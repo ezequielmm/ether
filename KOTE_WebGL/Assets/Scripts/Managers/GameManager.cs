@@ -4,13 +4,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public enum inGameScenes {MainMenuScene,LoaderScene,Map,Game}; //created so we can use the names on the enums instead of hard coding strings everytime, if a scene name is changed we can just change it here as well instead of changing at various spots
-
+public enum connectionState {LoggedOut, Loggedin};
 public class GameManager : SingleTon
 {
 
     public inGameScenes nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
-
-
+    [SerializeField] // permits changes on editor
+    connectionState currentConnectionState = connectionState.LoggedOut; // used to keep track of log in state, maybe can be changed to a bool but might be less safe
+    [SerializeField]
+    string username;
     protected override void Awake()
     {
         base.Awake();
@@ -35,4 +37,18 @@ public class GameManager : SingleTon
         SceneManager.LoadScene(inGameScenes.LoaderScene.ToString()); //Loads the Main Menu scene passing through the LoaderScene
         nextSceneToLoad = default(inGameScenes);
     }
+
+    public connectionState CheckConnection()
+    {
+        return currentConnectionState;
+    }
+    public void LogIn()
+    {
+        currentConnectionState = connectionState.Loggedin;
+    }
+    public void LogOut()
+    {
+        currentConnectionState = connectionState.;
+    }
+
 }

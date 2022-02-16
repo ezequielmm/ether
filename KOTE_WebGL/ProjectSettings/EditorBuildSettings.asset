@@ -6,15 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/00_KOTE/Scenes/MainMenuScene.unity
+    path: Assets/Scenes/MainMenuScene.unity
     guid: 44b99823509014341ad879143188897f
   - enabled: 1
-    path: Assets/00_KOTE/Scenes/LoaderScene.unity
+    path: Assets/Scenes/LoaderScene.unity
     guid: 579a8beebcc2e0b498b2ad9c2804af07
   - enabled: 1
-    path: Assets/00_KOTE/Scenes/Map.unity
+    path: Assets/Scenes/Map.unity
     guid: 8da417e458d8248218d82c73e3253276
   - enabled: 1
-    path: Assets/00_KOTE/Scenes/Game.unity
+    path: Assets/Scenes/Game.unity
     guid: d0b42c3c1f4c743cbabb99ffbe23de6a
   m_configObjects: {}
