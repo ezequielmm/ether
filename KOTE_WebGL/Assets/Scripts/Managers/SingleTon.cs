@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class SingleTon : MonoBehaviour
 {
-    public static SingleTon _instance;
+    public static SingleTon instance;
 
     protected virtual void Awake()
     {
-        if (_instance != null && _instance != this)
+        if (instance != null && instance != this)
         {
             Destroy(this.gameObject);
         }
         else
         {
-            _instance = this;
+            instance = this;
             DontDestroyOnLoad(this.gameObject);
         }
     }

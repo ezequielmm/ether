@@ -16,7 +16,7 @@ public class LoadingManager : MonoBehaviour
 
     private void Start()
     {
-        GameManagerLocal = GameManager._instance.gameObject.GetComponent<GameManager>(); // getting the current GameManager from the singleton
+        GameManagerLocal = GameManager.instance.gameObject.GetComponent<GameManager>(); // getting the current GameManager from the singleton
     }
     private void OnEnable()
     {

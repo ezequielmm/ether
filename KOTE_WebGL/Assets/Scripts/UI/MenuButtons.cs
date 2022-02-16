@@ -8,7 +8,7 @@ public class MenuButtons : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameManagerLocal = GameManager._instance.gameObject.GetComponent<GameManager>();
+        GameManagerLocal = GameManager.instance.gameObject.GetComponent<GameManager>();
     }
 
     public void loadScene(inGameScenes inGameScenesVariable)
