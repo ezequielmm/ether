@@ -48,7 +48,7 @@ public class GameManager : SingleTon
     }
     public void LogOut()
     {
-        currentConnectionState = connectionState.;
+        currentConnectionState = connectionState.LoggedOut;
     }
 
 }
