@@ -16,7 +16,7 @@ public class LoadingManager : MonoBehaviour
 
     private void Start()
     {
-        GameManagerLocal = GameManager.instance.gameObject.GetComponent<GameManager>(); // getting the current GameManager from the singleton
+        GameManagerLocal = GameManager.Instance; // getting the current GameManager from the singleton
     }
     private void OnEnable()
     {
@@ -57,7 +57,7 @@ public class LoadingManager : MonoBehaviour
             //Debug.Log(asyncLoad.progress);
             yield return null;
         }
-        GameManagerLocal.nextSceneToLoad = inGameScenes.LoaderScene; //sets the next scene to load to loaderscene to prevent multiple loads and to come back to the loading scene when there is a need to change again
+        GameManagerLocal.nextSceneToLoad = inGameScenes.Loader; //sets the next scene to load to loaderscene to prevent multiple loads and to come back to the loading scene when there is a need to change again
 
     }
 

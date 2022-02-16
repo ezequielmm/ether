@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class MainMenuManager : MonoBehaviour
+public class MainMenuManager : MenuButtons
 {
     [SerializeField]
     GameObject LoginPanelPrefab, RegisterPanelPrefab;
