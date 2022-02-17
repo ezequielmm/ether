@@ -14,18 +14,14 @@ public class GameManager : SingleTon<GameManager>
     void Start()
     {
         //LoadScene(default(inGameScenes)); locks into the load scene(debug test)
-        LoadScene(inGameScenes.MainMenu);//setting the first scene to map for now, will be MainMenuScene when that is prepared (unecessary as there is a demo MainMenuScene)
+        if (SceneManager.GetActiveScene().name == inGameScenes.Loader.ToString()) //checks if the first scene is the level loader, if so loads the main menu
+            LoadScene(inGameScenes.MainMenu);//setting the first scene to map for now, will be MainMenuScene when that is prepared (unecessary as there is a demo MainMenuScene)
     }
 
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene
     {
         SceneManager.LoadScene(inGameScenes.Loader.ToString());
         nextSceneToLoad = scene;
-    }
-    public void LoadScene()
-    {
-        SceneManager.LoadScene(inGameScenes.Loader.ToString()); //Loads the Main Menu scene passing through the LoaderScene
-        nextSceneToLoad = default(inGameScenes);
     }
 
 }
