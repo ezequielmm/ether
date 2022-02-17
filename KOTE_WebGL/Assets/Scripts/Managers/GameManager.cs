@@ -13,9 +13,6 @@ public class GameManager : SingleTon<GameManager>
     // Start is called before the first frame update
     void Start()
     {
-        //LoadScene(default(inGameScenes)); locks into the load scene(debug test)
-        if (SceneManager.GetActiveScene().name == inGameScenes.Loader.ToString()) //checks if the first scene is the level loader, if so loads the main menu
-            LoadScene(inGameScenes.MainMenu);//setting the first scene to map for now, will be MainMenuScene when that is prepared (unecessary as there is a demo MainMenuScene)
     }
 
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene

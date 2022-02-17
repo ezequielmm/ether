@@ -8,34 +8,13 @@ using TMPro;
 
 public class LoadingManager : MonoBehaviour
 {
-    [SerializeField] GameManager GameManagerLocal;
     [SerializeField] TextMeshPro loadingText;
     [SerializeField] Slider slideBar;
-    [SerializeField] bool enableLoad = true;
-    public string NextSceneToLoad = default(inGameScenes).ToString();
 
     private void Start()
     {
-        GameManagerLocal = GameManager.Instance; // getting the current GameManager from the singleton
-    }
-    private void OnEnable()
-    {
-        enableLoad = true;
-    }
 
-    void Update()
-    {
-        if (enableLoad)
-        {
-            NextSceneToLoad = GameManagerLocal.nextSceneToLoad.ToString();
-            LoadLevel(NextSceneToLoad); //loads the next scene
-            enableLoad = false;
-        }
-    }
-
-    public void LoadLevel(string sceneName)
-    {
-        StartCoroutine(LoadAsynchronously(sceneName));
+        StartCoroutine(LoadAsynchronously(GameManager.Instance.nextSceneToLoad.ToString()));
     }
 
     IEnumerator LoadAsynchronously(string sceneName)
@@ -57,14 +36,7 @@ public class LoadingManager : MonoBehaviour
             //Debug.Log(asyncLoad.progress);
             yield return null;
         }
-        GameManagerLocal.nextSceneToLoad = inGameScenes.Loader; //sets the next scene to load to loaderscene to prevent multiple loads and to come back to the loading scene when there is a need to change again
-
+        
     }
-
-
-
-
-
-
 
 }
