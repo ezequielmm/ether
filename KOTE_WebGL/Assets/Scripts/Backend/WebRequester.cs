@@ -32,9 +32,21 @@ public class WebRequester : MonoBehaviour
         }
     }
 
+    [Serializable]
+    public class LoginData
+    {
+        public Data data;
+
+        [Serializable]
+        public class Data
+        {
+        }
+    }
+
     private readonly string baseUrl = "https://gateway.kote.robotseamonster.com";
     private readonly string urlRandomName = "/auth/v1/generate/username";
     private readonly string urlRegister = "/auth/v1/register";
+    private readonly string urlLogin = "/auth/v1/login";
 
     private void Start()
     {
@@ -95,5 +107,31 @@ public class WebRequester : MonoBehaviour
     public void RequestRegister(string namesText, string email, string password)
     {
         StartCoroutine(GetRegister(namesText, email, password));
+    }
+
+    IEnumerator GetLogin(string email, string password)
+    {
+        string loginUrl = $"{baseUrl}{urlLogin}";
+        WWWForm form = new WWWForm();
+        form.AddField("email", email);
+        form.AddField("password", password);
+
+        UnityWebRequest request = UnityWebRequest.Post(loginUrl, form);
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.Log($"{request.error}");
+            yield break;
+        }
+
+        LoginData registerData = JsonUtility.FromJson<LoginData>(request.downloadHandler.text);
+    }
+
+    public bool RequestLogin(string email, string password)
+    {
+        StartCoroutine(GetLogin(email, password));
+        return false;
     }
 }
