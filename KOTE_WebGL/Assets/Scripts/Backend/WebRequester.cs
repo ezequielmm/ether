@@ -40,6 +40,7 @@ public class WebRequester : MonoBehaviour
         [Serializable]
         public class Data
         {
+            public string token;
         }
     }
 
@@ -109,7 +110,7 @@ public class WebRequester : MonoBehaviour
         StartCoroutine(GetRegister(namesText, email, password));
     }
 
-    IEnumerator GetLogin(string email, string password)
+    IEnumerator GetLogin(string email, string password, bool rememberMe, Action<bool> callback = null)
     {
         string loginUrl = $"{baseUrl}{urlLogin}";
         WWWForm form = new WWWForm();
@@ -123,15 +124,22 @@ public class WebRequester : MonoBehaviour
             request.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.Log($"{request.error}");
+            callback?.Invoke(false);
             yield break;
         }
 
         LoginData registerData = JsonUtility.FromJson<LoginData>(request.downloadHandler.text);
+        callback?.Invoke(true);
+
+        if (rememberMe)
+        {
+            PlayerPrefs.SetString("auth_token", registerData.data.token);
+            PlayerPrefs.Save();
+        }
     }
 
-    public bool RequestLogin(string email, string password)
+    public void RequestLogin(string email, string password, bool rememberMe, Action<bool> callback)
     {
-        StartCoroutine(GetLogin(email, password));
-        return false;
+        StartCoroutine(GetLogin(email, password, rememberMe, callback));
     }
 }

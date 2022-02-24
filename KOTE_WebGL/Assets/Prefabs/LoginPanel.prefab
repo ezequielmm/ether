@@ -600,6 +600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 031b309c8831642478ac42173636ca80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  succesfulLogin: 0
 --- !u!1 &1512877100772146505
 GameObject:
   m_ObjectHideFlags: 0
@@ -1599,7 +1600,7 @@ GameObject:
   - component: {fileID: 5191841801602545225}
   - component: {fileID: 6043711864758805976}
   m_Layer: 5
-  m_Name: Login
+  m_Name: Forgot password
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

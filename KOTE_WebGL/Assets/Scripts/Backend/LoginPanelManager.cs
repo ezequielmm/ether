@@ -30,9 +30,9 @@ public class LoginPanelManager : MonoBehaviour
 
     public void VerifyEmail()
     {
+        validLoginEmail.gameObject.SetActive(false);
+
         validEmail = ParseString.IsEmail(emailInputField.text);
-        Debug.Log($"valid email");
-        validLoginEmail.gameObject.SetActive(validEmail && validLogin);
         validEmailLabel.gameObject.SetActive(!validEmail);
     }
 
@@ -41,16 +41,24 @@ public class LoginPanelManager : MonoBehaviour
         validLoginEmail.gameObject.SetActive(false);
         validLoginEmail.gameObject.SetActive(false);
 
+        webRequester.RequestLogin(emailInputField.text, passwordInputField.text, rememberMe.isOn, ValidateLogin);
+    }
+
+    void ValidateLogin(bool validLoginLocal)
+    {
+        validLogin = validLoginLocal;
 
         if (validEmail)
         {
-            validLogin = webRequester.RequestLogin(emailInputField.text, passwordInputField.text);
-
             if (validLogin)
             {
+                gameObject.SetActive(false);
             }
             else
             {
+                emailInputField.text = "";
+                passwordInputField.text = "";
+
                 validLoginEmail.gameObject.SetActive(!validLogin);
                 validLoginPassword.gameObject.SetActive(!validLogin);
             }
