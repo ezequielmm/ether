@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Toggle = UnityEngine.UI.Toggle;
+using UnityEngine.EventSystems;
 
-public class Register : MonoBehaviour
+public class RegisterPanelManager : MonoBehaviour
 {
     public TMP_InputField emailInputField;
     public TMP_InputField confirmEmailInputField;
@@ -19,6 +21,8 @@ public class Register : MonoBehaviour
     public TMP_Text nameText;
 
     [Space(20)] public Toggle termsAndConditions;
+
+    [Space(20)] public LoginPanelManager loginPanelManager;
     public WebRequester webRequester;
 
     private bool validEmail;
@@ -41,24 +45,43 @@ public class Register : MonoBehaviour
     {
         validEmail = ParseString.IsEmail(emailInputField.text);
         validEmailLabel.gameObject.SetActive(!validEmail);
+
+        emailNotMatchLabel.gameObject.SetActive(false);
+        validPasswordLabel.gameObject.SetActive(false);
+        passwordNotMatchLabel.gameObject.SetActive(false);
     }
 
     public void ConfirmEmail()
     {
         emailConfirmed = validEmail && (emailInputField.text == confirmEmailInputField.text);
         emailNotMatchLabel.gameObject.SetActive(!emailConfirmed && validEmail);
+
+        validPasswordLabel.gameObject.SetActive(false);
+        passwordNotMatchLabel.gameObject.SetActive(false);
     }
 
     public void VerifyPassword()
     {
         validPassword = ParseString.IsPassword(passwordInputField.text);
         validPasswordLabel.gameObject.SetActive(!validPassword);
+
+        validEmailLabel.gameObject.SetActive(false);
+        emailNotMatchLabel.gameObject.SetActive(false);
+        passwordNotMatchLabel.gameObject.SetActive(false);
     }
 
     public void ConfirmPassword()
     {
         passwordConfirmed = validPassword && (passwordInputField.text == confirmPasswordInputField.text);
         passwordNotMatchLabel.gameObject.SetActive(!passwordConfirmed && validPassword);
+
+        validEmailLabel.gameObject.SetActive(false);
+        emailNotMatchLabel.gameObject.SetActive(false);
+    }
+
+    public void RequestNewName()
+    {
+        webRequester.RequestNewName(nameText);
     }
 
     public void OnRegister()
@@ -69,5 +92,11 @@ public class Register : MonoBehaviour
             string password = passwordInputField.text;
             webRequester.RequestRegister(nameText.text, email, password);
         }
+    }
+
+    public void LoginHyperlink()
+    {
+        gameObject.SetActive(false);
+        loginPanelManager.gameObject.SetActive(true);
     }
 }

@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.UIElements;
 using UnityEngine.UI;
 using Toggle = UnityEngine.UI.Toggle;
+using UnityEngine.EventSystems;
 
 public class LoginPanelManager : MonoBehaviour
 {
@@ -39,9 +40,10 @@ public class LoginPanelManager : MonoBehaviour
     public void OnLogin()
     {
         validLoginEmail.gameObject.SetActive(false);
-        validLoginEmail.gameObject.SetActive(false);
+        validLoginPassword.gameObject.SetActive(false);
 
-        webRequester.RequestLogin(emailInputField.text, passwordInputField.text, rememberMe.isOn, ValidateLogin);
+        if (validEmail && passwordInputField.text != null)
+            webRequester.RequestLogin(emailInputField.text, passwordInputField.text, rememberMe.isOn, ValidateLogin);
     }
 
     void ValidateLogin(bool validLoginLocal)
