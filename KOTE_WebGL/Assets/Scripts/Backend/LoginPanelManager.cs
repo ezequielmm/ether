@@ -17,7 +17,7 @@ public class LoginPanelManager : MonoBehaviour
     public TMP_Text validLoginPassword;
 
     [Space(20)] public Toggle rememberMe;
-    public WebRequester webRequester;
+    public WebRequesterManager webRequesterManager;
 
     private bool validEmail;
     private bool validLogin;
@@ -43,7 +43,7 @@ public class LoginPanelManager : MonoBehaviour
         validLoginPassword.gameObject.SetActive(false);
 
         if (validEmail && passwordInputField.text != null)
-            webRequester.RequestLogin(emailInputField.text, passwordInputField.text, rememberMe.isOn, ValidateLogin);
+            webRequesterManager.RequestLogin(emailInputField.text, passwordInputField.text, rememberMe.isOn, ValidateLogin);
     }
 
     void ValidateLogin(bool validLoginLocal)

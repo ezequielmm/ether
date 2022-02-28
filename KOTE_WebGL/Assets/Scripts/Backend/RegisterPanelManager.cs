@@ -23,7 +23,7 @@ public class RegisterPanelManager : MonoBehaviour
     [Space(20)] public Toggle termsAndConditions;
 
     [Space(20)] public LoginPanelManager loginPanelManager;
-    public WebRequester webRequester;
+    public WebRequesterManager webRequesterManager;
 
     private bool validEmail;
     private bool emailConfirmed;
@@ -33,7 +33,7 @@ public class RegisterPanelManager : MonoBehaviour
 
     private void Start()
     {
-        webRequester.RequestNewName(nameText);
+        webRequesterManager.RequestNewName(nameText);
 
         validEmailLabel.gameObject.SetActive(false);
         emailNotMatchLabel.gameObject.SetActive(false);
@@ -81,7 +81,7 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void RequestNewName()
     {
-        webRequester.RequestNewName(nameText);
+        webRequesterManager.RequestNewName(nameText);
     }
 
     public void OnRegister()
@@ -90,7 +90,7 @@ public class RegisterPanelManager : MonoBehaviour
         {
             string email = emailInputField.text;
             string password = passwordInputField.text;
-            webRequester.RequestRegister(nameText.text, email, password);
+            webRequesterManager.RequestRegister(nameText.text, email, password);
         }
     }
 

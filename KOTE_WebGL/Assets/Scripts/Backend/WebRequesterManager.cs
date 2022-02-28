@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using TMPro;
 
-public class WebRequester : MonoBehaviour
+public class WebRequesterManager : MonoBehaviour
 {
     [Serializable]
     public class RandomNameData
