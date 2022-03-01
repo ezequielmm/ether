@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,12 +13,16 @@ public enum inGameScenes
 
 public class GameManager : SingleTon<GameManager>
 {
-    public class EVENT_STRING_CLASS : UnityEvent<string>
-    {
-    }
-
+    public UnityEvent EVENT_REQUEST_NAME = new UnityEvent();
     public UnityEvent<string> EVENT_NEW_RANDOM_NAME = new UnityEvent<string>();
-    public UnityEvent<string> EVENT_REGISTER_TOKEN = new UnityEvent<string>();
+
+    public UnityEvent<string, string, string> EVENT_REGISTER = new UnityEvent<string, string, string>();
+    public UnityEvent<string> EVENT_REGISTER_COMPLETED = new UnityEvent<string>();
+
+    public UnityEvent<string, string, bool> EVENT_LOGIN = new UnityEvent<string, string, bool>();
+    public UnityEvent<string, bool> EVENT_LOGIN_COMPLETED = new UnityEvent<string, bool>();
+
+    public UnityEvent EVENT_LOGIN_HYPERLINK = new UnityEvent();
 
     public inGameScenes
         nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat

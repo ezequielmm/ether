@@ -53,6 +53,12 @@ public class WebRequesterManager : MonoBehaviour
     {
         PlayerPrefs.SetString("session_token", "");
         PlayerPrefs.Save();
+
+        GameManager.Instance.EVENT_REQUEST_NAME.AddListener(OnRandomNameEvent);
+        GameManager.Instance.EVENT_REGISTER.AddListener(OnRegisterEvent);
+        GameManager.Instance.EVENT_LOGIN.AddListener(RequestLogin);
+
+        OnRandomNameEvent();
     }
 
     public IEnumerator GetRandomName()
@@ -79,6 +85,11 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_NEW_RANDOM_NAME.Invoke(string.IsNullOrEmpty(newName) ? "" : newName);
     }
 
+    public void OnRandomNameEvent()
+    {
+        StartCoroutine(GetRandomName());
+    }
+
     public IEnumerator GetRegister(string nameText, string email, string password)
     {
         string registerUrl = $"{baseUrl}{urlRegister}";
@@ -100,10 +111,15 @@ public class WebRequesterManager : MonoBehaviour
         RegisterData registerData = JsonUtility.FromJson<RegisterData>(request.downloadHandler.text);
         string token = registerData.data.token;
 
-        GameManager.Instance.EVENT_REGISTER_TOKEN.Invoke(string.IsNullOrEmpty(token) ? "" : token);
+        GameManager.Instance.EVENT_REGISTER_COMPLETED.Invoke(string.IsNullOrEmpty(token) ? "" : token);
     }
 
-    IEnumerator GetLogin(string email, string password, bool rememberMe, Action<bool> callback = null)
+    public void OnRegisterEvent(string name, string email, string password)
+    {
+        StartCoroutine(GetRegister(name, email, password));
+    }
+
+    IEnumerator GetLogin(string email, string password, bool rememberMe)
     {
         string loginUrl = $"{baseUrl}{urlLogin}";
         WWWForm form = new WWWForm();
@@ -117,22 +133,18 @@ public class WebRequesterManager : MonoBehaviour
             request.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.Log($"{request.error}");
-            callback?.Invoke(false);
+            GameManager.Instance.EVENT_LOGIN_COMPLETED.Invoke("", false);
             yield break;
         }
 
         LoginData registerData = JsonUtility.FromJson<LoginData>(request.downloadHandler.text);
-        callback?.Invoke(true);
+        string token = registerData.data.token;
 
-        if (rememberMe)
-        {
-            PlayerPrefs.SetString("auth_token", registerData.data.token);
-            PlayerPrefs.Save();
-        }
+        GameManager.Instance.EVENT_LOGIN_COMPLETED.Invoke(token, true);
     }
 
-    public void RequestLogin(string email, string password, bool rememberMe, Action<bool> callback)
+    public void RequestLogin(string email, string password, bool rememberMe)
     {
-        StartCoroutine(GetLogin(email, password, rememberMe, callback));
+        StartCoroutine(GetLogin(email, password, rememberMe));
     }
 }

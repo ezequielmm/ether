@@ -822,7 +822,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.003921569}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -875,7 +875,6 @@ MonoBehaviour:
   termsAndConditions: {fileID: 7830214380086651458}
   registerButton: {fileID: 9033512270406486638}
   loginPanelManager: {fileID: 0}
-  webRequesterManager: {fileID: 0}
 --- !u!1 &1013767694908859600
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,7 +19,7 @@ public class LoginPanelManager : MonoBehaviour
     [Space(20)] public Toggle rememberMe;
     public Button loginButton;
 
-    [Space(20)] public WebRequesterManager webRequesterManager;
+    [Space(20)] public GameObject loginContainer;
 
     private bool validEmail;
     private bool validLogin;
@@ -31,6 +31,9 @@ public class LoginPanelManager : MonoBehaviour
         validLoginPassword.gameObject.SetActive(false);
 
         loginButton.interactable = false;
+
+        GameManager.Instance.EVENT_LOGIN_COMPLETED.AddListener(ValidateLogin);
+        GameManager.Instance.EVENT_LOGIN_HYPERLINK.AddListener(LoginHyperlink);
     }
 
     private void Update()
@@ -51,10 +54,10 @@ public class LoginPanelManager : MonoBehaviour
         validLoginEmail.gameObject.SetActive(false);
         validLoginPassword.gameObject.SetActive(false);
 
-        webRequesterManager.RequestLogin(emailInputField.text, passwordInputField.text, rememberMe.isOn, ValidateLogin);
+        GameManager.Instance.EVENT_LOGIN.Invoke(emailInputField.text, passwordInputField.text, rememberMe.isOn);
     }
 
-    private void ValidateLogin(bool validLoginLocal)
+    private void ValidateLogin(string token, bool validLoginLocal)
     {
         validLogin = validLoginLocal;
 
@@ -63,6 +66,12 @@ public class LoginPanelManager : MonoBehaviour
             if (validLogin)
             {
                 gameObject.SetActive(false);
+
+                if (rememberMe.isOn)
+                {
+                    PlayerPrefs.SetString("auth_token", token);
+                    PlayerPrefs.Save();
+                }
             }
             else
             {
@@ -73,5 +82,10 @@ public class LoginPanelManager : MonoBehaviour
                 validLoginPassword.gameObject.SetActive(!validLogin);
             }
         }
+    }
+
+    public void LoginHyperlink()
+    {
+        loginContainer.SetActive(true);
     }
 }

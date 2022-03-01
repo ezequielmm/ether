@@ -23,9 +23,6 @@ public class RegisterPanelManager : MonoBehaviour
     [Space(20)] public Toggle termsAndConditions;
     public Button registerButton;
 
-    [Space(20)] public LoginPanelManager loginPanelManager;
-    public WebRequesterManager webRequesterManager;
-
     private bool validEmail;
     private bool emailConfirmed;
 
@@ -34,8 +31,6 @@ public class RegisterPanelManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(webRequesterManager.GetRandomName());
-
         validEmailLabel.gameObject.SetActive(false);
         emailNotMatchLabel.gameObject.SetActive(false);
         validPasswordLabel.gameObject.SetActive(false);
@@ -44,7 +39,7 @@ public class RegisterPanelManager : MonoBehaviour
         registerButton.interactable = false;
 
         GameManager.Instance.EVENT_NEW_RANDOM_NAME.AddListener(OnNewRandomName);
-        GameManager.Instance.EVENT_REGISTER_TOKEN.AddListener(OnRegisterCompleted);
+        GameManager.Instance.EVENT_REGISTER_COMPLETED.AddListener(OnRegisterCompleted);
     }
 
     private void Update()
@@ -92,7 +87,7 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void RequestNewName()
     {
-        StartCoroutine(webRequesterManager.GetRandomName());
+        GameManager.Instance.EVENT_REQUEST_NAME.Invoke();
     }
 
     public void OnNewRandomName(string name)
@@ -105,7 +100,7 @@ public class RegisterPanelManager : MonoBehaviour
         string name = nameText.text;
         string email = emailInputField.text;
         string password = passwordInputField.text;
-        StartCoroutine(webRequesterManager.GetRegister(name, email, password));
+        GameManager.Instance.EVENT_REGISTER.Invoke(name, email, password);
     }
 
     public void OnRegisterCompleted(string token)
@@ -117,6 +112,6 @@ public class RegisterPanelManager : MonoBehaviour
     public void LoginHyperlink()
     {
         gameObject.SetActive(false);
-        loginPanelManager.gameObject.SetActive(true);
+        GameManager.Instance.EVENT_LOGIN_HYPERLINK.Invoke();
     }
 }
