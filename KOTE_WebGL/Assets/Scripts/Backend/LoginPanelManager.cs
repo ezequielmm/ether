@@ -17,7 +17,9 @@ public class LoginPanelManager : MonoBehaviour
     public TMP_Text validLoginPassword;
 
     [Space(20)] public Toggle rememberMe;
-    public WebRequesterManager webRequesterManager;
+    public Button loginButton;
+
+    [Space(20)] public WebRequesterManager webRequesterManager;
 
     private bool validEmail;
     private bool validLogin;
@@ -27,6 +29,13 @@ public class LoginPanelManager : MonoBehaviour
         validEmailLabel.gameObject.SetActive(false);
         validLoginEmail.gameObject.SetActive(false);
         validLoginPassword.gameObject.SetActive(false);
+
+        loginButton.interactable = false;
+    }
+
+    private void Update()
+    {
+        loginButton.interactable = validEmail && !string.IsNullOrEmpty(passwordInputField.text);
     }
 
     public void VerifyEmail()
@@ -42,11 +51,10 @@ public class LoginPanelManager : MonoBehaviour
         validLoginEmail.gameObject.SetActive(false);
         validLoginPassword.gameObject.SetActive(false);
 
-        if (validEmail && passwordInputField.text != null)
-            webRequesterManager.RequestLogin(emailInputField.text, passwordInputField.text, rememberMe.isOn, ValidateLogin);
+        webRequesterManager.RequestLogin(emailInputField.text, passwordInputField.text, rememberMe.isOn, ValidateLogin);
     }
 
-    void ValidateLogin(bool validLoginLocal)
+    private void ValidateLogin(bool validLoginLocal)
     {
         validLogin = validLoginLocal;
 

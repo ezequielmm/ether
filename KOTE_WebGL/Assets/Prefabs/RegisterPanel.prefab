@@ -873,8 +873,9 @@ MonoBehaviour:
   passwordNotMatchLabel: {fileID: 1046823699064354979}
   nameText: {fileID: 930893747637170833}
   termsAndConditions: {fileID: 7830214380086651458}
+  registerButton: {fileID: 9033512270406486638}
   loginPanelManager: {fileID: 0}
-  webRequester: {fileID: 0}
+  webRequesterManager: {fileID: 0}
 --- !u!1 &1013767694908859600
 GameObject:
   m_ObjectHideFlags: 0
@@ -1304,8 +1305,8 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
@@ -1640,8 +1641,8 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0

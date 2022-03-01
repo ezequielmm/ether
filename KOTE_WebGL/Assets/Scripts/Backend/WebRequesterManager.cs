@@ -55,9 +55,9 @@ public class WebRequesterManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    IEnumerator GetRandomName(TMP_Text nameText)
+    public IEnumerator GetRandomName()
     {
-        nameText.text = "Loading...";
+        GameManager.Instance.EVENT_NEW_RANDOM_NAME.Invoke("Loading...");
 
         string randomNameUrl = $"{baseUrl}{urlRandomName}";
 
@@ -74,15 +74,12 @@ public class WebRequesterManager : MonoBehaviour
 
         RandomNameData randomNameData =
             JsonUtility.FromJson<RandomNameData>(randomNameInfoRequest.downloadHandler.text);
-        nameText.text = randomNameData.data.username;
+        string newName = randomNameData.data.username;
+
+        GameManager.Instance.EVENT_NEW_RANDOM_NAME.Invoke(string.IsNullOrEmpty(newName) ? "" : newName);
     }
 
-    public void RequestNewName(TMP_Text nameText)
-    {
-        StartCoroutine(GetRandomName(nameText));
-    }
-
-    IEnumerator GetRegister(string nameText, string email, string password)
+    public IEnumerator GetRegister(string nameText, string email, string password)
     {
         string registerUrl = $"{baseUrl}{urlRegister}";
         WWWForm form = new WWWForm();
@@ -101,13 +98,9 @@ public class WebRequesterManager : MonoBehaviour
         }
 
         RegisterData registerData = JsonUtility.FromJson<RegisterData>(request.downloadHandler.text);
-        PlayerPrefs.SetString("session_token", registerData.data.token);
-        PlayerPrefs.Save();
-    }
+        string token = registerData.data.token;
 
-    public void RequestRegister(string namesText, string email, string password)
-    {
-        StartCoroutine(GetRegister(namesText, email, password));
+        GameManager.Instance.EVENT_REGISTER_TOKEN.Invoke(string.IsNullOrEmpty(token) ? "" : token);
     }
 
     IEnumerator GetLogin(string email, string password, bool rememberMe, Action<bool> callback = null)

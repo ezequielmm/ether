@@ -21,6 +21,7 @@ public class RegisterPanelManager : MonoBehaviour
     public TMP_Text nameText;
 
     [Space(20)] public Toggle termsAndConditions;
+    public Button registerButton;
 
     [Space(20)] public LoginPanelManager loginPanelManager;
     public WebRequesterManager webRequesterManager;
@@ -33,12 +34,22 @@ public class RegisterPanelManager : MonoBehaviour
 
     private void Start()
     {
-        webRequesterManager.RequestNewName(nameText);
+        StartCoroutine(webRequesterManager.GetRandomName());
 
         validEmailLabel.gameObject.SetActive(false);
         emailNotMatchLabel.gameObject.SetActive(false);
         validPasswordLabel.gameObject.SetActive(false);
         passwordNotMatchLabel.gameObject.SetActive(false);
+
+        registerButton.interactable = false;
+
+        GameManager.Instance.EVENT_NEW_RANDOM_NAME.AddListener(OnNewRandomName);
+        GameManager.Instance.EVENT_REGISTER_TOKEN.AddListener(OnRegisterCompleted);
+    }
+
+    private void Update()
+    {
+        registerButton.interactable = emailConfirmed && passwordConfirmed && termsAndConditions.isOn;
     }
 
     public void VerifyEmail()
@@ -81,17 +92,26 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void RequestNewName()
     {
-        webRequesterManager.RequestNewName(nameText);
+        StartCoroutine(webRequesterManager.GetRandomName());
+    }
+
+    public void OnNewRandomName(string name)
+    {
+        nameText.text = name;
     }
 
     public void OnRegister()
     {
-        if (passwordConfirmed && emailConfirmed && termsAndConditions.isOn)
-        {
-            string email = emailInputField.text;
-            string password = passwordInputField.text;
-            webRequesterManager.RequestRegister(nameText.text, email, password);
-        }
+        string name = nameText.text;
+        string email = emailInputField.text;
+        string password = passwordInputField.text;
+        StartCoroutine(webRequesterManager.GetRegister(name, email, password));
+    }
+
+    public void OnRegisterCompleted(string token)
+    {
+        PlayerPrefs.SetString("session_token", token);
+        PlayerPrefs.Save();
     }
 
     public void LoginHyperlink()

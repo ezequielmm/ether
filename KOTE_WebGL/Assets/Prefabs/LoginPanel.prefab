@@ -1214,11 +1214,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
+    m_WrapAround: 1
+    m_SelectOnUp: {fileID: 2827399042370696327}
+    m_SelectOnDown: {fileID: 2168699279653196832}
+    m_SelectOnLeft: {fileID: 2827399042370696327}
+    m_SelectOnRight: {fileID: 2168699279653196832}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -1435,7 +1435,8 @@ MonoBehaviour:
   validLoginEmail: {fileID: 4349300738131975132}
   validLoginPassword: {fileID: 4994785263734996063}
   rememberMe: {fileID: 3948259946520810667}
-  webRequester: {fileID: 0}
+  loginButton: {fileID: 2827399042370696327}
+  webRequesterManager: {fileID: 0}
 --- !u!1 &6268708868612310732
 GameObject:
   m_ObjectHideFlags: 0
@@ -2548,8 +2549,8 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
