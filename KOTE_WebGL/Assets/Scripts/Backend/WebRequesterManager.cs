@@ -175,7 +175,6 @@ public class WebRequesterManager : MonoBehaviour
             yield break;
         }
 
-        Debug.Log($"hello login");
         LoginData registerData = JsonUtility.FromJson<LoginData>(request.downloadHandler.text);
         string token = registerData.data.token;
 
