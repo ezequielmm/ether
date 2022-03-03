@@ -18,11 +18,14 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(false);
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(false);
 
-        ActivateLabels("", false);
+        ActivateLabels("", "", 0, false);
     }
 
-    public void ActivateLabels(string token, bool validLoginLocal)
+    public void ActivateLabels(string name, string token, int fief, bool validLoginLocal)
     {
+        nameText.text = name;
+        moneyText.text = fief.ToString();
+
         nameText.gameObject.SetActive(validLoginLocal);
         moneyText.gameObject.SetActive(validLoginLocal);
 

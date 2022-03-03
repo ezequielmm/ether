@@ -17,10 +17,15 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<string> EVENT_NEW_RANDOM_NAME = new UnityEvent<string>();
 
     public UnityEvent<string, string, string> EVENT_REGISTER = new UnityEvent<string, string, string>();
-    public UnityEvent<string> EVENT_REGISTER_COMPLETED = new UnityEvent<string>();
+
+    public UnityEvent<string, string, string, string> EVENT_REGISTER_COMPLETED =
+        new UnityEvent<string, string, string, string>();
 
     public UnityEvent<string, string, bool> EVENT_LOGIN = new UnityEvent<string, string, bool>();
-    public UnityEvent<string, bool> EVENT_LOGIN_COMPLETED = new UnityEvent<string, bool>();
+    public UnityEvent<string, string, int, bool> EVENT_LOGIN_COMPLETED = new UnityEvent<string, string, int, bool>();
+
+    public UnityEvent<string> EVENT_PROFILE = new UnityEvent<string>();
+    public UnityEvent<string, int> EVENT_PROFILE_REQUESTED = new UnityEvent<string, int>();
 
     public UnityEvent<bool> EVENT_LOGINPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
     public UnityEvent<bool> EVENT_REGISTERPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();

@@ -57,33 +57,33 @@ public class LoginPanelManager : MonoBehaviour
         validLoginEmail.gameObject.SetActive(false);
         validLoginPassword.gameObject.SetActive(false);
 
-        GameManager.Instance.EVENT_LOGIN.Invoke(emailInputField.text, passwordInputField.text, rememberMe.isOn);
+        if (validEmail)
+        {
+            GameManager.Instance.EVENT_LOGIN.Invoke(emailInputField.text, passwordInputField.text, rememberMe.isOn);
+        }
     }
 
-    private void ValidateLogin(string token, bool validLoginLocal)
+    private void ValidateLogin(string name, string token, int fief, bool validLoginLocal)
     {
         validLogin = validLoginLocal;
 
-        if (validEmail)
+        if (validLogin)
         {
-            if (validLogin)
-            {
-                GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(false);
+            GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(false);
 
-                if (rememberMe.isOn)
-                {
-                    PlayerPrefs.SetString("auth_token", token);
-                    PlayerPrefs.Save();
-                }
-            }
-            else
+            if (rememberMe.isOn)
             {
-                emailInputField.text = "";
-                passwordInputField.text = "";
-
-                validLoginEmail.gameObject.SetActive(!validLogin);
-                validLoginPassword.gameObject.SetActive(!validLogin);
+                PlayerPrefs.SetString("auth_token", token);
+                PlayerPrefs.Save();
             }
+        }
+        else
+        {
+            emailInputField.text = "";
+            passwordInputField.text = "";
+
+            validLoginEmail.gameObject.SetActive(!validLogin);
+            validLoginPassword.gameObject.SetActive(!validLogin);
         }
     }
 

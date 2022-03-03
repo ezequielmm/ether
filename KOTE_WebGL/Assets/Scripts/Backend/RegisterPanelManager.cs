@@ -111,10 +111,12 @@ public class RegisterPanelManager : MonoBehaviour
         GameManager.Instance.EVENT_REGISTER.Invoke(name, email, password);
     }
 
-    public void OnRegisterCompleted(string token)
+    public void OnRegisterCompleted(string name, string email, string password, string token)
     {
         PlayerPrefs.SetString("session_token", token);
         PlayerPrefs.Save();
+
+        GameManager.Instance.EVENT_LOGIN.Invoke(email, password, false);
     }
 
     public void LoginHyperlink()
