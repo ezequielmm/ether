@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class TreasuryManager : MonoBehaviour
 {
     public TreasuryTabsNavigatorManager treasuryTabsNavigatorManager;
+    public List<Transform> panelTransforms;
 
     [Space(20)] public GameObject characterList;
     public GameObject tabContentPrefab;
@@ -28,56 +29,32 @@ public class TreasuryManager : MonoBehaviour
     private void SetTestingObjects()
     {
         //setting random amount of objects for testing purposes
-        foreach (Transform child in treasuryTabsNavigatorManager.NFTsPanel.transform)
+        foreach (Transform panelTransform in panelTransforms)
+        {
+            DestroyChildren(panelTransform);
+        }
+
+        foreach (Transform panelTransform in panelTransforms)
+        {
+            SetObjects(panelTransform);
+        }
+    }
+
+    public void DestroyChildren(Transform transform)
+    {
+        foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
         }
+    }
 
-        foreach (Transform child in treasuryTabsNavigatorManager.cardsPanel.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (Transform child in treasuryTabsNavigatorManager.powerPanel.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (Transform child in treasuryTabsNavigatorManager.armourPanel.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
+    public void SetObjects(Transform transform)
+    {
         int objectsAmount = Random.Range(7, 20);
 
         for (int i = 0; i < objectsAmount; i++)
         {
-            Debug.Log($"{i}");
-            GameObject localObject = Instantiate(tabContentPrefab, treasuryTabsNavigatorManager.NFTsPanel.transform);
-            localObject.transform.GetChild(0).GetComponent<TMP_Text>().text = i.ToString();
-        }
-
-        objectsAmount = Random.Range(7, 20);
-
-        for (int i = 0; i < objectsAmount; i++)
-        {
-            GameObject localObject = Instantiate(tabContentPrefab, treasuryTabsNavigatorManager.cardsPanel.transform);
-            localObject.transform.GetChild(0).GetComponent<TMP_Text>().text = i.ToString();
-        }
-
-        objectsAmount = Random.Range(7, 20);
-
-        for (int i = 0; i < objectsAmount; i++)
-        {
-            GameObject localObject = Instantiate(tabContentPrefab, treasuryTabsNavigatorManager.powerPanel.transform);
-            localObject.transform.GetChild(0).GetComponent<TMP_Text>().text = i.ToString();
-        }
-
-        objectsAmount = Random.Range(7, 20);
-
-        for (int i = 0; i < objectsAmount; i++)
-        {
-            GameObject localObject = Instantiate(tabContentPrefab, treasuryTabsNavigatorManager.armourPanel.transform);
+            GameObject localObject = Instantiate(tabContentPrefab, transform);
             localObject.transform.GetChild(0).GetComponent<TMP_Text>().text = i.ToString();
         }
     }

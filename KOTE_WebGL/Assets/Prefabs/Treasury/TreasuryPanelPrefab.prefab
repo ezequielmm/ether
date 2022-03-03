@@ -1863,6 +1863,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   treasuryTabsNavigatorManager: {fileID: 1105841658741440106}
+  panelTransforms:
+  - {fileID: 8568124338811891660}
+  - {fileID: 7934301651696720677}
+  - {fileID: 7332653985670341115}
+  - {fileID: 4522013329714808495}
   characterList: {fileID: 4844148999373937329}
   tabContentPrefab: {fileID: 6145099774662437866, guid: 7ccef22af53efac4c91b9442707cf437,
     type: 3}
