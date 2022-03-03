@@ -116,6 +116,7 @@ public class RegisterPanelManager : MonoBehaviour
         PlayerPrefs.SetString("session_token", token);
         PlayerPrefs.Save();
 
+        GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(false);
         GameManager.Instance.EVENT_LOGIN.Invoke(email, password, false);
     }
 
