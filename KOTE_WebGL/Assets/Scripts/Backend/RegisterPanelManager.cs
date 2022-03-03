@@ -22,6 +22,8 @@ public class RegisterPanelManager : MonoBehaviour
 
     [Space(20)] public Toggle termsAndConditions;
     public Button registerButton;
+    public GameObject registerContainer;
+
 
     private bool validEmail;
     private bool emailConfirmed;
@@ -40,6 +42,9 @@ public class RegisterPanelManager : MonoBehaviour
 
         GameManager.Instance.EVENT_NEW_RANDOM_NAME.AddListener(OnNewRandomName);
         GameManager.Instance.EVENT_REGISTER_COMPLETED.AddListener(OnRegisterCompleted);
+        GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerRegisterPanel);
+
+        GameManager.Instance.EVENT_REQUEST_NAME.Invoke(true, null);
     }
 
     private void Update()
@@ -87,7 +92,7 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void RequestNewName()
     {
-        GameManager.Instance.EVENT_REQUEST_NAME.Invoke();
+        GameManager.Instance.EVENT_REQUEST_NAME.Invoke(false, nameText.text);
     }
 
     public void OnNewRandomName(string name)
@@ -112,6 +117,11 @@ public class RegisterPanelManager : MonoBehaviour
     public void LoginHyperlink()
     {
         gameObject.SetActive(false);
-        GameManager.Instance.EVENT_LOGIN_HYPERLINK.Invoke();
+        GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(true);
+    }
+
+    public void ActivateInnerRegisterPanel(bool activate)
+    {
+        registerContainer.SetActive(activate);
     }
 }

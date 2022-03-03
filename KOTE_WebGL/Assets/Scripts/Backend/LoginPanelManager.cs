@@ -33,7 +33,7 @@ public class LoginPanelManager : MonoBehaviour
         loginButton.interactable = false;
 
         GameManager.Instance.EVENT_LOGIN_COMPLETED.AddListener(ValidateLogin);
-        GameManager.Instance.EVENT_LOGIN_HYPERLINK.AddListener(LoginHyperlink);
+        GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerLoginPanel);
     }
 
     private void Update()
@@ -84,8 +84,8 @@ public class LoginPanelManager : MonoBehaviour
         }
     }
 
-    public void LoginHyperlink()
+    public void ActivateInnerLoginPanel(bool activate)
     {
-        loginContainer.SetActive(true);
+        loginContainer.SetActive(activate);
     }
 }

@@ -49,7 +49,7 @@ public class WebRequesterManager : MonoBehaviour
     private readonly string urlRegister = "/auth/v1/register";
     private readonly string urlLogin = "/auth/v1/login";
 
-    private void Start()
+    private void Awake()
     {
         PlayerPrefs.SetString("session_token", "");
         PlayerPrefs.Save();
@@ -57,17 +57,24 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_NAME.AddListener(OnRandomNameEvent);
         GameManager.Instance.EVENT_REGISTER.AddListener(OnRegisterEvent);
         GameManager.Instance.EVENT_LOGIN.AddListener(RequestLogin);
-
-        OnRandomNameEvent();
     }
 
-    public IEnumerator GetRandomName()
+    public IEnumerator GetRandomName(bool isStart, string lastName)
     {
         GameManager.Instance.EVENT_NEW_RANDOM_NAME.Invoke("Loading...");
 
         string randomNameUrl = $"{baseUrl}{urlRandomName}";
 
-        UnityWebRequest randomNameInfoRequest = UnityWebRequest.Get(randomNameUrl);
+        UnityWebRequest randomNameInfoRequest;
+
+        if (!isStart && lastName != null)
+        {
+            randomNameInfoRequest = UnityWebRequest.Get($"{randomNameUrl}?username={Uri.EscapeDataString(lastName)}");
+        }
+        else
+        {
+            randomNameInfoRequest = UnityWebRequest.Get(randomNameUrl);
+        }
 
         yield return randomNameInfoRequest.SendWebRequest();
 
@@ -85,9 +92,9 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_NEW_RANDOM_NAME.Invoke(string.IsNullOrEmpty(newName) ? "" : newName);
     }
 
-    public void OnRandomNameEvent()
+    public void OnRandomNameEvent(bool isStart, string lastName = null)
     {
-        StartCoroutine(GetRandomName());
+        StartCoroutine(GetRandomName(isStart, lastName));
     }
 
     public IEnumerator GetRegister(string nameText, string email, string password)
