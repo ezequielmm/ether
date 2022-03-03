@@ -24,6 +24,12 @@ public class LoginPanelManager : MonoBehaviour
     private bool validEmail;
     private bool validLogin;
 
+    private void Awake()
+    {
+        GameManager.Instance.EVENT_LOGIN_COMPLETED.AddListener(ValidateLogin);
+        GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerLoginPanel);
+    }
+
     private void Start()
     {
         validEmailLabel.gameObject.SetActive(false);
@@ -31,9 +37,6 @@ public class LoginPanelManager : MonoBehaviour
         validLoginPassword.gameObject.SetActive(false);
 
         loginButton.interactable = false;
-
-        GameManager.Instance.EVENT_LOGIN_COMPLETED.AddListener(ValidateLogin);
-        GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerLoginPanel);
     }
 
     private void Update()
@@ -65,7 +68,7 @@ public class LoginPanelManager : MonoBehaviour
         {
             if (validLogin)
             {
-                gameObject.SetActive(false);
+                GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(false);
 
                 if (rememberMe.isOn)
                 {
@@ -87,5 +90,10 @@ public class LoginPanelManager : MonoBehaviour
     public void ActivateInnerLoginPanel(bool activate)
     {
         loginContainer.SetActive(activate);
+        Image panelImage = gameObject.GetComponent<Image>();
+        panelImage.raycastTarget = activate;
+        Color tempColor = panelImage.color;
+        tempColor.a = activate ? 1f : 0.004f;
+        panelImage.color = tempColor;
     }
 }

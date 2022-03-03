@@ -31,6 +31,13 @@ public class RegisterPanelManager : MonoBehaviour
     private bool validPassword;
     private bool passwordConfirmed;
 
+    private void Awake()
+    {
+        GameManager.Instance.EVENT_NEW_RANDOM_NAME.AddListener(OnNewRandomName);
+        GameManager.Instance.EVENT_REGISTER_COMPLETED.AddListener(OnRegisterCompleted);
+        GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerRegisterPanel);
+    }
+
     private void Start()
     {
         validEmailLabel.gameObject.SetActive(false);
@@ -39,10 +46,6 @@ public class RegisterPanelManager : MonoBehaviour
         passwordNotMatchLabel.gameObject.SetActive(false);
 
         registerButton.interactable = false;
-
-        GameManager.Instance.EVENT_NEW_RANDOM_NAME.AddListener(OnNewRandomName);
-        GameManager.Instance.EVENT_REGISTER_COMPLETED.AddListener(OnRegisterCompleted);
-        GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerRegisterPanel);
 
         GameManager.Instance.EVENT_REQUEST_NAME.Invoke(true, null);
     }
@@ -116,12 +119,17 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void LoginHyperlink()
     {
-        gameObject.SetActive(false);
+        GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(false);
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
     public void ActivateInnerRegisterPanel(bool activate)
     {
         registerContainer.SetActive(activate);
+        Image panelImage = gameObject.GetComponent<Image>();
+        panelImage.raycastTarget = activate;
+        Color tempColor = panelImage.color;
+        tempColor.a = activate ? 1f : 0.004f;
+        panelImage.color = tempColor;
     }
 }
