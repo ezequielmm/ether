@@ -14,13 +14,17 @@ public class RegisterPanelManager : MonoBehaviour
     public TMP_InputField passwordInputField;
     public TMP_InputField confirmPasswordInputField;
 
-    [Space(20)] public TMP_Text validEmailLabel;
+    [Space(20)]
+    public TMP_Text validEmailLabel;
+
     public TMP_Text emailNotMatchLabel;
     public TMP_Text validPasswordLabel;
     public TMP_Text passwordNotMatchLabel;
     public TMP_Text nameText;
 
-    [Space(20)] public Toggle termsAndConditions;
+    [Space(20)]
+    public Toggle termsAndConditions;
+
     public Button registerButton;
     public GameObject registerContainer;
 
@@ -33,9 +37,8 @@ public class RegisterPanelManager : MonoBehaviour
 
     private void Awake()
     {
-       
         GameManager.Instance.EVENT_REQUEST_NAME_SUCESSFUL.AddListener(OnNewRandomName);
-        GameManager.Instance.EVENT_REQUEST_NAME_ERROR.AddListener(OnRandomNameError);//TODO: move this to error manager
+        GameManager.Instance.EVENT_REQUEST_NAME_ERROR.AddListener(OnRandomNameError); //TODO: move this to error manager
         GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLoginSucessful);
         GameManager.Instance.EVENT_REQUEST_LOGIN_ERROR.AddListener(OnLoginError);
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerRegisterPanel);
@@ -58,7 +61,7 @@ public class RegisterPanelManager : MonoBehaviour
 
     private void OnLoginError(string errorMessage)
     {
-        Debug.Log("Register Error:"+errorMessage);
+        Debug.Log("Register Error:" + errorMessage);
     }
 
     private void Start()
@@ -91,7 +94,6 @@ public class RegisterPanelManager : MonoBehaviour
         validEmailLabel.gameObject.SetActive(!validEmail);
 
         UpdateRegisterButton();
-
     }
 
     public void ConfirmEmail()
@@ -102,7 +104,6 @@ public class RegisterPanelManager : MonoBehaviour
         emailNotMatchLabel.gameObject.SetActive(!emailConfirmed && validEmail);
 
         UpdateRegisterButton();
-
     }
 
     public void VerifyPassword()
@@ -113,7 +114,6 @@ public class RegisterPanelManager : MonoBehaviour
         validPasswordLabel.gameObject.SetActive(!validPassword);
 
         UpdateRegisterButton();
-
     }
 
     public void ConfirmPassword()
@@ -124,14 +124,13 @@ public class RegisterPanelManager : MonoBehaviour
         passwordNotMatchLabel.gameObject.SetActive(!passwordConfirmed && validPassword);
 
         UpdateRegisterButton();
-
     }
 
     public void RequestNewName()
     {
         nameText.text = "Loading...";
-        GameManager.Instance.EVENT_REQUEST_NAME.Invoke( nameText.text);
-    }       
+        GameManager.Instance.EVENT_REQUEST_NAME.Invoke(nameText.text);
+    }
 
     public void OnRegister()
     {
@@ -150,6 +149,5 @@ public class RegisterPanelManager : MonoBehaviour
     public void ActivateInnerRegisterPanel(bool activate)
     {
         registerContainer.SetActive(activate);
-      
     }
 }

@@ -13,24 +13,29 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLoginSucessful);
+        GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLoginSuccessful);
+        GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
 
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(false);
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(false);
 
-        TooglePreLoginStatus(true);
+        TogglePreLoginStatus(true);
     }
 
-    public void OnLoginSucessful(string name, int fief)
+    public void OnLoginSuccessful(string name, int fief)
     {
         nameText.text = name;
         moneyText.text = fief.ToString();
 
-        TooglePreLoginStatus(false);
-
+        TogglePreLoginStatus(false);
     }
 
-    public void TooglePreLoginStatus(bool preLoginStatus)
+    public void OnLogoutSuccessful(string message)
+    {
+        TogglePreLoginStatus(true);
+    }
+
+    public void TogglePreLoginStatus(bool preLoginStatus)
     {
         nameText.gameObject.SetActive(!preLoginStatus);
         moneyText.gameObject.SetActive(!preLoginStatus);
@@ -48,5 +53,10 @@ public class MainMenuManager : MonoBehaviour
     public void OnLoginButton()
     {
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(true);
+    }
+
+    public void OnSettingsButton()
+    {
+        GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 }

@@ -72,11 +72,24 @@ public class WebRequesterManager : MonoBehaviour
         }
     }
 
+    [Serializable]
+    public class LogoutData
+    {
+        public Data data;
+
+        [Serializable]
+        public class Data
+        {
+            public string message;
+        }
+    }
+
     private readonly string baseUrl = "https://gateway.kote.robotseamonster.com";
     private readonly string urlRandomName = "/auth/v1/generate/username";
     private readonly string urlRegister = "/auth/v1/register";
     private readonly string urlLogin = "/auth/v1/login";
     private readonly string urlProfile = "/gsrv/v1/profile";
+    private readonly string urlLogout = "/auth/v1/logout";
 
     private void Awake()
     {
@@ -87,15 +100,16 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_REGISTER.AddListener(OnRegisterEvent);
         GameManager.Instance.EVENT_REQUEST_LOGIN.AddListener(RequestLogin);
         GameManager.Instance.EVENT_REQUEST_PROFILE.AddListener(RequestProfile);
+        GameManager.Instance.EVENT_REQUEST_LOGOUT.AddListener(RequestLogout);
     }
 
     public IEnumerator GetRandomName(string lastName)
-    {       
+    {
         string randomNameUrl = $"{baseUrl}{urlRandomName}";
 
         UnityWebRequest randomNameInfoRequest;
-        
-        randomNameInfoRequest = UnityWebRequest.Get($"{randomNameUrl}?username={Uri.EscapeDataString(lastName)}"); 
+
+        randomNameInfoRequest = UnityWebRequest.Get($"{randomNameUrl}?username={Uri.EscapeDataString(lastName)}");
 
         yield return randomNameInfoRequest.SendWebRequest();
 
@@ -126,7 +140,6 @@ public class WebRequesterManager : MonoBehaviour
     /// <param name="email"></param>
     /// <param name="password"></param>
     /// <returns></returns>
-
     public IEnumerator GetRegister(string nameText, string email, string password)
     {
         string registerUrl = $"{baseUrl}{urlRegister}";
@@ -150,7 +163,7 @@ public class WebRequesterManager : MonoBehaviour
 
         //TO DO: check for errors even on a sucessful answer
 
-        GameManager.Instance.EVENT_REQUEST_PROFILE.Invoke(token);//we request the profile to confirm the server got our account created properly. This will invoke later EVENT_LOGIN_COMPLETED
+        GameManager.Instance.EVENT_REQUEST_PROFILE.Invoke(token); //we request the profile to confirm the server got our account created properly. This will invoke later EVENT_LOGIN_COMPLETED
     }
 
     public void OnRegisterEvent(string name, string email, string password)
@@ -165,7 +178,6 @@ public class WebRequesterManager : MonoBehaviour
     /// <param name="password"></param>
     /// <param name="rememberMe"></param>
     /// <returns></returns>
-
     IEnumerator GetLogin(string email, string password)
     {
         string loginUrl = $"{baseUrl}{urlLogin}";
@@ -184,8 +196,8 @@ public class WebRequesterManager : MonoBehaviour
             yield break;
         }
 
-        LoginData registerData = JsonUtility.FromJson<LoginData>(request.downloadHandler.text);
-        string token = registerData.data.token;
+        LoginData loginData = JsonUtility.FromJson<LoginData>(request.downloadHandler.text);
+        string token = loginData.data.token;
 
         //TODO: check for errors even on sucessful result
 
@@ -199,10 +211,9 @@ public class WebRequesterManager : MonoBehaviour
 
     IEnumerator GetProfile(string token)
     {
-        
         string profileUrl = $"{baseUrl}{urlProfile}";
 
-        UnityWebRequest profileInfoRequest =  UnityWebRequest.Get($"{profileUrl}?Authorization={Uri.EscapeDataString(token)}");
+        UnityWebRequest profileInfoRequest = UnityWebRequest.Get($"{profileUrl}?Authorization={Uri.EscapeDataString(token)}");
 
         yield return profileInfoRequest.SendWebRequest();
 
@@ -228,5 +239,36 @@ public class WebRequesterManager : MonoBehaviour
     public void RequestProfile(string token)
     {
         StartCoroutine(GetProfile(token));
+    }
+
+    IEnumerator GetLogout(string token)
+    {
+        string loginUrl = $"{baseUrl}{urlLogout}";
+        WWWForm form = new WWWForm();
+        form.headers.Add("Authorization", token);
+
+        UnityWebRequest request = UnityWebRequest.Post(loginUrl, form);
+        // request.SetRequestHeader("Authorization", token);
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            GameManager.Instance.EVENT_REQUEST_LOGOUT_ERROR.Invoke(request.error);
+            yield break;
+        }
+
+        LogoutData logoutData = JsonUtility.FromJson<LogoutData>(request.downloadHandler.text);
+        string message = logoutData.data.message;
+
+        //TODO: check for errors even on sucessful result
+
+        GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.Invoke(message);
+    }
+
+    public void RequestLogout(string token)
+    {
+        StartCoroutine(GetLogout(token));
     }
 }

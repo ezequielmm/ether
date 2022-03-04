@@ -13,8 +13,6 @@ public enum inGameScenes
 
 public class GameManager : SingleTon<GameManager>
 {
-
-
     //REGISTER ACCOUNT EVENTS
     public UnityEvent<string, string, string> EVENT_REQUEST_REGISTER = new UnityEvent<string, string, string>();
     public UnityEvent<string> EVENT_REQUEST_REGISTER_ERROR = new UnityEvent<string>();
@@ -27,15 +25,22 @@ public class GameManager : SingleTon<GameManager>
 
     //LOGIN EVENTS
 
-    public UnityEvent<string, string> EVENT_REQUEST_LOGIN = new UnityEvent<string, string>();   
+    public UnityEvent<string, string> EVENT_REQUEST_LOGIN = new UnityEvent<string, string>();
     public UnityEvent<string, int> EVENT_REQUEST_LOGIN_SUCESSFUL = new UnityEvent<string, int>();
     public UnityEvent<string> EVENT_REQUEST_LOGIN_ERROR = new UnityEvent<string>();
 
     public UnityEvent<bool> EVENT_LOGINPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
-    public UnityEvent<string> EVENT_REQUEST_PROFILE = new UnityEvent<string>();  
-    public UnityEvent<string> EVENT_REQUEST_PROFILE_ERROR = new UnityEvent<string>();   
-   
+    public UnityEvent<string> EVENT_REQUEST_PROFILE = new UnityEvent<string>();
+    public UnityEvent<string> EVENT_REQUEST_PROFILE_ERROR = new UnityEvent<string>();
+
+    //SETTINGS EVENTS
+
+    public UnityEvent<bool> EVENT_SETTINGSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
+
+    public UnityEvent<string> EVENT_REQUEST_LOGOUT = new UnityEvent<string>();
+    public UnityEvent<string> EVENT_REQUEST_LOGOUT_SUCCESSFUL = new UnityEvent<string>();
+    public UnityEvent<string> EVENT_REQUEST_LOGOUT_ERROR = new UnityEvent<string>();
 
     public inGameScenes
         nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
