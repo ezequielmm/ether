@@ -13,22 +13,29 @@ public enum inGameScenes
 
 public class GameManager : SingleTon<GameManager>
 {
-    public UnityEvent<bool, string> EVENT_REQUEST_NAME = new UnityEvent<bool, string>();
-    public UnityEvent<string> EVENT_NEW_RANDOM_NAME = new UnityEvent<string>();
 
-    public UnityEvent<string, string, string> EVENT_REGISTER = new UnityEvent<string, string, string>();
 
-    public UnityEvent<string, string, string, string> EVENT_REGISTER_COMPLETED =
-        new UnityEvent<string, string, string, string>();
+    //REGISTER ACCOUNT EVENTS
+    public UnityEvent<string, string, string> EVENT_REQUEST_REGISTER = new UnityEvent<string, string, string>();
+    public UnityEvent<string> EVENT_REQUEST_REGISTER_ERROR = new UnityEvent<string>();
 
-    public UnityEvent<string, string, bool> EVENT_LOGIN = new UnityEvent<string, string, bool>();
-    public UnityEvent<string, string, int, bool> EVENT_LOGIN_COMPLETED = new UnityEvent<string, string, int, bool>();
+    public UnityEvent<bool> EVENT_REGISTERPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
-    public UnityEvent<string> EVENT_PROFILE = new UnityEvent<string>();
-    public UnityEvent<string, int> EVENT_PROFILE_REQUESTED = new UnityEvent<string, int>();
+    public UnityEvent<string> EVENT_REQUEST_NAME = new UnityEvent<string>();
+    public UnityEvent<string> EVENT_REQUEST_NAME_SUCESSFUL = new UnityEvent<string>();
+    public UnityEvent<string> EVENT_REQUEST_NAME_ERROR = new UnityEvent<string>();
+
+    //LOGIN EVENTS
+
+    public UnityEvent<string, string> EVENT_REQUEST_LOGIN = new UnityEvent<string, string>();   
+    public UnityEvent<string, int> EVENT_REQUEST_LOGIN_SUCESSFUL = new UnityEvent<string, int>();
+    public UnityEvent<string> EVENT_REQUEST_LOGIN_ERROR = new UnityEvent<string>();
 
     public UnityEvent<bool> EVENT_LOGINPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
-    public UnityEvent<bool> EVENT_REGISTERPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
+
+    public UnityEvent<string> EVENT_REQUEST_PROFILE = new UnityEvent<string>();  
+    public UnityEvent<string> EVENT_REQUEST_PROFILE_ERROR = new UnityEvent<string>();   
+   
 
     public inGameScenes
         nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat

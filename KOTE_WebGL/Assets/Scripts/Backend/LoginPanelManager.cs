@@ -26,8 +26,27 @@ public class LoginPanelManager : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.EVENT_LOGIN_COMPLETED.AddListener(ValidateLogin);
+        GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLoginSucessful);
+        GameManager.Instance.EVENT_REQUEST_LOGIN_ERROR.AddListener(OnLoginError);
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerLoginPanel);
+    }
+
+    private void OnLoginSucessful(string userName, int fiefAmount)
+    {
+        if (rememberMe.isOn)
+        {
+            PlayerPrefs.SetString("user_email", emailInputField.text);
+            PlayerPrefs.Save();
+        }
+
+        ActivateInnerLoginPanel(false);
+    }
+
+    private void OnLoginError(string errorMessage)
+    {
+        validLoginPassword.gameObject.SetActive(true);
+        passwordInputField.text = "";
+        Debug.Log("-------------------Login Error------------------");
     }
 
     private void Start()
@@ -59,41 +78,14 @@ public class LoginPanelManager : MonoBehaviour
 
         if (validEmail)
         {
-            GameManager.Instance.EVENT_LOGIN.Invoke(emailInputField.text, passwordInputField.text, rememberMe.isOn);
+           GameManager.Instance.EVENT_REQUEST_LOGIN.Invoke(emailInputField.text, passwordInputField.text);
         }
     }
-
-    private void ValidateLogin(string name, string token, int fief, bool validLoginLocal)
-    {
-        validLogin = validLoginLocal;
-
-        if (validLogin)
-        {
-            GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(false);
-
-            if (rememberMe.isOn)
-            {
-                PlayerPrefs.SetString("auth_token", token);
-                PlayerPrefs.Save();
-            }
-        }
-        else
-        {
-            emailInputField.text = "";
-            passwordInputField.text = "";
-
-            validLoginEmail.gameObject.SetActive(!validLogin);
-            validLoginPassword.gameObject.SetActive(!validLogin);
-        }
-    }
+       
 
     public void ActivateInnerLoginPanel(bool activate)
     {
         loginContainer.SetActive(activate);
-        Image panelImage = gameObject.GetComponent<Image>();
-        panelImage.raycastTarget = activate;
-        Color tempColor = panelImage.color;
-        tempColor.a = activate ? 1f : 0.004f;
-        panelImage.color = tempColor;
+   
     }
 }

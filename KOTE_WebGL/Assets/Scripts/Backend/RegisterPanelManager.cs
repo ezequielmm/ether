@@ -33,106 +33,123 @@ public class RegisterPanelManager : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.EVENT_NEW_RANDOM_NAME.AddListener(OnNewRandomName);
-        GameManager.Instance.EVENT_REGISTER_COMPLETED.AddListener(OnRegisterCompleted);
+       
+        GameManager.Instance.EVENT_REQUEST_NAME_SUCESSFUL.AddListener(OnNewRandomName);
+        GameManager.Instance.EVENT_REQUEST_NAME_ERROR.AddListener(OnRandomNameError);//TODO: move this to error manager
+        GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLoginSucessful);
+        GameManager.Instance.EVENT_REQUEST_LOGIN_ERROR.AddListener(OnLoginError);
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerRegisterPanel);
     }
 
+    private void OnNewRandomName(string newName)
+    {
+        nameText.SetText(newName);
+    }
+
+    private void OnRandomNameError(string errorMessage)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void OnLoginSucessful(string userName, int fief)
+    {
+        ActivateInnerRegisterPanel(false);
+    }
+
+    private void OnLoginError(string errorMessage)
+    {
+        Debug.Log("Register Error:"+errorMessage);
+    }
+
     private void Start()
+    {
+        DeactivateAllErrorLabels();
+
+        registerButton.interactable = false;
+
+        GameManager.Instance.EVENT_REQUEST_NAME.Invoke("");
+    }
+
+    private void DeactivateAllErrorLabels()
     {
         validEmailLabel.gameObject.SetActive(false);
         emailNotMatchLabel.gameObject.SetActive(false);
         validPasswordLabel.gameObject.SetActive(false);
         passwordNotMatchLabel.gameObject.SetActive(false);
-
-        registerButton.interactable = false;
-
-        GameManager.Instance.EVENT_REQUEST_NAME.Invoke(true, null);
     }
 
-    private void Update()
+    public void UpdateRegisterButton()
     {
         registerButton.interactable = emailConfirmed && passwordConfirmed && termsAndConditions.isOn;
     }
 
     public void VerifyEmail()
     {
+        DeactivateAllErrorLabels();
+
         validEmail = ParseString.IsEmail(emailInputField.text);
         validEmailLabel.gameObject.SetActive(!validEmail);
 
-        emailNotMatchLabel.gameObject.SetActive(false);
-        validPasswordLabel.gameObject.SetActive(false);
-        passwordNotMatchLabel.gameObject.SetActive(false);
+        UpdateRegisterButton();
+
     }
 
     public void ConfirmEmail()
     {
+        DeactivateAllErrorLabels();
+
         emailConfirmed = validEmail && (emailInputField.text == confirmEmailInputField.text);
         emailNotMatchLabel.gameObject.SetActive(!emailConfirmed && validEmail);
 
-        validPasswordLabel.gameObject.SetActive(false);
-        passwordNotMatchLabel.gameObject.SetActive(false);
+        UpdateRegisterButton();
+
     }
 
     public void VerifyPassword()
     {
+        DeactivateAllErrorLabels();
+
         validPassword = ParseString.IsPassword(passwordInputField.text);
         validPasswordLabel.gameObject.SetActive(!validPassword);
 
-        validEmailLabel.gameObject.SetActive(false);
-        emailNotMatchLabel.gameObject.SetActive(false);
-        passwordNotMatchLabel.gameObject.SetActive(false);
+        UpdateRegisterButton();
+
     }
 
     public void ConfirmPassword()
     {
+        DeactivateAllErrorLabels();
+
         passwordConfirmed = validPassword && (passwordInputField.text == confirmPasswordInputField.text);
         passwordNotMatchLabel.gameObject.SetActive(!passwordConfirmed && validPassword);
 
-        validEmailLabel.gameObject.SetActive(false);
-        emailNotMatchLabel.gameObject.SetActive(false);
+        UpdateRegisterButton();
+
     }
 
     public void RequestNewName()
     {
-        GameManager.Instance.EVENT_REQUEST_NAME.Invoke(false, nameText.text);
-    }
-
-    public void OnNewRandomName(string name)
-    {
-        nameText.text = name;
-    }
+        nameText.text = "Loading...";
+        GameManager.Instance.EVENT_REQUEST_NAME.Invoke( nameText.text);
+    }       
 
     public void OnRegister()
     {
         string name = nameText.text;
         string email = emailInputField.text;
         string password = passwordInputField.text;
-        GameManager.Instance.EVENT_REGISTER.Invoke(name, email, password);
-    }
-
-    public void OnRegisterCompleted(string name, string email, string password, string token)
-    {
-        PlayerPrefs.SetString("session_token", token);
-        PlayerPrefs.Save();
-
-        GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(false);
-        GameManager.Instance.EVENT_LOGIN.Invoke(email, password, false);
+        GameManager.Instance.EVENT_REQUEST_REGISTER.Invoke(name, email, password);
     }
 
     public void LoginHyperlink()
     {
-        GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(false);
+        ActivateInnerRegisterPanel(false);
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
     public void ActivateInnerRegisterPanel(bool activate)
     {
         registerContainer.SetActive(activate);
-        Image panelImage = gameObject.GetComponent<Image>();
-        panelImage.raycastTarget = activate;
-        Color tempColor = panelImage.color;
-        tempColor.a = activate ? 1f : 0.004f;
-        panelImage.color = tempColor;
+      
     }
 }

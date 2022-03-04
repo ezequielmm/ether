@@ -84,27 +84,18 @@ public class WebRequesterManager : MonoBehaviour
         PlayerPrefs.Save();
 
         GameManager.Instance.EVENT_REQUEST_NAME.AddListener(OnRandomNameEvent);
-        GameManager.Instance.EVENT_REGISTER.AddListener(OnRegisterEvent);
-        GameManager.Instance.EVENT_LOGIN.AddListener(RequestLogin);
-        GameManager.Instance.EVENT_PROFILE.AddListener(RequestProfile);
+        GameManager.Instance.EVENT_REQUEST_REGISTER.AddListener(OnRegisterEvent);
+        GameManager.Instance.EVENT_REQUEST_LOGIN.AddListener(RequestLogin);
+        GameManager.Instance.EVENT_REQUEST_PROFILE.AddListener(RequestProfile);
     }
 
-    public IEnumerator GetRandomName(bool isStart, string lastName)
-    {
-        GameManager.Instance.EVENT_NEW_RANDOM_NAME.Invoke("Loading...");
-
+    public IEnumerator GetRandomName(string lastName)
+    {       
         string randomNameUrl = $"{baseUrl}{urlRandomName}";
 
         UnityWebRequest randomNameInfoRequest;
-
-        if (!isStart && lastName != null)
-        {
-            randomNameInfoRequest = UnityWebRequest.Get($"{randomNameUrl}?username={Uri.EscapeDataString(lastName)}");
-        }
-        else
-        {
-            randomNameInfoRequest = UnityWebRequest.Get(randomNameUrl);
-        }
+        
+        randomNameInfoRequest = UnityWebRequest.Get($"{randomNameUrl}?username={Uri.EscapeDataString(lastName)}"); 
 
         yield return randomNameInfoRequest.SendWebRequest();
 
@@ -115,17 +106,26 @@ public class WebRequesterManager : MonoBehaviour
             yield break;
         }
 
-        RandomNameData randomNameData =
-            JsonUtility.FromJson<RandomNameData>(randomNameInfoRequest.downloadHandler.text);
+        //TODO: check for errors here
+
+        RandomNameData randomNameData = JsonUtility.FromJson<RandomNameData>(randomNameInfoRequest.downloadHandler.text);
         string newName = randomNameData.data.username;
 
-        GameManager.Instance.EVENT_NEW_RANDOM_NAME.Invoke(string.IsNullOrEmpty(newName) ? "" : newName);
+        GameManager.Instance.EVENT_REQUEST_NAME_SUCESSFUL.Invoke(string.IsNullOrEmpty(newName) ? "" : newName);
     }
 
-    public void OnRandomNameEvent(bool isStart, string lastName = null)
+    public void OnRandomNameEvent(string previousName)
     {
-        StartCoroutine(GetRandomName(isStart, lastName));
+        StartCoroutine(GetRandomName(previousName));
     }
+
+    /// <summary>
+    /// GetRegister
+    /// </summary>
+    /// <param name="nameText"></param>
+    /// <param name="email"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
 
     public IEnumerator GetRegister(string nameText, string email, string password)
     {
@@ -148,8 +148,9 @@ public class WebRequesterManager : MonoBehaviour
         RegisterData registerData = JsonUtility.FromJson<RegisterData>(request.downloadHandler.text);
         string token = registerData.data.token;
 
-        GameManager.Instance.EVENT_REGISTER_COMPLETED.Invoke(nameText, email, password,
-            string.IsNullOrEmpty(token) ? "" : token);
+        //TO DO: check for errors even on a sucessful answer
+
+        GameManager.Instance.EVENT_REQUEST_PROFILE.Invoke(token);//we request the profile to confirm the server got our account created properly. This will invoke later EVENT_LOGIN_COMPLETED
     }
 
     public void OnRegisterEvent(string name, string email, string password)
@@ -157,7 +158,15 @@ public class WebRequesterManager : MonoBehaviour
         StartCoroutine(GetRegister(name, email, password));
     }
 
-    IEnumerator GetLogin(string email, string password, bool rememberMe)
+    /// <summary>
+    /// GetLogin
+    /// </summary>
+    /// <param name="email"></param>
+    /// <param name="password"></param>
+    /// <param name="rememberMe"></param>
+    /// <returns></returns>
+
+    IEnumerator GetLogin(string email, string password)
     {
         string loginUrl = $"{baseUrl}{urlLogin}";
         WWWForm form = new WWWForm();
@@ -171,27 +180,29 @@ public class WebRequesterManager : MonoBehaviour
             request.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.Log($"{request.error}");
-            GameManager.Instance.EVENT_LOGIN_COMPLETED.Invoke("", "", 0, false);
+            GameManager.Instance.EVENT_REQUEST_LOGIN_ERROR.Invoke(request.error);
             yield break;
         }
 
         LoginData registerData = JsonUtility.FromJson<LoginData>(request.downloadHandler.text);
         string token = registerData.data.token;
 
-        GameManager.Instance.EVENT_PROFILE.Invoke(token);
+        //TODO: check for errors even on sucessful result
+
+        GameManager.Instance.EVENT_REQUEST_PROFILE.Invoke(token);
     }
 
-    public void RequestLogin(string email, string password, bool rememberMe)
+    public void RequestLogin(string email, string password)
     {
-        StartCoroutine(GetLogin(email, password, rememberMe));
+        StartCoroutine(GetLogin(email, password));
     }
 
     IEnumerator GetProfile(string token)
     {
+        
         string profileUrl = $"{baseUrl}{urlProfile}";
 
-        UnityWebRequest profileInfoRequest =
-            UnityWebRequest.Get($"{profileUrl}?Authorization={Uri.EscapeDataString(token)}");
+        UnityWebRequest profileInfoRequest =  UnityWebRequest.Get($"{profileUrl}?Authorization={Uri.EscapeDataString(token)}");
 
         yield return profileInfoRequest.SendWebRequest();
 
@@ -202,12 +213,16 @@ public class WebRequesterManager : MonoBehaviour
             yield break;
         }
 
-        ProfileData profileData =
-            JsonUtility.FromJson<ProfileData>(profileInfoRequest.downloadHandler.text);
+        //TODO: check for errors even when the result is sucessful
+
+        ProfileData profileData = JsonUtility.FromJson<ProfileData>(profileInfoRequest.downloadHandler.text);
         string name = profileData.data.name;
         int fief = profileData.data.fief;
 
-        GameManager.Instance.EVENT_LOGIN_COMPLETED.Invoke(name, token, fief, true);
+        PlayerPrefs.SetString("session_token", token);
+        PlayerPrefs.Save();
+
+        GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.Invoke(name, fief);
     }
 
     public void RequestProfile(string token)

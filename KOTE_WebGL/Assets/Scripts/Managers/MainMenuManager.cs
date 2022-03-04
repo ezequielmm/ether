@@ -13,27 +13,31 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.EVENT_LOGIN_COMPLETED.AddListener(ActivateLabels);
+        GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLoginSucessful);
 
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(false);
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(false);
 
-        ActivateLabels("", "", 0, false);
+        TooglePreLoginStatus(true);
     }
 
-    public void ActivateLabels(string name, string token, int fief, bool validLoginLocal)
+    public void OnLoginSucessful(string name, int fief)
     {
         nameText.text = name;
         moneyText.text = fief.ToString();
 
-        nameText.gameObject.SetActive(validLoginLocal);
-        moneyText.gameObject.SetActive(validLoginLocal);
+        TooglePreLoginStatus(false);
 
-        playButton.interactable = validLoginLocal;
-        treasuryButton.interactable = validLoginLocal;
+    }
 
-        registerButton.gameObject.SetActive(!validLoginLocal);
-        loginButton.gameObject.SetActive(!validLoginLocal);
+    public void TooglePreLoginStatus(bool preLoginStatus)
+    {
+        nameText.gameObject.SetActive(!preLoginStatus);
+        moneyText.gameObject.SetActive(!preLoginStatus);
+        playButton.interactable = !preLoginStatus;
+        treasuryButton.interactable = !preLoginStatus;
+        registerButton.gameObject.SetActive(preLoginStatus);
+        loginButton.gameObject.SetActive(preLoginStatus);
     }
 
     public void OnRegisterButton()
