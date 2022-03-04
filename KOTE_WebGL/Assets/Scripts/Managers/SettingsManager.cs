@@ -25,6 +25,11 @@ public class SettingsManager : MonoBehaviour
         // Debug.Log($"Volume = {AudioListener.volume * 100}");
     }
 
+    public void OnWalletsButton()
+    {
+        GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.Invoke(true);
+    }
+
     public void ActivateInnerSettingsPanel(bool activate)
     {
         settingsContainer.SetActive(activate);
