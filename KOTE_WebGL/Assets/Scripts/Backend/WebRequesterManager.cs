@@ -245,10 +245,9 @@ public class WebRequesterManager : MonoBehaviour
     {
         string loginUrl = $"{baseUrl}{urlLogout}";
         WWWForm form = new WWWForm();
-        form.headers.Add("Authorization", token);
 
         UnityWebRequest request = UnityWebRequest.Post(loginUrl, form);
-        // request.SetRequestHeader("Authorization", token);
+        request.SetRequestHeader("Authorization", $"Bearer {token}");
 
         yield return request.SendWebRequest();
 
