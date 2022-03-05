@@ -6,10 +6,12 @@ using UnityEngine.UI;
 
 public class TreasuryManager : MonoBehaviour
 {
-    public TreasuryTabsNavigatorManager treasuryTabsNavigatorManager;
+    public TreasuryTabsNavigatorManager tabsNavigatorManager;
     public List<Transform> panelTransforms;
 
-    [Space(20)] public GameObject characterList;
+    [Space(20)]
+    public GameObject characterList;
+
     public GameObject tabContentPrefab;
 
     private void Start()
@@ -18,9 +20,9 @@ public class TreasuryManager : MonoBehaviour
         if (firstCharacterButton != null) firstCharacterButton.onClick?.Invoke();
     }
 
-    public void OnCharacterButtonStatic()
+    public void OnCharacterButton()
     {
-        treasuryTabsNavigatorManager.SelectNFTsTab();
+        tabsNavigatorManager.SelectTab(tabsNavigatorManager.tabButtons[0], tabsNavigatorManager.panels[0]);
 
         SetTestingObjects();
     }

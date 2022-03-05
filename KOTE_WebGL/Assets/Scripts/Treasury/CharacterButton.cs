@@ -16,7 +16,7 @@ public class CharacterButton : MonoBehaviour
     {
         if (treasuryManager != null)
         {
-            treasuryManager.OnCharacterButtonStatic();
+            treasuryManager.OnCharacterButton();
         }
     }
 }
