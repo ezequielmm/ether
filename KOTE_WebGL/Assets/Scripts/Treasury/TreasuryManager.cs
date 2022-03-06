@@ -13,9 +13,12 @@ public class TreasuryManager : MonoBehaviour
     public GameObject characterList;
 
     public GameObject tabContentPrefab;
+    public GameObject treasuryContainer;
 
     private void Start()
     {
+        GameManager.Instance.EVENT_TREASURYPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerTreasuryPanel);
+
         Button firstCharacterButton = characterList.transform.GetChild(0)?.GetComponent<Button>();
         if (firstCharacterButton != null) firstCharacterButton.onClick?.Invoke();
     }
@@ -59,5 +62,15 @@ public class TreasuryManager : MonoBehaviour
             GameObject localObject = Instantiate(tabContentPrefab, transform);
             localObject.transform.GetChild(0).GetComponent<TMP_Text>().text = i.ToString();
         }
+    }
+
+    public void OnWalletsButton()
+    {
+        GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.Invoke(true);
+    }
+
+    public void ActivateInnerTreasuryPanel(bool activate)
+    {
+        treasuryContainer.SetActive(activate);
     }
 }

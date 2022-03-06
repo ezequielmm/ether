@@ -59,4 +59,9 @@ public class MainMenuManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
+
+    public void OnTreasuryButton()
+    {
+        GameManager.Instance.EVENT_TREASURYPANEL_ACTIVATION_REQUEST.Invoke(true);
+    }
 }
