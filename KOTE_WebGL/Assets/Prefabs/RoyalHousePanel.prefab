@@ -3421,6 +3421,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   confirmationPanel: {fileID: 2373437508949523796}
+  armoryItemPrefab: {fileID: 1082145392123221739, guid: 76ff9b0e1efaf864bb10b82f94f2d266,
+    type: 3}
+  blessingItemPrefab: {fileID: 6669544305215181301, guid: 3b5d469868abc80419d5783963cc3cae,
+    type: 3}
 --- !u!1 &8210942710311860348
 GameObject:
   m_ObjectHideFlags: 0
