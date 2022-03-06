@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
-    public TMP_Text nameText, moneyText;
+    public TMP_Text nameText, moneyText, koteLabel;
 
     public Button playButton, treasuryButton, registerButton, loginButton;
 
@@ -63,5 +63,12 @@ public class MainMenuManager : MonoBehaviour
     public void OnTreasuryButton()
     {
         GameManager.Instance.EVENT_TREASURYPANEL_ACTIVATION_REQUEST.Invoke(true);
+    }
+
+    public void OnPlayButton()
+    {
+        koteLabel.gameObject.SetActive(false);
+        treasuryButton.interactable = false;
+        GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 }

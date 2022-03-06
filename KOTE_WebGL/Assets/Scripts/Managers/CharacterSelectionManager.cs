@@ -11,12 +11,12 @@ public class CharacterSelectionManager : MonoBehaviour
     public Button startExpeditionButton;
 
     public List<GameObject> characterBorders;
-    // public GameObject currentCharacter;
-
-    private bool characterSelected;
+    public GameObject characterSelectionContainer;
 
     private void Start()
     {
+        GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerCharacterSelectionPanel);
+
         startExpeditionButton.interactable = false;
     }
 
@@ -32,6 +32,11 @@ public class CharacterSelectionManager : MonoBehaviour
 
     public void OnStartExpedition()
     {
-        // GameManager.Instance.LoadScene();
+        GameManager.Instance.LoadScene(inGameScenes.Map);
+    }
+
+    public void ActivateInnerCharacterSelectionPanel(bool activate)
+    {
+        characterSelectionContainer.SetActive(activate);
     }
 }
