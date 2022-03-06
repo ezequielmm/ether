@@ -1,18 +1,33 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class RoyalHouseManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [Serializable]
+    public class ArmoryItem
     {
-        
+        public string name;
+        public string description;
+        public int encumbrance;
     }
 
-    // Update is called once per frame
-    void Update()
+    [Serializable]
+    public class BlessingItem
     {
-        
+        public string name;
+        public string description;
+        public int fief;
+    }
+
+    public GameObject confirmationPanel;
+
+    public GameObject armoryItemPrefab;
+    public GameObject blessingItemPrefab;
+
+    public void ActivateInnerSelectionsConfirmPanel(bool activate)
+    {
+        confirmationPanel.SetActive(activate);
     }
 }
