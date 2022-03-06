@@ -10,6 +10,9 @@ public class CharacterSelectionManager : MonoBehaviour
 {
     public Button startExpeditionButton;
 
+    public List<GameObject> characterBorders;
+    // public GameObject currentCharacter;
+
     private bool characterSelected;
 
     private void Start()
@@ -17,22 +20,13 @@ public class CharacterSelectionManager : MonoBehaviour
         startExpeditionButton.interactable = false;
     }
 
-    private void Update()
+    public void OnCharacterSelected(GameObject currentCharacterBorder)
     {
-        OnCharacterSelected();
-    }
+        startExpeditionButton.interactable = true;
 
-    public void OnCharacterSelected()
-    {
-        if (EventSystem.current.currentSelectedGameObject != null)
+        foreach (GameObject characterBorder in characterBorders)
         {
-            startExpeditionButton.interactable =
-                EventSystem.current.currentSelectedGameObject.GetComponent<CharacterToSelect>() != null ||
-                EventSystem.current.currentSelectedGameObject == startExpeditionButton.gameObject;
-        }
-        else
-        {
-            startExpeditionButton.interactable = false;
+            characterBorder.SetActive(characterBorder == currentCharacterBorder);
         }
     }
 

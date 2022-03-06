@@ -221,7 +221,6 @@ GameObject:
   - component: {fileID: 8923834195796565382}
   - component: {fileID: 9129013715842932992}
   - component: {fileID: 6819502888422522298}
-  - component: {fileID: 2994643464749373480}
   m_Layer: 5
   m_Name: CharacterToSelectPrefab
   m_TagString: Untagged
@@ -332,7 +331,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2994643464749373480}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CharacterToSelect, Assembly-CSharp
         m_MethodName: OnCharacterSelected
         m_Mode: 1
@@ -344,16 +343,3 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &2994643464749373480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4178455478015453719}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5086f6f5c3c65f449941cf9af977316c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  border: {fileID: 1784563638437589256}
