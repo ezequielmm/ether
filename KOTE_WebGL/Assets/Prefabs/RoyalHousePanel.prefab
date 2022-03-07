@@ -1382,7 +1382,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 2}
-  m_SizeDelta: {x: 0, y: 400}
+  m_SizeDelta: {x: 0, y: 70}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &4205351998476989175
 CanvasRenderer:
@@ -3425,6 +3425,10 @@ MonoBehaviour:
     type: 3}
   blessingItemPrefab: {fileID: 6669544305215181301, guid: 3b5d469868abc80419d5783963cc3cae,
     type: 3}
+  armoryContent: {fileID: 4899684393973046740}
+  blessingContent: {fileID: 8210942710311860348}
+  armoryItems: []
+  blessingItems: []
 --- !u!1 &8210942710311860348
 GameObject:
   m_ObjectHideFlags: 0

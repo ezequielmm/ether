@@ -280,6 +280,7 @@ GameObject:
   - component: {fileID: 4624469402629488802}
   - component: {fileID: 3069603644416714927}
   - component: {fileID: 2118463139515572766}
+  - component: {fileID: 1045479583655838978}
   m_Layer: 5
   m_Name: BlessingItemPrefab
   m_TagString: Untagged
@@ -391,6 +392,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1045479583655838978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6669544305215181301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8b85eaa1bd98c2499cb113057115bcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: {fileID: 8115777982532780128}
+  itemDescription: {fileID: 8651928024437526898}
+  itemCost: {fileID: 7571674921377109763}
 --- !u!1 &7698788090044485884
 GameObject:
   m_ObjectHideFlags: 0
