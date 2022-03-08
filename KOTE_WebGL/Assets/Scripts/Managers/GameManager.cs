@@ -9,7 +9,8 @@ public enum inGameScenes
 {
     MainMenu,
     Loader,
-    Map
+    Map,
+    Combat
 }; //created so we can use the names on the enums instead of hard coding strings everytime, if a scene name is changed we can just change it here as well instead of changing at various spots
 
 public class GameManager : SingleTon<GameManager>
@@ -64,7 +65,8 @@ public class GameManager : SingleTon<GameManager>
 
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene
     {
-        SceneManager.LoadScene(inGameScenes.Loader.ToString());
         nextSceneToLoad = scene;
+        SceneManager.LoadScene(inGameScenes.Loader.ToString());
+        
     }
 }

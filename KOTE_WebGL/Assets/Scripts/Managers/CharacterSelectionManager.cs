@@ -32,7 +32,7 @@ public class CharacterSelectionManager : MonoBehaviour
 
     public void OnStartExpedition()
     {
-        // GameManager.Instance.LoadScene();
+        GameManager.Instance.LoadScene(inGameScenes.Map);
     }
 
     public void ActivateInnerCharacterSelectionPanel(bool activate)

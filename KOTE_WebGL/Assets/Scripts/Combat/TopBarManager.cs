@@ -10,7 +10,6 @@ public class TopBarManager : MonoBehaviour
     public TMP_Text healthText;
     public TMP_Text coinsText;
 
-    [Space(20)] public GameObject potionsContainer;
 
     public void SetTextValues(string nameText, string classText, string healthText, int coins)
     {
@@ -20,7 +19,4 @@ public class TopBarManager : MonoBehaviour
         coinsText.text = coins.ToString();
     }
 
-    public void SetPotions()
-    {
-    }
 }
