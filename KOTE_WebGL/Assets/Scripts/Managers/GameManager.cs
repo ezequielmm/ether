@@ -45,6 +45,7 @@ public class GameManager : SingleTon<GameManager>
     //WALLETS EVENTS
 
     public UnityEvent<bool> EVENT_WALLETSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
+    public UnityEvent<bool> EVENT_DISCONNECTWALLETPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
     //WALLETS EVENTS
 

@@ -9,7 +9,7 @@ public class SettingsManager : MonoBehaviour
     public Slider volumeSlider;
     public GameObject settingsContainer;
     public GameObject logoutConfirmContainer;
-    public Button logoutHyperlink;
+    public Button logoutHyperlink, manageWallets;
 
     private void Start()
     {
@@ -21,6 +21,7 @@ public class SettingsManager : MonoBehaviour
 
         volumeSlider.value = AudioListener.volume;
         logoutHyperlink.interactable = false;
+        manageWallets.interactable = false;
     }
 
     public void OnVolumeChanged()
@@ -47,11 +48,13 @@ public class SettingsManager : MonoBehaviour
     public void OnLogin(string name, int fief)
     {
         logoutHyperlink.interactable = true;
+        manageWallets.interactable = true;
     }
 
     public void OnLogout()
     {
         logoutHyperlink.interactable = false;
+        manageWallets.interactable = false;
         GameManager.Instance.EVENT_REQUEST_LOGOUT.Invoke(PlayerPrefs.GetString("session_token"));
     }
 
