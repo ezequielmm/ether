@@ -148,6 +148,10 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void ActivateInnerRegisterPanel(bool activate)
     {
+        emailInputField.text = "";
+        confirmEmailInputField.text = "";
+        passwordInputField.text = "";
+        confirmPasswordInputField.text = "";
         registerContainer.SetActive(activate);
     }
 }

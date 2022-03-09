@@ -12,14 +12,19 @@ public class LoginPanelManager : MonoBehaviour
     public TMP_InputField emailInputField;
     public TMP_InputField passwordInputField;
 
-    [Space(20)] public TMP_Text validEmailLabel;
+    [Space(20)]
+    public TMP_Text validEmailLabel;
+
     public TMP_Text validLoginEmail;
     public TMP_Text validLoginPassword;
 
-    [Space(20)] public Toggle rememberMe;
+    [Space(20)]
+    public Toggle rememberMe;
+
     public Button loginButton;
 
-    [Space(20)] public GameObject loginContainer;
+    [Space(20)]
+    public GameObject loginContainer;
 
     private bool validEmail;
     private bool validLogin;
@@ -78,14 +83,15 @@ public class LoginPanelManager : MonoBehaviour
 
         if (validEmail)
         {
-           GameManager.Instance.EVENT_REQUEST_LOGIN.Invoke(emailInputField.text, passwordInputField.text);
+            GameManager.Instance.EVENT_REQUEST_LOGIN.Invoke(emailInputField.text, passwordInputField.text);
         }
     }
-       
+
 
     public void ActivateInnerLoginPanel(bool activate)
     {
+        emailInputField.text = "";
+        passwordInputField.text = "";
         loginContainer.SetActive(activate);
-   
     }
 }
