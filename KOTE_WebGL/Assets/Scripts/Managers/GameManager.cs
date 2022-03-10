@@ -61,6 +61,8 @@ public class GameManager : SingleTon<GameManager>
 
     public UnityEvent<bool> EVENT_REWARDSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
     public UnityEvent<bool> EVENT_CARDS_REWARDPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
+    //POTIONS EVENTS
+    public UnityEvent<Potion> EVENT_POTION_USED = new UnityEvent<Potion>();
 
     public inGameScenes nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
 
