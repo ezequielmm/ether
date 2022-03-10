@@ -42,23 +42,26 @@ public class RoyalHouseManager : MonoBehaviour
     /// we'll call this function for every item we get to instantiate in
     /// the UI (currently not using it since we are using placeholders)
     /// </summary>
-    /// <param name="prefab"> prefab to instantiate (armory item or blessing item) </param>
-    /// <param name="father"> gameObject where it will be instantiated (armory content or blessing content) </param>
+    /// <param name="prefab">prefab to instantiate </param>
+    /// <param name="father">gameObject where it will be instantiated</param>
     /// <param name="itemName"></param>
     /// <param name="itemDescription"></param>
     /// <param name="itemCost"></param>
-    /// <returns> returns the gameObject instantiated so we can take control of it</returns>
-    public GameObject CreateArmoryContent(GameObject prefab, GameObject father, string itemName, string itemDescription, int itemCost)
+    /// <typeparam name="T">type of the object we are creating (ArmoryItem or BlessingItem) </typeparam>
+    /// <returns>returns the gameObject instantiated so we can take control of it</returns>
+    public GameObject CreateItemContent<T>(GameObject prefab, GameObject father, string itemName, string itemDescription, int itemCost)
     {
         GameObject currentItem = Instantiate(prefab, father.transform);
-        currentItem.GetComponent<ArmoryItem>().SetProperties(itemName, itemDescription, itemCost);
-        return currentItem;
-    }
 
-    public GameObject CreateBlessingContent(GameObject prefab, GameObject father, string itemName, string itemDescription, int itemCost)
-    {
-        GameObject currentItem = Instantiate(prefab, father.transform);
-        currentItem.GetComponent<BlessingItem>().SetProperties(itemName, itemDescription, itemCost);
+        if (typeof(T) == typeof(ArmoryItem))
+        {
+            currentItem.GetComponent<ArmoryItem>().SetProperties(itemName, itemDescription, itemCost);
+        }
+        else if (typeof(T) == typeof(BlessingItem))
+        {
+            currentItem.GetComponent<BlessingItem>().SetProperties(itemName, itemDescription, itemCost);
+        }
+
         return currentItem;
     }
 
@@ -94,35 +97,33 @@ public class RoyalHouseManager : MonoBehaviour
         confirmationText.text = $" Spend {currentFief} $fief on selection?";
     }
 
+    // I made two functions because I am setting armory by dropdown value change
+    // and I can't pass more than one parameter on inspector.
     public void SetArmoryItems()
     {
-        armoryItems.Clear();
-        DestroyChildren(armoryContent);
-
-        int randomArmoryItemsAmount = Random.Range(5, 15);
-
-        for (int i = 0; i < randomArmoryItemsAmount; i++)
-        {
-            armoryItems.Add(CreateArmoryContent(armoryItemPrefab,
-                armoryContent, "Random armory item",
-                "Random armory description for item",
-                Random.Range(1, 11)));
-        }
+        currentEncumbrance = 0;
+        encumbranceText.text = $"{currentEncumbrance}/{maxEncumbrance}";
+        SetItems<ArmoryItem>(armoryItems, armoryItemPrefab, armoryContent);
     }
 
     public void SetBlessingItems()
     {
-        blessingItems.Clear();
-        DestroyChildren(blessingContent);
+        SetItems<BlessingItem>(blessingItems, blessingItemPrefab, blessingContent);
+    }
+
+    private void SetItems<T>(List<GameObject> objectsList, GameObject prefab, GameObject father) where T : RoyalHouseItem
+    {
+        objectsList.Clear();
+        DestroyChildren(father);
 
         int randomArmoryItemsAmount = Random.Range(5, 15);
 
         for (int i = 0; i < randomArmoryItemsAmount; i++)
         {
-            blessingItems.Add(CreateBlessingContent(blessingItemPrefab,
-                blessingContent, "Random blessing item",
-                "Random blessing description for item",
-                Random.Range(0, 36)));
+            armoryItems.Add(CreateItemContent<T>(prefab,
+                father, "Random item",
+                "Random description for item",
+                Random.Range(1, 11)));
         }
     }
 

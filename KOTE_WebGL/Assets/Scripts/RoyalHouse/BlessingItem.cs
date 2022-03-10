@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 
 [Serializable]
-public class BlessingItem : MonoBehaviour
+public class BlessingItem : RoyalHouseItem
 {
     public string itemName, itemDescription;
     public int itemFief;

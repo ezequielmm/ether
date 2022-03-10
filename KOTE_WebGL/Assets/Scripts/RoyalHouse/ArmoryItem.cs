@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [Serializable]
-public class ArmoryItem : MonoBehaviour
+public class ArmoryItem : RoyalHouseItem
 {
     public string itemName, itemDescription;
     public int itemEncumbrance;
@@ -26,7 +26,7 @@ public class ArmoryItem : MonoBehaviour
         itemEncumbranceText.text = $"Encumbrance: {itemEncumbrance.ToString()}";
     }
 
-    public void OnArmoryItem()
+    public void OnArmoryItemSelected()
     {
         selected = !selected;
         GameManager.Instance.EVENT_SELECTARMORY_ITEM.Invoke(this, selected);
