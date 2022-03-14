@@ -61,11 +61,11 @@ public class GameManager : SingleTon<GameManager>
     //WALLETS EVENTS
     [HideInInspector]
     public UnityEvent<bool> EVENT_WALLETSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
-    [HideInInspector]
-    public UnityEvent<bool,GameObject> EVENT_DISCONNECTWALLETPANEL_ACTIVATION_REQUEST = new UnityEvent<bool,GameObject>();
+    public UnityEvent<bool, GameObject> EVENT_DISCONNECTWALLETPANEL_ACTIVATION_REQUEST = new UnityEvent<bool, GameObject>();
+    public UnityEvent<bool> EVENT_DISCONNECTWALLET_CONFIRMED = new UnityEvent<bool>();
 
-    //WALLETS EVENTS
-    [HideInInspector]
+    //TREASURY EVENTS
+
     public UnityEvent<bool> EVENT_TREASURYPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
     //CHARACTER SELECTION EVENTS
@@ -78,6 +78,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector]
     public UnityEvent<bool> EVENT_REWARDSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
     [HideInInspector]
+
     public UnityEvent<bool> EVENT_CARDS_REWARDPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
     //POTIONS EVENTS
@@ -93,6 +94,8 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<BlessingItem, bool> EVENT_SELECTBLESSING_ITEM = new UnityEvent<BlessingItem, bool>();
 
     [HideInInspector]
+    //SHOP LOCATION EVENTS
+
     public UnityEvent<bool> EVENT_SHOPLOCATION_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
     public inGameScenes nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat

@@ -28,6 +28,7 @@ public class TopBarManager : MonoBehaviour
     }
 
     public void SetTextValues(string nameText, string classText, int health, int coins)
+   // public void SetTextValues(string nameText, string classText, string healthText, int coins)
     {
         this.nameText.text = nameText;
         this.classText.text = classText;
@@ -70,5 +71,15 @@ public class TopBarManager : MonoBehaviour
     {
         currentHealth = health;
         SetHealthText(currentHealth);
+    }
+    
+    public void OnWalletButton()
+    {
+        GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.Invoke(true);
+    }
+
+    public void OnSettingsButton()
+    {
+        GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 }
