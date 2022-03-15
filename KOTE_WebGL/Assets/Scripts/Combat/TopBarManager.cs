@@ -21,8 +21,8 @@ public class TopBarManager : MonoBehaviour
     {
         this.nameText.text = nameText;
         this.classText.text = classText;
-        healthText.text = health.ToString();
-        coinsText.text = coins.ToString();
+        healthText.text = $"{health} health";
+        coinsText.text = $"{coins} coins";
     }
 
     public void SetNameText(string nameText)
