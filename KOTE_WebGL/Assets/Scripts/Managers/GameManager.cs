@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public enum inGameScenes
 {
@@ -15,6 +16,10 @@ public enum inGameScenes
 
 public class GameManager : SingleTon<GameManager>
 {
+    public WebRequesterManager.ProfileData currentProfile;
+    public string currentClass;
+    public int currentHealth;
+
     //REGISTER ACCOUNT EVENTS
     public UnityEvent<string, string, string> EVENT_REQUEST_REGISTER = new UnityEvent<string, string, string>();
     public UnityEvent<string> EVENT_REQUEST_REGISTER_ERROR = new UnityEvent<string>();
@@ -33,8 +38,11 @@ public class GameManager : SingleTon<GameManager>
 
     public UnityEvent<bool> EVENT_LOGINPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
+    //PROFILE EVENTS
+
     public UnityEvent<string> EVENT_REQUEST_PROFILE = new UnityEvent<string>();
     public UnityEvent<string> EVENT_REQUEST_PROFILE_ERROR = new UnityEvent<string>();
+    public UnityEvent<WebRequesterManager.ProfileData> EVENT_REQUEST_PROFILE_SUCCESSFUL = new UnityEvent<WebRequesterManager.ProfileData>();
 
     //SETTINGS EVENTS
 
@@ -56,11 +64,14 @@ public class GameManager : SingleTon<GameManager>
     //CHARACTER SELECTION EVENTS
 
     public UnityEvent<bool> EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
+    public UnityEvent<string> EVENT_CHARACTERSELECTED = new UnityEvent<string>();
 
     //REWARDS EVENTS
 
     public UnityEvent<bool> EVENT_REWARDSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
+
     public UnityEvent<bool> EVENT_CARDS_REWARDPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
+
     //POTIONS EVENTS
     public UnityEvent<Potion> EVENT_POTION_USED = new UnityEvent<Potion>();
     // ROYAL HOUSE EVENTS
@@ -73,12 +84,29 @@ public class GameManager : SingleTon<GameManager>
     // Start is called before the first frame update
     void Start()
     {
+        EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
+        EVENT_CHARACTERSELECTED.AddListener(SetClassSelected);
+        SetHealth(Random.Range(30, 81));
+    }
+
+    public void SetProfileInfo(WebRequesterManager.ProfileData profileData)
+    {
+        currentProfile = profileData;
+    }
+
+    public void SetClassSelected(string classSelected)
+    {
+        currentClass = classSelected;
+    }
+
+    public void SetHealth(int health)
+    {
+        currentHealth = health;
     }
 
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene
     {
         nextSceneToLoad = scene;
         SceneManager.LoadScene(inGameScenes.Loader.ToString());
-        
     }
 }

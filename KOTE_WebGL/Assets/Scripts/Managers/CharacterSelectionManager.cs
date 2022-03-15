@@ -13,6 +13,8 @@ public class CharacterSelectionManager : MonoBehaviour
     public List<GameObject> characterBorders;
     public GameObject characterSelectionContainer;
 
+    private GameObject currentCharacter;
+
     private void Start()
     {
         GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerCharacterSelectionPanel);
@@ -30,9 +32,17 @@ public class CharacterSelectionManager : MonoBehaviour
         }
     }
 
+    public void SetSelectedCharacter(GameObject selectedCharacter)
+    {
+        currentCharacter = selectedCharacter;
+    }
+
     public void OnStartExpedition()
     {
         GameManager.Instance.LoadScene(inGameScenes.Map);
+
+        string classSelected = currentCharacter.name.Replace("BT", string.Empty);
+        GameManager.Instance.EVENT_CHARACTERSELECTED.Invoke(classSelected);
     }
 
     public void ActivateInnerCharacterSelectionPanel(bool activate)

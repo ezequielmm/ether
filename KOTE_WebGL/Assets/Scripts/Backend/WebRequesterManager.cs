@@ -233,6 +233,7 @@ public class WebRequesterManager : MonoBehaviour
         PlayerPrefs.SetString("session_token", token);
         PlayerPrefs.Save();
 
+        GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.Invoke(profileData);
         GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.Invoke(name, fief);
     }
 
