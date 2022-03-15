@@ -25,7 +25,7 @@ public class MainMenuManager : MonoBehaviour
     public void OnLoginSuccessful(string name, int fief)
     {
         nameText.text = name;
-        moneyText.text = fief.ToString();
+        moneyText.text = $"{fief} $fief";
 
         TogglePreLoginStatus(false);
     }
