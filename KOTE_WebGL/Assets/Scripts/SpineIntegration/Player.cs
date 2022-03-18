@@ -1,12 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Numerics;
-using Spine;
-using Spine.Unity;
-using UnityEditor.VersionControl;
 using UnityEngine;
-using Animation = Spine.Animation;
 using Vector2 = UnityEngine.Vector2;
 
 public class Player : MonoBehaviour

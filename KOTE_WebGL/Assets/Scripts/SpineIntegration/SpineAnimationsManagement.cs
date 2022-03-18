@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 using Spine;
 using Spine.Unity;
-using Unity.Collections;
 using Animation = Spine.Animation;
 
 [Serializable]
@@ -30,9 +27,7 @@ public class SpineAnimationsManagement : MonoBehaviour
         public class Animation
         {
             public int track;
-
             public string name;
-
             public bool loop;
             public float delay;
             public AnimationEvent animationEvent;
