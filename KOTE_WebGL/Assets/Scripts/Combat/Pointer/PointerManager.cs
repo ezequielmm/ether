@@ -6,10 +6,7 @@ using UnityEngine;
 
 public class PointerManager : MonoBehaviour
 {
-    public float cursorRotationSmoothness;
-
     private GameObject sourceGO;
-    public Vector3 baseVector;
     public Transform pointerTransform;
 
     private bool target;
@@ -25,7 +22,7 @@ public class PointerManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.EVENT_START_POINTER.AddListener(SetTargeting);
+        GameManager.Instance.EVENT_START_POINTER.AddListener(StartTargeting);
     }
 
     private void Update()
@@ -42,12 +39,12 @@ public class PointerManager : MonoBehaviour
 
         if (target)
         {
-            StartTargeting();
+            UpdateArrowHead();
             UpdateBody();
         }
     }
 
-    public void SetTargeting(GameObject invoker)
+    public void StartTargeting(GameObject invoker)
     {
         if (sourceGO != null) return;
 
@@ -57,19 +54,14 @@ public class PointerManager : MonoBehaviour
         CreateArrowBody();
     }
 
-    public void StartTargeting()
+    public void UpdateArrowHead()
     {
         Cursor.visible = false;
 
         pointerTransform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         pointerTransform.position = new Vector3(pointerTransform.position.x, pointerTransform.position.y, 1);
 
-        float direction = pointerTransform.position.x - baseVector.x;
-
-        float angle = -Mathf.Atan(direction) * Mathf.Rad2Deg;
-        angle = ApplySmoothness(angle, cursorRotationSmoothness);
-
-        pointerTransform.localEulerAngles = new Vector3(0, 0, angle);
+        SetRotationAngle(pointerTransform.position, sourceGO.transform.position, pointerTransform);
     }
 
     public void CreateArrowBody()
@@ -85,9 +77,10 @@ public class PointerManager : MonoBehaviour
 
     public void UpdateBody()
     {
-        bezierPoint0 = baseVector;
+        bezierPoint0 = sourceGO.transform.position;
         bezierPoint2 = pointerTransform.position;
-        bezierPoint1 = new Vector2(0, bezierPoint0.y + (bezierPoint2.y - bezierPoint0.y) * 0.80f);
+
+        bezierPoint1 = new Vector2(bezierPoint0.x, bezierPoint0.y + (bezierPoint2.y - bezierPoint0.y) * 0.80f);
 
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -100,11 +93,22 @@ public class PointerManager : MonoBehaviour
             transform.GetChild(i).transform.position = bezierPoint;
 
             //rotation
-            float direction = pointerTransform.position.x - baseVector.x;
 
-            float angle = -Mathf.Atan(direction) * Mathf.Rad2Deg;
-            transform.GetChild(i).transform.localEulerAngles = new Vector3(0, 0, angle * Mathf.Clamp((100f - 10f * i) / 100f, 0, 100));
+            SetRotationAngle(pointerTransform.position, sourceGO.transform.position, transform.GetChild(i).transform);
         }
+    }
+
+    private void SetRotationAngle(Vector3 v0, Vector3 v1, Transform applyAngleTo)
+    {
+        Vector3 direction = (v0 - v1).normalized;
+
+        float angle = -Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+        if (angle < 0)
+        {
+            angle += 360;
+        }
+
+        applyAngleTo.localEulerAngles = new Vector3(0, 0, angle);
     }
 
     private Vector3 CalculateQuadraticBezierPoint(float t, Vector2 p0, Vector2 p1, Vector2 p2)
@@ -115,27 +119,6 @@ public class PointerManager : MonoBehaviour
 
         Vector3 p = (uu * p0) + (2 * u * t * p1) + (tt * p2);
         return p;
-    }
-
-    private float ApplySmoothness(float angle, float rotationSmoothness)
-    {
-        if (angle == 0)
-        {
-            return angle;
-        }
-
-        float smoothness = Mathf.Abs(angle * (rotationSmoothness / 100));
-
-        if (angle > 0)
-        {
-            angle -= smoothness;
-        }
-        else if (angle < 0)
-        {
-            angle += smoothness;
-        }
-
-        return angle;
     }
 
     private void StopTargeting()
@@ -175,7 +158,7 @@ public class PointerManager : MonoBehaviour
 
     public void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(baseVector, 0.1f);
+        if (target) Gizmos.DrawSphere(sourceGO.transform.position, 0.1f);
         Gizmos.color = Color.yellow;
 
         Gizmos.DrawSphere(bezierPoint0, 0.1f);

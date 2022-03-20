@@ -167,8 +167,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a975e702e6bf1d49bbdce0ab0df222d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorRotationSmoothness: 0
-  baseVector: {x: -0.39, y: -4.23, z: 0}
+  cursorRotationSmoothness: 30
+  baseVector: {x: -0.39, y: 0, z: 0}
   pointerTransform: {fileID: 1246325087}
   bodyAmount: 10
   bodyPrefab: {fileID: 6113141064779520571, guid: 44b1356a859f29842afa68ff1a886f7d,
