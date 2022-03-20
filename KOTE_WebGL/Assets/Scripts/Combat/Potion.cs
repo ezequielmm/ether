@@ -12,14 +12,25 @@ public class Potion : MonoBehaviour
 
     private void Start()
     {
+        GameManager.Instance.EVENT_TARGET_POINTER_SELECTED.AddListener(OnPotionUsed);
+
         potionImage = GetComponent<Image>();
         potionButton = GetComponent<Button>();
 
         potionImage.sprite = unusedPotionSprite;
     }
 
-    public void OnPotionUsed()
+    public void OnPotion()
     {
+        GameManager.Instance.EVENT_START_POINTER.Invoke(gameObject);
+    }
+
+    public void OnPotionUsed(GameObject invoker)
+    {
+        if (invoker != gameObject) return;
+
+        Debug.Log($"Potion used");
+
         potionImage.sprite = usedPotionSprite;
         potionButton.interactable = false;
 

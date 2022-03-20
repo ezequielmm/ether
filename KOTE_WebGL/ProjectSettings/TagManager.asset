@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Card
+  - Pointer
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -13,8 +15,8 @@ TagManager:
   - Water
   - UI
   - Card
-  - 
-  - 
+  - Enemy
+  - Pointer
   - 
   - 
   - 
@@ -44,4 +46,10 @@ TagManager:
     locked: 0
   - name: Card
     uniqueID: 3387933161
+    locked: 0
+  - name: Enemy
+    uniqueID: 3699855255
+    locked: 0
+  - name: Pointer
+    uniqueID: 2462136163
     locked: 0
