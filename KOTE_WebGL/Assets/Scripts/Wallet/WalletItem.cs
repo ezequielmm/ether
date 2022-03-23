@@ -17,6 +17,6 @@ public class WalletItem : MonoBehaviour
 
     public void ActivateConfirmation()
     {
-        GameManager.Instance.EVENT_DISCONNECTWALLETPANEL_ACTIVATION_REQUEST.Invoke(true);
+        GameManager.Instance.EVENT_DISCONNECTWALLETPANEL_ACTIVATION_REQUEST.Invoke(true, gameObject);
     }
 }

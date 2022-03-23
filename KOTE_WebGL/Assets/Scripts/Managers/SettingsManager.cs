@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SettingsManager : MonoBehaviour
 {
     public Slider volumeSlider;
+    public TMP_Dropdown languageDropdown;
     public GameObject settingsContainer;
     public GameObject logoutConfirmContainer;
     public Button logoutHyperlink, manageWallets;
@@ -19,15 +21,26 @@ public class SettingsManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_LOGOUT_ERROR.AddListener(OnLogoutError);
         GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
 
-        volumeSlider.value = AudioListener.volume;
         logoutHyperlink.interactable = false;
-        manageWallets.interactable = false;
+
+        Debug.Log($"{PlayerPrefs.GetFloat("settings_volume")}");
+        volumeSlider.value = PlayerPrefs.GetFloat("settings_volume");
+        AudioListener.volume = volumeSlider.value;
+
+        languageDropdown.value = PlayerPrefs.GetInt("settings_dropdown");
     }
 
     public void OnVolumeChanged()
     {
         AudioListener.volume = volumeSlider.value;
-        // Debug.Log($"Volume = {AudioListener.volume * 100}");
+        PlayerPrefs.SetFloat("settings_volume", AudioListener.volume);
+        PlayerPrefs.Save();
+    }
+
+    public void OnLanguageChanged()
+    {
+        PlayerPrefs.SetInt("settings_dropdown", languageDropdown.value);
+        PlayerPrefs.Save();
     }
 
     public void OnWalletsButton()

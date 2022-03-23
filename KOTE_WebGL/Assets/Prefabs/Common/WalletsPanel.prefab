@@ -1293,7 +1293,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8649418466282296134}
-        m_TargetAssemblyTypeName: WalletsManager, Assembly-CSharp
+        m_TargetAssemblyTypeName: WalletManager, Assembly-CSharp
         m_MethodName: ActivateInnerDisconnectWalletConfirmPanel
         m_Mode: 6
         m_Arguments:
@@ -1711,9 +1711,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: OnLogout
+      - m_Target: {fileID: 8649418466282296134}
+        m_TargetAssemblyTypeName: WalletManager, Assembly-CSharp
+        m_MethodName: OnDisconnectConfirm
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1723,9 +1723,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: ActivateInnerLogoutConfirmPanel
+      - m_Target: {fileID: 8649418466282296134}
+        m_TargetAssemblyTypeName: WalletManager, Assembly-CSharp
+        m_MethodName: ActivateInnerDisconnectWalletConfirmPanel
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2851,6 +2851,7 @@ MonoBehaviour:
   lightRowColor: {r: 1, g: 1, b: 1, a: 0.78431374}
   rowPrefab: {fileID: 3069086770818720402, guid: 315c3443fe3c00a4ebeafd2e576665a5,
     type: 3}
+  walletToDelete: {fileID: 0}
 --- !u!1 &8649418467033877781
 GameObject:
   m_ObjectHideFlags: 0
