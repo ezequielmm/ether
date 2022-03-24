@@ -17,81 +17,65 @@ public enum inGameScenes
 public class GameManager : SingleTon<GameManager>
 {
     //REGISTER ACCOUNT EVENTS
-    [HideInInspector]
     public UnityEvent<string, string, string> EVENT_REQUEST_REGISTER = new UnityEvent<string, string, string>();
-    [HideInInspector]
     public UnityEvent<string> EVENT_REQUEST_REGISTER_ERROR = new UnityEvent<string>();
-    [HideInInspector]
+
     public UnityEvent<bool> EVENT_REGISTERPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
-    [HideInInspector]
+
     public UnityEvent<string> EVENT_REQUEST_NAME = new UnityEvent<string>();
-    [HideInInspector]
     public UnityEvent<string> EVENT_REQUEST_NAME_SUCESSFUL = new UnityEvent<string>();
-    [HideInInspector]
     public UnityEvent<string> EVENT_REQUEST_NAME_ERROR = new UnityEvent<string>();
 
     //LOGIN EVENTS
-    [HideInInspector]
+
     public UnityEvent<string, string> EVENT_REQUEST_LOGIN = new UnityEvent<string, string>();
-    [HideInInspector]
     public UnityEvent<string, int> EVENT_REQUEST_LOGIN_SUCESSFUL = new UnityEvent<string, int>();
-    [HideInInspector]
     public UnityEvent<string> EVENT_REQUEST_LOGIN_ERROR = new UnityEvent<string>();
-    [HideInInspector]
+
     public UnityEvent<bool> EVENT_LOGINPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
     //PROFILE EVENTS
-    [HideInInspector]
+
     public UnityEvent<string> EVENT_REQUEST_PROFILE = new UnityEvent<string>();
-    [HideInInspector]
     public UnityEvent<string> EVENT_REQUEST_PROFILE_ERROR = new UnityEvent<string>();
-    [HideInInspector]
     public UnityEvent<WebRequesterManager.ProfileData> EVENT_REQUEST_PROFILE_SUCCESSFUL = new UnityEvent<WebRequesterManager.ProfileData>();
 
     //SETTINGS EVENTS
-    [HideInInspector]
+
     public UnityEvent<bool> EVENT_SETTINGSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
-    [HideInInspector]
+
     public UnityEvent<string> EVENT_REQUEST_LOGOUT = new UnityEvent<string>();
-    [HideInInspector]
     public UnityEvent<string> EVENT_REQUEST_LOGOUT_SUCCESSFUL = new UnityEvent<string>();
-    [HideInInspector]
     public UnityEvent<string> EVENT_REQUEST_LOGOUT_ERROR = new UnityEvent<string>();
 
     //WALLETS EVENTS
-    [HideInInspector]
+
     public UnityEvent<bool> EVENT_WALLETSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
-    [HideInInspector]
     public UnityEvent<bool> EVENT_DISCONNECTWALLETPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
     //WALLETS EVENTS
-    [HideInInspector]
+
     public UnityEvent<bool> EVENT_TREASURYPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
     //CHARACTER SELECTION EVENTS
-    [HideInInspector]
+
     public UnityEvent<bool> EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
-    [HideInInspector]
     public UnityEvent<string> EVENT_CHARACTERSELECTED = new UnityEvent<string>();
 
     //REWARDS EVENTS
-    [HideInInspector]
+
     public UnityEvent<bool> EVENT_REWARDSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
-    [HideInInspector]
+
     public UnityEvent<bool> EVENT_CARDS_REWARDPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
     //POTIONS EVENTS
-    [HideInInspector]
     public UnityEvent<Potion> EVENT_POTION_USED = new UnityEvent<Potion>();
     // ROYAL HOUSE EVENTS
-    [HideInInspector]
-    public UnityEvent<ArmoryItem, bool> EVENT_SELECTARMORY_ITEM = new UnityEvent<ArmoryItem, bool>();
-    [HideInInspector]
-    public UnityEvent<BlessingItem, bool> EVENT_SELECTBLESSING_ITEM = new UnityEvent<BlessingItem, bool>();
-    
-    public inGameScenes nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
 
-    public WebRequesterManager webRequester;
+    public UnityEvent<ArmoryItem, bool> EVENT_SELECTARMORY_ITEM = new UnityEvent<ArmoryItem, bool>();
+    public UnityEvent<BlessingItem, bool> EVENT_SELECTBLESSING_ITEM = new UnityEvent<BlessingItem, bool>();
+
+    public inGameScenes nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
 
     // Start is called before the first frame update
     void Start()

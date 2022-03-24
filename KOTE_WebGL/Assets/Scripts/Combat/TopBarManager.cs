@@ -6,7 +6,8 @@ using TMPro;
 using Random = UnityEngine.Random;
 
 public class TopBarManager : MonoBehaviour
-{    
+{
+    public WebRequesterManager.ProfileData currentProfile;
     public string currentClass;
     public int currentHealth;
 
@@ -56,9 +57,10 @@ public class TopBarManager : MonoBehaviour
     }
 
     public void SetProfileInfo(WebRequesterManager.ProfileData profileData)
-    {        
-        SetNameText(profileData.data.name);
-        SetCoinsText(profileData.data.coins);
+    {
+        currentProfile = profileData;
+        SetNameText(currentProfile.data.name);
+        SetCoinsText(currentProfile.data.coins);
     }
 
     public void SetClassSelected(string classSelected)

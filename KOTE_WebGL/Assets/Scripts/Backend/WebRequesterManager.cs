@@ -103,12 +103,6 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_LOGOUT.AddListener(RequestLogout);
     }
 
-    private void Start()
-    {
-        GameManager.Instance.webRequester = this;
-        DontDestroyOnLoad(this);
-    }
-
     public IEnumerator GetRandomName(string lastName)
     {
         string randomNameUrl = $"{baseUrl}{urlRandomName}";
@@ -217,8 +211,6 @@ public class WebRequesterManager : MonoBehaviour
 
     IEnumerator GetProfile(string token)
     {
-        Debug.Log("Getting profile");
-
         string profileUrl = $"{baseUrl}{urlProfile}";
 
         UnityWebRequest profileInfoRequest = UnityWebRequest.Get($"{profileUrl}?Authorization={Uri.EscapeDataString(token)}");
