@@ -15,6 +15,8 @@ public class WalletManager : MonoBehaviour
     public Color darkRowColor, lightRowColor;
     public GameObject rowPrefab;
 
+    public GameObject walletToDelete;
+
     private void Start()
     {
         GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerWalletsPanel);
@@ -31,6 +33,22 @@ public class WalletManager : MonoBehaviour
             GameObject currentRow = Instantiate(rowPrefab, informationContent.transform);
             currentRow.GetComponent<WalletItem>().SetColor(i % 2 == 0 ? lightRowColor : darkRowColor);
         }
+    }
+
+    public void OnDisconnectConfirm()
+    {
+        Destroy(walletToDelete);
+
+        for (int i = 0; i < informationContent.transform.childCount; i++)
+        {
+            informationContent.transform.GetChild(i).GetComponent<WalletItem>().SetColor(i % 2 != 0 ? lightRowColor : darkRowColor);
+        }
+    }
+
+    public void ActivateInnerDisconnectWalletConfirmPanel(bool activate, GameObject wallet)
+    {
+        if (wallet != null) walletToDelete = wallet;
+        confirmationPanel.SetActive(activate);
     }
 
     public void ActivateInnerDisconnectWalletConfirmPanel(bool activate)

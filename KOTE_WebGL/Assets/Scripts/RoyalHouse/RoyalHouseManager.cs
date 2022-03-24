@@ -25,6 +25,7 @@ public class RoyalHouseManager : MonoBehaviour
 
     private void Start()
     {
+        GameManager.Instance.EVENT_ROYALHOUSES_ACTIVATION_REQUEST.AddListener(ActivateInnerRoyalHousePanel);
         GameManager.Instance.EVENT_SELECTARMORY_ITEM.AddListener(SetCurrentlyEncumbrance);
         GameManager.Instance.EVENT_SELECTBLESSING_ITEM.AddListener(SetCurrentlyFief);
 
