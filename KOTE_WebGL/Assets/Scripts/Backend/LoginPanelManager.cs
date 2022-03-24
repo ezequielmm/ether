@@ -22,6 +22,7 @@ public class LoginPanelManager : MonoBehaviour
     [Space(20)]
     public Toggle rememberMe;
 
+    public Toggle showPassword;
     public Button loginButton;
 
     [Space(20)]
@@ -52,6 +53,12 @@ public class LoginPanelManager : MonoBehaviour
                 rememberMe.isOn = true;
             }
         }
+    }
+
+    public void OnShowPassword()
+    {
+        passwordInputField.contentType = showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
+        passwordInputField.ForceLabelUpdate();
     }
 
     private void OnLoginSucessful(string userName, int fiefAmount)
