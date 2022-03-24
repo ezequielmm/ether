@@ -16,10 +16,6 @@ public enum inGameScenes
 
 public class GameManager : SingleTon<GameManager>
 {
-    public WebRequesterManager.ProfileData currentProfile;
-    public string currentClass;
-    public int currentHealth;
-
     //REGISTER ACCOUNT EVENTS
     public UnityEvent<string, string, string> EVENT_REQUEST_REGISTER = new UnityEvent<string, string, string>();
     public UnityEvent<string> EVENT_REQUEST_REGISTER_ERROR = new UnityEvent<string>();
@@ -84,24 +80,7 @@ public class GameManager : SingleTon<GameManager>
     // Start is called before the first frame update
     void Start()
     {
-        EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
-        EVENT_CHARACTERSELECTED.AddListener(SetClassSelected);
-        SetHealth(Random.Range(30, 81));
-    }
-
-    public void SetProfileInfo(WebRequesterManager.ProfileData profileData)
-    {
-        currentProfile = profileData;
-    }
-
-    public void SetClassSelected(string classSelected)
-    {
-        currentClass = classSelected;
-    }
-
-    public void SetHealth(int health)
-    {
-        currentHealth = health;
+        
     }
 
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene

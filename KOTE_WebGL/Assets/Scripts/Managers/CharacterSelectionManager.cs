@@ -43,6 +43,8 @@ public class CharacterSelectionManager : MonoBehaviour
 
         string classSelected = currentCharacter.name.Replace("BT", string.Empty);
         GameManager.Instance.EVENT_CHARACTERSELECTED.Invoke(classSelected);
+        PlayerPrefs.SetString("class_selected", classSelected);
+        PlayerPrefs.Save();
     }
 
     public void ActivateInnerCharacterSelectionPanel(bool activate)

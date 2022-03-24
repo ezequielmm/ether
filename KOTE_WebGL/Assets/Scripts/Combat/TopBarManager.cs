@@ -3,9 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Random = UnityEngine.Random;
 
 public class TopBarManager : MonoBehaviour
 {
+    public WebRequesterManager.ProfileData currentProfile;
+    public string currentClass;
+    public int currentHealth;
+
     public TMP_Text nameText;
     public TMP_Text classText;
     public TMP_Text healthText;
@@ -13,8 +18,14 @@ public class TopBarManager : MonoBehaviour
 
     private void Start()
     {
-        SetTextValues(GameManager.Instance.currentProfile.data.name, GameManager.Instance.currentClass,
-            GameManager.Instance.currentHealth, GameManager.Instance.currentProfile.data.coins);
+        GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
+        GameManager.Instance.EVENT_CHARACTERSELECTED.AddListener(SetClassSelected);
+
+        GameManager.Instance.EVENT_REQUEST_PROFILE.Invoke(PlayerPrefs.GetString("session_token"));
+
+        currentClass = PlayerPrefs.GetString("class_selected");
+        SetClassText(currentClass);
+        SetHealth(Random.Range(30, 81));
     }
 
     public void SetTextValues(string nameText, string classText, int health, int coins)
@@ -43,5 +54,23 @@ public class TopBarManager : MonoBehaviour
     public void SetCoinsText(int coins)
     {
         coinsText.text = coins.ToString();
+    }
+
+    public void SetProfileInfo(WebRequesterManager.ProfileData profileData)
+    {
+        currentProfile = profileData;
+        SetNameText(currentProfile.data.name);
+        SetCoinsText(currentProfile.data.coins);
+    }
+
+    public void SetClassSelected(string classSelected)
+    {
+        currentClass = classSelected;
+    }
+
+    public void SetHealth(int health)
+    {
+        currentHealth = health;
+        SetHealthText(currentHealth);
     }
 }
