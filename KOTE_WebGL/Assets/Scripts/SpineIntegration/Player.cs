@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 
@@ -12,12 +13,9 @@ public class Player : MonoBehaviour
         spineAnimationsManagement.PlayAnimationSequence("Idle");
     }
 
-    private void Update()
+    private void OnMouseDown()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            DetectMouseClick();
-        }
+        Attack();
     }
 
     public void DetectMouseClick()
@@ -26,7 +24,6 @@ public class Player : MonoBehaviour
 
         if (hit.collider != null && hit.collider.CompareTag("Player"))
         {
-            Attack();
         }
     }
 

@@ -5,7 +5,7 @@ using Spine;
 using Spine.Unity;
 using Animation = Spine.Animation;
 
-[Serializable]
+[Serializable, RequireComponent(typeof(SkeletonAnimation))]
 public class SpineAnimationsManagement : MonoBehaviour
 {
     public enum AnimationEvent
@@ -63,7 +63,7 @@ public class SpineAnimationsManagement : MonoBehaviour
         skeletonDataAsset = SkeletonDataAsset.CreateRuntimeInstance(animationJson, atlasAssetBase, true);
         skeletonData = skeletonDataAsset.GetSkeletonData(false);
 
-        skeletonAnimationScript = gameObject.GetComponent<SkeletonAnimation>() == null ? gameObject.AddComponent<SkeletonAnimation>() : GetComponent<SkeletonAnimation>();
+        skeletonAnimationScript = GetComponent<SkeletonAnimation>();
         skeletonAnimationScript.skeletonDataAsset = skeletonDataAsset;
         skeletonAnimationScript.Initialize(true);
 
