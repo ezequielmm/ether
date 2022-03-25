@@ -18,15 +18,6 @@ public class Player : MonoBehaviour
         Attack();
     }
 
-    public void DetectMouseClick()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-
-        if (hit.collider != null && hit.collider.CompareTag("Player"))
-        {
-        }
-    }
-
     public void Attack()
     {
         spineAnimationsManagement.PlayAnimationSequence("Attack");
