@@ -7,6 +7,7 @@ public class MapManager : MonoBehaviour
     public void OnRoyalHousesButton()
     {
         GameManager.Instance.EVENT_ROYALHOUSES_ACTIVATION_REQUEST.Invoke(true);
+       
     }
 
     public void OnShopButton()
