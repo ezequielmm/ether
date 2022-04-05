@@ -23,7 +23,7 @@ public class SettingsManager : MonoBehaviour
 
         logoutHyperlink.interactable = false;
 
-        Debug.Log($"{PlayerPrefs.GetFloat("settings_volume")}");
+       // Debug.Log($"{PlayerPrefs.GetFloat("settings_volume")}");
         volumeSlider.value = PlayerPrefs.GetFloat("settings_volume");
         AudioListener.volume = volumeSlider.value;
 

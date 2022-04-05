@@ -11,6 +11,8 @@ public class MainMenuManager : MonoBehaviour
 
     public Button playButton, treasuryButton, registerButton, loginButton;
 
+    private bool _hasExpedition;
+
     private void Start()
     {
         GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLoginSuccessful);
@@ -19,7 +21,19 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(false);
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(false);
 
+        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(OnExpeditionUpdate);
+
         TogglePreLoginStatus(true);
+    }
+
+    private void OnExpeditionUpdate(bool hasExpedition)
+    {
+        TextMeshProUGUI textField = playButton.gameObject.GetComponentInChildren<TextMeshProUGUI>();
+
+        _hasExpedition = hasExpedition;
+
+        textField?.SetText( hasExpedition? "Resume" : "Play");
+        
     }
 
     public void OnLoginSuccessful(string name, int fief)
@@ -69,8 +83,20 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnPlayButton()
     {
-        koteLabel.gameObject.SetActive(false);
-        treasuryButton.interactable = false;
-        GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
+        //check if we are playing a new expedition or resuming
+        if (_hasExpedition)
+        {
+            //load the expedition
+            GameManager.Instance.LoadScene(inGameScenes.Expedition);
+        }
+        else
+        {
+            //show the character selection panel
+            koteLabel.gameObject.SetActive(false);
+            treasuryButton.interactable = false;
+            GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
+        }       
+
+        
     }
 }

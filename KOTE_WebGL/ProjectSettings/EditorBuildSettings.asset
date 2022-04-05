@@ -12,9 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 44b99823509014341ad879143188897f
   - enabled: 1
-    path: Assets/Scenes/Combat.unity
+    path: Assets/Scenes/Expedition.unity
     guid: 9615cdd825d16bc43bd036ea48f78520
   - enabled: 1
-    path: Assets/Scenes/Map.unity
+    path: Assets/Scenes/MapDoNotUseToBeDeletedLater.unity
     guid: 6839215558f3b474cad1c55ec9657589
   m_configObjects: {}

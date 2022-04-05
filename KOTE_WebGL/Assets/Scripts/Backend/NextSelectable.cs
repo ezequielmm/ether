@@ -27,7 +27,7 @@ public class NextSelectable : MonoBehaviour
             {
                 if (nextSelectable != null)
                 {
-                    Debug.Log(system.currentSelectedGameObject + "--->" + nextSelectable.name);
+                   // Debug.Log(system.currentSelectedGameObject + "--->" + nextSelectable.name);
 
                     InputField inputfield = nextSelectable.GetComponent<InputField>();
                     if (inputfield != null) inputfield.OnPointerClick(new PointerEventData(system));

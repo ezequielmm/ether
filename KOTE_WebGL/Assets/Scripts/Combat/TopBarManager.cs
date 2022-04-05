@@ -17,14 +17,15 @@ public class TopBarManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
+        //TODO : Now, all this will be implemented after the websocket is connected
+        /*GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
         GameManager.Instance.EVENT_CHARACTERSELECTED.AddListener(SetClassSelected);
 
         GameManager.Instance.EVENT_REQUEST_PROFILE.Invoke(PlayerPrefs.GetString("session_token"));
 
         currentClass = PlayerPrefs.GetString("class_selected");
         SetClassText(currentClass);
-        SetHealth(Random.Range(30, 81));
+        SetHealth(Random.Range(30, 81));*/
     }
 
     public void SetTextValues(string nameText, string classText, int health, int coins)
@@ -56,7 +57,7 @@ public class TopBarManager : MonoBehaviour
         coinsText.text = coins.ToString();
     }
 
-    public void SetProfileInfo(WebRequesterManager.ProfileData profileData)
+    public void SetProfileInfo(ProfileData profileData)
     {        
         SetNameText(profileData.data.name);
         SetCoinsText(profileData.data.coins);

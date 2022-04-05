@@ -17,9 +17,17 @@ public class CharacterSelectionManager : MonoBehaviour
 
     private void Start()
     {
+        //GameManager.Instance.webRequester.RequestCharacterList();// we are not requesting the list until we have more than one type so for the moment only knight
+
         GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerCharacterSelectionPanel);
+        GameManager.Instance.EVENT_EXPEDITION_CONFIRMED.AddListener(OnExpeditionConfirmed);
 
         startExpeditionButton.interactable = false;
+    }
+
+    private void OnExpeditionConfirmed()
+    {
+        GameManager.Instance.LoadScene(inGameScenes.Expedition);
     }
 
     public void OnCharacterSelected(GameObject currentCharacterBorder)
@@ -39,12 +47,17 @@ public class CharacterSelectionManager : MonoBehaviour
 
     public void OnStartExpedition()
     {
-        GameManager.Instance.LoadScene(inGameScenes.Map);
+        startExpeditionButton.enabled = false;
 
-        string classSelected = currentCharacter.name.Replace("BT", string.Empty);
-        GameManager.Instance.EVENT_CHARACTERSELECTED.Invoke(classSelected);
-        PlayerPrefs.SetString("class_selected", classSelected);
-        PlayerPrefs.Save();
+        GameManager.Instance.webRequester.RequestStartExpedition("knight");//for the moment this is harcoded
+
+        //TO DO: implement API call expedition passing the character id selected
+        /* GameManager.Instance.LoadScene(inGameScenes.Expedition);
+
+         string classSelected = currentCharacter.name.Replace("BT", string.Empty);
+         GameManager.Instance.EVENT_CHARACTERSELECTED.Invoke(classSelected);
+         PlayerPrefs.SetString("class_selected", classSelected);
+         PlayerPrefs.Save();*/
     }
 
     public void ActivateInnerCharacterSelectionPanel(bool activate)

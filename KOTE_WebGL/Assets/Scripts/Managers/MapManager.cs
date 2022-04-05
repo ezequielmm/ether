@@ -17,7 +17,7 @@ public class MapManager : MonoBehaviour
 
     public void LoadCombat()
     {
-        GameManager.Instance.LoadScene(inGameScenes.Combat);
+      //  GameManager.Instance.LoadScene(inGameScenes.Combat);
     }
 
     public void ShowShop()
