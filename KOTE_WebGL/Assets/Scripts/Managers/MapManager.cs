@@ -1,9 +1,29 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
+    [SerializeField]
+    private  GameObject mapScroll;
+
+    private void Start()
+    {
+        GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeDataUpdated);
+        GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnMapIconClicked);
+    }
+
+    private void OnMapIconClicked()
+    {
+        mapScroll.SetActive(true);
+    }
+
+    private void OnNodeDataUpdated(string arg0)
+    {
+        mapScroll.SetActive(false);
+    }
+
     public void OnRoyalHousesButton()
     {
         GameManager.Instance.EVENT_ROYALHOUSES_ACTIVATION_REQUEST.Invoke(true);

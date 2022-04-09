@@ -3,6 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// These classes are used to deserialize JSON objects coming from/to webrequests or webscokects messages
+/// </summary>
+/// 
+[Serializable]
+public class ExpeditionMapData
+{
+    public int act;
+    
+    public NodesGroup[] rows;
+
+    [Serializable]
+    public class NodesGroup
+    {
+        public NodeItem[] nodes;
+    }
+    [Serializable]
+    public class NodeItem
+    {
+        public int id;
+        public string type;
+        public ExitNodeItem[] exit_nodes;
+    }
+    [Serializable]
+    public class ExitNodeItem
+    {
+        public int exit_nodeid;
+    }
+}
+
 [Serializable]
 public class ExpeditionStatusData
 {
