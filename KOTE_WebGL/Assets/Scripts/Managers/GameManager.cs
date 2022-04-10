@@ -46,6 +46,8 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<string> EVENT_REQUEST_PROFILE_ERROR = new UnityEvent<string>();
     [HideInInspector]
     public UnityEvent<ProfileData> EVENT_REQUEST_PROFILE_SUCCESSFUL = new UnityEvent<ProfileData>();
+    [HideInInspector]
+    public UnityEvent<PlayerStateData> EVENT_REQUEST_PLAYERSTATE = new UnityEvent<PlayerStateData>();
 
     //SETTINGS EVENTS
     [HideInInspector]

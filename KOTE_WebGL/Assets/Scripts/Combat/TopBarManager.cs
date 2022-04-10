@@ -18,14 +18,17 @@ public class TopBarManager : MonoBehaviour
     private void Start()
     {
         //TODO : Now, all this will be implemented after the websocket is connected
-        /*GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
-        GameManager.Instance.EVENT_CHARACTERSELECTED.AddListener(SetClassSelected);
+        //GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
+        //GameManager.Instance.EVENT_CHARACTERSELECTED.AddListener(SetClassSelected);
 
         GameManager.Instance.EVENT_REQUEST_PROFILE.Invoke(PlayerPrefs.GetString("session_token"));
 
-        currentClass = PlayerPrefs.GetString("class_selected");
-        SetClassText(currentClass);
-        SetHealth(Random.Range(30, 81));*/
+        //currentClass = PlayerPrefs.GetString("class_selected");
+        //SetClassText(currentClass);
+        //SetHealth(Random.Range(30, 81));
+
+        GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
+        GameManager.Instance.EVENT_REQUEST_PLAYERSTATE.AddListener(SetPlayerState);
     }
 
     public void SetTextValues(string nameText, string classText, int health, int coins)
@@ -47,9 +50,9 @@ public class TopBarManager : MonoBehaviour
         this.classText.text = classText;
     }
 
-    public void SetHealthText(int health)
+    public void SetHealthText(int health, int maxHealth)
     {
-        healthText.text = health.ToString();
+        healthText.text = health.ToString() + "/" + maxHealth.ToString();
     }
 
     public void SetCoinsText(int coins)
@@ -58,9 +61,16 @@ public class TopBarManager : MonoBehaviour
     }
 
     public void SetProfileInfo(ProfileData profileData)
-    {        
+    {
         SetNameText(profileData.data.name);
         SetCoinsText(profileData.data.coins);
+    }
+
+    public void SetPlayerState(PlayerStateData playerState) 
+    {
+        SetClassText(playerState.data.className);
+        SetHealthText(playerState.data.hp_current, playerState.data.hp_max);
+        SetCoinsText(playerState.data.gold);
     }
 
     public void SetClassSelected(string classSelected)
@@ -71,7 +81,7 @@ public class TopBarManager : MonoBehaviour
     public void SetHealth(int health)
     {
         currentHealth = health;
-        SetHealthText(currentHealth);
+        //SetHealthText(currentHealth);
     }
     
     public void OnWalletButton()

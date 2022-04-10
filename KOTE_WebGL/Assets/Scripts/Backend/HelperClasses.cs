@@ -140,3 +140,29 @@ public class LogoutData
         public string message;
     }
 }
+
+[Serializable]
+public class PlayerStateData 
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public string className;
+        public int hp_max;
+        public int hp_current;
+        public int gold;
+        public Potions potion;
+
+        [Serializable]
+        public class Potions 
+        {
+            public string index;
+            public string potion_name;
+        }
+
+        public string[] trinkets;
+        public string[] deck;
+    }
+}

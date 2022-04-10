@@ -1253,7 +1253,7 @@ PrefabInstance:
     - target: {fileID: 3907663041720871995, guid: a1110c66c4ea43c45b132e548d62a7f4,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8939103002356851791, guid: a1110c66c4ea43c45b132e548d62a7f4,
         type: 3}
@@ -2150,6 +2150,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7612459577253896924, guid: cfde224b6c58c614eadd85e7c967e1a0,
         type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7612459577253896924, guid: cfde224b6c58c614eadd85e7c967e1a0,
+        type: 3}
       propertyPath: m_fontSize
       value: 20
       objectReference: {fileID: 0}
@@ -2337,6 +2342,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TopBarPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7612459578312946484, guid: cfde224b6c58c614eadd85e7c967e1a0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7612459578312946485, guid: cfde224b6c58c614eadd85e7c967e1a0,
         type: 3}
