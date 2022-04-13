@@ -28,12 +28,12 @@ public class RegisterPanelManager : MonoBehaviour
     public Button registerButton;
     public GameObject registerContainer;
 
-
     private bool validEmail;
     private bool emailConfirmed;
 
     private bool validPassword;
     private bool passwordConfirmed;
+    public Toggle showPassword;
 
     private void Awake()
     {
@@ -42,6 +42,14 @@ public class RegisterPanelManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLoginSucessful);
         GameManager.Instance.EVENT_REQUEST_LOGIN_ERROR.AddListener(OnLoginError);
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerRegisterPanel);
+    }
+
+    public void OnShowPassword()
+    {
+        passwordInputField.contentType = showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
+        passwordInputField.ForceLabelUpdate();
+        confirmPasswordInputField.contentType = showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
+        confirmPasswordInputField.ForceLabelUpdate();
     }
 
     private void OnNewRandomName(string newName)
