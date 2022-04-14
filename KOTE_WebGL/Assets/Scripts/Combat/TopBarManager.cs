@@ -15,6 +15,8 @@ public class TopBarManager : MonoBehaviour
     public TMP_Text healthText;
     public TMP_Text coinsText;
 
+    public GameObject classIcon, className, showmapbutton;
+
     private void Start()
     {
         //TODO : Now, all this will be implemented after the websocket is connected
@@ -29,6 +31,20 @@ public class TopBarManager : MonoBehaviour
 
         GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
         GameManager.Instance.EVENT_REQUEST_PLAYERSTATE.AddListener(SetPlayerState);
+    }
+
+    public void OnMapViewTopBar() 
+    {
+        classIcon.SetActive(false);
+        className.SetActive(true);
+        showmapbutton.SetActive(false);
+    }
+
+    public void OnCombatViewTopBar() 
+    {
+        classIcon.SetActive(true);
+        className.SetActive(false);
+        showmapbutton.SetActive(true);
     }
 
     public void SetTextValues(string nameText, string classText, int health, int coins)
