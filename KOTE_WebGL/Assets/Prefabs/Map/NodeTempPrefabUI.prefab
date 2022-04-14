@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 3684144987231202249}
   - component: {fileID: 6502388052746223064}
   m_Layer: 5
-  m_Name: NodeTempPrefab
+  m_Name: NodeTempPrefabUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

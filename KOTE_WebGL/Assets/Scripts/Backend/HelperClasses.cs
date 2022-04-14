@@ -10,28 +10,35 @@ using UnityEngine;
 [Serializable]
 public class ExpeditionMapData
 {
-    public int act;
-    
-    public NodesGroup[] rows;
-
-    [Serializable]
-    public class NodesGroup
-    {
-        public NodeItem[] nodes;
-    }
-    [Serializable]
-    public class NodeItem
-    {
-        public int id;
-        public string type;
-        public ExitNodeItem[] exit_nodes;
-    }
-    [Serializable]
-    public class ExitNodeItem
-    {
-        public int exit_nodeid;
-    }
+   public NodeDataHelper[] data;
 }
+[Serializable]
+public class NodeDataHelper
+{
+    public int act;
+    public int step;
+    public int id;
+    public string type;
+    public int[] exits;
+    public int[] enter;
+}
+
+[Serializable]
+public class MapStructure
+{
+    public List<Act> acts = new List<Act>();
+}
+[Serializable]
+public class Act
+{
+    public List<Step> steps = new List<Step>();
+}
+[Serializable]
+public class Step
+{
+    public List<NodeDataHelper> nodesData = new List<NodeDataHelper>();
+}
+
 
 [Serializable]
 public class ExpeditionStatusData

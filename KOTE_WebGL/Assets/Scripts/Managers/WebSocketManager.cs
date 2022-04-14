@@ -27,7 +27,9 @@ public class WebSocketManager : MonoBehaviour
     /// 
     /// </summary>
     void ConnectSocket()
-    {       
+    {
+        //BestHTTP.HTTPManager.UseAlternateSSLDefaultValue = true; 
+       
         string token = PlayerPrefs.GetString("session_token");
 
         Debug.Log("Connecting socket using token: " + token);
@@ -39,25 +41,45 @@ public class WebSocketManager : MonoBehaviour
             request.AddHeader("Authorization",token);
         };
 
-        manager = new SocketManager(new Uri("http://api.game.kote.robotseamonster.com:7777"), options);             
-        
+        //options.AdditionalQueryParams = new PlatformSupport.Collections.ObjectModel.ObservableDictionary<string, string>();
+        //options.AdditionalQueryParams.Add("transports", "['websocket']");
+
+
+        //string uriStr = "https://45.33.0.125:8443";
+        string uriStr = "https://delcasda.com:8443";
+        //string uriStr = "wss://45.33.0.125:7777";
+
+        // string uriStr = "wss://api.game.kote.robotseamonster.com:7777";
+        /*
+ #if UNITY_EDITOR
+
+         uriStr = "wss://api.game.kote.robotseamonster.com:7777";
+ #endif*/
+        manager = new SocketManager(new Uri(uriStr), options);
 
         var root = manager.Socket;
         customNamespace = manager.GetSocket("/socket");
 
         root.On<Error>(SocketIOEventTypes.Error, OnError);
 
+        root.On<ConnectResponse>(SocketIOEventTypes.Connect, OnConnected);
         customNamespace.On<ConnectResponse>(SocketIOEventTypes.Connect, OnConnected);
        
         //customNamespace.On<string>("ExpeditionMap", (arg1) => Debug.Log("Data from ReceiveExpeditionStatus:" + arg1));
         customNamespace.On<string>("ExpeditionMap", OnExpeditionMap);
         customNamespace.On<string>("PlayerState", OnPlayerState);
+        root.On<string>("hello", OnHello);
         
 
 
         //  manager.Open();
 
   
+    }
+
+    private void OnHello(string obj)
+    {
+        Debug.Log(obj);
     }
 
     void OnConnected(ConnectResponse resp)
