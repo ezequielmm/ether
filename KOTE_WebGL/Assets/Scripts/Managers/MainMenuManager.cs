@@ -46,7 +46,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnLogoutSuccessful(string message)
     {
-        koteLabel.gameObject.SetActive(true);
+        //koteLabel.gameObject.SetActive(true);
         GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(false);
         TogglePreLoginStatus(true);
     }

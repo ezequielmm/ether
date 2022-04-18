@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: b3d016580c83eec46861f377b1405983
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Leksa
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: e0ff9673e43d4f640978a1994d318e4e, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
