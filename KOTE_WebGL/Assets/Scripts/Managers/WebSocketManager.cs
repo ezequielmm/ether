@@ -9,7 +9,7 @@ public class WebSocketManager : MonoBehaviour
 {
     SocketManager manager;
     SocketOptions options;
-    private Socket customNamespace;
+    private Socket rootSocket; 
 
     // Start is called before the first frame update
     void Start()
@@ -46,10 +46,10 @@ public class WebSocketManager : MonoBehaviour
 
 
         //string uriStr = "https://45.33.0.125:8443";
-        string uriStr = "https://delcasda.com:8443";
-        //string uriStr = "wss://45.33.0.125:7777";
+        //string uriStr = "https://delcasda.com:8443";
+        //string uriStr = "https://delcasda.com:8888";
 
-        // string uriStr = "wss://api.game.kote.robotseamonster.com:7777";
+         string uriStr = "https://api.game.kote.robotseamonster.com:443";
         /*
  #if UNITY_EDITOR
 
@@ -57,23 +57,18 @@ public class WebSocketManager : MonoBehaviour
  #endif*/
         manager = new SocketManager(new Uri(uriStr), options);
 
-        var root = manager.Socket;
-        customNamespace = manager.GetSocket("/socket");
+        rootSocket = manager.Socket;
+        //customNamespace = manager.GetSocket("/socket");
 
-        root.On<Error>(SocketIOEventTypes.Error, OnError);
+        rootSocket.On<Error>(SocketIOEventTypes.Error, OnError);
 
-        root.On<ConnectResponse>(SocketIOEventTypes.Connect, OnConnected);
-        customNamespace.On<ConnectResponse>(SocketIOEventTypes.Connect, OnConnected);
-       
+        rootSocket.On<ConnectResponse>(SocketIOEventTypes.Connect, OnConnected);
+
         //customNamespace.On<string>("ExpeditionMap", (arg1) => Debug.Log("Data from ReceiveExpeditionStatus:" + arg1));
-        customNamespace.On<string>("ExpeditionMap", OnExpeditionMap);
-        customNamespace.On<string>("PlayerState", OnPlayerState);
-        root.On<string>("hello", OnHello);
-        
-
-
+        rootSocket.On<string>("ExpeditionMap", OnExpeditionMap);
+        rootSocket.On<string>("PlayerState", OnPlayerState);
+      
         //  manager.Open();
-
   
     }
 
@@ -114,7 +109,7 @@ public class WebSocketManager : MonoBehaviour
         Debug.Log("Sending message NodeSelected with node id " + nodeId);
         //customNamespace.Emit("NodeSelected",nodeId);
 
-        customNamespace.ExpectAcknowledgement<string>(OnNodeClickedAnswer).Emit("NodeSelected", nodeId);
+        rootSocket.ExpectAcknowledgement<string>(OnNodeClickedAnswer).Emit("NodeSelected", nodeId);
     }
 
 
