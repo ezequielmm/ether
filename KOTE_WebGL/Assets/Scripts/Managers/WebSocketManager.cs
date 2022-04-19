@@ -9,7 +9,14 @@ public class WebSocketManager : MonoBehaviour
 {
     SocketManager manager;
     SocketOptions options;
-    private Socket rootSocket; 
+    private Socket rootSocket;
+
+    //Websockets incoming messages
+    private const string WS_MESSAGE_EXPEDITION_MAP = "ExpeditionMap";
+    private const string WS_MESSAGE_PLAYER_STATE = "PlayerState";
+
+    //Websockets outgoing messages with callback
+    private const string WS_MESSAGE_NODE_SELECTED = "NodeSelected";
 
     // Start is called before the first frame update
     void Start()
@@ -41,10 +48,6 @@ public class WebSocketManager : MonoBehaviour
             request.AddHeader("Authorization",token);
         };
 
-        //options.AdditionalQueryParams = new PlatformSupport.Collections.ObjectModel.ObservableDictionary<string, string>();
-        //options.AdditionalQueryParams.Add("transports", "['websocket']");
-
-
         //string uriStr = "https://45.33.0.125:8443";
         //string uriStr = "https://delcasda.com:8443";
         //string uriStr = "https://delcasda.com:8888";
@@ -65,8 +68,8 @@ public class WebSocketManager : MonoBehaviour
         rootSocket.On<ConnectResponse>(SocketIOEventTypes.Connect, OnConnected);
 
         //customNamespace.On<string>("ExpeditionMap", (arg1) => Debug.Log("Data from ReceiveExpeditionStatus:" + arg1));
-        rootSocket.On<string>("ExpeditionMap", OnExpeditionMap);
-        rootSocket.On<string>("PlayerState", OnPlayerState);
+        rootSocket.On<string>(WS_MESSAGE_EXPEDITION_MAP, OnExpeditionMap);
+        rootSocket.On<string>(WS_MESSAGE_PLAYER_STATE, OnPlayerState);
       
         //  manager.Open();
   
@@ -81,12 +84,6 @@ public class WebSocketManager : MonoBehaviour
     {
         Debug.Log("Websocket Connected sucessfully!");
 
-        // Method 1: received as parameter
-        //Debug.Log("Sid through parameter: " + resp.sid);
-        //Debug.Log("manager.Handshake.Sid: " + manager.Handshake.Sid);
-
-        // Method 2: access through the socket
-        //Debug.Log("Sid through socket: " + manager.Socket.Id);
     }
 
     void OnError(Error resp)
@@ -109,7 +106,7 @@ public class WebSocketManager : MonoBehaviour
         Debug.Log("Sending message NodeSelected with node id " + nodeId);
         //customNamespace.Emit("NodeSelected",nodeId);
 
-        rootSocket.ExpectAcknowledgement<string>(OnNodeClickedAnswer).Emit("NodeSelected", nodeId);
+        rootSocket.ExpectAcknowledgement<string>(OnNodeClickedAnswer).Emit(WS_MESSAGE_NODE_SELECTED, nodeId);
     }
 
 
