@@ -206,9 +206,7 @@ public class WebRequesterManager : MonoBehaviour
 
         GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.Invoke(profileData);
         GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.Invoke(name, fief);
-
-        PlayerStateData playerState = JsonUtility.FromJson<PlayerStateData>(request.downloadHandler.text);
-        GameManager.Instance.EVENT_REQUEST_PLAYERSTATE.Invoke(playerState);
+                     
     }   
 
     IEnumerator GetLogout(string token)

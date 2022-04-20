@@ -132,6 +132,8 @@ public class WebSocketManager : MonoBehaviour
     void OnPlayerState(string data)
     {
         Debug.Log("Data from OnPlayerState: " + data);
+      
+        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.Invoke(data);
     }
 
 

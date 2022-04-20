@@ -84,7 +84,7 @@ public class NodeCreator : MonoBehaviour
 
                     float yy = (rowsMaxSpace * step.nodesData.IndexOf(nodeData))-((rows-1)*rowsMaxSpace)/2;
 
-                    Debug.Log("act:"+mapStructure.acts.IndexOf(act)+",step:"+act.steps.IndexOf(step)+",node:"+step.nodesData.IndexOf(nodeData).ToString()+",yy:"+yy+",rowspace:"+rowsMaxSpace);
+                   // Debug.Log("act:"+mapStructure.acts.IndexOf(act)+",step:"+act.steps.IndexOf(step)+",node:"+step.nodesData.IndexOf(nodeData).ToString()+",yy:"+yy+",rowspace:"+rowsMaxSpace);
                    
                       //nodes
                     GameObject newNode = Instantiate(nodePrefab, this.transform);
@@ -102,7 +102,7 @@ public class NodeCreator : MonoBehaviour
 
         foreach (GameObject go in nodes)
         {
-            Debug.Log("Searching :" + go.GetComponent<NodeData>().id);
+            //Debug.Log("Searching :" + go.GetComponent<NodeData>().id);
 
             foreach (int exit_id in go.GetComponent<NodeData>().exits)
             {

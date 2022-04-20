@@ -156,6 +156,7 @@ public class PlayerStateData
     [Serializable]
     public class Data
     {
+        public string player_name;
         public string className;
         public int hp_max;
         public int hp_current;

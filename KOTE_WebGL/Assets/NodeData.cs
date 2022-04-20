@@ -30,7 +30,7 @@ public class NodeData : MonoBehaviour
 
     public void UpdateLine(GameObject targetOb)
     {
-        Debug.Log("Updating line!");
+        //Debug.Log("Updating line!");
 
         var child = new GameObject();
         child.transform.SetParent( gameObject.transform);

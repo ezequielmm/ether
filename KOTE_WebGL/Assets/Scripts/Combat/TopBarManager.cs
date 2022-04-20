@@ -11,7 +11,6 @@ public class TopBarManager : MonoBehaviour
     public int currentHealth;
 
     public TMP_Text nameText;
-    public TMP_Text classText;
     public TMP_Text healthText;
     public TMP_Text coinsText;
 
@@ -30,20 +29,16 @@ public class TopBarManager : MonoBehaviour
         //SetHealth(Random.Range(30, 81));
 
         GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
-        GameManager.Instance.EVENT_REQUEST_PLAYERSTATE.AddListener(SetPlayerState);
+        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(SetPlayerState);
     }
 
     public void OnMapViewTopBar() 
-    {
-        classIcon.SetActive(false);
-        className.SetActive(true);
+    {      
         showmapbutton.SetActive(false);
     }
 
     public void OnCombatViewTopBar() 
     {
-        classIcon.SetActive(true);
-        className.SetActive(false);
         showmapbutton.SetActive(true);
     }
 
@@ -51,7 +46,7 @@ public class TopBarManager : MonoBehaviour
    // public void SetTextValues(string nameText, string classText, string healthText, int coins)
     {
         this.nameText.text = nameText;
-        this.classText.text = classText;
+     
         healthText.text = $"{health} health";
         coinsText.text = $"{coins} coins";
     }
@@ -61,10 +56,6 @@ public class TopBarManager : MonoBehaviour
         this.nameText.text = nameText;
     }
 
-    public void SetClassText(string classText)
-    {
-        this.classText.text = classText;
-    }
 
     public void SetHealthText(int health, int maxHealth)
     {
@@ -82,9 +73,10 @@ public class TopBarManager : MonoBehaviour
         SetCoinsText(profileData.data.coins);
     }
 
-    public void SetPlayerState(PlayerStateData playerState) 
+    public void SetPlayerState(string data) 
     {
-        SetClassText(playerState.data.className);
+        PlayerStateData playerState = JsonUtility.FromJson<PlayerStateData>(data);
+        SetNameText(playerState.data.player_name);
         SetHealthText(playerState.data.hp_current, playerState.data.hp_max);
         SetCoinsText(playerState.data.gold);
     }
