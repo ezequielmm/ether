@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4e9d3b4301e9d5749a9dae5911b848d0
+guid: 1a12f7635c1677c49896588ad7d6376c
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -10,7 +10,8 @@ TrueTypeFontImporter:
   includeFontData: 1
   fontNames:
   - Leksa Sans
-  fallbackFontReferences: []
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 9c3fb8cff23edab4a8674e4c8070ac8e, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

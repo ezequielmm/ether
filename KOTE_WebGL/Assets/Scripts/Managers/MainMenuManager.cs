@@ -10,7 +10,7 @@ public class MainMenuManager : MonoBehaviour
 {
     public TMP_Text nameText, moneyText, koteLabel;
 
-    public Button playButton, treasuryButton, registerButton, loginButton;
+    public Button playButton, treasuryButton, registerButton, loginButton, nameButton, fiefButton, settingButton;
 
     private bool _hasExpedition;
 
@@ -47,7 +47,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnLogoutSuccessful(string message)
     {
-        koteLabel.gameObject.SetActive(true);
+        //koteLabel.gameObject.SetActive(true);
         GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(false);
         TogglePreLoginStatus(true);
     }
@@ -58,8 +58,13 @@ public class MainMenuManager : MonoBehaviour
         moneyText.gameObject.SetActive(!preLoginStatus);
         playButton.interactable = !preLoginStatus;
         treasuryButton.interactable = !preLoginStatus;
-        registerButton.gameObject.SetActive(preLoginStatus);
-        loginButton.gameObject.SetActive(preLoginStatus);
+        //registerButton.gameObject.SetActive(preLoginStatus);
+        //loginButton.gameObject.SetActive(preLoginStatus);
+        registerButton.interactable = preLoginStatus;
+        loginButton.interactable = preLoginStatus;
+        nameButton.gameObject.SetActive(!preLoginStatus);
+        fiefButton.gameObject.SetActive(!preLoginStatus);
+        settingButton.gameObject.SetActive(!preLoginStatus);
     }
 
     public void OnRegisterButton()
