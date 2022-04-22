@@ -171,6 +171,23 @@ public class PlayerStateData
         }
 
         public string[] trinkets;
-        public string[] deck;
+        public Deck deck;
     }
+}
+
+public class Card
+{
+    public string name;
+    public string id;
+    public string description;
+    public string rarity;
+    public int energy;
+    public string type;
+    public int coin_min;
+    public int coin_max;
+}
+
+public class Deck
+{
+    public List<Card> cards;
 }

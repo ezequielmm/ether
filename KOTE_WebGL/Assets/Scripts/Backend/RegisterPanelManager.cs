@@ -94,45 +94,36 @@ public class RegisterPanelManager : MonoBehaviour
         registerButton.interactable = emailConfirmed && passwordConfirmed && termsAndConditions.isOn;
     }
 
-    public void VerifyEmail()
-    {
-        DeactivateAllErrorLabels();
-
+    #region
+    public bool VerifyEmail()
+    {   
         validEmail = ParseString.IsEmail(emailInputField.text);
         validEmailLabel.gameObject.SetActive(!validEmail);
-
-        UpdateRegisterButton();
+        return validEmail;
     }
 
-    public void ConfirmEmail()
+    public bool ConfirmEmail()
     {
-        DeactivateAllErrorLabels();
-
         emailConfirmed = validEmail && (emailInputField.text == confirmEmailInputField.text);
         emailNotMatchLabel.gameObject.SetActive(!emailConfirmed && validEmail);
-
-        UpdateRegisterButton();
+        return emailConfirmed;
     }
 
-    public void VerifyPassword()
+    public bool VerifyPassword()
     {
-        DeactivateAllErrorLabels();
-
         validPassword = ParseString.IsPassword(passwordInputField.text);
         validPasswordLabel.gameObject.SetActive(!validPassword);
-
-        UpdateRegisterButton();
+        return validPassword;
     }
 
-    public void ConfirmPassword()
-    {
-        DeactivateAllErrorLabels();
-
+    public bool ConfirmPassword()
+    {        
         passwordConfirmed = validPassword && (passwordInputField.text == confirmPasswordInputField.text);
         passwordNotMatchLabel.gameObject.SetActive(!passwordConfirmed && validPassword);
 
-        UpdateRegisterButton();
+        return passwordConfirmed;
     }
+    #endregion
 
     public void RequestNewName()
     {
@@ -161,5 +152,17 @@ public class RegisterPanelManager : MonoBehaviour
         passwordInputField.text = "";
         confirmPasswordInputField.text = "";
         registerContainer.SetActive(activate);
+    }
+
+    public void PerfomAllValidations()
+    {
+        DeactivateAllErrorLabels();
+
+        if(!VerifyEmail())return;
+        if(!ConfirmEmail())return;
+        if(!VerifyPassword())return;
+        if(!ConfirmPassword())return;
+
+        UpdateRegisterButton();
     }
 }

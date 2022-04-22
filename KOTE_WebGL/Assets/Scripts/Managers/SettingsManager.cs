@@ -15,6 +15,8 @@ public class SettingsManager : MonoBehaviour
 
     private void Start()
     {
+        settingsContainer.SetActive(false);
+
         GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerSettingsPanel);
 
         GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLogin);

@@ -1003,7 +1003,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5185505309533442102}
         m_TargetAssemblyTypeName: RegisterPanelManager, Assembly-CSharp
-        m_MethodName: VerifyEmail
+        m_MethodName: PerfomAllValidations
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1280,8 +1280,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5185505309533442102}
-        m_TargetAssemblyTypeName: Register, Assembly-CSharp
-        m_MethodName: ConfirmPassword
+        m_TargetAssemblyTypeName: RegisterPanelManager, Assembly-CSharp
+        m_MethodName: PerfomAllValidations
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1849,8 +1849,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5185505309533442102}
-        m_TargetAssemblyTypeName: Register, Assembly-CSharp
-        m_MethodName: VerifyPassword
+        m_TargetAssemblyTypeName: RegisterPanelManager, Assembly-CSharp
+        m_MethodName: PerfomAllValidations
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2399,7 +2399,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -182.1, y: -174.7}
+  m_AnchoredPosition: {x: -182.1, y: -174.70001}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7830214380086651458
@@ -2904,8 +2904,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5185505309533442102}
-        m_TargetAssemblyTypeName: Register, Assembly-CSharp
-        m_MethodName: ConfirmEmail
+        m_TargetAssemblyTypeName: RegisterPanelManager, Assembly-CSharp
+        m_MethodName: PerfomAllValidations
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

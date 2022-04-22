@@ -30,17 +30,15 @@ public class TopBarManager : MonoBehaviour
 
         GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(SetPlayerState);
+        GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.AddListener(OnToggleMapIcon);
     }
 
-    public void OnMapViewTopBar() 
-    {      
-        showmapbutton.SetActive(false);
-    }
-
-    public void OnCombatViewTopBar() 
+    private void OnToggleMapIcon(bool arg0)
     {
-        showmapbutton.SetActive(true);
+        Debug.Log("[OnToggleMapIcon]");
+        showmapbutton.SetActive(arg0);
     }
+
 
     public void SetTextValues(string nameText, string classText, int health, int coins)
    // public void SetTextValues(string nameText, string classText, string healthText, int coins)
@@ -92,13 +90,18 @@ public class TopBarManager : MonoBehaviour
         //SetHealthText(currentHealth);
     }
     
-    public void OnWalletButton()
+    public void OnMapButtonClicked()
     {
-        GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.Invoke(true);
+        GameManager.Instance.EVENT_MAP_ICON_CLICKED.Invoke();
     }
 
     public void OnSettingsButton()
     {
         GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.Invoke(true);
+    }
+
+    public void OnDeskButtonClicked()
+    {
+        GameManager.Instance.EVENT_CARD_PILE_CLICKED.Invoke(PileTypes.Deck);
     }
 }

@@ -10,6 +10,7 @@ public class CombatManager : MonoBehaviour
 
     private void Start()
     {
+        combatContainer.SetActive(false);
         GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeDataUpdated);//TODO: this will change as not all nodes will be combat
     }
 

@@ -6,12 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
-public enum inGameScenes
-{
-    MainMenu,
-    Loader,
-    Expedition
-}; //created so we can use the names on the enums instead of hard coding strings everytime, if a scene name is changed we can just change it here as well instead of changing at various spots
+
 
 public class GameManager : SingleTon<GameManager>
 {
@@ -115,8 +110,15 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<string> EVENT_PLAYER_STATUS_UPDATE = new UnityEvent<string>();
 
     [HideInInspector]
-    //PLAYER DATA EVENTS
+    //TOP BAR EVENTS
     public UnityEvent EVENT_MAP_ICON_CLICKED = new UnityEvent();
+    public UnityEvent<bool> EVENT_TOOGLE_TOPBAR_MAP_ICON = new UnityEvent<bool>();
+
+    [HideInInspector]
+    //COMMON EVENTS
+    public UnityEvent<PileTypes> EVENT_CARD_PILE_CLICKED = new UnityEvent<PileTypes>();
+    public UnityEvent<GameObject> EVENT_VISUAL_ELEMENT_ACTIVATED = new UnityEvent<GameObject>();
+    public UnityEvent<GameObject> EVENT_VISUAL_ELEMENT_DEACTIVATED = new UnityEvent<GameObject>();
 
 
     public inGameScenes nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
