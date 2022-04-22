@@ -117,8 +117,11 @@ public class WebSocketManager : MonoBehaviour
 
     private void OnNodeClickedAnswer(string nodeData)
     {
-        Debug.Log("Test answer " + nodeData);
-        GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeData);
+       
+        NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
+        GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState);
+
+        Debug.Log("OnNodeClickedAnswer: " + nodeState);
     }
 
 
@@ -131,11 +134,11 @@ public class WebSocketManager : MonoBehaviour
 
     void OnPlayerState(string data)
     {
-        Debug.Log("Data from OnPlayerState: " + data);
-      
-        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.Invoke(data);
+       
+        PlayerStateData playerState = JsonUtility.FromJson<PlayerStateData>(data);//TODO: move this to websocker manager
+        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.Invoke(playerState);
+      //  Debug.Log("Data from OnPlayerState: " + playerState);
+
     }
-
-
 
 }

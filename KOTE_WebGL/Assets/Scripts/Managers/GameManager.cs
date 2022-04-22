@@ -103,11 +103,11 @@ public class GameManager : SingleTon<GameManager>
     //MAP EVENTS
     public UnityEvent<string> EVENT_MAP_NODES_UPDATE = new UnityEvent<string>();
     public UnityEvent<int> EVENT_MAP_NODE_SELECTED = new UnityEvent<int>();
-    public UnityEvent<string> EVENT_NODE_DATA_UPDATE = new UnityEvent<string>();
+    public UnityEvent<NodeStateData> EVENT_NODE_DATA_UPDATE = new UnityEvent<NodeStateData>();
 
     [HideInInspector]
     //PLAYER DATA EVENTS
-    public UnityEvent<string> EVENT_PLAYER_STATUS_UPDATE = new UnityEvent<string>();
+    public UnityEvent<PlayerStateData> EVENT_PLAYER_STATUS_UPDATE = new UnityEvent<PlayerStateData>();
 
     [HideInInspector]
     //TOP BAR EVENTS

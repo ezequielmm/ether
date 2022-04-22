@@ -32,7 +32,7 @@ public class NodeCreator : MonoBehaviour
         mapContainer.SetActive(mapContainer.activeSelf?false:true);
     }
 
-    private void OnNodeDataUpdated(string arg0)
+    private void OnNodeDataUpdated(NodeStateData arg0)
     {
         mapContainer.SetActive(false);
     }
@@ -40,7 +40,7 @@ public class NodeCreator : MonoBehaviour
     // Update is called once per frame
     void OnMapNodesDataUpdated(string data)
     {       
-        Debug.Log("data " + data);
+        Debug.Log("[OnMapNodesDataUpdated] " + data);
 
         //ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>("{\"data\":" + data + "}");
         ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>(data);

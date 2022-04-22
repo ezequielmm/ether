@@ -156,25 +156,32 @@ public class PlayerStateData
     [Serializable]
     public class Data
     {
-        public string player_name;
-        public string className;
-        public int hp_max;
-        public int hp_current;
-        public int gold;
-        public Potions potion;
-
+        public PlayerState player_state;
         [Serializable]
-        public class Potions 
+        public class PlayerState
         {
-            public string index;
-            public string potion_name;
-        }
+            public string player_name;
+            public string className;
+            public int hp_max;
+            public int hp_current;
+            public int gold;
+            public Potions potion;
 
-        public string[] trinkets;
-        public Deck deck;
+            [Serializable]
+            public class Potions
+            {
+                public string index;
+                public string potion_name;
+            }
+
+            public string[] trinkets;
+
+            public Deck deck;
+        }
+        
     }
 }
-
+[Serializable]
 public class Card
 {
     public string name;
@@ -186,8 +193,53 @@ public class Card
     public int coin_min;
     public int coin_max;
 }
-
+[Serializable]
 public class Deck
 {
     public List<Card> cards;
 }
+
+#region NODESTATE
+[Serializable]
+public class NodeStateData
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public int node_id;
+        public bool completed;
+        public string node_type;
+        public Data1 data;
+
+        [Serializable]
+        public class Data1
+        {
+            public int round;
+            public int action;
+
+            public PlayerData player;
+
+            [Serializable]
+            public class PlayerData
+            {
+                public int energy;
+                public int energy_max;
+                public int hand_size;
+
+                public Cards cards;
+
+                [Serializable]
+                public class Cards
+                {
+                    public List<Card> draw;
+                    public List<Card> hand;
+                }
+
+            }
+        }
+    }
+    
+}
+#endregion

@@ -98,7 +98,7 @@ public class MainMenuManager : MonoBehaviour
         else
         {
             //show the character selection panel
-            koteLabel.gameObject.SetActive(false);
+            //koteLabel.gameObject.SetActive(false);
             treasuryButton.interactable = false;
             GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
         }       

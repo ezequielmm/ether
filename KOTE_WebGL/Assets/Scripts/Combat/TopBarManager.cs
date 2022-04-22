@@ -71,12 +71,11 @@ public class TopBarManager : MonoBehaviour
         SetCoinsText(profileData.data.coins);
     }
 
-    public void SetPlayerState(string data) 
-    {
-        PlayerStateData playerState = JsonUtility.FromJson<PlayerStateData>(data);
-        SetNameText(playerState.data.player_name);
-        SetHealthText(playerState.data.hp_current, playerState.data.hp_max);
-        SetCoinsText(playerState.data.gold);
+    public void SetPlayerState(PlayerStateData playerState) 
+    {        
+        SetNameText(playerState.data.player_state.player_name);
+        SetHealthText(playerState.data.player_state.hp_current, playerState.data.player_state.hp_max);
+        SetCoinsText(playerState.data.player_state.gold);
     }
 
     public void SetClassSelected(string classSelected)

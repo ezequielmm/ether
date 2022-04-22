@@ -1,23 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class DrawCardPileManager : MonoBehaviour
 {
-    public GameObject informationContent;
-    public GameObject cardPrefab;
 
-    // Start is called before the first frame update
+    TextMeshProUGUI energy;
     void Start()
     {
-        SetInformationRows();
+        
     }
 
-    public void SetInformationRows()
+    public void OnPileClick()
     {
-        for (int i = 0; i < 20; i++)
-        {
-            GameObject currentRow = Instantiate(cardPrefab, informationContent.transform);
-        }
+        GameManager.Instance.EVENT_CARD_PILE_CLICKED.Invoke(PileTypes.Draw);
     }
 }

@@ -7,15 +7,24 @@ public class GameStatusManager : MonoBehaviour
 {
     public GameStatuses currentGameStatus;
 
+    private PlayerStateData playerStateData;
+
     void Start()
     {
         //TODO: for the moment we always start as map but this could change
         ChangeGameStatus(GameStatuses.Map);
 
         GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeDataUpdate);//a node has been selected an we got an update node data
+
+        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusUpdate);
     }
 
-    private void OnNodeDataUpdate(string nodeDataJsonString)
+    private void OnPlayerStatusUpdate(PlayerStateData playerState)
+    {        
+        Debug.Log(playerState);
+    }
+
+    private void OnNodeDataUpdate(NodeStateData nodeState)
     {
         //TODO: for the moment is only combat but as long as we create more node types that logic will be decided here
         ChangeGameStatus(GameStatuses.Combat);

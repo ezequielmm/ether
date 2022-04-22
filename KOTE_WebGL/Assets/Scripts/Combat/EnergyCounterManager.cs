@@ -6,17 +6,15 @@ using TMPro;
 
 public class EnergyCounterManager : MonoBehaviour
 {
-    public TMP_Text energyText;
-    public int maxEnergy;
+    public TextMeshProUGUI energyTF;
 
     private void Start()
     {
-        maxEnergy = 10;
-        SetEnergyText(5);
+        GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeStateDateUpdate);
     }
 
-    public void SetEnergyText(int energy)
+    private void OnNodeStateDateUpdate(NodeStateData nodeState)
     {
-        energyText.text = $"{energy}/{maxEnergy}";
+        energyTF.SetText(nodeState.data.data.player.energy + "/" + nodeState.data.data.player.energy_max);
     }
 }

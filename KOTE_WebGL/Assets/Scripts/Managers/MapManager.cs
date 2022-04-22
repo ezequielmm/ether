@@ -19,7 +19,7 @@ public class MapManager : MonoBehaviour
         mapScroll.SetActive(true);
     }
 
-    private void OnNodeDataUpdated(string arg0)
+    private void OnNodeDataUpdated(NodeStateData arg0)
     {
         mapScroll.SetActive(false);
     }
