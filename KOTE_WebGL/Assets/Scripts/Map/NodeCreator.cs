@@ -29,7 +29,17 @@ public class NodeCreator : MonoBehaviour
         {
             go.GetComponent<NodeData>().disabled = true;
         }
-        mapContainer.SetActive(mapContainer.activeSelf?false:true);
+
+        if (mapContainer.activeSelf)
+        {
+            mapContainer.SetActive(false);
+        }
+        else
+        {
+            mapContainer.SetActive(true);
+        }
+
+        
     }
 
     private void OnNodeDataUpdated(NodeStateData arg0)

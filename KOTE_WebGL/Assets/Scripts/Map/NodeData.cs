@@ -34,7 +34,8 @@ public class NodeData : MonoBehaviour
     {
         //Debug.Log("Updating line!");
 
-        var child = new GameObject();
+        GameObject child = new GameObject();
+        
         child.transform.SetParent( gameObject.transform);
        
 
@@ -44,35 +45,17 @@ public class NodeData : MonoBehaviour
         lineRenderer.endColor = Color.white;
         lineRenderer.material = lineMat;
 
+        Vector3 sourcePosition = this.gameObject.transform.position;
+        Vector3 targetPosition = targetOb.transform.position;
 
-       lineRenderer.SetPosition(0, this.gameObject.transform.position);
-       lineRenderer.SetPosition(1, targetOb.transform.position);
+        //make sure lines are behind nodes
+        sourcePosition.z++;
+        targetPosition.z++;
 
+        lineRenderer.SetPosition(0, sourcePosition);
+        lineRenderer.SetPosition(1, targetPosition);
 
-        //below commented code is for the UI version of the node prefab
-
-        /*  Vector3 vec = gameObject.GetComponent<RectTransform>().anchoredPosition;
-          //Vector3 vec = this.transform.TransformPoint(gameObject.GetComponent<RectTransform>().position);
-          vec.x += gameObject.GetComponent<RectTransform>().rect.width;
-          vec.y += gameObject.GetComponent<RectTransform>().rect.height /2;
-          Vector3 vec2 = Camera.main.ScreenToWorldPoint(vec);
-         // Debug.Log("vec="+vec);
-         // Debug.Log("vec2="+vec2);
-          Vector3 vec3 = targetOb.GetComponent<RectTransform>().anchoredPosition;
-         // vec3.x += targetOb.GetComponent<RectTransform>().rect.width / 4;
-          vec3.y += targetOb.GetComponent<RectTransform>().rect.height / 2;
-          Vector3 vec4 = Camera.main.ScreenToWorldPoint(vec3);
-
-          vec2.z = 0;
-          vec4.z = 0;
-
-          lineRenderer.SetPosition(0, vec2);
-          lineRenderer.SetPosition(1, vec4);
-
-          Debug.Log("vec=" + vec);
-          Debug.Log("vec2=" + vec2);
-          Debug.Log("vec3=" + vec3);
-          Debug.Log("vec4=" + vec4);*/
+                
     }
 
     private void OnMouseDown()

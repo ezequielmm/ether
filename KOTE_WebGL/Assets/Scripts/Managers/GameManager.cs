@@ -90,34 +90,48 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector]
     public UnityEvent<BlessingItem, bool> EVENT_SELECTBLESSING_ITEM = new UnityEvent<BlessingItem, bool>();
 
-    [HideInInspector]
+    
     //SHOP LOCATION EVENTS
+    [HideInInspector]
     public UnityEvent<bool> EVENT_SHOPLOCATION_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
-    [HideInInspector]
+    
     //EXPEDITION EVENTS
+    [HideInInspector]
     public UnityEvent<bool> EVENT_EXPEDITION_STATUS_UPDATE = new UnityEvent<bool>();
+    [HideInInspector]
     public UnityEvent EVENT_EXPEDITION_CONFIRMED = new UnityEvent();
 
-    [HideInInspector]
+    
     //MAP EVENTS
+    [HideInInspector]
     public UnityEvent<string> EVENT_MAP_NODES_UPDATE = new UnityEvent<string>();
+    [HideInInspector]
     public UnityEvent<int> EVENT_MAP_NODE_SELECTED = new UnityEvent<int>();
+    [HideInInspector]
     public UnityEvent<NodeStateData> EVENT_NODE_DATA_UPDATE = new UnityEvent<NodeStateData>();
+    //MAP PANEL EVENTS
+    public UnityEvent<bool> EVENT_MAP_PANEL_TOOGLE = new UnityEvent<bool>();
+    
 
     [HideInInspector]
     //PLAYER DATA EVENTS
     public UnityEvent<PlayerStateData> EVENT_PLAYER_STATUS_UPDATE = new UnityEvent<PlayerStateData>();
 
-    [HideInInspector]
+
     //TOP BAR EVENTS
+    [HideInInspector]
     public UnityEvent EVENT_MAP_ICON_CLICKED = new UnityEvent();
+    [HideInInspector]
     public UnityEvent<bool> EVENT_TOOGLE_TOPBAR_MAP_ICON = new UnityEvent<bool>();
 
-    [HideInInspector]
+   
     //COMMON EVENTS
+    [HideInInspector]
     public UnityEvent<PileTypes> EVENT_CARD_PILE_CLICKED = new UnityEvent<PileTypes>();
+    [HideInInspector]
     public UnityEvent<GameObject> EVENT_VISUAL_ELEMENT_ACTIVATED = new UnityEvent<GameObject>();
+    [HideInInspector]
     public UnityEvent<GameObject> EVENT_VISUAL_ELEMENT_DEACTIVATED = new UnityEvent<GameObject>();
 
 
