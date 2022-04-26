@@ -243,3 +243,9 @@ public class NodeStateData
     
 }
 #endregion
+[Serializable]
+public class CardPlayedData
+{
+    public string card_id;
+    public string target_id;
+}

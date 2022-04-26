@@ -17,18 +17,22 @@ public class WebSocketManager : MonoBehaviour
 
     //Websockets outgoing messages with callback
     private const string WS_MESSAGE_NODE_SELECTED = "NodeSelected";
+    private const string WS_MESSAGE_CARD_PLAYED = "CardPlayed";
 
     // Start is called before the first frame update
     void Start()
     {
         //events
         GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnNodeClicked);
+        GameManager.Instance.EVENT_CARD_PLAYED.AddListener(OnCardPlayed);
 
         options = new SocketOptions();
         ConnectSocket(); //Disabled connection until actual implementation
       
     }
-  
+
+
+
 
     /// <summary>
     /// 
@@ -139,6 +143,25 @@ public class WebSocketManager : MonoBehaviour
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.Invoke(playerState);
       //  Debug.Log("Data from OnPlayerState: " + playerState);
 
+    }
+
+    private void OnCardPlayed(string cardId)
+    {
+
+        CardPlayedData obj = new CardPlayedData();
+        obj.card_id = "87d501f6-0583-484c-bf1d-d09d822c68fa";
+        obj.card_id = cardId;
+
+        string test = JsonUtility.ToJson(obj).ToString();
+        Debug.Log("sending WS playedcard test=" + test);
+
+        rootSocket.ExpectAcknowledgement<string>(OnCardPlayedAnswer).Emit(WS_MESSAGE_CARD_PLAYED, test);
+
+    }
+
+    private void OnCardPlayedAnswer(string data)
+    {
+        Debug.Log("con card played answer:" + data);
     }
 
 }

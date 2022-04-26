@@ -134,6 +134,10 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector]
     public UnityEvent<GameObject> EVENT_VISUAL_ELEMENT_DEACTIVATED = new UnityEvent<GameObject>();
 
+    //Gameplay events
+    [HideInInspector]
+    public UnityEvent<string> EVENT_CARD_PLAYED = new UnityEvent<string>();
+
 
     public inGameScenes nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
 

@@ -6,10 +6,10 @@ using TMPro;
 using UnityEngine.EventSystems;
 using DG.Tweening;
 
-public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class UICardPrefabManager : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandler
 {
     public TextMeshProUGUI energyTF;
-    public TextMeshProUGUI typeTF;
+    public TextMeshProUGUI nameTF;
     public TextMeshProUGUI rarityTF;
     public TextMeshProUGUI descriptionTF;
     public string id;
@@ -27,15 +27,15 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
         
     }
 
-    internal void populate(Card card)
+    public void populate(Card card)
     {
         energyTF.SetText(card.energy.ToString());
-        typeTF.SetText(card.name);
+        nameTF.SetText(card.name);
         rarityTF.SetText(card.rarity);
         descriptionTF.SetText(card.description);
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+   /* public void OnPointerEnter(PointerEventData eventData)
     {      
         DOTween.PlayForward(this.gameObject);
     }
@@ -43,5 +43,5 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
     public void OnPointerExit(PointerEventData eventData)
     {      
         DOTween.PlayBackwards(this.gameObject);
-    }
+    }*/
 }

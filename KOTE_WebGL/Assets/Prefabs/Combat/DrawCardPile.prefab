@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6884859552794977369}
   - component: {fileID: 4533784669837775837}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: AmountOfCardsTF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -280,3 +280,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1321660f5b8f60349811a4f89d43ea22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  amountOfCardsTF: {fileID: 4533784669837775837}
