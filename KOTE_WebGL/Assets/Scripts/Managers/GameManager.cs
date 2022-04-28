@@ -108,9 +108,11 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<string> EVENT_MAP_NODES_UPDATE = new UnityEvent<string>();
     [HideInInspector]
     public UnityEvent<int> EVENT_MAP_NODE_SELECTED = new UnityEvent<int>();
+    
     [HideInInspector]
-    public UnityEvent<NodeStateData> EVENT_NODE_DATA_UPDATE = new UnityEvent<NodeStateData>();
+    public UnityEvent<NodeStateData,bool> EVENT_NODE_DATA_UPDATE = new UnityEvent<NodeStateData,bool>();
     //MAP PANEL EVENTS
+    [HideInInspector]
     public UnityEvent<bool> EVENT_MAP_PANEL_TOOGLE = new UnityEvent<bool>();
     
 
@@ -129,15 +131,14 @@ public class GameManager : SingleTon<GameManager>
     //COMMON EVENTS
     [HideInInspector]
     public UnityEvent<PileTypes> EVENT_CARD_PILE_CLICKED = new UnityEvent<PileTypes>();
-    [HideInInspector]
-    public UnityEvent<GameObject> EVENT_VISUAL_ELEMENT_ACTIVATED = new UnityEvent<GameObject>();
-    [HideInInspector]
-    public UnityEvent<GameObject> EVENT_VISUAL_ELEMENT_DEACTIVATED = new UnityEvent<GameObject>();
+
 
     //Gameplay events
     [HideInInspector]
     public UnityEvent<string> EVENT_CARD_PLAYED = new UnityEvent<string>();
-
+    [HideInInspector]
+    public UnityEvent EVENT_END_TURN_CLICKED = new UnityEvent();
+    
 
     public inGameScenes nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
 

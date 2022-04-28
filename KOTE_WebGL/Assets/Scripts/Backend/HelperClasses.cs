@@ -235,6 +235,8 @@ public class NodeStateData
                 {
                     public List<Card> draw;
                     public List<Card> hand;
+                    public List<Card> discard;
+                    public List<Card> exhaust;
                 }
 
             }
@@ -248,4 +250,16 @@ public class CardPlayedData
 {
     public string card_id;
     public string target_id;
+}
+
+[Serializable]
+public class Errordata
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public string message;
+    }
 }

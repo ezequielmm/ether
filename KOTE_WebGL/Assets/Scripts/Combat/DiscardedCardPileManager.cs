@@ -1,23 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class DiscardedCardPileManager : MonoBehaviour
 {
-    public GameObject informationContent;
-    public GameObject cardPrefab;
-
-    // Start is called before the first frame update
+    public TextMeshProUGUI amountOfCardsTF;
     void Start()
     {
-        SetInformationRows();
+        GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeStateDateUpdate);
     }
 
-    public void SetInformationRows()
+    private void OnNodeStateDateUpdate(NodeStateData nodeState, bool initialCall)
     {
-        for (int i = 0; i < 20; i++)
-        {
-            GameObject currentRow = Instantiate(cardPrefab, informationContent.transform);
-        }
+        amountOfCardsTF.SetText(nodeState.data.data.player.cards!.discard.Count!.ToString());
+    }
+
+    public void OnPileClick()
+    {
+        GameManager.Instance.EVENT_CARD_PILE_CLICKED.Invoke(PileTypes.Discarded);
     }
 }

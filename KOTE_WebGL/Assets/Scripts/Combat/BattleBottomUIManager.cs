@@ -21,8 +21,12 @@ public class BattleBottomUIManager : MonoBehaviour
         container.SetActive(!arg0);
     }
 
-    private void OnNodeDataUpdated(NodeStateData arg0)
+    private void OnNodeDataUpdated(NodeStateData nodeData, bool initialCall)
     {
-        container.SetActive(true);
+        if (initialCall)
+        {
+            container.SetActive(true);
+        }
+       
     }
 }

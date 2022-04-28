@@ -19,9 +19,13 @@ public class MapManager : MonoBehaviour
         mapScroll.SetActive(true);
     }
 
-    private void OnNodeDataUpdated(NodeStateData arg0)
+    private void OnNodeDataUpdated(NodeStateData nodeState, bool initialCall)
     {
-        mapScroll.SetActive(false);
+        if (initialCall)
+        {
+            mapScroll.SetActive(false);
+        }
+        
     }
 
     public void OnRoyalHousesButton()

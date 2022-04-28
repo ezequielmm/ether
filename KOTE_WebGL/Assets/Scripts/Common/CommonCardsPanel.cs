@@ -11,6 +11,8 @@ public class CommonCardsPanel : MonoBehaviour
 
     private Deck playerDeck;
     private Deck drawDeck;
+    private Deck discardDeck;
+    private Deck exhaustDeck;
 
 
     void Start()
@@ -21,10 +23,28 @@ public class CommonCardsPanel : MonoBehaviour
         GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeStateDateUpdate);
     }
 
-    private void OnNodeStateDateUpdate(NodeStateData nodeState)
+    private void OnNodeStateDateUpdate(NodeStateData nodeState,bool initialCall)
     {
         drawDeck = new Deck();
-        drawDeck.cards = nodeState.data.data.player.cards.draw;
+        discardDeck = new Deck();
+        exhaustDeck = new Deck();
+
+        if (nodeState != null && nodeState.data !=null && nodeState.data.data != null & nodeState.data.data.player != null && nodeState.data.data.player.cards != null)
+        {
+            if (nodeState.data.data.player.cards.draw != null)
+            {
+                drawDeck.cards = nodeState.data.data.player.cards.draw;
+            }
+            if (nodeState.data.data.player.cards.discard != null)
+            {
+                discardDeck.cards = nodeState.data.data.player.cards.discard;
+            }
+            if (nodeState.data.data.player.cards.exhaust != null)
+            {
+                exhaustDeck.cards = nodeState.data.data.player.cards.exhaust;
+            }
+        }
+        
     }
 
     private void OnPlayerStatusUpdate(PlayerStateData playerState)
@@ -58,6 +78,8 @@ public class CommonCardsPanel : MonoBehaviour
         {
             case PileTypes.Deck: GenerateCards(playerDeck); break;
             case PileTypes.Draw: GenerateCards(drawDeck); break;
+            case PileTypes.Discarded: GenerateCards(discardDeck); break;
+            case PileTypes.Exhausted: GenerateCards(exhaustDeck); break;
         }       
     }
 

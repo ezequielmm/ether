@@ -42,9 +42,13 @@ public class NodeCreator : MonoBehaviour
         
     }
 
-    private void OnNodeDataUpdated(NodeStateData arg0)
+    private void OnNodeDataUpdated(NodeStateData nodeState,bool initialCall)
     {
-        mapContainer.SetActive(false);
+        if (initialCall)
+        {
+            mapContainer.SetActive(false);
+        }
+        
     }
 
     // Update is called once per frame

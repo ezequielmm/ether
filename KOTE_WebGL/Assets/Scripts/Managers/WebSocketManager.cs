@@ -18,6 +18,7 @@ public class WebSocketManager : MonoBehaviour
     //Websockets outgoing messages with callback
     private const string WS_MESSAGE_NODE_SELECTED = "NodeSelected";
     private const string WS_MESSAGE_CARD_PLAYED = "CardPlayed";
+    private const string WS_MESSAGE_END_TURN = "EndTurn";
 
     // Start is called before the first frame update
     void Start()
@@ -25,11 +26,13 @@ public class WebSocketManager : MonoBehaviour
         //events
         GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnNodeClicked);
         GameManager.Instance.EVENT_CARD_PLAYED.AddListener(OnCardPlayed);
+        GameManager.Instance.EVENT_END_TURN_CLICKED.AddListener(OnEndTurn);
 
         options = new SocketOptions();
         ConnectSocket(); //Disabled connection until actual implementation
       
     }
+
 
 
 
@@ -123,7 +126,7 @@ public class WebSocketManager : MonoBehaviour
     {
        
         NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
-        GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState);
+        GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState,true);
 
         Debug.Log("OnNodeClickedAnswer: " + nodeState);
     }
@@ -149,19 +152,43 @@ public class WebSocketManager : MonoBehaviour
     {
 
         CardPlayedData obj = new CardPlayedData();
-        obj.card_id = "87d501f6-0583-484c-bf1d-d09d822c68fa";
+      //  obj.card_id = "87d501f6-0583-484c-bf1d-d09d822c68fa";
         obj.card_id = cardId;
 
-        string test = JsonUtility.ToJson(obj).ToString();
-        Debug.Log("sending WS playedcard test=" + test);
+        string data = JsonUtility.ToJson(obj).ToString();
+        Debug.Log("sending WS playedcard test=" + data);
 
-        rootSocket.ExpectAcknowledgement<string>(OnCardPlayedAnswer).Emit(WS_MESSAGE_CARD_PLAYED, test);
+        rootSocket.ExpectAcknowledgement<string>(OnCardPlayedAnswer).Emit(WS_MESSAGE_CARD_PLAYED, data);
 
     }
 
-    private void OnCardPlayedAnswer(string data)
+    private void OnCardPlayedAnswer(string nodeData)
     {
-        Debug.Log("con card played answer:" + data);
+        Debug.Log("on card played answer:" + nodeData);
+        if (MessageErrorValidator.ValidateData(nodeData))
+        {
+            NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
+            GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, false);
+        }       
+
     }
+
+    //END of Turn
+
+    private void OnEndTurn()
+    {
+        rootSocket.ExpectAcknowledgement<string>(OnEndOfTurnAnswer).Emit(WS_MESSAGE_END_TURN);
+    }
+
+    private void OnEndOfTurnAnswer(string nodeData)
+    {
+        Debug.Log("on end of turn answer:" + nodeData);
+        if (MessageErrorValidator.ValidateData(nodeData))
+        {
+            NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
+            GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, false);
+        }
+    }
+
 
 }

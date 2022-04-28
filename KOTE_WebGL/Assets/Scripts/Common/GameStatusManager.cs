@@ -24,10 +24,10 @@ public class GameStatusManager : MonoBehaviour
         Debug.Log(playerState);
     }
 
-    private void OnNodeDataUpdate(NodeStateData nodeState)
+    private void OnNodeDataUpdate(NodeStateData nodeState, bool initialCall)
     {
         //TODO: for the moment is only combat but as long as we create more node types that logic will be decided here
-        ChangeGameStatus(GameStatuses.Combat);
+        if(initialCall) ChangeGameStatus(GameStatuses.Combat);
     }
 
     public void ChangeGameStatus(GameStatuses newGameStatus)
