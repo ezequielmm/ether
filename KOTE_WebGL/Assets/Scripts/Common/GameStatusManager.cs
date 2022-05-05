@@ -6,8 +6,11 @@ using UnityEngine;
 public class GameStatusManager : MonoBehaviour
 {
     public GameStatuses currentGameStatus;
+    public NodeStateData lastNodeStatusData;
 
     private PlayerStateData playerStateData;
+
+
 
     void Start()
     {
@@ -26,6 +29,7 @@ public class GameStatusManager : MonoBehaviour
 
     private void OnNodeDataUpdate(NodeStateData nodeState, bool initialCall)
     {
+        lastNodeStatusData = nodeState;
         //TODO: for the moment is only combat but as long as we create more node types that logic will be decided here
         if(initialCall) ChangeGameStatus(GameStatuses.Combat);
     }

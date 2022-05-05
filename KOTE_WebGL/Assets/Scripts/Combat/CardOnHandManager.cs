@@ -15,31 +15,55 @@ public class CardOnHandManager : MonoBehaviour
     public string id;
 
     public Vector3 targetPosition;
+    public Vector3 targetRotation;
     public bool cardActive = false;
+    public ParticleSystem auraPS;
+      
 
-    private Vector3 originalPosition;
+    [Header ("Colors")]
+    public Color greenColor;
+    public Color blueColor;
+    public Color redColor;
 
+    [HideInInspector]
+    public Sequence mySequence;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        mySequence = DOTween.Sequence();
     }
 
-    internal void populate(Card card)
+    internal void populate(Card card, int energy)
     {
         energyTF.SetText(card.energy.ToString());
         nameTF.SetText(card.name);
         rarityTF.SetText(card.rarity);
         descriptionTF.SetText(card.description);
         this.id = card.id;
+
+        //Energy management
+        Debug.Log("card energy="+card.energy+", energy="+energy);
+        if (card.energy <= energy)
+        {
+            var main = auraPS.main;
+            main.startColor = greenColor;
+            auraPS.gameObject.SetActive(true);
+        }
+        else
+        {
+            auraPS.gameObject.SetActive(false);
+            energyTF.color = redColor;
+        }
     }
 
     private void OnMouseEnter()
     {
         if (cardActive)
         {
-            DOTween.PlayForward(this.gameObject);
+           // DOTween.PlayForward(this.gameObject);
+            GameManager.Instance.EVENT_CARD_MOUSE_ENTER.Invoke(this.id);
+            if(auraPS.gameObject.activeSelf)auraPS.Play();
         }
            
     }
@@ -47,14 +71,16 @@ public class CardOnHandManager : MonoBehaviour
     {
         if (cardActive)
         { 
-            DOTween.PlayBackwards(this.gameObject); 
+           // DOTween.PlayBackwards(this.gameObject);
+            GameManager.Instance.EVENT_CARD_MOUSE_EXIT.Invoke(this.id);
+            if (auraPS.gameObject.activeSelf) auraPS.Stop();
         }
            
     }
 
     private void OnMouseDrag()
     {
-        float xxDelta = Mathf.Abs(this.transform.position.x - originalPosition.x);
+        float xxDelta = Mathf.Abs(this.transform.position.x - targetPosition.x);
 
         if (xxDelta > GameSettings.HAND_CARD_MAX_XX_DRAG_DELTA)
         {
@@ -78,30 +104,30 @@ public class CardOnHandManager : MonoBehaviour
             {
                 Debug.Log("card is on center");
                 GameManager.Instance.EVENT_CARD_PLAYED.Invoke(id);
-                Destroy(this.gameObject);//TODO don destroy unless message back is error free
+              //  Destroy(this.gameObject);//TODO don destroy unless message back is error free
             }
             else
             {
                 Debug.Log("card is far from center");
-                MoveCardBackToOriginalHandPosition();
+                //MoveCardBackToOriginalHandPosition();
             }
-           // 
+            
         }
     }
     private void OnMouseDown()
     {
-        originalPosition = this.transform.position;
+       
        
     }
 
     private void MoveCardBackToOriginalHandPosition()
     {
-       this.transform.DOMove(originalPosition, 0.5f);
+       //this.transform.DOMove(originalPosition, 0.5f);
     }
 
     public void ActivateCard()
     {
-        Debug.Log("Activating card");
+       // Debug.Log("Activating card");
         cardActive = true;
     }
 }

@@ -521,6 +521,8 @@ MonoBehaviour:
   spriteCardPrefab: {fileID: 3965819321617490583, guid: 4912c08d2b3482c44800e4ee984fc359,
     type: 3}
   listOfCardsOnHand: []
+  explosionEffectPrefab: {fileID: 100000, guid: 6746092d79f3e4fe1bfa983603238e26,
+    type: 3}
 --- !u!1 &252026735
 GameObject:
   m_ObjectHideFlags: 0
@@ -2551,13 +2553,16 @@ MonoBehaviour:
   EVENT_CARD_PILE_CLICKED:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_VISUAL_ELEMENT_ACTIVATED:
+  EVENT_CARD_MOUSE_ENTER:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_VISUAL_ELEMENT_DEACTIVATED:
+  EVENT_CARD_MOUSE_EXIT:
     m_PersistentCalls:
       m_Calls: []
   EVENT_CARD_PLAYED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_END_TURN_CLICKED:
     m_PersistentCalls:
       m_Calls: []
   nextSceneToLoad: 0

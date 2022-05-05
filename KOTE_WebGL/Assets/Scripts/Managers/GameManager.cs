@@ -101,37 +101,34 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<bool> EVENT_EXPEDITION_STATUS_UPDATE = new UnityEvent<bool>();
     [HideInInspector]
     public UnityEvent EVENT_EXPEDITION_CONFIRMED = new UnityEvent();
-
     
     //MAP EVENTS
     [HideInInspector]
     public UnityEvent<string> EVENT_MAP_NODES_UPDATE = new UnityEvent<string>();
     [HideInInspector]
-    public UnityEvent<int> EVENT_MAP_NODE_SELECTED = new UnityEvent<int>();
-    
+    public UnityEvent<int> EVENT_MAP_NODE_SELECTED = new UnityEvent<int>();    
     [HideInInspector]
     public UnityEvent<NodeStateData,bool> EVENT_NODE_DATA_UPDATE = new UnityEvent<NodeStateData,bool>();
+
     //MAP PANEL EVENTS
     [HideInInspector]
     public UnityEvent<bool> EVENT_MAP_PANEL_TOOGLE = new UnityEvent<bool>();
-    
 
-    [HideInInspector]
     //PLAYER DATA EVENTS
+    [HideInInspector]
     public UnityEvent<PlayerStateData> EVENT_PLAYER_STATUS_UPDATE = new UnityEvent<PlayerStateData>();
-
 
     //TOP BAR EVENTS
     [HideInInspector]
     public UnityEvent EVENT_MAP_ICON_CLICKED = new UnityEvent();
     [HideInInspector]
     public UnityEvent<bool> EVENT_TOOGLE_TOPBAR_MAP_ICON = new UnityEvent<bool>();
-
    
-    //COMMON EVENTS
+    //HAND EVENTS
     [HideInInspector]
     public UnityEvent<PileTypes> EVENT_CARD_PILE_CLICKED = new UnityEvent<PileTypes>();
-
+    public UnityEvent<string> EVENT_CARD_MOUSE_ENTER = new UnityEvent<string>();
+    public UnityEvent<string> EVENT_CARD_MOUSE_EXIT = new UnityEvent<string>();
 
     //Gameplay events
     [HideInInspector]

@@ -144,7 +144,7 @@ public class WebSocketManager : MonoBehaviour
        
         PlayerStateData playerState = JsonUtility.FromJson<PlayerStateData>(data);//TODO: move this to websocker manager
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.Invoke(playerState);
-      //  Debug.Log("Data from OnPlayerState: " + playerState);
+        Debug.Log("Data from OnPlayerState: " + playerState);
 
     }
 
