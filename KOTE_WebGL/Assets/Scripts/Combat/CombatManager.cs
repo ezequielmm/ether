@@ -14,8 +14,8 @@ public class CombatManager : MonoBehaviour
         GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeDataUpdated);//TODO: this will change as not all nodes will be combat
     }
 
-    private void OnNodeDataUpdated(NodeStateData nodeState,bool initialCall)
+    private void OnNodeDataUpdated(NodeStateData nodeState,WS_QUERY_TYPE wsType)
     {
-        combatContainer.SetActive(true);
+        if(wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED)combatContainer.SetActive(true);
     }
 }

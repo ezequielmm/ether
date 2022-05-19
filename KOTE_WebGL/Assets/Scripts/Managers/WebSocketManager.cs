@@ -33,10 +33,6 @@ public class WebSocketManager : MonoBehaviour
       
     }
 
-
-
-
-
     /// <summary>
     /// 
     /// </summary>
@@ -126,7 +122,7 @@ public class WebSocketManager : MonoBehaviour
     {
        
         NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
-        GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState,true);
+        GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState,WS_QUERY_TYPE.MAP_NODE_SELECTED);
 
         Debug.Log("OnNodeClickedAnswer: " + nodeState);
     }
@@ -134,7 +130,16 @@ public class WebSocketManager : MonoBehaviour
 
     void OnExpeditionMap(string data)
     {
-       
+#if UNITY_EDITOR
+        if (GameSettings.DEBUG_MODE_ON)
+        {
+            //data = Utils.ReadJsonFile("node_data_act1.txt");
+            //data = Utils.ReadJsonFile("node_data_only_RH.txt");
+            data = Utils.ReadJsonFile("node_data_act1step2.txt");
+        }
+#endif
+
+
         Debug.Log("Data from OnExpeditionMap: " + data);
         GameManager.Instance.EVENT_MAP_NODES_UPDATE.Invoke(data);
     }
@@ -168,7 +173,7 @@ public class WebSocketManager : MonoBehaviour
         if (MessageErrorValidator.ValidateData(nodeData))
         {
             NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
-            GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, false);
+            GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, WS_QUERY_TYPE.CARD_PLAYED);
         }       
 
     }
@@ -186,7 +191,7 @@ public class WebSocketManager : MonoBehaviour
         if (MessageErrorValidator.ValidateData(nodeData))
         {
             NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
-            GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, false);
+            GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, WS_QUERY_TYPE.END_OF_TURN);
         }
     }
 

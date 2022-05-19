@@ -19,6 +19,7 @@ public class NodeDataHelper
     public int step;
     public int id;
     public string type;
+    public string status;
     public int[] exits;
     public int[] enter;
 }

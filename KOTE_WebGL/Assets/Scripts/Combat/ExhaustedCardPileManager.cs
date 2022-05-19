@@ -1,23 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class ExhaustedCardPileManager : MonoBehaviour
 {
-    public GameObject informationContent;
-    public GameObject cardPrefab;
-
-    // Start is called before the first frame update
+    public TextMeshProUGUI amountOfCardsTF;
     void Start()
     {
-        SetInformationRows();
+        GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeStateDateUpdate);
     }
 
-    public void SetInformationRows()
+    private void OnNodeStateDateUpdate(NodeStateData nodeState, WS_QUERY_TYPE wsType)
     {
-        for (int i = 0; i < 30; i++)
-        {
-            GameObject currentRow = Instantiate(cardPrefab, informationContent.transform);
-        }
+        if (nodeState.data != null && nodeState.data.data != null) amountOfCardsTF.SetText(nodeState.data.data.player.cards!.exhaust.Count!.ToString());
+    }
+
+    public void OnPileClick()
+    {
+        GameManager.Instance.EVENT_CARD_PILE_CLICKED.Invoke(PileTypes.Discarded);
     }
 }

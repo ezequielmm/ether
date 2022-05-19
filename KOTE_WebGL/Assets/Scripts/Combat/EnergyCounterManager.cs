@@ -19,9 +19,9 @@ public class EnergyCounterManager : MonoBehaviour
         
     }
 
-    private void OnNodeStateDateUpdate(NodeStateData nodeState, bool initialCall)
+    private void OnNodeStateDateUpdate(NodeStateData nodeState, WS_QUERY_TYPE quertyType)
     {
-        energyTF.SetText(nodeState.data.data.player.energy + "/" + nodeState.data.data.player.energy_max);
+        if(nodeState.data != null && nodeState.data.data != null)energyTF.SetText(nodeState.data.data.player.energy + "/" + nodeState.data.data.player.energy_max);
     }
 
  

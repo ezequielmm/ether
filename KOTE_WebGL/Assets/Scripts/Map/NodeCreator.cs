@@ -10,8 +10,6 @@ public class NodeCreator : MonoBehaviour
     public GameObject mapContainer;
 
     public GameObject nodePrefab;
-    float h_offset = 350f;
-    float v_offset = 100;
 
     List<GameObject> nodes = new List<GameObject>();
     // Start is called before the first frame update
@@ -27,7 +25,7 @@ public class NodeCreator : MonoBehaviour
     {
         foreach(GameObject go in nodes)
         {
-            go.GetComponent<NodeData>().disabled = true;
+            go.GetComponent<NodeData>().nodeClickDisabled = true;
         }
 
         if (mapContainer.activeSelf)
@@ -42,16 +40,16 @@ public class NodeCreator : MonoBehaviour
         
     }
 
-    private void OnNodeDataUpdated(NodeStateData nodeState,bool initialCall)
+    private void OnNodeDataUpdated(NodeStateData nodeState,WS_QUERY_TYPE wsType)
     {
-        if (initialCall)
+        if (wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED)
         {
             mapContainer.SetActive(false);
         }
         
     }
 
-    // Update is called once per frame
+   
     void OnMapNodesDataUpdated(string data)
     {       
         Debug.Log("[OnMapNodesDataUpdated] " + data);
@@ -86,13 +84,10 @@ public class NodeCreator : MonoBehaviour
 
         Debug.Log(mapStructure);
 
-        float actOffset = 5f;
         float columnOffset = 3f;
 
         //map holder is on -1 (y center) so top is +3 and bottom is -5
 
-        float mapTopEdge = 3;
-        float mapBottomEdge = -5;
 
         //generate the map
         foreach (Act act in mapStructure.acts)

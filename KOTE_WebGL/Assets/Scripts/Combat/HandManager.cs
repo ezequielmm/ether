@@ -14,7 +14,8 @@ public class HandManager : MonoBehaviour
     private string currentCardID;
     private GameObject currentCard;
 
-    
+    private Deck handDeck;
+    private float maxDepth;
 
     void Start()
     {
@@ -26,22 +27,22 @@ public class HandManager : MonoBehaviour
 
     private void OnCardMouseExit(string cardId)
     {
-        Debug.Log("[-----OnCardMouseExit]cardid=" + cardId);
+        //Debug.Log("[-----OnCardMouseExit]cardid=" + cardId);
 
         foreach (GameObject go in listOfCardsOnHand)
         {
             CardOnHandManager cardData = go.GetComponent<CardOnHandManager>();
 
-            cardData.mySequence.Append(go.transform.DOMove(cardData.targetPosition, 0.1f));
-            cardData.mySequence.Append(go.transform.DORotate(cardData.targetRotation, 0.2f));
-            cardData.mySequence.Append(go.transform.DOScale(Vector3.one , 0.2f));
+           go.transform.DOMove(cardData.targetPosition, 0.1f);
+           go.transform.DORotate(cardData.targetRotation, 0.2f);
+           go.transform.DOScale(Vector3.one , 0.2f);
 
         }
     }
 
     private void OnCardMouseEnter(string cardId)
     {
-        Debug.Log("[++++++OnCardMouseEnter]cardid="+cardId);
+       // Debug.Log("[++++++OnCardMouseEnter]cardid="+cardId);
         GameObject selectedCard = listOfCardsOnHand.Find((x) => (x.GetComponent<CardOnHandManager>().id == cardId));
 
         if (selectedCard == null) return;
@@ -49,7 +50,7 @@ public class HandManager : MonoBehaviour
         foreach (GameObject go in listOfCardsOnHand)
         {            
             CardOnHandManager cardData = go.GetComponent<CardOnHandManager>();
-            cardData.mySequence.Append(go.transform.DOMove(cardData.targetPosition, 0.1f));
+           go.transform.DOMove(cardData.targetPosition, 0.1f);
             //go.transform.position = cardData.targetPosition;
 
             if (cardData.id != cardId)
@@ -60,16 +61,17 @@ public class HandManager : MonoBehaviour
                 Vector3 pos = cardData.targetPosition;
                 pos.x += movex;
                 
-                cardData.mySequence.Append(go.transform.DOMove(pos, 0.1f));
+                go.transform.DOMove(pos, 0.1f);
             }
             else
             {
-                cardData.mySequence.Append(go.transform.DOScale(Vector3.one*1.2f,0.2f));//TODO:magic number for scale,move to settings
+                go.transform.DOScale(Vector3.one*1.25f,0.2f);//TODO:magic number for scale,move to settings
                 Vector3 pos = cardData.targetPosition;
                 pos.y += 1.5f;
-                cardData.mySequence.Append(go.transform.DOMove(pos,0.2f));
+                pos.z = maxDepth;
+                go.transform.DOMove(pos,0.2f);
 
-                cardData.mySequence.Append(go.transform.DORotate(Vector3.zero,0.2f));
+                go.transform.DORotate(Vector3.zero,0.2f);
             }
         }
     }
@@ -79,12 +81,51 @@ public class HandManager : MonoBehaviour
         Debug.Log("lalal");
     }
 
-    private void OnNodeUpdate(NodeStateData nodeState, bool initialCall)
+    private void arrangeCards(GameObject cardSelected)
     {
-        float effectDelay = 0.5f;
+       /* if (go)
+        {
+
+        }
+        else
+        {
+            foreach(GameObject go in listOfCardsOnHand)
+            {
+                vec
+            }
+        }*/
+    }
+
+    private void OnNodeUpdate(NodeStateData nodeState, WS_QUERY_TYPE wsType)
+    {
+        //do we had cards on the current hand?
+        if (listOfCardsOnHand.Count > 0)//this is insecure. The list could have null elements and the count still would be above 0 
+        {
+            //compare new hand cards with current hand cards
+            Deck newHandDeck = new Deck();
+            newHandDeck.cards = nodeState.data.data.player.cards.hand;
+            int counterOfDifferentCards = 0;
+            foreach (Card newCard in newHandDeck.cards)
+            {
+                foreach (GameObject go in listOfCardsOnHand)
+                {
+
+                }
+            }
+        }
+        else
+        {
+            //
+        }
+
+       
+
+
+            //play effect on current cards. This must be isolated to only happen when it is the end of turn but not on card played
+            float effectDelay = 0.5f;
         foreach (GameObject go in listOfCardsOnHand)
         {
-            if (go == null) continue;
+            if (go == null) continue;//avoid working on a gameobject that has been destroyed but is still referenced on the list
             GameObject fireball = Instantiate(explosionEffectPrefab,go.transform);
             fireball.transform.position = go.transform.position;
             fireball.transform.localScale = fireball.transform.localScale*0.5f;
@@ -93,7 +134,7 @@ public class HandManager : MonoBehaviour
         }
 
         listOfCardsOnHand = new List<GameObject>();
-        Deck handDeck = new Deck();
+        handDeck = new Deck();
         handDeck.cards = nodeState.data.data.player.cards.hand;
 
         Vector3 spawnPosition = GameSettings.HAND_CARDS_GENERATION_POINT;
@@ -118,7 +159,7 @@ public class HandManager : MonoBehaviour
 
             newCard.GetComponent<CardOnHandManager>().targetPosition = pos;
 
-            if (initialCall)
+            if (wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED)
             {
                 newCard.transform.position = spawnPosition;
 
@@ -143,6 +184,9 @@ public class HandManager : MonoBehaviour
             depth--;
 
         }
+
+        maxDepth = --depth;
+
     }
    
 }

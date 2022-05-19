@@ -12,9 +12,9 @@ public class DrawCardPileManager : MonoBehaviour
         GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeStateDateUpdate);
     }
 
-    private void OnNodeStateDateUpdate(NodeStateData nodeState, bool initialCall)
+    private void OnNodeStateDateUpdate(NodeStateData nodeState, WS_QUERY_TYPE wsType)
     {
-        amountOfCardsTF.SetText(nodeState.data.data.player.cards.draw.Count!.ToString());
+        if (nodeState.data != null && nodeState.data.data != null) amountOfCardsTF.SetText(nodeState.data.data.player.cards.draw.Count!.ToString());
     }
 
     public void OnPileClick()

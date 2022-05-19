@@ -21,9 +21,9 @@ public class BattleBottomUIManager : MonoBehaviour
         container.SetActive(!arg0);
     }
 
-    private void OnNodeDataUpdated(NodeStateData nodeData, bool initialCall)
+    private void OnNodeDataUpdated(NodeStateData nodeData, WS_QUERY_TYPE wsType)
     {
-        if (initialCall)
+        if (wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED)
         {
             container.SetActive(true);
         }

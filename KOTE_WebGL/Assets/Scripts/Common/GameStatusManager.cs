@@ -27,11 +27,11 @@ public class GameStatusManager : MonoBehaviour
         Debug.Log(playerState);
     }
 
-    private void OnNodeDataUpdate(NodeStateData nodeState, bool initialCall)
+    private void OnNodeDataUpdate(NodeStateData nodeState, WS_QUERY_TYPE wsType)
     {
         lastNodeStatusData = nodeState;
         //TODO: for the moment is only combat but as long as we create more node types that logic will be decided here
-        if(initialCall) ChangeGameStatus(GameStatuses.Combat);
+        if(wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED) ChangeGameStatus(GameStatuses.Combat);
     }
 
     public void ChangeGameStatus(GameStatuses newGameStatus)

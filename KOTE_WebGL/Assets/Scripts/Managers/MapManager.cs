@@ -19,9 +19,9 @@ public class MapManager : MonoBehaviour
         mapScroll.SetActive(true);
     }
 
-    private void OnNodeDataUpdated(NodeStateData nodeState, bool initialCall)
+    private void OnNodeDataUpdated(NodeStateData nodeState, WS_QUERY_TYPE wsType)
     {
-        if (initialCall)
+        if (wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED)
         {
             mapScroll.SetActive(false);
         }

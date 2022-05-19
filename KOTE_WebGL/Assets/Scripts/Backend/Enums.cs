@@ -23,3 +23,26 @@ public enum GameStatuses
     Merchant,
     RoyalHouse
 }
+
+public enum WS_QUERY_TYPE
+{
+    MAP_NODE_SELECTED,
+    CARD_PLAYED,
+    END_OF_TURN
+}
+
+public enum NODE_TYPES
+{
+    royal_house,
+    portal,
+    encounter,
+    combat_standard
+}
+
+public enum NODE_STATUS
+{
+    completed,
+    active,
+    available,
+    disabled
+}

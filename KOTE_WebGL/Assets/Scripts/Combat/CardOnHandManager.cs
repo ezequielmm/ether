@@ -17,7 +17,15 @@ public class CardOnHandManager : MonoBehaviour
     public Vector3 targetPosition;
     public Vector3 targetRotation;
     public bool cardActive = false;
+
+    [Header("Outline effects")]
     public ParticleSystem auraPS;
+    public GameObject cardBgGO;
+    public Material greenOutlineMaterial;
+    public Material blueOutlineMaterial;
+   
+    private Material defaultMaterial;
+    private Material outlineMaterial;
       
 
     [Header ("Colors")]
@@ -32,6 +40,8 @@ public class CardOnHandManager : MonoBehaviour
     void Start()
     {
         mySequence = DOTween.Sequence();
+
+        defaultMaterial = cardBgGO.GetComponent<Renderer>().sharedMaterial;
     }
 
     internal void populate(Card card, int energy)
@@ -43,11 +53,12 @@ public class CardOnHandManager : MonoBehaviour
         this.id = card.id;
 
         //Energy management
-        Debug.Log("card energy="+card.energy+", energy="+energy);
+      //  Debug.Log("card energy="+card.energy+", energy="+energy);
         if (card.energy <= energy)
         {
             var main = auraPS.main;
             main.startColor = greenColor;
+            outlineMaterial = greenOutlineMaterial;//TODO:apply blue if card has a special condition
             auraPS.gameObject.SetActive(true);
         }
         else
@@ -64,6 +75,8 @@ public class CardOnHandManager : MonoBehaviour
            // DOTween.PlayForward(this.gameObject);
             GameManager.Instance.EVENT_CARD_MOUSE_ENTER.Invoke(this.id);
             if(auraPS.gameObject.activeSelf)auraPS.Play();
+
+            cardBgGO.GetComponent<Renderer>().material = outlineMaterial;
         }
            
     }
@@ -74,6 +87,7 @@ public class CardOnHandManager : MonoBehaviour
            // DOTween.PlayBackwards(this.gameObject);
             GameManager.Instance.EVENT_CARD_MOUSE_EXIT.Invoke(this.id);
             if (auraPS.gameObject.activeSelf) auraPS.Stop();
+            cardBgGO.GetComponent<Renderer>().material = defaultMaterial;
         }
            
     }
@@ -82,11 +96,11 @@ public class CardOnHandManager : MonoBehaviour
     {
         float xxDelta = Mathf.Abs(this.transform.position.x - targetPosition.x);
 
-        if (xxDelta > GameSettings.HAND_CARD_MAX_XX_DRAG_DELTA)
+        /*if (xxDelta > GameSettings.HAND_CARD_MAX_XX_DRAG_DELTA)
         {
             MoveCardBackToOriginalHandPosition();
             return;
-        }
+        }*/
 
        // Debug.Log("Distance y is " + xxDelta);
 

@@ -108,7 +108,15 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector]
     public UnityEvent<int> EVENT_MAP_NODE_SELECTED = new UnityEvent<int>();    
     [HideInInspector]
-    public UnityEvent<NodeStateData,bool> EVENT_NODE_DATA_UPDATE = new UnityEvent<NodeStateData,bool>();
+    public UnityEvent<NodeStateData,WS_QUERY_TYPE> EVENT_NODE_DATA_UPDATE = new UnityEvent<NodeStateData, WS_QUERY_TYPE>();
+    [HideInInspector]
+    public UnityEvent<int> EVENT_MAP_NODE_MOUSE_OVER = new UnityEvent<int>();
+    /// <summary>
+    /// Scroll map buttons events. First bool enable/disable, second bool direction left/right
+    /// </summary>
+    [HideInInspector]
+    public UnityEvent<bool,bool> EVENT_MAP_SCROLL_CLICK = new UnityEvent<bool,bool>();
+    public UnityEvent EVENT_MAP_MASK_DOUBLECLICK = new UnityEvent();
 
     //MAP PANEL EVENTS
     [HideInInspector]
@@ -127,7 +135,9 @@ public class GameManager : SingleTon<GameManager>
     //HAND EVENTS
     [HideInInspector]
     public UnityEvent<PileTypes> EVENT_CARD_PILE_CLICKED = new UnityEvent<PileTypes>();
+    [HideInInspector]
     public UnityEvent<string> EVENT_CARD_MOUSE_ENTER = new UnityEvent<string>();
+    [HideInInspector]
     public UnityEvent<string> EVENT_CARD_MOUSE_EXIT = new UnityEvent<string>();
 
     //Gameplay events

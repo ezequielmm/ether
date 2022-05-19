@@ -23,7 +23,7 @@ public class CommonCardsPanel : MonoBehaviour
         GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeStateDateUpdate);
     }
 
-    private void OnNodeStateDateUpdate(NodeStateData nodeState,bool initialCall)
+    private void OnNodeStateDateUpdate(NodeStateData nodeState,WS_QUERY_TYPE wsType)
     {
         drawDeck = new Deck();
         discardDeck = new Deck();
