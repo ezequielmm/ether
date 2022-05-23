@@ -7,13 +7,8 @@
     <list default="true" id="b583c65a-1209-4afe-bcc7-938ffe134f01" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.KOTE_WebGL/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.KOTE_WebGL/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/DottedLine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DottedLine.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/New Material.mat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/New Material.mat.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Sprite Shape Profile.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Sprite Shape Profile.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Line Sprite Shape Profile 1.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Line Sprite Shape Profile 1.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Map/SpriteShapePrefab.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Map/SpriteShapePrefab.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Map/MapSpriteManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Map/MapSpriteManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Map/NodeData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Map/NodeData.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,4 +28,23 @@
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="false" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/DottedLine.cs</url>
+          <line>65</line>
+          <properties documentPath="C:\Users\KJA\BitBucketRepos\kote_game_client\KOTE_WebGL\Assets\DottedLine.cs" initialLine="65" containingFunctionPresentation="method 'DetermineIfPathIsShown'">
+            <startOffsets>
+              <option value="2170" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2281" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
 </project>

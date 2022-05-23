@@ -13,7 +13,9 @@ public class DottedLine : MonoBehaviour
 
     public int exitNodeId;
     // we need to know the status of the nodes on both ends of the path
+    [SerializeField]
     private string entranceNodeStatus;
+    [SerializeField]
     private string exitNodeStatus;
 
     private void Awake()
@@ -24,7 +26,7 @@ public class DottedLine : MonoBehaviour
 
     private void OnMouseOver(int nodeId)
     {
-        test.SetActive(nodeId == exitNodeId && exitNodeStatus == NODE_STATUS.active.ToString());
+        test.SetActive(nodeId == exitNodeId && entranceNodeStatus == NODE_STATUS.active.ToString());
     }
 
     // Update is called once per frame
