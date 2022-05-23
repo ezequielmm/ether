@@ -13,7 +13,7 @@ public class MapScrollButton : MonoBehaviour
 
     private void OnMouseUp()
     {
-        Debug.Log("Mouse up");
+       // Debug.Log("Mouse up");
         GameManager.Instance.EVENT_MAP_SCROLL_CLICK.Invoke(false,scrollRight);
     }
     private void OnMouseDrag()

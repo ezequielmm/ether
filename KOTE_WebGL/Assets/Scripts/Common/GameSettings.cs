@@ -10,13 +10,15 @@ public static class GameSettings
     public const int MAP_LINE_RENDERER_SORTING_LAYER_ORDER = 50;
     public const float MAP_SCROLL_SPEED = 2f;
     public static float MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON = 2;
+    public static float DOUBLE_CLICK_TIME_DELTA = 1;
 
     //HAND OF CARDS
     public const float HAND_CARD_SPRITE_Z = -12f;
     public const float HAND_CARD_MAX_XX_DRAG_DELTA = 5f;
     public static Vector3 HAND_CARDS_GENERATION_POINT = new Vector3(-7, -5, -9);
+    
 
-   
+
 
     /*//////////////  
     ///Debug

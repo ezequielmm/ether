@@ -116,6 +116,7 @@ public class GameManager : SingleTon<GameManager>
     /// </summary>
     [HideInInspector]
     public UnityEvent<bool,bool> EVENT_MAP_SCROLL_CLICK = new UnityEvent<bool,bool>();
+    [HideInInspector]
     public UnityEvent EVENT_MAP_MASK_DOUBLECLICK = new UnityEvent();
 
     //MAP PANEL EVENTS

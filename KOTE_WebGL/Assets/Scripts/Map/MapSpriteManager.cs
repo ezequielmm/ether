@@ -79,7 +79,7 @@ public class MapSpriteManager : MonoBehaviour
             scrollSpeed = 0;
         }
 
-        Debug.Log(currentMapPos);
+        //Debug.Log(currentMapPos);
            
     }
 
@@ -270,13 +270,13 @@ public class MapSpriteManager : MonoBehaviour
 
         foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
         {
-            Debug.Log("renderer:" + renderer.gameObject.name);
+            //Debug.Log("renderer:" + renderer.gameObject.name);
             bounds.Encapsulate(renderer.bounds);
         }
 
         Vector3 localCenter = bounds.center - this.transform.position;
         bounds.center = localCenter;
-        Debug.Log("The local bounds of this model is " + bounds);
+      //  Debug.Log("The local bounds of this model is " + bounds);
 
         this.transform.rotation = currentRotation;
         

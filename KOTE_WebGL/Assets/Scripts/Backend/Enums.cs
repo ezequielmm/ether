@@ -36,7 +36,20 @@ public enum NODE_TYPES
     royal_house,
     portal,
     encounter,
-    combat_standard
+    combat,
+    camp
+}
+
+public enum NODE_SUBTYPES
+{
+    royal_house,
+    portal,
+    encounter,
+    combat_standard,
+    combar_elite,
+    combat_boss,
+    camp_regular,
+    camp_house
 }
 
 public enum NODE_STATUS

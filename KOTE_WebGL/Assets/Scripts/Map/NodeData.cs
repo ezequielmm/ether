@@ -14,6 +14,7 @@ public class NodeData : MonoBehaviour
         public NODE_TYPES type;
         public GameObject imageGo;
     }
+
     [Header("Background sprites")]
     public List<BackgroundImage> bgSprites = new List<BackgroundImage>();
 
@@ -105,11 +106,21 @@ public class NodeData : MonoBehaviour
         this.name = nodeData.type + "_"+nodeData.id;
                 
         GetComponentInChildren<TextMeshPro>().SetText(nodeData.id.ToString());
-        
+
 
         //Debug.Log("Node data populate");
 
-        bgSprites.Find(x =>  x.type == (NODE_TYPES)Enum.Parse(typeof(NODE_TYPES), nodeData.type) ).imageGo.SetActive(true);
+        BackgroundImage bgi = bgSprites.Find(x => x.type == (NODE_TYPES)Enum.Parse(typeof(NODE_TYPES), nodeData.type));
+        if (bgi.imageGo !=null )
+        {
+            bgi.imageGo.SetActive(true);
+        }
+        else
+        {
+            Debug.Log(" nodeData.type " + nodeData.type + " not found ");
+        }
+
+        
 
         Color indexColor = Color.grey;
 

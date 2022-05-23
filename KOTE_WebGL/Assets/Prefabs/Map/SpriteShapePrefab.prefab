@@ -135,8 +135,8 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   m_LocalAABB:
-    m_Center: {x: 2.0048203, y: -0.13823128, z: 0}
-    m_Extent: {x: 2.0180242, y: 1.0790339, z: 0}
+    m_Center: {x: 4.0351357, y: 0.5270784, z: 0}
+    m_Extent: {x: 4.04834, y: 1.7443435, z: 0}
 --- !u!114 &7163704449398746698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,8 +192,8 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: 4.020648, y: 0.04440987, z: 0}
-      leftTangent: {x: -0.42260456, y: -0.0014502406, z: 0}
+    - position: {x: 8.081281, y: 1.6314257, z: 0}
+      leftTangent: {x: -0.42260456, y: -0.001450181, z: 0}
       rightTangent: {x: 0.92193127, y: 0.0031638145, z: 0}
       mode: 1
       height: 1

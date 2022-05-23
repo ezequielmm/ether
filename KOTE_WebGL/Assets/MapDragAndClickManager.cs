@@ -12,7 +12,7 @@ public class MapDragAndClickManager : MonoBehaviour
 
         if (lastTimeClick > 0)
         {
-            if (Time.fixedTime - lastTimeClick < 1)
+            if (Time.fixedTime - lastTimeClick < GameSettings.DOUBLE_CLICK_TIME_DELTA)
             {
                 Debug.Log("Double click!");
                 lastTimeClick = 0;
@@ -44,13 +44,13 @@ public class MapDragAndClickManager : MonoBehaviour
 
             if (diff > 1)
             {
-                Debug.Log("drag RRRRRRRRRR!" + diff);
+                //Debug.Log("drag RRRRRRRRRR!" + diff);
 
                 GameManager.Instance.EVENT_MAP_SCROLL_CLICK.Invoke(true, false);
             }
             else if(diff < -1)
             {
-                Debug.Log("drag LLLLLL!" + diff);
+               // Debug.Log("drag LLLLLL!" + diff);
                 GameManager.Instance.EVENT_MAP_SCROLL_CLICK.Invoke(true, true);
             }           
            
