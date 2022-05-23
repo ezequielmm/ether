@@ -23,7 +23,7 @@ public class MapSpriteManager : MonoBehaviour
     public GameObject RightScrollButton;
 
     private float scrollSpeed;
-      
+
     public Bounds mapBounds;
 
     private bool scrollMap;
@@ -38,7 +38,6 @@ public class MapSpriteManager : MonoBehaviour
         GameManager.Instance.EVENT_MAP_MASK_DOUBLECLICK.AddListener(OnMaskDoubleClick);
 
         playerIcon.SetActive(false);
-
     }
 
     private void OnMaskDoubleClick()
@@ -51,16 +50,16 @@ public class MapSpriteManager : MonoBehaviour
         if (!scrollMap)
         {
             scrollSpeed = Mathf.SmoothStep(scrollSpeed, 0, Time.fixedDeltaTime * 2);
-           // Debug.Log("scrollSpeed:" + scrollSpeed);
+            // Debug.Log("scrollSpeed:" + scrollSpeed);
         }
 
         if (Mathf.Abs(scrollSpeed) < 0.01f) scrollSpeed = 0;
-        
+
         Vector3 velocity = Vector3.zero;
-        Vector3 currentMapPos = nodesHolder.transform.localPosition;                       
+        Vector3 currentMapPos = nodesHolder.transform.localPosition;
 
         Vector3 newPos = nodesHolder.transform.localPosition;
-           
+
         newPos.x += scrollSpeed;
 
         //limit the map move to the right
@@ -68,7 +67,7 @@ public class MapSpriteManager : MonoBehaviour
         if (newPos.x > mapBounds.extents.x) newPos.x = mapBounds.extents.x;
 
         //limit left scroll
-        if (newPos.x < mapBounds.extents.x*-1) newPos.x = mapBounds.extents.x*-1;
+        if (newPos.x < mapBounds.extents.x * -1) newPos.x = mapBounds.extents.x * -1;
 
         if (newPos.x < 0)
         {
@@ -80,7 +79,6 @@ public class MapSpriteManager : MonoBehaviour
         }
 
         //Debug.Log(currentMapPos);
-           
     }
 
     private void OnScrollButtonClicked(bool active, bool direction)
@@ -91,14 +89,14 @@ public class MapSpriteManager : MonoBehaviour
         {
             if (direction)
             {
-                scrollSpeed = GameSettings.MAP_SCROLL_SPEED * -1;//TODO magic number
+                scrollSpeed = GameSettings.MAP_SCROLL_SPEED * -1; //TODO magic number
             }
             else
             {
                 scrollSpeed = GameSettings.MAP_SCROLL_SPEED;
             }
         }
-        
+
 
         /* if (active)
          {
@@ -128,15 +126,13 @@ public class MapSpriteManager : MonoBehaviour
             mapContainer.SetActive(true);
             GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.Invoke(true);
         }
-
-
     }
 
     private void OnNodeDataUpdated(NodeStateData nodeState, WS_QUERY_TYPE wsType)
     {
-       if(wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED) mapContainer.SetActive(false);
+        if (wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED) mapContainer.SetActive(false);
     }
-    
+
     //we will get to this point once the backend give us the node data
     void OnMapNodesDataUpdated(string data)
     {
@@ -153,30 +149,32 @@ public class MapSpriteManager : MonoBehaviour
             NodeDataHelper nodeData = expeditionMapData.data[i];
 
             //acts
-            if (mapStructure.acts.Count == 0 || mapStructure.acts.Count < (nodeData.act+1 ))
+            if (mapStructure.acts.Count == 0 || mapStructure.acts.Count < (nodeData.act + 1))
             {
                 Act newAct = new Act();
                 mapStructure.acts.Add(newAct);
-
             }
+
             //steps
-            if (mapStructure.acts[nodeData.act].steps.Count == 0 || mapStructure.acts[nodeData.act].steps.Count < (nodeData.step + 1))
+            if (mapStructure.acts[nodeData.act].steps.Count == 0 ||
+                mapStructure.acts[nodeData.act].steps.Count < (nodeData.step + 1))
             {
                 Step newStep = new Step();
                 mapStructure.acts[nodeData.act].steps.Add(newStep);
             }
+
             //add id
             mapStructure.acts[nodeData.act].steps[nodeData.step].nodesData.Add(nodeData);
 
-            if ( nodeData.status == NODE_STATUS.available.ToString() && nodeData.type == NODE_TYPES.royal_house.ToString() ) royal_houses_mode_on = true;
+            if (nodeData.status == NODE_STATUS.available.ToString() &&
+                nodeData.type == NODE_TYPES.royal_house.ToString()) royal_houses_mode_on = true;
 
             //Debug.Log("royal_houses_mode_on = "+ royal_houses_mode_on);
-
         }
-               
+
         float columnOffsetCounter = GameSettings.MAP_SPRITE_NODE_X_OFFSET;
-        float columnIncrement = GameSettings.MAP_SPRITE_NODE_X_OFFSET; 
-        
+        float columnIncrement = GameSettings.MAP_SPRITE_NODE_X_OFFSET;
+
 
         //generate the map
         foreach (Act act in mapStructure.acts)
@@ -204,8 +202,9 @@ public class MapSpriteManager : MonoBehaviour
                     {
                         columnIncrement = GameSettings.MAP_SPRITE_NODE_X_OFFSET;
                     }
-                  
-                    newNode.transform.localPosition = new Vector3(columnOffsetCounter, yy, GameSettings.MAP_SPRITE_ELEMENTS_Z);
+
+                    newNode.transform.localPosition =
+                        new Vector3(columnOffsetCounter, yy, GameSettings.MAP_SPRITE_ELEMENTS_Z);
                     newNode.GetComponent<NodeData>().Populate(nodeData);
 
                     if (nodeData.status == NODE_STATUS.active.ToString())
@@ -213,7 +212,6 @@ public class MapSpriteManager : MonoBehaviour
                         playerIcon.SetActive(true);
                         playerIcon.transform.localPosition = newNode.transform.localPosition;
                     }
-
                 }
 
                 //move next step (vertical group of nodes)
@@ -221,31 +219,33 @@ public class MapSpriteManager : MonoBehaviour
             }
         }
 
-        foreach (GameObject go in nodes)
+        foreach (GameObject curNode in nodes)
         {
             //Debug.Log("Searching :" + go.GetComponent<NodeData>().id);
 
-            foreach (int exit_id in go.GetComponent<NodeData>().exits)
+            foreach (int exitId in curNode.GetComponent<NodeData>().exits)
             {
-                GameObject targetOb = nodes.Find(x => x.GetComponent<NodeData>().id == exit_id);
+                NodeData exitNode = nodes.Find(x => x.GetComponent<NodeData>().id == exitId).GetComponent<NodeData>();
 
-                //if we find an exit node this becomes the target gameobject for the path sprite shape
-                if (targetOb)
+                //if we find an exit node this becomes the target gameobject for the path sprite shape, and the exit 
+                // node for keeping track of the status
+                if (exitNode)
                 {
                     //go.GetComponent<NodeData>().UpdateLine(targetOb);
-                    go.GetComponent<NodeData>().UpdateSpriteShape(targetOb, exit_id);
+                    curNode.GetComponent<NodeData>().UpdateSpriteShape(exitNode);
                 }
                 else
                 {
-                    Destroy(go.GetComponent<LineRenderer>());//as we are not longet using sprite renderer maybe we can remove this line
-                    go.GetComponent<NodeData>().UpdateSpriteShape(null,0);
+                    Destroy(curNode
+                        .GetComponent<LineRenderer>()); //as we are not longet using sprite renderer maybe we can remove this line
+                    curNode.GetComponent<NodeData>().UpdateSpriteShape(null);
                 }
             }
         }
 
         //at this point the map is completed. 
         //we get the maps bounds to help later with scroll limits and animations
-        
+
         mapBounds = CalculateLocalBounds();
 
         ScrollBackToPlayerIcon();
@@ -276,11 +276,10 @@ public class MapSpriteManager : MonoBehaviour
 
         Vector3 localCenter = bounds.center - this.transform.position;
         bounds.center = localCenter;
-      //  Debug.Log("The local bounds of this model is " + bounds);
+        //  Debug.Log("The local bounds of this model is " + bounds);
 
         this.transform.rotation = currentRotation;
-        
+
         return bounds;
     }
-   
 }

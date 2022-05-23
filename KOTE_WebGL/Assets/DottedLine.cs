@@ -1,16 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.U2D;
 
 public class DottedLine : MonoBehaviour
 {
     public GameObject test;
-    public SpriteShapeController ssc;
+    public SpriteShapeController pathController;
+    public SpriteShapeController lineController;
     private float _timePassed;
 
     public int exitNodeId;
-    string status;
+    // we need to know the status of the nodes on both ends of the path
+    private string entranceNodeStatus;
+    private string exitNodeStatus;
 
     private void Awake()
     {
@@ -20,57 +24,81 @@ public class DottedLine : MonoBehaviour
 
     private void OnMouseOver(int nodeId)
     {
-        test.SetActive(nodeId == exitNodeId && status == NODE_STATUS.active.ToString());       
+        test.SetActive(nodeId == exitNodeId && exitNodeStatus == NODE_STATUS.active.ToString());
     }
 
     // Update is called once per frame
     void Update()
-    {   
-
+    {
         if (test.activeSelf)
         {
             _timePassed += Time.deltaTime;
             //float value = Mathf.Lerp(0, 1, Mathf.PingPong(_timePassed, 1));
             float value = Mathf.Lerp(0, 1, _timePassed);
 
-            Vector3 pos = ssc.transform.TransformPoint(GetPoint(ssc.spline, value));
+            Vector3 pos = pathController.transform.TransformPoint(GetPoint(pathController.spline, value));
             test.transform.position = pos;
             Vector3 pos2 = test.transform.localPosition;
-            pos2.z = -5;//to make it visible over the sprite shape
+            pos2.z = -5; //to make it visible over the sprite shape
             test.transform.localPosition = pos2;
-           
+
 
             if (value >= 1) _timePassed = 0;
         }
-       
-
     }
 
-    public void Populate(GameObject targetOb, int eni,string st)
+    public void Populate(NodeData exitNode, string entranceNodeStatus)
     {
-        status = st;
-        exitNodeId = eni;
-        ssc.spline.SetPosition(4, this.transform.InverseTransformPoint(targetOb.transform.position));
+        this.entranceNodeStatus = entranceNodeStatus;
+        this.exitNodeStatus = exitNode.status;
+        this.exitNodeId = exitNode.id;
+        pathController.spline.SetPosition(4, this.transform.InverseTransformPoint(exitNode.transform.position));
+        lineController.spline.SetPosition(4, this.transform.InverseTransformPoint(exitNode.transform.position));
         //TODO: add noise to previous spline points. There are 5 so far
+        DetermineIfPathIsShown();
         RelocateSplinePoints();
-     
+    }
+
+    private void DetermineIfPathIsShown()
+    {
+        if (exitNodeStatus == NODE_STATUS.disabled.ToString() || entranceNodeStatus == NODE_STATUS.disabled.ToString())
+        {
+            lineController.gameObject.SetActive(false);
+        }
     }
 
     private void RelocateSplinePoints()
     {
-     
-        float offsetX = (ssc.spline.GetPosition(ssc.spline.GetPointCount() - 1).x - ssc.spline.GetPosition(0).x)/ (ssc.spline.GetPointCount()-1);
-        float offsetY = (ssc.spline.GetPosition(ssc.spline.GetPointCount() - 1).y - ssc.spline.GetPosition(0).y)/ (ssc.spline.GetPointCount()-1);
-        
-       
-        for(int i=1;i<ssc.spline.GetPointCount(); i++ )
+        float offsetX =
+            (pathController.spline.GetPosition(pathController.spline.GetPointCount() - 1).x -
+             pathController.spline.GetPosition(0).x) / (pathController.spline.GetPointCount() - 1);
+        float offsetY =
+            (pathController.spline.GetPosition(pathController.spline.GetPointCount() - 1).y -
+             pathController.spline.GetPosition(0).y) / (pathController.spline.GetPointCount() - 1);
+
+
+        for (int i = 1; i < pathController.spline.GetPointCount(); i++)
         {
-            Vector3 pos = ssc.spline.GetPosition(i);
+            Vector3 pos = pathController.spline.GetPosition(i);
             pos.x = i * offsetX;
             pos.y = i * offsetY;
-            ssc.spline.SetPosition(i,pos);
+            pathController.spline.SetPosition(i, pos);
+            // set the dotted line to the exact same position
+        }
+        MatchSplinesToEachOther();
+    }
+
+    // match the splines for the path and the dotted line to each other exactly
+    private void MatchSplinesToEachOther()
+    {
+        for (int i = 1; i < pathController.spline.GetPointCount(); i++)
+        {
+            lineController.spline.SetLeftTangent(i, pathController.spline.GetLeftTangent(i));
+            lineController.spline.SetRightTangent(i, pathController.spline.GetRightTangent(i));
+            lineController.spline.SetPosition(i, pathController.spline.GetPosition(i));
         }
     }
+
     public Vector2 GetPoint(Spline spline, float progress)
     {
         var length = spline.GetPointCount();

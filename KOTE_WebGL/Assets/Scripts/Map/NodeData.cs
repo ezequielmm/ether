@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.U2D;
 
 [Serializable]
-public class NodeData : MonoBehaviour  
+public class NodeData : MonoBehaviour
 {
     [Serializable]
     public struct BackgroundImage
@@ -15,8 +15,7 @@ public class NodeData : MonoBehaviour
         public GameObject imageGo;
     }
 
-    [Header("Background sprites")]
-    public List<BackgroundImage> bgSprites = new List<BackgroundImage>();
+    [Header("Background sprites")] public List<BackgroundImage> bgSprites = new List<BackgroundImage>();
 
     public int act;
     public int step;
@@ -25,7 +24,7 @@ public class NodeData : MonoBehaviour
     public string status;
     public int[] exits;
     public int[] enter;
-        
+
     public Material lineMat;
 
     public bool nodeClickDisabled = false;
@@ -34,7 +33,7 @@ public class NodeData : MonoBehaviour
 
     public GameObject spriteShapePrefab;
     private GameObject spriteShape;
-   
+
 
     private void Awake()
     {
@@ -45,25 +44,24 @@ public class NodeData : MonoBehaviour
             bgimg.imageGo.SetActive(false);
         }
     }
+
     private void Start()
     {
-       
-        
     }
 
-   /* public void OnNodeClick()
-    {
-        Debug.Log("Node clicked "+id);
-        GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(id);
-    }*/
+    /* public void OnNodeClick()
+     {
+         Debug.Log("Node clicked "+id);
+         GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(id);
+     }*/
 
     public void UpdateLine(GameObject targetOb)
     {
         //Debug.Log("Updating line!");
 
         GameObject child = new GameObject();
-        
-        child.transform.SetParent( gameObject.transform);       
+
+        child.transform.SetParent(gameObject.transform);
 
         lineRenderer = child.AddComponent<LineRenderer>();
         lineRenderer.startWidth = 0.1f;
@@ -82,18 +80,17 @@ public class NodeData : MonoBehaviour
 
         lineRenderer.SetPosition(0, sourcePosition);
         lineRenderer.SetPosition(1, targetPosition);
-                
     }
 
-    public void UpdateSpriteShape(GameObject targetOb,int exitID)
+    // when we update the sprite shape, we pass it the node data for the exit node directly, because it needs three things from it
+    public void UpdateSpriteShape(NodeData exitNode)
     {
-        if(targetOb != null)
+        if (exitNode != null)
         {
             spriteShape = Instantiate(spriteShapePrefab, this.transform);
             // spriteShape.GetComponent<SpriteShapeController>().spline.SetPosition(4, spriteShape.transform.InverseTransformPoint(targetOb.transform.position));
-            spriteShape.GetComponent<DottedLine>().Populate(targetOb, exitID,status);
+            spriteShape.GetComponent<DottedLine>().Populate(exitNode, status);
         }
-       
     }
 
     public void Populate(NodeDataHelper nodeData)
@@ -103,15 +100,15 @@ public class NodeData : MonoBehaviour
         this.type = nodeData.type;
         this.exits = nodeData.exits;
 
-        this.name = nodeData.type + "_"+nodeData.id;
-                
+        this.name = nodeData.type + "_" + nodeData.id;
+
         GetComponentInChildren<TextMeshPro>().SetText(nodeData.id.ToString());
 
 
         //Debug.Log("Node data populate");
 
         BackgroundImage bgi = bgSprites.Find(x => x.type == (NODE_TYPES)Enum.Parse(typeof(NODE_TYPES), nodeData.type));
-        if (bgi.imageGo !=null )
+        if (bgi.imageGo != null)
         {
             bgi.imageGo.SetActive(true);
         }
@@ -120,23 +117,22 @@ public class NodeData : MonoBehaviour
             Debug.Log(" nodeData.type " + nodeData.type + " not found ");
         }
 
-        
 
         Color indexColor = Color.grey;
 
-        switch (Enum.Parse(typeof(NODE_STATUS),nodeData.status))
+        switch (Enum.Parse(typeof(NODE_STATUS), nodeData.status))
         {
             case NODE_STATUS.disabled:
-                this.nodeClickDisabled = true; 
+                this.nodeClickDisabled = true;
                 break;
             case NODE_STATUS.completed:
                 indexColor = Color.red;
-                this.nodeClickDisabled = true; 
+                this.nodeClickDisabled = true;
                 break;
             case NODE_STATUS.active:
-                if(nodeData.type == NODE_TYPES.portal.ToString()) this.nodeClickDisabled = true;
+                if (nodeData.type == NODE_TYPES.portal.ToString()) this.nodeClickDisabled = true;
                 indexColor = Color.cyan;
-                break;  
+                break;
             case NODE_STATUS.available:
                 indexColor = Color.green;
                 break;
@@ -151,8 +147,7 @@ public class NodeData : MonoBehaviour
         {
             Debug.Log("click");
             GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);
-        }       
-       
+        }
     }
 
     private void OnMouseOver()
@@ -164,6 +159,4 @@ public class NodeData : MonoBehaviour
     {
         GameManager.Instance.EVENT_MAP_NODE_MOUSE_OVER.Invoke(-1);
     }
-
-
 }
