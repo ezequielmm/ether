@@ -7,6 +7,7 @@
     <list default="true" id="b583c65a-1209-4afe-bcc7-938ffe134f01" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.KOTE_WebGL/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.KOTE_WebGL/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Treasury/TreasuryPanelPrefab.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Treasury/TreasuryPanelPrefab.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Treasury/TreasuryTabsNavigatorManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Treasury/TreasuryTabsNavigatorManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +77,7 @@
       <workItem from="1652992824293" duration="1720000" />
       <workItem from="1652997061922" duration="156000" />
       <workItem from="1653066077255" duration="8902000" />
-      <workItem from="1653335167340" duration="973000" />
+      <workItem from="1653335167340" duration="2754000" />
     </task>
     <servers />
   </component>

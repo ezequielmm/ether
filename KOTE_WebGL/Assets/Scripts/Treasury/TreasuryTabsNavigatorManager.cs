@@ -48,4 +48,15 @@ public class TreasuryTabsNavigatorManager : MonoBehaviour
 
         scrollRect.content = selectedPanel.transform as RectTransform;
     }
+    
+    // these are used so that the scroll buttons control the scrollbar required for the ScrollRect
+    public void ScrollUp()
+    {
+        
+    }
+
+    public void ScrollDown()
+    {
+        
+    }
 }
