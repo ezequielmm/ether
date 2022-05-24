@@ -37,7 +37,8 @@ public enum NODE_TYPES
     portal,
     encounter,
     combat,
-    camp
+    camp,
+    merchant
 }
 
 public enum NODE_SUBTYPES

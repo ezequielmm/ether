@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.U2D;
 
 [Serializable]
 public class NodeData : MonoBehaviour
@@ -26,6 +24,8 @@ public class NodeData : MonoBehaviour
     public int[] enter;
 
     public Material lineMat;
+    public Material grayscaleMaterial;
+    public ParticleSystem pSystem;
 
     public bool nodeClickDisabled = false;
 
@@ -111,6 +111,10 @@ public class NodeData : MonoBehaviour
         if (bgi.imageGo != null)
         {
             bgi.imageGo.SetActive(true);
+            if (status == NODE_STATUS.disabled.ToString())
+            {
+                bgi.imageGo.GetComponent<SpriteRenderer>().material = grayscaleMaterial;
+            }
         }
         else
         {
@@ -135,6 +139,7 @@ public class NodeData : MonoBehaviour
                 break;
             case NODE_STATUS.available:
                 indexColor = Color.green;
+                pSystem.Play();
                 break;
         }
 

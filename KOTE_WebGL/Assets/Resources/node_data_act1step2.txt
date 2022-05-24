@@ -114,7 +114,7 @@
 "type":"combat",
 "exits":[13],
 "enter":null,
-"status":"disabled",
+"status":"available",
 "private_data":{"enemies":["enemy1","enemy2","enemy3","enemy4"]}
 },
 {
