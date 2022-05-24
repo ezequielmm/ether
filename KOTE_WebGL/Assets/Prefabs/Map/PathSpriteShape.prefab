@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4982565462928977029}
   - component: {fileID: 1353683383787713187}
   m_Layer: 0
-  m_Name: SpriteShapePrefab
+  m_Name: PathSpriteShape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

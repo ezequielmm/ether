@@ -89,7 +89,7 @@ public class NodeData : MonoBehaviour
         {
             spriteShape = Instantiate(spriteShapePrefab, this.transform);
             // spriteShape.GetComponent<SpriteShapeController>().spline.SetPosition(4, spriteShape.transform.InverseTransformPoint(targetOb.transform.position));
-            spriteShape.GetComponent<DottedLine>().Populate(exitNode, status);
+            spriteShape.GetComponent<PathManager>().Populate(exitNode, status);
         }
     }
 
