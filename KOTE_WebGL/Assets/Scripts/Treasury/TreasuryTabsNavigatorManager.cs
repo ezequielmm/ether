@@ -7,14 +7,11 @@ public class TreasuryTabsNavigatorManager : MonoBehaviour
 {
     public List<Image> tabButtons;
 
-    [Space(20)]
-    public List<GameObject> panels;
+    [Space(20)] public List<GameObject> panels;
 
-    [Space(20)]
-    public ScrollRect scrollRect;
+    [Space(20)] public ScrollRect scrollRect;
 
-    [Space(20)]
-    public Color selectedColor;
+    [Space(20)] public Color selectedColor;
 
     public Color nonSelectedColor;
 
@@ -48,15 +45,24 @@ public class TreasuryTabsNavigatorManager : MonoBehaviour
 
         scrollRect.content = selectedPanel.transform as RectTransform;
     }
-    
+
     // these are used so that the scroll buttons control the scrollbar required for the ScrollRect
     public void ScrollUp()
     {
-        
+        getMovementOffset();
+        scrollRect.verticalScrollbar.value += getMovementOffset();
     }
 
     public void ScrollDown()
     {
-        
+        scrollRect.verticalScrollbar.value -= getMovementOffset();
+    }
+
+    private float getMovementOffset()
+    {
+        int count = scrollRect.content.childCount;
+        int rows = count / 5;
+        float offset = 1.0f / (rows - 1);
+        return offset;
     }
 }
