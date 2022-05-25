@@ -759,9 +759,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 238e084595f5c244cbb51914e09b48ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  combatEntityAttachedTo: 0
   healthBar: {fileID: 2565453733523069681}
-  armorGauge: {fileID: 8899024928938350130}
-  armorText: {fileID: 832665484426299727}
+  blockGauge: {fileID: 8899024928938350130}
+  blockText: {fileID: 832665484426299727}
 --- !u!1 &8634057916232954624
 GameObject:
   m_ObjectHideFlags: 0

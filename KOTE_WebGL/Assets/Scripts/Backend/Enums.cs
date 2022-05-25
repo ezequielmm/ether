@@ -59,3 +59,8 @@ public enum NODE_STATUS
     available,
     disabled
 }
+public enum EntityType
+{
+    Player,
+    Enemy
+}

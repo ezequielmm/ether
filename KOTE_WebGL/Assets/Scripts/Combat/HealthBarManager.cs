@@ -57,9 +57,4 @@ public class HealthBarManager : MonoBehaviour
         blockGauge.SetActive(true);
     }
 
-    public enum EntityType
-    {
-        Player,
-        Enemy
-    }
 }
