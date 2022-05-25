@@ -151,6 +151,12 @@ public class NodeData : MonoBehaviour
         if (!nodeClickDisabled)
         {
             Debug.Log("click");
+            // if clicking on a royal house node, we want to ask the player for confirmation before activating the node
+            if (type == NODE_TYPES.royal_house.ToString())
+            {
+                GameManager.Instance.EVENT_MAP_REQUEST_NODE_CONFIRMATION.Invoke(this);
+                return;
+            }
             GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);
         }
     }
