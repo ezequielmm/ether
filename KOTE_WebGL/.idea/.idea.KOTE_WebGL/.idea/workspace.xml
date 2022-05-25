@@ -4,20 +4,100 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b583c65a-1209-4afe-bcc7-938ffe134f01" name="Changes" comment="" />
+    <list default="true" id="b583c65a-1209-4afe-bcc7-938ffe134f01" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.KOTE_WebGL/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.KOTE_WebGL/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Managers/GameManager.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="PropertiesComponent">
-    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/0c/b2ab89de/List`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/16/abdde9b5/Type.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/62/aab382f3/String.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/8c/989ccd7d/RuntimeType.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/8f/f29b5e47/Enum.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/e8/724306b3/RuntimeTypeHandle.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ae72fc958ab44fdbb61b9d8c36cf141e13ca00/ed/d0868876/SceneManager.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="29d7Rzc2FnpglaLJ1ecIryKXod6" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Discover.Launch.Via.Unity&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;rider.run.widget.enabled.cache&quot;: &quot;false&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="UnitTests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2020.3.34f1\Editor\Unity.exe" />
+      <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath C:\Users\KJA\BitBucketRepos\kote_game_client\KOTE_WebGL -testResults Logs/results.xml -testPlatform EditMode -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\KJA\BitBucketRepos\kote_game_client\KOTE_WebGL" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b583c65a-1209-4afe-bcc7-938ffe134f01" name="Changes" comment="" />
+      <created>1653431111738</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1653431111738</updated>
+      <workItem from="1653431129383" duration="1027000" />
+    </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="false" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
-  <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
 </project>
