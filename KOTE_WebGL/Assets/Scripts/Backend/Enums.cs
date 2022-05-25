@@ -37,7 +37,8 @@ public enum NODE_TYPES
     portal,
     encounter,
     combat,
-    camp
+    camp,
+    merchant
 }
 
 public enum NODE_SUBTYPES
@@ -49,7 +50,8 @@ public enum NODE_SUBTYPES
     combar_elite,
     combat_boss,
     camp_regular,
-    camp_house
+    camp_house,
+    merchant
 }
 
 public enum NODE_STATUS
