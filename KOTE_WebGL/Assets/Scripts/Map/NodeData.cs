@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class NodeData : MonoBehaviour
@@ -25,7 +27,8 @@ public class NodeData : MonoBehaviour
 
     public Material lineMat;
     public Material grayscaleMaterial;
-    public ParticleSystem pSystem;
+    [FormerlySerializedAs("pSystem")] public ParticleSystem availableParticleSystem;
+    public ParticleSystem portalActivateParticleSystem;
 
     public bool nodeClickDisabled = false;
 
@@ -139,7 +142,7 @@ public class NodeData : MonoBehaviour
                 break;
             case NODE_STATUS.available:
                 indexColor = Color.green;
-                pSystem.Play();
+                availableParticleSystem.Play();
                 break;
         }
 
@@ -157,6 +160,12 @@ public class NodeData : MonoBehaviour
                 GameManager.Instance.EVENT_MAP_REQUEST_NODE_CONFIRMATION.Invoke(this);
                 return;
             }
+
+            if (type == NODE_TYPES.portal.ToString())
+            {
+                StartCoroutine(EnterPortal());
+                return;
+            }
             GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);
         }
     }
@@ -169,5 +178,14 @@ public class NodeData : MonoBehaviour
     private void OnMouseExit()
     {
         GameManager.Instance.EVENT_MAP_NODE_MOUSE_OVER.Invoke(-1);
+    }
+
+    // wait for the portal animation to end before activating the node
+    IEnumerator EnterPortal()
+    {
+        portalActivateParticleSystem.time = GameSettings.PORTAL_ACTIVATION_ANIMATION_TIME;
+        portalActivateParticleSystem.Play();
+        yield return new WaitForSeconds(GameSettings.PORTAL_ACTIVATION_ANIMATION_TIME);
+        GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);
     }
 }
