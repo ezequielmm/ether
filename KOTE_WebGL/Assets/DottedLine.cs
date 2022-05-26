@@ -10,7 +10,7 @@ public class DottedLine : MonoBehaviour
     private float _timePassed;
 
     public int exitNodeId;
-    string status;
+    NODE_STATUS status;
 
     private void Awake()
     {
@@ -20,13 +20,12 @@ public class DottedLine : MonoBehaviour
 
     private void OnMouseOver(int nodeId)
     {
-        test.SetActive(nodeId == exitNodeId && status == NODE_STATUS.active.ToString());       
+        test.SetActive(nodeId == exitNodeId && status == NODE_STATUS.active);
     }
 
     // Update is called once per frame
     void Update()
-    {   
-
+    {
         if (test.activeSelf)
         {
             _timePassed += Time.deltaTime;
@@ -36,41 +35,40 @@ public class DottedLine : MonoBehaviour
             Vector3 pos = ssc.transform.TransformPoint(GetPoint(ssc.spline, value));
             test.transform.position = pos;
             Vector3 pos2 = test.transform.localPosition;
-            pos2.z = -5;//to make it visible over the sprite shape
+            pos2.z = -5; //to make it visible over the sprite shape
             test.transform.localPosition = pos2;
-           
+
 
             if (value >= 1) _timePassed = 0;
         }
-       
-
     }
 
-    public void Populate(GameObject targetOb, int eni,string st)
+    public void Populate(GameObject targetOb, int eni, NODE_STATUS st)
     {
         status = st;
         exitNodeId = eni;
         ssc.spline.SetPosition(4, this.transform.InverseTransformPoint(targetOb.transform.position));
         //TODO: add noise to previous spline points. There are 5 so far
         RelocateSplinePoints();
-     
     }
 
     private void RelocateSplinePoints()
     {
-     
-        float offsetX = (ssc.spline.GetPosition(ssc.spline.GetPointCount() - 1).x - ssc.spline.GetPosition(0).x)/ (ssc.spline.GetPointCount()-1);
-        float offsetY = (ssc.spline.GetPosition(ssc.spline.GetPointCount() - 1).y - ssc.spline.GetPosition(0).y)/ (ssc.spline.GetPointCount()-1);
-        
-       
-        for(int i=1;i<ssc.spline.GetPointCount(); i++ )
+        float offsetX = (ssc.spline.GetPosition(ssc.spline.GetPointCount() - 1).x - ssc.spline.GetPosition(0).x) /
+                        (ssc.spline.GetPointCount() - 1);
+        float offsetY = (ssc.spline.GetPosition(ssc.spline.GetPointCount() - 1).y - ssc.spline.GetPosition(0).y) /
+                        (ssc.spline.GetPointCount() - 1);
+
+
+        for (int i = 1; i < ssc.spline.GetPointCount(); i++)
         {
             Vector3 pos = ssc.spline.GetPosition(i);
             pos.x = i * offsetX;
             pos.y = i * offsetY;
-            ssc.spline.SetPosition(i,pos);
+            ssc.spline.SetPosition(i, pos);
         }
     }
+
     public Vector2 GetPoint(Spline spline, float progress)
     {
         var length = spline.GetPointCount();

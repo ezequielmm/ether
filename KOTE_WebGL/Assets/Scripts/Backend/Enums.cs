@@ -43,11 +43,14 @@ public enum NODE_TYPES
 
 public enum NODE_SUBTYPES
 {
-    royal_house,
+    royal_house_a,
+    royal_house_b,
+    royal_house_c,
+    royal_house_d,
     portal,
     encounter,
     combat_standard,
-    combar_elite,
+    combat_elite,
     combat_boss,
     camp_regular,
     camp_house,
