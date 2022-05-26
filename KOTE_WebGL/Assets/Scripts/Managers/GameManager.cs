@@ -155,12 +155,24 @@ public class GameManager : SingleTon<GameManager>
     // Start is called before the first frame update
     void Start()
     {
-        
+        SceneManager.activeSceneChanged += UpdateSoundVolume;
+    }
+
+    void Update()
+    {
+        Debug.Log(AudioListener.volume);
     }
 
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene
     {
         nextSceneToLoad = scene;
         SceneManager.LoadScene(inGameScenes.Loader.ToString());
+    }
+
+    // when the scene changes, update the sound volume using the value stored in PlayerPrefs
+    private void UpdateSoundVolume(Scene prevScene, Scene nextScene)
+    {
+       float volumeSetting = PlayerPrefs.GetFloat("settings_volume");
+       AudioListener.volume = volumeSetting;
     }
 }
