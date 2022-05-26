@@ -6,10 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="b583c65a-1209-4afe-bcc7-938ffe134f01" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.KOTE_WebGL/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.KOTE_WebGL/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Map/NodeTemPrefabSprite.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Map/NodeTemPrefabSprite.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/DottedLine.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/node_data_act1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/node_data_act1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/node_data_act1step2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/node_data_act1step2.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/node_data_act_test.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/node_data_act_test.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/node_data_only_RH.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/node_data_only_RH.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Common/GameSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Common/GameSettings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Map/NodeConfirmPanelManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Map/NodeConfirmPanelManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Map/NodeData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Map/NodeData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Map/PathManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Map/PathManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,10 +72,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="1016">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="1016" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />

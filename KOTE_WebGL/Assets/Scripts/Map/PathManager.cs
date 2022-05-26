@@ -10,10 +10,10 @@ public class PathManager : MonoBehaviour
     public int exitNodeId;
 
     // we need to know the status of the nodes on both ends of the path
-    private string entranceNodeStatus;
-    private string exitNodeStatus;
+    private NODE_STATUS entranceNodeStatus;
+    private NODE_STATUS exitNodeStatus;
 
-    public void Populate(NodeData exitNode, string entranceNodeStatus)
+    public void Populate(NodeData exitNode, NODE_STATUS entranceNodeStatus)
     {
         this.entranceNodeStatus = entranceNodeStatus;
         this.exitNodeStatus = exitNode.status;
@@ -34,7 +34,7 @@ public class PathManager : MonoBehaviour
     {
         bool isMousedOver = nodeId == exitNodeId;
         // we have to check if the entrance node is active so we don't deactivate the lines showing the path traveled
-        if (entranceNodeStatus == NODE_STATUS.active.ToString())
+        if (entranceNodeStatus == NODE_STATUS.active)
         {
             lineController.gameObject.SetActive(isMousedOver);
         }
@@ -42,7 +42,7 @@ public class PathManager : MonoBehaviour
 
     private void DetermineIfPathIsShown()
     {
-        if (exitNodeStatus == NODE_STATUS.disabled.ToString() || entranceNodeStatus == NODE_STATUS.disabled.ToString())
+        if (exitNodeStatus == NODE_STATUS.disabled || entranceNodeStatus == NODE_STATUS.disabled)
         {
             lineController.gameObject.SetActive(false);
         }
@@ -64,9 +64,8 @@ public class PathManager : MonoBehaviour
             pos.x = i * offsetX;
             pos.y = i * offsetY;
             pathController.spline.SetPosition(i, pos);
-            // set the dotted line to the exact same position
         }
-
+        // set the dotted line to the exact same position
         MatchSplinesToEachOther();
     }
 

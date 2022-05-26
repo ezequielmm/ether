@@ -116,7 +116,7 @@ public class NodeData : MonoBehaviour
         if (bgi.imageGo != null)
         {
             bgi.imageGo.SetActive(true);
-            if (status == NODE_STATUS.disabled.ToString())
+            if (status == NODE_STATUS.disabled)
             {
                 bgi.imageGo.GetComponent<SpriteRenderer>().material = grayscaleMaterial;
             }
@@ -157,13 +157,13 @@ public class NodeData : MonoBehaviour
         {
             Debug.Log("click");
             // if clicking on a royal house node, we want to ask the player for confirmation before activating the node
-            if (type == NODE_TYPES.royal_house.ToString())
+            if (type == NODE_TYPES.royal_house)
             {
                 GameManager.Instance.EVENT_MAP_REQUEST_NODE_CONFIRMATION.Invoke(this);
                 return;
             }
 
-            if (type == NODE_TYPES.portal.ToString())
+            if (type == NODE_TYPES.portal)
             {
                 StartCoroutine(EnterPortal());
                 return;
