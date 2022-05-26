@@ -21,8 +21,8 @@ public class NodeConfirmPanelManager : MonoBehaviour
 
     private void ShowNodeSelectionRequest(NodeData nodeData)
     {
-        titleText.text = nodeData.type.ToString();
-        descriptionText.text = " Do you want to enter " + nodeData.subType + "?";
+        titleText.text = Utils.CapitalizeEveryWordOfEnum(nodeData.type);
+        descriptionText.text = " Do you want to select " + Utils.CapitalizeEveryWordOfEnum(nodeData.subType) + "?";
         nodeId = nodeData.id;
         nodeConfirmContainer.SetActive(true);
     }
