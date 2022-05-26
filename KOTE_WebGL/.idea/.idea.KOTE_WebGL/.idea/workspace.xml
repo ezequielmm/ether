@@ -6,19 +6,26 @@
   <component name="ChangeListManager">
     <list default="true" id="b583c65a-1209-4afe-bcc7-938ffe134f01" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.KOTE_WebGL/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.KOTE_WebGL/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/DottedLine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DottedLine.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Map/NodeCreator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Map/NodeCreator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Map/NodeData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Map/NodeData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Treasury/TreasuryPanelPrefab.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Treasury/TreasuryPanelPrefab.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Treasury/TreasuryTabsNavigatorManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Treasury/TreasuryTabsNavigatorManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/0c/b2ab89de/List`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/16/abdde9b5/Type.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/62/aab382f3/String.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/8c/989ccd7d/RuntimeType.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/8f/f29b5e47/Enum.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/695d1cc93cca45069c528c15c9fdd7493e2800/e8/724306b3/RuntimeTypeHandle.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectId" id="29cMerdZm7ToQBvfUfaYoP259zp" />
+  <component name="ProjectId" id="29Ove5kmhaFtNwe3Ga6MuFXQ1c5" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -53,10 +60,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="1016">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="26312">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="1016" />
+      <option name="pid" value="26312" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -68,11 +75,14 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="b583c65a-1209-4afe-bcc7-938ffe134f01" name="Changes" comment="" />
-      <created>1653408025726</created>
+      <created>1652992789332</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1653408025726</updated>
-      <workItem from="1653408042418" duration="4809000" />
+      <updated>1652992789332</updated>
+      <workItem from="1652992824293" duration="1720000" />
+      <workItem from="1652997061922" duration="156000" />
+      <workItem from="1653066077255" duration="8902000" />
+      <workItem from="1653335167340" duration="2754000" />
     </task>
     <servers />
   </component>
@@ -82,4 +92,39 @@
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="false" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Managers/WebSocketManager.cs</url>
+          <line>137</line>
+          <properties documentPath="C:\Users\KJA\BitBucketRepos\kote_game_client\KOTE_WebGL\Assets\Scripts\Managers\WebSocketManager.cs" initialLine="137" containingFunctionPresentation="method 'OnExpeditionMap'">
+            <startOffsets>
+              <option value="4114" />
+            </startOffsets>
+            <endOffsets>
+              <option value="4166" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Treasury/TreasuryTabsNavigatorManager.cs</url>
+          <line>62</line>
+          <properties documentPath="C:\Users\KJA\BitBucketRepos\kote_game_client\KOTE_WebGL\Assets\Scripts\Treasury\TreasuryTabsNavigatorManager.cs" initialLine="62" containingFunctionPresentation="method 'getMovementOffset'">
+            <startOffsets>
+              <option value="1752" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1794" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
 </project>
