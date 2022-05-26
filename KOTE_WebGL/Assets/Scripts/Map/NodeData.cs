@@ -22,6 +22,7 @@ public class NodeData : MonoBehaviour
     public int step;
     public int id;
     public string type;
+    public string subType;
     public string status;
     public int[] exits;
     public int[] enter;
@@ -101,6 +102,7 @@ public class NodeData : MonoBehaviour
         this.status = nodeData.status;
         this.id = nodeData.id;
         this.type = nodeData.type;
+        this.subType = nodeData.subType;
         this.exits = nodeData.exits;
 
         this.name = nodeData.type + "_"+nodeData.id;
