@@ -113,7 +113,7 @@ public class NodeCreator : MonoBehaviour
                     newNode.GetComponentInChildren<TextMeshPro>().SetText(nodeData.id.ToString());
                     newNode.transform.localPosition = new Vector3( columnOffset, yy , GameSettings.MAP_SPRITE_ELEMENTS_Z);
                     newNode.GetComponent<NodeData>().id = nodeData.id;
-                    newNode.GetComponent<NodeData>().type = nodeData.type;
+                    newNode.GetComponent<NodeData>().type = (NODE_TYPES)Enum.Parse(typeof(NODE_TYPES), nodeData.type);
                     newNode.GetComponent<NodeData>().exits = nodeData.exits;
                 }
 

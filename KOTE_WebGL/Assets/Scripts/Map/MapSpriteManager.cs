@@ -207,7 +207,7 @@ public class MapSpriteManager : MonoBehaviour
                         new Vector3(columnOffsetCounter, yy, GameSettings.MAP_SPRITE_ELEMENTS_Z);
                     newNode.GetComponent<NodeData>().Populate(nodeData);
 
-                    if (nodeData.status == NODE_STATUS.active.ToString())
+                    if (nodeData.status == NODE_STATUS.active.ToString() || nodeData.status.Equals(NODE_STATUS.completed))
                     {
                         playerIcon.SetActive(true);
                         playerIcon.transform.localPosition = newNode.transform.localPosition;

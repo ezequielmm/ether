@@ -20,8 +20,9 @@ public class NodeData : MonoBehaviour
     public int act;
     public int step;
     public int id;
-    public string type;
-    public string status;
+    public NODE_TYPES type;
+    public NODE_SUBTYPES subType;
+    public NODE_STATUS status;
     public int[] exits;
     public int[] enter;
 
@@ -98,9 +99,10 @@ public class NodeData : MonoBehaviour
 
     public void Populate(NodeDataHelper nodeData)
     {
-        this.status = nodeData.status;
+        this.status = (NODE_STATUS)Enum.Parse(typeof(NODE_STATUS), nodeData.status);
         this.id = nodeData.id;
-        this.type = nodeData.type;
+        this.type = (NODE_TYPES)Enum.Parse(typeof(NODE_TYPES), nodeData.type);
+        this.subType = (NODE_SUBTYPES)Enum.Parse(typeof(NODE_SUBTYPES), nodeData.subType);
         this.exits = nodeData.exits;
 
         this.name = nodeData.type + "_" + nodeData.id;
@@ -110,7 +112,7 @@ public class NodeData : MonoBehaviour
 
         //Debug.Log("Node data populate");
 
-        BackgroundImage bgi = bgSprites.Find(x => x.type == (NODE_TYPES)Enum.Parse(typeof(NODE_TYPES), nodeData.type));
+        BackgroundImage bgi = bgSprites.Find(x => x.type == type);
         if (bgi.imageGo != null)
         {
             bgi.imageGo.SetActive(true);
