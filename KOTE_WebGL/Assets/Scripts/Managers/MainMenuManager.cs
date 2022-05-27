@@ -10,7 +10,8 @@ public class MainMenuManager : MonoBehaviour
 {
     public TMP_Text nameText, moneyText, koteLabel;
 
-    public Button playButton, treasuryButton, registerButton, loginButton, nameButton, fiefButton, settingButton;
+    public Button playButton, newExpeditionButton, treasuryButton, registerButton, loginButton, nameButton, fiefButton, settingButton;
+    public GameObject confirmationMenu;
 
     private bool _hasExpedition;
 
@@ -35,6 +36,7 @@ public class MainMenuManager : MonoBehaviour
 
         textField?.SetText( hasExpedition? "Resume" : "Play");
         
+        newExpeditionButton.gameObject.SetActive(_hasExpedition);
     }
 
     public void OnLoginSuccessful(string name, int fief)
@@ -58,8 +60,9 @@ public class MainMenuManager : MonoBehaviour
         moneyText.gameObject.SetActive(!preLoginStatus);
         playButton.interactable = !preLoginStatus;
         treasuryButton.interactable = !preLoginStatus;
-        //registerButton.gameObject.SetActive(preLoginStatus);
-        //loginButton.gameObject.SetActive(preLoginStatus);
+        newExpeditionButton.gameObject.SetActive(!preLoginStatus);
+        registerButton.gameObject.SetActive(preLoginStatus);
+        loginButton.gameObject.SetActive(preLoginStatus);
         registerButton.interactable = preLoginStatus;
         loginButton.interactable = preLoginStatus;
         nameButton.gameObject.SetActive(!preLoginStatus);
@@ -101,8 +104,26 @@ public class MainMenuManager : MonoBehaviour
             //koteLabel.gameObject.SetActive(false);
             treasuryButton.interactable = false;
             GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
-        }       
+        }
+    }
 
-        
+    public void OnNewExpeditionButton()
+    {
+        confirmationMenu.SetActive(true);
+    }
+
+    public void OnNewExpeditionConfirmButton()
+    {
+        // cancel the exepedition
+        GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.Invoke();
+        confirmationMenu.SetActive(false);
+        // then start a new one
+        treasuryButton.interactable = false;
+        GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
+    }
+
+    public void OnNewExpeditionBackButton()
+    {
+        confirmationMenu.SetActive(false);
     }
 }

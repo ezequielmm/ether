@@ -19,6 +19,7 @@ public class WebRequesterManager : MonoBehaviour
     private readonly string urlExpeditionStatus = "/gsrv/v1/expeditions/status";
     private readonly string urlCharactersList = "/gsrv/v1/characters";
     private readonly string urlExpeditionRequest = "/gsrv/v1/expeditions";
+    private readonly string urlExpeditionCancel = "/gsrv/v1/expeditions/cancel";
 
 
     private void Awake()
@@ -31,6 +32,7 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_LOGIN.AddListener(RequestLogin);
         GameManager.Instance.EVENT_REQUEST_PROFILE.AddListener(RequestProfile);
         GameManager.Instance.EVENT_REQUEST_LOGOUT.AddListener(RequestLogout);
+        GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.AddListener(RequestExpeditionCancel);
     }
 
     private void Start()
@@ -53,6 +55,11 @@ public class WebRequesterManager : MonoBehaviour
     {
 
         StartCoroutine(GetExpeditionStatus());
+    }
+
+    public void RequestExpeditionCancel()
+    {
+        StartCoroutine(CancelOngoingExpedition());
     }
 
     public void OnRandomNameEvent(string previousName)
@@ -332,5 +339,26 @@ public class WebRequesterManager : MonoBehaviour
         {
             Debug.Log("[Error on RequestNewExpedition]");
         }
+    }
+
+    private IEnumerator CancelOngoingExpedition()
+    {
+        string fullURL = $"{baseUrl}{urlExpeditionCancel}";
+        string token = PlayerPrefs.GetString("session_token");
+        
+        UnityWebRequest request = UnityWebRequest.Post(fullURL, "");
+        request.SetRequestHeader("Authorization", $"Bearer {token}");
+
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.Log("[Error canceling expedition]");
+            yield break;
+        }
+        
+        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false);
+        Debug.Log("answer from cancel expedition " + request.downloadHandler.text);
     }
 }

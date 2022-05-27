@@ -101,7 +101,9 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<bool> EVENT_EXPEDITION_STATUS_UPDATE = new UnityEvent<bool>();
     [HideInInspector]
     public UnityEvent EVENT_EXPEDITION_CONFIRMED = new UnityEvent();
-    
+    [HideInInspector]
+    public UnityEvent EVENT_REQUEST_EXPEDITION_CANCEL = new UnityEvent();
+
     //MAP EVENTS
     [HideInInspector]
     public UnityEvent<string> EVENT_MAP_NODES_UPDATE = new UnityEvent<string>();
