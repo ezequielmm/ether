@@ -16,7 +16,7 @@ public static class Utils
         return result;
     }
 
-    public static TEnum ParseEnum<TEnum>(string dataString) where TEnum : struct
+    public static TEnum ParseEnum<TEnum>(string dataString) where TEnum : struct, Enum
     {
         TEnum parsedEnum;
         bool parseSuccess = Enum.TryParse(dataString, out parsedEnum);
