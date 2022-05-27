@@ -10351,17 +10351,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgSprites:
-  - type: 0
-    imageGo: {fileID: 2809503541552325168}
   - type: 1
-    imageGo: {fileID: 6966435326268907109}
+    imageGo: {fileID: 2809503541552325168}
   - type: 2
-    imageGo: {fileID: 1253312687149335851}
+    imageGo: {fileID: 6966435326268907109}
   - type: 3
-    imageGo: {fileID: 1977959998612935866}
+    imageGo: {fileID: 1253312687149335851}
   - type: 4
-    imageGo: {fileID: 1064623043277589349}
+    imageGo: {fileID: 1977959998612935866}
   - type: 5
+    imageGo: {fileID: 1064623043277589349}
+  - type: 6
     imageGo: {fileID: 2172254499105225716}
   act: 0
   step: 0

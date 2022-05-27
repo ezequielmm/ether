@@ -91,10 +91,10 @@ public class NodeData : MonoBehaviour
     
     private void PopulateNodeInformation(NodeDataHelper nodeData)
     {
-        status = (NODE_STATUS)Enum.Parse(typeof(NODE_STATUS), nodeData.status);
+        status = Utils.ParseEnum<NODE_STATUS>(nodeData.status);
         id = nodeData.id;
-        type = (NODE_TYPES)Enum.Parse(typeof(NODE_TYPES), nodeData.type);
-        subType = (NODE_SUBTYPES)Enum.Parse(typeof(NODE_SUBTYPES), nodeData.subType);
+        type = Utils.ParseEnum<NODE_TYPES>(nodeData.type);
+        subType = Utils.ParseEnum<NODE_SUBTYPES>(nodeData.subType);
         exits = nodeData.exits;
         name = nodeData.type + "_" + nodeData.id;
     }
