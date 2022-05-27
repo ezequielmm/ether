@@ -38,7 +38,8 @@ public enum NODE_TYPES
     encounter,
     combat,
     camp,
-    merchant
+    merchant,
+    treasure
 }
 
 public enum NODE_SUBTYPES
@@ -54,7 +55,8 @@ public enum NODE_SUBTYPES
     combat_boss,
     camp_regular,
     camp_house,
-    merchant
+    merchant,
+    treasure
 }
 
 public enum NODE_STATUS
