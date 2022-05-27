@@ -160,7 +160,7 @@ public class GameManager : SingleTon<GameManager>
 
     void Update()
     {
-        Debug.Log(AudioListener.volume);
+        
     }
 
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene
