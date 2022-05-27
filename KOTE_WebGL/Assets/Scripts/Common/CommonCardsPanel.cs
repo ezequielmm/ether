@@ -29,7 +29,7 @@ public class CommonCardsPanel : MonoBehaviour
         discardDeck = new Deck();
         exhaustDeck = new Deck();
 
-        if (nodeState != null && nodeState.data !=null && nodeState.data.data != null & nodeState.data.data.player != null && nodeState.data.data.player.cards != null)
+        if (nodeState != null && nodeState.data !=null && nodeState.data.data != null && nodeState.data.data.player != null && nodeState.data.data.player.cards != null)
         {
             if (nodeState.data.data.player.cards.draw != null)
             {

@@ -111,6 +111,10 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<NodeStateData,WS_QUERY_TYPE> EVENT_NODE_DATA_UPDATE = new UnityEvent<NodeStateData, WS_QUERY_TYPE>();
     [HideInInspector]
     public UnityEvent<int> EVENT_MAP_NODE_MOUSE_OVER = new UnityEvent<int>();
+    [HideInInspector] 
+    public UnityEvent<NodeData> EVENT_MAP_REQUEST_NODE_CONFIRMATION = new UnityEvent<NodeData>();
+    [HideInInspector] 
+    public UnityEvent<int> EVENT_MAP_ACTIVATE_PORTAL = new UnityEvent<int>();
     /// <summary>
     /// Scroll map buttons events. First bool enable/disable, second bool direction left/right
     /// </summary>
@@ -156,11 +160,6 @@ public class GameManager : SingleTon<GameManager>
     void Start()
     {
         SceneManager.activeSceneChanged += UpdateSoundVolume;
-    }
-
-    void Update()
-    {
-        
     }
 
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -13,5 +14,24 @@ public static class Utils
         string result =reader.ReadToEnd();
         reader.Close();
         return result;
+    }
+    
+    // utility function to clean up an enum when we're going to display it to the player
+    public static string CapitalizeEveryWordOfEnum<T>(T inEnumValue){
+        if (!inEnumValue.GetType().IsEnum)
+        {
+            throw new Exception("Input value is not an Enum");
+        }
+
+        string enumString = inEnumValue.ToString();
+        string[] splitEnum = enumString.Split(new[] { '_' });
+        splitEnum[0] = char.ToUpper(splitEnum[0][0]) + splitEnum[0].Substring(1);
+        string returnString = "";
+        foreach (string word in splitEnum)
+        {
+            string capitalizeWord = char.ToUpper(word[0]) + word.Substring(1);
+            returnString += capitalizeWord + " ";
+        }
+        return returnString.Trim();
     }
 }

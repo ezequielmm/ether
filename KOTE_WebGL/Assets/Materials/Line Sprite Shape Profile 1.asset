@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af7181f404f1447c0a7a17b3070b952b, type: 3}
-  m_Name: Sprite Shape Profile
+  m_Name: Line Sprite Shape Profile 1
   m_EditorClassIdentifier: 
   m_Angles:
   - m_Start: -180
     m_End: 180
     m_Order: 0
     m_Sprites:
-    - {fileID: 21300000, guid: 121cf6a84a8073b428afc637f7ff2397, type: 3}
-  m_FillTexture: {fileID: 2800000, guid: 121cf6a84a8073b428afc637f7ff2397, type: 3}
+    - {fileID: 21300000, guid: 2c79c52372e1ee142bd94c8662e3163f, type: 3}
+  m_FillTexture: {fileID: 2800000, guid: 2c79c52372e1ee142bd94c8662e3163f, type: 3}
   m_CornerSprites:
   - m_CornerType: 0
     m_Sprites:
