@@ -32,7 +32,8 @@ public class PathManager : MonoBehaviour
 
     private void OnMouseOverExitNode(int nodeId)
     {
-        bool isMousedOver = nodeId == exitNodeId;
+        // check if the moused over node is the exit node, and it's available
+        bool isMousedOver = nodeId == exitNodeId && exitNodeStatus == NODE_STATUS.available;
         // we have to check if the entrance node is active so we don't deactivate the lines showing the path traveled
         if (entranceNodeStatus == NODE_STATUS.active)
         {
@@ -42,7 +43,8 @@ public class PathManager : MonoBehaviour
 
     private void DetermineIfPathIsShown()
     {
-        if (exitNodeStatus == NODE_STATUS.disabled || entranceNodeStatus == NODE_STATUS.disabled)
+        if (exitNodeStatus == NODE_STATUS.disabled || entranceNodeStatus == NODE_STATUS.disabled ||
+            exitNodeStatus == NODE_STATUS.available)
         {
             lineController.gameObject.SetActive(false);
         }
@@ -65,6 +67,7 @@ public class PathManager : MonoBehaviour
             pos.y = i * offsetY;
             pathController.spline.SetPosition(i, pos);
         }
+
         // set the dotted line to the exact same position
         MatchSplinesToEachOther();
     }

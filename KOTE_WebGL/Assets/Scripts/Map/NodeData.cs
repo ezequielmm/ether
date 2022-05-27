@@ -38,6 +38,7 @@ public class NodeData : MonoBehaviour
     public GameObject spriteShapePrefab;
     private GameObject spriteShape;
 
+    #region UnityEventFunctions
 
     private void Awake()
     {
@@ -51,14 +52,131 @@ public class NodeData : MonoBehaviour
 
     private void Start()
     {
+        GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.AddListener(ActivatePortal);
     }
 
-    /* public void OnNodeClick()
-     {
-         Debug.Log("Node clicked "+id);
-         GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(id);
-     }*/
+    private void OnMouseDown()
+    {
+        if (!nodeClickDisabled)
+        {
+            Debug.Log("click");
+            // if clicking on a royal house node, we want to ask the player for confirmation before activating the node
+            if (type == NODE_TYPES.royal_house)
+            {
+                GameManager.Instance.EVENT_MAP_REQUEST_NODE_CONFIRMATION.Invoke(this);
+                return;
+            }
 
+            GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);
+        }
+    }
+
+    private void OnMouseOver()
+    {
+        GameManager.Instance.EVENT_MAP_NODE_MOUSE_OVER.Invoke(id);
+    }
+
+    private void OnMouseExit()
+    {
+        GameManager.Instance.EVENT_MAP_NODE_MOUSE_OVER.Invoke(-1);
+    }
+
+    #endregion
+    public void Populate(NodeDataHelper nodeData)
+    {
+        PopulateNodeInformation(nodeData);
+        SelectNodeImage(nodeData);
+        UpdateNodeStatusVisuals(nodeData);
+    }
+    
+    private void PopulateNodeInformation(NodeDataHelper nodeData)
+    {
+        status = (NODE_STATUS)Enum.Parse(typeof(NODE_STATUS), nodeData.status);
+        id = nodeData.id;
+        type = (NODE_TYPES)Enum.Parse(typeof(NODE_TYPES), nodeData.type);
+        subType = (NODE_SUBTYPES)Enum.Parse(typeof(NODE_SUBTYPES), nodeData.subType);
+        exits = nodeData.exits;
+        name = nodeData.type + "_" + nodeData.id;
+    }
+
+    private void SelectNodeImage(NodeDataHelper nodeData)
+    {
+        BackgroundImage bgi = bgSprites.Find(x => x.type == type);
+        if (bgi.imageGo != null)
+        {
+            bgi.imageGo.SetActive(true);
+            if (status == NODE_STATUS.disabled)
+            {
+                bgi.imageGo.GetComponent<SpriteRenderer>().material = grayscaleMaterial;
+            }
+        }
+        else
+        {
+            Debug.Log(" nodeData.type " + nodeData.type + " not found ");
+        }
+    }
+
+    private void UpdateNodeStatusVisuals(NodeDataHelper nodeData)
+    {
+        Color indexColor = Color.grey;
+
+        switch (Enum.Parse(typeof(NODE_STATUS), nodeData.status))
+        {
+            case NODE_STATUS.disabled:
+                this.nodeClickDisabled = true;
+                break;
+            case NODE_STATUS.completed:
+                indexColor = Color.red;
+                this.nodeClickDisabled = true;
+                break;
+            case NODE_STATUS.active:
+                if (nodeData.type == NODE_TYPES.portal.ToString()) this.nodeClickDisabled = true;
+                indexColor = Color.cyan;
+                break;
+            case NODE_STATUS.available:
+                indexColor = Color.green;
+                availableParticleSystem.Play();
+                break;
+        }
+
+        GetComponentInChildren<TextMeshPro>().SetText(nodeData.id.ToString());
+        GetComponentInChildren<TextMeshPro>().color = indexColor;
+    }
+
+
+    // when we update the sprite shape, we pass it the node data for the exit node directly, because it needs three things from it
+    public void UpdateSpriteShape(NodeData exitNode)
+    {
+        if (exitNode != null)
+        {
+            spriteShape = Instantiate(spriteShapePrefab, this.transform);
+            // spriteShape.GetComponent<SpriteShapeController>().spline.SetPosition(4, spriteShape.transform.InverseTransformPoint(targetOb.transform.position));
+            spriteShape.GetComponent<PathManager>().Populate(exitNode, status);
+        }
+    }
+
+    // invoked by the royal house menu when the royal house is activated.
+    private void ActivatePortal(int nodeId)
+    {
+        // TODO check to make sure correct portal animates
+        if (type == NODE_TYPES.portal)
+        {
+            StartCoroutine(EnterPortal(nodeId));
+        }
+    }
+
+    // wait for the portal animation to end before activating the node
+    IEnumerator EnterPortal(int nodeId)
+    {
+        portalActivateParticleSystem.time = GameSettings.PORTAL_ACTIVATION_ANIMATION_TIME;
+        portalActivateParticleSystem.Play();
+        yield return new WaitForSeconds(GameSettings.PORTAL_ACTIVATION_ANIMATION_TIME);
+        GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(nodeId);
+    }
+
+    #region oldFunctions
+
+    //TODO eventually get rid of this, this is from the old map generation
     public void UpdateLine(GameObject targetOb)
     {
         //Debug.Log("Updating line!");
@@ -86,108 +204,5 @@ public class NodeData : MonoBehaviour
         lineRenderer.SetPosition(1, targetPosition);
     }
 
-    // when we update the sprite shape, we pass it the node data for the exit node directly, because it needs three things from it
-    public void UpdateSpriteShape(NodeData exitNode)
-    {
-        if (exitNode != null)
-        {
-            spriteShape = Instantiate(spriteShapePrefab, this.transform);
-            // spriteShape.GetComponent<SpriteShapeController>().spline.SetPosition(4, spriteShape.transform.InverseTransformPoint(targetOb.transform.position));
-            spriteShape.GetComponent<PathManager>().Populate(exitNode, status);
-        }
-    }
-
-    public void Populate(NodeDataHelper nodeData)
-    {
-        this.status = (NODE_STATUS)Enum.Parse(typeof(NODE_STATUS), nodeData.status);
-        this.id = nodeData.id;
-        this.type = (NODE_TYPES)Enum.Parse(typeof(NODE_TYPES), nodeData.type);
-        this.subType = (NODE_SUBTYPES)Enum.Parse(typeof(NODE_SUBTYPES), nodeData.subType);
-        this.exits = nodeData.exits;
-
-        this.name = nodeData.type + "_" + nodeData.id;
-
-        GetComponentInChildren<TextMeshPro>().SetText(nodeData.id.ToString());
-
-
-        //Debug.Log("Node data populate");
-
-        BackgroundImage bgi = bgSprites.Find(x => x.type == type);
-        if (bgi.imageGo != null)
-        {
-            bgi.imageGo.SetActive(true);
-            if (status == NODE_STATUS.disabled)
-            {
-                bgi.imageGo.GetComponent<SpriteRenderer>().material = grayscaleMaterial;
-            }
-        }
-        else
-        {
-            Debug.Log(" nodeData.type " + nodeData.type + " not found ");
-        }
-
-
-        Color indexColor = Color.grey;
-
-        switch (Enum.Parse(typeof(NODE_STATUS), nodeData.status))
-        {
-            case NODE_STATUS.disabled:
-                this.nodeClickDisabled = true;
-                break;
-            case NODE_STATUS.completed:
-                indexColor = Color.red;
-                this.nodeClickDisabled = true;
-                break;
-            case NODE_STATUS.active:
-                if (nodeData.type == NODE_TYPES.portal.ToString()) this.nodeClickDisabled = true;
-                indexColor = Color.cyan;
-                break;
-            case NODE_STATUS.available:
-                indexColor = Color.green;
-                availableParticleSystem.Play();
-                break;
-        }
-
-        GetComponentInChildren<TextMeshPro>().color = indexColor;
-    }
-
-    private void OnMouseDown()
-    {
-        if (!nodeClickDisabled)
-        {
-            Debug.Log("click");
-            // if clicking on a royal house node, we want to ask the player for confirmation before activating the node
-            if (type == NODE_TYPES.royal_house)
-            {
-                GameManager.Instance.EVENT_MAP_REQUEST_NODE_CONFIRMATION.Invoke(this);
-                return;
-            }
-
-            if (type == NODE_TYPES.portal)
-            {
-                StartCoroutine(EnterPortal());
-                return;
-            }
-            GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);
-        }
-    }
-
-    private void OnMouseOver()
-    {
-        GameManager.Instance.EVENT_MAP_NODE_MOUSE_OVER.Invoke(id);
-    }
-
-    private void OnMouseExit()
-    {
-        GameManager.Instance.EVENT_MAP_NODE_MOUSE_OVER.Invoke(-1);
-    }
-
-    // wait for the portal animation to end before activating the node
-    IEnumerator EnterPortal()
-    {
-        portalActivateParticleSystem.time = GameSettings.PORTAL_ACTIVATION_ANIMATION_TIME;
-        portalActivateParticleSystem.Play();
-        yield return new WaitForSeconds(GameSettings.PORTAL_ACTIVATION_ANIMATION_TIME);
-        GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);
-    }
+    #endregion
 }

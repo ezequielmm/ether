@@ -113,6 +113,8 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<int> EVENT_MAP_NODE_MOUSE_OVER = new UnityEvent<int>();
     [HideInInspector] 
     public UnityEvent<NodeData> EVENT_MAP_REQUEST_NODE_CONFIRMATION = new UnityEvent<NodeData>();
+    [HideInInspector] 
+    public UnityEvent<int> EVENT_MAP_ACTIVATE_PORTAL = new UnityEvent<int>();
     /// <summary>
     /// Scroll map buttons events. First bool enable/disable, second bool direction left/right
     /// </summary>

@@ -30,7 +30,7 @@ public class NodeConfirmPanelManager : MonoBehaviour
     public void ConfirmSelection()
     {
         nodeConfirmContainer.SetActive(false);
-        GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(nodeId);
+        GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.Invoke(nodeId);
     }
 
     public void GoBack()
