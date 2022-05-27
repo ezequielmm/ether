@@ -325,6 +325,7 @@ MonoBehaviour:
   nameText: {fileID: 268814861707174154}
   moneyText: {fileID: 3131140181173809878}
   koteLabel: {fileID: 0}
+  buttonPanel: {fileID: 7529312769314855789}
   playButton: {fileID: 8177204198001534365}
   newExpeditionButton: {fileID: 3789730152164239881}
   treasuryButton: {fileID: 7076252712982377043}
@@ -479,6 +480,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4793569339800019224}
   - component: {fileID: 3426070399363702191}
+  - component: {fileID: 7529312769314855789}
   m_Layer: 5
   m_Name: ButtonsPanel
   m_TagString: Untagged
@@ -536,6 +538,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!225 &7529312769314855789
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3009663106970770743}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &3024320741435571509
 GameObject:
   m_ObjectHideFlags: 0

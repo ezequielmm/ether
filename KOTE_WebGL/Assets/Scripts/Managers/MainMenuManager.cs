@@ -9,7 +9,9 @@ using UnityEngine.UI;
 public class MainMenuManager : MonoBehaviour
 {
     public TMP_Text nameText, moneyText, koteLabel;
-
+    [Tooltip("the entire button panel's canvas group for controling them all")]
+    public CanvasGroup buttonPanel;
+    [Tooltip("Main menu buttons for individual control")]
     public Button playButton, newExpeditionButton, treasuryButton, registerButton, loginButton, nameButton, fiefButton, settingButton;
     public GameObject confirmationMenu;
 
@@ -102,7 +104,7 @@ public class MainMenuManager : MonoBehaviour
         {
             //show the character selection panel
             //koteLabel.gameObject.SetActive(false);
-            treasuryButton.interactable = false;
+            buttonPanel.interactable = false;
             GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
         }
     }
@@ -110,6 +112,7 @@ public class MainMenuManager : MonoBehaviour
     public void OnNewExpeditionButton()
     {
         confirmationMenu.SetActive(true);
+        buttonPanel.interactable = false;
     }
 
     public void OnNewExpeditionConfirmButton()
@@ -118,12 +121,12 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.Invoke();
         confirmationMenu.SetActive(false);
         // then start a new one
-        treasuryButton.interactable = false;
         GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
     public void OnNewExpeditionBackButton()
     {
         confirmationMenu.SetActive(false);
+        buttonPanel.interactable = true;
     }
 }
