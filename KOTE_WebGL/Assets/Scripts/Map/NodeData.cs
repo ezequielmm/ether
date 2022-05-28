@@ -63,7 +63,7 @@ public class NodeData : MonoBehaviour
             // if clicking on a royal house node, we want to ask the player for confirmation before activating the node
             if (type == NODE_TYPES.royal_house)
             {
-                GameManager.Instance.EVENT_MAP_REQUEST_NODE_CONFIRMATION.Invoke(this);
+                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Do you want to enter" + Utils.CapitalizeEveryWordOfEnum(subType), EnterRoyalHouse);
                 return;
             }
 
@@ -153,6 +153,11 @@ public class NodeData : MonoBehaviour
             // spriteShape.GetComponent<SpriteShapeController>().spline.SetPosition(4, spriteShape.transform.InverseTransformPoint(targetOb.transform.position));
             spriteShape.GetComponent<PathManager>().Populate(exitNode, status);
         }
+    }
+
+    private void EnterRoyalHouse()
+    {
+        GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.Invoke(id);
     }
 
     // invoked by the royal house menu when the royal house is activated.
