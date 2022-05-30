@@ -13,7 +13,7 @@ public class MainMenuManager : MonoBehaviour
     public CanvasGroup buttonPanel;
     [Tooltip("Main menu buttons for individual control")]
     public Button playButton, newExpeditionButton, treasuryButton, registerButton, loginButton, nameButton, fiefButton, settingButton;
-    public GameObject confirmationMenu;
+    
 
     private bool _hasExpedition;
 
@@ -111,22 +111,14 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnNewExpeditionButton()
     {
-        confirmationMenu.SetActive(true);
-        buttonPanel.interactable = false;
+        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Do you want to cancel the current expedition?", OnNewExpeditionConfirmed);
     }
 
-    public void OnNewExpeditionConfirmButton()
+    public void OnNewExpeditionConfirmed()
     {
-        // cancel the exepedition
+        // cancel the expedition
         GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.Invoke();
-        confirmationMenu.SetActive(false);
-        // then start a new one
-        GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
+              
     }
 
-    public void OnNewExpeditionBackButton()
-    {
-        confirmationMenu.SetActive(false);
-        buttonPanel.interactable = true;
-    }
 }

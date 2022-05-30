@@ -211,7 +211,7 @@ public class WebRequesterManager : MonoBehaviour
 
         RequestExpeditionStatus();
 
-        GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.Invoke(profileData);
+        GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.Invoke(profileData);//TODO: these 2 events here don't look good
         GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.Invoke(name, fief);
                      
     }   
