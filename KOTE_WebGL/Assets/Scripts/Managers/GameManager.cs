@@ -114,7 +114,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector]
     public UnityEvent<int> EVENT_MAP_NODE_MOUSE_OVER = new UnityEvent<int>();
     [HideInInspector] 
-    public UnityEvent<NodeData> EVENT_MAP_REQUEST_NODE_CONFIRMATION = new UnityEvent<NodeData>();
+    public UnityEvent<string, Action> EVENT_SHOW_CONFIRMATION_PANEL = new UnityEvent<string, Action>();
     [HideInInspector] 
     public UnityEvent<int> EVENT_MAP_ACTIVATE_PORTAL = new UnityEvent<int>();
     /// <summary>
