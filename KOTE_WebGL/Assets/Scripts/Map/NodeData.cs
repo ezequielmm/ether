@@ -29,7 +29,7 @@ public class NodeData : MonoBehaviour
     public Material lineMat;
     public Material grayscaleMaterial;
     [FormerlySerializedAs("pSystem")] public ParticleSystem availableParticleSystem;
-    public ParticleSystem portalActivateParticleSystem;
+   
 
     public bool nodeClickDisabled = false;
 
@@ -52,7 +52,7 @@ public class NodeData : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.AddListener(ActivatePortal);
+        //GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.AddListener(ActivatePortal);
     }
 
     private void OnMouseDown()
@@ -63,11 +63,15 @@ public class NodeData : MonoBehaviour
             // if clicking on a royal house node, we want to ask the player for confirmation before activating the node
             if (type == NODE_TYPES.royal_house)
             {
-                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Do you want to enter" + Utils.CapitalizeEveryWordOfEnum(subType), EnterRoyalHouse);
+                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Do you want to enter" + Utils.CapitalizeEveryWordOfEnum(subType), OnConfirmRoyalHouse);
                 return;
             }
+            else
+            {
+                GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);
+            }
 
-            GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);
+            
         }
     }
 
@@ -155,29 +159,10 @@ public class NodeData : MonoBehaviour
         }
     }
 
-    private void EnterRoyalHouse()
+    private void OnConfirmRoyalHouse()
     {
-        GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.Invoke(id);
-    }
-
-    // invoked by the royal house menu when the royal house is activated.
-    private void ActivatePortal(int nodeId)
-    {
-        // TODO check to make sure correct portal animates
-        if (type == NODE_TYPES.portal)
-        {
-            StartCoroutine(EnterPortal(nodeId));
-        }
-    }
-
-    // wait for the portal animation to end before activating the node
-    IEnumerator EnterPortal(int nodeId)
-    {
-        portalActivateParticleSystem.time = GameSettings.PORTAL_ACTIVATION_ANIMATION_TIME;
-        portalActivateParticleSystem.Play();
-        yield return new WaitForSeconds(GameSettings.PORTAL_ACTIVATION_ANIMATION_TIME);
-        GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(nodeId);
-    }
+        GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);        
+    }  
 
     #region oldFunctions
 
