@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using DG.Tweening;
+using UnityEngine;
 
 public class MapSpriteManager : MonoBehaviour
 {
@@ -40,11 +36,6 @@ public class MapSpriteManager : MonoBehaviour
         playerIcon.SetActive(false);
     }
 
-    private void OnMaskDoubleClick()
-    {
-        ScrollBackToPlayerIcon();
-    }
-
     private void Update()
     {
         if (!scrollMap)
@@ -63,11 +54,10 @@ public class MapSpriteManager : MonoBehaviour
         newPos.x += scrollSpeed;
 
         //limit the map move to the right
-        //if (newPos.x > 0) newPos.x = 0;
-        if (newPos.x > mapBounds.extents.x) newPos.x = mapBounds.extents.x;
+        if (newPos.x > 0) newPos.x = 0;
 
         //limit left scroll
-        if (newPos.x < mapBounds.extents.x * -1) newPos.x = mapBounds.extents.x * -1;
+        if (newPos.x < mapBounds.max.x * -1) newPos.x = mapBounds.max.x * -1;
 
         if (newPos.x < 0)
         {
@@ -79,6 +69,12 @@ public class MapSpriteManager : MonoBehaviour
         }
 
         //Debug.Log(currentMapPos);
+    }
+
+
+    private void OnMaskDoubleClick()
+    {
+        ScrollBackToPlayerIcon();
     }
 
     private void OnScrollButtonClicked(bool active, bool direction)
@@ -96,16 +92,6 @@ public class MapSpriteManager : MonoBehaviour
                 scrollSpeed = GameSettings.MAP_SCROLL_SPEED;
             }
         }
-
-
-        /* if (active)
-         {
-
-         }
-         else
-         {
-             scrollSpeed = 0;
-         }*/
     }
 
     private void OnMapIconClicked()
@@ -207,7 +193,8 @@ public class MapSpriteManager : MonoBehaviour
                         new Vector3(columnOffsetCounter, yy, GameSettings.MAP_SPRITE_ELEMENTS_Z);
                     newNode.GetComponent<NodeData>().Populate(nodeData);
 
-                    if (nodeData.status == NODE_STATUS.active.ToString() || nodeData.status.Equals(NODE_STATUS.completed))
+                    if (nodeData.status == NODE_STATUS.active.ToString() ||
+                        nodeData.status.Equals(NODE_STATUS.completed))
                     {
                         playerIcon.SetActive(true);
                         playerIcon.transform.localPosition = newNode.transform.localPosition;
@@ -273,10 +260,6 @@ public class MapSpriteManager : MonoBehaviour
             //Debug.Log("renderer:" + renderer.gameObject.name);
             bounds.Encapsulate(renderer.bounds);
         }
-
-        Vector3 localCenter = bounds.center - this.transform.position;
-        bounds.center = localCenter;
-        //  Debug.Log("The local bounds of this model is " + bounds);
 
         this.transform.rotation = currentRotation;
 
