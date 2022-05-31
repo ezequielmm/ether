@@ -11,7 +11,7 @@ public class NodeData : MonoBehaviour
     [Serializable]
     public struct BackgroundImage
     {
-        public NODE_TYPES type;
+        public NODE_SUBTYPES type;
         public GameObject imageGo;
     }
 
@@ -101,7 +101,7 @@ public class NodeData : MonoBehaviour
 
     private void SelectNodeImage(NodeDataHelper nodeData)
     {
-        BackgroundImage bgi = bgSprites.Find(x => x.type == type);
+        BackgroundImage bgi = bgSprites.Find(x => x.type == subType);
         if (bgi.imageGo != null)
         {
             bgi.imageGo.SetActive(true);
