@@ -9,7 +9,8 @@ public static class GameSettings
     public const string MAP_ELEMENTS_SORTING_LAYER_NAME = "MapElements";
     public const int MAP_LINE_RENDERER_SORTING_LAYER_ORDER = 50;
     public const float MAP_SCROLL_SPEED = 2f;
-    public static float MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON = 2;
+    public const float MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON = 2;
+    public const float MAP_SCROLL_ANIMATION_DURATION = 5f;
     public static float DOUBLE_CLICK_TIME_DELTA = 1;
     public static float PORTAL_ACTIVATION_ANIMATION_TIME = 2;
 

@@ -1,10 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using DG.Tweening;
+using UnityEngine;
 
 public class MapSpriteManager : MonoBehaviour
 {
@@ -248,17 +245,47 @@ public class MapSpriteManager : MonoBehaviour
 
         mapBounds = CalculateLocalBounds();
 
-        ScrollBackToPlayerIcon();
+        ScrollFromBoss();
     }
 
-    void ScrollBackToPlayerIcon()
+    void ScrollBackToPlayerIcon(float scrollTime = GameSettings.MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON)
     {
         float targetx = playerIcon.transform.localPosition.x / -2;
 
         Debug.Log("node:" + nodesHolder.transform.localPosition.x);
         Debug.Log("targetx:" + targetx);
 
-        nodesHolder.transform.DOLocalMoveX(targetx, GameSettings.MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON);
+        nodesHolder.transform.DOLocalMoveX(targetx, scrollTime);
+    }
+
+    void ScrollFromBoss()
+    {
+        float targetX = GetBossNode().transform.localPosition.x * -1;
+        nodesHolder.transform.position = new Vector3(targetX, 0, 0);
+        ScrollBackToPlayerIcon(GameSettings.MAP_SCROLL_ANIMATION_DURATION);
+    }
+
+    // TODO this coroutine is for when we need to scroll to the boss from the portal being activated
+    private IEnumerator ScrollFromBossToPlayer()
+    {
+        float targetX = GetBossNode().transform.localPosition.x * -1;
+        Tween moveToBossTween = nodesHolder.transform.DOLocalMoveX(targetX, GameSettings.MAP_SCROLL_SPEED);
+        yield return moveToBossTween.WaitForCompletion();
+        ScrollBackToPlayerIcon(GameSettings.MAP_SCROLL_ANIMATION_DURATION);
+    }
+
+    // get the boss node so we can move to it
+    private GameObject GetBossNode()
+    {
+        for (int i = nodes.Count - 1; i >= 0; i--)
+        {
+            if (nodes[i].GetComponent<NodeData>().subType == NODE_SUBTYPES.combat_boss)
+            {
+                return nodes[i];
+            }
+        }
+        Debug.LogError("Warning: No boss node found");
+        return nodes[nodes.Count-1];
     }
 
     Bounds CalculateLocalBounds()
