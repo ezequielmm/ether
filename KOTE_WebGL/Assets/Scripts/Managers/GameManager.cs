@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 
@@ -120,6 +121,8 @@ public class GameManager : SingleTon<GameManager>
     /// </summary>
     [HideInInspector]
     public UnityEvent<bool,bool> EVENT_MAP_SCROLL_CLICK = new UnityEvent<bool,bool>();
+    [HideInInspector]
+    public UnityEvent<Vector3> EVENT_MAP_SCROLL_DRAG = new UnityEvent<Vector3>();
     [HideInInspector]
     public UnityEvent EVENT_MAP_MASK_DOUBLECLICK = new UnityEvent();
 

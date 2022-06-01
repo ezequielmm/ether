@@ -31,6 +31,7 @@ public class MapSpriteManager : MonoBehaviour
         GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeDataUpdated);
         GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnMapIconClicked);
         GameManager.Instance.EVENT_MAP_SCROLL_CLICK.AddListener(OnScrollButtonClicked);
+        GameManager.Instance.EVENT_MAP_SCROLL_DRAG.AddListener(OnMapScrollDragged);
         GameManager.Instance.EVENT_MAP_MASK_DOUBLECLICK.AddListener(OnMaskDoubleClick);
 
         playerIcon.SetActive(false);
@@ -92,6 +93,25 @@ public class MapSpriteManager : MonoBehaviour
                 scrollSpeed = GameSettings.MAP_SCROLL_SPEED;
             }
         }
+    }
+
+    // called while the player is dragging the map
+    private void OnMapScrollDragged(Vector3 dragOffset)
+    {
+        // make sure this script isn't scrolling
+        scrollSpeed = 0;
+        // and keep the map in bounds
+        
+        Vector3 newPos = nodesHolder.transform.position;
+        newPos.x = Camera.main.ScreenToWorldPoint(Input.mousePosition).x - dragOffset.x;
+
+        //limit the map move to the right
+        if (newPos.x > 0) newPos.x = 0;
+
+        //limit left scroll
+        if (newPos.x < mapBounds.max.x * -1) newPos.x = mapBounds.max.x * -1;
+        nodesHolder.transform.position = newPos;
+        
     }
 
     private void OnMapIconClicked()
