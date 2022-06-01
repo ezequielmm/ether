@@ -93,16 +93,6 @@ public class MapSpriteManager : MonoBehaviour
                 scrollSpeed = GameSettings.MAP_SCROLL_SPEED;
             }
         }
-
-
-        /* if (active)
-         {
-
-         }
-         else
-         {
-             scrollSpeed = 0;
-         }*/
     }
 
     private void OnMapIconClicked()
@@ -135,11 +125,24 @@ public class MapSpriteManager : MonoBehaviour
     {
         Debug.Log("[OnMapNodesDataUpdated] " + data);
 
-        //ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>("{\"data\":" + data + "}");
         ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>(data);
 
-        MapStructure mapStructure = new MapStructure();
+        MapStructure mapStructure = GenerateMapStructure(expeditionMapData);
 
+        InstantiateMapNodes(mapStructure);
+
+        CreateNodeConnections();
+
+        //at this point the map is completed. 
+        //we get the maps bounds to help later with scroll limits and animations
+        CalculateLocalMapBounds();
+
+        ScrollFromBoss();
+    }
+
+    MapStructure GenerateMapStructure(ExpeditionMapData expeditionMapData)
+    {
+        MapStructure mapStructure = new MapStructure();
         //parse nodes data
         for (int i = 0; i < expeditionMapData.data.Length; i++)
         {
@@ -162,13 +165,13 @@ public class MapSpriteManager : MonoBehaviour
 
             //add id
             mapStructure.acts[nodeData.act].steps[nodeData.step].nodesData.Add(nodeData);
-
-            if (nodeData.status == NODE_STATUS.available.ToString() &&
-                nodeData.type == NODE_TYPES.royal_house.ToString()) royal_houses_mode_on = true;
-
-            //Debug.Log("royal_houses_mode_on = "+ royal_houses_mode_on);
         }
 
+        return mapStructure;
+    }
+
+    void InstantiateMapNodes(MapStructure mapStructure)
+    {
         float columnOffsetCounter = GameSettings.MAP_SPRITE_NODE_X_OFFSET;
         float columnIncrement = GameSettings.MAP_SPRITE_NODE_X_OFFSET;
 
@@ -204,18 +207,27 @@ public class MapSpriteManager : MonoBehaviour
                         new Vector3(columnOffsetCounter, yy, GameSettings.MAP_SPRITE_ELEMENTS_Z);
                     newNode.GetComponent<NodeData>().Populate(nodeData);
 
-                    if (nodeData.status == NODE_STATUS.active.ToString() || nodeData.status.Equals(NODE_STATUS.completed))
+                    if (nodeData.status == NODE_STATUS.active.ToString() ||
+                        nodeData.status == NODE_STATUS.completed.ToString())
                     {
                         playerIcon.SetActive(true);
                         playerIcon.transform.localPosition = newNode.transform.localPosition;
                     }
+
+                    if (nodeData.status == NODE_STATUS.available.ToString() &&
+                        nodeData.type == NODE_TYPES.royal_house.ToString()) royal_houses_mode_on = true;
+
+                    //Debug.Log("royal_houses_mode_on = "+ royal_houses_mode_on);
                 }
 
                 //move next step (vertical group of nodes)
                 columnOffsetCounter += columnIncrement;
             }
         }
+    }
 
+    void CreateNodeConnections()
+    {
         foreach (GameObject curNode in nodes)
         {
             //Debug.Log("Searching :" + go.GetComponent<NodeData>().id);
@@ -239,13 +251,6 @@ public class MapSpriteManager : MonoBehaviour
                 }
             }
         }
-
-        //at this point the map is completed. 
-        //we get the maps bounds to help later with scroll limits and animations
-
-        mapBounds = CalculateLocalBounds();
-
-        ScrollFromBoss();
     }
 
     void ScrollBackToPlayerIcon(float scrollTime = GameSettings.MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON)
@@ -284,11 +289,12 @@ public class MapSpriteManager : MonoBehaviour
                 return nodes[i];
             }
         }
+
         Debug.LogError("Warning: No boss node found");
-        return nodes[nodes.Count-1];
+        return nodes[nodes.Count - 1];
     }
 
-    Bounds CalculateLocalBounds()
+    void CalculateLocalMapBounds()
     {
         Quaternion currentRotation = this.transform.rotation;
         this.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
@@ -307,6 +313,6 @@ public class MapSpriteManager : MonoBehaviour
 
         this.transform.rotation = currentRotation;
 
-        return bounds;
+        mapBounds = bounds;
     }
 }
