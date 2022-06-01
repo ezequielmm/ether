@@ -25,7 +25,7 @@ public class TreasuryManager : MonoBehaviour
 
     public void OnCharacterButton()
     {
-        tabsNavigatorManager.SelectTab(tabsNavigatorManager.tabButtons[0], tabsNavigatorManager.panels[0]);
+        tabsNavigatorManager.SelectFirstTab();
 
         SetTestingObjects();
     }
