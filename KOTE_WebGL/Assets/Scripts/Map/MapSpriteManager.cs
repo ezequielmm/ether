@@ -141,7 +141,8 @@ namespace map
             //we get the maps bounds to help later with scroll limits and animations
             CalculateLocalMapBounds();
 
-            ScrollFromBoss();
+            //ScrollFromBoss();
+            ScrollBackToPlayerIcon();
         }
 
         #region generateMap
@@ -279,6 +280,7 @@ namespace map
             nodesHolder.transform.DOLocalMoveX(targetx, scrollTime);
         }
 
+        
         void ScrollFromBoss()
         {
             float targetX = GetBossNode().transform.localPosition.x * -1;
