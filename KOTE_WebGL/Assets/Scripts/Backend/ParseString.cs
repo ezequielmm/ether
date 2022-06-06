@@ -11,7 +11,7 @@ public static class ParseString
         + @"([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
         + @"([a-zA-Z]+[\w-]+\.)+[a-zA-Z]{2,4})$";
 
-    public const string MatchPasswordPattern = @"^(?=.*[0-9])(?=.*[A-Z]).{8,}$";
+    public const string MatchPasswordPattern = @"^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*()_+=\[{\]};:<>|./?,-]).{8,}$";
 
     public static bool IsEmail(string email)
     {

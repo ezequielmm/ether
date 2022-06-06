@@ -28,12 +28,12 @@ public class RegisterPanelManager : MonoBehaviour
     public Button registerButton;
     public GameObject registerContainer;
 
-
     private bool validEmail;
     private bool emailConfirmed;
 
     private bool validPassword;
     private bool passwordConfirmed;
+    public Toggle showPassword;
 
     private void Awake()
     {
@@ -42,6 +42,14 @@ public class RegisterPanelManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLoginSucessful);
         GameManager.Instance.EVENT_REQUEST_LOGIN_ERROR.AddListener(OnLoginError);
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerRegisterPanel);
+    }
+
+    public void OnShowPassword()
+    {
+        passwordInputField.contentType = showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
+        passwordInputField.ForceLabelUpdate();
+        confirmPasswordInputField.contentType = showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
+        confirmPasswordInputField.ForceLabelUpdate();
     }
 
     private void OnNewRandomName(string newName)
@@ -86,45 +94,36 @@ public class RegisterPanelManager : MonoBehaviour
         registerButton.interactable = emailConfirmed && passwordConfirmed && termsAndConditions.isOn;
     }
 
-    public void VerifyEmail()
-    {
-        DeactivateAllErrorLabels();
-
+    #region
+    public bool VerifyEmail()
+    {   
         validEmail = ParseString.IsEmail(emailInputField.text);
         validEmailLabel.gameObject.SetActive(!validEmail);
-
-        UpdateRegisterButton();
+        return validEmail;
     }
 
-    public void ConfirmEmail()
+    public bool ConfirmEmail()
     {
-        DeactivateAllErrorLabels();
-
         emailConfirmed = validEmail && (emailInputField.text == confirmEmailInputField.text);
         emailNotMatchLabel.gameObject.SetActive(!emailConfirmed && validEmail);
-
-        UpdateRegisterButton();
+        return emailConfirmed;
     }
 
-    public void VerifyPassword()
+    public bool VerifyPassword()
     {
-        DeactivateAllErrorLabels();
-
         validPassword = ParseString.IsPassword(passwordInputField.text);
         validPasswordLabel.gameObject.SetActive(!validPassword);
-
-        UpdateRegisterButton();
+        return validPassword;
     }
 
-    public void ConfirmPassword()
-    {
-        DeactivateAllErrorLabels();
-
+    public bool ConfirmPassword()
+    {        
         passwordConfirmed = validPassword && (passwordInputField.text == confirmPasswordInputField.text);
         passwordNotMatchLabel.gameObject.SetActive(!passwordConfirmed && validPassword);
 
-        UpdateRegisterButton();
+        return passwordConfirmed;
     }
+    #endregion
 
     public void RequestNewName()
     {
@@ -153,5 +152,17 @@ public class RegisterPanelManager : MonoBehaviour
         passwordInputField.text = "";
         confirmPasswordInputField.text = "";
         registerContainer.SetActive(activate);
+    }
+
+    public void PerfomAllValidations()
+    {
+        DeactivateAllErrorLabels();
+
+        if(!VerifyEmail())return;
+        if(!ConfirmEmail())return;
+        if(!VerifyPassword())return;
+        if(!ConfirmPassword())return;
+
+        UpdateRegisterButton();
     }
 }

@@ -14,9 +14,9 @@ TagManager:
   - 
   - Water
   - UI
-  - Card
-  - Enemy
-  - Pointer
+  - Player
+  - 
+  - 
   - 
   - 
   - 
@@ -44,12 +44,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Card
-    uniqueID: 3387933161
-    locked: 0
-  - name: Enemy
-    uniqueID: 3699855255
-    locked: 0
-  - name: Pointer
-    uniqueID: 2462136163
+  - name: MapElements
+    uniqueID: 1449054989
     locked: 0

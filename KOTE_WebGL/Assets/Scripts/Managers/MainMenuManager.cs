@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,8 +9,13 @@ using UnityEngine.UI;
 public class MainMenuManager : MonoBehaviour
 {
     public TMP_Text nameText, moneyText, koteLabel;
+    [Tooltip("the entire button panel's canvas group for controling them all")]
+    public CanvasGroup buttonPanel;
+    [Tooltip("Main menu buttons for individual control")]
+    public Button playButton, newExpeditionButton, treasuryButton, registerButton, loginButton, nameButton, fiefButton, settingButton;
+    
 
-    public Button playButton, treasuryButton, registerButton, loginButton;
+    private bool _hasExpedition;
 
     private void Start()
     {
@@ -19,20 +25,33 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(false);
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(false);
 
+        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(OnExpeditionUpdate);
+
         TogglePreLoginStatus(true);
+    }
+
+    private void OnExpeditionUpdate(bool hasExpedition)
+    {
+        TextMeshProUGUI textField = playButton.gameObject.GetComponentInChildren<TextMeshProUGUI>();
+
+        _hasExpedition = hasExpedition;
+
+        textField?.SetText( hasExpedition? "Resume" : "Play");
+        
+        newExpeditionButton.gameObject.SetActive(_hasExpedition);
     }
 
     public void OnLoginSuccessful(string name, int fief)
     {
         nameText.text = name;
-        moneyText.text = fief.ToString();
+        moneyText.text = $"{fief} $fief";
 
         TogglePreLoginStatus(false);
     }
 
     public void OnLogoutSuccessful(string message)
     {
-        koteLabel.gameObject.SetActive(true);
+        //koteLabel.gameObject.SetActive(true);
         GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(false);
         TogglePreLoginStatus(true);
     }
@@ -43,8 +62,14 @@ public class MainMenuManager : MonoBehaviour
         moneyText.gameObject.SetActive(!preLoginStatus);
         playButton.interactable = !preLoginStatus;
         treasuryButton.interactable = !preLoginStatus;
+        newExpeditionButton.gameObject.SetActive(!preLoginStatus);
         registerButton.gameObject.SetActive(preLoginStatus);
         loginButton.gameObject.SetActive(preLoginStatus);
+        registerButton.interactable = preLoginStatus;
+        loginButton.interactable = preLoginStatus;
+        nameButton.gameObject.SetActive(!preLoginStatus);
+        fiefButton.gameObject.SetActive(!preLoginStatus);
+        settingButton.gameObject.SetActive(!preLoginStatus);
     }
 
     public void OnRegisterButton()
@@ -69,8 +94,31 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnPlayButton()
     {
-        koteLabel.gameObject.SetActive(false);
-        treasuryButton.interactable = false;
-        GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
+        //check if we are playing a new expedition or resuming
+        if (_hasExpedition)
+        {
+            //load the expedition
+            GameManager.Instance.LoadScene(inGameScenes.Expedition);
+        }
+        else
+        {
+            //show the character selection panel
+            //koteLabel.gameObject.SetActive(false);
+            buttonPanel.interactable = false;
+            GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
+        }
     }
+
+    public void OnNewExpeditionButton()
+    {
+        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Do you want to cancel the current expedition?", OnNewExpeditionConfirmed);
+    }
+
+    public void OnNewExpeditionConfirmed()
+    {
+        // cancel the expedition
+        GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.Invoke();
+              
+    }
+
 }
