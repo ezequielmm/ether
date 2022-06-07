@@ -120,8 +120,18 @@ public class WebSocketManager : MonoBehaviour
 
     private void OnNodeClickedAnswer(string nodeData)
     {
+#if UNITY_EDITOR
+        if (GameSettings.DEBUG_MODE_ON)
+        {
+           
+            nodeData = Utils.ReadJsonFile("DummyNodeStateDataResponse.json");
+            
+        }
+#endif
        
         NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
+        
+        
         GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState,WS_QUERY_TYPE.MAP_NODE_SELECTED);
 
         Debug.Log("OnNodeClickedAnswer: " + nodeState);
@@ -135,7 +145,7 @@ public class WebSocketManager : MonoBehaviour
         {
             //data = Utils.ReadJsonFile("node_data_act1.txt");
             //data = Utils.ReadJsonFile("node_data_only_RH.txt");
-            data = Utils.ReadJsonFile("node_data_act1step2.txt");
+            //data = Utils.ReadJsonFile("node_data_act1step2.txt");
             //data = Utils.ReadJsonFile("node_data_act_test.txt");
         }
 #endif

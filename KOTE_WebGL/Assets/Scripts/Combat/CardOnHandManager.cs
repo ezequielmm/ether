@@ -13,6 +13,7 @@ public class CardOnHandManager : MonoBehaviour
     public TextMeshPro rarityTF;
     public TextMeshPro descriptionTF;
     public string id;
+    public string type;
 
     public Vector3 targetPosition;
     public Vector3 targetRotation;
@@ -51,6 +52,7 @@ public class CardOnHandManager : MonoBehaviour
         rarityTF.SetText(card.rarity);
         descriptionTF.SetText(card.description);
         this.id = card.id;
+        type = card.type;
 
         //Energy management
       //  Debug.Log("card energy="+card.energy+", energy="+energy);
@@ -103,11 +105,25 @@ public class CardOnHandManager : MonoBehaviour
         }*/
 
        // Debug.Log("Distance y is " + xxDelta);
+       if (type == "attack")
+       {
+           //show the pointer instead of following the mouse
+           GameManager.Instance.EVENT_CARD_ACTIVATE_POINTER.Invoke();
+           return;
+       }
 
         float zz = this.transform.position.z;
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = zz;
         this.transform.position = mousePos;
+    }
+
+    private void OnMouseUp()
+    {
+        if (type == "attack")
+        {
+            GameManager.Instance.EVENT_CARD_DEACTIVATE_POINTER.Invoke(id);
+        }
     }
 
     private void OnMouseUpAsButton()

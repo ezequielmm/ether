@@ -12,8 +12,6 @@ public class Potion : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.EVENT_TARGET_POINTER_SELECTED.AddListener(OnPotionUsed);
-
         potionImage = GetComponent<Image>();
         potionButton = GetComponent<Button>();
 
@@ -22,7 +20,7 @@ public class Potion : MonoBehaviour
 
     public void OnPotion()
     {
-        GameManager.Instance.EVENT_START_POINTER.Invoke(gameObject);
+        
     }
 
     public void OnPotionUsed(GameObject invoker)
