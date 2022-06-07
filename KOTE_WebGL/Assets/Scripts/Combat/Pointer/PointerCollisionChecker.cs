@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PointerCollisionChecker : MonoBehaviour
@@ -7,8 +5,9 @@ public class PointerCollisionChecker : MonoBehaviour
     public PointerManager pointerManager;
     // these are triggers to avoid needing rigidbodies
     //TODO get the enemy's id and make sure it's the same one on exit
-    private void OnTriggerEnter(Collider collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log("Collision happening");
         if (collision.gameObject.CompareTag("Enemy"))
         {
             pointerManager.overEnemy = true;
@@ -16,7 +15,7 @@ public class PointerCollisionChecker : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {

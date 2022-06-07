@@ -4,6 +4,7 @@ using UnityEngine;
 public class PointerManager : MonoBehaviour
 {
     public GameObject pointerContainer;
+    public GameObject pointerTarget;
     public SkeletonAnimation SkeletonAnimation;
 
     public bool overEnemy;
@@ -22,6 +23,7 @@ public class PointerManager : MonoBehaviour
         Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         position.z = 0;
         SkeletonAnimation.transform.position = position;
+        pointerTarget.transform.position = position;
     }
 
 

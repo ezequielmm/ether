@@ -868,6 +868,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointerContainer: {fileID: 437319140137559549}
+  pointerTarget: {fileID: 4862351172721167495}
   SkeletonAnimation: {fileID: 6581070225138839431}
   overEnemy: 0
 --- !u!1 &8921548246016229941
