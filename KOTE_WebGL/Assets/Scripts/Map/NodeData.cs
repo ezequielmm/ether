@@ -101,6 +101,8 @@ public class NodeData : MonoBehaviour
         subType = Utils.ParseEnum<NODE_SUBTYPES>(nodeData.subType);
         exits = nodeData.exits;
         name = nodeData.type + "_" + nodeData.id;
+        act = nodeData.act;
+        step = nodeData.step;
     }
 
     private void SelectNodeImage(NodeDataHelper nodeData)
@@ -149,7 +151,7 @@ public class NodeData : MonoBehaviour
 
 
     // when we update the sprite shape, we pass it the node data for the exit node directly, because it needs three things from it
-    public void UpdateSpriteShape(NodeData exitNode)
+    public void CreateSpriteShape(NodeData exitNode)
     {
         if (exitNode != null)
         {

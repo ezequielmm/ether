@@ -255,14 +255,14 @@ namespace map
                     if (exitNode)
                     {
                         //go.GetComponent<NodeData>().UpdateLine(targetOb);
-                        curNode.GetComponent<NodeData>().UpdateSpriteShape(exitNode);
+                        curNode.GetComponent<NodeData>().CreateSpriteShape(exitNode);
                     }
                     else
                     {
                         Destroy(curNode
                             .GetComponent<
                                 LineRenderer>()); //as we are not longet using sprite renderer maybe we can remove this line
-                        curNode.GetComponent<NodeData>().UpdateSpriteShape(null);
+                        curNode.GetComponent<NodeData>().CreateSpriteShape(null);
                     }
                 }
             }
