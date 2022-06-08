@@ -10,7 +10,7 @@ using TMPro;
 /// </summary>
 public class WebRequesterManager : MonoBehaviour
 {
-    private readonly string baseUrl = "https://gateway.kote.robotseamonster.com";
+    private readonly string baseUrl = "https://gateway.dev.kote.robotseamonster.com";
     private readonly string urlRandomName = "/auth/v1/generate/username";
     private readonly string urlRegister = "/auth/v1/register";
     private readonly string urlLogin = "/auth/v1/login";

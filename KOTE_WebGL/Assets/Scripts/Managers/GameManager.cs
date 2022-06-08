@@ -147,7 +147,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector]
     public UnityEvent<string> EVENT_CARD_MOUSE_EXIT = new UnityEvent<string>();
     [HideInInspector]
-    public UnityEvent EVENT_CARD_ACTIVATE_POINTER = new UnityEvent();
+    public UnityEvent<Vector3> EVENT_CARD_ACTIVATE_POINTER = new UnityEvent<Vector3>();
     [HideInInspector]
     public UnityEvent<string> EVENT_CARD_DEACTIVATE_POINTER = new UnityEvent<string>();
 

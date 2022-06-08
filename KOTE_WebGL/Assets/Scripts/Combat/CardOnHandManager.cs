@@ -108,7 +108,7 @@ public class CardOnHandManager : MonoBehaviour
        if (type == "attack")
        {
            //show the pointer instead of following the mouse
-           GameManager.Instance.EVENT_CARD_ACTIVATE_POINTER.Invoke();
+           GameManager.Instance.EVENT_CARD_ACTIVATE_POINTER.Invoke(transform.position);
            return;
        }
 
