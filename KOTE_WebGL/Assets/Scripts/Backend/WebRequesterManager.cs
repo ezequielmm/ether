@@ -25,12 +25,31 @@ public class WebRequesterManager : MonoBehaviour
 
     private void Awake()
     {
-#if UNITY_EDITOR
-        baseUrl = "https://gateway.stage.kote.robotseamonster.com";
-#elif UNITY_WEBPLAYER
+        // determine the correct server the client is running on
         baseUrl = Application.absoluteURL;
-#endif
+        string[] splitURL = baseUrl.Split('.');
+        if (baseUrl != "" && splitURL.Length > 1)
+        {
+            switch (splitURL[1])
+            {
+                case "dev":
+                    baseUrl = "https://gateway.dev.kote.robotseamonster.com";
+                    break;
+                case "stage":
+                    baseUrl = "https://gateway.stage.kote.robotseamonster.com";
+                    break;
+                default:
+                    baseUrl = "https://gateway.kote.robotseamonster.com";
+                    break;
+            }
+        }
 
+        // default to the stage server if we're in the editor
+        #if UNITY_EDITOR
+        baseUrl = "https://gateway.stage.kote.robotseamonster.com";
+        #endif
+      
+        Debug.Log("Base URL: " + baseUrl.ToString());
         PlayerPrefs.SetString("session_token", "");
         PlayerPrefs.Save();
 
