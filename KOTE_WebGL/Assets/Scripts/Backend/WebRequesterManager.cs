@@ -39,7 +39,7 @@ public class WebRequesterManager : MonoBehaviour
                     baseUrl = "https://gateway.stage.kote.robotseamonster.com";
                     break;
                 default:
-                    baseUrl = "https://gateway.kote.robotseamonster.com";
+                    baseUrl = "https://gateway.stage.kote.robotseamonster.com";
                     break;
             }
         }

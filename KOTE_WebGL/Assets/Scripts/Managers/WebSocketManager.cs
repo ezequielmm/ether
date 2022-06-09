@@ -62,7 +62,7 @@ public class WebSocketManager : MonoBehaviour
                     uriStr = "https://api.stage.kote.robotseamonster.com";
                     break;
                 default:
-                    uriStr = "https://api.kote.robotseamonster.com";
+                    uriStr = "https://api.stage.kote.robotseamonster.com";
                     break;
             }
         }
