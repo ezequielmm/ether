@@ -55,7 +55,7 @@ public class WebSocketManager : MonoBehaviour
         //string uriStr = "https://delcasda.com:8443";
         //string uriStr = "https://delcasda.com:8888";
 
-         string uriStr = "https://api.game.kote.robotseamonster.com:443";
+         string uriStr = "https://api.dev.kote.robotseamonster.com:443";
         /*
  #if UNITY_EDITOR
 
