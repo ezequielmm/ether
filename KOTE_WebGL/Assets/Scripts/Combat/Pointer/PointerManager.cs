@@ -1,3 +1,4 @@
+using System;
 using Spine;
 using Spine.Unity;
 using UnityEngine;
@@ -9,7 +10,9 @@ public class PointerManager : MonoBehaviour
     public GameObject pointerTarget;
     public SpriteShapeController PointerLine;
     private Spline spline;
-    private Vector3[] originalLinePositions;
+    private Vector3[] originalLinePositions; // we need to store the original locations so we can use them as constants
+    private Vector3[] originalLeftTangents;
+    private Vector3[] originalRightTangents;
     private int splinePointCount; // store this so we don't have to keep grabbing it, since we use it a lot
     [HideInInspector] public bool overEnemy;
 
@@ -20,11 +23,15 @@ public class PointerManager : MonoBehaviour
         spline = PointerLine.spline;
         splinePointCount = spline.GetPointCount();
 
-        // get the starting points for each point on the spline to use as offsets
+        // get the starting points for each point on the spline to use as offsets and constants
         originalLinePositions = new Vector3[splinePointCount];
+        originalLeftTangents = new Vector3[splinePointCount];
+        originalRightTangents = new Vector3[splinePointCount];
         for (int i = 0; i < splinePointCount; i++)
         {
             originalLinePositions[i] = spline.GetPosition(i);
+            originalLeftTangents[i] = spline.GetLeftTangent(i);
+            originalRightTangents[i] = spline.GetRightTangent(i);
         }
     }
 
@@ -51,6 +58,8 @@ public class PointerManager : MonoBehaviour
 
         pointerTarget.transform.position = arrowPosition;
         RotateArrowTowardsMouse(mousePosition, cardPosition);
+
+        //TODO get the tip of the arrow to scale larger as it gets further away from the card
     }
 
     private void RotateArrowTowardsMouse(Vector3 mousePosition, Vector3 cardPosition)
@@ -72,39 +81,115 @@ public class PointerManager : MonoBehaviour
     private void MoveLine(Vector3 mousePosition, Vector3 cardPosition)
     {
         // change the world coords to local coords so it's in the right spots
-        Vector3 localMouseCoord = transform.InverseTransformPoint(mousePosition);
+        Vector3 localMousePosition = transform.InverseTransformPoint(mousePosition);
         Vector3 localCardPosition = transform.InverseTransformPoint(cardPosition);
 
+        MoveSplinePoints(localMousePosition, localCardPosition);
+        SetSplineTangents(localMousePosition, localCardPosition);
+    }
+
+    private void MoveSplinePoints(Vector3 localMousePosition, Vector3 localCardPosition)
+    {
         // set the starting point to the card's position
         spline.SetPosition(0, localCardPosition);
 
         // set the arrow side of the spriteshape to where the ponter is
-        if (localMouseCoord.x < localCardPosition.x)
+        if (localMousePosition.x < localCardPosition.x)
         {
-            localMouseCoord.x += 0.2f;
+            localMousePosition.x += 0.2f;
+        }
+        else
+        {
+            localMousePosition.x -= 0.2f;
         }
 
-        if (localMouseCoord.x > localCardPosition.x)
-        {
-            localMouseCoord.x -= 0.2f;
-        }
+        spline.SetPosition(splinePointCount - 1, localMousePosition);
 
-        spline.SetPosition(splinePointCount - 1, localMouseCoord);
-
-        // adjust the location of the turn
+        // set the rest of the points to their correct location
         for (int i = 1; i < splinePointCount - 1; i++)
         {
             Vector3 newLocation = spline.GetPosition(i);
+
+            //determine what side of the offset it's on
+            if (IsToLeftOfCard(localMousePosition, localCardPosition))
+            {
+                newLocation.x = spline.GetPosition(0).x - originalLinePositions[i].x;
+            }
+            else if (IsToRightOfCard(localMousePosition, localCardPosition))
+            {
+                newLocation.x = spline.GetPosition(0).x + originalLinePositions[i].x;
+            }
+
+            // however, if it's in the bounds of the offset, adjust it with the position of the mouse
+
+            // if it's on the opposite side of the card from the arrow point, adjust it only when it's in bounds
+            if (IsInOffsetBounds(i, localMousePosition))
+            {
+                if (originalLinePositions[i].x < 0)
+                    newLocation.x = localCardPosition.x - (localMousePosition.x - localCardPosition.x);
+                else newLocation.x = localMousePosition.x;
+            }
             
-            // the points of the spline need to remain in the same x coordinates as in the prefab in relation to the base point
-            newLocation.x = spline.GetPosition(0).x + originalLinePositions[i].x;
-            
-            // but they should be following the y value of the arrow point
+            // set the y value to that of the mouse minus the offset
             float yOffset = originalLinePositions[i].y - originalLinePositions[splinePointCount - 1].y;
             newLocation.y = spline.GetPosition(splinePointCount - 1).y + yOffset;
-            
+
             spline.SetPosition(i, newLocation);
         }
+    }
+
+    private void SetSplineTangents(Vector3 localMousePosition, Vector3 localCardPosition)
+    {
+        // adjust the tangents of the turn
+        for (int i = 0; i < splinePointCount; i++)
+        {
+            Vector3 leftTangent = spline.GetLeftTangent(i);
+            Vector3 rightTangent = spline.GetRightTangent(i);
+
+            if (IsInOffsetBounds(i, localMousePosition))
+            {
+                // get the offset from the card position as a percentage, and use that to calculate the correct tangent values
+                float mouseDistanceFromCardPosition = localMousePosition.x - localCardPosition.x;
+                float offsetPercent = mouseDistanceFromCardPosition / originalLinePositions[i].x;
+                float leftTangentX = originalLeftTangents[i].x * offsetPercent;
+                float rightTangentX = originalRightTangents[i].x * offsetPercent;
+
+                leftTangent = new Vector3(leftTangentX, originalLeftTangents[i].y, 0);
+                rightTangent = new Vector3(rightTangentX, originalRightTangents[i].y, 0);
+            }
+            else if (IsToLeftOfCard(localMousePosition, localCardPosition))
+            {
+                leftTangent = new Vector3(-originalLeftTangents[i].x, originalLeftTangents[i].y, 0);
+                rightTangent = new Vector3(-originalRightTangents[i].x, originalRightTangents[i].y, 0);
+            }
+            else if (IsToRightOfCard(localMousePosition, localCardPosition))
+            {
+                leftTangent = originalLeftTangents[i];
+                rightTangent = originalRightTangents[i];
+            }
+
+            spline.SetLeftTangent(i, leftTangent);
+            spline.SetRightTangent(i, rightTangent);
+        }
+    }
+
+    private bool IsInOffsetBounds(int pointIndex, Vector3 localMousePosition)
+    {
+        bool inRightBounds =
+            localMousePosition.x < spline.GetPosition(0).x + Math.Abs(originalLinePositions[pointIndex].x);
+        bool inLeftBounds =
+            localMousePosition.x > spline.GetPosition(0).x - Math.Abs(originalLinePositions[pointIndex].x);
+        return inLeftBounds && inRightBounds;
+    }
+
+    private bool IsToLeftOfCard(Vector3 localMousePosition, Vector3 localCardPosition)
+    {
+        return localMousePosition.x < localCardPosition.x;
+    }
+
+    private bool IsToRightOfCard(Vector3 localMousePosition, Vector3 localCardPosition)
+    {
+        return localMousePosition.x > localCardPosition.x;
     }
 
 
