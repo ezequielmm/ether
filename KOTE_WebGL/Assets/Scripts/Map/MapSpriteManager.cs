@@ -47,6 +47,7 @@ public class MapSpriteManager : MonoBehaviour
 
         if (Mathf.Abs(scrollSpeed) < 0.01f) scrollSpeed = 0;
 
+
         Vector3 velocity = Vector3.zero;
         Vector3 currentMapPos = nodesHolder.transform.localPosition;
 
@@ -56,9 +57,10 @@ public class MapSpriteManager : MonoBehaviour
 
         //limit the map move to the right
         if (newPos.x > 0) newPos.x = 0;
+        
 
         //limit left scroll
-        if (newPos.x < mapBounds.max.x * -1) newPos.x = mapBounds.max.x * -1;
+        if (newPos.x < -mapBounds.extents.x) newPos.x = -mapBounds.extents.x;
 
         if (newPos.x < 0)
         {
@@ -68,6 +70,7 @@ public class MapSpriteManager : MonoBehaviour
         {
             scrollSpeed = 0;
         }
+
 
         //Debug.Log(currentMapPos);
     }
@@ -101,17 +104,19 @@ public class MapSpriteManager : MonoBehaviour
         // make sure this script isn't scrolling
         scrollSpeed = 0;
         // and keep the map in bounds
-        
-        Vector3 newPos = nodesHolder.transform.position;
+
+        Vector3 newPos = nodesHolder.transform.localPosition;
         newPos.x = Camera.main.ScreenToWorldPoint(Input.mousePosition).x - dragOffset.x;
+        newPos = transform.InverseTransformPoint(newPos);
+        newPos.z = 0;
+
 
         //limit the map move to the right
         if (newPos.x > 0) newPos.x = 0;
 
         //limit left scroll
-        if (newPos.x < mapBounds.max.x * -1) newPos.x = mapBounds.max.x * -1;
-        nodesHolder.transform.position = newPos;
-        
+        if (newPos.x < -mapBounds.extents.x) newPos.x = -mapBounds.extents.x;
+        nodesHolder.transform.localPosition = newPos;
     }
 
     private void OnMapIconClicked()
@@ -268,6 +273,8 @@ public class MapSpriteManager : MonoBehaviour
         nodesHolder.transform.DOLocalMoveX(targetx, GameSettings.MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON);
     }
 
+    
+    // TODO this doesn't work, the numbers it produces are either too large or too small
     Bounds CalculateLocalBounds()
     {
         Quaternion currentRotation = this.transform.rotation;
@@ -275,14 +282,16 @@ public class MapSpriteManager : MonoBehaviour
 
         Bounds bounds = new Bounds(this.transform.position, Vector3.zero);
 
-        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        foreach (Renderer renderer in nodesHolder.GetComponentsInChildren<Renderer>())
         {
             //Debug.Log("renderer:" + renderer.gameObject.name);
-            bounds.Encapsulate(renderer.bounds);
+            if (renderer.gameObject.name == "combat")
+            {
+                bounds.Encapsulate(renderer.bounds);
+            }
         }
 
         this.transform.rotation = currentRotation;
-
         return bounds;
     }
 }
