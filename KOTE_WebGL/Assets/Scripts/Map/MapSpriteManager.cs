@@ -32,14 +32,20 @@ namespace map
         void Start()
         {
             GameManager.Instance.EVENT_MAP_NODES_UPDATE.AddListener(OnMapNodesDataUpdated);
+        GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.AddListener(OnToggleMap);
+        GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnMapIconClicked);
+        GameManager.Instance.EVENT_MAP_SCROLL_CLICK.AddListener(OnScrollButtonClicked);
+        GameManager.Instance.EVENT_MAP_MASK_DOUBLECLICK.AddListener(OnMaskDoubleClick);
             GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeDataUpdated);
-            GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnMapIconClicked);
-            GameManager.Instance.EVENT_MAP_SCROLL_CLICK.AddListener(OnScrollButtonClicked);
-            GameManager.Instance.EVENT_MAP_MASK_DOUBLECLICK.AddListener(OnMaskDoubleClick);
             GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.AddListener(OnPortalActivated);
 
             playerIcon.SetActive(false);
         }
+
+        private void OnToggleMap(bool data)
+    {
+        mapContainer.SetActive(data);
+    }
 
         private void OnMaskDoubleClick()
         {
@@ -76,7 +82,8 @@ namespace map
             }
             else
             {
-                scrollSpeed = 0;
+                scrollSpeed = GameSettings.MAP_SCROLL_SPEED;
+    
             }
 
             //Debug.Log(currentMapPos);
@@ -129,7 +136,9 @@ namespace map
         {
             Debug.Log("[OnMapNodesDataUpdated] " + data);
 
-            ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>(data);
+           //ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>("{\"data\":" + data + "}");
+        //ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>(data);
+        SWSM_MapData expeditionMapData = JsonUtility.FromJson<SWSM_MapData>(data);
 
             MapStructure mapStructure = GenerateMapStructure(expeditionMapData);
 

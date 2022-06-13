@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
+
 
 public class EnvironmentManager : MonoBehaviour
 {
@@ -12,10 +12,16 @@ public class EnvironmentManager : MonoBehaviour
 
     void Start()
     {
-        GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnMapIconClicked);
-        GameManager.Instance.EVENT_MAP_NODES_UPDATE.AddListener(onMapNodesUpdate);
-        GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(onMapNodeSelected);
-        mapBg.gameObject.SetActive(false);
+      //  GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnMapIconClicked);
+       // GameManager.Instance.EVENT_MAP_NODES_UPDATE.AddListener(OnMapNodesUpdate);
+      //  GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnMapNodeSelected);
+        GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.AddListener(OnToogleMap);
+       // mapBg.gameObject.SetActive(false);
+    }
+
+    private void OnToogleMap(bool data)
+    {
+        mapBg.gameObject.SetActive(data);
     }
 
     private void onMapNodeSelected(int arg0)
@@ -34,9 +40,5 @@ public class EnvironmentManager : MonoBehaviour
        mapBg.gameObject.SetActive(mapBg.gameObject.activeSelf ? false:true) ;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+ 
 }

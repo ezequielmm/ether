@@ -265,3 +265,33 @@ public class Errordata
         public string message;
     }
 }
+
+//SWSM
+[Serializable]
+public class SWSM_Base
+{
+    public SWSM_CommonFields data;
+
+    [Serializable]
+    public class SWSM_CommonFields
+    {
+        public string message_type;
+        public string action;
+       
+    }
+ 
+}
+
+[Serializable]
+public class SWSM_MapData
+{
+    public ExpeditionMapData data;
+
+}
+
+[Serializable]
+public class SWSM_NodeData
+{
+    public NodeStateData data;
+
+}
