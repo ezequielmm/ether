@@ -57,10 +57,10 @@ public class MapSpriteManager : MonoBehaviour
 
         //limit the map move to the right
         if (newPos.x > 0) newPos.x = 0;
-        
+
 
         //limit left scroll
-        if (newPos.x < -mapBounds.extents.x) newPos.x = -mapBounds.extents.x;
+        if (newPos.x < -mapBounds.max.x) newPos.x = -mapBounds.max.x;
 
         if (newPos.x < 0)
         {
@@ -115,7 +115,7 @@ public class MapSpriteManager : MonoBehaviour
         if (newPos.x > 0) newPos.x = 0;
 
         //limit left scroll
-        if (newPos.x < -mapBounds.extents.x) newPos.x = -mapBounds.extents.x;
+        if (newPos.x < -mapBounds.max.x) newPos.x = -mapBounds.max.x;
         nodesHolder.transform.localPosition = newPos;
     }
 
@@ -273,7 +273,7 @@ public class MapSpriteManager : MonoBehaviour
         nodesHolder.transform.DOLocalMoveX(targetx, GameSettings.MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON);
     }
 
-    
+
     // TODO this doesn't work, the numbers it produces are either too large or too small
     Bounds CalculateLocalBounds()
     {
@@ -284,12 +284,20 @@ public class MapSpriteManager : MonoBehaviour
 
         foreach (Renderer renderer in nodesHolder.GetComponentsInChildren<Renderer>())
         {
-            //Debug.Log("renderer:" + renderer.gameObject.name);
-            if (renderer.gameObject.name == "combat")
-            {
-                bounds.Encapsulate(renderer.bounds);
-            }
+            bounds.Encapsulate(renderer.bounds);
         }
+
+        // the bounds puts the final node in the middle of the screen, but we want it at the right edge
+        // so we get half the width of the screen
+        float halfScreenWidth = Camera.main.orthographicSize * Camera.main.aspect;
+        
+        // but just that cuts off the last node, so we need the size of the node as well
+        float nodeWidth = nodes[nodes.Count - 1].GetComponent<BoxCollider2D>().size.x / 2;
+
+        // and subtract it from the bounds, but add the node width so it doesn't get cut off
+        float newBoundsX = (bounds.extents.x - halfScreenWidth + nodeWidth);
+        
+        bounds.extents = new Vector3(newBoundsX, bounds.extents.y, bounds.extents.z);
 
         this.transform.rotation = currentRotation;
         return bounds;
