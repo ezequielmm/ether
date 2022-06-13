@@ -6701,7 +6701,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapContainer: {fileID: 1413707758}
-  nodePrefab: {fileID: 7168986811972704242, guid: 58e7f40e197f503419f7264265cb2544,
+  nodePrefab: {fileID: 5730114510743785768, guid: 58e7f40e197f503419f7264265cb2544,
     type: 3}
   playerIcon: {fileID: 980390179}
   portalAnimation: {fileID: 507405838}
@@ -7502,6 +7502,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   EVENT_SHOW_CONFIRMATION_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_MAP_ANIMATE_STEP:
     m_PersistentCalls:
       m_Calls: []
   EVENT_MAP_ACTIVATE_PORTAL:

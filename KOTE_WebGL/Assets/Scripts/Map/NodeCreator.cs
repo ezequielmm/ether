@@ -15,7 +15,7 @@ public class NodeCreator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.Instance.EVENT_MAP_NODES_UPDATE.AddListener(OnMapNodesDataUpdated);
+        GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.AddListener(OnMapNodesDataUpdated);
         GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeDataUpdated);
         GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnMapIconClicked);
 

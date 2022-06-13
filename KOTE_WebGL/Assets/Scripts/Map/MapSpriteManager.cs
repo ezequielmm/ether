@@ -9,9 +9,9 @@ namespace map
     {
         public GameObject mapContainer;
 
-        public GameObject nodePrefab;
+        public NodeData nodePrefab;
 
-        List<GameObject> nodes = new List<GameObject>();
+        List<NodeData> nodes = new List<NodeData>();
 
         private bool royal_houses_mode_on = false;
 
@@ -31,21 +31,20 @@ namespace map
 
         void Start()
         {
-            GameManager.Instance.EVENT_MAP_NODES_UPDATE.AddListener(OnMapNodesDataUpdated);
-        GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.AddListener(OnToggleMap);
-        GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnMapIconClicked);
-        GameManager.Instance.EVENT_MAP_SCROLL_CLICK.AddListener(OnScrollButtonClicked);
-        GameManager.Instance.EVENT_MAP_MASK_DOUBLECLICK.AddListener(OnMaskDoubleClick);
-            GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeDataUpdated);
+            GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.AddListener(OnMapNodesDataUpdated);
+            GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.AddListener(OnToggleMap);
+            GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnMapIconClicked);
+            GameManager.Instance.EVENT_MAP_SCROLL_CLICK.AddListener(OnScrollButtonClicked);
+            GameManager.Instance.EVENT_MAP_MASK_DOUBLECLICK.AddListener(OnMaskDoubleClick);
             GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.AddListener(OnPortalActivated);
 
             playerIcon.SetActive(false);
         }
 
         private void OnToggleMap(bool data)
-    {
-        mapContainer.SetActive(data);
-    }
+        {
+            mapContainer.SetActive(data);
+        }
 
         private void OnMaskDoubleClick()
         {
@@ -83,7 +82,6 @@ namespace map
             else
             {
                 scrollSpeed = GameSettings.MAP_SCROLL_SPEED;
-    
             }
 
             //Debug.Log(currentMapPos);
@@ -109,9 +107,9 @@ namespace map
         private void OnMapIconClicked()
         {
             //make sure when the map is on panel mode the nodes are not clickable
-            foreach (GameObject go in nodes)
+            foreach (NodeData node in nodes)
             {
-                go.GetComponent<NodeData>().nodeClickDisabled = true;
+                node.nodeClickDisabled = true;
             }
 
             if (mapContainer.activeSelf)
@@ -126,19 +124,14 @@ namespace map
             }
         }
 
-        private void OnNodeDataUpdated(NodeStateData nodeState, WS_QUERY_TYPE wsType)
-        {
-            if (wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED) mapContainer.SetActive(false);
-        }
-
         //we will get to this point once the backend give us the node data
         void OnMapNodesDataUpdated(string data)
         {
             Debug.Log("[OnMapNodesDataUpdated] " + data);
 
-           //ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>("{\"data\":" + data + "}");
-        //ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>(data);
-        SWSM_MapData expeditionMapData = JsonUtility.FromJson<SWSM_MapData>(data);
+            //ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>("{\"data\":" + data + "}");
+            //ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>(data);
+            SWSM_MapData expeditionMapData = JsonUtility.FromJson<SWSM_MapData>(data);
 
             MapStructure mapStructure = GenerateMapStructure(expeditionMapData);
 
@@ -156,13 +149,13 @@ namespace map
 
         #region generateMap
 
-        MapStructure GenerateMapStructure(ExpeditionMapData expeditionMapData)
+        MapStructure GenerateMapStructure(SWSM_MapData expeditionMapData)
         {
             MapStructure mapStructure = new MapStructure();
             //parse nodes data
-            for (int i = 0; i < expeditionMapData.data.Length; i++)
+            for (int i = 0; i < expeditionMapData.data.data.Length; i++)
             {
-                NodeDataHelper nodeData = expeditionMapData.data[i];
+                NodeDataHelper nodeData = expeditionMapData.data.data[i];
 
                 //acts
                 if (mapStructure.acts.Count == 0 || mapStructure.acts.Count < (nodeData.act + 1))
@@ -207,7 +200,7 @@ namespace map
                     {
                         float yy = (rowsMaxSpace * step.nodesData.IndexOf(nodeData)) - ((rows - 1) * rowsMaxSpace) / 2;
 
-                        GameObject newNode = Instantiate(nodePrefab, nodesHolder.transform);
+                        NodeData newNode = Instantiate(nodePrefab, nodesHolder.transform);
                         nodes.Add(newNode);
 
                         if (nodeData.type == NODE_TYPES.royal_house.ToString())
@@ -222,7 +215,7 @@ namespace map
                         newNode.transform.localPosition =
                             new Vector3(columnOffsetCounter, yy, GameSettings.MAP_SPRITE_ELEMENTS_Z);
                         newNode.GetComponent<NodeData>().Populate(nodeData);
-                        
+
                         // if the node is active or the last completed node, move the player icon there
                         if (nodeData.status == NODE_STATUS.active.ToString() ||
                             nodeData.status == NODE_STATUS.completed.ToString())
@@ -230,16 +223,10 @@ namespace map
                             playerIcon.SetActive(true);
                             playerIcon.transform.localPosition = newNode.transform.localPosition;
                         }
-                        
+
                         // if the node is an available royal house, turn royal house mode on
                         if (nodeData.status == NODE_STATUS.available.ToString() &&
                             nodeData.type == NODE_TYPES.royal_house.ToString()) royal_houses_mode_on = true;
-                        
-                        // if the node is a portal, put the portal animation there
-                        if (nodeData.type == NODE_TYPES.portal.ToString())
-                        {
-                            portalAnimation.transform.position = newNode.transform.position;
-                        }
                     }
 
                     //move next step (vertical group of nodes)
@@ -250,14 +237,13 @@ namespace map
 
         void CreateNodeConnections()
         {
-            foreach (GameObject curNode in nodes)
+            foreach (NodeData curNode in nodes)
             {
                 //Debug.Log("Searching :" + go.GetComponent<NodeData>().id);
 
                 foreach (int exitId in curNode.GetComponent<NodeData>().exits)
                 {
-                    NodeData exitNode = nodes.Find(x => x.GetComponent<NodeData>().id == exitId)
-                        .GetComponent<NodeData>();
+                    NodeData exitNode = nodes.Find(x => x.id == exitId);
 
                     //if we find an exit node this becomes the target gameobject for the path sprite shape, and the exit 
                     // node for keeping track of the status
@@ -289,7 +275,6 @@ namespace map
             nodesHolder.transform.DOLocalMoveX(targetx, scrollTime);
         }
 
-        
         void ScrollFromBoss()
         {
             float targetX = GetBossNode().transform.localPosition.x * -1;
@@ -307,11 +292,11 @@ namespace map
         }
 
         // get the boss node so we can move to it
-        private GameObject GetBossNode()
+        private NodeData GetBossNode()
         {
             for (int i = nodes.Count - 1; i >= 0; i--)
             {
-                if (nodes[i].GetComponent<NodeData>().subType == NODE_SUBTYPES.combat_boss)
+                if (nodes[i].subType == NODE_SUBTYPES.combat_boss)
                 {
                     return nodes[i];
                 }
@@ -321,14 +306,22 @@ namespace map
             return nodes[nodes.Count - 1];
         }
 
-        private void OnPortalActivated()
+        private void OnPortalActivated(SWSM_MapData mapData)
         {
+            // the portal is always the last node when we receive the portal activate event
+            int nodeId =  mapData.data.data[mapData.data.data.Length - 1].id;
+            
+            // move the particle system to the correct portal
+            NodeData exitNode = nodes.Find(x => x.id == nodeId);
+            portalAnimation.transform.position = exitNode.transform.position;
+            
             // set the animation duration to the one specified in GameSettings
             ParticleSystem.MainModule portalAnimationMain = portalAnimation.main;
             portalAnimationMain.duration = GameSettings.PORTAL_ACTIVATION_ANIMATION_TIME;
             portalAnimation.Play();
             //TODO play map expansion animation
         }
+
         void CalculateLocalMapBounds()
         {
             Quaternion currentRotation = this.transform.rotation;

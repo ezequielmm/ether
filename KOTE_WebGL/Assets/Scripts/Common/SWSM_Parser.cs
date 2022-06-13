@@ -13,8 +13,7 @@ public class SWSM_Parser
         switch (swsm.data.message_type)
         {
             case "map_update":
-                //SWSM_MapData mapData = JsonUtility.FromJson<SWSM_MapData>(data);
-                GameManager.Instance.EVENT_MAP_NODES_UPDATE.Invoke(data);
+                UpdateMapActionPicker(swsm.data.action, data);
                 break;
             case "combat_update":
                 //NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
@@ -27,6 +26,27 @@ public class SWSM_Parser
         }
     }
 
-
+    // we don't need the SWSM_base here, because we just need the action.
+    // We parse the rest of the data from the original message string, and don't retain the message type or action
+    private static void UpdateMapActionPicker(string action, string data)
+    {
+        
+        SWSM_MapData mapData = JsonUtility.FromJson<SWSM_MapData>(data);
+        switch (action)
+        {
+            case "show_map":
+                GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.Invoke(data);
+                break;
+            case "activate_portal":
+                GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.Invoke(mapData);
+                GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.Invoke(data);
+                break;
+            case "extend_map":
+                GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.Invoke(data);
+                // TODO get this to work
+                // GameManager.Instance.EVENT_MAP_ANIMATE_STEP.Invoke(1, 0);
+                break;
+        }
+    }
 
 }

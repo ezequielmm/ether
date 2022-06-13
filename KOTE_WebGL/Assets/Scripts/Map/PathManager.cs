@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.U2D;
@@ -23,6 +24,7 @@ public class PathManager : MonoBehaviour
 
     // save the final positions of the points of the spline for animation purposes
     private Vector3[] splinePointPositions;
+
     // bool to make sure the path is only animated once
     private bool pathAnimated;
 
@@ -70,16 +72,20 @@ public class PathManager : MonoBehaviour
     private void AnimateSplinePoints(int act, int step)
     {
         // hide the path if it hasn't been animated yet and it's in the correct act
-        if(pathAnimated == false && pathAct == act) pathController.gameObject.SetActive(false);
+        if (pathAnimated == false && pathAct == act) pathController.gameObject.SetActive(false);
         if (pathAnimated == false && pathAct == act && pathStep == step)
         {
             pathAnimated = true;
             // move all the points to the beginning node
+            float offset = 0.1f;
+            Vector3 startingPoint = pathController.spline.GetPosition(0);
             for (int i = 0; i < pathController.spline.GetPointCount(); i++)
             {
-                pathController.spline.SetPosition(i, pathController.spline.GetPosition(0));
+                pathController.spline.SetPosition(i,
+                    new Vector3(startingPoint.x + offset, startingPoint.y, startingPoint.z));
+                offset += 0.1f;
             }
-            
+
             // then show the path and start animating
             pathController.gameObject.SetActive(true);
             StartCoroutine(AnimateSpline());
@@ -92,17 +98,37 @@ public class PathManager : MonoBehaviour
         // animate the paths extending from the nodes
         while (!pathInCorrectPosition)
         {
-            for (int i = 0; i < pathController.spline.GetPointCount(); i++)
+            // we don't need to update point 0
+            for (int i = pathController.spline.GetPointCount() -1; i > 0; i--)
             {
-                if (pathController.spline.GetPosition(i) == splinePointPositions[i])
+                if (Math.Abs(pathController.spline.GetPosition(i).x) >= Math.Abs(splinePointPositions[i].x) &&
+                    Math.Abs(pathController.spline.GetPosition(i).y) >= Math.Abs(splinePointPositions[i].y))
                 {
                     pathInCorrectPosition = true;
+                    pathController.spline.SetPosition(i, splinePointPositions[i]);
                     continue;
                 }
 
-                Vector3 pointPos = pathController.spline.GetPosition(0);
-                pointPos.x += 0.1f; //TODO magic number for animation speed
-                pointPos.y += 0.1f;
+                Vector3 pointPos = pathController.spline.GetPosition(i);
+                Vector3 oldPos = pathController.spline.GetPosition(i);
+
+                // move the path along the line defined by the starting point and the ending point
+                // we need to get it in the form y = m * x + b
+                // slope = m
+                float slope = (splinePointPositions[i].y - pathController.spline.GetPosition(0).y) /
+                              (splinePointPositions[i].x - pathController.spline.GetPosition(0).x);
+                // yintercept = b
+                float yIntercept = splinePointPositions[i].y - (slope * splinePointPositions[i].x);
+                
+                float yOffset = (slope * 0.1f) + yIntercept;
+
+                    if (splinePointPositions[i].x > 0) pointPos.x += 0.1f;
+                    if (splinePointPositions[i].x < 0) pointPos.x -= 0.1f;
+                    if (splinePointPositions[i].y > 0) pointPos.y -= yOffset;
+                    if (splinePointPositions[i].y < 0) pointPos.y += yOffset;//TODO magic number for animation speed
+                    // and get the position of y by using y= m * x + b
+                  
+
                 pathController.spline.SetPosition(i, pointPos);
                 pathInCorrectPosition = false;
             }
