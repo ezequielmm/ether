@@ -70,9 +70,6 @@ public class MapSpriteManager : MonoBehaviour
         {
             scrollSpeed = 0;
         }
-
-
-        //Debug.Log(currentMapPos);
     }
 
 
@@ -272,9 +269,7 @@ public class MapSpriteManager : MonoBehaviour
 
         nodesHolder.transform.DOLocalMoveX(targetx, GameSettings.MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON);
     }
-
-
-    // TODO this doesn't work, the numbers it produces are either too large or too small
+    
     Bounds CalculateLocalBounds()
     {
         Quaternion currentRotation = this.transform.rotation;
