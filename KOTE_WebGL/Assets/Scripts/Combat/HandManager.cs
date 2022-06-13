@@ -116,13 +116,11 @@ public class HandManager : MonoBehaviour
         else
         {
             //
-        }
-
-       
+        }      
 
 
             //play effect on current cards. This must be isolated to only happen when it is the end of turn but not on card played
-            float effectDelay = 0.5f;
+        float effectDelay = 0.5f;
         foreach (GameObject go in listOfCardsOnHand)
         {
             if (go == null) continue;//avoid working on a gameobject that has been destroyed but is still referenced on the list

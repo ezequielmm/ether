@@ -32,12 +32,17 @@ public class MapSpriteManager : MonoBehaviour
     void Start()
     {
         GameManager.Instance.EVENT_MAP_NODES_UPDATE.AddListener(OnMapNodesDataUpdated);
-        GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeDataUpdated);
+        GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.AddListener(OnToggleMap);
         GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnMapIconClicked);
         GameManager.Instance.EVENT_MAP_SCROLL_CLICK.AddListener(OnScrollButtonClicked);
         GameManager.Instance.EVENT_MAP_MASK_DOUBLECLICK.AddListener(OnMaskDoubleClick);
 
         playerIcon.SetActive(false);
+    }
+
+    private void OnToggleMap(bool data)
+    {
+        mapContainer.SetActive(data);
     }
 
     private void OnMaskDoubleClick()
@@ -128,10 +133,7 @@ public class MapSpriteManager : MonoBehaviour
         }
     }
 
-    private void OnNodeDataUpdated(NodeStateData nodeState, WS_QUERY_TYPE wsType)
-    {
-        if (wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED) mapContainer.SetActive(false);
-    }
+
 
     //we will get to this point once the backend give us the node data
     void OnMapNodesDataUpdated(string data)
@@ -139,14 +141,15 @@ public class MapSpriteManager : MonoBehaviour
         Debug.Log("[OnMapNodesDataUpdated] " + data);
 
         //ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>("{\"data\":" + data + "}");
-        ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>(data);
+        //ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>(data);
+        SWSM_MapData expeditionMapData = JsonUtility.FromJson<SWSM_MapData>(data);
 
         MapStructure mapStructure = new MapStructure();
 
         //parse nodes data
-        for (int i = 0; i < expeditionMapData.data.Length; i++)
+        for (int i = 0; i < expeditionMapData.data.data.Length; i++)
         {
-            NodeDataHelper nodeData = expeditionMapData.data[i];
+            NodeDataHelper nodeData = expeditionMapData.data.data[i];
 
             //acts
             if (mapStructure.acts.Count == 0 || mapStructure.acts.Count < (nodeData.act + 1))
