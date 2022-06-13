@@ -117,6 +117,8 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<string, Action> EVENT_SHOW_CONFIRMATION_PANEL = new UnityEvent<string, Action>();
     [HideInInspector] 
     public UnityEvent<int> EVENT_MAP_ACTIVATE_PORTAL = new UnityEvent<int>();
+    //[HideInInspector]
+    //public UnityEvent<bool> EVENT_MAP_TOGGLE_MAP = new UnityEvent<bool>();
     /// <summary>
     /// Scroll map buttons events. First bool enable/disable, second bool direction left/right
     /// </summary>
