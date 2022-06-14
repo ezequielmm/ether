@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using DG.Tweening;
+using UnityEngine;
 
 public class MapSpriteManager : MonoBehaviour
 {
@@ -32,12 +28,18 @@ public class MapSpriteManager : MonoBehaviour
     void Start()
     {
         GameManager.Instance.EVENT_MAP_NODES_UPDATE.AddListener(OnMapNodesDataUpdated);
-        GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeDataUpdated);
+        GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.AddListener(OnToggleMap);
         GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnMapIconClicked);
         GameManager.Instance.EVENT_MAP_SCROLL_CLICK.AddListener(OnScrollButtonClicked);
+        GameManager.Instance.EVENT_MAP_SCROLL_DRAG.AddListener(OnMapScrollDragged);
         GameManager.Instance.EVENT_MAP_MASK_DOUBLECLICK.AddListener(OnMaskDoubleClick);
 
         playerIcon.SetActive(false);
+    }
+
+    private void OnToggleMap(bool data)
+    {
+        mapContainer.SetActive(data);
     }
 
     private void OnMaskDoubleClick()
@@ -55,6 +57,7 @@ public class MapSpriteManager : MonoBehaviour
 
         if (Mathf.Abs(scrollSpeed) < 0.01f) scrollSpeed = 0;
 
+
         Vector3 velocity = Vector3.zero;
         Vector3 currentMapPos = nodesHolder.transform.localPosition;
 
@@ -63,11 +66,11 @@ public class MapSpriteManager : MonoBehaviour
         newPos.x += scrollSpeed;
 
         //limit the map move to the right
-        //if (newPos.x > 0) newPos.x = 0;
-        if (newPos.x > mapBounds.extents.x) newPos.x = mapBounds.extents.x;
+        if (newPos.x > 0) newPos.x = 0;
+
 
         //limit left scroll
-        if (newPos.x < mapBounds.extents.x * -1) newPos.x = mapBounds.extents.x * -1;
+        if (newPos.x < -mapBounds.max.x) newPos.x = -mapBounds.max.x;
 
         if (newPos.x < 0)
         {
@@ -77,9 +80,8 @@ public class MapSpriteManager : MonoBehaviour
         {
             scrollSpeed = 0;
         }
-
-        //Debug.Log(currentMapPos);
     }
+
 
     private void OnScrollButtonClicked(bool active, bool direction)
     {
@@ -96,16 +98,27 @@ public class MapSpriteManager : MonoBehaviour
                 scrollSpeed = GameSettings.MAP_SCROLL_SPEED;
             }
         }
+    }
+
+    // called while the player is dragging the map
+    private void OnMapScrollDragged(Vector3 dragOffset)
+    {
+        // make sure this script isn't scrolling
+        scrollSpeed = 0;
+        // and keep the map in bounds
+
+        Vector3 newPos = nodesHolder.transform.localPosition;
+        newPos.x = Camera.main.ScreenToWorldPoint(Input.mousePosition).x - dragOffset.x;
+        newPos = transform.InverseTransformPoint(newPos);
+        newPos.z = 0;
 
 
-        /* if (active)
-         {
+        //limit the map move to the right
+        if (newPos.x > 0) newPos.x = 0;
 
-         }
-         else
-         {
-             scrollSpeed = 0;
-         }*/
+        //limit left scroll
+        if (newPos.x < -mapBounds.max.x) newPos.x = -mapBounds.max.x;
+        nodesHolder.transform.localPosition = newPos;
     }
 
     private void OnMapIconClicked()
@@ -128,25 +141,32 @@ public class MapSpriteManager : MonoBehaviour
         }
     }
 
-    private void OnNodeDataUpdated(NodeStateData nodeState, WS_QUERY_TYPE wsType)
-    {
-        if (wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED) mapContainer.SetActive(false);
-    }
+
 
     //we will get to this point once the backend give us the node data
     void OnMapNodesDataUpdated(string data)
     {
         Debug.Log("[OnMapNodesDataUpdated] " + data);
 
+
+        //destroy current nodes
+        foreach (GameObject go in nodes)
+        {
+            Destroy(go);
+        }
+
+        nodes = new List<GameObject>();
+
         //ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>("{\"data\":" + data + "}");
-        ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>(data);
+        //ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>(data);
+        SWSM_MapData expeditionMapData = JsonUtility.FromJson<SWSM_MapData>(data);
 
         MapStructure mapStructure = new MapStructure();
 
         //parse nodes data
-        for (int i = 0; i < expeditionMapData.data.Length; i++)
+        for (int i = 0; i < expeditionMapData.data.data.Length; i++)
         {
-            NodeDataHelper nodeData = expeditionMapData.data[i];
+            NodeDataHelper nodeData = expeditionMapData.data.data[i];
 
             //acts
             if (mapStructure.acts.Count == 0 || mapStructure.acts.Count < (nodeData.act + 1))
@@ -207,7 +227,8 @@ public class MapSpriteManager : MonoBehaviour
                         new Vector3(columnOffsetCounter, yy, GameSettings.MAP_SPRITE_ELEMENTS_Z);
                     newNode.GetComponent<NodeData>().Populate(nodeData);
 
-                    if (nodeData.status == NODE_STATUS.active.ToString() || nodeData.status.Equals(NODE_STATUS.completed))
+                    if (nodeData.status == NODE_STATUS.active.ToString() ||
+                        nodeData.status.Equals(NODE_STATUS.completed))
                     {
                         playerIcon.SetActive(true);
                         playerIcon.transform.localPosition = newNode.transform.localPosition;
@@ -260,7 +281,7 @@ public class MapSpriteManager : MonoBehaviour
 
         nodesHolder.transform.DOLocalMoveX(targetx, GameSettings.MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON);
     }
-
+    
     Bounds CalculateLocalBounds()
     {
         Quaternion currentRotation = this.transform.rotation;
@@ -268,18 +289,24 @@ public class MapSpriteManager : MonoBehaviour
 
         Bounds bounds = new Bounds(this.transform.position, Vector3.zero);
 
-        foreach (Renderer renderer in GetComponentsInChildren<Renderer>())
+        foreach (Renderer renderer in nodesHolder.GetComponentsInChildren<Renderer>())
         {
-            //Debug.Log("renderer:" + renderer.gameObject.name);
             bounds.Encapsulate(renderer.bounds);
         }
 
-        Vector3 localCenter = bounds.center - this.transform.position;
-        bounds.center = localCenter;
-        //  Debug.Log("The local bounds of this model is " + bounds);
+        // the bounds puts the final node in the middle of the screen, but we want it at the right edge
+        // so we get half the width of the screen
+        float halfScreenWidth = Camera.main.orthographicSize * Camera.main.aspect;
+        
+        // but just that cuts off the last node, so we need the size of the node as well
+        float nodeWidth = nodes[nodes.Count - 1].GetComponent<BoxCollider2D>().size.x / 2;
+
+        // and subtract it from the bounds, but add the node width so it doesn't get cut off
+        float newBoundsX = (bounds.extents.x - halfScreenWidth + nodeWidth);
+        
+        bounds.extents = new Vector3(newBoundsX, bounds.extents.y, bounds.extents.z);
 
         this.transform.rotation = currentRotation;
-
         return bounds;
     }
 }

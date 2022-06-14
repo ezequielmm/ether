@@ -14,6 +14,7 @@ public class WebSocketManager : MonoBehaviour
     //Websockets incoming messages
     private const string WS_MESSAGE_EXPEDITION_MAP = "ExpeditionMap";
     private const string WS_MESSAGE_PLAYER_STATE = "PlayerState";
+    private const string WS_MESSAGE_INIT_COMBAT = "InitCombat";
 
     //Websockets outgoing messages with callback
     private const string WS_MESSAGE_NODE_SELECTED = "NodeSelected";
@@ -80,10 +81,16 @@ public class WebSocketManager : MonoBehaviour
         rootSocket.On<ConnectResponse>(SocketIOEventTypes.Connect, OnConnected);
 
         //customNamespace.On<string>("ExpeditionMap", (arg1) => Debug.Log("Data from ReceiveExpeditionStatus:" + arg1));
-        rootSocket.On<string>(WS_MESSAGE_EXPEDITION_MAP, OnExpeditionMap);
-        rootSocket.On<string>(WS_MESSAGE_PLAYER_STATE, OnPlayerState);
-
+        rootSocket.On<string>(WS_MESSAGE_EXPEDITION_MAP, GenericParser);
+        rootSocket.On<string>(WS_MESSAGE_PLAYER_STATE, GenericParser);
+        rootSocket.On<string>(WS_MESSAGE_INIT_COMBAT, GenericParser);
+      
         //  manager.Open();
+    }
+
+    private void GenericParser(string data)
+    {
+        SWSM_Parser.ParseJSON(data);
     }
 
     private void OnHello(string obj)
@@ -123,12 +130,14 @@ public class WebSocketManager : MonoBehaviour
     /// 
     /// </summary>
     /// <param name="test"></param>
-    private void OnNodeClickedAnswer(string nodeData)
-    {
-        NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
-        GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, WS_QUERY_TYPE.MAP_NODE_SELECTED);
 
-        Debug.Log("OnNodeClickedAnswer: " + nodeState);
+    private void OnNodeClickedAnswer(string data)
+    {
+        //NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
+        //GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState,WS_QUERY_TYPE.MAP_NODE_SELECTED);
+        SWSM_Parser.ParseJSON(data);
+
+        //Debug.Log("OnNodeClickedAnswer: " + nodeState);
     }
 
 
@@ -137,16 +146,17 @@ public class WebSocketManager : MonoBehaviour
 #if UNITY_EDITOR
         if (GameSettings.DEBUG_MODE_ON)
         {
-            //data = Utils.ReadJsonFile("node_data_act1.txt");
+            data = Utils.ReadJsonFile("node_data_act1.txt");
             //data = Utils.ReadJsonFile("node_data_only_RH.txt");
-            data = Utils.ReadJsonFile("node_data_act1step2.txt");
+            //data = Utils.ReadJsonFile("node_data_act1step2.txt");
             //data = Utils.ReadJsonFile("node_data_act_test.txt");
         }
 #endif
-
-
         Debug.Log("Data from OnExpeditionMap: " + data);
-        GameManager.Instance.EVENT_MAP_NODES_UPDATE.Invoke(data);
+        // GameManager.Instance.EVENT_MAP_NODES_UPDATE.Invoke(data);
+        SWSM_Parser.ParseJSON(data);
+
+      
     }
 
     void OnPlayerState(string data)

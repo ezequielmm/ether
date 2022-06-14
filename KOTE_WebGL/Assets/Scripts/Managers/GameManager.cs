@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 
@@ -117,11 +118,15 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<string, Action> EVENT_SHOW_CONFIRMATION_PANEL = new UnityEvent<string, Action>();
     [HideInInspector] 
     public UnityEvent<int> EVENT_MAP_ACTIVATE_PORTAL = new UnityEvent<int>();
+    //[HideInInspector]
+    //public UnityEvent<bool> EVENT_MAP_TOGGLE_MAP = new UnityEvent<bool>();
     /// <summary>
     /// Scroll map buttons events. First bool enable/disable, second bool direction left/right
     /// </summary>
     [HideInInspector]
     public UnityEvent<bool,bool> EVENT_MAP_SCROLL_CLICK = new UnityEvent<bool,bool>();
+    [HideInInspector]
+    public UnityEvent<Vector3> EVENT_MAP_SCROLL_DRAG = new UnityEvent<Vector3>();
     [HideInInspector]
     public UnityEvent EVENT_MAP_MASK_DOUBLECLICK = new UnityEvent();
 
@@ -152,7 +157,10 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<string> EVENT_CARD_PLAYED = new UnityEvent<string>();
     [HideInInspector]
     public UnityEvent EVENT_END_TURN_CLICKED = new UnityEvent();
-    
+
+    //Combat events
+    [HideInInspector]
+    public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();
 
     public inGameScenes nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
 
