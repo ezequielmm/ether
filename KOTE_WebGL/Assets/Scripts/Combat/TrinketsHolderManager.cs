@@ -17,6 +17,7 @@ public class TrinketsHolderManager : MonoBehaviour
         // we might need to change this once we get trinkets properly implemented, idk
         trinketsContainer.SetActive(false);
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(DisplayRandomTrinkets);
+        DisplayRandomTrinkets(null);
     }
 
     // when we get a player status update, that tells us to update the trinkets
