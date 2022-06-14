@@ -148,6 +148,15 @@ public class MapSpriteManager : MonoBehaviour
     {
         Debug.Log("[OnMapNodesDataUpdated] " + data);
 
+
+        //destroy current nodes
+        foreach (GameObject go in nodes)
+        {
+            Destroy(go);
+        }
+
+        nodes = new List<GameObject>();
+
         //ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>("{\"data\":" + data + "}");
         //ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>(data);
         SWSM_MapData expeditionMapData = JsonUtility.FromJson<SWSM_MapData>(data);

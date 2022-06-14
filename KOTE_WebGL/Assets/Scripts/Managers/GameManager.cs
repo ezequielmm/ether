@@ -157,7 +157,10 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<string> EVENT_CARD_PLAYED = new UnityEvent<string>();
     [HideInInspector]
     public UnityEvent EVENT_END_TURN_CLICKED = new UnityEvent();
-    
+
+    //Combat events
+    [HideInInspector]
+    public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();
 
     public inGameScenes nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
 

@@ -10609,22 +10609,24 @@ MonoBehaviour:
   - type: 3
     imageGo: {fileID: 2809503541552325168}
   - type: 4
-    imageGo: {fileID: 6966435326268907109}
+    imageGo: {fileID: 2809503541552325168}
   - type: 5
-    imageGo: {fileID: 1253312687149335851}
+    imageGo: {fileID: 6966435326268907109}
   - type: 6
-    imageGo: {fileID: 1977959998612935866}
+    imageGo: {fileID: 1253312687149335851}
   - type: 7
-    imageGo: {fileID: 5986638541900264206}
+    imageGo: {fileID: 1977959998612935866}
   - type: 8
-    imageGo: {fileID: 4250975384216146778}
+    imageGo: {fileID: 5986638541900264206}
   - type: 9
-    imageGo: {fileID: 1064623043277589349}
+    imageGo: {fileID: 4250975384216146778}
   - type: 10
     imageGo: {fileID: 1064623043277589349}
   - type: 11
-    imageGo: {fileID: 2172254499105225716}
+    imageGo: {fileID: 1064623043277589349}
   - type: 12
+    imageGo: {fileID: 2172254499105225716}
+  - type: 13
     imageGo: {fileID: 4855249461534791823}
   act: 0
   step: 0
@@ -10637,7 +10639,6 @@ MonoBehaviour:
   lineMat: {fileID: 2100000, guid: 876743e6c61dea5439bf74f607cebd2c, type: 2}
   grayscaleMaterial: {fileID: 2100000, guid: 0b1698dca7e23124588f0d96f9c8b2eb, type: 2}
   availableParticleSystem: {fileID: 4278458617687280834}
-  portalActivateParticleSystem: {fileID: 4296749518308982002}
   nodeClickDisabled: 0
   spriteShapePrefab: {fileID: 166793866925265225, guid: e9df6b78fba15624eaf4e961880a4ce4,
     type: 3}
