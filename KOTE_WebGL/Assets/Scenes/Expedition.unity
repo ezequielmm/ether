@@ -1713,6 +1713,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 252026739}
     m_Modifications:
+    - target: {fileID: 3779016675993651453, guid: d2e06bd1a4ff8264ea5e7faae64b81e5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6768843336790469690, guid: d2e06bd1a4ff8264ea5e7faae64b81e5,
         type: 3}
       propertyPath: m_Name
@@ -2712,6 +2717,9 @@ MonoBehaviour:
   EVENT_MAP_SCROLL_CLICK:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_MAP_SCROLL_DRAG:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_MAP_MASK_DOUBLECLICK:
     m_PersistentCalls:
       m_Calls: []
@@ -3224,6 +3232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 055dc9f0d0beb2542987ed2a55848618, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nodesHolder: {fileID: 1923504842}
 --- !u!61 &2100204869
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3650,6 +3659,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 252026739}
     m_Modifications:
+    - target: {fileID: 8065093879915780064, guid: f0ef4465dd03e1444a06ef7a1232c37e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8065093880304469052, guid: f0ef4465dd03e1444a06ef7a1232c37e,
         type: 3}
       propertyPath: m_Name

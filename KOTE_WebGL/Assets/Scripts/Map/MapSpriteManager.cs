@@ -83,11 +83,6 @@ public class MapSpriteManager : MonoBehaviour
     }
 
 
-    private void OnMaskDoubleClick()
-    {
-        ScrollBackToPlayerIcon();
-    }
-
     private void OnScrollButtonClicked(bool active, bool direction)
     {
         scrollMap = active;
