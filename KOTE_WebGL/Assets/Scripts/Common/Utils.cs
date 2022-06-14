@@ -15,6 +15,15 @@ public static class Utils
         reader.Close();
         return result;
     }
+
+    public static TEnum ParseEnum<TEnum>(string dataString) where TEnum : struct, Enum
+    {
+        TEnum parsedEnum;
+        bool parseSuccess = Enum.TryParse(dataString, out parsedEnum);
+        if (parseSuccess) return parsedEnum;
+        Debug.LogError("Warning: Enum not parsed. No value '" + dataString +"' in enum type " + typeof(TEnum));
+        return default(TEnum);
+    }
     
     // utility function to clean up an enum when we're going to display it to the player
     public static string CapitalizeEveryWordOfEnum<T>(T inEnumValue){

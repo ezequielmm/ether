@@ -10,7 +10,7 @@ public static class GameSettings
     public const int MAP_LINE_RENDERER_SORTING_LAYER_ORDER = 50;
     public const float MAP_SCROLL_SPEED = 2f;
     public static float MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON = 2;
-    public static float DOUBLE_CLICK_TIME_DELTA = 1;
+    public static float DOUBLE_CLICK_TIME_DELTA = 0.5f;
     public static float PORTAL_ACTIVATION_ANIMATION_TIME = 2;
 
     //HAND OF CARDS
@@ -24,7 +24,7 @@ public static class GameSettings
     /*//////////////  
     ///Debug
     //*/
-    public const bool DEBUG_MODE_ON = false;
+    public const bool DEBUG_MODE_ON = true;
 
     
 }

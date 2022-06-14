@@ -1,4 +1,5 @@
 using System;
+
 public enum inGameScenes
 {
     MainMenu,
@@ -33,6 +34,7 @@ public enum WS_QUERY_TYPE
 
 public enum NODE_TYPES
 {
+    undefined = 0,
     royal_house,
     portal,
     encounter,
@@ -44,6 +46,7 @@ public enum NODE_TYPES
 
 public enum NODE_SUBTYPES
 {
+    undefined = 0,
     royal_house_a,
     royal_house_b,
     royal_house_c,
@@ -61,13 +64,17 @@ public enum NODE_SUBTYPES
 
 public enum NODE_STATUS
 {
+    undefined = 0,
     completed,
     active,
     available,
     disabled
+    
 }
+
 public enum EntityType
 {
     Player,
     Enemy
 }
+
