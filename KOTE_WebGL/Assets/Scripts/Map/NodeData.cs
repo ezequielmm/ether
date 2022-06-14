@@ -11,11 +11,13 @@ public class NodeData : MonoBehaviour
     [Serializable]
     public struct BackgroundImage
     {
-        public NODE_TYPES type;
+        public NODE_SUBTYPES type;
         public GameObject imageGo;
     }
 
-    [Header("Background sprites")] public List<BackgroundImage> bgSprites = new List<BackgroundImage>();
+    [Header("Background sprites")]
+    
+    public List<BackgroundImage> bgSprites = new List<BackgroundImage>();
 
     public int act;
     public int step;
@@ -45,6 +47,9 @@ public class NodeData : MonoBehaviour
     {
         HideNode();
     }
+
+  
+   
 
     private void OnMouseDown()
     {
@@ -113,7 +118,9 @@ public class NodeData : MonoBehaviour
 
     private void SelectNodeImage()
     {
-        BackgroundImage bgi = bgSprites.Find(x => x.type == type);
+        HideAllIcons();
+
+        BackgroundImage bgi = bgSprites.Find(x => x.type == subType);
         if (bgi.imageGo != null)
         {
             bgi.imageGo.SetActive(true);
@@ -130,7 +137,7 @@ public class NodeData : MonoBehaviour
 
     private void UpdateNodeStatusVisuals()
     {
-        Color indexColor = Color.grey;
+        Color indexColor = Color.grey;        
 
         switch (status)
         {

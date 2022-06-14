@@ -333,7 +333,6 @@ MonoBehaviour:
   nameButton: {fileID: 1243952911725042524}
   fiefButton: {fileID: 4216056195811062611}
   settingButton: {fileID: 2563560112582612212}
-  confirmationMenu: {fileID: 0}
 --- !u!1 &2210478339609055012
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,7 +985,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -54.5, y: -43}
-  m_SizeDelta: {x: 80, y: 80}
+  m_SizeDelta: {x: 56, y: 48}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4538948544015746671
 CanvasRenderer:
@@ -1016,7 +1015,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1359abac43289cb42bc2770fe32a80ee, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8e438963297b3584cad6f3f390de9f57, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

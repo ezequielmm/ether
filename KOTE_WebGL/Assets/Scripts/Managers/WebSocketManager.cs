@@ -140,9 +140,9 @@ public class WebSocketManager : MonoBehaviour
 #if UNITY_EDITOR
         if (GameSettings.DEBUG_MODE_ON)
         {
-            //data = Utils.ReadJsonFile("node_data_act1.txt");
+            data = Utils.ReadJsonFile("node_data_act1.txt");
             //data = Utils.ReadJsonFile("node_data_only_RH.txt");
-            data = Utils.ReadJsonFile("node_data_act1step2.txt");
+            //data = Utils.ReadJsonFile("node_data_act1step2.txt");
             //data = Utils.ReadJsonFile("node_data_act_test.txt");
         }
 #endif
