@@ -99,7 +99,7 @@ public class PathManager : MonoBehaviour
         while (!pathInCorrectPosition)
         {
             // we don't need to update point 0
-            for (int i = pathController.spline.GetPointCount() -1; i > 0; i--)
+            for (int i = pathController.spline.GetPointCount() - 1; i > 0; i--)
             {
                 if (Math.Abs(pathController.spline.GetPosition(i).x) >= Math.Abs(splinePointPositions[i].x) &&
                     Math.Abs(pathController.spline.GetPosition(i).y) >= Math.Abs(splinePointPositions[i].y))
@@ -110,7 +110,6 @@ public class PathManager : MonoBehaviour
                 }
 
                 Vector3 pointPos = pathController.spline.GetPosition(i);
-                Vector3 oldPos = pathController.spline.GetPosition(i);
 
                 // move the path along the line defined by the starting point and the ending point
                 // we need to get it in the form y = m * x + b
@@ -120,16 +119,22 @@ public class PathManager : MonoBehaviour
                 // yintercept = b
                 float yIntercept = splinePointPositions[i].y - (slope * splinePointPositions[i].x);
                 
-                float yOffset = (slope * 0.1f) + yIntercept;
+                // add the speed we want the paths to animate to the right at
+                if (splinePointPositions[i].x > 0) pointPos.x += 0.1f;
+                if (splinePointPositions[i].x < 0) pointPos.x -= 0.1f; //TODO magic number for animation speed
 
-                    if (splinePointPositions[i].x > 0) pointPos.x += 0.1f;
-                    if (splinePointPositions[i].x < 0) pointPos.x -= 0.1f;
-                    if (splinePointPositions[i].y > 0) pointPos.y -= yOffset;
-                    if (splinePointPositions[i].y < 0) pointPos.y += yOffset;//TODO magic number for animation speed
-                    // and get the position of y by using y= m * x + b
-                  
+                // and get the position of y by using y= m * x + b
+                float yPosition = (slope * pointPos.x) + yIntercept;
+                pointPos.y = yPosition;
 
                 pathController.spline.SetPosition(i, pointPos);
+                pathInCorrectPosition = false;
+            }
+            
+            // check to make sure that the final point is at the next node before continuing
+            if (pathController.spline.GetPosition(pathController.spline.GetPointCount() - 1) !=
+                splinePointPositions[pathController.spline.GetPointCount() - 1])
+            {
                 pathInCorrectPosition = false;
             }
 

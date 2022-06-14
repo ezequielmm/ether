@@ -44,7 +44,7 @@ public class SWSM_Parser
             case "extend_map":
                 GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.Invoke(data);
                 // TODO get this to work
-                // GameManager.Instance.EVENT_MAP_ANIMATE_STEP.Invoke(1, 0);
+                GameManager.Instance.EVENT_MAP_ANIMATE_STEP.Invoke(1, 0);
                 break;
         }
     }
