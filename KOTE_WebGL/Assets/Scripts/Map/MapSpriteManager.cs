@@ -77,10 +77,10 @@ namespace map
             Vector3 newPos = nodesHolder.transform.localPosition;
 
             newPos.x += scrollSpeed;
-            
+
             //limit left scroll
             if (newPos.x < -mapBounds.max.x) newPos.x = -mapBounds.max.x;
-            
+
             //limit the map move to the right
             if (newPos.x > 0 || mapBounds.max.x < halfScreenWidth * 2) newPos.x = 0;
 
@@ -119,7 +119,6 @@ namespace map
         {
             KillActiveTween();
 
-            Debug.Log("Dragging");
             // make sure this script isn't scrolling
             scrollSpeed = 0;
             // and keep the map in bounds
@@ -128,13 +127,13 @@ namespace map
             newPos.x = Camera.main.ScreenToWorldPoint(Input.mousePosition).x - dragOffset.x;
             newPos = transform.InverseTransformPoint(newPos);
             newPos.z = 0;
-            
+
             //limit left scroll
             if (newPos.x < -mapBounds.max.x) newPos.x = -mapBounds.max.x;
-            
+
             //limit the map move to the right
             if (newPos.x > 0 || mapBounds.max.x < halfScreenWidth * 2) newPos.x = 0;
-            
+
             nodesHolder.transform.localPosition = newPos;
         }
 
@@ -158,8 +157,30 @@ namespace map
             }
         }
 
+        private void OnMapNodesDataUpdated(SWSM_MapData mapData)
+        {
+            GenerateMap(mapData);
+            bool doBossScroll = true;
+            foreach (NodeData node in nodes.FindAll(
+                         x => x.type == NODE_TYPES.royal_house || x.type == NODE_TYPES.portal))
+            {
+                if (node.status == NODE_STATUS.active)
+                {
+                    doBossScroll = false;
+                }
+            }
+
+            if (doBossScroll && GetBossNode() != null)
+            {
+               ScrollFromBoss();
+                return;
+            }
+
+            ScrollBackToPlayerIcon();
+        }
+
         //we will get to this point once the backend give us the node data
-        void OnMapNodesDataUpdated(SWSM_MapData expeditionMapData)
+        void GenerateMap(SWSM_MapData expeditionMapData)
         {
             Debug.Log("[OnMapNodesDataUpdated] " + expeditionMapData);
 
@@ -174,9 +195,6 @@ namespace map
             //at this point the map is completed. 
             //we get the maps bounds to help later with scroll limits and animations
             CalculateLocalBounds();
-
-            //ScrollFromBoss();
-            ScrollBackToPlayerIcon();
         }
 
         #region generateMap
@@ -324,7 +342,7 @@ namespace map
         private void OnRevealMap(SWSM_MapData mapData)
         {
             // update the map as usual
-            OnMapNodesDataUpdated(mapData);
+            GenerateMap(mapData);
 
             // then hide the nodes and scroll towards the end
             foreach (NodeData node in nodes)
@@ -350,15 +368,14 @@ namespace map
         {
             float targetX = GetBossNode().transform.localPosition.x * -1;
             nodesHolder.transform.position = new Vector3(targetX, 0, 0);
-            ScrollBackToPlayerIcon(GameSettings.MAP_SCROLL_ANIMATION_DURATION);
+            StartCoroutine(ScrollFromBossToPlayer());
         }
 
-        // TODO this coroutine is for when we need to scroll to the boss from the portal being activated
         private IEnumerator ScrollFromBossToPlayer()
         {
             float targetX = GetBossNode().transform.localPosition.x * -1;
-            activeTween = nodesHolder.transform.DOLocalMoveX(targetX, GameSettings.MAP_SCROLL_SPEED);
-            yield return activeTween.WaitForCompletion();
+            nodesHolder.transform.DOLocalMoveX(targetX, GameSettings.MAP_SCROLL_ANIMATION_DURATION);
+            yield return new WaitForSeconds(1);
             ScrollBackToPlayerIcon(GameSettings.MAP_SCROLL_ANIMATION_DURATION);
         }
 
@@ -372,9 +389,7 @@ namespace map
                     return nodes[i];
                 }
             }
-
-            Debug.LogError("Warning: No boss node found");
-            return nodes[nodes.Count - 1];
+            return null;
         }
 
         private void OnPortalActivated(SWSM_MapData mapData)

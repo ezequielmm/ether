@@ -15,9 +15,7 @@ public class NodeData : MonoBehaviour
         public GameObject imageGo;
     }
 
-    [Header("Background sprites")]
-    
-    public List<BackgroundImage> bgSprites = new List<BackgroundImage>();
+    [Header("Background sprites")] public List<BackgroundImage> bgSprites = new List<BackgroundImage>();
 
     public int act;
     public int step;
@@ -32,7 +30,7 @@ public class NodeData : MonoBehaviour
     public Material grayscaleMaterial;
     [FormerlySerializedAs("pSystem")] public ParticleSystem availableParticleSystem;
     public TextMeshPro idText;
-   
+
 
     public bool nodeClickDisabled = false;
 
@@ -48,8 +46,6 @@ public class NodeData : MonoBehaviour
         HideNode();
     }
 
-  
-   
 
     private void OnMouseDown()
     {
@@ -59,15 +55,14 @@ public class NodeData : MonoBehaviour
             // if clicking on a royal house node, we want to ask the player for confirmation before activating the node
             if (type == NODE_TYPES.royal_house)
             {
-                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Do you want to enter" + Utils.CapitalizeEveryWordOfEnum(subType), OnConfirmRoyalHouse);
+                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
+                    "Do you want to enter" + Utils.CapitalizeEveryWordOfEnum(subType), OnConfirmRoyalHouse);
                 return;
             }
             else
             {
                 GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);
             }
-
-            
         }
     }
 
@@ -89,6 +84,7 @@ public class NodeData : MonoBehaviour
         {
             bgimg.imageGo.SetActive(false);
         }
+
         idText.gameObject.SetActive(false);
     }
 
@@ -97,13 +93,14 @@ public class NodeData : MonoBehaviour
         SelectNodeImage();
         UpdateNodeStatusVisuals();
     }
+
     public void Populate(NodeDataHelper nodeData)
     {
         PopulateNodeInformation(nodeData);
         SelectNodeImage();
         UpdateNodeStatusVisuals();
     }
-    
+
     private void PopulateNodeInformation(NodeDataHelper nodeData)
     {
         status = Utils.ParseEnum<NODE_STATUS>(nodeData.status);
@@ -118,8 +115,6 @@ public class NodeData : MonoBehaviour
 
     private void SelectNodeImage()
     {
-        HideNode();
-
         BackgroundImage bgi = bgSprites.Find(x => x.type == subType);
         if (bgi.imageGo != null)
         {
@@ -137,7 +132,7 @@ public class NodeData : MonoBehaviour
 
     private void UpdateNodeStatusVisuals()
     {
-        Color indexColor = Color.grey;        
+        Color indexColor = Color.grey;
 
         switch (status)
         {
@@ -177,8 +172,8 @@ public class NodeData : MonoBehaviour
 
     private void OnConfirmRoyalHouse()
     {
-        GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);        
-    }  
+        GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);
+    }
 
     #region oldFunctions
 
