@@ -58,11 +58,13 @@ public class GameStatusManager : MonoBehaviour
         //generate map using nodes data. This is currently done on the websocket manager
         //tell top bar to hide the map icon
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(false);
+        GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.Invoke(true);
     }
 
     private void InitializeCombatmode()
     {
         //tell top bar to hide the map icon
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
+        GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.Invoke(false);
     }
 }

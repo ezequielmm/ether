@@ -102,7 +102,9 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<bool> EVENT_EXPEDITION_STATUS_UPDATE = new UnityEvent<bool>();
     [HideInInspector]
     public UnityEvent EVENT_EXPEDITION_CONFIRMED = new UnityEvent();
-    
+    [HideInInspector]
+    public UnityEvent EVENT_REQUEST_EXPEDITION_CANCEL = new UnityEvent();
+
     //MAP EVENTS
     [HideInInspector]
     public UnityEvent<string> EVENT_MAP_NODES_UPDATE = new UnityEvent<string>();
@@ -113,9 +115,11 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector]
     public UnityEvent<int> EVENT_MAP_NODE_MOUSE_OVER = new UnityEvent<int>();
     [HideInInspector] 
-    public UnityEvent<NodeData> EVENT_MAP_REQUEST_NODE_CONFIRMATION = new UnityEvent<NodeData>();
+    public UnityEvent<string, Action> EVENT_SHOW_CONFIRMATION_PANEL = new UnityEvent<string, Action>();
     [HideInInspector] 
     public UnityEvent<int> EVENT_MAP_ACTIVATE_PORTAL = new UnityEvent<int>();
+    //[HideInInspector]
+    //public UnityEvent<bool> EVENT_MAP_TOGGLE_MAP = new UnityEvent<bool>();
     /// <summary>
     /// Scroll map buttons events. First bool enable/disable, second bool direction left/right
     /// </summary>

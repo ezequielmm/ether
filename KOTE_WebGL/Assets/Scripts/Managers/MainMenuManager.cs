@@ -9,8 +9,11 @@ using UnityEngine.UI;
 public class MainMenuManager : MonoBehaviour
 {
     public TMP_Text nameText, moneyText, koteLabel;
-
-    public Button playButton, treasuryButton, registerButton, loginButton, nameButton, fiefButton, settingButton;
+    [Tooltip("the entire button panel's canvas group for controling them all")]
+    public CanvasGroup buttonPanel;
+    [Tooltip("Main menu buttons for individual control")]
+    public Button playButton, newExpeditionButton, treasuryButton, registerButton, loginButton, nameButton, fiefButton, settingButton;
+    
 
     private bool _hasExpedition;
 
@@ -35,6 +38,7 @@ public class MainMenuManager : MonoBehaviour
 
         textField?.SetText( hasExpedition? "Resume" : "Play");
         
+        newExpeditionButton.gameObject.SetActive(_hasExpedition);
     }
 
     public void OnLoginSuccessful(string name, int fief)
@@ -58,8 +62,9 @@ public class MainMenuManager : MonoBehaviour
         moneyText.gameObject.SetActive(!preLoginStatus);
         playButton.interactable = !preLoginStatus;
         treasuryButton.interactable = !preLoginStatus;
-        //registerButton.gameObject.SetActive(preLoginStatus);
-        //loginButton.gameObject.SetActive(preLoginStatus);
+        newExpeditionButton.gameObject.SetActive(!preLoginStatus);
+        registerButton.gameObject.SetActive(preLoginStatus);
+        loginButton.gameObject.SetActive(preLoginStatus);
         registerButton.interactable = preLoginStatus;
         loginButton.interactable = preLoginStatus;
         nameButton.gameObject.SetActive(!preLoginStatus);
@@ -99,10 +104,21 @@ public class MainMenuManager : MonoBehaviour
         {
             //show the character selection panel
             //koteLabel.gameObject.SetActive(false);
-            treasuryButton.interactable = false;
+            buttonPanel.interactable = false;
             GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
-        }       
-
-        
+        }
     }
+
+    public void OnNewExpeditionButton()
+    {
+        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Do you want to cancel the current expedition?", OnNewExpeditionConfirmed);
+    }
+
+    public void OnNewExpeditionConfirmed()
+    {
+        // cancel the expedition
+        GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.Invoke();
+              
+    }
+
 }
