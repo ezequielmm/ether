@@ -28,6 +28,11 @@ namespace map
 
         private bool scrollMap;
 
+        private Tween activeTween;
+
+        // keep track of this so the map doesn't move if it's not bigger than the visible area
+        private float halfScreenWidth;
+
 
         void Start()
         {
@@ -41,6 +46,9 @@ namespace map
             GameManager.Instance.EVENT_MAP_REVEAL.AddListener(OnRevealMap);
 
             playerIcon.SetActive(false);
+
+            // we need half the width of the screen for various checks
+            halfScreenWidth = Camera.main.orthographicSize * Camera.main.aspect;
         }
 
         private void OnToggleMap(bool data)
@@ -64,17 +72,17 @@ namespace map
             if (Mathf.Abs(scrollSpeed) < 0.01f) scrollSpeed = 0;
 
             Vector3 velocity = Vector3.zero;
-        Vector3 currentMapPos = nodesHolder.transform.localPosition;
+            Vector3 currentMapPos = nodesHolder.transform.localPosition;
 
             Vector3 newPos = nodesHolder.transform.localPosition;
 
             newPos.x += scrollSpeed;
-
-            //limit the map move to the right
-        if (newPos.x > 0) newPos.x = 0;
-
+            
             //limit left scroll
-        if (newPos.x < -mapBounds.max.x) newPos.x = -mapBounds.max.x;
+            if (newPos.x < -mapBounds.max.x) newPos.x = -mapBounds.max.x;
+            
+            //limit the map move to the right
+            if (newPos.x > 0 || mapBounds.max.x < halfScreenWidth * 2) newPos.x = 0;
 
             if (newPos.x < 0)
             {
@@ -85,47 +93,52 @@ namespace map
                 scrollSpeed = GameSettings.MAP_SCROLL_SPEED;
             }
         }
-    }
 
-    private void OnScrollButtonClicked(bool active, bool direction)
-    {
-        scrollMap = active;
 
-        if (active)
+        private void OnScrollButtonClicked(bool active, bool direction)
         {
-              if (direction)
+            scrollMap = active;
+
+            if (active)
             {
-                     scrollSpeed = GameSettings.MAP_SCROLL_SPEED * -1; //TODO magic number
-             }
-             else
-             {
+                KillActiveTween();
+                if (direction)
+                {
+                    scrollSpeed = GameSettings.MAP_SCROLL_SPEED * -1; //TODO magic number
+                }
+                else
+                {
                     scrollSpeed = GameSettings.MAP_SCROLL_SPEED;
-             }
-         }
-     }
+                }
+            }
+        }
 
 
-    // called while the player is dragging the map
-    private void OnMapScrollDragged(Vector3 dragOffset)
-    {
-        // make sure this script isn't scrolling
-        scrollSpeed = 0;
-        // and keep the map in bounds
+        // called while the player is dragging the map
+        private void OnMapScrollDragged(Vector3 dragOffset)
+        {
+            KillActiveTween();
 
-        Vector3 newPos = nodesHolder.transform.localPosition;
-        newPos.x = Camera.main.ScreenToWorldPoint(Input.mousePosition).x - dragOffset.x;
-        newPos = transform.InverseTransformPoint(newPos);
-        newPos.z = 0;
+            Debug.Log("Dragging");
+            // make sure this script isn't scrolling
+            scrollSpeed = 0;
+            // and keep the map in bounds
 
-         //limit the map move to the right
-        if (newPos.x > 0) newPos.x = 0;
+            Vector3 newPos = nodesHolder.transform.localPosition;
+            newPos.x = Camera.main.ScreenToWorldPoint(Input.mousePosition).x - dragOffset.x;
+            newPos = transform.InverseTransformPoint(newPos);
+            newPos.z = 0;
+            
+            //limit left scroll
+            if (newPos.x < -mapBounds.max.x) newPos.x = -mapBounds.max.x;
+            
+            //limit the map move to the right
+            if (newPos.x > 0 || mapBounds.max.x < halfScreenWidth * 2) newPos.x = 0;
+            
+            nodesHolder.transform.localPosition = newPos;
+        }
 
-        //limit left scroll
-        if (newPos.x < -mapBounds.max.x) newPos.x = -mapBounds.max.x;
-        nodesHolder.transform.localPosition = newPos;
-    }
-
-    private void OnMapIconClicked()
+        private void OnMapIconClicked()
         {
             //make sure when the map is on panel mode the nodes are not clickable
             foreach (NodeData node in nodes)
@@ -134,18 +147,18 @@ namespace map
             }
 
             if (mapContainer.activeSelf)
-        {
-            mapContainer.SetActive(false);
-            GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.Invoke(false);
+            {
+                mapContainer.SetActive(false);
+                GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.Invoke(false);
+            }
+            else
+            {
+                mapContainer.SetActive(true);
+                GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.Invoke(true);
+            }
         }
-        else
-        {
-            mapContainer.SetActive(true);
-            GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.Invoke(true);
-        }
-    }
 
-     //we will get to this point once the backend give us the node data
+        //we will get to this point once the backend give us the node data
         void OnMapNodesDataUpdated(SWSM_MapData expeditionMapData)
         {
             Debug.Log("[OnMapNodesDataUpdated] " + expeditionMapData);
@@ -160,13 +173,13 @@ namespace map
 
             //at this point the map is completed. 
             //we get the maps bounds to help later with scroll limits and animations
-            CalculateLocalMapBounds();
+            CalculateLocalBounds();
 
             //ScrollFromBoss();
             ScrollBackToPlayerIcon();
         }
-        
-         #region generateMap
+
+        #region generateMap
 
         private void ClearMap()
         {
@@ -207,8 +220,8 @@ namespace map
 
             return mapStructure;
         }
-       
-       
+
+
         void InstantiateMapNodes(MapStructure mapStructure)
         {
             float columnOffsetCounter = GameSettings.MAP_SPRITE_NODE_X_OFFSET;
@@ -302,9 +315,12 @@ namespace map
             Debug.Log("node:" + nodesHolder.transform.localPosition.x);
             Debug.Log("targetx:" + targetx);
 
-            nodesHolder.transform.DOLocalMoveX(targetx, scrollTime);
+            if ((mapBounds.max.x < halfScreenWidth * 2) == false)
+            {
+                activeTween = nodesHolder.transform.DOLocalMoveX(targetx, scrollTime);
+            }
         }
-                        
+
         private void OnRevealMap(SWSM_MapData mapData)
         {
             // update the map as usual
@@ -319,8 +335,15 @@ namespace map
             // animate the map based on the act of the last node, which should be the new act
             GameManager.Instance.EVENT_MAP_ANIMATE_STEP.Invoke(nodes[nodes.Count - 1].act, 0);
 
+            StartCoroutine(RevealMapThenReturnToPlayer());
+        }
+
+        private IEnumerator RevealMapThenReturnToPlayer()
+        {
             // TODO figure out a better way of calculating the animation time
-            nodesHolder.transform.DOLocalMoveX(-mapBounds.max.x, 15);
+            activeTween = nodesHolder.transform.DOLocalMoveX(-mapBounds.max.x, 10);
+            yield return activeTween.WaitForCompletion();
+            ScrollBackToPlayerIcon(GameSettings.MAP_SCROLL_ANIMATION_DURATION);
         }
 
         void ScrollFromBoss()
@@ -334,8 +357,8 @@ namespace map
         private IEnumerator ScrollFromBossToPlayer()
         {
             float targetX = GetBossNode().transform.localPosition.x * -1;
-            Tween moveToBossTween = nodesHolder.transform.DOLocalMoveX(targetX, GameSettings.MAP_SCROLL_SPEED);
-            yield return moveToBossTween.WaitForCompletion();
+            activeTween = nodesHolder.transform.DOLocalMoveX(targetX, GameSettings.MAP_SCROLL_SPEED);
+            yield return activeTween.WaitForCompletion();
             ScrollBackToPlayerIcon(GameSettings.MAP_SCROLL_ANIMATION_DURATION);
         }
 
@@ -370,33 +393,41 @@ namespace map
             //TODO play map expansion animation
         }
 
-    
-    
-    Bounds CalculateLocalBounds()
-    {
-        Quaternion currentRotation = this.transform.rotation;
-        this.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
-        Bounds bounds = new Bounds(this.transform.position, Vector3.zero);
-
-        foreach (Renderer renderer in nodesHolder.GetComponentsInChildren<Renderer>())
+        void CalculateLocalBounds()
         {
-            bounds.Encapsulate(renderer.bounds);
+            Quaternion currentRotation = this.transform.rotation;
+            this.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+
+            Bounds bounds = new Bounds(this.transform.position, Vector3.zero);
+
+            foreach (Renderer renderer in nodesHolder.GetComponentsInChildren<Renderer>())
+            {
+                bounds.Encapsulate(renderer.bounds);
+            }
+
+            // the bounds puts the final node in the middle of the screen, but we want it at the right edge
+
+
+            // but just that cuts off the last node, so we need the size of the node as well
+            float nodeWidth = nodes[nodes.Count - 1].GetComponent<BoxCollider2D>().size.x;
+
+            // and subtract it from the bounds, but add the node width so it doesn't get cut off
+            float newBoundsX = (bounds.extents.x - halfScreenWidth + nodeWidth);
+
+            bounds.extents = new Vector3(newBoundsX, bounds.extents.y, bounds.extents.z);
+
+            this.transform.rotation = currentRotation;
+            mapBounds = bounds;
         }
 
-        // the bounds puts the final node in the middle of the screen, but we want it at the right edge
-        // so we get half the width of the screen
-        float halfScreenWidth = Camera.main.orthographicSize * Camera.main.aspect;
-        
-        // but just that cuts off the last node, so we need the size of the node as well
-        float nodeWidth = nodes[nodes.Count - 1].GetComponent<BoxCollider2D>().size.x / 2;
-
-        // and subtract it from the bounds, but add the node width so it doesn't get cut off
-        float newBoundsX = (bounds.extents.x - halfScreenWidth + nodeWidth);
-        
-        bounds.extents = new Vector3(newBoundsX, bounds.extents.y, bounds.extents.z);
-
-        this.transform.rotation = currentRotation;
-        return bounds;
+        // kills the active tween to allow for player override
+        private void KillActiveTween()
+        {
+            if (activeTween != null && activeTween.active)
+            {
+                activeTween.Kill();
+            }
+        }
     }
 }

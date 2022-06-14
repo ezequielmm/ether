@@ -118,7 +118,7 @@ public class NodeData : MonoBehaviour
 
     private void SelectNodeImage()
     {
-        HideAllIcons();
+        HideNode();
 
         BackgroundImage bgi = bgSprites.Find(x => x.type == subType);
         if (bgi.imageGo != null)
