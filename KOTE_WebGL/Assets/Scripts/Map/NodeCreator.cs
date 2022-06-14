@@ -50,12 +50,12 @@ public class NodeCreator : MonoBehaviour
     }
 
    
-    void OnMapNodesDataUpdated(string data)
+    void OnMapNodesDataUpdated(SWSM_MapData data)
     {       
         Debug.Log("[OnMapNodesDataUpdated] " + data);
 
         //ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>("{\"data\":" + data + "}");
-        ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>(data);
+        ExpeditionMapData expeditionMapData = data.data;
 
         MapStructure mapStructure = new MapStructure();
 

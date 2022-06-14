@@ -29,6 +29,7 @@ public class NodeData : MonoBehaviour
     public Material lineMat;
     public Material grayscaleMaterial;
     [FormerlySerializedAs("pSystem")] public ParticleSystem availableParticleSystem;
+    public TextMeshPro idText;
    
 
     public bool nodeClickDisabled = false;
@@ -42,17 +43,7 @@ public class NodeData : MonoBehaviour
 
     private void Awake()
     {
-        //Debug.Log("Node data awake");
-
-        foreach (BackgroundImage bgimg in bgSprites)
-        {
-            bgimg.imageGo.SetActive(false);
-        }
-    }
-
-    private void Start()
-    {
-        //GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.AddListener(ActivatePortal);
+        HideNode();
     }
 
     private void OnMouseDown()
@@ -86,11 +77,26 @@ public class NodeData : MonoBehaviour
     }
 
     #endregion
+
+    public void HideNode()
+    {
+        foreach (BackgroundImage bgimg in bgSprites)
+        {
+            bgimg.imageGo.SetActive(false);
+        }
+        idText.gameObject.SetActive(false);
+    }
+
+    public void ShowNode()
+    {
+        SelectNodeImage();
+        UpdateNodeStatusVisuals();
+    }
     public void Populate(NodeDataHelper nodeData)
     {
         PopulateNodeInformation(nodeData);
-        SelectNodeImage(nodeData);
-        UpdateNodeStatusVisuals(nodeData);
+        SelectNodeImage();
+        UpdateNodeStatusVisuals();
     }
     
     private void PopulateNodeInformation(NodeDataHelper nodeData)
@@ -105,7 +111,7 @@ public class NodeData : MonoBehaviour
         step = nodeData.step;
     }
 
-    private void SelectNodeImage(NodeDataHelper nodeData)
+    private void SelectNodeImage()
     {
         BackgroundImage bgi = bgSprites.Find(x => x.type == type);
         if (bgi.imageGo != null)
@@ -118,25 +124,25 @@ public class NodeData : MonoBehaviour
         }
         else
         {
-            Debug.Log(" nodeData.type " + nodeData.type + " not found ");
+            Debug.Log(" nodeData.type " + type + " not found ");
         }
     }
 
-    private void UpdateNodeStatusVisuals(NodeDataHelper nodeData)
+    private void UpdateNodeStatusVisuals()
     {
         Color indexColor = Color.grey;
 
-        switch (Enum.Parse(typeof(NODE_STATUS), nodeData.status))
+        switch (status)
         {
             case NODE_STATUS.disabled:
-                this.nodeClickDisabled = true;
+                nodeClickDisabled = true;
                 break;
             case NODE_STATUS.completed:
                 indexColor = Color.red;
-                this.nodeClickDisabled = true;
+                nodeClickDisabled = true;
                 break;
             case NODE_STATUS.active:
-                if (nodeData.type == NODE_TYPES.portal.ToString()) this.nodeClickDisabled = true;
+                if (type == NODE_TYPES.portal) nodeClickDisabled = true;
                 indexColor = Color.cyan;
                 break;
             case NODE_STATUS.available:
@@ -145,8 +151,9 @@ public class NodeData : MonoBehaviour
                 break;
         }
 
-        GetComponentInChildren<TextMeshPro>().SetText(nodeData.id.ToString());
-        GetComponentInChildren<TextMeshPro>().color = indexColor;
+        idText.SetText(id.ToString());
+        idText.color = indexColor;
+        idText.gameObject.SetActive(true);
     }
 
 

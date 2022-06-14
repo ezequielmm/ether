@@ -120,9 +120,9 @@ public class PathManager : MonoBehaviour
                 float yIntercept = splinePointPositions[i].y - (slope * splinePointPositions[i].x);
                 
                 // add the speed we want the paths to animate to the right at
-                if (splinePointPositions[i].x > 0) pointPos.x += 0.1f;
-                if (splinePointPositions[i].x < 0) pointPos.x -= 0.1f; //TODO magic number for animation speed
-
+                if (splinePointPositions[i].x > 0) pointPos.x += GameSettings.MAP_REVEAL_ANIMATION_SPEED;
+                if (splinePointPositions[i].x < 0) pointPos.x -= GameSettings.MAP_REVEAL_ANIMATION_SPEED;
+                
                 // and get the position of y by using y= m * x + b
                 float yPosition = (slope * pointPos.x) + yIntercept;
                 pointPos.y = yPosition;
@@ -142,7 +142,7 @@ public class PathManager : MonoBehaviour
         }
 
         // make the nodes appear when the path reaches them
-        exitNode.gameObject.SetActive(true);
+        exitNode.ShowNode();
         // and animate the next step
         GameManager.Instance.EVENT_MAP_ANIMATE_STEP.Invoke(pathAct, pathStep + 1);
     }

@@ -77,7 +77,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_REQUEST_EXPEDITION_CANCEL = new UnityEvent();
 
     //MAP EVENTS
-    [HideInInspector] public UnityEvent<string> EVENT_ALL_MAP_NODES_UPDATE = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<SWSM_MapData> EVENT_ALL_MAP_NODES_UPDATE = new UnityEvent<SWSM_MapData>();
     [HideInInspector] public UnityEvent<int> EVENT_MAP_NODE_SELECTED = new UnityEvent<int>();
 
     [HideInInspector]

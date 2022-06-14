@@ -37,6 +37,7 @@ namespace map
             GameManager.Instance.EVENT_MAP_SCROLL_CLICK.AddListener(OnScrollButtonClicked);
             GameManager.Instance.EVENT_MAP_MASK_DOUBLECLICK.AddListener(OnMaskDoubleClick);
             GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.AddListener(OnPortalActivated);
+            GameManager.Instance.EVENT_MAP_REVEAL.AddListener(OnRevealMap);
 
             playerIcon.SetActive(false);
         }
@@ -125,13 +126,11 @@ namespace map
         }
 
         //we will get to this point once the backend give us the node data
-        void OnMapNodesDataUpdated(string data)
+        void OnMapNodesDataUpdated(SWSM_MapData expeditionMapData)
         {
-            Debug.Log("[OnMapNodesDataUpdated] " + data);
+            Debug.Log("[OnMapNodesDataUpdated] " + expeditionMapData);
 
-            //ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>("{\"data\":" + data + "}");
-            //ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>(data);
-            SWSM_MapData expeditionMapData = JsonUtility.FromJson<SWSM_MapData>(data);
+            ClearMap();
 
             MapStructure mapStructure = GenerateMapStructure(expeditionMapData);
 
@@ -148,6 +147,16 @@ namespace map
         }
 
         #region generateMap
+
+        private void ClearMap()
+        {
+            while (nodes.Count > 0)
+            {
+                NodeData node = nodes[0];
+                nodes.Remove(node);
+                Destroy(node);
+            }
+        }
 
         MapStructure GenerateMapStructure(SWSM_MapData expeditionMapData)
         {
@@ -275,6 +284,24 @@ namespace map
             nodesHolder.transform.DOLocalMoveX(targetx, scrollTime);
         }
 
+        private void OnRevealMap(SWSM_MapData mapData)
+        {
+            // update the map as usual
+            OnMapNodesDataUpdated(mapData);
+
+            // then hide the nodes and scroll towards the end
+            foreach (NodeData node in nodes)
+            {
+                node.HideNode();
+            }
+
+            // animate the map based on the act of the last node, which should be the new act
+            GameManager.Instance.EVENT_MAP_ANIMATE_STEP.Invoke(nodes[nodes.Count - 1].act, 0);
+
+            // TODO figure out a better way of calculating the animation time
+            nodesHolder.transform.DOLocalMoveX(-mapBounds.max.x, 15);
+        }
+
         void ScrollFromBoss()
         {
             float targetX = GetBossNode().transform.localPosition.x * -1;
@@ -309,12 +336,12 @@ namespace map
         private void OnPortalActivated(SWSM_MapData mapData)
         {
             // the portal is always the last node when we receive the portal activate event
-            int nodeId =  mapData.data.data[mapData.data.data.Length - 1].id;
-            
+            int nodeId = mapData.data.data[mapData.data.data.Length - 1].id;
+
             // move the particle system to the correct portal
             NodeData exitNode = nodes.Find(x => x.id == nodeId);
             portalAnimation.transform.position = exitNode.transform.position;
-            
+
             // set the animation duration to the one specified in GameSettings
             ParticleSystem.MainModule portalAnimationMain = portalAnimation.main;
             portalAnimationMain.duration = GameSettings.PORTAL_ACTIVATION_ANIMATION_TIME;

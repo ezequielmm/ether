@@ -35,16 +35,14 @@ public class SWSM_Parser
         switch (action)
         {
             case "show_map":
-                GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.Invoke(data);
+                GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.Invoke(mapData);
                 break;
             case "activate_portal":
                 GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.Invoke(mapData);
-                GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.Invoke(data);
+                GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.Invoke(mapData);
                 break;
             case "extend_map":
-                GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.Invoke(data);
-                // TODO get this to work
-                GameManager.Instance.EVENT_MAP_ANIMATE_STEP.Invoke(1, 0);
+               GameManager.Instance.EVENT_MAP_REVEAL.Invoke(mapData);
                 break;
         }
     }
