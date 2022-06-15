@@ -52,7 +52,7 @@ public class CardOnHandManager : MonoBehaviour
         rarityTF.SetText(card.rarity);
         descriptionTF.SetText(card.description);
         this.id = card.id;
-        type = card.type;
+        type = card.card_type;
 
         //Energy management
       //  Debug.Log("card energy="+card.energy+", energy="+energy);

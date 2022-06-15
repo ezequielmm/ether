@@ -191,7 +191,7 @@ public class Card
     public string description;
     public string rarity;
     public int energy;
-    public string type;
+    public string card_type;
     public int coin_min;
     public int coin_max;
 }

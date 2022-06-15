@@ -58,8 +58,19 @@ public class PointerManager : MonoBehaviour
 
         pointerTarget.transform.position = arrowPosition;
         RotateArrowTowardsMouse(mousePosition, cardPosition);
+    }
 
-        //TODO get the tip of the arrow to scale larger as it gets further away from the card
+    private void OnPointerDeactivated(string id)
+    {
+        //if the pointer is over an enemy, play the card
+        if (overEnemy)
+        {
+            GameManager.Instance.EVENT_CARD_PLAYED.Invoke(id);
+        }
+
+        // else return it to the deck
+        //GameManager.Instance.EVENT_CARD_MOUSE_EXIT.Invoke(id);
+        pointerContainer.SetActive(false);
     }
 
     private void RotateArrowTowardsMouse(Vector3 mousePosition, Vector3 cardPosition)
@@ -91,19 +102,10 @@ public class PointerManager : MonoBehaviour
     private void MoveSplinePoints(Vector3 localMousePosition, Vector3 localCardPosition)
     {
         // set the starting point to the card's position
-        spline.SetPosition(0, localCardPosition);
+        SetPointerBasePosition(localCardPosition);
 
-        // set the arrow side of the spriteshape to where the ponter is
-        if (localMousePosition.x < localCardPosition.x)
-        {
-            localMousePosition.x += 0.2f;
-        }
-        else
-        {
-            localMousePosition.x -= 0.2f;
-        }
-
-        spline.SetPosition(splinePointCount - 1, localMousePosition);
+        // set the arrow side of the spriteshape to where the pointer is
+        SetPointerTipPosition(localMousePosition, localCardPosition);
 
         // set the rest of the points to their correct location
         for (int i = 1; i < splinePointCount - 1; i++)
@@ -120,22 +122,63 @@ public class PointerManager : MonoBehaviour
                 newLocation.x = spline.GetPosition(0).x + originalLinePositions[i].x;
             }
 
-            // however, if it's in the bounds of the offset, adjust it with the position of the mouse
+            // if it's on the same side of the card as the arrow point, never let it get within one unit of the arrow
+            if (originalLinePositions[i].x > 0)
+            {
+                if (IsToLeftOfCard(localMousePosition, localCardPosition) &&
+                    localMousePosition.x > localCardPosition.x - originalLinePositions[i].x - 1)
+                {
+                    newLocation.x = localMousePosition.x + 1;
+                }
+                else if (IsToRightOfCard(localMousePosition, localCardPosition) &&
+                         localMousePosition.x < localCardPosition.x + originalLinePositions[i].x + 1)
+                {
+                    newLocation.x = localMousePosition.x - 1;
+                }
+
+                // unless it's within one unit of the card, then it stays at the location of the card
+                if (localMousePosition.x > localCardPosition.x - 1 && localMousePosition.x < localCardPosition.x + 1)
+                {
+                    newLocation.x = localCardPosition.x;
+                }
+            }
 
             // if it's on the opposite side of the card from the arrow point, adjust it only when it's in bounds
-            if (IsInOffsetBounds(i, localMousePosition))
+            if (IsInOffsetBounds(i, localMousePosition) && originalLinePositions[i].x < 0)
             {
-                if (originalLinePositions[i].x < 0)
-                    newLocation.x = localCardPosition.x - (localMousePosition.x - localCardPosition.x);
-                else newLocation.x = localMousePosition.x;
+                newLocation.x = localCardPosition.x - (localMousePosition.x - localCardPosition.x);
             }
-            
+
             // set the y value to that of the mouse minus the offset
             float yOffset = originalLinePositions[i].y - originalLinePositions[splinePointCount - 1].y;
             newLocation.y = spline.GetPosition(splinePointCount - 1).y + yOffset;
+            // make sure the arrow doesn't go beneath the card
+            if (newLocation.y < localCardPosition.y)
+            {
+                newLocation.y = localCardPosition.y;
+            }
 
             spline.SetPosition(i, newLocation);
         }
+    }
+
+    private void SetPointerBasePosition(Vector3 position)
+    {
+        spline.SetPosition(0, position);
+    }
+
+    private void SetPointerTipPosition(Vector3 localMousePosition, Vector3 localCardPosition)
+    {
+        if (localMousePosition.x < localCardPosition.x)
+        {
+            localMousePosition.x += 0.2f;
+        }
+        else
+        {
+            localMousePosition.x -= 0.2f;
+        }
+
+        spline.SetPosition(splinePointCount - 1, localMousePosition);
     }
 
     private void SetSplineTangents(Vector3 localMousePosition, Vector3 localCardPosition)
@@ -153,9 +196,10 @@ public class PointerManager : MonoBehaviour
                 float offsetPercent = mouseDistanceFromCardPosition / originalLinePositions[i].x;
                 float leftTangentX = originalLeftTangents[i].x * offsetPercent;
                 float rightTangentX = originalRightTangents[i].x * offsetPercent;
+                float rightTangentY = originalRightTangents[i].y;
 
                 leftTangent = new Vector3(leftTangentX, originalLeftTangents[i].y, 0);
-                rightTangent = new Vector3(rightTangentX, originalRightTangents[i].y, 0);
+                rightTangent = new Vector3(rightTangentX, rightTangentY, 0);
             }
             else if (IsToLeftOfCard(localMousePosition, localCardPosition))
             {
@@ -168,9 +212,23 @@ public class PointerManager : MonoBehaviour
                 rightTangent = originalRightTangents[i];
             }
 
+            // however, if the spline point nearest the pointer is too close, make the right tangent very small
+            if ((i == splinePointCount - 2) && IsTooCloseToPointerArrow(i, 2))
+            {
+                rightTangent = new Vector3(0.01f, 0.01f, 0);
+            }
+
             spline.SetLeftTangent(i, leftTangent);
             spline.SetRightTangent(i, rightTangent);
         }
+    }
+
+    private bool IsTooCloseToPointerArrow(int index, float distance)
+    {
+        return (spline.GetPosition(index).x < spline.GetPosition(splinePointCount - 1).x + distance &&
+                spline.GetPosition(index).x > spline.GetPosition(splinePointCount - 1).x - distance) &&
+               (spline.GetPosition(index).y < spline.GetPosition(splinePointCount - 1).y + distance &&
+                spline.GetPosition(index).y > spline.GetPosition(splinePointCount - 1).y - distance);
     }
 
     private bool IsInOffsetBounds(int pointIndex, Vector3 localMousePosition)
@@ -190,19 +248,5 @@ public class PointerManager : MonoBehaviour
     private bool IsToRightOfCard(Vector3 localMousePosition, Vector3 localCardPosition)
     {
         return localMousePosition.x > localCardPosition.x;
-    }
-
-
-    private void OnPointerDeactivated(string id)
-    {
-        pointerContainer.SetActive(false);
-        //if the pointer is over an enemy, play the card
-        if (overEnemy)
-        {
-            GameManager.Instance.EVENT_CARD_PLAYED.Invoke(id);
-        }
-
-        // else return it to the deck
-        //GameManager.Instance.EVENT_CARD_MOUSE_EXIT.Invoke(id);
     }
 }
