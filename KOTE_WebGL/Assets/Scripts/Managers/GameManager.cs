@@ -132,7 +132,7 @@ public class GameManager : SingleTon<GameManager>
 
     //MAP PANEL EVENTS
     [HideInInspector]
-    public UnityEvent<bool> EVENT_MAP_PANEL_TOOGLE = new UnityEvent<bool>();
+    public UnityEvent<bool> EVENT_MAP_PANEL_TOGGLE = new UnityEvent<bool>();
 
     //PLAYER DATA EVENTS
     [HideInInspector]

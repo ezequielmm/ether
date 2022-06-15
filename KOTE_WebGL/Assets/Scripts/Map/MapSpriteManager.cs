@@ -24,17 +24,22 @@ public class MapSpriteManager : MonoBehaviour
 
     private bool scrollMap;
 
+    private float leftEdge;
+
 
     void Start()
     {
         GameManager.Instance.EVENT_MAP_NODES_UPDATE.AddListener(OnMapNodesDataUpdated);
-        GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.AddListener(OnToggleMap);
+        GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.AddListener(OnToggleMap);
         GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnMapIconClicked);
         GameManager.Instance.EVENT_MAP_SCROLL_CLICK.AddListener(OnScrollButtonClicked);
         GameManager.Instance.EVENT_MAP_SCROLL_DRAG.AddListener(OnMapScrollDragged);
         GameManager.Instance.EVENT_MAP_MASK_DOUBLECLICK.AddListener(OnMaskDoubleClick);
 
         playerIcon.SetActive(false);
+        
+        // fix an offset issue fixed by updating the map container to the correct position
+        leftEdge = 0 - Camera.main.orthographicSize * Camera.main.aspect;
     }
 
     private void OnToggleMap(bool data)
@@ -66,7 +71,7 @@ public class MapSpriteManager : MonoBehaviour
         newPos.x += scrollSpeed;
 
         //limit the map move to the right
-        if (newPos.x > 0) newPos.x = 0;
+        if (newPos.x > leftEdge) newPos.x = leftEdge;
 
 
         //limit left scroll
@@ -114,7 +119,7 @@ public class MapSpriteManager : MonoBehaviour
 
 
         //limit the map move to the right
-        if (newPos.x > 0) newPos.x = 0;
+        if (newPos.x > leftEdge) newPos.x = leftEdge;
 
         //limit left scroll
         if (newPos.x < -mapBounds.max.x) newPos.x = -mapBounds.max.x;
@@ -132,12 +137,12 @@ public class MapSpriteManager : MonoBehaviour
         if (mapContainer.activeSelf)
         {
             mapContainer.SetActive(false);
-            GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.Invoke(false);
+            GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
         }
         else
         {
             mapContainer.SetActive(true);
-            GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.Invoke(true);
+            GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(true);
         }
     }
 
