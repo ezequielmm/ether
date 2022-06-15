@@ -25,7 +25,7 @@ public class SettingsManager : MonoBehaviour
 
         logoutHyperlink.interactable = false;
 
-       // Debug.Log($"{PlayerPrefs.GetFloat("settings_volume")}");
+        // Debug.Log($"{PlayerPrefs.GetFloat("settings_volume")}");
         volumeSlider.value = PlayerPrefs.GetFloat("settings_volume");
         AudioListener.volume = volumeSlider.value;
 
@@ -57,7 +57,13 @@ public class SettingsManager : MonoBehaviour
 
     public void ActivateInnerLogoutConfirmPanel(bool activate)
     {
-        logoutConfirmContainer.SetActive(activate);
+        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Do you want to logout?",
+            () =>
+            {
+                logoutHyperlink.interactable = false;
+                manageWallets.interactable = false;
+                GameManager.Instance.EVENT_REQUEST_LOGOUT.Invoke(PlayerPrefs.GetString("session_token"));
+            });
     }
 
     public void OnLogin(string name, int fief)

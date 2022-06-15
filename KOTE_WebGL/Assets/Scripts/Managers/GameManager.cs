@@ -169,6 +169,7 @@ public class GameManager : SingleTon<GameManager>
     // Start is called before the first frame update
     void Start()
     {
+        EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
         SceneManager.activeSceneChanged += UpdateSoundVolume;
     }
 
@@ -176,6 +177,11 @@ public class GameManager : SingleTon<GameManager>
     {
         nextSceneToLoad = scene;
         SceneManager.LoadScene(inGameScenes.Loader.ToString());
+    }
+
+    private void OnLogoutSuccessful(string message)
+    {
+        LoadScene(inGameScenes.MainMenu);
     }
 
     // when the scene changes, update the sound volume using the value stored in PlayerPrefs
