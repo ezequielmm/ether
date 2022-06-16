@@ -33,6 +33,7 @@ public class SWSM_Parser
     private static void ProcessErrorAction(string action, string data)
     {
         SWSM_ErrorData errorData;
+        //TODO this will need to get parsed and passed on once we know what the error data is going to be
         switch (action)
         {
             case "card_unplayable":
