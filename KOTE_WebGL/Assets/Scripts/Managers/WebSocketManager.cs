@@ -14,12 +14,13 @@ public class WebSocketManager : MonoBehaviour
     //Websockets incoming messages
     private const string WS_MESSAGE_EXPEDITION_MAP = "ExpeditionMap";
     private const string WS_MESSAGE_PLAYER_STATE = "PlayerState";
-    private const string WS_MESSAGE_INIT_COMBAT = "InitCombat";
+    private const string WS_MESSAGE_INIT_COMBAT = "InitCombat";   
 
     //Websockets outgoing messages with callback
     private const string WS_MESSAGE_NODE_SELECTED = "NodeSelected";
     private const string WS_MESSAGE_CARD_PLAYED = "CardPlayed";
     private const string WS_MESSAGE_END_TURN = "EndTurn";
+    private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
 
     // Start is called before the first frame update
     void Start()
@@ -29,9 +30,12 @@ public class WebSocketManager : MonoBehaviour
         GameManager.Instance.EVENT_CARD_PLAYED.AddListener(OnCardPlayed);
         GameManager.Instance.EVENT_END_TURN_CLICKED.AddListener(OnEndTurn);
 
+        GameManager.Instance.EVENT_GET_ENERGY.AddListener(OnEnergyRequest);
+
         options = new SocketOptions();
         ConnectSocket(); //Disabled connection until actual implementation
     }
+
 
     /// <summary>
     /// 
@@ -51,8 +55,8 @@ public class WebSocketManager : MonoBehaviour
         // determine the correct server the client is running on
         string hostURL = Application.absoluteURL;
         string[] splitURL = hostURL.Split('.');
-        string uriStr;
-        if (hostURL != "" && splitURL.Length > 1)
+        string uriStr = "https://api.dev.kote.robotseamonster.com";
+        if ( splitURL.Length > 1)//this will fail for localhost
         {
             switch (splitURL[1])
             {
@@ -69,8 +73,11 @@ public class WebSocketManager : MonoBehaviour
         }
         // default to the stage server if running from the unity editor
 #if UNITY_EDITOR
-        uriStr = "https://api.stage.kote.robotseamonster.com";
+        uriStr = "https://api.dev.kote.robotseamonster.com";
 #endif
+
+        Debug.Log("Connecting to "+uriStr);
+
         manager = new SocketManager(new Uri(uriStr), options);
 
         rootSocket = manager.Socket;
@@ -161,8 +168,7 @@ public class WebSocketManager : MonoBehaviour
 
     void OnPlayerState(string data)
     {
-        PlayerStateData
-            playerState = JsonUtility.FromJson<PlayerStateData>(data); //TODO: move this to websocker manager
+        PlayerStateData playerState = JsonUtility.FromJson<PlayerStateData>(data); //TODO: move this to websocker manager
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.Invoke(playerState);
         Debug.Log("Data from OnPlayerState: " + playerState);
     }
@@ -204,5 +210,16 @@ public class WebSocketManager : MonoBehaviour
             NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
             GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, WS_QUERY_TYPE.END_OF_TURN);
         }
+    }
+
+    private void OnEnergyRequest()
+    {
+        rootSocket.ExpectAcknowledgement<int[]>(OnEnergyRequestRespond).Emit(WS_MESSAGE_GET_ENERGY);
+    }
+
+    private void OnEnergyRequestRespond(int[] data)
+    {
+        Debug.Log("[OnEnergyRequest]"+data[0]+","+data[1]);
+        GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(data[0],data[1]);
     }
 }

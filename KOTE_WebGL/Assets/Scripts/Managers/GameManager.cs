@@ -161,6 +161,14 @@ public class GameManager : SingleTon<GameManager>
     //Combat events
     [HideInInspector]
     public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();
+    [HideInInspector]
+    public UnityEvent EVENT_GET_ENERGY = new UnityEvent();
+    [HideInInspector]
+    public UnityEvent<int,int> EVENT_UPDATE_ENERGY = new UnityEvent<int,int>();//current energy, max energy
+    [HideInInspector]
+    public UnityEvent EVENT_GET_PLAYER_HEALTH = new UnityEvent();
+    [HideInInspector]
+    public UnityEvent<int, int> EVENT_UPDATE_PLAYER_HEALTH = new UnityEvent<int, int>();//current health, max health
 
     public inGameScenes nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
 

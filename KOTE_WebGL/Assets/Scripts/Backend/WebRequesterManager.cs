@@ -26,9 +26,12 @@ public class WebRequesterManager : MonoBehaviour
     private void Awake()
     {
         // determine the correct server the client is running on
-        baseUrl = Application.absoluteURL;
-        string[] splitURL = baseUrl.Split('.');
-        if (baseUrl != "" && splitURL.Length > 1)
+        string hostName = Application.absoluteURL;
+        baseUrl = "https://gateway.dev.kote.robotseamonster.com";//make sure if anything fails we use DEV
+
+        string[] splitURL = hostName.Split('.');
+
+        if ( splitURL.Length > 1) // localhost url will fail this check as ther are no dots on it
         {
             switch (splitURL[1])
             {
@@ -39,14 +42,14 @@ public class WebRequesterManager : MonoBehaviour
                     baseUrl = "https://gateway.stage.kote.robotseamonster.com";
                     break;
                 default:
-                    baseUrl = "https://gateway.stage.kote.robotseamonster.com";
+                    baseUrl = "https://gateway.dev.kote.robotseamonster.com";
                     break;
             }
         }
 
         // default to the stage server if we're in the editor
         #if UNITY_EDITOR
-        baseUrl = "https://gateway.stage.kote.robotseamonster.com";
+        baseUrl = "https://gateway.dev.kote.robotseamonster.com";
         #endif
       
         Debug.Log("Base URL: " + baseUrl.ToString());

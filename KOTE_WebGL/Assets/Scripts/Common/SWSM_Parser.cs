@@ -23,10 +23,12 @@ public class SWSM_Parser
                 GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState,WS_QUERY_TYPE.MAP_NODE_SELECTED);                
                 break;
             case "player_state_update":
+                SWSM_PlayerState playerStateBase = JsonUtility.FromJson<SWSM_PlayerState>(data);
+                PlayerStateData playerState = playerStateBase.data;
+                GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.Invoke(playerState);
                 break;
         }
     }
-
 
 
 }
