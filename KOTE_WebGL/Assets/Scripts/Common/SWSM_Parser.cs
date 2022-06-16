@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using BestHTTP.Connections.TLS;
 using BestHTTP.JSON;
 using UnityEngine;
 
@@ -28,7 +29,10 @@ public class SWSM_Parser
             case "error":
                 ProcessErrorAction(swsm.data.action, data);
                 break;
-        }
+            default:
+                Debug.LogError("No message_type processed. Data Received: " + data);
+                break;
+        } ;
     }
 
     private static void ProcessErrorAction(string action, string data)
