@@ -10,8 +10,9 @@ using UnityEngine;
 [Serializable]
 public class ExpeditionMapData
 {
-   public NodeDataHelper[] data;
+    public NodeDataHelper[] data;
 }
+
 [Serializable]
 public class NodeDataHelper
 {
@@ -30,11 +31,13 @@ public class MapStructure
 {
     public List<Act> acts = new List<Act>();
 }
+
 [Serializable]
 public class Act
 {
     public List<Step> steps = new List<Step>();
 }
+
 [Serializable]
 public class Step
 {
@@ -46,6 +49,7 @@ public class Step
 public class ExpeditionStatusData
 {
     public Data data;
+
     public bool GetHasExpedition()
     {
         return this.data.hasExpedition == "true";
@@ -61,6 +65,7 @@ public class ExpeditionStatusData
 public class ExpeditionRequestData
 {
     public Data data;
+
     public bool GetExpeditionStarted()
     {
         return this.data.expeditionCreated == "true";
@@ -151,7 +156,7 @@ public class LogoutData
 }
 
 [Serializable]
-public class PlayerStateData 
+public class PlayerStateData
 {
     public Data data;
 
@@ -159,6 +164,7 @@ public class PlayerStateData
     public class Data
     {
         public PlayerState player_state;
+
         [Serializable]
         public class PlayerState
         {
@@ -180,9 +186,9 @@ public class PlayerStateData
 
             public Deck deck;
         }
-        
     }
 }
+
 [Serializable]
 public class Card
 {
@@ -195,6 +201,7 @@ public class Card
     public int coin_min;
     public int coin_max;
 }
+
 [Serializable]
 public class Deck
 {
@@ -202,6 +209,7 @@ public class Deck
 }
 
 #region NODESTATE
+
 [Serializable]
 public class NodeStateData
 {
@@ -240,13 +248,13 @@ public class NodeStateData
                     public List<Card> discard;
                     public List<Card> exhaust;
                 }
-
             }
         }
     }
-    
 }
+
 #endregion
+
 [Serializable]
 public class CardPlayedData
 {
@@ -277,21 +285,23 @@ public class SWSM_Base
     {
         public string message_type;
         public string action;
-       
     }
- 
 }
 
 [Serializable]
 public class SWSM_MapData
 {
     public ExpeditionMapData data;
-
 }
 
 [Serializable]
 public class SWSM_NodeData
 {
     public NodeStateData data;
+}
 
+[Serializable]
+public class SWSM_ErrorData
+{
+    public String data;
 }

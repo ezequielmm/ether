@@ -24,9 +24,32 @@ public class SWSM_Parser
                 break;
             case "player_state_update":
                 break;
+            case "error":
+                ProcessErrorAction(swsm.data.action, data);
+                break;
         }
     }
 
-
+    private static void ProcessErrorAction(string action, string data)
+    {
+        SWSM_ErrorData errorData;
+        switch (action)
+        {
+            case "card_unplayable":
+                 errorData = new SWSM_ErrorData
+                {
+                    data = data
+                };
+                Debug.Log(errorData.data);
+                break;
+            case "invalid_card":
+                 errorData = new SWSM_ErrorData
+                {
+                    data = data
+                };
+                 Debug.Log(errorData.data);
+                break;
+        }
+    }
 
 }
