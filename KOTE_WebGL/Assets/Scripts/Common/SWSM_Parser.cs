@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using BestHTTP.JSON;
 using UnityEngine;
 
 public class SWSM_Parser
-{ 
+{
     public static void ParseJSON(string data)
     {
         SWSM_Base swsm = JsonUtility.FromJson<SWSM_Base>(data);
 
-        Debug.Log("[MessageType]" + swsm.data.message_type+" , [Action]" +swsm.data.action);
+        Debug.Log("[MessageType]" + swsm.data.message_type + " , [Action]" + swsm.data.action);
 
         switch (swsm.data.message_type)
         {
@@ -20,7 +21,7 @@ public class SWSM_Parser
                 //NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
                 SWSM_NodeData nodeBase = JsonUtility.FromJson<SWSM_NodeData>(data);
                 NodeStateData nodeState = nodeBase.data;
-                GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState,WS_QUERY_TYPE.MAP_NODE_SELECTED);                
+                GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, WS_QUERY_TYPE.MAP_NODE_SELECTED);
                 break;
             case "player_state_update":
                 break;
@@ -33,24 +34,17 @@ public class SWSM_Parser
     private static void ProcessErrorAction(string action, string data)
     {
         SWSM_ErrorData errorData;
-        //TODO this will need to get parsed and passed on once we know what the error data is going to be
+        //TODO this will need to get passed on to where it needs to go once we determine what the error data will be
         switch (action)
         {
             case "card_unplayable":
-                 errorData = new SWSM_ErrorData
-                {
-                    data = data
-                };
-                Debug.Log(errorData.data);
+                errorData = JsonUtility.FromJson<SWSM_ErrorData>(data);
+                Debug.Log(action + ": " + errorData.data);
                 break;
             case "invalid_card":
-                 errorData = new SWSM_ErrorData
-                {
-                    data = data
-                };
-                 Debug.Log(errorData.data);
+                errorData = JsonUtility.FromJson<SWSM_ErrorData>(data);
+                Debug.Log(action + ": " + errorData.data);
                 break;
         }
     }
-
 }
