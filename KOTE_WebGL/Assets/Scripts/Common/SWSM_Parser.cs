@@ -53,7 +53,7 @@ public class SWSM_Parser
                 break;
         }
     }
-}
+
     // we don't need the SWSM_base here, because we just need the action.
     // We parse the rest of the data from the original message string, and don't retain the message type or action
     private static void UpdateMapActionPicker(string action, string data)
