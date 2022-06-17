@@ -188,6 +188,7 @@ public class WebSocketManager : MonoBehaviour
     private void OnCardPlayedAnswer(string nodeData)
     {
         Debug.Log("on card played answer:" + nodeData);
+        SWSM_Parser.ParseJSON(nodeData);
         if (MessageErrorValidator.ValidateData(nodeData))
         {
             NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
