@@ -371,8 +371,6 @@ namespace map
         void ScrollFromBoss()
         {
             scrollSpeed = 0;
-            float targetX = GetBossNode().transform.position.x * -1;
-            Debug.Log("target X: " + targetX + " map bounds.max.x: " + mapBounds.max.x);
             nodesHolder.transform.localPosition = new Vector3(-mapBounds.max.x, 0, 0);
             StartCoroutine(ScrollFromBossToPlayer());
         }
