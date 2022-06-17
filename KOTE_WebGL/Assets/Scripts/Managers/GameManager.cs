@@ -133,6 +133,14 @@ public class GameManager : SingleTon<GameManager>
     //Combat events
     [HideInInspector]
     public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();
+    [HideInInspector]
+    public UnityEvent EVENT_GET_ENERGY = new UnityEvent();
+    [HideInInspector]
+    public UnityEvent<int,int> EVENT_UPDATE_ENERGY = new UnityEvent<int,int>();//current energy, max energy
+    [HideInInspector]
+    public UnityEvent EVENT_GET_PLAYER_HEALTH = new UnityEvent();
+    [HideInInspector]
+    public UnityEvent<int, int> EVENT_UPDATE_PLAYER_HEALTH = new UnityEvent<int, int>();//current health, max health
 
 
     public inGameScenes
