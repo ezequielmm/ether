@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
 using TMPro;
@@ -10,7 +11,7 @@ using TMPro;
 /// </summary>
 public class WebRequesterManager : MonoBehaviour
 {
-    private readonly string baseUrl = "https://gateway.kote.robotseamonster.com";
+    private string baseUrl;
     private readonly string urlRandomName = "/auth/v1/generate/username";
     private readonly string urlRegister = "/auth/v1/register";
     private readonly string urlLogin = "/auth/v1/login";
@@ -24,6 +25,34 @@ public class WebRequesterManager : MonoBehaviour
 
     private void Awake()
     {
+        // determine the correct server the client is running on
+        string hostName = Application.absoluteURL;
+        baseUrl = "https://gateway.dev.kote.robotseamonster.com";//make sure if anything fails we use DEV
+
+        string[] splitURL = hostName.Split('.');
+
+        if ( splitURL.Length > 1) // localhost url will fail this check as ther are no dots on it
+        {
+            switch (splitURL[1])
+            {
+                case "dev":
+                    baseUrl = "https://gateway.dev.kote.robotseamonster.com";
+                    break;
+                case "stage":
+                    baseUrl = "https://gateway.stage.kote.robotseamonster.com";
+                    break;
+                default:
+                    baseUrl = "https://gateway.dev.kote.robotseamonster.com";
+                    break;
+            }
+        }
+
+        // default to the stage server if we're in the editor
+        #if UNITY_EDITOR
+        baseUrl = "https://gateway.dev.kote.robotseamonster.com";
+        #endif
+      
+        Debug.Log("Base URL: " + baseUrl.ToString());
         PlayerPrefs.SetString("session_token", "");
         PlayerPrefs.Save();
 
@@ -38,7 +67,7 @@ public class WebRequesterManager : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.webRequester = this;
-        DontDestroyOnLoad(this);      
+        DontDestroyOnLoad(this);
     }
 
     internal void RequestStartExpedition(string characterType)
@@ -53,7 +82,6 @@ public class WebRequesterManager : MonoBehaviour
 
     public void RequestExpeditionStatus()
     {
-
         StartCoroutine(GetExpeditionStatus());
     }
 
@@ -71,6 +99,7 @@ public class WebRequesterManager : MonoBehaviour
     {
         StartCoroutine(GetRegister(name, email, password));
     }
+
     public void RequestLogin(string email, string password)
     {
         StartCoroutine(GetLogin(email, password));
@@ -85,7 +114,7 @@ public class WebRequesterManager : MonoBehaviour
     {
         StartCoroutine(GetCharacterList());
     }
-  
+
     public IEnumerator GetRandomName(string lastName)
     {
         string randomNameUrl = $"{baseUrl}{urlRandomName}";
@@ -105,7 +134,8 @@ public class WebRequesterManager : MonoBehaviour
 
         //TODO: check for errors here
 
-        RandomNameData randomNameData = JsonUtility.FromJson<RandomNameData>(randomNameInfoRequest.downloadHandler.text);
+        RandomNameData randomNameData =
+            JsonUtility.FromJson<RandomNameData>(randomNameInfoRequest.downloadHandler.text);
         string newName = randomNameData.data.username;
 
         GameManager.Instance.EVENT_REQUEST_NAME_SUCESSFUL.Invoke(string.IsNullOrEmpty(newName) ? "" : newName);
@@ -140,12 +170,13 @@ public class WebRequesterManager : MonoBehaviour
         RegisterData registerData = JsonUtility.FromJson<RegisterData>(request.downloadHandler.text);
         string token = registerData.data.token;
 
-        Debug.Log("Registration sucessful, token is "+token);
+        Debug.Log("Registration sucessful, token is " + token);
 
         //TO DO: check for errors even on a sucessful answer
 
-        GameManager.Instance.EVENT_REQUEST_PROFILE.Invoke(token); //we request the profile to confirm the server got our account created properly. This will invoke later EVENT_LOGIN_COMPLETED
-    }   
+        GameManager.Instance.EVENT_REQUEST_PROFILE
+            .Invoke(token); //we request the profile to confirm the server got our account created properly. This will invoke later EVENT_LOGIN_COMPLETED
+    }
 
     /// <summary>
     /// GetLogin
@@ -178,16 +209,17 @@ public class WebRequesterManager : MonoBehaviour
         //TODO: check for errors even on sucessful result
 
         GameManager.Instance.EVENT_REQUEST_PROFILE.Invoke(token);
-    }     
+    }
 
     IEnumerator GetProfile(string token)
     {
-        Debug.Log("Getting profile with token " +token);
+        Debug.Log("Getting profile with token " + token);
 
         string profileUrl = $"{baseUrl}{urlProfile}";
 
         //UnityWebRequest profileInfoRequest = UnityWebRequest.Get($"{profileUrl}?Authorization={Uri.EscapeDataString(token)}");
-        UnityWebRequest request = UnityWebRequest.Get(profileUrl); // TO DO: this should be asking for authorization on the header
+        UnityWebRequest
+            request = UnityWebRequest.Get(profileUrl); // TO DO: this should be asking for authorization on the header
         request.SetRequestHeader("Authorization", $"Bearer {token}");
 
         yield return request.SendWebRequest();
@@ -195,7 +227,7 @@ public class WebRequesterManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.ConnectionError ||
             request.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log("Error getting profile with token "+token);
+            Debug.Log("Error getting profile with token " + token);
             Debug.Log($"{request.error}");
             yield break;
         }
@@ -211,10 +243,10 @@ public class WebRequesterManager : MonoBehaviour
 
         RequestExpeditionStatus();
 
-        GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.Invoke(profileData);//TODO: these 2 events here don't look good
+        GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL
+            .Invoke(profileData); //TODO: these 2 events here don't look good
         GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.Invoke(name, fief);
-                     
-    }   
+    }
 
     IEnumerator GetLogout(string token)
     {
@@ -251,7 +283,7 @@ public class WebRequesterManager : MonoBehaviour
         WWWForm form = new WWWForm();
 
         UnityWebRequest request = UnityWebRequest.Get(fullUrl);
-       // UnityWebRequest request = UnityWebRequest.Post(loginUrl, form);
+        // UnityWebRequest request = UnityWebRequest.Post(loginUrl, form);
         request.SetRequestHeader("Accept", "*/*");
         request.SetRequestHeader("Authorization", $"Bearer {token}");
 
@@ -263,7 +295,7 @@ public class WebRequesterManager : MonoBehaviour
             request.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.Log("[Error getting expedition status] " + request.error);
-           
+
             yield break;
         }
 
@@ -272,8 +304,7 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(data.GetHasExpedition());
 
         Debug.Log("answer from expedition status " + request.downloadHandler.text);
-             
-    }  
+    }
 
     IEnumerator GetCharacterList()
     {
@@ -305,7 +336,6 @@ public class WebRequesterManager : MonoBehaviour
         //string message = logoutData.data.message;
 
         //TODO: check for errors even on sucessful result
-
     }
 
     public IEnumerator RequestNewExpedition(string characterType)
@@ -316,7 +346,7 @@ public class WebRequesterManager : MonoBehaviour
 
         WWWForm form = new WWWForm();
         form.AddField("class", characterType);
-      
+
         UnityWebRequest request = UnityWebRequest.Post(fullURL, form);
         request.SetRequestHeader("Authorization", $"Bearer {token}");
 
@@ -324,7 +354,7 @@ public class WebRequesterManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.ConnectionError ||
             request.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log("Request new expedition error: "+$"{request.error}");
+            Debug.Log("Request new expedition error: " + $"{request.error}");
             yield break;
         }
 
@@ -345,7 +375,7 @@ public class WebRequesterManager : MonoBehaviour
     {
         string fullURL = $"{baseUrl}{urlExpeditionCancel}";
         string token = PlayerPrefs.GetString("session_token");
-        
+
         UnityWebRequest request = UnityWebRequest.Post(fullURL, "");
         request.SetRequestHeader("Authorization", $"Bearer {token}");
 
@@ -357,7 +387,7 @@ public class WebRequesterManager : MonoBehaviour
             Debug.Log("[Error canceling expedition]");
             yield break;
         }
-        
+
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false);
         Debug.Log("answer from cancel expedition " + request.downloadHandler.text);
     }

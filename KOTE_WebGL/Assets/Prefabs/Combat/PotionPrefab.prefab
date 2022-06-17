@@ -145,5 +145,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66696958e94b9d747b1d3064aeace1e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unusedPotionSprite: {fileID: 21300000, guid: 9a5bb36d66a593247bad9a4544d1198d, type: 3}
+  unusedPotionSprite: {fileID: 21300000, guid: ab3abad86f2155e49a6ebc923797b678, type: 3}
   usedPotionSprite: {fileID: 21300000, guid: 28de461271fc1de48af1bcb5f94e7175, type: 3}
