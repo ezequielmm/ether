@@ -205,7 +205,7 @@ namespace map
             {
                 NodeData node = nodes[0];
                 nodes.Remove(node);
-                Destroy(node);
+                Destroy(node.gameObject);
             }
         }
 
