@@ -295,3 +295,10 @@ public class SWSM_NodeData
     public NodeStateData data;
 
 }
+
+[Serializable]
+public class SWSM_PlayerState
+{
+    public PlayerStateData data;
+
+}
