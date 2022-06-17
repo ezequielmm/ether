@@ -172,7 +172,7 @@ namespace map
 
             if (doBossScroll && GetBossNode() != null)
             {
-               ScrollFromBoss();
+                ScrollFromBoss();
                 return;
             }
 
@@ -205,7 +205,7 @@ namespace map
             {
                 NodeData node = nodes[0];
                 nodes.Remove(node);
-                Destroy(node);
+                Destroy(node.gameObject);
             }
         }
 
@@ -344,14 +344,18 @@ namespace map
             // update the map as usual
             GenerateMap(mapData);
 
+            int curAct = nodes[nodes.Count - 1].act;
             // then hide the nodes and scroll towards the end
             foreach (NodeData node in nodes)
             {
-                node.HideNode();
+                if (node.act == curAct)
+                {
+                    node.HideNode();
+                }
             }
 
             // animate the map based on the act of the last node, which should be the new act
-            GameManager.Instance.EVENT_MAP_ANIMATE_STEP.Invoke(nodes[nodes.Count - 1].act, 0);
+            GameManager.Instance.EVENT_MAP_ANIMATE_STEP.Invoke(curAct, 0);
 
             StartCoroutine(RevealMapThenReturnToPlayer());
         }
@@ -366,16 +370,16 @@ namespace map
 
         void ScrollFromBoss()
         {
-            float targetX = GetBossNode().transform.localPosition.x * -1;
-            nodesHolder.transform.position = new Vector3(targetX, 0, 0);
+            scrollSpeed = 0;
+            float targetX = GetBossNode().transform.position.x * -1;
+            Debug.Log("target X: " + targetX + " map bounds.max.x: " + mapBounds.max.x);
+            nodesHolder.transform.localPosition = new Vector3(-mapBounds.max.x, 0, 0);
             StartCoroutine(ScrollFromBossToPlayer());
         }
 
         private IEnumerator ScrollFromBossToPlayer()
         {
-            float targetX = GetBossNode().transform.localPosition.x * -1;
-            nodesHolder.transform.DOLocalMoveX(targetX, GameSettings.MAP_SCROLL_ANIMATION_DURATION);
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(1); // pause for loading
             ScrollBackToPlayerIcon(GameSettings.MAP_SCROLL_ANIMATION_DURATION);
         }
 
@@ -389,6 +393,7 @@ namespace map
                     return nodes[i];
                 }
             }
+
             return null;
         }
 
