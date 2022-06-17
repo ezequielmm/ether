@@ -10639,6 +10639,7 @@ MonoBehaviour:
   lineMat: {fileID: 2100000, guid: 876743e6c61dea5439bf74f607cebd2c, type: 2}
   grayscaleMaterial: {fileID: 2100000, guid: 0b1698dca7e23124588f0d96f9c8b2eb, type: 2}
   availableParticleSystem: {fileID: 4278458617687280834}
+  idText: {fileID: 2645682501440922271}
   nodeClickDisabled: 0
   spriteShapePrefab: {fileID: 166793866925265225, guid: e9df6b78fba15624eaf4e961880a4ce4,
     type: 3}

@@ -304,4 +304,8 @@ public class SWSM_NodeData
 public class SWSM_ErrorData
 {
     public String data;
+public class SWSM_PlayerState
+{
+    public PlayerStateData data;
+
 }
