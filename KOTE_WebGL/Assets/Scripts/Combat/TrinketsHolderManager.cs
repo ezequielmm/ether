@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class TrinketsHolderManager : MonoBehaviour
 {
@@ -9,15 +10,15 @@ public class TrinketsHolderManager : MonoBehaviour
     public TrinketItemManager trinketItem;
 
     // we need this to set the parent of the created trinkets
-    public GameObject HorizontalGroup;
+    [FormerlySerializedAs("HorizontalGroup")] public GameObject GridLayout;
 
     // Start is called before the first frame update
     private void Start()
     {
         // we might need to change this once we get trinkets properly implemented, idk
         trinketsContainer.SetActive(false);
-        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(DisplayRandomTrinkets);
-        DisplayRandomTrinkets(null);
+        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(UpdateTrinketHolder);
+        DisplayRandomTrinkets();
     }
 
     // when we get a player status update, that tells us to update the trinkets
@@ -29,7 +30,7 @@ public class TrinketsHolderManager : MonoBehaviour
         {
             for (int i = 0; i < activeTrinkets.Length; i++)
             {
-                TrinketItemManager trinket = Instantiate(trinketItem, HorizontalGroup.transform);
+                TrinketItemManager trinket = Instantiate(trinketItem, GridLayout.transform);
                 trinket.Populate("Trinket" + Random.Range(1, 5), "Common");
             }
             trinketsContainer.SetActive(true);
@@ -38,11 +39,11 @@ public class TrinketsHolderManager : MonoBehaviour
     }
      
     // --------- TEMP CODE TO BE DELETED WHEN WE RECEIVE TRINKET DATA -------------------------
-    private void DisplayRandomTrinkets(PlayerStateData playerState)
+    private void DisplayRandomTrinkets()
     {
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < Random.Range(3, 10); i++)
         {
-            TrinketItemManager trinket = Instantiate(trinketItem, HorizontalGroup.transform);
+            TrinketItemManager trinket = Instantiate(trinketItem, GridLayout.transform);
             trinket.Populate("Trinket" + Random.Range(1, 5), "Common");
         }
         trinketsContainer.SetActive(true);

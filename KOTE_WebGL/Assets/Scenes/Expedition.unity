@@ -179,7 +179,7 @@ PrefabInstance:
     - target: {fileID: 2005680357519280615, guid: 3119ef6b4839afa488a63900c8265815,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2005680357519280615, guid: 3119ef6b4839afa488a63900c8265815,
         type: 3}
@@ -189,7 +189,7 @@ PrefabInstance:
     - target: {fileID: 2005680357519280615, guid: 3119ef6b4839afa488a63900c8265815,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2005680357519280615, guid: 3119ef6b4839afa488a63900c8265815,
         type: 3}
@@ -244,12 +244,12 @@ PrefabInstance:
     - target: {fileID: 2005680357519280615, guid: 3119ef6b4839afa488a63900c8265815,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 2005680357519280615, guid: 3119ef6b4839afa488a63900c8265815,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 387
       objectReference: {fileID: 0}
     - target: {fileID: 2005680357519280615, guid: 3119ef6b4839afa488a63900c8265815,
         type: 3}
@@ -2565,9 +2565,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapContainer: {fileID: 1413707758}
-  nodePrefab: {fileID: 7168986811972704242, guid: 58e7f40e197f503419f7264265cb2544,
+  nodePrefab: {fileID: 5730114510743785768, guid: 58e7f40e197f503419f7264265cb2544,
     type: 3}
   playerIcon: {fileID: 980390179}
+  portalAnimation: {fileID: 0}
   nodesHolder: {fileID: 1923504842}
   LeftButton: {fileID: 2051162291}
   RightScrollButton: {fileID: 1954662557}
@@ -3352,7 +3353,7 @@ MonoBehaviour:
   EVENT_REQUEST_EXPEDITION_CANCEL:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_MAP_NODES_UPDATE:
+  EVENT_ALL_MAP_NODES_UPDATE:
     m_PersistentCalls:
       m_Calls: []
   EVENT_MAP_NODE_SELECTED:
@@ -3367,10 +3368,19 @@ MonoBehaviour:
   EVENT_SHOW_CONFIRMATION_PANEL:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_MAP_REVEAL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_MAP_ANIMATE_STEP:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_MAP_ACTIVATE_PORTAL:
     m_PersistentCalls:
       m_Calls: []
   EVENT_MAP_SCROLL_CLICK:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_MAP_SCROLL_DRAG:
     m_PersistentCalls:
       m_Calls: []
   EVENT_MAP_MASK_DOUBLECLICK:
@@ -3401,6 +3411,21 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   EVENT_END_TURN_CLICKED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_TOOGLE_COMBAT_ELEMENTS:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_GET_ENERGY:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_UPDATE_ENERGY:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_GET_PLAYER_HEALTH:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_UPDATE_PLAYER_HEALTH:
     m_PersistentCalls:
       m_Calls: []
   nextSceneToLoad: 0
@@ -3885,6 +3910,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 055dc9f0d0beb2542987ed2a55848618, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nodesHolder: {fileID: 0}
 --- !u!61 &2100204869
 BoxCollider2D:
   m_ObjectHideFlags: 0
