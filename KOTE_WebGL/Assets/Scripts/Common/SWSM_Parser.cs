@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using BestHTTP.Connections.TLS;
-using BestHTTP.JSON;
 using UnityEngine;
 
 public class SWSM_Parser

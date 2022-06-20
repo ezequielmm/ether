@@ -195,6 +195,9 @@ namespace map
             //at this point the map is completed. 
             //we get the maps bounds to help later with scroll limits and animations
             CalculateLocalBounds();
+
+            Debug.Log("last node position: " + nodes[nodes.Count - 1].transform.position + " last node localPosition" +
+                      nodes[nodes.Count - 1].transform.localPosition);
         }
 
         #region generateMap
@@ -344,29 +347,31 @@ namespace map
             // update the map as usual
             GenerateMap(mapData);
 
-            int curAct = nodes[nodes.Count - 1].act;
-            // then hide the nodes and scroll towards the end
-            foreach (NodeData node in nodes)
-            {
-                if (node.act == curAct)
-                {
-                    node.HideNode();
-                }
-            }
-
             // animate the map based on the act of the last node, which should be the new act
+            //TODO hopefully find a way of doing this that takes less processing time, currently too much for webgl
+            /*
+            int curAct = nodes[nodes.Count - 1].act;
+           
+            HideAllNodesInAct(curAct);
             GameManager.Instance.EVENT_MAP_ANIMATE_STEP.Invoke(curAct, 0);
 
-            StartCoroutine(RevealMapThenReturnToPlayer());
+            float numberOfSteps = nodes[nodes.Count - 1].step;
+
+            StartCoroutine(RevealMapThenReturnToPlayer(nodesHolder.transform.localPosition, numberOfSteps));
+            */
+            StartCoroutine(RevealMapThenReturnToPlayer(nodesHolder.transform.localPosition, GameSettings.MAP_SCROLL_ANIMATION_DURATION));
         }
 
-        private IEnumerator RevealMapThenReturnToPlayer()
+        private IEnumerator RevealMapThenReturnToPlayer(Vector3 mapPos, float animDuration)
         {
-            // TODO figure out a better way of calculating the animation time
-            activeTween = nodesHolder.transform.DOLocalMoveX(-mapBounds.max.x, 10);
+            activeTween = nodesHolder.transform.DOLocalMoveX(-mapBounds.max.x, animDuration);
             yield return activeTween.WaitForCompletion();
+
+            nodesHolder.transform.localPosition = new Vector3(-mapBounds.max.x, 0, 0);
+            yield return new WaitForSeconds(2);
             ScrollBackToPlayerIcon(GameSettings.MAP_SCROLL_ANIMATION_DURATION);
         }
+
 
         void ScrollFromBoss()
         {
@@ -393,6 +398,17 @@ namespace map
             }
 
             return null;
+        }
+
+        private void HideAllNodesInAct(int act)
+        {
+            foreach (NodeData node in nodes)
+            {
+                if (node.act == act)
+                {
+                    node.HideNode();
+                }
+            }
         }
 
         private void OnPortalActivated(SWSM_MapData mapData)
