@@ -37,7 +37,7 @@ namespace map
         void Start()
         {
             GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.AddListener(OnMapNodesDataUpdated);
-            GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.AddListener(OnToggleMap);
+            GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.AddListener(OnToggleMap);
             GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnMapIconClicked);
             GameManager.Instance.EVENT_MAP_SCROLL_CLICK.AddListener(OnScrollButtonClicked);
             GameManager.Instance.EVENT_MAP_SCROLL_DRAG.AddListener(OnMapScrollDragged);
@@ -82,7 +82,7 @@ namespace map
             if (newPos.x < -mapBounds.max.x) newPos.x = -mapBounds.max.x;
 
             //limit the map move to the right
-            if (newPos.x > 0 || mapBounds.max.x < halfScreenWidth * 2) newPos.x = 0;
+            if (newPos.x > 0 || mapBounds.max.x < halfScreenWidth * 2) newPos.x = 0 - halfScreenWidth;
 
             if (newPos.x < 0)
             {
@@ -132,7 +132,7 @@ namespace map
             if (newPos.x < -mapBounds.max.x) newPos.x = -mapBounds.max.x;
 
             //limit the map move to the right
-            if (newPos.x > 0 || mapBounds.max.x < halfScreenWidth * 2) newPos.x = 0;
+            if (newPos.x > 0 || mapBounds.max.x < halfScreenWidth * 2) newPos.x = 0 - halfScreenWidth;
 
             nodesHolder.transform.localPosition = newPos;
         }
@@ -148,12 +148,12 @@ namespace map
             if (mapContainer.activeSelf)
             {
                 mapContainer.SetActive(false);
-                GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.Invoke(false);
+                GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
             }
             else
             {
                 mapContainer.SetActive(true);
-                GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.Invoke(true);
+                GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(true);
             }
         }
 
