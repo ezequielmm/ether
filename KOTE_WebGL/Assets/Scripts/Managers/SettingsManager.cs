@@ -55,7 +55,7 @@ public class SettingsManager : MonoBehaviour
         settingsContainer.SetActive(activate);
     }
 
-    public void ActivateInnerLogoutConfirmPanel(bool activate)
+    public void ActivateLogoutConfirmPanel()
     {
         GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Do you want to logout?",
             () =>
@@ -70,13 +70,6 @@ public class SettingsManager : MonoBehaviour
     {
         logoutHyperlink.interactable = true;
         manageWallets.interactable = true;
-    }
-
-    public void OnLogout()
-    {
-        logoutHyperlink.interactable = false;
-        manageWallets.interactable = false;
-        GameManager.Instance.EVENT_REQUEST_LOGOUT.Invoke(PlayerPrefs.GetString("session_token"));
     }
 
     public void OnLogoutError(string errorMessage)
