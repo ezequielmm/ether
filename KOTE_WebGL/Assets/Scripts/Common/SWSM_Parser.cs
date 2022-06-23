@@ -19,9 +19,9 @@ public class SWSM_Parser
                 break;
             case "combat_update":
                 //NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
-                SWSM_NodeData nodeBase = JsonUtility.FromJson<SWSM_NodeData>(data);
-                NodeStateData nodeState = nodeBase.data;
-                GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, WS_QUERY_TYPE.MAP_NODE_SELECTED);
+               
+                //GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, WS_QUERY_TYPE.MAP_NODE_SELECTED);
+                ProcessCombatUpdate(swsm.data.action, data);
                 break;
             case "player_state_update":
                 SWSM_PlayerState playerStateBase = JsonUtility.FromJson<SWSM_PlayerState>(data);
@@ -35,6 +35,12 @@ public class SWSM_Parser
                 Debug.LogError("No message_type processed. Data Received: " + data);
                 break;
         } ;
+    }
+
+    private static void ProcessCombatUpdate(string action, string data)
+    {
+        SWSM_NodeData nodeBase = JsonUtility.FromJson<SWSM_NodeData>(data);
+        NodeStateData nodeState = nodeBase.data;
     }
 
     private static void ProcessErrorAction(string action, string data)
