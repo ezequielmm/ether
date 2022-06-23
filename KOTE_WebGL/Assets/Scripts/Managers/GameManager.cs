@@ -152,12 +152,18 @@ public class GameManager : SingleTon<GameManager>
     void Start()
     {
         SceneManager.activeSceneChanged += UpdateSoundVolume;
+        EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ReturnToMainMenu);
     }
 
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene
     {
         nextSceneToLoad = scene;
         SceneManager.LoadScene(inGameScenes.Loader.ToString());
+    }
+
+    public void ReturnToMainMenu(string message)
+    {
+        LoadScene(inGameScenes.MainMenu);
     }
 
     // when the scene changes, update the sound volume using the value stored in PlayerPrefs
