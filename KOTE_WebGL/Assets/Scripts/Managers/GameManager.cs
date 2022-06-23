@@ -154,7 +154,7 @@ public class GameManager : SingleTon<GameManager>
     {
         EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
         SceneManager.activeSceneChanged += UpdateSoundVolume;
-        EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ReturnToMainMenu);
+        //EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ReturnToMainMenu);
     }
 
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene
