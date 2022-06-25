@@ -183,22 +183,56 @@ public class PlayerStateData
         
     }
 }
+
+
+
 [Serializable]
 public class Card
 {
     public string name;
     public string id;
+    public string card_id;
     public string description;
     public string rarity;
     public int energy;
     public string card_type;
     public int coin_min;
     public int coin_max;
+    public string pool;
+    public Effects properties;
+    public List<string> keywords;
+}
+
+[Serializable]
+public class Effects
+{
+    public List<Effect> effects;
+}
+
+[Serializable]
+public class Effect
+{
+    public string name;
+    public EffectArgs args;
+}
+
+[Serializable]
+public class EffectArgs
+{  
+    public int base_value;//TODO change name on backend
+    public int calculated_value;//TODO change name on backend
+    public string targeted;
 }
 [Serializable]
 public class Deck
 {
     public List<Card> cards;
+}
+
+[Serializable]
+public class CardPiles
+{
+    public Cards data;
 }
 
 #region NODESTATE
@@ -246,6 +280,18 @@ public class NodeStateData
     }
     
 }
+
+[Serializable]
+public class Cards
+{
+    public List<Card> draw;
+    public List<Card> hand;
+    public List<Card> discard;
+    public List<Card> exhaust;
+    public int energy;
+    public int energy_max;
+}
+
 #endregion
 [Serializable]
 public class CardPlayedData

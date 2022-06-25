@@ -25,6 +25,13 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector]
     public UnityEvent<string> EVENT_REQUEST_NAME_ERROR = new UnityEvent<string>();
 
+
+    [HideInInspector] public UnityEvent<string> EVENT_REQUEST_REGISTER_ERROR = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<bool> EVENT_REGISTERPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<string> EVENT_REQUEST_NAME = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<string> EVENT_REQUEST_NAME_SUCESSFUL = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<string> EVENT_REQUEST_NAME_ERROR = new UnityEvent<string>();
+    
     //LOGIN EVENTS
     [HideInInspector]
     public UnityEvent<string, string> EVENT_REQUEST_LOGIN = new UnityEvent<string, string>();
@@ -118,21 +125,29 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<string, Action> EVENT_SHOW_CONFIRMATION_PANEL = new UnityEvent<string, Action>();
     [HideInInspector] 
     public UnityEvent<int> EVENT_MAP_ACTIVATE_PORTAL = new UnityEvent<int>();
+    [HideInInspector] public UnityEvent<SWSM_MapData> EVENT_ALL_MAP_NODES_UPDATE = new UnityEvent<SWSM_MapData>();
+    [HideInInspector] public UnityEvent<int> EVENT_MAP_NODE_SELECTED = new UnityEvent<int>();
+    [HideInInspector] public UnityEvent<NodeStateData, WS_QUERY_TYPE> EVENT_NODE_DATA_UPDATE =  new UnityEvent<NodeStateData, WS_QUERY_TYPE>();
+    [HideInInspector] public UnityEvent<int> EVENT_MAP_NODE_MOUSE_OVER = new UnityEvent<int>();
+    [HideInInspector] public UnityEvent<string, Action> EVENT_SHOW_CONFIRMATION_PANEL = new UnityEvent<string, Action>();
+
+    // map animation events
+    [HideInInspector] public UnityEvent<SWSM_MapData> EVENT_MAP_REVEAL = new UnityEvent<SWSM_MapData>();
+    [HideInInspector] public UnityEvent<int, int> EVENT_MAP_ANIMATE_STEP = new UnityEvent<int, int>();
+    [HideInInspector] public UnityEvent<SWSM_MapData> EVENT_MAP_ACTIVATE_PORTAL = new UnityEvent<SWSM_MapData>();
     //[HideInInspector]
     //public UnityEvent<bool> EVENT_MAP_TOGGLE_MAP = new UnityEvent<bool>();
     /// <summary>
     /// Scroll map buttons events. First bool enable/disable, second bool direction left/right
     /// </summary>
-    [HideInInspector]
-    public UnityEvent<bool,bool> EVENT_MAP_SCROLL_CLICK = new UnityEvent<bool,bool>();
-    [HideInInspector]
-    public UnityEvent<Vector3> EVENT_MAP_SCROLL_DRAG = new UnityEvent<Vector3>();
-    [HideInInspector]
-    public UnityEvent EVENT_MAP_MASK_DOUBLECLICK = new UnityEvent();
+    [HideInInspector] public UnityEvent<bool,bool> EVENT_MAP_SCROLL_CLICK = new UnityEvent<bool,bool>();
+    [HideInInspector] public UnityEvent<Vector3> EVENT_MAP_SCROLL_DRAG = new UnityEvent<Vector3>();
+    [HideInInspector] public UnityEvent EVENT_MAP_MASK_DOUBLECLICK = new UnityEvent();
 
     //MAP PANEL EVENTS
     [HideInInspector]
     public UnityEvent<bool> EVENT_MAP_PANEL_TOOGLE = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<bool> EVENT_MAP_PANEL_TOGGLE = new UnityEvent<bool>();
 
     //PLAYER DATA EVENTS
     [HideInInspector]
@@ -155,16 +170,30 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<Vector3> EVENT_CARD_ACTIVATE_POINTER = new UnityEvent<Vector3>();
     [HideInInspector]
     public UnityEvent<string> EVENT_CARD_DEACTIVATE_POINTER = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent EVENT_MAP_ICON_CLICKED = new UnityEvent();
+    [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_TOPBAR_MAP_ICON = new UnityEvent<bool>();
+
+    //CARDS EVENTS
+    [HideInInspector] public UnityEvent<PileTypes> EVENT_CARD_PILE_CLICKED = new UnityEvent<PileTypes>();
+    [HideInInspector] public UnityEvent<string> EVENT_CARD_MOUSE_ENTER = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<string> EVENT_CARD_MOUSE_EXIT = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent EVENT_CARD_DRAW_CARDS = new UnityEvent();
+    [HideInInspector] public UnityEvent<CardPiles> EVENT_CARDS_PILES_UPDATED = new UnityEvent<CardPiles>();
 
     //Gameplay events
-    [HideInInspector]
-    public UnityEvent<string> EVENT_CARD_PLAYED = new UnityEvent<string>();
-    [HideInInspector]
-    public UnityEvent EVENT_END_TURN_CLICKED = new UnityEvent();
+    [HideInInspector] public UnityEvent<GameStatuses> EVENT_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
+    [HideInInspector] public UnityEvent<string> EVENT_CARD_PLAYED = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent EVENT_END_TURN_CLICKED = new UnityEvent();
 
     //Combat events
     [HideInInspector]
     public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent EVENT_GET_ENERGY = new UnityEvent();
+    [HideInInspector] public UnityEvent<int,int> EVENT_UPDATE_ENERGY = new UnityEvent<int,int>();//current energy, max energy
+    [HideInInspector] public UnityEvent EVENT_GET_PLAYER_HEALTH = new UnityEvent();
+    [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_PLAYER_HEALTH = new UnityEvent<int, int>();//current health, max health
+
 
     public inGameScenes nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
 

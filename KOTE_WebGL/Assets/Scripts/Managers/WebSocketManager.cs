@@ -15,11 +15,15 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_EXPEDITION_MAP = "ExpeditionMap";
     private const string WS_MESSAGE_PLAYER_STATE = "PlayerState";
     private const string WS_MESSAGE_INIT_COMBAT = "InitCombat";
+    private const string WS_MESSAGE_INIT_COMBAT = "InitCombat";   
+    private const string WS_MESSAGE_ENEMY_INTENTS = "EnemiesIntents";   
 
     //Websockets outgoing messages with callback
     private const string WS_MESSAGE_NODE_SELECTED = "NodeSelected";
     private const string WS_MESSAGE_CARD_PLAYED = "CardPlayed";
     private const string WS_MESSAGE_END_TURN = "EndTurn";
+    private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
+    private const string WS_MESSAGE_GET_CARD_PILES = "GetCardPiles";
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +32,9 @@ public class WebSocketManager : MonoBehaviour
         GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnNodeClicked);
         GameManager.Instance.EVENT_CARD_PLAYED.AddListener(OnCardPlayed);
         GameManager.Instance.EVENT_END_TURN_CLICKED.AddListener(OnEndTurn);
+
+        GameManager.Instance.EVENT_GET_ENERGY.AddListener(OnEnergyRequest);
+        GameManager.Instance.EVENT_CARD_DRAW_CARDS.AddListener(OnCardsRequest);
 
         options = new SocketOptions();
         ConnectSocket(); //Disabled connection until actual implementation
@@ -75,6 +82,7 @@ public class WebSocketManager : MonoBehaviour
         rootSocket.On<string>(WS_MESSAGE_EXPEDITION_MAP, GenericParser);
         rootSocket.On<string>(WS_MESSAGE_PLAYER_STATE, GenericParser);
         rootSocket.On<string>(WS_MESSAGE_INIT_COMBAT, GenericParser);
+        rootSocket.On<string>(WS_MESSAGE_ENEMY_INTENTS, GenericParser);
       
         //  manager.Open();
   
@@ -205,4 +213,37 @@ public class WebSocketManager : MonoBehaviour
     }
 
 
+}
+    /// <summary>
+    /// ENergy request
+    /// </summary>
+    private void OnEnergyRequest()
+    {
+        rootSocket.ExpectAcknowledgement<int[]>(OnEnergyRequestRespond).Emit(WS_MESSAGE_GET_ENERGY);
+    }
+
+    private void OnEnergyRequestRespond(int[] data)
+    {
+        Debug.Log("[OnEnergyRequest]" + data[0] + "," + data[1]);
+        GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(data[0], data[1]);
+    }
+
+    /// <summary>
+    /// Cards request
+    /// </summary>
+
+    private void OnCardsRequest()
+    {
+        Debug.Log("[OnCardsRequest]");
+        rootSocket.ExpectAcknowledgement<string>(OnCardsPilesRequestRespond).Emit(WS_MESSAGE_GET_CARD_PILES);
+    }
+
+
+    private void OnCardsPilesRequestRespond(string data)
+    {
+        Debug.Log("[OnCardsPilesRequestRespond]" + data);
+        CardPiles deck = JsonUtility.FromJson<CardPiles>(data);
+        Debug.Log("[OnCardsPilesRequestRespond] deck=" + deck);
+        GameManager.Instance.EVENT_CARDS_PILES_UPDATED.Invoke(deck);
+    }
 }

@@ -15,7 +15,7 @@ public enum PileTypes
     Exhausted,
     Discarded
 }
-
+[Serializable]
 public enum GameStatuses
 {
     Combat,

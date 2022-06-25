@@ -15,11 +15,12 @@ public class GameStatusManager : MonoBehaviour
     void Start()
     {
         //TODO: for the moment we always start as map but this could change
-        ChangeGameStatus(GameStatuses.Map);
+        OnChangeGameStatus(GameStatuses.Map);
 
         GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeDataUpdate);//a node has been selected an we got an update node data
 
-        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusUpdate);
+        // GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusUpdate);
+        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(OnChangeGameStatus);
     }
 
     private void OnPlayerStatusUpdate(PlayerStateData playerState)
@@ -31,10 +32,10 @@ public class GameStatusManager : MonoBehaviour
     {
         lastNodeStatusData = nodeState;
         //TODO: for the moment is only combat but as long as we create more node types that logic will be decided here
-        if(wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED) ChangeGameStatus(GameStatuses.Combat);
+        if(wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED) OnChangeGameStatus(GameStatuses.Combat);
     }
 
-    public void ChangeGameStatus(GameStatuses newGameStatus)
+    public void OnChangeGameStatus(GameStatuses newGameStatus)
     {
         currentGameStatus = newGameStatus;
 
@@ -68,5 +69,6 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.Invoke(false);
         GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(true);
+        GameManager.Instance.EVENT_CARD_DRAW_CARDS.Invoke();
     }
 }
