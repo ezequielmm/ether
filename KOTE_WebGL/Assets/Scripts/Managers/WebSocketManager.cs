@@ -15,8 +15,8 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_EXPEDITION_MAP = "ExpeditionMap";
     private const string WS_MESSAGE_PLAYER_STATE = "PlayerState";
     private const string WS_MESSAGE_INIT_COMBAT = "InitCombat";
-    private const string WS_MESSAGE_INIT_COMBAT = "InitCombat";   
     private const string WS_MESSAGE_ENEMY_INTENTS = "EnemiesIntents";   
+
 
     //Websockets outgoing messages with callback
     private const string WS_MESSAGE_NODE_SELECTED = "NodeSelected";
@@ -38,8 +38,8 @@ public class WebSocketManager : MonoBehaviour
 
         options = new SocketOptions();
         ConnectSocket(); //Disabled connection until actual implementation
-      
     }
+
 
     /// <summary>
     /// 
@@ -47,28 +47,41 @@ public class WebSocketManager : MonoBehaviour
     void ConnectSocket()
     {
         //BestHTTP.HTTPManager.UseAlternateSSLDefaultValue = true; 
-       
+
         string token = PlayerPrefs.GetString("session_token");
 
         Debug.Log("Connecting socket using token: " + token);
 
         SocketOptions options = new SocketOptions();
-      //  options.AutoConnect = false;
-        options.HTTPRequestCustomizationCallback = (manager, request) =>
+        //  options.AutoConnect = false;
+        options.HTTPRequestCustomizationCallback = (manager, request) => { request.AddHeader("Authorization", token); };
+
+        // determine the correct server the client is running on
+        string hostURL = Application.absoluteURL;
+        string[] splitURL = hostURL.Split('.');
+        string uriStr = "https://api.dev.kote.robotseamonster.com";
+        if ( splitURL.Length > 1)//this will fail for localhost
         {
-            request.AddHeader("Authorization",token);
-        };
+            switch (splitURL[1])
+            {
+                case "dev":
+                    uriStr = "https://api.dev.kote.robotseamonster.com";
+                    break;
+                case "stage":
+                    uriStr = "https://api.stage.kote.robotseamonster.com";
+                    break;
+                default:
+                    uriStr = "https://api.stage.kote.robotseamonster.com";
+                    break;
+            }
+        }
+        // default to the stage server if running from the unity editor
+#if UNITY_EDITOR
+        uriStr = "https://api.dev.kote.robotseamonster.com";
+#endif
 
-        //string uriStr = "https://45.33.0.125:8443";
-        //string uriStr = "https://delcasda.com:8443";
-        //string uriStr = "https://delcasda.com:8888";
+        Debug.Log("Connecting to "+uriStr);
 
-         string uriStr = "https://api.dev.kote.robotseamonster.com:443";
-        /*
- #if UNITY_EDITOR
-
-         uriStr = "wss://api.game.kote.robotseamonster.com:7777";
- #endif*/
         manager = new SocketManager(new Uri(uriStr), options);
 
         rootSocket = manager.Socket;
@@ -85,7 +98,6 @@ public class WebSocketManager : MonoBehaviour
         rootSocket.On<string>(WS_MESSAGE_ENEMY_INTENTS, GenericParser);
       
         //  manager.Open();
-  
     }
 
     private void GenericParser(string data)
@@ -101,7 +113,6 @@ public class WebSocketManager : MonoBehaviour
     void OnConnected(ConnectResponse resp)
     {
         Debug.Log("Websocket Connected sucessfully!");
-
     }
 
     void OnError(Error resp)
@@ -118,7 +129,6 @@ public class WebSocketManager : MonoBehaviour
     /// </summary>
     /// <param name="data"></param>
     /// 
-
     private void OnNodeClicked(int nodeId)
     {
         Debug.Log("Sending message NodeSelected with node id " + nodeId);
@@ -163,36 +173,32 @@ public class WebSocketManager : MonoBehaviour
 
     void OnPlayerState(string data)
     {
-       
-        PlayerStateData playerState = JsonUtility.FromJson<PlayerStateData>(data);//TODO: move this to websocker manager
+        PlayerStateData playerState = JsonUtility.FromJson<PlayerStateData>(data); //TODO: move this to websocker manager
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.Invoke(playerState);
         Debug.Log("Data from OnPlayerState: " + playerState);
-
     }
 
     private void OnCardPlayed(string cardId)
     {
-
         CardPlayedData obj = new CardPlayedData();
-      //  obj.card_id = "87d501f6-0583-484c-bf1d-d09d822c68fa";
+        //  obj.card_id = "87d501f6-0583-484c-bf1d-d09d822c68fa";
         obj.card_id = cardId;
 
         string data = JsonUtility.ToJson(obj).ToString();
         Debug.Log("sending WS playedcard test=" + data);
 
         rootSocket.ExpectAcknowledgement<string>(OnCardPlayedAnswer).Emit(WS_MESSAGE_CARD_PLAYED, data);
-
     }
 
     private void OnCardPlayedAnswer(string nodeData)
     {
         Debug.Log("on card played answer:" + nodeData);
+        SWSM_Parser.ParseJSON(nodeData);
         if (MessageErrorValidator.ValidateData(nodeData))
         {
             NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
             GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, WS_QUERY_TYPE.CARD_PLAYED);
-        }       
-
+        }
     }
 
     //END of Turn
@@ -212,6 +218,10 @@ public class WebSocketManager : MonoBehaviour
         }
     }
 
+    private void OnEnergyRequest()
+    {
+        rootSocket.ExpectAcknowledgement<int[]>(OnEnergyRequestRespond).Emit(WS_MESSAGE_GET_ENERGY);
+    }
 
 }
     /// <summary>
