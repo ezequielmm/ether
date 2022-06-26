@@ -271,14 +271,6 @@ public class NodeStateData
 
                 public Cards cards;
 
-                [Serializable]
-                public class Cards
-                {
-                    public List<Card> draw;
-                    public List<Card> hand;
-                    public List<Card> discard;
-                    public List<Card> exhaust;
-                }
             }
         }
     }
@@ -301,7 +293,7 @@ public class Cards
 public class CardPlayedData
 {
     public string card_id;
-    public string target_id;
+    public List<int> target_id = new List<int>();
 }
 
 [Serializable]
@@ -352,3 +344,80 @@ public class SWSM_PlayerState
     public PlayerStateData data;
 
 }
+
+[Serializable]
+public class SWSM_EnergyArray
+{
+    public EnergyData data;
+
+    [Serializable]
+    public class EnergyData
+    {
+        public int[] data;
+    
+    }
+
+}
+
+[Serializable]
+public class SWSM_CardsPiles
+{
+    public CardPiles data;
+}
+
+[Serializable]
+public class SWSM_Enemies
+{
+    public EnemiesData data;
+
+}
+
+[Serializable]
+public class EnemiesData
+{
+    public List<Enemy> data;
+
+}
+
+[Serializable]
+public class Enemy
+{
+    public string id;
+    public string name;
+    public int enemyId;
+    public int defense;
+    public int hpMin;//current
+    public int hpMax;
+    public string type;
+    public string category;
+    public string size;
+
+}
+
+public class SWSM_Players
+{
+    public PlayersData data;
+
+}
+
+[Serializable]
+public class PlayersData
+{
+    public PlayerData data;//future array when multiplayer
+
+}
+
+[Serializable]
+public class PlayerData
+{
+    public string player_name;
+    public string character_class;
+    public int hp_current;
+    public int hp_max;//current
+    public int gold;
+    public int energy;
+    public int energy_max;
+    public int defense;
+
+}
+

@@ -19,12 +19,23 @@ public class HandManager : MonoBehaviour
         
 
     void Start()
-    {      
-        //GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeUpdate);//this is called after a node is slected on the map and get an asnwer from server
+    {
+        Debug.Log("[HandManager]Start");
         GameManager.Instance.EVENT_CARD_MOUSE_ENTER.AddListener(OnCardMouseEnter);
-        GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);
-       // GameManager.Instance.EVENT_CARD_DRAW_CARDS.AddListener(OnDrawCardsCalled);
+        GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);      
+      
+    }
+
+    private void Awake()
+    {
+        Debug.Log("[HandManager]Awake");
         GameManager.Instance.EVENT_CARDS_PILES_UPDATED.AddListener(OnCardsPilesUpdated);
+    }
+
+    private void OnEnable()
+    {
+        Debug.Log("[HandManager]OnEnable");
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(DataWSRequestTypes.CardsPiles);
     }
 
     private void OnCardsPilesUpdated(CardPiles data)

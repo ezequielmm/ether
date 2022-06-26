@@ -105,22 +105,22 @@ SpriteShapeRenderer:
   m_SortingLayerID: 982048211
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Color: {r: 0.28235295, g: 0.9607844, b: 0.9215687, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_MaskInteraction: 0
-  m_ShapeTexture: {fileID: 2800000, guid: b281b91a70a624a0da1c43adc1c30c7b, type: 3}
+  m_ShapeTexture: {fileID: 2800000, guid: fe39f2bec5728224daed5b6d5c8d6e88, type: 3}
   m_Sprites:
-  - {fileID: 21300000, guid: 0ae2b74b1edd14bb18dd7b65ae916a54, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
+  - {fileID: 21300000, guid: fe39f2bec5728224daed5b6d5c8d6e88, type: 3}
+  - {fileID: 21300000, guid: fe39f2bec5728224daed5b6d5c8d6e88, type: 3}
+  - {fileID: 21300000, guid: fe39f2bec5728224daed5b6d5c8d6e88, type: 3}
+  - {fileID: 21300000, guid: fe39f2bec5728224daed5b6d5c8d6e88, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   m_LocalAABB:
-    m_Center: {x: 1.8427974, y: 1.6170592, z: 0}
-    m_Extent: {x: 2.5175889, y: 1.8965882, z: 0}
+    m_Center: {x: 1.9005331, y: 1.7048045, z: 0}
+    m_Extent: {x: 2.1610482, y: 1.7132912, z: 0}
 --- !u!114 &10462258665108976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,7 +138,7 @@ MonoBehaviour:
     m_ControlPoints:
     - position: {x: 0, y: 0, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
-      rightTangent: {x: -0.26578838, y: 0.47593516, z: 0}
+      rightTangent: {x: -0.17949933, y: 1.5761207, z: 0}
       mode: 2
       height: 0.5
       bevelCutoff: 0
@@ -146,37 +146,17 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: -0.5, y: 1.5, z: 0}
-      leftTangent: {x: -0.024920799, y: -0.52829754, z: -0}
-      rightTangent: {x: 0.022382736, y: 0.47449303, z: 0}
-      mode: 1
-      height: 0.7
-      bevelCutoff: 0
-      bevelSize: 0
-      spriteIndex: 0
-      corner: 1
-      m_CornerMode: 1
-    - position: {x: 1, y: 3, z: 0}
-      leftTangent: {x: -0.7118368, y: -0.2190153, z: -0}
-      rightTangent: {x: 1.290701, y: 0.3971181, z: 0}
-      mode: 1
-      height: 1
-      bevelCutoff: 0
-      bevelSize: 0
-      spriteIndex: 0
-      corner: 1
-      m_CornerMode: 1
     - position: {x: 4.0451117, y: 2.9548883, z: 0}
-      leftTangent: {x: -0.9446111, y: 0.17936468, z: 0}
+      leftTangent: {x: -4.74133, y: 0.16857862, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
-      height: 1.5
+      height: 3.09
       bevelCutoff: 0
       bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-  m_SpriteShape: {fileID: 11400000, guid: f24cddf7c09a6442abbce710a6fd7397, type: 2}
+  m_SpriteShape: {fileID: 11400000, guid: 97997bc78b8d3404f929916a905e7d87, type: 2}
   m_FillPixelPerUnit: 256
   m_StretchTiling: 1
   m_SplineDetail: 16
@@ -254,8 +234,8 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0}
-    oldSize: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.61, y: 1.05}
     newSize: {x: 0.5, y: 0.5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -304,7 +284,7 @@ SpriteRenderer:
   m_SortingLayerID: 982048211
   m_SortingLayer: 1
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 7da6c79282c943149b1d0b6e599e6116, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5fd29c38d9c445c4caeb120d76cb4b0f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

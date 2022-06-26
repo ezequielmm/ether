@@ -324,8 +324,7 @@
 	{ "name": "right-front-toe3", "bone": "right-front-toe3", "attachment": "front-toe-b" },
 	{ "name": "chin", "bone": "chin", "attachment": "chin" },
 	{ "name": "right-wing", "bone": "right-wing", "attachment": "right-wing01" },
-	{ "name": "head", "bone": "head", "attachment": "head" },
-	{ "name": "thiagobrayner", "bone": "root", "attachment": "thiagobrayner" }
+	{ "name": "head", "bone": "head", "attachment": "head" }
 ],
 "skins": [
 	{
@@ -444,9 +443,6 @@
 			},
 			"tail6": {
 				"tail06": { "x": 28.02, "y": -16.83, "rotation": -175.45, "width": 95, "height": 68 }
-			},
-			"thiagobrayner": {
-				"thiagobrayner": { "y": -95, "width": 350, "height": 31 }
 			}
 		}
 	}

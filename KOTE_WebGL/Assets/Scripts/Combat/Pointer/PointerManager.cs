@@ -16,6 +16,8 @@ public class PointerManager : MonoBehaviour
     private int splinePointCount; // store this so we don't have to keep grabbing it, since we use it a lot
     [HideInInspector] public bool overEnemy;
 
+    public Enemy enemyData;
+
     private void Start()
     {
         GameManager.Instance.EVENT_CARD_ACTIVATE_POINTER.AddListener(OnPointerActivated);
@@ -65,7 +67,7 @@ public class PointerManager : MonoBehaviour
         //if the pointer is over an enemy, play the card
         if (overEnemy)
         {
-            GameManager.Instance.EVENT_CARD_PLAYED.Invoke(id);
+            GameManager.Instance.EVENT_CARD_PLAYED.Invoke(id,enemyData.enemyId);
         }
 
         // else return it to the deck

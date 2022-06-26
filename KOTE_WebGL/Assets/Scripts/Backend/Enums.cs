@@ -78,3 +78,15 @@ public enum EntityType
     Enemy
 }
 
+[Serializable]
+public enum DataWSRequestTypes
+{
+    Energy,//done
+    Health,
+    Players,
+    CardsPiles,//done
+    Enemies,
+    EnemyIntents,
+    Potions,
+    Trinkets
+}

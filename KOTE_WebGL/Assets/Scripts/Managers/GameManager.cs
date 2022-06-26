@@ -19,12 +19,6 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_NAME_SUCESSFUL = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_NAME_ERROR = new UnityEvent<string>();
 
-
-    [HideInInspector] public UnityEvent<string> EVENT_REQUEST_REGISTER_ERROR = new UnityEvent<string>();
-    [HideInInspector] public UnityEvent<bool> EVENT_REGISTERPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
-    [HideInInspector] public UnityEvent<string> EVENT_REQUEST_NAME = new UnityEvent<string>();
-    [HideInInspector] public UnityEvent<string> EVENT_REQUEST_NAME_SUCESSFUL = new UnityEvent<string>();
-    [HideInInspector] public UnityEvent<string> EVENT_REQUEST_NAME_ERROR = new UnityEvent<string>();
     
     //LOGIN EVENTS
     [HideInInspector] public UnityEvent<string, string> EVENT_REQUEST_LOGIN = new UnityEvent<string, string>();
@@ -89,10 +83,8 @@ public class GameManager : SingleTon<GameManager>
     //MAP EVENTS
     [HideInInspector] public UnityEvent<NodeStateData, WS_QUERY_TYPE> EVENT_NODE_DATA_UPDATE = new UnityEvent<NodeStateData, WS_QUERY_TYPE>();
     [HideInInspector] public UnityEvent<string, Action> EVENT_SHOW_CONFIRMATION_PANEL = new UnityEvent<string, Action>();//TODO: move this event as it is not map exclusive
-    [HideInInspector] public UnityEvent<int> EVENT_MAP_ACTIVATE_PORTAL = new UnityEvent<int>();
     [HideInInspector] public UnityEvent<SWSM_MapData> EVENT_ALL_MAP_NODES_UPDATE = new UnityEvent<SWSM_MapData>();
     [HideInInspector] public UnityEvent<int> EVENT_MAP_NODE_SELECTED = new UnityEvent<int>();
-    [HideInInspector] public UnityEvent<NodeStateData, WS_QUERY_TYPE> EVENT_NODE_DATA_UPDATE =  new UnityEvent<NodeStateData, WS_QUERY_TYPE>();
     [HideInInspector] public UnityEvent<int> EVENT_MAP_NODE_MOUSE_OVER = new UnityEvent<int>();
 
 
@@ -122,34 +114,30 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_MAP_ICON_CLICKED = new UnityEvent();
     [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_TOPBAR_MAP_ICON = new UnityEvent<bool>();
 
-    //HAND EVENTS
-    [HideInInspector] public UnityEvent<PileTypes> EVENT_CARD_PILE_CLICKED = new UnityEvent<PileTypes>();
-    [HideInInspector] public UnityEvent<string> EVENT_CARD_MOUSE_ENTER = new UnityEvent<string>();
-    [HideInInspector] public UnityEvent<string> EVENT_CARD_MOUSE_EXIT = new UnityEvent<string>();
-    [HideInInspector] public UnityEvent<Vector3> EVENT_CARD_ACTIVATE_POINTER = new UnityEvent<Vector3>();
-    [HideInInspector] public UnityEvent<string> EVENT_CARD_DEACTIVATE_POINTER = new UnityEvent<string>();
-    [HideInInspector] public UnityEvent EVENT_MAP_ICON_CLICKED = new UnityEvent();
-    [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_TOPBAR_MAP_ICON = new UnityEvent<bool>();
-
     //CARDS EVENTS
     [HideInInspector] public UnityEvent<PileTypes> EVENT_CARD_PILE_CLICKED = new UnityEvent<PileTypes>();
     [HideInInspector] public UnityEvent<string> EVENT_CARD_MOUSE_ENTER = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<string> EVENT_CARD_MOUSE_EXIT = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<Vector3> EVENT_CARD_ACTIVATE_POINTER = new UnityEvent<Vector3>();
+    [HideInInspector] public UnityEvent<string> EVENT_CARD_DEACTIVATE_POINTER = new UnityEvent<string>();   
     [HideInInspector] public UnityEvent EVENT_CARD_DRAW_CARDS = new UnityEvent();
     [HideInInspector] public UnityEvent<CardPiles> EVENT_CARDS_PILES_UPDATED = new UnityEvent<CardPiles>();
 
     //Gameplay events
     [HideInInspector] public UnityEvent<GameStatuses> EVENT_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
-    [HideInInspector] public UnityEvent<string> EVENT_CARD_PLAYED = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<string,int> EVENT_CARD_PLAYED = new UnityEvent<string,int>();
     [HideInInspector] public UnityEvent EVENT_END_TURN_CLICKED = new UnityEvent();
 
     //Combat events
-    [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();
-    [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();
-    [HideInInspector] public UnityEvent EVENT_GET_ENERGY = new UnityEvent();
-    [HideInInspector] public UnityEvent<int,int> EVENT_UPDATE_ENERGY = new UnityEvent<int,int>();//current energy, max energy
-    [HideInInspector] public UnityEvent EVENT_GET_PLAYER_HEALTH = new UnityEvent();
+    [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();   
+    [HideInInspector] public UnityEvent<int,int> EVENT_UPDATE_ENERGY = new UnityEvent<int,int>();//current energy, max energy 
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_PLAYER_HEALTH = new UnityEvent<int, int>();//current health, max health
+
+    //Common events
+    [HideInInspector] public UnityEvent<DataWSRequestTypes> EVENT_GENERIC_WS_DATA = new UnityEvent<DataWSRequestTypes>();
+
+    //Enemies events
+    [HideInInspector] public UnityEvent<EnemiesData> EVENT_UPDATE_ENEMIES = new UnityEvent<EnemiesData>();
 
 
 

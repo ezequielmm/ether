@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class SWSM_Parser
@@ -24,16 +25,44 @@ public class SWSM_Parser
                 break;
             case "player_state_update":
                 SWSM_PlayerState playerStateBase = JsonUtility.FromJson<SWSM_PlayerState>(data);
+
                 PlayerStateData playerState = playerStateBase.data;
                 GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.Invoke(playerState);
                 break;
             case "error":
                 ProcessErrorAction(swsm.data.action, data);
                 break;
+            //Data types
+            case "generic_data":
+                ProcessGenericData(swsm.data.action, data);
+                break;
             default:
                 Debug.LogError("No message_type processed. Data Received: " + data);
                 break;
         } ;
+    }
+
+    private static void ProcessGenericData(string action, string data)
+    {
+        
+        switch (action)
+        {
+            case nameof(DataWSRequestTypes.Energy):
+                SWSM_EnergyArray energyData = JsonUtility.FromJson<SWSM_EnergyArray>(data);
+                Debug.Log(energyData);
+                GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(energyData.data.data[0], energyData.data.data[1]);
+                break;
+            case nameof(DataWSRequestTypes.CardsPiles):
+                SWSM_CardsPiles deck = JsonUtility.FromJson<SWSM_CardsPiles>(data);
+                Debug.Log("[OnCardsPilesRequestRespond] deck=" + deck);
+                GameManager.Instance.EVENT_CARDS_PILES_UPDATED.Invoke(deck.data);
+                break;
+            case nameof(DataWSRequestTypes.Enemies):
+                // GameManager.Instance.
+                SWSM_Enemies enemies = JsonUtility.FromJson<SWSM_Enemies>(data);
+                GameManager.Instance.EVENT_UPDATE_ENEMIES.Invoke(enemies.data);
+                break;
+        }
     }
 
     private static void ProcessCombatUpdate(string action, string data)

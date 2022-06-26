@@ -10,12 +10,13 @@ public class EnergyCounterManager : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeStateDateUpdate);
+        //GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeStateDateUpdate);
     }
     private void OnEnable()
     {
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnEnergyUpdate);
-        GameManager.Instance.EVENT_GET_ENERGY.Invoke();
+       
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(DataWSRequestTypes.Energy);
     }
 
     private void OnEnergyUpdate(int arg0, int arg1)

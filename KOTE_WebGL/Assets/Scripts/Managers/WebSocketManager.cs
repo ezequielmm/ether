@@ -22,8 +22,14 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_NODE_SELECTED = "NodeSelected";
     private const string WS_MESSAGE_CARD_PLAYED = "CardPlayed";
     private const string WS_MESSAGE_END_TURN = "EndTurn";
-    private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
+    /*private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
     private const string WS_MESSAGE_GET_CARD_PILES = "GetCardPiles";
+    private const string WS_MESSAGE_GET_PLAYER_HEALTH = "GetPlayerHealth";
+    private const string WS_MESSAGE_GET_PLAYERS = "GetPlayers";
+    private const string WS_MESSAGE_GET_ENEMIES = "GetEnemies";*/
+    private const string WS_MESSAGE_GET_DATA = "GetData";
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -33,8 +39,10 @@ public class WebSocketManager : MonoBehaviour
         GameManager.Instance.EVENT_CARD_PLAYED.AddListener(OnCardPlayed);
         GameManager.Instance.EVENT_END_TURN_CLICKED.AddListener(OnEndTurn);
 
-        GameManager.Instance.EVENT_GET_ENERGY.AddListener(OnEnergyRequest);
-        GameManager.Instance.EVENT_CARD_DRAW_CARDS.AddListener(OnCardsRequest);
+       // GameManager.Instance.EVENT_GET_ENERGY.AddListener(OnEnergyRequest);
+       // GameManager.Instance.EVENT_CARD_DRAW_CARDS.AddListener(OnCardsRequest);
+
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener(OnGenericWSDataRequest);
 
         options = new SocketOptions();
         ConnectSocket(); //Disabled connection until actual implementation
@@ -96,10 +104,11 @@ public class WebSocketManager : MonoBehaviour
         rootSocket.On<string>(WS_MESSAGE_PLAYER_STATE, GenericParser);
         rootSocket.On<string>(WS_MESSAGE_INIT_COMBAT, GenericParser);
         rootSocket.On<string>(WS_MESSAGE_ENEMY_INTENTS, GenericParser);
-      
+
+
         //  manager.Open();
     }
-
+    #region
     private void GenericParser(string data)
     {
         SWSM_Parser.ParseJSON(data);
@@ -178,11 +187,12 @@ public class WebSocketManager : MonoBehaviour
         Debug.Log("Data from OnPlayerState: " + playerState);
     }
 
-    private void OnCardPlayed(string cardId)
+    private void OnCardPlayed(string cardId,int enemyId)//TODO: enemyId will an array 
     {
         CardPlayedData obj = new CardPlayedData();
         //  obj.card_id = "87d501f6-0583-484c-bf1d-d09d822c68fa";
         obj.card_id = cardId;
+        obj.target_id.Add(enemyId);//TODO: here we will poulate the actual array of enemies rather than just one
 
         string data = JsonUtility.ToJson(obj).ToString();
         Debug.Log("sending WS playedcard test=" + data);
@@ -201,7 +211,10 @@ public class WebSocketManager : MonoBehaviour
         }
     }
 
-    //END of Turn
+  
+    /// <summary>
+    /// End of turn
+    /// </summary>
 
     private void OnEndTurn()
     {
@@ -217,32 +230,28 @@ public class WebSocketManager : MonoBehaviour
             GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, WS_QUERY_TYPE.END_OF_TURN);
         }
     }
-
-    private void OnEnergyRequest()
-    {
-        rootSocket.ExpectAcknowledgement<int[]>(OnEnergyRequestRespond).Emit(WS_MESSAGE_GET_ENERGY);
-    }
-
-}
     /// <summary>
-    /// ENergy request
+    /// Enegy Request
     /// </summary>
-    private void OnEnergyRequest()
+
+   /* private void OnEnergyRequest()
     {
-        rootSocket.ExpectAcknowledgement<int[]>(OnEnergyRequestRespond).Emit(WS_MESSAGE_GET_ENERGY);
+        //rootSocket.ExpectAcknowledgement<int[]>(OnEnergyRequestRespond).Emit(WS_MESSAGE_GET_ENERGY);
     }
 
     private void OnEnergyRequestRespond(int[] data)
     {
         Debug.Log("[OnEnergyRequest]" + data[0] + "," + data[1]);
         GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(data[0], data[1]);
-    }
+    }*/
+
+    #endregion 
 
     /// <summary>
     /// Cards request
     /// </summary>
 
-    private void OnCardsRequest()
+   /* private void OnCardsRequest()
     {
         Debug.Log("[OnCardsRequest]");
         rootSocket.ExpectAcknowledgement<string>(OnCardsPilesRequestRespond).Emit(WS_MESSAGE_GET_CARD_PILES);
@@ -255,5 +264,34 @@ public class WebSocketManager : MonoBehaviour
         CardPiles deck = JsonUtility.FromJson<CardPiles>(data);
         Debug.Log("[OnCardsPilesRequestRespond] deck=" + deck);
         GameManager.Instance.EVENT_CARDS_PILES_UPDATED.Invoke(deck);
+    }*/
+
+    /// <summary>
+    /// Players request
+    /// </summary>
+
+   /* private void OnPlayersRequest()
+    {
+        Debug.Log("[OnCardsRequest]");
+        rootSocket.ExpectAcknowledgement<string>(OnPlayersRequestRespond).Emit(WS_MESSAGE_GET_CARD_PILES);
+    }
+
+
+    private void OnPlayersRequestRespond(string data)
+    {
+        Debug.Log("[OnCardsPilesRequestRespond]" + data);
+        CardPiles deck = JsonUtility.FromJson<CardPiles>(data);
+        Debug.Log("[OnCardsPilesRequestRespond] deck=" + deck);
+        GameManager.Instance.EVENT_CARDS_PILES_UPDATED.Invoke(deck);
+    }*/
+
+    /// <summary>
+    /// Generic data request
+    /// </summary>
+
+    private void OnGenericWSDataRequest(DataWSRequestTypes dataType)
+    {
+        Debug.Log("[OnCardsRequest]");
+        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_GET_DATA,dataType.ToString());
     }
 }

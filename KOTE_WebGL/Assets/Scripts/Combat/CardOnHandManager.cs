@@ -133,7 +133,7 @@ public class CardOnHandManager : MonoBehaviour
             if (Vector2.Distance(this.transform.position,Vector2.zero) < 1.5f)
             {
                 Debug.Log("card is on center");
-                GameManager.Instance.EVENT_CARD_PLAYED.Invoke(id);
+                GameManager.Instance.EVENT_CARD_PLAYED.Invoke(id,-1);
               //  Destroy(this.gameObject);//TODO don destroy unless message back is error free
             }
             else
