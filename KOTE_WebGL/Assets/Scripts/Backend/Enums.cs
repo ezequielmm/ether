@@ -79,7 +79,7 @@ public enum EntityType
 }
 
 [Serializable]
-public enum DataWSRequestTypes
+public enum WS_DATA_REQUEST_TYPES
 {
     Energy,//done
     Health,
@@ -90,3 +90,33 @@ public enum DataWSRequestTypes
     Potions,
     Trinkets
 }
+
+[Serializable]
+public enum WS_ERROR_TYPES
+{
+    card_unplayable,
+    invalid_card,
+    insufficient_energy
+}
+
+[Serializable]
+public enum WS_MESSAGE_TYPES
+{
+    map_update,
+    combat_update,
+    enemy_intents,
+    player_state_update,
+    error,
+    generic_data,
+    enemy_attacked,
+    player_attacked
+}
+
+public enum WS_MESSAGE_ACTIONS
+{
+    update_energy,
+    move_card,
+    update_enemy,
+    update_player
+}
+

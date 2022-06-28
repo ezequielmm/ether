@@ -16,6 +16,7 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_PLAYER_STATE = "PlayerState";
     private const string WS_MESSAGE_INIT_COMBAT = "InitCombat";
     private const string WS_MESSAGE_ENEMY_INTENTS = "EnemiesIntents";   
+    private const string WS_MESSAGE_PUT_DATA = "PutData";   
 
 
     //Websockets outgoing messages with callback
@@ -104,6 +105,7 @@ public class WebSocketManager : MonoBehaviour
         rootSocket.On<string>(WS_MESSAGE_PLAYER_STATE, GenericParser);
         rootSocket.On<string>(WS_MESSAGE_INIT_COMBAT, GenericParser);
         rootSocket.On<string>(WS_MESSAGE_ENEMY_INTENTS, GenericParser);
+        rootSocket.On<string>(WS_MESSAGE_PUT_DATA, GenericParser);
 
 
         //  manager.Open();
@@ -189,18 +191,20 @@ public class WebSocketManager : MonoBehaviour
 
     private void OnCardPlayed(string cardId,int enemyId)//TODO: enemyId will an array 
     {
-        CardPlayedData obj = new CardPlayedData();
+        CardPlayedData cardData = new CardPlayedData();
         //  obj.card_id = "87d501f6-0583-484c-bf1d-d09d822c68fa";
-        obj.card_id = cardId;
-        obj.target_id.Add(enemyId);//TODO: here we will poulate the actual array of enemies rather than just one
+        cardData.card_id = cardId;
+        cardData.target = enemyId;//TODO: here we will poulate the actual array of enemies rather than just one
 
-        string data = JsonUtility.ToJson(obj).ToString();
+        string data = JsonUtility.ToJson(cardData).ToString();
         Debug.Log("sending WS playedcard test=" + data);
 
-        rootSocket.ExpectAcknowledgement<string>(OnCardPlayedAnswer).Emit(WS_MESSAGE_CARD_PLAYED, data);
+        //rootSocket.ExpectAcknowledgement<string>(OnCardPlayedAnswer).Emit(WS_MESSAGE_CARD_PLAYED, data);
+        rootSocket.Emit(WS_MESSAGE_CARD_PLAYED, data);
+
     }
 
-    private void OnCardPlayedAnswer(string nodeData)
+   /* private void OnCardPlayedAnswer(string nodeData)
     {
         Debug.Log("on card played answer:" + nodeData);
         SWSM_Parser.ParseJSON(nodeData);
@@ -209,7 +213,7 @@ public class WebSocketManager : MonoBehaviour
             NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
             GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, WS_QUERY_TYPE.CARD_PLAYED);
         }
-    }
+    }*/
 
   
     /// <summary>
@@ -289,7 +293,7 @@ public class WebSocketManager : MonoBehaviour
     /// Generic data request
     /// </summary>
 
-    private void OnGenericWSDataRequest(DataWSRequestTypes dataType)
+    private void OnGenericWSDataRequest(WS_DATA_REQUEST_TYPES dataType)
     {
         Debug.Log("[OnCardsRequest]");
         rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_GET_DATA,dataType.ToString());

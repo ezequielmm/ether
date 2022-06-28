@@ -14,6 +14,8 @@ public class CardOnHandManager : MonoBehaviour
     public TextMeshPro descriptionTF;
     public string id;
     public string type;
+    public int card_energy_cost;
+    public bool card_can_be_played = true;
 
     public Vector3 targetPosition;
     public Vector3 targetRotation;
@@ -26,8 +28,7 @@ public class CardOnHandManager : MonoBehaviour
     public Material blueOutlineMaterial;
    
     private Material defaultMaterial;
-    private Material outlineMaterial;
-      
+    private Material outlineMaterial;      
 
     [Header ("Colors")]
     public Color greenColor;
@@ -62,12 +63,17 @@ public class CardOnHandManager : MonoBehaviour
             main.startColor = greenColor;
             outlineMaterial = greenOutlineMaterial;//TODO:apply blue if card has a special condition
             auraPS.gameObject.SetActive(true);
+            card_can_be_played = true;
         }
         else
         {
             auraPS.gameObject.SetActive(false);
             energyTF.color = redColor;
+            outlineMaterial = greenOutlineMaterial;
+            card_can_be_played = false;
         }
+
+        card_energy_cost = card.energy;
     }
 
     private void OnMouseEnter()
@@ -96,17 +102,20 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnMouseDrag()
     {
+
+        if (!card_can_be_played)
+        {
+            //TODO: show no energy message
+            return;
+        }
+
         float xxDelta = Mathf.Abs(this.transform.position.x - targetPosition.x);
 
-        /*if (xxDelta > GameSettings.HAND_CARD_MAX_XX_DRAG_DELTA)
-        {
-            MoveCardBackToOriginalHandPosition();
-            return;
-        }*/
 
        // Debug.Log("Distance y is " + xxDelta);
        if (type == "attack")
        {
+            
            //show the pointer instead of following the mouse
            GameManager.Instance.EVENT_CARD_ACTIVATE_POINTER.Invoke(transform.position);
            return;

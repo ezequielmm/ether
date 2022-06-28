@@ -293,7 +293,7 @@ public class Cards
 public class CardPlayedData
 {
     public string card_id;
-    public List<int> target_id = new List<int>();
+    public int target;
 }
 
 [Serializable]
@@ -353,8 +353,7 @@ public class SWSM_EnergyArray
     [Serializable]
     public class EnergyData
     {
-        public int[] data;
-    
+        public int[] data;    
     }
 
 }
@@ -421,3 +420,8 @@ public class PlayerData
 
 }
 
+public class SWSM_Card
+{
+    public Card data;
+  
+}

@@ -21,7 +21,7 @@ public class EnemiesManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(DataWSRequestTypes.Enemies);
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Enemies);
     }
 
     private void OnEnemiesUpdate(EnemiesData enemiesData)

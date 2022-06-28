@@ -11,30 +11,33 @@ public class SWSM_Parser
 
         switch (swsm.data.message_type)
         {
-            case "map_update":
+            case nameof(WS_MESSAGE_TYPES.map_update):
                 UpdateMapActionPicker(swsm.data.action, data);
                 break;
-            case "combat_update":
-                //NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
-               
-                //GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, WS_QUERY_TYPE.MAP_NODE_SELECTED);
+            case nameof(WS_MESSAGE_TYPES.combat_update):               
                 ProcessCombatUpdate(swsm.data.action, data);
                 break;
-            case "enemy_intents":
+            case nameof(WS_MESSAGE_TYPES.enemy_intents):
                 ProcessEnemyIntents(swsm.data.action, data);
                 break;
-            case "player_state_update":
+            case nameof(WS_MESSAGE_TYPES.player_state_update):
                 SWSM_PlayerState playerStateBase = JsonUtility.FromJson<SWSM_PlayerState>(data);
 
                 PlayerStateData playerState = playerStateBase.data;
                 GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.Invoke(playerState);
                 break;
-            case "error":
+            case nameof(WS_MESSAGE_TYPES.error):
                 ProcessErrorAction(swsm.data.action, data);
                 break;
             //Data types
-            case "generic_data":
+            case nameof(WS_MESSAGE_TYPES.generic_data):
                 ProcessGenericData(swsm.data.action, data);
+                break;
+            case nameof(WS_MESSAGE_TYPES.enemy_attacked):
+                ProcessEnemyAttacked(swsm.data.action, data);
+                break;
+            case nameof(WS_MESSAGE_TYPES.player_attacked):
+                ProcessPlayerAttacked(swsm.data.action, data);
                 break;
             default:
                 Debug.LogError("No message_type processed. Data Received: " + data);
@@ -42,22 +45,54 @@ public class SWSM_Parser
         } ;
     }
 
+    private static void ProcessEnemyAttacked(string action, string data)
+    {
+        switch (action)
+        {
+            case nameof(WS_MESSAGE_ACTIONS.update_energy):
+                UpdateEnergy(data);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.move_card):
+                ProcessMoveCard(data);
+                break;
+
+            case nameof(WS_MESSAGE_ACTIONS.update_enemy):break;
+            case nameof(WS_MESSAGE_ACTIONS.update_player):break;
+        }
+    }
+
+    private static void ProcessMoveCard(string data)
+    {
+        SWSM_Card card = JsonUtility.FromJson<SWSM_Card>(data);
+    }
+
+    private static void ProcessPlayerAttacked(string action, string data)
+    {
+        switch (action)
+        {
+            case nameof(WS_MESSAGE_ACTIONS.update_enemy): break;
+            case nameof(WS_MESSAGE_ACTIONS.update_player): break;
+        }
+    }
+    /// <summary>
+    /// This data is coming from backend after a request from frontend
+    /// </summary>
+    /// <param name="action"></param>
+    /// <param name="data"></param>
     private static void ProcessGenericData(string action, string data)
     {
         
         switch (action)
         {
-            case nameof(DataWSRequestTypes.Energy):
-                SWSM_EnergyArray energyData = JsonUtility.FromJson<SWSM_EnergyArray>(data);
-                Debug.Log(energyData);
-                GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(energyData.data.data[0], energyData.data.data[1]);
+            case nameof(WS_DATA_REQUEST_TYPES.Energy):
+                UpdateEnergy(data);
                 break;
-            case nameof(DataWSRequestTypes.CardsPiles):
+            case nameof(WS_DATA_REQUEST_TYPES.CardsPiles):
                 SWSM_CardsPiles deck = JsonUtility.FromJson<SWSM_CardsPiles>(data);
                 Debug.Log("[OnCardsPilesRequestRespond] deck=" + deck);
                 GameManager.Instance.EVENT_CARDS_PILES_UPDATED.Invoke(deck.data);
                 break;
-            case nameof(DataWSRequestTypes.Enemies):
+            case nameof(WS_DATA_REQUEST_TYPES.Enemies):
                 // GameManager.Instance.
                 SWSM_Enemies enemies = JsonUtility.FromJson<SWSM_Enemies>(data);
                 GameManager.Instance.EVENT_UPDATE_ENEMIES.Invoke(enemies.data);
@@ -89,19 +124,21 @@ public class SWSM_Parser
         //TODO this will need to get passed on to where it needs to go once we determine what the error data will be
         switch (action)
         {
-            case "card_unplayable":
+            case nameof(WS_ERROR_TYPES.card_unplayable):
                 errorData = JsonUtility.FromJson<SWSM_ErrorData>(data);
                 Debug.Log(action + ": " + errorData.data);
                 break;
-            case "invalid_card":
+            case nameof(WS_ERROR_TYPES.invalid_card):
+                errorData = JsonUtility.FromJson<SWSM_ErrorData>(data);
+                Debug.Log(action + ": " + errorData.data);
+                break;
+            case nameof(WS_ERROR_TYPES.insufficient_energy):
                 errorData = JsonUtility.FromJson<SWSM_ErrorData>(data);
                 Debug.Log(action + ": " + errorData.data);
                 break;
         }
     }
 
-    // we don't need the SWSM_base here, because we just need the action.
-    // We parse the rest of the data from the original message string, and don't retain the message type or action
     private static void UpdateMapActionPicker(string action, string data)
     {
         
@@ -119,6 +156,13 @@ public class SWSM_Parser
                GameManager.Instance.EVENT_MAP_REVEAL.Invoke(mapData);
                 break;
         }
+    }
+
+    private static void UpdateEnergy(string data)
+    {
+        SWSM_EnergyArray energyData = JsonUtility.FromJson<SWSM_EnergyArray>(data);
+        Debug.Log(energyData);
+        GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(energyData.data.data[0], energyData.data.data[1]);
     }
 
 }

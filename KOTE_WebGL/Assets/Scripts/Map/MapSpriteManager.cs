@@ -333,8 +333,8 @@ namespace map
         {
             float targetx = playerIcon.transform.localPosition.x / -2;
 
-            Debug.Log("node:" + nodesHolder.transform.localPosition.x);
-            Debug.Log("targetx:" + targetx);
+           //Debug.Log("node:" + nodesHolder.transform.localPosition.x);
+            //Debug.Log("targetx:" + targetx);
 
             if ((mapBounds.max.x < halfScreenWidth * 2) == false)
             {

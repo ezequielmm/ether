@@ -35,7 +35,7 @@ public class HandManager : MonoBehaviour
     private void OnEnable()
     {
         Debug.Log("[HandManager]OnEnable");
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(DataWSRequestTypes.CardsPiles);
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
     }
 
     private void OnCardsPilesUpdated(CardPiles data)
@@ -61,8 +61,9 @@ public class HandManager : MonoBehaviour
             listOfCardsOnHand.Add(newCard);
             newCard.GetComponent<CardOnHandManager>().populate(card, data.data.energy);
             Vector3 pos = newCard.transform.position;
-            pos.x = counter * 2.2f;//TODO:magic numbers and make it related to the number of cards to center
-            pos.y = (Mathf.Cos(angle * Mathf.Deg2Rad) * 5) - 9;//TODO:magic numbers
+            pos.x = counter * 2.2f;//TODO: this value has to be beased on the number of cards to display them from the center
+           // pos.y = (Mathf.Cos(angle * Mathf.Deg2Rad) * handDeck.cards.Count) - 9.5F;//TODO:magic numbers 5,9
+            pos.y = Camera.main.orthographicSize*-1;//TODO:magic numbers 5,9
             pos.z = depth;
 
             newCard.GetComponent<CardOnHandManager>().targetPosition = pos;

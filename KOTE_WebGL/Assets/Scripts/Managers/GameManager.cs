@@ -134,7 +134,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_PLAYER_HEALTH = new UnityEvent<int, int>();//current health, max health
 
     //Common events
-    [HideInInspector] public UnityEvent<DataWSRequestTypes> EVENT_GENERIC_WS_DATA = new UnityEvent<DataWSRequestTypes>();
+    [HideInInspector] public UnityEvent<WS_DATA_REQUEST_TYPES> EVENT_GENERIC_WS_DATA = new UnityEvent<WS_DATA_REQUEST_TYPES>();
 
     //Enemies events
     [HideInInspector] public UnityEvent<EnemiesData> EVENT_UPDATE_ENEMIES = new UnityEvent<EnemiesData>();

@@ -16,7 +16,7 @@ public class EnergyCounterManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnEnergyUpdate);
        
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(DataWSRequestTypes.Energy);
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Energy);
     }
 
     private void OnEnergyUpdate(int arg0, int arg1)
