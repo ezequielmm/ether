@@ -19,8 +19,21 @@ public class CommonCardsPanel : MonoBehaviour
     {
         CommonCardsContainer.SetActive(false);
         GameManager.Instance.EVENT_CARD_PILE_CLICKED.AddListener(DisplayCards);
-        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusUpdate);
-        GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeStateDateUpdate);
+        //GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusUpdate);
+        //GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeStateDateUpdate);
+        GameManager.Instance.EVENT_CARDS_PILES_UPDATED.AddListener(OnPilesUpdate);
+    }
+
+    private void OnPilesUpdate(CardPiles data)
+    {
+        drawDeck = new Deck();
+        discardDeck = new Deck();
+        exhaustDeck = new Deck();
+
+        drawDeck.cards = data.data.draw;
+        discardDeck.cards = data.data.discard;
+        exhaustDeck.cards = data.data.exhaust;       
+
     }
 
     private void OnNodeStateDateUpdate(NodeStateData nodeState,WS_QUERY_TYPE wsType)

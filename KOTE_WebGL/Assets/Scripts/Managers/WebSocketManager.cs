@@ -41,7 +41,7 @@ public class WebSocketManager : MonoBehaviour
         GameManager.Instance.EVENT_END_TURN_CLICKED.AddListener(OnEndTurn);
 
        // GameManager.Instance.EVENT_GET_ENERGY.AddListener(OnEnergyRequest);
-       // GameManager.Instance.EVENT_CARD_DRAW_CARDS.AddListener(OnCardsRequest);
+       
 
         GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener(OnGenericWSDataRequest);
 
@@ -204,22 +204,6 @@ public class WebSocketManager : MonoBehaviour
 
     }
 
-   /* private void OnCardPlayedAnswer(string nodeData)
-    {
-        Debug.Log("on card played answer:" + nodeData);
-        SWSM_Parser.ParseJSON(nodeData);
-        if (MessageErrorValidator.ValidateData(nodeData))
-        {
-            NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
-            GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, WS_QUERY_TYPE.CARD_PLAYED);
-        }
-    }*/
-
-  
-    /// <summary>
-    /// End of turn
-    /// </summary>
-
     private void OnEndTurn()
     {
         rootSocket.ExpectAcknowledgement<string>(OnEndOfTurnAnswer).Emit(WS_MESSAGE_END_TURN);
@@ -234,64 +218,8 @@ public class WebSocketManager : MonoBehaviour
             GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, WS_QUERY_TYPE.END_OF_TURN);
         }
     }
-    /// <summary>
-    /// Enegy Request
-    /// </summary>
-
-   /* private void OnEnergyRequest()
-    {
-        //rootSocket.ExpectAcknowledgement<int[]>(OnEnergyRequestRespond).Emit(WS_MESSAGE_GET_ENERGY);
-    }
-
-    private void OnEnergyRequestRespond(int[] data)
-    {
-        Debug.Log("[OnEnergyRequest]" + data[0] + "," + data[1]);
-        GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(data[0], data[1]);
-    }*/
 
     #endregion 
-
-    /// <summary>
-    /// Cards request
-    /// </summary>
-
-   /* private void OnCardsRequest()
-    {
-        Debug.Log("[OnCardsRequest]");
-        rootSocket.ExpectAcknowledgement<string>(OnCardsPilesRequestRespond).Emit(WS_MESSAGE_GET_CARD_PILES);
-    }
-
-
-    private void OnCardsPilesRequestRespond(string data)
-    {
-        Debug.Log("[OnCardsPilesRequestRespond]" + data);
-        CardPiles deck = JsonUtility.FromJson<CardPiles>(data);
-        Debug.Log("[OnCardsPilesRequestRespond] deck=" + deck);
-        GameManager.Instance.EVENT_CARDS_PILES_UPDATED.Invoke(deck);
-    }*/
-
-    /// <summary>
-    /// Players request
-    /// </summary>
-
-   /* private void OnPlayersRequest()
-    {
-        Debug.Log("[OnCardsRequest]");
-        rootSocket.ExpectAcknowledgement<string>(OnPlayersRequestRespond).Emit(WS_MESSAGE_GET_CARD_PILES);
-    }
-
-
-    private void OnPlayersRequestRespond(string data)
-    {
-        Debug.Log("[OnCardsPilesRequestRespond]" + data);
-        CardPiles deck = JsonUtility.FromJson<CardPiles>(data);
-        Debug.Log("[OnCardsPilesRequestRespond] deck=" + deck);
-        GameManager.Instance.EVENT_CARDS_PILES_UPDATED.Invoke(deck);
-    }*/
-
-    /// <summary>
-    /// Generic data request
-    /// </summary>
 
     private void OnGenericWSDataRequest(WS_DATA_REQUEST_TYPES dataType)
     {

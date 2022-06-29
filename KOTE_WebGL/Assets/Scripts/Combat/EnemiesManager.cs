@@ -7,9 +7,9 @@ public class EnemiesManager : MonoBehaviour
 {
   
     public List<GameObject> EnemiesPrefabs = new List<GameObject>();
-   // public Dictionary<string, GameObject> EnemyPrefabsDictionary = new Dictionary<string, GameObject>();
+  
     private List<GameObject> EnemiesGoArray = new List<GameObject>();
-    // Start is called before the first frame update
+  
     void Start()
     {
        
@@ -33,7 +33,7 @@ public class EnemiesManager : MonoBehaviour
         }
 
         GameObject newEnemy = Instantiate(EnemiesPrefabs[0], this.transform);
-        newEnemy.GetComponent<EnemyDataHolder>().enemyData = enemiesData.data[0];//TODO manage array of enemies rather than using only one
+        newEnemy.GetComponent<EnemyManager>().EnemyData = enemiesData.data[0];//TODO manage array of enemies rather than using only one
         EnemiesGoArray.Add(newEnemy);
 
 

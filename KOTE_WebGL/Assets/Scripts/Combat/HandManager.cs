@@ -5,8 +5,7 @@ using UnityEngine;
 using DG.Tweening;
 
 public class HandManager : MonoBehaviour
-{
-    
+{    
     public GameObject spriteCardPrefab;
     public List<GameObject> listOfCardsOnHand;
     public GameObject explosionEffectPrefab;
@@ -16,13 +15,17 @@ public class HandManager : MonoBehaviour
 
     private Deck handDeck;
     private float maxDepth;
-        
+
+    CardPiles cardPilesData;
+
+
 
     void Start()
     {
         Debug.Log("[HandManager]Start");
         GameManager.Instance.EVENT_CARD_MOUSE_ENTER.AddListener(OnCardMouseEnter);
-        GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);      
+        GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);
+       
       
     }
 
@@ -30,6 +33,7 @@ public class HandManager : MonoBehaviour
     {
         Debug.Log("[HandManager]Awake");
         GameManager.Instance.EVENT_CARDS_PILES_UPDATED.AddListener(OnCardsPilesUpdated);
+        GameManager.Instance.EVENT_CARD_DRAW_CARDS.AddListener(OnDrawCards);
     }
 
     private void OnEnable()
@@ -38,13 +42,14 @@ public class HandManager : MonoBehaviour
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
     }
 
-    private void OnCardsPilesUpdated(CardPiles data)
+    private void OnDrawCards()
     {
-        Debug.Log("[OnCardsPilesUpdated] "+data);
+        if (cardPilesData == null) return;
+        Debug.Log("**********************************************[OnDrawCards] " );
         //Generate cards hand
         listOfCardsOnHand = new List<GameObject>();
         handDeck = new Deck();
-        handDeck.cards = data.data.hand;
+        handDeck.cards = cardPilesData.data.hand;
 
         Vector3 spawnPosition = GameSettings.HAND_CARDS_GENERATION_POINT;
 
@@ -59,19 +64,23 @@ public class HandManager : MonoBehaviour
             //Debug.Log(counter + "/" + angle);
             GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
             listOfCardsOnHand.Add(newCard);
-            newCard.GetComponent<CardOnHandManager>().populate(card, data.data.energy);
+            newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
             Vector3 pos = newCard.transform.position;
             pos.x = counter * 2.2f;//TODO: this value has to be beased on the number of cards to display them from the center
-           // pos.y = (Mathf.Cos(angle * Mathf.Deg2Rad) * handDeck.cards.Count) - 9.5F;//TODO:magic numbers 5,9
-            pos.y = Camera.main.orthographicSize*-1;//TODO:magic numbers 5,9
+                                   // pos.y = (Mathf.Cos(angle * Mathf.Deg2Rad) * handDeck.cards.Count) - 9.5F;//TODO:magic numbers 5,9
+            pos.y = Camera.main.orthographicSize * -1;//TODO:magic numbers 5,9
             pos.z = depth;
+            newCard.GetComponent<CardOnHandManager>().targetPosition = pos;//we need this to put the card back after mouse interaction
+            newCard.transform.position = spawnPosition;
 
-            newCard.GetComponent<CardOnHandManager>().targetPosition = pos;
+            newCard.GetComponent<CardOnHandManager>().MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, pos, delay);
+
+            /*
 
             newCard.transform.position = spawnPosition;
 
             newCard.transform.DOMove(pos, .5f).SetDelay(delay, true).SetEase(Ease.OutBack).OnComplete(newCard.GetComponent<CardOnHandManager>().ActivateCard);
-            newCard.transform.DOPlay(); 
+            newCard.transform.DOPlay(); */
 
             //newCard.transform.position = pos;
             Vector3 rot = newCard.transform.eulerAngles;
@@ -87,6 +96,24 @@ public class HandManager : MonoBehaviour
         }
 
         maxDepth = --depth;
+    }
+
+    private void OnCardsPilesUpdated(CardPiles data)
+    {
+        Debug.Log("**********************************************[OnCardsPilesUpdated] ");
+        cardPilesData = data;
+
+        if (cardPilesData.data.hand.Count > listOfCardsOnHand.Count)
+        {
+            foreach (GameObject obj in listOfCardsOnHand)
+            {
+                Destroy(obj);
+            }
+
+            listOfCardsOnHand = new List<GameObject>();
+            OnDrawCards();
+        }
+
     }
 
    /* private void OnDrawCardsCalled()

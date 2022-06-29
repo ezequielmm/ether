@@ -120,3 +120,11 @@ public enum WS_MESSAGE_ACTIONS
     update_player
 }
 
+public enum CARDS_POSITIONS_TYPES
+{
+    discard,
+    hand,
+    exhaust,
+    draw
+}
+

@@ -56,14 +56,32 @@ public class SWSM_Parser
                 ProcessMoveCard(data);
                 break;
 
-            case nameof(WS_MESSAGE_ACTIONS.update_enemy):break;
+            case nameof(WS_MESSAGE_ACTIONS.update_enemy):
+                ProcessUpdateEnemy(data);
+                break;
             case nameof(WS_MESSAGE_ACTIONS.update_player):break;
         }
     }
 
-    private static void ProcessMoveCard(string data)
+    private static void ProcessUpdateEnemy(string rawData)
     {
-        SWSM_Card card = JsonUtility.FromJson<SWSM_Card>(data);
+     
+        SWSM_Enemies enemiesData = JsonUtility.FromJson<SWSM_Enemies>(rawData);
+        foreach (Enemy enemyData in enemiesData.data.data)
+        {
+            GameManager.Instance.EVENT_UPDATE_ENEMY.Invoke(enemyData);
+        }
+    }
+
+    private static void ProcessMoveCard(string rawData)
+    {
+        SWSM_CardMove cardMoveData = JsonUtility.FromJson<SWSM_CardMove>(rawData);
+        Debug.Log(cardMoveData);
+        foreach (CardToMoveData data in cardMoveData.data.data)
+        {
+            GameManager.Instance.EVENT_MOVE_CARD.Invoke(data);
+            GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+        }
     }
 
     private static void ProcessPlayerAttacked(string action, string data)

@@ -420,8 +420,23 @@ public class PlayerData
 
 }
 
-public class SWSM_Card
+public class SWSM_CardMove
 {
-    public Card data;
-  
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public CardToMoveData[] data;
+
+    }
+}
+
+[Serializable]
+public class CardToMoveData
+{
+    public string source;
+    public string destination;
+    public string card_id;
+
 }
