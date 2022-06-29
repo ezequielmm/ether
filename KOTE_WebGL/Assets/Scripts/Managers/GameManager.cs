@@ -133,6 +133,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();   
     [HideInInspector] public UnityEvent<int,int> EVENT_UPDATE_ENERGY = new UnityEvent<int,int>();//current energy, max energy 
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_PLAYER_HEALTH = new UnityEvent<int, int>();//current health, max health
+    [HideInInspector] public UnityEvent EVENT_PLAY_PLAYER_ATTACK = new UnityEvent();
 
     //Common events
     [HideInInspector] public UnityEvent<WS_DATA_REQUEST_TYPES> EVENT_GENERIC_WS_DATA = new UnityEvent<WS_DATA_REQUEST_TYPES>();

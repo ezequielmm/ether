@@ -21,8 +21,11 @@ public class EnemyManager : MonoBehaviour
         }
                             }
 
-    public ParticleSystem HitPS;
+    public ParticleSystem hitPS;
+    public ParticleSystem explodePS;
     public Slider healthBar;
+
+    private bool firstAttack = true;
 
     private void Start()
     {
@@ -33,7 +36,7 @@ public class EnemyManager : MonoBehaviour
     {
         if (newEnemyData.enemyId == enemyData.enemyId)
         {
-            HitPS.Play();
+            hitPS.Play();
 
             // healthBar.DOValue(newEnemyData.hpMin, 1);
             EnemyData = newEnemyData;
@@ -43,7 +46,30 @@ public class EnemyManager : MonoBehaviour
     public void SetHealth()
     {
         Debug.Log("[SetHealth]min="+enemyData.hpMin+"/"+enemyData.hpMax);
+
+        if (!firstAttack) {
+            Debug.Log("----------invoking attack play");
+            GameManager.Instance.EVENT_PLAY_PLAYER_ATTACK.Invoke();
+
+        } else
+        {
+            firstAttack = false;
+        }
+       
         healthBar.maxValue = enemyData.hpMax;
-        healthBar.DOValue(enemyData.hpMin, 1);
+        healthBar.DOValue(enemyData.hpMin, 1).OnComplete(CheckDeath);
+
+       
+    }
+
+    private void CheckDeath()
+    {
+        if (enemyData.hpMin < 1)
+        {
+            explodePS.transform.parent = null;
+            explodePS.Play();
+            Destroy(explodePS.gameObject, 2);
+            Destroy(this.gameObject);
+        }
     }
 }

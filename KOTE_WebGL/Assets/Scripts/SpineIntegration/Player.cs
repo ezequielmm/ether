@@ -8,9 +8,13 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        GameManager.Instance.EVENT_PLAY_PLAYER_ATTACK.AddListener(Attack);
+
         spineAnimationsManagement = GetComponent<SpineAnimationsManagement>();
-        spineAnimationsManagement.SetSkin("weapon/sword");
+        //spineAnimationsManagement.SetSkin("weapon/sword");
         spineAnimationsManagement.PlayAnimationSequence("Idle");
+
+       
     }
 
     private void OnMouseDown()
@@ -20,6 +24,7 @@ public class Player : MonoBehaviour
 
     public void Attack()
     {
+        Debug.Log("+++++++++++++++[Player]Attack");
         spineAnimationsManagement.PlayAnimationSequence("Attack");
         spineAnimationsManagement.PlayAnimationSequence("Idle");
     }
