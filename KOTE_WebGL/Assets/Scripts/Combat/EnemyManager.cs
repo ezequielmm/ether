@@ -45,7 +45,7 @@ public class EnemyManager : MonoBehaviour
 
     public void SetHealth()
     {
-        Debug.Log("[SetHealth]min="+enemyData.hpMin+"/"+enemyData.hpMax);
+        Debug.Log("[SetHealth]min="+enemyData.hpCurrent + "/"+enemyData.hpMax);
 
         if (!firstAttack) {
             Debug.Log("----------invoking attack play");
@@ -57,14 +57,14 @@ public class EnemyManager : MonoBehaviour
         }
        
         healthBar.maxValue = enemyData.hpMax;
-        healthBar.DOValue(enemyData.hpMin, 1).OnComplete(CheckDeath);
+        healthBar.DOValue(enemyData.hpCurrent, 1).OnComplete(CheckDeath);
 
        
     }
 
     private void CheckDeath()
     {
-        if (enemyData.hpMin < 1)
+        if (enemyData.hpCurrent < 1)
         {
             explodePS.transform.parent = null;
             explodePS.Play();

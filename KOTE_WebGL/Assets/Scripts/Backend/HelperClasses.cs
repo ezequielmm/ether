@@ -138,7 +138,7 @@ public class ProfileData
         public class ActMap
         {
             public string id;
-            public string current_node;
+            public string currentNode;
         }
     }
 }
@@ -163,9 +163,9 @@ public class PlayerStateData
     [Serializable]
     public class Data
     {
-        public PlayerState player_state;
+        public PlayerData playerState;
 
-        [Serializable]
+       /* [Serializable]
         public class PlayerState
         {
             public string player_name;
@@ -185,8 +185,23 @@ public class PlayerStateData
             public string[] trinkets;
 
             public Deck deck;
-        }
+        }*/
     }
+}
+
+[Serializable]
+public class PlayerData
+{
+    public string playerName;
+    public string characterClass;
+    public int hpCurrent;
+    public int hpMax;//current
+    public int gold;
+    //public int energy;
+    //public int energyMax;
+    public int defense;
+    public List<Card> cards;
+
 }
 
 [Serializable]
@@ -194,13 +209,11 @@ public class Card
 {
     public string name;
     public string id;
-    public string card_id;
+    public string cardId;
     public string description;
     public string rarity;
     public int energy;
-    public string card_type;
-    public int coin_min;
-    public int coin_max;
+    public string cardType;
     public string pool;
     public Effects properties;
     public List<string> keywords;
@@ -290,10 +303,10 @@ public class Cards
 #endregion
 
 [Serializable]
-public class CardPlayedData
+public class CardPlayedData//outgoing data
 {
-    public string card_id;
-    public int target;
+    public string cardId;
+    public int targetId;
 }
 
 [Serializable]
@@ -385,7 +398,7 @@ public class Enemy
     public string name;
     public int enemyId;
     public int defense;
-    public int hpMin;//current
+    public int hpCurrent;//current
     public int hpMax;
     public string type;
     public string category;
@@ -406,19 +419,7 @@ public class PlayersData
 
 }
 
-[Serializable]
-public class PlayerData
-{
-    public string player_name;
-    public string character_class;
-    public int hp_current;
-    public int hp_max;//current
-    public int gold;
-    public int energy;
-    public int energy_max;
-    public int defense;
 
-}
 
 public class SWSM_CardMove
 {
@@ -437,6 +438,6 @@ public class CardToMoveData
 {
     public string source;
     public string destination;
-    public string card_id;
+    public string cardId;
 
 }

@@ -24,7 +24,7 @@ public class TrinketsHolderManager : MonoBehaviour
     // when we get a player status update, that tells us to update the trinkets
     private void UpdateTrinketHolder(PlayerStateData playerState)
     {
-        string[] activeTrinkets = playerState.data.player_state.trinkets;
+       /* string[] activeTrinkets = playerState.data.playerState.trinkets;
         // currently we're picking trinkets at random, that will change once we do more with them
         if (activeTrinkets != null && activeTrinkets.Length > 0)
         {
@@ -34,7 +34,7 @@ public class TrinketsHolderManager : MonoBehaviour
                 trinket.Populate("Trinket" + Random.Range(1, 5), "Common");
             }
             trinketsContainer.SetActive(true);
-        }
+        }*/
    
     }
      

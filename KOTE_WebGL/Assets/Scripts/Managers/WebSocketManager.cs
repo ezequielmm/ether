@@ -193,8 +193,8 @@ public class WebSocketManager : MonoBehaviour
     {
         CardPlayedData cardData = new CardPlayedData();
         //  obj.card_id = "87d501f6-0583-484c-bf1d-d09d822c68fa";
-        cardData.card_id = cardId;
-        cardData.target = enemyId;//TODO: here we will poulate the actual array of enemies rather than just one
+        cardData.cardId = cardId;
+        cardData.targetId = enemyId;//TODO: here we will poulate the actual array of enemies rather than just one
 
         string data = JsonUtility.ToJson(cardData).ToString();
         Debug.Log("sending WS playedcard test=" + data);

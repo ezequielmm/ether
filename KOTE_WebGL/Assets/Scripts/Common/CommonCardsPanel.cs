@@ -62,7 +62,7 @@ public class CommonCardsPanel : MonoBehaviour
 
     private void OnPlayerStatusUpdate(PlayerStateData playerState)
     {
-        playerDeck = playerState.data.player_state.deck;
+        playerDeck.cards = playerState.data.playerState.cards;
     }
 
     private void DisplayCards(PileTypes pileType)

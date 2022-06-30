@@ -73,7 +73,7 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnCardToMove(CardToMoveData data)
     {
-        if (this.id == data.card_id)
+        if (this.id == data.cardId)
         {
             System.Enum.TryParse(data.source, out CARDS_POSITIONS_TYPES origin);
             System.Enum.TryParse(data.destination, out CARDS_POSITIONS_TYPES destination);
@@ -98,7 +98,7 @@ public class CardOnHandManager : MonoBehaviour
         rarityTF.SetText(card.rarity);
         descriptionTF.SetText(card.description);
         this.id = card.id;
-        type = card.card_type;
+        type = card.cardType;
         card_energy_cost = card.energy;
 
         UpdateCardBasedOnEnergy( energy);      
