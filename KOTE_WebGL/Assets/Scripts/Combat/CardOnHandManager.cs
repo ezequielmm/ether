@@ -114,8 +114,11 @@ public class CardOnHandManager : MonoBehaviour
     private void OnUpdateEnergy(int currentEnergy, int maxEnergy)
     {
         Debug.Log("[CardOnHandManager] OnUpdateEnergy = "+currentEnergy);
+        if (cardActive)
+        {
+            UpdateCardBasedOnEnergy(currentEnergy);
+        }
        
-        UpdateCardBasedOnEnergy(currentEnergy);
     }
 
     internal void Populate(Card card, int energy)

@@ -43,7 +43,7 @@ public class EnemyManager : MonoBehaviour
     {
         if (newEnemyData.enemyId == enemyData.enemyId)
         {
-            hitPS.Play();
+            
 
             // healthBar.DOValue(newEnemyData.hpMin, 1);
             EnemyData = newEnemyData;
@@ -60,6 +60,7 @@ public class EnemyManager : MonoBehaviour
 
         if (healthBar.value != enemyData.hpCurrent)
         {
+            hitPS.Play();
             healthBar.DOValue(enemyData.hpCurrent, 1).OnComplete(CheckDeath);
 
             if (!firstAttack)

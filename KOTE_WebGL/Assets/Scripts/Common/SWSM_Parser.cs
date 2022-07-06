@@ -39,10 +39,33 @@ public class SWSM_Parser
             case nameof(WS_MESSAGE_TYPES.player_affected):
                 ProcessPlayerAffected(swsm.data.action, data);
                 break;
+            case nameof(WS_MESSAGE_TYPES.end_turn):
+                ProcessEndOfTurn(swsm.data.action, data);
+                break;
             default:
                 Debug.LogError("No message_type processed. Data Received: " + data);
                 break;
         } ;
+    }
+
+    private static void ProcessEndOfTurn(string action, string data)
+    {
+        switch (action)
+        {
+            case nameof(WS_MESSAGE_ACTIONS.update_energy):
+                UpdateEnergy(data);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.move_card):
+                ProcessMoveCard(data);
+                break;
+
+            case nameof(WS_MESSAGE_ACTIONS.update_enemy):
+                ProcessUpdateEnemy(data);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.update_player):
+                ProcessUpdatePlayer(data); 
+                break;
+        }
     }
 
     private static void ProcessEnemyAffected(string action, string data)
@@ -59,7 +82,9 @@ public class SWSM_Parser
             case nameof(WS_MESSAGE_ACTIONS.update_enemy):
                 ProcessUpdateEnemy(data);
                 break;
-            case nameof(WS_MESSAGE_ACTIONS.update_player):break;
+            case nameof(WS_MESSAGE_ACTIONS.update_player):
+                ProcessUpdatePlayer(data); 
+                break;
         }
     }
 

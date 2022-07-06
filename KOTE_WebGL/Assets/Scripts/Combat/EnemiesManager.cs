@@ -31,10 +31,6 @@ public class EnemiesManager : MonoBehaviour
             enemiesDictionary.Add(enemyData.id,newEnemy);
 
         }
-        else
-        {
-            enemiesDictionary[enemyData.id].GetComponent<EnemyManager>().EnemyData = enemyData;
-        }
     }
 
     private void OnEnable()

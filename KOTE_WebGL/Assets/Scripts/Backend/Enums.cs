@@ -109,7 +109,8 @@ public enum WS_MESSAGE_TYPES
     error,
     generic_data,
     enemy_affected,
-    player_affected
+    player_affected,
+    end_turn
 }
 
 public enum WS_MESSAGE_ACTIONS
