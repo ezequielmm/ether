@@ -7,7 +7,10 @@ using DG.Tweening;
 public class HandManager : MonoBehaviour
 {    
     public GameObject spriteCardPrefab;
-    public List<GameObject> listOfCardsOnHand;
+    //  public List<GameObject> listOfCardsOnHand;
+    public Dictionary<string, GameObject> listOfCardsOnHand = new Dictionary<string, GameObject>();
+
+
     public GameObject explosionEffectPrefab;
 
     private string currentCardID;
@@ -23,10 +26,57 @@ public class HandManager : MonoBehaviour
     void Start()
     {
         Debug.Log("[HandManager]Start");
-        GameManager.Instance.EVENT_CARD_MOUSE_ENTER.AddListener(OnCardMouseEnter);
-        GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);
+        //GameManager.Instance.EVENT_CARD_MOUSE_ENTER.AddListener(OnCardMouseEnter);
+       // GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);
+        GameManager.Instance.EVENT_CARD_DESTROYED.AddListener(OnCardDestroyed);
        
       
+    }
+
+    private void OnCardDestroyed(string cardId)
+    {
+        Debug.Log("[Removing card "+cardId+" from hand]");
+        //listOfCardsOnHand.Remove(listOfCardsOnHand.Find((x) => (x.GetComponent<CardOnHandManager>().id == cardId)));
+        listOfCardsOnHand.Remove(cardId);
+
+        RelocateCards();
+        
+    }
+
+    private void RelocateCards()
+    {
+        
+        float counter = 0;
+        float depth = GameSettings.HAND_CARD_SPRITE_Z;
+        float halfWidth = listOfCardsOnHand.Values.Count * GameSettings.HAND_CARD_GAP/2;
+        float offset = listOfCardsOnHand.Values.Count % 2 == 0 ? GameSettings.HAND_CARD_GAP / 2 : 0;
+
+        Debug.Log("----------------------------Relocate cards halfWidth=" + halfWidth);
+
+        foreach (GameObject card in listOfCardsOnHand.Values)        
+        {
+            Vector3 pos = Vector3.zero;
+            pos.x = counter * GameSettings.HAND_CARD_GAP - halfWidth + offset;
+            pos.y = Camera.main.orthographicSize * -1;
+            pos.z = depth;
+            card.transform.position = pos;
+
+            //var angle = (float)(counter * Mathf.PI * 2);                   
+            var angle = (float)(pos.x * Mathf.PI * 2);                   
+
+
+            //newCard.transform.position = pos;
+            Vector3 rot = card.transform.eulerAngles;
+            rot.z = angle / -2;
+            card.transform.eulerAngles = rot;
+            card.GetComponent<CardOnHandManager>().targetRotation = rot;
+            card.GetComponent<CardOnHandManager>().targetPosition = pos;
+            card.transform.localScale = Vector3.one;
+
+            counter++;
+            depth--;
+
+        }
     }
 
     private void Awake()
@@ -47,7 +97,7 @@ public class HandManager : MonoBehaviour
         if (cardPilesData == null) return;
         Debug.Log("**********************************************[OnDrawCards] " );
         //Generate cards hand
-        listOfCardsOnHand = new List<GameObject>();
+        listOfCardsOnHand.Clear();
         handDeck = new Deck();
         handDeck.cards = cardPilesData.data.hand;
 
@@ -59,11 +109,13 @@ public class HandManager : MonoBehaviour
         float delay = delayStep * handDeck.cards.Count;
 
         foreach (Card card in handDeck.cards)
+        //for (var i= 0; i < (handDeck.cards.Count - 4);i++)
         {
+           // var card = handDeck.cards[3];
             var angle = (float)(counter * Mathf.PI * 2);
             //Debug.Log(counter + "/" + angle);
             GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
-            listOfCardsOnHand.Add(newCard);
+            listOfCardsOnHand.Add(card.cardId,newCard);
             newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
             Vector3 pos = newCard.transform.position;
             pos.x = counter * 2.2f;//TODO: this value has to be beased on the number of cards to display them from the center
@@ -73,16 +125,9 @@ public class HandManager : MonoBehaviour
             newCard.GetComponent<CardOnHandManager>().targetPosition = pos;//we need this to put the card back after mouse interaction
             newCard.transform.position = spawnPosition;
 
-            newCard.GetComponent<CardOnHandManager>().MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, pos, delay);
+            Debug.Log("[***************************************************************Moving cards from Draw creation]");
+            newCard.GetComponent<CardOnHandManager>().MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand,true, pos, delay);
 
-            /*
-
-            newCard.transform.position = spawnPosition;
-
-            newCard.transform.DOMove(pos, .5f).SetDelay(delay, true).SetEase(Ease.OutBack).OnComplete(newCard.GetComponent<CardOnHandManager>().ActivateCard);
-            newCard.transform.DOPlay(); */
-
-            //newCard.transform.position = pos;
             Vector3 rot = newCard.transform.eulerAngles;
             rot.z = angle / -2;
             newCard.transform.eulerAngles = rot;
@@ -105,12 +150,12 @@ public class HandManager : MonoBehaviour
 
         if (cardPilesData.data.hand.Count > listOfCardsOnHand.Count)
         {
-            foreach (GameObject obj in listOfCardsOnHand)
+            foreach (GameObject obj in listOfCardsOnHand.Values)
             {
                 Destroy(obj);
             }
 
-            listOfCardsOnHand = new List<GameObject>();
+            listOfCardsOnHand.Clear();
             OnDrawCards();
         }
 
@@ -121,11 +166,11 @@ public class HandManager : MonoBehaviour
         GameManager.Instance.
     }*/
 
-    private void OnCardMouseExit(string cardId)
+  /*  private void OnCardMouseExit(string cardId)
     {
         //Debug.Log("[-----OnCardMouseExit]cardid=" + cardId);
 
-        foreach (GameObject go in listOfCardsOnHand)
+        foreach (GameObject go in listOfCardsOnHand.Values)
         {
             CardOnHandManager cardData = go.GetComponent<CardOnHandManager>();
 
@@ -134,22 +179,22 @@ public class HandManager : MonoBehaviour
            go.transform.DOScale(Vector3.one , 0.2f);
 
         }
-    }
+    }*/
 
-    private void OnCardMouseEnter(string cardId)
+   /* private void OnCardMouseEnter(string cardId)
     {
-       // Debug.Log("[++++++OnCardMouseEnter]cardid="+cardId);
-        GameObject selectedCard = listOfCardsOnHand.Find((x) => (x.GetComponent<CardOnHandManager>().id == cardId));
+        // Debug.Log("[++++++OnCardMouseEnter]cardid="+cardId);
+        // GameObject selectedCard = listOfCardsOnHand.Find((x) => (x.GetComponent<CardOnHandManager>().id == cardId));
+        GameObject selectedCard = listOfCardsOnHand[cardId];
+       
 
-        if (selectedCard == null) return;
-
-        foreach (GameObject go in listOfCardsOnHand)
+        foreach (GameObject go in listOfCardsOnHand.Values)
         {            
             CardOnHandManager cardData = go.GetComponent<CardOnHandManager>();
-           go.transform.DOMove(cardData.targetPosition, 0.1f);
+            go.transform.DOMove(cardData.targetPosition, 0.1f);
             //go.transform.position = cardData.targetPosition;
 
-            if (cardData.id != cardId)
+            if (cardData.th != cardId)
             {
                 float xx = go.transform.position.x - selectedCard.transform.position.x;
                // Debug.Log("---this card is the " + (xx > 0 ? "left" : "right"));
@@ -170,50 +215,6 @@ public class HandManager : MonoBehaviour
                 go.transform.DORotate(Vector3.zero,0.2f);
             }
         }
-    }
-
-    private void OnParticleSystemStopped()
-    {
-        Debug.Log("lalal");
-    }
-      
-    private void OnNodeUpdate(NodeStateData nodeState, WS_QUERY_TYPE wsType)
-    {
-        //do we had cards on the current hand?
-        if (listOfCardsOnHand.Count > 0)//this is insecure. The list could have null elements and the count still would be above 0 
-        {
-            //compare new hand cards with current hand cards
-            Deck newHandDeck = new Deck();
-            newHandDeck.cards = nodeState.data.data.player.cards.hand;
-            int counterOfDifferentCards = 0;
-            foreach (Card newCard in newHandDeck.cards)
-            {
-                foreach (GameObject go in listOfCardsOnHand)
-                {
-
-                }
-            }
-        }
-        else
-        {
-            //
-        }      
-
-
-            //play effect on current cards. This must be isolated to only happen when it is the end of turn but not on card played
-        float effectDelay = 0.5f;
-        foreach (GameObject go in listOfCardsOnHand)
-        {
-            if (go == null) continue;//avoid working on a gameobject that has been destroyed but is still referenced on the list
-            GameObject fireball = Instantiate(explosionEffectPrefab,go.transform);
-            fireball.transform.position = go.transform.position;
-            fireball.transform.localScale = fireball.transform.localScale*0.5f;
-   
-            effectDelay += 0.3f;
-        }
-
-        
-
-    }
+    }*/
    
 }

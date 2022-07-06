@@ -7275,6 +7275,9 @@ MonoBehaviour:
   EVENT_PLAYER_STATUS_UPDATE:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_UPDATE_PLAYER:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_MAP_ICON_CLICKED:
     m_PersistentCalls:
       m_Calls: []
@@ -7285,6 +7288,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   EVENT_CARD_MOUSE_ENTER:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_SHOWING_UP:
     m_PersistentCalls:
       m_Calls: []
   EVENT_CARD_MOUSE_EXIT:
@@ -7303,6 +7309,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   EVENT_MOVE_CARD:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_DESTROYED:
     m_PersistentCalls:
       m_Calls: []
   EVENT_GAME_STATUS_CHANGE:
@@ -7327,6 +7336,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   EVENT_GENERIC_WS_DATA:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_WS_CONNECTED:
     m_PersistentCalls:
       m_Calls: []
   EVENT_UPDATE_ENEMIES:

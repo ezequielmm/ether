@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class Player : MonoBehaviour
+public class PlayerManager : MonoBehaviour
 {
     public SpineAnimationsManagement spineAnimationsManagement;
     public TMP_Text defenseTF;
@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
 
     private void OnWSConnected()
     {
-       
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
     }
 
     private void OnUpdatePlayer(PlayerData newPlayerData)

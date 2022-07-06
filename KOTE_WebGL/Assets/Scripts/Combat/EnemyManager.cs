@@ -4,35 +4,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 
 public class EnemyManager : MonoBehaviour
 {
-    private Enemy enemyData;
+    private EnemyData enemyData;
+    public ParticleSystem hitPS;
+    public ParticleSystem explodePS;
+    public Slider healthBar;
+    private bool firstAttack = true;
+    public TMP_Text healthTF;
+    public TMP_Text defenseTF;
 
-    public Enemy EnemyData { 
+    public EnemyData EnemyData { 
         set
         {
             enemyData = value;
+            SetDefense();
             SetHealth();
         }
         get
         {
             return enemyData;
         }
-                            }
+    }
 
-    public ParticleSystem hitPS;
-    public ParticleSystem explodePS;
-    public Slider healthBar;
-
-    private bool firstAttack = true;
+    private void SetDefense()
+    {
+        defenseTF.SetText(enemyData.defense.ToString());
+    }
 
     private void Start()
     {
         GameManager.Instance.EVENT_UPDATE_ENEMY.AddListener(OnUpdateEnemy);
     }
 
-    private void OnUpdateEnemy(Enemy newEnemyData)
+    private void OnUpdateEnemy(EnemyData newEnemyData)
     {
         if (newEnemyData.enemyId == enemyData.enemyId)
         {
@@ -47,17 +54,25 @@ public class EnemyManager : MonoBehaviour
     {
         Debug.Log("[SetHealth]min="+enemyData.hpCurrent + "/"+enemyData.hpMax);
 
-        if (!firstAttack) {
-            Debug.Log("----------invoking attack play");
-            GameManager.Instance.EVENT_PLAY_PLAYER_ATTACK.Invoke();
+        healthTF.SetText(enemyData.hpCurrent + "/" + enemyData.hpMax);
 
-        } else
-        {
-            firstAttack = false;
-        }
-       
         healthBar.maxValue = enemyData.hpMax;
-        healthBar.DOValue(enemyData.hpCurrent, 1).OnComplete(CheckDeath);
+
+        if (healthBar.value != enemyData.hpCurrent)
+        {
+            healthBar.DOValue(enemyData.hpCurrent, 1).OnComplete(CheckDeath);
+
+            if (!firstAttack)
+            {
+                Debug.Log("----------invoking attack play");
+                GameManager.Instance.EVENT_PLAY_PLAYER_ATTACK.Invoke();
+
+            }
+            else
+            {
+                firstAttack = false;
+            }
+        }       
 
        
     }

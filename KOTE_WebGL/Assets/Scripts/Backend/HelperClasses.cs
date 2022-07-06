@@ -215,6 +215,7 @@ public class Card
     public int energy;
     public string cardType;
     public string pool;
+    public bool showPointer;
     public Effects properties;
     public List<string> keywords;
 }
@@ -387,12 +388,12 @@ public class SWSM_Enemies
 [Serializable]
 public class EnemiesData
 {
-    public List<Enemy> data;
+    public List<EnemyData> data;
 
 }
 
 [Serializable]
-public class Enemy
+public class EnemyData
 {
     public string id;
     public string name;

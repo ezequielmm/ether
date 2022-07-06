@@ -109,6 +109,7 @@ public class GameManager : SingleTon<GameManager>
 
     //PLAYER DATA EVENTS
     [HideInInspector] public UnityEvent<PlayerStateData> EVENT_PLAYER_STATUS_UPDATE = new UnityEvent<PlayerStateData>();
+    [HideInInspector] public UnityEvent<PlayerData> EVENT_UPDATE_PLAYER = new UnityEvent<PlayerData>();
 
     //TOP BAR EVENTS
     [HideInInspector] public UnityEvent EVENT_MAP_ICON_CLICKED = new UnityEvent();
@@ -117,12 +118,14 @@ public class GameManager : SingleTon<GameManager>
     //CARDS EVENTS
     [HideInInspector] public UnityEvent<PileTypes> EVENT_CARD_PILE_CLICKED = new UnityEvent<PileTypes>();
     [HideInInspector] public UnityEvent<string> EVENT_CARD_MOUSE_ENTER = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<string,Vector3> EVENT_CARD_SHOWING_UP = new UnityEvent<string,Vector3>();
     [HideInInspector] public UnityEvent<string> EVENT_CARD_MOUSE_EXIT = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<Vector3> EVENT_CARD_ACTIVATE_POINTER = new UnityEvent<Vector3>();
     [HideInInspector] public UnityEvent<string> EVENT_CARD_DEACTIVATE_POINTER = new UnityEvent<string>();   
     [HideInInspector] public UnityEvent EVENT_CARD_DRAW_CARDS = new UnityEvent();
     [HideInInspector] public UnityEvent<CardPiles> EVENT_CARDS_PILES_UPDATED = new UnityEvent<CardPiles>();
     [HideInInspector] public UnityEvent<CardToMoveData> EVENT_MOVE_CARD = new UnityEvent<CardToMoveData>();
+    [HideInInspector] public UnityEvent<string> EVENT_CARD_DESTROYED = new UnityEvent<string>();//id fo the cards being destroyed
 
     //Gameplay events
     [HideInInspector] public UnityEvent<GameStatuses> EVENT_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
@@ -137,10 +140,11 @@ public class GameManager : SingleTon<GameManager>
 
     //Common events
     [HideInInspector] public UnityEvent<WS_DATA_REQUEST_TYPES> EVENT_GENERIC_WS_DATA = new UnityEvent<WS_DATA_REQUEST_TYPES>();
+    [HideInInspector] public UnityEvent EVENT_WS_CONNECTED = new UnityEvent();    
 
     //Enemies events
     [HideInInspector] public UnityEvent<EnemiesData> EVENT_UPDATE_ENEMIES = new UnityEvent<EnemiesData>();
-    [HideInInspector] public UnityEvent<Enemy> EVENT_UPDATE_ENEMY = new UnityEvent<Enemy>();
+    [HideInInspector] public UnityEvent<EnemyData> EVENT_UPDATE_ENEMY = new UnityEvent<EnemyData>();
 
 
 
@@ -148,6 +152,8 @@ public class GameManager : SingleTon<GameManager>
         nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
 
     public WebRequesterManager webRequester;
+
+    
 
     // Start is called before the first frame update
     void Start()

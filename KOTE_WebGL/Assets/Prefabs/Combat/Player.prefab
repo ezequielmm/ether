@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 789611549104299332}
   - component: {fileID: 789611549104299334}
   - component: {fileID: 789611549104299333}
-  - component: {fileID: 789611549104299337}
   - component: {fileID: 789611549104299335}
   - component: {fileID: 789611549104299339}
+  - component: {fileID: 1972393808682014241}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -123,19 +123,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 789611549104299331}
   m_Mesh: {fileID: 0}
---- !u!114 &789611549104299337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 789611549104299331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0612bdbb7c23a640aaabb8d433b758e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spineAnimationsManagement: {fileID: 0}
 --- !u!114 &789611549104299335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,3 +203,19 @@ MonoBehaviour:
   _animationName: 
   loop: 0
   timeScale: 1
+--- !u!114 &1972393808682014241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789611549104299331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbaed028717c0bd4c873a64f59231d21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spineAnimationsManagement: {fileID: 0}
+  defenseTF: {fileID: 0}
+  healthTF: {fileID: 0}
+  healthBar: {fileID: 0}

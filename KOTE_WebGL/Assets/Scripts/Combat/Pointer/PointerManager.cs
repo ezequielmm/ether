@@ -16,7 +16,7 @@ public class PointerManager : MonoBehaviour
     private int splinePointCount; // store this so we don't have to keep grabbing it, since we use it a lot
     [HideInInspector] public bool overEnemy;
 
-    public Enemy enemyData;
+    public EnemyData enemyData;
 
     private void Start()
     {

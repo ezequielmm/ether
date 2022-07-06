@@ -16,7 +16,11 @@ public static class GameSettings
     public static float PORTAL_ACTIVATION_ANIMATION_TIME = 2;
 
     //HAND OF CARDS
+    public const float HAND_CARD_GAP = 2.2f;
     public const float HAND_CARD_SPRITE_Z = -12f;
+    public const float HAND_CARD_SHOW_UP_Y = 1.25f;
+    public const float HAND_CARD_SHOW_UP_TIME = 0.5f;
+    public const float HAND_CARD_RESET_POSITION_TIME = 0.2f;
     public const float HAND_CARD_MAX_XX_DRAG_DELTA = 5f;
     public static Vector3 HAND_CARDS_GENERATION_POINT = new Vector3(-7, -5, -9);
     

@@ -33,11 +33,11 @@ public class SWSM_Parser
             case nameof(WS_MESSAGE_TYPES.generic_data):
                 ProcessGenericData(swsm.data.action, data);
                 break;
-            case nameof(WS_MESSAGE_TYPES.enemy_attacked):
-                ProcessEnemyAttacked(swsm.data.action, data);
+            case nameof(WS_MESSAGE_TYPES.enemy_affected):
+                ProcessEnemyAffected(swsm.data.action, data);
                 break;
-            case nameof(WS_MESSAGE_TYPES.player_attacked):
-                ProcessPlayerAttacked(swsm.data.action, data);
+            case nameof(WS_MESSAGE_TYPES.player_affected):
+                ProcessPlayerAffected(swsm.data.action, data);
                 break;
             default:
                 Debug.LogError("No message_type processed. Data Received: " + data);
@@ -45,7 +45,7 @@ public class SWSM_Parser
         } ;
     }
 
-    private static void ProcessEnemyAttacked(string action, string data)
+    private static void ProcessEnemyAffected(string action, string data)
     {
         switch (action)
         {
@@ -67,9 +67,10 @@ public class SWSM_Parser
     {
      
         SWSM_Enemies enemiesData = JsonUtility.FromJson<SWSM_Enemies>(rawData);
-        foreach (Enemy enemyData in enemiesData.data.data)
+        foreach (EnemyData enemyData in enemiesData.data.data)
         {
             GameManager.Instance.EVENT_UPDATE_ENEMY.Invoke(enemyData);
+            break;//TODO: process all enemis , not only one
         }
     }
 
@@ -84,14 +85,35 @@ public class SWSM_Parser
         }
     }
 
-    private static void ProcessPlayerAttacked(string action, string data)
+    private static void ProcessPlayerAffected(string action, string data)
     {
         switch (action)
         {
-            case nameof(WS_MESSAGE_ACTIONS.update_enemy): break;
-            case nameof(WS_MESSAGE_ACTIONS.update_player): break;
+            case nameof(WS_MESSAGE_ACTIONS.update_energy):
+                UpdateEnergy(data);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.move_card):
+                ProcessMoveCard(data);
+                break;
+
+            case nameof(WS_MESSAGE_ACTIONS.update_enemy):
+                ProcessUpdateEnemy(data);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.update_player):
+                ProcessUpdatePlayer(data);
+                break;
         }
     }
+
+    private static void ProcessUpdatePlayer(string data)
+    {
+        SWSM_Players playersData = JsonUtility.FromJson<SWSM_Players>(data);
+       // foreach (PlayerData playerData in playersData.data)
+      //  {
+            GameManager.Instance.EVENT_UPDATE_PLAYER.Invoke(playersData.data.data);
+       // }//TODO: plyersdta will be a list
+    }
+
     /// <summary>
     /// This data is coming from backend after a request from frontend
     /// </summary>
@@ -111,9 +133,13 @@ public class SWSM_Parser
                 GameManager.Instance.EVENT_CARDS_PILES_UPDATED.Invoke(deck.data);
                 break;
             case nameof(WS_DATA_REQUEST_TYPES.Enemies):
-                // GameManager.Instance.
-                SWSM_Enemies enemies = JsonUtility.FromJson<SWSM_Enemies>(data);
-                GameManager.Instance.EVENT_UPDATE_ENEMIES.Invoke(enemies.data);
+
+                // SWSM_Enemies enemies = JsonUtility.FromJson<SWSM_Enemies>(data);
+                //   GameManager.Instance.EVENT_UPDATE_ENEMIES.Invoke(enemies.data);
+                ProcessUpdateEnemy(data);
+                break;
+            case nameof(WS_DATA_REQUEST_TYPES.Players):
+                ProcessUpdatePlayer(data);
                 break;
         }
     }

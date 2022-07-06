@@ -31,19 +31,9 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_GET_DATA = "GetData";
 
 
-
-    // Start is called before the first frame update
     void Start()
     {
-        //events
-        GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnNodeClicked);
-        GameManager.Instance.EVENT_CARD_PLAYED.AddListener(OnCardPlayed);
-        GameManager.Instance.EVENT_END_TURN_CLICKED.AddListener(OnEndTurn);
-
-       // GameManager.Instance.EVENT_GET_ENERGY.AddListener(OnEnergyRequest);
        
-
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener(OnGenericWSDataRequest);
 
         options = new SocketOptions();
         ConnectSocket(); //Disabled connection until actual implementation
@@ -123,7 +113,14 @@ public class WebSocketManager : MonoBehaviour
 
     void OnConnected(ConnectResponse resp)
     {
-        Debug.Log("Websocket Connected sucessfully!");
+        Debug.Log("Websocket Connected sucessfully! Setting listeners" );
+        //events
+        GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnNodeClicked);
+        GameManager.Instance.EVENT_CARD_PLAYED.AddListener(OnCardPlayed);
+        GameManager.Instance.EVENT_END_TURN_CLICKED.AddListener(OnEndTurn);
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener(OnGenericWSDataRequest);
+
+        GameManager.Instance.EVENT_WS_CONNECTED.Invoke();
     }
 
     void OnError(Error resp)
@@ -223,7 +220,7 @@ public class WebSocketManager : MonoBehaviour
 
     private void OnGenericWSDataRequest(WS_DATA_REQUEST_TYPES dataType)
     {
-        Debug.Log("[OnCardsRequest]");
+        Debug.Log("[OnGenericWSDataRequest]"+ dataType.ToString());
         rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_GET_DATA,dataType.ToString());
     }
 }

@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 9032002354893603802}
   - component: {fileID: 9032002354893603800}
   - component: {fileID: 9032002354893603803}
-  - component: {fileID: 9032002354893603799}
   - component: {fileID: 9032002354893603801}
   - component: {fileID: 9032002354893603797}
   m_Layer: 6
@@ -123,19 +122,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9032002354893603805}
   m_Mesh: {fileID: 0}
---- !u!114 &9032002354893603799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9032002354893603805}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0612bdbb7c23a640aaabb8d433b758e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spineAnimationsManagement: {fileID: 0}
 --- !u!114 &9032002354893603801
 MonoBehaviour:
   m_ObjectHideFlags: 0

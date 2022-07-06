@@ -12,9 +12,9 @@ public class CardOnHandManager : MonoBehaviour
     public TextMeshPro nameTF;
     public TextMeshPro rarityTF;
     public TextMeshPro descriptionTF;
-    public string id;
-    public string type;
-    public int card_energy_cost;
+   // public string id;
+   // public string type;
+  //  public int card_energy_cost;
     public bool card_can_be_played = true;
 
     public Vector3 targetPosition;
@@ -45,6 +45,11 @@ public class CardOnHandManager : MonoBehaviour
     [Header("Movement")]
     public ParticleSystem movePs;
 
+    private Card thisCardValues;
+    private bool activateCardAfterMove;
+    private bool cardIsShowingUp;
+    private bool pointerIsActive;
+
     private void Awake()
     {
 
@@ -68,19 +73,41 @@ public class CardOnHandManager : MonoBehaviour
         defaultMaterial = cardBgGO.GetComponent<Renderer>().sharedMaterial;
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
         GameManager.Instance.EVENT_MOVE_CARD.AddListener(OnCardToMove);
+        GameManager.Instance.EVENT_CARD_SHOWING_UP.AddListener(OnCardMouseShowingUp);
+        GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);
 
+    }
+
+    private void OnCardMouseExit(string cardId)
+    {        
+        if (cardId != thisCardValues.cardId && !cardIsShowingUp)
+        {
+           // Debug.Log("[OnCardMouseExit]");
+            ResetCardPosition();
+        }
+    }
+
+    private void OnCardMouseShowingUp(string cardId, Vector3 cardPos)
+    {
+        if (cardId != thisCardValues.id)
+        {
+           // Debug.Log("Check mouse is left or right "+ TransformMouseToOrtho().x+"/"+this.transform.position.x);            
+
+            float direction = cardPos.x > this.transform.position.x ? -0.5f : 0.5f;
+
+            this.transform.DOMoveX(targetPosition.x + direction, 0.5f);
+        }
     }
 
     private void OnCardToMove(CardToMoveData data)
     {
-        if (this.id == data.cardId)
+        if (thisCardValues.id == data.cardId)
         {
             System.Enum.TryParse(data.source, out CARDS_POSITIONS_TYPES origin);
             System.Enum.TryParse(data.destination, out CARDS_POSITIONS_TYPES destination);
           
             MoveCard(origin, destination);
         }
-
        
     }
 
@@ -97,15 +124,17 @@ public class CardOnHandManager : MonoBehaviour
         nameTF.SetText(card.name);
         rarityTF.SetText(card.rarity);
         descriptionTF.SetText(card.description);
-        this.id = card.id;
+      /* this.id = card.id;
         type = card.cardType;
-        card_energy_cost = card.energy;
+        card_energy_cost = card.energy;*/
+
+        thisCardValues = card;
 
         UpdateCardBasedOnEnergy( energy);      
         
     }
 
-    public void MoveCard(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType, Vector3 pos = default(Vector3), float delay = 0)
+    public void MoveCard(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType, bool activateCard = false, Vector3 pos = default(Vector3), float delay = 0)
     {
         Debug.Log("[CardOnHandManager] MoveCard = " + originType+" to "+destinationType);
         movePs.Play();
@@ -153,30 +182,28 @@ public class CardOnHandManager : MonoBehaviour
             }
         }
 
-
-        this.transform.position = origin;      
-        
-        //Debug.Log("Moving card")
-        
+        activateCardAfterMove = (originType == CARDS_POSITIONS_TYPES.draw && destinationType == CARDS_POSITIONS_TYPES.hand);
+ 
 
         if (delay > 0)
         {
-            transform.DOMove(destination, 1f).SetDelay(delay, true).SetEase(Ease.InCirc).OnComplete(DeactivatePS); ;
+            transform.DOMove(destination, 1f).SetDelay(delay, true).SetEase(Ease.InCirc).OnComplete(OnMoveCompleted).From(origin); ;
            // transform.DOMoveX(destination.x, .5f).SetEase(Ease.Linear);
            // transform.DOMoveY(destination.y, .5f).SetEase(Ease.InCirc);
         }
         else
         {
 
-            transform.DOMove(destination, 1f).SetEase(Ease.OutCirc);
+            transform.DOMove(destination, 1f).From(origin).SetEase(Ease.OutCirc);
             transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InElastic).OnComplete(HideAndDeactivateCard);
-        }
+        }       
 
         //transform.DOPlay();
     }
 
-    private void DeactivatePS()
+    private void OnMoveCompleted()
     {
+        cardActive = activateCardAfterMove;
         movePs.Stop();
     }
 
@@ -189,7 +216,7 @@ public class CardOnHandManager : MonoBehaviour
     }
     private void UpdateCardBasedOnEnergy( int energy)
     {
-        if (card_energy_cost <= energy)
+        if (thisCardValues.energy <= energy)
         {
             var main = auraPS.main;
             main.startColor = greenColor;
@@ -206,27 +233,81 @@ public class CardOnHandManager : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        DOTween.Kill(this.transform);
+        GameManager.Instance.EVENT_CARD_DESTROYED.Invoke(thisCardValues.cardId);   
+    }
+
 
     private void OnMouseEnter()
     {
         if (cardActive)
         {
            // DOTween.PlayForward(this.gameObject);
-            GameManager.Instance.EVENT_CARD_MOUSE_ENTER.Invoke(this.id);
+           // GameManager.Instance.EVENT_CARD_MOUSE_ENTER.Invoke(thisCardValues.cardId);
             if(auraPS.gameObject.activeSelf)auraPS.Play();
 
             cardBgGO.GetComponent<Renderer>().material = outlineMaterial;
+
+            ShowUpCard();
+        }
+        else
+        {
+            Debug.Log("[Mouse evnter but ccard is not active]");
         }
            
     }
-    private void OnMouseExit()
+
+    private void ShowUpCard()
     {
+        if (cardIsShowingUp) return;
+
         if (cardActive)
-        { 
-           // DOTween.PlayBackwards(this.gameObject);
-            GameManager.Instance.EVENT_CARD_MOUSE_EXIT.Invoke(this.id);
+        {
+
+            // mySequence.Kill();
+            DOTween.Kill(this.transform);
+            ResetCardPosition();
+
+            cardIsShowingUp = true;
+
+            //  Debug.Log("ShowUp");
+            transform.DOScale(Vector3.one * GameSettings.HAND_CARD_SHOW_UP_Y, GameSettings.HAND_CARD_SHOW_UP_TIME);
+
+            //pos.z = maxDepth;
+            transform.DOMoveY(1.5f, 0.2f).SetRelative(true);
+
+            transform.DORotate(Vector3.zero, GameSettings.HAND_CARD_SHOW_UP_TIME);
+
+            GameManager.Instance.EVENT_CARD_SHOWING_UP.Invoke(thisCardValues.id, this.targetPosition);
+        }
+    }
+
+    private void ResetCardPosition()
+    {
+        //  Debug.Log("[ResetCardPosition]");
+        if (cardActive)
+        {
             if (auraPS.gameObject.activeSelf) auraPS.Stop();
             cardBgGO.GetComponent<Renderer>().material = defaultMaterial;
+            cardIsShowingUp = false;
+            transform.DOMove(targetPosition, GameSettings.HAND_CARD_RESET_POSITION_TIME);
+            transform.DOScale(Vector3.one, GameSettings.HAND_CARD_RESET_POSITION_TIME);
+            transform.DORotate(targetRotation, GameSettings.HAND_CARD_RESET_POSITION_TIME);
+        }
+    }
+
+    private void OnMouseExit()
+    {
+        if (pointerIsActive) return;
+
+        if (cardActive && cardIsShowingUp)
+        {
+           // Debug.Log("[OnMouseExit]");
+            GameManager.Instance.EVENT_CARD_MOUSE_EXIT.Invoke(thisCardValues.id);
+           
+            ResetCardPosition();
         }
            
     }
@@ -244,11 +325,13 @@ public class CardOnHandManager : MonoBehaviour
 
 
        // Debug.Log("Distance y is " + xxDelta);
-       if (type == "attack")
+     //if (type == "attack")
+       if (thisCardValues.showPointer)
        {
             
            //show the pointer instead of following the mouse
            GameManager.Instance.EVENT_CARD_ACTIVATE_POINTER.Invoke(transform.position);
+           pointerIsActive = true;
            return;
        }
 
@@ -260,21 +343,34 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (type == "attack")
+        if (pointerIsActive)
         {
-            GameManager.Instance.EVENT_CARD_DEACTIVATE_POINTER.Invoke(id);
+            ResetCardPosition();
+            pointerIsActive = false;
+        }
+      
+
+        if (thisCardValues.showPointer)
+        {
+            GameManager.Instance.EVENT_CARD_DEACTIVATE_POINTER.Invoke(thisCardValues.id);
         }
     }
 
     private void OnMouseUpAsButton()
     {
+        if (pointerIsActive)
+        {
+            ResetCardPosition();
+            pointerIsActive = false;
+        }
+
         if (cardActive)
         {
             if (Vector2.Distance(this.transform.position,Vector2.zero) < 1.5f)
             {
                 Debug.Log("card is on center");
-                GameManager.Instance.EVENT_CARD_PLAYED.Invoke(id,-1);
-              //  Destroy(this.gameObject);//TODO don destroy unless message back is error free
+                GameManager.Instance.EVENT_CARD_PLAYED.Invoke(thisCardValues.id, -1);
+                cardActive = false;
             }
             else
             {
@@ -308,6 +404,21 @@ public class CardOnHandManager : MonoBehaviour
         float height = 2 * Camera.main.orthographicSize;//10
         float width = height * Camera.main.aspect;//21.42
 
+        //transform UI coordinates to orthorgraphic coordinates
+        float xx = pos.x * width / Screen.width;
+        xx -= width / 2;//ortho counts from the center 
+        float yy = pos.y * height / Screen.height;
+        yy -= height / 2;
+
+        return new Vector3(xx, yy, this.transform.position.z);
+    }
+
+    private Vector3 TransformMouseToOrtho()
+    {
+        Vector3 pos = Input.mousePosition;
+
+        float height = 2 * Camera.main.orthographicSize;//10
+        float width = height * Camera.main.aspect;//21.42
 
         //transform UI coordinates to orthorgraphic coordinates
         float xx = pos.x * width / Screen.width;
@@ -315,6 +426,6 @@ public class CardOnHandManager : MonoBehaviour
         float yy = pos.y * height / Screen.height;
         yy -= height / 2;
 
-        return new Vector3(xx, yy, this.transform.position.x);
+        return new Vector3(xx, yy, this.transform.position.z);
     }
 }

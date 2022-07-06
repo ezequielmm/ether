@@ -8,7 +8,9 @@ public class EnemiesManager : MonoBehaviour
   
     public List<GameObject> EnemiesPrefabs = new List<GameObject>();
   
-    private List<GameObject> EnemiesGoArray = new List<GameObject>();
+    //private List<GameObject> EnemiesGoArray = new List<GameObject>();
+
+    public Dictionary<string, GameObject> enemiesDictionary = new Dictionary<string, GameObject>();
   
     void Start()
     {
@@ -16,7 +18,23 @@ public class EnemiesManager : MonoBehaviour
     }
     private void Awake()
     {
-        GameManager.Instance.EVENT_UPDATE_ENEMIES.AddListener(OnEnemiesUpdate);
+      //  GameManager.Instance.EVENT_UPDATE_ENEMIES.AddListener(OnEnemiesUpdate);
+        GameManager.Instance.EVENT_UPDATE_ENEMY.AddListener(OnEnemyUpdate);
+    }
+
+    private void OnEnemyUpdate(EnemyData enemyData)
+    {
+        if (!enemiesDictionary.ContainsKey(enemyData.id))
+        {
+            GameObject newEnemy = Instantiate(EnemiesPrefabs[0], this.transform);//TODO: needs to be base on enemy type
+            newEnemy.GetComponent<EnemyManager>().EnemyData = enemyData;
+            enemiesDictionary.Add(enemyData.id,newEnemy);
+
+        }
+        else
+        {
+            enemiesDictionary[enemyData.id].GetComponent<EnemyManager>().EnemyData = enemyData;
+        }
     }
 
     private void OnEnable()
@@ -24,7 +42,7 @@ public class EnemiesManager : MonoBehaviour
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Enemies);
     }
 
-    private void OnEnemiesUpdate(EnemiesData enemiesData)
+   /* private void OnEnemiesUpdate(EnemiesData enemiesData)
     {
         Debug.Log(enemiesData);
         foreach(GameObject enemy in EnemiesGoArray)
@@ -37,5 +55,5 @@ public class EnemiesManager : MonoBehaviour
         EnemiesGoArray.Add(newEnemy);
 
 
-    }
+    }*/
 }
