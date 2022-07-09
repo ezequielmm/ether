@@ -167,7 +167,6 @@ public class CardOnHandManager : MonoBehaviour
         }
         else
         {
-
             switch (destinationType)
             {
                 case CARDS_POSITIONS_TYPES.draw:
@@ -185,8 +184,8 @@ public class CardOnHandManager : MonoBehaviour
             }
         }
 
-        activateCardAfterMove = (originType == CARDS_POSITIONS_TYPES.draw && destinationType == CARDS_POSITIONS_TYPES.hand);
- 
+        cardActive = (originType == CARDS_POSITIONS_TYPES.draw && destinationType == CARDS_POSITIONS_TYPES.hand);
+        //cardActive = activateCardAfterMove;
 
         if (delay > 0)
         {
@@ -206,14 +205,16 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnMoveCompleted()
     {
-        cardActive = activateCardAfterMove;
+       
         movePs.Stop();
     }
 
     private void HideAndDeactivateCard()
     {
+        Debug.Log("HideAndDeactivateCard, activateCardAfterMove="+ activateCardAfterMove);
         //cardActive = false;
         //this.gameObject.SetActive(false);
+      
         Destroy(this.gameObject);
 
     }
@@ -238,7 +239,7 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        DOTween.Kill(this.transform);
+       // DOTween.Kill(this.transform);
         GameManager.Instance.EVENT_CARD_DESTROYED.Invoke(thisCardValues.cardId);   
     }
 
@@ -289,9 +290,10 @@ public class CardOnHandManager : MonoBehaviour
 
     private void ResetCardPosition()
     {
-        //  Debug.Log("[ResetCardPosition]");
+         
         if (cardActive)
         {
+           // Debug.Log("[ResetCardPosition]");
             if (auraPS.gameObject.activeSelf) auraPS.Stop();
             cardBgGO.GetComponent<Renderer>().material = defaultMaterial;
             cardIsShowingUp = false;

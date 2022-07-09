@@ -165,27 +165,6 @@ public class PlayerStateData
     {
         public PlayerData playerState;
 
-       /* [Serializable]
-        public class PlayerState
-        {
-            public string player_name;
-            public string className;
-            public int hp_max;
-            public int hp_current;
-            public int gold;
-            public Potions potion;
-
-            [Serializable]
-            public class Potions
-            {
-                public string index;
-                public string potion_name;
-            }
-
-            public string[] trinkets;
-
-            public Deck deck;
-        }*/
     }
 }
 

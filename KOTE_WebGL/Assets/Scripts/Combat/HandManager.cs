@@ -39,7 +39,7 @@ public class HandManager : MonoBehaviour
         //listOfCardsOnHand.Remove(listOfCardsOnHand.Find((x) => (x.GetComponent<CardOnHandManager>().id == cardId)));
         listOfCardsOnHand.Remove(cardId);
 
-        RelocateCards();
+      
         
     }
 
@@ -150,10 +150,10 @@ public class HandManager : MonoBehaviour
 
         if (cardPilesData.data.hand.Count > listOfCardsOnHand.Count)
         {
-            foreach (GameObject obj in listOfCardsOnHand.Values)
+           /* foreach (GameObject obj in listOfCardsOnHand.Values)
             {
                 Destroy(obj);
-            }
+            }*/
 
             listOfCardsOnHand.Clear();
             OnDrawCards();

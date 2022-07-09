@@ -110,7 +110,8 @@ public enum WS_MESSAGE_TYPES
     generic_data,
     enemy_affected,
     player_affected,
-    end_turn
+    end_turn,
+    begin_turn
 }
 
 public enum WS_MESSAGE_ACTIONS
@@ -118,7 +119,9 @@ public enum WS_MESSAGE_ACTIONS
     update_energy,
     move_card,
     update_enemy,
-    update_player
+    update_player,
+    change_turn
+
 }
 
 public enum CARDS_POSITIONS_TYPES

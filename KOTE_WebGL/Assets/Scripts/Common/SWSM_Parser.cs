@@ -42,10 +42,33 @@ public class SWSM_Parser
             case nameof(WS_MESSAGE_TYPES.end_turn):
                 ProcessEndOfTurn(swsm.data.action, data);
                 break;
+            case nameof(WS_MESSAGE_TYPES.begin_turn):
+                ProcessBeginTurn(swsm.data.action, data);
+                break;
             default:
                 Debug.LogError("No message_type processed. Data Received: " + data);
                 break;
         } ;
+    }
+
+    private static void ProcessBeginTurn(string action, string data)
+    {
+        switch (action)
+        {
+            case nameof(WS_MESSAGE_ACTIONS.move_card):
+                Debug.Log("Should move cards from draw to hand");
+               // ProcessMoveCard(data);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.change_turn):
+                Debug.Log("Should move cards from draw to hand");
+                ProcessChangeTurn(data);
+                break;
+        }
+    }
+
+    private static void ProcessChangeTurn(string data)
+    {
+        GameManager.Instance.EVENT_CHANGE_TURN.Invoke(data);
     }
 
     private static void ProcessEndOfTurn(string action, string data)
@@ -106,7 +129,7 @@ public class SWSM_Parser
         foreach (CardToMoveData data in cardMoveData.data.data)
         {
             GameManager.Instance.EVENT_MOVE_CARD.Invoke(data);
-            GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+            //GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
         }
     }
 
