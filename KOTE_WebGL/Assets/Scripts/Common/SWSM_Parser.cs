@@ -68,7 +68,11 @@ public class SWSM_Parser
 
     private static void ProcessChangeTurn(string data)
     {
-        GameManager.Instance.EVENT_CHANGE_TURN.Invoke(data);
+        SWSM_ChangeTurn who = JsonUtility.FromJson<SWSM_ChangeTurn>(data);
+
+        Debug.Log("[ProcessChangeTurn]data= "+data);
+        Debug.Log("[ProcessChangeTurn]who.data= " + who.data);
+        GameManager.Instance.EVENT_CHANGE_TURN.Invoke(who.data.data);
     }
 
     private static void ProcessEndOfTurn(string action, string data)

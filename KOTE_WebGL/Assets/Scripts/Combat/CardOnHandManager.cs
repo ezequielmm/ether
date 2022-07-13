@@ -80,7 +80,7 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnCardMouseExit(string cardId)
     {        
-        if (cardId != thisCardValues.cardId && !cardIsShowingUp)
+        if (cardId != thisCardValues.id && !cardIsShowingUp)
         {
            // Debug.Log("[OnCardMouseExit]");
             ResetCardPosition();
@@ -101,7 +101,8 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnCardToMove(CardToMoveData data)
     {
-        if (thisCardValues.id == data.cardId)
+        Debug.Log("[OnCardToMove]thisCardValues.id ="+ thisCardValues.id+ " || data.id="+ data.id);
+        if (thisCardValues.id == data.id)
         {
             System.Enum.TryParse(data.source, out CARDS_POSITIONS_TYPES origin);
             System.Enum.TryParse(data.destination, out CARDS_POSITIONS_TYPES destination);
@@ -211,7 +212,7 @@ public class CardOnHandManager : MonoBehaviour
 
     private void HideAndDeactivateCard()
     {
-        Debug.Log("HideAndDeactivateCard, activateCardAfterMove="+ activateCardAfterMove);
+        //Debug.Log("HideAndDeactivateCard, activateCardAfterMove="+ activateCardAfterMove);
         //cardActive = false;
         //this.gameObject.SetActive(false);
       
@@ -225,12 +226,12 @@ public class CardOnHandManager : MonoBehaviour
             var main = auraPS.main;
             main.startColor = greenColor;
             outlineMaterial = greenOutlineMaterial;//TODO:apply blue if card has a special condition
-            auraPS.gameObject.SetActive(true);
+           // auraPS.Play();
             card_can_be_played = true;
         }
         else
         {
-            auraPS.gameObject.SetActive(false);
+          //  auraPS.Stop();
             energyTF.color = redColor;
             outlineMaterial = greenOutlineMaterial;
             card_can_be_played = false;
@@ -240,7 +241,7 @@ public class CardOnHandManager : MonoBehaviour
     private void OnDestroy()
     {
        // DOTween.Kill(this.transform);
-        GameManager.Instance.EVENT_CARD_DESTROYED.Invoke(thisCardValues.cardId);   
+        GameManager.Instance.EVENT_CARD_DESTROYED.Invoke(thisCardValues.id);   
     }
 
 
@@ -250,16 +251,16 @@ public class CardOnHandManager : MonoBehaviour
         {
            // DOTween.PlayForward(this.gameObject);
            // GameManager.Instance.EVENT_CARD_MOUSE_ENTER.Invoke(thisCardValues.cardId);
-            if(auraPS.gameObject.activeSelf)auraPS.Play();
+            
 
             cardBgGO.GetComponent<Renderer>().material = outlineMaterial;
 
             ShowUpCard();
         }
-        else
+        /*else
         {
             Debug.Log("[Mouse evnter but ccard is not active]");
-        }
+        }*/
            
     }
 
@@ -273,6 +274,8 @@ public class CardOnHandManager : MonoBehaviour
             // mySequence.Kill();
             DOTween.Kill(this.transform);
             ResetCardPosition();
+
+            auraPS.Play();
 
             cardIsShowingUp = true;
 
@@ -331,7 +334,7 @@ public class CardOnHandManager : MonoBehaviour
 
        // Debug.Log("Distance y is " + xxDelta);
      //if (type == "attack")
-       if (thisCardValues.showPointer)
+       if (thisCardValues != null && thisCardValues.showPointer)
        {
             
            //show the pointer instead of following the mouse

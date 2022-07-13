@@ -188,7 +188,7 @@ public class Card
 {
     public string name;
     public string id;
-    public string cardId;
+  //  public int cardId;
     public string description;
     public string rarity;
     public int energy;
@@ -418,6 +418,19 @@ public class CardToMoveData
 {
     public string source;
     public string destination;
-    public string cardId;
+    public string id;
+
+}
+
+public class SWSM_ChangeTurn
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public string data;
+
+    }
 
 }

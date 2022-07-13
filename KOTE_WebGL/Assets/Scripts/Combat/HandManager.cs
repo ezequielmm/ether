@@ -35,10 +35,10 @@ public class HandManager : MonoBehaviour
 
     private void OnCardDestroyed(string cardId)
     {
-        Debug.Log("[Removing card "+cardId+" from hand]");
+        //Debug.Log("[Removing card "+cardId+" from hand]");
         //listOfCardsOnHand.Remove(listOfCardsOnHand.Find((x) => (x.GetComponent<CardOnHandManager>().id == cardId)));
         listOfCardsOnHand.Remove(cardId);
-
+        RelocateCards();
       
         
     }
@@ -51,7 +51,7 @@ public class HandManager : MonoBehaviour
         float halfWidth = listOfCardsOnHand.Values.Count * GameSettings.HAND_CARD_GAP/2;
         float offset = listOfCardsOnHand.Values.Count % 2 == 0 ? GameSettings.HAND_CARD_GAP / 2 : 0;
 
-        Debug.Log("----------------------------Relocate cards halfWidth=" + halfWidth);
+       // Debug.Log("----------------------------Relocate cards halfWidth=" + halfWidth);
 
         foreach (GameObject card in listOfCardsOnHand.Values)        
         {
@@ -113,9 +113,9 @@ public class HandManager : MonoBehaviour
         {
            // var card = handDeck.cards[3];
             var angle = (float)(counter * Mathf.PI * 2);
-            //Debug.Log(counter + "/" + angle);
+            Debug.Log("card.cardId: "+card.id);
             GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
-            listOfCardsOnHand.Add(card.cardId,newCard);
+            listOfCardsOnHand.Add(card.id,newCard);
             newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
             Vector3 pos = newCard.transform.position;
             pos.x = counter * 2.2f;//TODO: this value has to be beased on the number of cards to display them from the center

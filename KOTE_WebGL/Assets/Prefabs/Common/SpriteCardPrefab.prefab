@@ -471,7 +471,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 1
-  prewarm: 0
+  prewarm: 1
   playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
@@ -1024,7 +1024,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 5000
+    maxNumParticles: 200
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -5283,9 +5283,6 @@ MonoBehaviour:
   nameTF: {fileID: 5713581070345797471}
   rarityTF: {fileID: 176593153547545964}
   descriptionTF: {fileID: 3068445883249443291}
-  id: 
-  type: 
-  card_energy_cost: 0
   card_can_be_played: 1
   targetPosition: {x: 0, y: 0, z: 0}
   targetRotation: {x: 0, y: 0, z: 0}
