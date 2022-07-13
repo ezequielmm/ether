@@ -82,6 +82,88 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &2382930963786774372
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8141702055794320695}
+  - component: {fileID: 4176703382880440533}
+  m_Layer: 0
+  m_Name: CardGem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8141702055794320695
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2382930963786774372}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.7, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6187759085374558748}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &4176703382880440533
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2382930963786774372}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: 3af5db683b542d54e9bf087d9c362539, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 9.97, y: 4.47}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &2603767005736432849
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,7 +198,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1.672}
+  m_AnchoredPosition: {x: 0, y: 1.4}
   m_SizeDelta: {x: 1.5, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &4969058278952348574
@@ -5265,6 +5347,8 @@ Transform:
   - {fileID: 8562534667755127784}
   - {fileID: 5211650774977271919}
   - {fileID: 8438878561806295735}
+  - {fileID: 8141702055794320695}
+  - {fileID: 4313378982928735884}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5284,10 +5368,46 @@ MonoBehaviour:
   nameTF: {fileID: 5713581070345797471}
   rarityTF: {fileID: 176593153547545964}
   descriptionTF: {fileID: 3068445883249443291}
+  cardImage: {fileID: 0}
+  gemSprite: {fileID: 4176703382880440533}
   card_can_be_played: 1
   targetPosition: {x: 0, y: 0, z: 0}
   targetRotation: {x: 0, y: 0, z: 0}
   cardActive: 0
+  cardImages:
+  - cardName: Brace
+    Image: {fileID: 21300000, guid: 8aff0cbb42a5e574ab8375e223e2ca94, type: 3}
+  - cardName: Counter
+    Image: {fileID: 21300000, guid: 7f3a4656b23c5044e96b0b02431b923b, type: 3}
+  - cardName: Heaven's Grace
+    Image: {fileID: 21300000, guid: c38e407db55cab24589233b74cd450bb, type: 3}
+  - cardName: Invoke Blessing
+    Image: {fileID: 21300000, guid: ee65ee8e8ba34f84fbbef84b0bd8cdda, type: 3}
+  - cardName: Knock Down
+    Image: {fileID: 21300000, guid: bdcb1dfb6fe644d449f209282a35d183, type: 3}
+  - cardName: On A Roll
+    Image: {fileID: 21300000, guid: 9b065b69be5f6d942b15692431a4a374, type: 3}
+  - cardName: Shrug It Off
+    Image: {fileID: 21300000, guid: 13673517d04713e49a2f66bf8b446df5, type: 3}
+  - cardName: Tighten Grip
+    Image: {fileID: 21300000, guid: 5bbf36e09aeedf04b9678cb2214f78dc, type: 3}
+  - cardName: Tighten Straps
+    Image: {fileID: 21300000, guid: 3df833841dee6ca44b487456096b8e9c, type: 3}
+  - cardName: Trinity
+    Image: {fileID: 21300000, guid: d1818895e9cea354c991cff9b4befb9e, type: 3}
+  - cardName: Ultra Lethality
+    Image: {fileID: 21300000, guid: 033115893e7e9d5409fbe58bf1e53b13, type: 3}
+  Gems:
+  - type: attack
+    gemSprite: {fileID: 21300000, guid: 3af5db683b542d54e9bf087d9c362539, type: 3}
+  - type: curse
+    gemSprite: {fileID: 21300000, guid: 0ff4b9ecb00d0e9448114737df532d3a, type: 3}
+  - type: defend
+    gemSprite: {fileID: 21300000, guid: 94c5f41ecbc60dd4cb3633c3e147c889, type: 3}
+  - type: power
+    gemSprite: {fileID: 21300000, guid: ba1bb79a6a7e5244d978ce4c647d7c65, type: 3}
+  - type: skill
+    gemSprite: {fileID: 21300000, guid: 23b1a335996ef4c4b9a54eff87e128f6, type: 3}
   auraPS: {fileID: 2455367811583604567}
   cardBgGO: {fileID: 1607830172358102166}
   greenOutlineMaterial: {fileID: 2100000, guid: 2336fb1f44d8f764980e28d82722fd08,
@@ -5357,7 +5477,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.213}
+  m_AnchoredPosition: {x: 0, y: -0.2}
   m_SizeDelta: {x: 2, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &8575486080779753645
@@ -5576,6 +5696,88 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &8722318022027289965
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4313378982928735884}
+  - component: {fileID: 5550587819042125110}
+  m_Layer: 0
+  m_Name: CardImage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4313378982928735884
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8722318022027289965}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.364, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6187759085374558748}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &5550587819042125110
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8722318022027289965}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: c14fb330c6215ff4aa0378fdf06c3adc, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 12, y: 8}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &8965050654673192770
 GameObject:
   m_ObjectHideFlags: 0
@@ -5610,7 +5812,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0071, y: -1.0474}
+  m_AnchoredPosition: {x: 0.0071, y: -1.2}
   m_SizeDelta: {x: 2.3518, y: 0.8112}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &4700769906471511520
@@ -5801,6 +6003,14 @@ PrefabInstance:
     - target: {fileID: 451070, guid: 7a59dbad522a0e443afbd995ada3fa01, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19824120, guid: 7a59dbad522a0e443afbd995ada3fa01, type: 3}
+      propertyPath: InitialModule.startRotationX.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19824120, guid: 7a59dbad522a0e443afbd995ada3fa01, type: 3}
+      propertyPath: InitialModule.startRotationY.minMaxState
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a59dbad522a0e443afbd995ada3fa01, type: 3}

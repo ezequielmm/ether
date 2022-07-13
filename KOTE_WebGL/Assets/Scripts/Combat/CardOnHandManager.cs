@@ -5,13 +5,30 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 public class CardOnHandManager : MonoBehaviour
 {
+    [Serializable]
+    public struct CardImage
+    {
+        [FormerlySerializedAs("type")] public String cardName;
+        [FormerlySerializedAs("cardImage")] public Sprite Image;
+    }
+
+    [Serializable]
+    public struct Gem
+    {
+        public string type;
+        public Sprite gemSprite;
+    }
+    
     public TextMeshPro energyTF;
     public TextMeshPro nameTF;
     public TextMeshPro rarityTF;
     public TextMeshPro descriptionTF;
+    public SpriteRenderer cardImage;
+    public SpriteRenderer gemSprite;
    // public string id;
    // public string type;
   //  public int card_energy_cost;
@@ -21,6 +38,10 @@ public class CardOnHandManager : MonoBehaviour
     public Vector3 targetRotation;
     public bool cardActive = false;
 
+    [Header("Card Variation Sprites")] 
+    public List<CardImage> cardImages;
+    public List<Gem> Gems;
+    
     [Header("Outline effects")]
     public ParticleSystem auraPS;
     public GameObject cardBgGO;
@@ -128,9 +149,13 @@ public class CardOnHandManager : MonoBehaviour
         nameTF.SetText(card.name);
         rarityTF.SetText(card.rarity);
         descriptionTF.SetText(card.description);
-      /* this.id = card.id;
-        type = card.cardType;
-        card_energy_cost = card.energy;*/
+        gemSprite.sprite = Gems.Find(gem => gem.type == card.cardType).gemSprite;
+        if (cardImages.Exists(image => image.cardName == card.name))
+        {
+            cardImage.sprite = cardImages.Find(image => image.cardName == card.name).Image;
+        }
+        /* this.id = card.id;
+          card_energy_cost = card.energy;*/
 
         thisCardValues = card;
 
