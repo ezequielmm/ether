@@ -197,6 +197,7 @@ public class Card
     public bool showPointer;
     public Effects properties;
     public List<string> keywords;
+    public bool isUpgraded;
 }
 
 [Serializable]

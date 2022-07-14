@@ -12,58 +12,77 @@ public class CardOnHandManager : MonoBehaviour
     [Serializable]
     public struct CardImage
     {
-        [FormerlySerializedAs("type")] public String cardName;
-        [FormerlySerializedAs("cardImage")] public Sprite Image;
+        public String cardName;
+        public Sprite Image;
     }
 
     [Serializable]
     public struct Gem
     {
         public string type;
-        public Sprite gemSprite;
+        public Sprite gem;
     }
-    
+
+    [Serializable]
+    public struct Banner
+    {
+        public string rarity;
+        public Sprite banner;
+    }
+
+    [Serializable]
+    public struct Frame
+    {
+        public string pool;
+        public Sprite frame;
+    }
+
     public TextMeshPro energyTF;
     public TextMeshPro nameTF;
     public TextMeshPro rarityTF;
     public TextMeshPro descriptionTF;
     public SpriteRenderer cardImage;
     public SpriteRenderer gemSprite;
-   // public string id;
-   // public string type;
-  //  public int card_energy_cost;
+    public SpriteRenderer bannerSprite;
+    public SpriteRenderer frameSprite;
+
+    // public string id;
+    // public string type;
+    //  public int card_energy_cost;
     public bool card_can_be_played = true;
 
     public Vector3 targetPosition;
     public Vector3 targetRotation;
     public bool cardActive = false;
 
-    [Header("Card Variation Sprites")] 
+    [Header("Card Variation Sprites")]
     public List<CardImage> cardImages;
     public List<Gem> Gems;
-    
-    [Header("Outline effects")]
+    public List<Banner> banners;
+    public List<Frame> frames;
+
+    [Header("Outline effects")] 
     public ParticleSystem auraPS;
     public GameObject cardBgGO;
     public Material greenOutlineMaterial;
     public Material blueOutlineMaterial;
-   
-    private Material defaultMaterial;
-    private Material outlineMaterial;      
 
-    [Header ("Colors")]
+    private Material defaultMaterial;
+    private Material outlineMaterial;
+
+    [Header("Colors")]
     public Color greenColor;
     public Color blueColor;
     public Color redColor;
 
-    [HideInInspector]
+    [HideInInspector] 
     public Sequence mySequence;
 
     private Vector3 drawPileOrthoPosition;
     private Vector3 discardPileOrthoPosition;
     private Vector3 exhaustPileOrthoPosition;
 
-    [Header("Movement")]
+    [Header("Movement")] 
     public ParticleSystem movePs;
 
     private Card thisCardValues;
@@ -73,22 +92,18 @@ public class CardOnHandManager : MonoBehaviour
 
     private void Awake()
     {
-
         //Screenspace is defined in pixels. The bottom-left of the screen is (0,0); the right-top is (pixelWidth,pixelHeight). The z position is in world units from the camera.
         //Viewport space is normalized and relative to the camera. The bottom-left of the camera is (0,0); the top-right is (1,1). The z position is in world units from the camera.
 
         drawPileOrthoPosition = TransformUIToOrtho("DrawCardPile");
         discardPileOrthoPosition = TransformUIToOrtho("DiscardCardPile");
         exhaustPileOrthoPosition = TransformUIToOrtho("ExhaustedPilePrefab");
-
     }
-
 
 
     // Start is called before the first frame update
     void Start()
-    {            
-
+    {
         mySequence = DOTween.Sequence();
 
         defaultMaterial = cardBgGO.GetComponent<Renderer>().sharedMaterial;
@@ -96,14 +111,13 @@ public class CardOnHandManager : MonoBehaviour
         GameManager.Instance.EVENT_MOVE_CARD.AddListener(OnCardToMove);
         GameManager.Instance.EVENT_CARD_SHOWING_UP.AddListener(OnCardMouseShowingUp);
         GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);
-
     }
 
     private void OnCardMouseExit(string cardId)
-    {        
+    {
         if (cardId != thisCardValues.id && !cardIsShowingUp)
         {
-           // Debug.Log("[OnCardMouseExit]");
+            // Debug.Log("[OnCardMouseExit]");
             ResetCardPosition();
         }
     }
@@ -112,7 +126,7 @@ public class CardOnHandManager : MonoBehaviour
     {
         if (cardId != thisCardValues.id)
         {
-           // Debug.Log("Check mouse is left or right "+ TransformMouseToOrtho().x+"/"+this.transform.position.x);            
+            // Debug.Log("Check mouse is left or right "+ TransformMouseToOrtho().x+"/"+this.transform.position.x);            
 
             float direction = cardPos.x > this.transform.position.x ? -0.5f : 0.5f;
 
@@ -122,25 +136,23 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnCardToMove(CardToMoveData data)
     {
-        Debug.Log("[OnCardToMove]thisCardValues.id ="+ thisCardValues.id+ " || data.id="+ data.id);
+        Debug.Log("[OnCardToMove]thisCardValues.id =" + thisCardValues.id + " || data.id=" + data.id);
         if (thisCardValues.id == data.id)
         {
             System.Enum.TryParse(data.source, out CARDS_POSITIONS_TYPES origin);
             System.Enum.TryParse(data.destination, out CARDS_POSITIONS_TYPES destination);
-          
+
             MoveCard(origin, destination);
         }
-       
     }
 
     private void OnUpdateEnergy(int currentEnergy, int maxEnergy)
     {
-        Debug.Log("[CardOnHandManager] OnUpdateEnergy = "+currentEnergy);
+        Debug.Log("[CardOnHandManager] OnUpdateEnergy = " + currentEnergy);
         if (cardActive)
         {
             UpdateCardBasedOnEnergy(currentEnergy);
         }
-       
     }
 
     internal void Populate(Card card, int energy)
@@ -149,7 +161,12 @@ public class CardOnHandManager : MonoBehaviour
         nameTF.SetText(card.name);
         rarityTF.SetText(card.rarity);
         descriptionTF.SetText(card.description);
-        gemSprite.sprite = Gems.Find(gem => gem.type == card.cardType).gemSprite;
+        // we've got to check if the card is upgraded when picking the gem, hence the extra variable
+        string cardType = card.cardType;
+        if (card.isUpgraded) cardType += "+";
+        gemSprite.sprite = Gems.Find(gem => gem.type == cardType).gem;
+        frameSprite.sprite = frames.Find(frame => frame.pool == card.pool).frame;
+        bannerSprite.sprite = banners.Find(banner => banner.rarity == card.rarity).banner;
         if (cardImages.Exists(image => image.cardName == card.name))
         {
             cardImage.sprite = cardImages.Find(image => image.cardName == card.name).Image;
@@ -159,13 +176,13 @@ public class CardOnHandManager : MonoBehaviour
 
         thisCardValues = card;
 
-        UpdateCardBasedOnEnergy( energy);      
-        
+        UpdateCardBasedOnEnergy(energy);
     }
 
-    public void MoveCard(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType, bool activateCard = false, Vector3 pos = default(Vector3), float delay = 0)
+    public void MoveCard(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType,
+        bool activateCard = false, Vector3 pos = default(Vector3), float delay = 0)
     {
-        Debug.Log("[CardOnHandManager] MoveCard = " + originType+" to "+destinationType);
+        Debug.Log("[CardOnHandManager] MoveCard = " + originType + " to " + destinationType);
         movePs.Play();
 
         Vector3 origin = new Vector3();
@@ -215,23 +232,23 @@ public class CardOnHandManager : MonoBehaviour
 
         if (delay > 0)
         {
-            transform.DOMove(destination, 1f).SetDelay(delay, true).SetEase(Ease.InCirc).OnComplete(OnMoveCompleted).From(origin); ;
-           // transform.DOMoveX(destination.x, .5f).SetEase(Ease.Linear);
-           // transform.DOMoveY(destination.y, .5f).SetEase(Ease.InCirc);
+            transform.DOMove(destination, 1f).SetDelay(delay, true).SetEase(Ease.InCirc).OnComplete(OnMoveCompleted)
+                .From(origin);
+            ;
+            // transform.DOMoveX(destination.x, .5f).SetEase(Ease.Linear);
+            // transform.DOMoveY(destination.y, .5f).SetEase(Ease.InCirc);
         }
         else
         {
-
             transform.DOMove(destination, 1f).From(origin).SetEase(Ease.OutCirc);
             transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InElastic).OnComplete(HideAndDeactivateCard);
-        }       
+        }
 
         //transform.DOPlay();
     }
 
     private void OnMoveCompleted()
     {
-       
         movePs.Stop();
     }
 
@@ -240,23 +257,23 @@ public class CardOnHandManager : MonoBehaviour
         //Debug.Log("HideAndDeactivateCard, activateCardAfterMove="+ activateCardAfterMove);
         //cardActive = false;
         //this.gameObject.SetActive(false);
-      
-        Destroy(this.gameObject);
 
+        Destroy(this.gameObject);
     }
-    private void UpdateCardBasedOnEnergy( int energy)
+
+    private void UpdateCardBasedOnEnergy(int energy)
     {
         if (thisCardValues.energy <= energy)
         {
             var main = auraPS.main;
             main.startColor = greenColor;
-            outlineMaterial = greenOutlineMaterial;//TODO:apply blue if card has a special condition
-           // auraPS.Play();
+            outlineMaterial = greenOutlineMaterial; //TODO:apply blue if card has a special condition
+            // auraPS.Play();
             card_can_be_played = true;
         }
         else
         {
-          //  auraPS.Stop();
+            //  auraPS.Stop();
             energyTF.color = redColor;
             outlineMaterial = greenOutlineMaterial;
             card_can_be_played = false;
@@ -265,8 +282,8 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnDestroy()
     {
-       // DOTween.Kill(this.transform);
-        GameManager.Instance.EVENT_CARD_DESTROYED.Invoke(thisCardValues.id);   
+        // DOTween.Kill(this.transform);
+        GameManager.Instance.EVENT_CARD_DESTROYED.Invoke(thisCardValues.id);
     }
 
 
@@ -274,9 +291,9 @@ public class CardOnHandManager : MonoBehaviour
     {
         if (cardActive)
         {
-           // DOTween.PlayForward(this.gameObject);
-           // GameManager.Instance.EVENT_CARD_MOUSE_ENTER.Invoke(thisCardValues.cardId);
-            
+            // DOTween.PlayForward(this.gameObject);
+            // GameManager.Instance.EVENT_CARD_MOUSE_ENTER.Invoke(thisCardValues.cardId);
+
 
             cardBgGO.GetComponent<Renderer>().material = outlineMaterial;
 
@@ -286,7 +303,6 @@ public class CardOnHandManager : MonoBehaviour
         {
             Debug.Log("[Mouse evnter but ccard is not active]");
         }*/
-           
     }
 
     private void ShowUpCard()
@@ -295,7 +311,6 @@ public class CardOnHandManager : MonoBehaviour
 
         if (cardActive)
         {
-
             // mySequence.Kill();
             DOTween.Kill(this.transform);
             ResetCardPosition();
@@ -318,10 +333,9 @@ public class CardOnHandManager : MonoBehaviour
 
     private void ResetCardPosition()
     {
-         
         if (cardActive)
         {
-           // Debug.Log("[ResetCardPosition]");
+            // Debug.Log("[ResetCardPosition]");
             if (auraPS.gameObject.activeSelf) auraPS.Stop();
             cardBgGO.GetComponent<Renderer>().material = defaultMaterial;
             cardIsShowingUp = false;
@@ -337,17 +351,15 @@ public class CardOnHandManager : MonoBehaviour
 
         if (cardActive && cardIsShowingUp)
         {
-           // Debug.Log("[OnMouseExit]");
+            // Debug.Log("[OnMouseExit]");
             GameManager.Instance.EVENT_CARD_MOUSE_EXIT.Invoke(thisCardValues.id);
-           
+
             ResetCardPosition();
         }
-           
     }
 
     private void OnMouseDrag()
     {
-
         if (!card_can_be_played)
         {
             //TODO: show no energy message
@@ -357,16 +369,15 @@ public class CardOnHandManager : MonoBehaviour
         float xxDelta = Mathf.Abs(this.transform.position.x - targetPosition.x);
 
 
-       // Debug.Log("Distance y is " + xxDelta);
-     //if (type == "attack")
-       if (thisCardValues != null && thisCardValues.showPointer)
-       {
-            
-           //show the pointer instead of following the mouse
-           GameManager.Instance.EVENT_CARD_ACTIVATE_POINTER.Invoke(transform.position);
-           pointerIsActive = true;
-           return;
-       }
+        // Debug.Log("Distance y is " + xxDelta);
+        //if (type == "attack")
+        if (thisCardValues != null && thisCardValues.showPointer)
+        {
+            //show the pointer instead of following the mouse
+            GameManager.Instance.EVENT_CARD_ACTIVATE_POINTER.Invoke(transform.position);
+            pointerIsActive = true;
+            return;
+        }
 
         float zz = this.transform.position.z;
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -381,7 +392,7 @@ public class CardOnHandManager : MonoBehaviour
             ResetCardPosition();
             pointerIsActive = false;
         }
-      
+
 
         if (thisCardValues.showPointer)
         {
@@ -399,7 +410,7 @@ public class CardOnHandManager : MonoBehaviour
 
         if (cardActive)
         {
-            if (Vector2.Distance(this.transform.position,Vector2.zero) < 1.5f)
+            if (Vector2.Distance(this.transform.position, Vector2.zero) < 1.5f)
             {
                 Debug.Log("card is on center");
                 GameManager.Instance.EVENT_CARD_PLAYED.Invoke(thisCardValues.id, -1);
@@ -410,36 +421,34 @@ public class CardOnHandManager : MonoBehaviour
                 Debug.Log("card is far from center");
                 //MoveCardBackToOriginalHandPosition();
             }
-            
         }
     }
+
     private void OnMouseDown()
     {
-       
-       
     }
 
     private void MoveCardBackToOriginalHandPosition()
     {
-       //this.transform.DOMove(originalPosition, 0.5f);
+        //this.transform.DOMove(originalPosition, 0.5f);
     }
 
     public void ActivateCard()
     {
-       // Debug.Log("Activating card");
+        // Debug.Log("Activating card");
         cardActive = true;
     }
 
     private Vector3 TransformUIToOrtho(string uiName)
     {
-        Vector3 pos = GameObject.Find(uiName).transform.position;//(1.1, 104.5, 0.0)
+        Vector3 pos = GameObject.Find(uiName).transform.position; //(1.1, 104.5, 0.0)
 
-        float height = 2 * Camera.main.orthographicSize;//10
-        float width = height * Camera.main.aspect;//21.42
+        float height = 2 * Camera.main.orthographicSize; //10
+        float width = height * Camera.main.aspect; //21.42
 
         //transform UI coordinates to orthorgraphic coordinates
         float xx = pos.x * width / Screen.width;
-        xx -= width / 2;//ortho counts from the center 
+        xx -= width / 2; //ortho counts from the center 
         float yy = pos.y * height / Screen.height;
         yy -= height / 2;
 
@@ -450,12 +459,12 @@ public class CardOnHandManager : MonoBehaviour
     {
         Vector3 pos = Input.mousePosition;
 
-        float height = 2 * Camera.main.orthographicSize;//10
-        float width = height * Camera.main.aspect;//21.42
+        float height = 2 * Camera.main.orthographicSize; //10
+        float width = height * Camera.main.aspect; //21.42
 
         //transform UI coordinates to orthorgraphic coordinates
         float xx = pos.x * width / Screen.width;
-        xx -= width / 2;//ortho counts from the center 
+        xx -= width / 2; //ortho counts from the center 
         float yy = pos.y * height / Screen.height;
         yy -= height / 2;
 
