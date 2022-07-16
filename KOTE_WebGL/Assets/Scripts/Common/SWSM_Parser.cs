@@ -147,14 +147,21 @@ public class SWSM_Parser
             case nameof(WS_MESSAGE_ACTIONS.move_card):
                 ProcessMoveCard(data);
                 break;
-
             case nameof(WS_MESSAGE_ACTIONS.update_enemy):
                 ProcessUpdateEnemy(data);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.update_player):
                 ProcessUpdatePlayer(data);
                 break;
+            case nameof(WS_MESSAGE_ACTIONS.create_card):
+                ProcessCreateCard(data);
+                break;
         }
+    }
+
+    private static void ProcessCreateCard(string data)
+    {
+        Debug.Log("[ProcessCreateCard] data:"+data);
     }
 
     private static void ProcessUpdatePlayer(string data)
@@ -257,7 +264,7 @@ public class SWSM_Parser
     private static void UpdateEnergy(string data)
     {
         SWSM_EnergyArray energyData = JsonUtility.FromJson<SWSM_EnergyArray>(data);
-        Debug.Log(energyData);
+//        Debug.Log(energyData);
         GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(energyData.data.data[0], energyData.data.data[1]);
     }
 

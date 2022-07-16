@@ -120,7 +120,8 @@ public enum WS_MESSAGE_ACTIONS
     move_card,
     update_enemy,
     update_player,
-    change_turn
+    change_turn,
+    create_card
 
 }
 

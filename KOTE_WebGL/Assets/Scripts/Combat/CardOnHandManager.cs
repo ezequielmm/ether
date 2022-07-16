@@ -8,6 +8,8 @@ using UnityEngine.EventSystems;
 
 public class CardOnHandManager : MonoBehaviour
 {
+    public GameObject cardcontent;
+
     public TextMeshPro energyTF;
     public TextMeshPro nameTF;
     public TextMeshPro rarityTF;
@@ -15,7 +17,7 @@ public class CardOnHandManager : MonoBehaviour
    // public string id;
    // public string type;
   //  public int card_energy_cost;
-    public bool card_can_be_played = true;
+  //  public bool card_can_be_played = true;
 
     public Vector3 targetPosition;
     public Vector3 targetRotation;
@@ -23,7 +25,7 @@ public class CardOnHandManager : MonoBehaviour
 
     [Header("Outline effects")]
     public ParticleSystem auraPS;
-    public GameObject cardBgGO;
+    
     public Material greenOutlineMaterial;
     public Material blueOutlineMaterial;
    
@@ -50,6 +52,9 @@ public class CardOnHandManager : MonoBehaviour
     private bool cardIsShowingUp;
     private bool pointerIsActive;
 
+    private bool card_can_be_played;
+
+
     private void Awake()
     {
 
@@ -69,8 +74,6 @@ public class CardOnHandManager : MonoBehaviour
     {            
 
         mySequence = DOTween.Sequence();
-
-        defaultMaterial = cardBgGO.GetComponent<Renderer>().sharedMaterial;
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
         GameManager.Instance.EVENT_MOVE_CARD.AddListener(OnCardToMove);
         GameManager.Instance.EVENT_CARD_SHOWING_UP.AddListener(OnCardMouseShowingUp);
@@ -101,7 +104,7 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnCardToMove(CardToMoveData data)
     {
-        Debug.Log("[OnCardToMove]thisCardValues.id ="+ thisCardValues.id+ " || data.id="+ data.id);
+       // Debug.Log("[OnCardToMove]thisCardValues.id ="+ thisCardValues.id+ " || data.id="+ data.id);
         if (thisCardValues.id == data.id)
         {
             System.Enum.TryParse(data.source, out CARDS_POSITIONS_TYPES origin);
@@ -114,7 +117,7 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnUpdateEnergy(int currentEnergy, int maxEnergy)
     {
-        Debug.Log("[CardOnHandManager] OnUpdateEnergy = "+currentEnergy);
+       // Debug.Log("[CardOnHandManager] OnUpdateEnergy = "+currentEnergy);
         if (cardActive)
         {
             UpdateCardBasedOnEnergy(currentEnergy);
@@ -162,9 +165,12 @@ public class CardOnHandManager : MonoBehaviour
                 break;
         }
 
+        activateCardAfterMove = false;
+
         if (pos.magnitude > 0)
         {
             destination = pos;
+            activateCardAfterMove = true;
         }
         else
         {
@@ -178,6 +184,7 @@ public class CardOnHandManager : MonoBehaviour
                     break;
                 case CARDS_POSITIONS_TYPES.hand:
                     destination = pos;
+                    activateCardAfterMove = true;
                     break;
                 case CARDS_POSITIONS_TYPES.exhaust:
                     destination = exhaustPileOrthoPosition;
@@ -185,8 +192,9 @@ public class CardOnHandManager : MonoBehaviour
             }
         }
 
-        cardActive = (originType == CARDS_POSITIONS_TYPES.draw && destinationType == CARDS_POSITIONS_TYPES.hand);
+        //cardActive = (originType == CARDS_POSITIONS_TYPES.draw && destinationType == CARDS_POSITIONS_TYPES.hand);
         //cardActive = activateCardAfterMove;
+        cardActive = false;
 
         if (delay > 0)
         {
@@ -206,8 +214,9 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnMoveCompleted()
     {
-       
+        cardActive = activateCardAfterMove;
         movePs.Stop();
+        
     }
 
     private void HideAndDeactivateCard()
@@ -215,8 +224,10 @@ public class CardOnHandManager : MonoBehaviour
         //Debug.Log("HideAndDeactivateCard, activateCardAfterMove="+ activateCardAfterMove);
         //cardActive = false;
         //this.gameObject.SetActive(false);
-      
-        Destroy(this.gameObject);
+        movePs.Stop();
+
+        DisableCardContent(true);
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
 
     }
     private void UpdateCardBasedOnEnergy( int energy)
@@ -226,47 +237,42 @@ public class CardOnHandManager : MonoBehaviour
             var main = auraPS.main;
             main.startColor = greenColor;
             outlineMaterial = greenOutlineMaterial;//TODO:apply blue if card has a special condition
-           // auraPS.Play();
+            //cardActive = true;
             card_can_be_played = true;
         }
         else
         {
-          //  auraPS.Stop();
+          
             energyTF.color = redColor;
             outlineMaterial = greenOutlineMaterial;
             card_can_be_played = false;
+            //cardActive = false;
         }
     }
 
-    private void OnDestroy()
+    public void DisableCardContent(bool notify = false)
     {
-       // DOTween.Kill(this.transform);
-        GameManager.Instance.EVENT_CARD_DESTROYED.Invoke(thisCardValues.id);   
+        // DOTween.Kill(this.transform);
+        this.cardcontent.SetActive(false);
+        if (notify) GameManager.Instance.EVENT_CARD_DISABLED.Invoke(thisCardValues.id);
     }
 
 
     private void OnMouseEnter()
     {
-        if (cardActive)
+        if (cardActive && card_can_be_played)
         {
            // DOTween.PlayForward(this.gameObject);
            // GameManager.Instance.EVENT_CARD_MOUSE_ENTER.Invoke(thisCardValues.cardId);
             
-
-            cardBgGO.GetComponent<Renderer>().material = outlineMaterial;
-
             ShowUpCard();
         }
-        /*else
-        {
-            Debug.Log("[Mouse evnter but ccard is not active]");
-        }*/
            
     }
 
     private void ShowUpCard()
     {
-        if (cardIsShowingUp) return;
+        if (cardIsShowingUp || !card_can_be_played) return;
 
         if (cardActive)
         {
@@ -289,6 +295,10 @@ public class CardOnHandManager : MonoBehaviour
 
             GameManager.Instance.EVENT_CARD_SHOWING_UP.Invoke(thisCardValues.id, this.targetPosition);
         }
+        else
+        {
+            auraPS.Stop();
+        }
     }
 
     private void ResetCardPosition()
@@ -298,7 +308,7 @@ public class CardOnHandManager : MonoBehaviour
         {
            // Debug.Log("[ResetCardPosition]");
             if (auraPS.gameObject.activeSelf) auraPS.Stop();
-            cardBgGO.GetComponent<Renderer>().material = defaultMaterial;
+            
             cardIsShowingUp = false;
             transform.DOMove(targetPosition, GameSettings.HAND_CARD_RESET_POSITION_TIME);
             transform.DOScale(Vector3.one, GameSettings.HAND_CARD_RESET_POSITION_TIME);
@@ -320,10 +330,24 @@ public class CardOnHandManager : MonoBehaviour
            
     }
 
+    private void OnMouseDown()
+    {
+        if (!card_can_be_played)
+        {
+            GameManager.Instance.EVENT_CARD_NO_ENERGY.Invoke();
+            return;
+        }
+    }
+
     private void OnMouseDrag()
     {
-
         if (!card_can_be_played)
+        {
+            //GameManager.Instance.EVENT_CARD_NO_ENERGY.Invoke();
+            return;
+        }
+
+        if (!cardActive )//card_can_be_played
         {
             //TODO: show no energy message
             return;
@@ -388,11 +412,7 @@ public class CardOnHandManager : MonoBehaviour
             
         }
     }
-    private void OnMouseDown()
-    {
-       
-       
-    }
+
 
     private void MoveCardBackToOriginalHandPosition()
     {

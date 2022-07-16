@@ -11,6 +11,8 @@ public class PlayerManager : MonoBehaviour
     public TMP_Text healthTF;
     public Slider healthBar;
 
+    public ParticleSystem hitPS;
+
     private PlayerData playerData;
     public PlayerData PlayerData
     {
@@ -36,6 +38,12 @@ public class PlayerManager : MonoBehaviour
 
         if (healthBar.value != playerData.hpCurrent)
         {
+
+            if (playerData.hpCurrent < healthBar.value)
+            {
+                hitPS.Play();
+            }
+
             healthBar.DOValue(playerData.hpCurrent, 1).OnComplete(CheckDeath);
 
            

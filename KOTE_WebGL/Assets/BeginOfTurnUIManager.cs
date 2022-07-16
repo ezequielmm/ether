@@ -21,11 +21,11 @@ public class BeginOfTurnUIManager : MonoBehaviour
     
     void OnBeginOfTurn(string who)
     {
-        if(firstPlay)
+        /*if(firstPlay)
         {
             firstPlay = false;
             return;
-        }
+        }*/
         Debug.Log("[OnBeginOfTurn]who: " + who);
         switch (who)
         {

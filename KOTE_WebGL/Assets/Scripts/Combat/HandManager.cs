@@ -9,6 +9,7 @@ public class HandManager : MonoBehaviour
     public GameObject spriteCardPrefab;
     //  public List<GameObject> listOfCardsOnHand;
     public Dictionary<string, GameObject> listOfCardsOnHand = new Dictionary<string, GameObject>();
+    public Dictionary<string, GameObject> listOfCardsOnDraw = new Dictionary<string, GameObject>();
 
 
     public GameObject explosionEffectPrefab;
@@ -17,6 +18,7 @@ public class HandManager : MonoBehaviour
     private GameObject currentCard;
 
     private Deck handDeck;
+    private Deck drawDeck;
     private float maxDepth;
 
     CardPiles cardPilesData;
@@ -28,7 +30,7 @@ public class HandManager : MonoBehaviour
         Debug.Log("[HandManager]Start");
         //GameManager.Instance.EVENT_CARD_MOUSE_ENTER.AddListener(OnCardMouseEnter);
        // GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);
-        GameManager.Instance.EVENT_CARD_DESTROYED.AddListener(OnCardDestroyed);
+        GameManager.Instance.EVENT_CARD_DISABLED.AddListener(OnCardDestroyed);
        
       
     }
@@ -92,6 +94,11 @@ public class HandManager : MonoBehaviour
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
     }
 
+    private void CreateCard()
+    {
+
+    }
+
     private void OnDrawCards()
     {
         if (cardPilesData == null) return;
@@ -100,6 +107,9 @@ public class HandManager : MonoBehaviour
         listOfCardsOnHand.Clear();
         handDeck = new Deck();
         handDeck.cards = cardPilesData.data.hand;
+
+        drawDeck = new Deck();
+        drawDeck.cards = cardPilesData.data.draw;
 
         Vector3 spawnPosition = GameSettings.HAND_CARDS_GENERATION_POINT;
 
@@ -141,6 +151,14 @@ public class HandManager : MonoBehaviour
         }
 
         maxDepth = --depth;
+
+        foreach (Card card in drawDeck.cards)
+        {
+            GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
+            listOfCardsOnDraw.Add(card.id, newCard);
+            newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
+            newCard.GetComponent<CardOnHandManager>().DisableCardContent(false);
+        }
     }
 
     private void OnCardsPilesUpdated(CardPiles data)
