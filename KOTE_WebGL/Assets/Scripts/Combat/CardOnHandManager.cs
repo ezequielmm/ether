@@ -91,7 +91,6 @@ public class CardOnHandManager : MonoBehaviour
     private bool cardIsShowingUp;
     private bool pointerIsActive;
 
-    private bool card_can_be_played;
 
 
     private void Awake()
