@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2382930963786774372}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.7, z: 0}
+  m_LocalPosition: {x: 0, y: 1.82, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_Children: []
   m_Father: {fileID: 7940520352951587027}
@@ -532,7 +532,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3663416533178617432}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7940520352951587027}
@@ -5361,9 +5361,88 @@ MonoBehaviour:
   nameTF: {fileID: 5713581070345797471}
   rarityTF: {fileID: 176593153547545964}
   descriptionTF: {fileID: 3068445883249443291}
+  cardImage: {fileID: 5550587819042125110}
+  gemSprite: {fileID: 4176703382880440533}
+  bannerSprite: {fileID: 2845704448172493043}
+  frameSprite: {fileID: 2969695255542709312}
+  card_can_be_played: 1
   targetPosition: {x: 0, y: 0, z: 0}
   targetRotation: {x: 0, y: 0, z: 0}
   cardActive: 0
+  cardImages:
+  - cardName: default
+    image: {fileID: 21300000, guid: c14fb330c6215ff4aa0378fdf06c3adc, type: 3}
+  - cardName: brace
+    image: {fileID: 21300000, guid: 8aff0cbb42a5e574ab8375e223e2ca94, type: 3}
+  - cardName: counter
+    image: {fileID: 21300000, guid: 7f3a4656b23c5044e96b0b02431b923b, type: 3}
+  - cardName: heavens_grace
+    image: {fileID: 21300000, guid: c38e407db55cab24589233b74cd450bb, type: 3}
+  - cardName: invoke_blessing
+    image: {fileID: 21300000, guid: ee65ee8e8ba34f84fbbef84b0bd8cdda, type: 3}
+  - cardName: knock_down
+    image: {fileID: 21300000, guid: bdcb1dfb6fe644d449f209282a35d183, type: 3}
+  - cardName: on_a_roll
+    image: {fileID: 21300000, guid: 9b065b69be5f6d942b15692431a4a374, type: 3}
+  - cardName: shrug_it_off
+    image: {fileID: 21300000, guid: 13673517d04713e49a2f66bf8b446df5, type: 3}
+  - cardName: tighten_grip
+    image: {fileID: 21300000, guid: 5bbf36e09aeedf04b9678cb2214f78dc, type: 3}
+  - cardName: tighten_straps
+    image: {fileID: 21300000, guid: 3df833841dee6ca44b487456096b8e9c, type: 3}
+  - cardName: trinity
+    image: {fileID: 21300000, guid: d1818895e9cea354c991cff9b4befb9e, type: 3}
+  - cardName: ultra_lethality
+    image: {fileID: 21300000, guid: 033115893e7e9d5409fbe58bf1e53b13, type: 3}
+  Gems:
+  - type: attack
+    gem: {fileID: 21300000, guid: 8e28d90fcfe29c440b2b5cc0e693c1ea, type: 3}
+  - type: attackUpgraded
+    gem: {fileID: 21300000, guid: 17b160ae112abbc4bafbdea643792c79, type: 3}
+  - type: curse
+    gem: {fileID: 21300000, guid: a91f4a01e80994f48a2557aaed77a5e1, type: 3}
+  - type: curseUpgraded
+    gem: {fileID: 21300000, guid: 046c009d0a376ca4aa267aef43e38d55, type: 3}
+  - type: defend
+    gem: {fileID: 21300000, guid: d8df9f0894829bb4091a36e0096f01f5, type: 3}
+  - type: defenseUpgraded
+    gem: {fileID: 21300000, guid: e53bc005833ea31479ee9810e1788066, type: 3}
+  - type: power
+    gem: {fileID: 21300000, guid: 38f885db2055644489d47841d6d19d42, type: 3}
+  - type: powerUpgraded
+    gem: {fileID: 21300000, guid: 6a1b1d8a52ca18c459b9fe6a93798f1d, type: 3}
+  - type: skill
+    gem: {fileID: 21300000, guid: 36037feff0900d44cb879c4d877523e8, type: 3}
+  - type: skillUpgraded
+    gem: {fileID: 21300000, guid: 21974add9c6582743b346de7dca6351a, type: 3}
+  - type: status
+    gem: {fileID: 21300000, guid: b33ff4b61c05ab0409323cbebfe68d84, type: 3}
+  - type: statusUpgraded
+    gem: {fileID: 21300000, guid: 6f964a85ba65f1d459ff72f3fe64ab19, type: 3}
+  banners:
+  - rarity: common
+    banner: {fileID: 21300000, guid: 2f72b78740abd2f48bc0b6cdcb2110e5, type: 3}
+  - rarity: legend
+    banner: {fileID: 21300000, guid: 89e4e52b9e37ab84c8b8744a18fc8e50, type: 3}
+  - rarity: rare
+    banner: {fileID: 21300000, guid: 0dc09acc238bb704e9e3ca6339a0916e, type: 3}
+  - rarity: special
+    banner: {fileID: 21300000, guid: 81d1a2140aa8e21448dbee1aad29befb, type: 3}
+  - rarity: starter
+    banner: {fileID: 21300000, guid: d8a5d3bacfe9c5740a927ae22b243e87, type: 3}
+  - rarity: uncommon
+    banner: {fileID: 21300000, guid: b6a35261bdffc7549b9467c2609f7333, type: 3}
+  frames:
+  - pool: curse
+    frame: {fileID: 21300000, guid: f383a8671927f53499fad44c44896ac0, type: 3}
+  - pool: knight
+    frame: {fileID: 21300000, guid: 3422201207651b44499a7081e06e99ca, type: 3}
+  - pool: knightNFT
+    frame: {fileID: 21300000, guid: a197703513c209146aca89bd1c27dbb7, type: 3}
+  - pool: neutral
+    frame: {fileID: 21300000, guid: 95635fcc514685b49b9dbc9df8c2dc3b, type: 3}
+  - pool: status
+    frame: {fileID: 21300000, guid: 2468302d43541e94c92dc37508a5ba26, type: 3}
   auraPS: {fileID: 2455367811583604567}
   greenOutlineMaterial: {fileID: 2100000, guid: 2336fb1f44d8f764980e28d82722fd08,
     type: 2}
@@ -5752,7 +5831,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: d59ba5c1215275c469c74583e5829045, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

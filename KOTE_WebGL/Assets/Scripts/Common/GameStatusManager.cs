@@ -69,6 +69,14 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
         GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(true);
+        //GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+        GameManager.Instance.EVENT_CARD_DRAW_CARDS.Invoke();
+        //Invoke("InvokeDrawCards", 0.2f);
+
+    }
+
+    private void InvokeDrawCards()
+    {
         GameManager.Instance.EVENT_CARD_DRAW_CARDS.Invoke();
     }
 }

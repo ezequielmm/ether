@@ -14,7 +14,7 @@ public class CardOnHandManager : MonoBehaviour
     public struct CardImage
     {
         public String cardName;
-        public Sprite Image;
+        public Sprite image;
     }
 
     [Serializable]
@@ -91,8 +91,7 @@ public class CardOnHandManager : MonoBehaviour
     private bool cardIsShowingUp;
     private bool pointerIsActive;
 
-
-
+ 
     private void Awake()
     {
         //Screenspace is defined in pixels. The bottom-left of the screen is (0,0); the right-top is (pixelWidth,pixelHeight). The z position is in world units from the camera.
@@ -141,7 +140,7 @@ public class CardOnHandManager : MonoBehaviour
         if (thisCardValues.id == data.id)
         {
             System.Enum.TryParse(data.source, out CARDS_POSITIONS_TYPES origin);
-            System.Enum.TryParse(data.destination, out CARDS_POSITIONS_TYPES destination);
+            System.Enum.TryParse(data.destination, out CARDS_POSITIONS_TYPES destination);           
 
             MoveCard(origin, destination);
         }
@@ -164,13 +163,17 @@ public class CardOnHandManager : MonoBehaviour
         descriptionTF.SetText(card.description);
         // we've got to check if the card is upgraded when picking the gem, hence the extra variable
         string cardType = card.cardType;
-        if (card.isUpgraded) cardType += "+";
+       // if (card.isUpgraded) cardType += "+";
         gemSprite.sprite = Gems.Find(gem => gem.type == cardType).gem;
         frameSprite.sprite = frames.Find(frame => frame.pool == card.pool).frame;
         bannerSprite.sprite = banners.Find(banner => banner.rarity == card.rarity).banner;
         if (cardImages.Exists(image => image.cardName == card.name))
         {
-            cardImage.sprite = cardImages.Find(image => image.cardName == card.name).Image;
+            cardImage.sprite = cardImages.Find(image => image.cardName == card.name).image;
+        }
+        else
+        {
+            cardImage.sprite = cardImages[0].image;
         }
         /* this.id = card.id;
           card_energy_cost = card.energy;*/
@@ -180,8 +183,7 @@ public class CardOnHandManager : MonoBehaviour
         UpdateCardBasedOnEnergy(energy);
     }
 
-    public void MoveCard(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType,
-        bool activateCard = false, Vector3 pos = default(Vector3), float delay = 0)
+    public void MoveCard(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType, bool activateCard = false, Vector3 pos = default(Vector3), float delay = 0)
     {
         Debug.Log("[CardOnHandManager] MoveCard = " + originType + " to " + destinationType);
         movePs.Play();
@@ -236,11 +238,12 @@ public class CardOnHandManager : MonoBehaviour
         //cardActive = activateCardAfterMove;
         cardActive = false;
 
+        cardcontent.SetActive(true);
+
         if (delay > 0)
         {
-            transform.DOMove(destination, 1f).SetDelay(delay, true).SetEase(Ease.InCirc).OnComplete(OnMoveCompleted)
-                .From(origin);
-            ;
+            transform.DOMove(destination, 1f).SetDelay(delay, true).SetEase(Ease.InCirc).OnComplete(OnMoveCompleted).From(origin);
+     
             // transform.DOMoveX(destination.x, .5f).SetEase(Ease.Linear);
             // transform.DOMoveY(destination.y, .5f).SetEase(Ease.InCirc);
         }
@@ -268,9 +271,9 @@ public class CardOnHandManager : MonoBehaviour
         movePs.Stop();
 
         DisableCardContent(true);
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+       
 
-        Destroy(this.gameObject);
+       // Destroy(this.gameObject);
     }
 
     private void UpdateCardBasedOnEnergy(int energy)
@@ -330,7 +333,7 @@ public class CardOnHandManager : MonoBehaviour
             //  Debug.Log("ShowUp");
             transform.DOScale(Vector3.one * GameSettings.HAND_CARD_SHOW_UP_Y, GameSettings.HAND_CARD_SHOW_UP_TIME);
 
-            //pos.z = maxDepth;
+           
             transform.DOMoveY(1.5f, 0.2f).SetRelative(true);
 
             transform.DORotate(Vector3.zero, GameSettings.HAND_CARD_SHOW_UP_TIME);

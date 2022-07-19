@@ -9,7 +9,7 @@ public class HandManager : MonoBehaviour
     public GameObject spriteCardPrefab;
     //  public List<GameObject> listOfCardsOnHand;
     public Dictionary<string, GameObject> listOfCardsOnHand = new Dictionary<string, GameObject>();
-    public Dictionary<string, GameObject> listOfCardsOnDraw = new Dictionary<string, GameObject>();
+   // public Dictionary<string, GameObject> listOfCardsOnDraw = new Dictionary<string, GameObject>();
 
 
     public GameObject explosionEffectPrefab;
@@ -17,13 +17,10 @@ public class HandManager : MonoBehaviour
     private string currentCardID;
     private GameObject currentCard;
 
-    private Deck handDeck;
-    private Deck drawDeck;
-    private float maxDepth;
-
+    public  Deck handDeck;
+    public  Deck drawDeck;
+  
     CardPiles cardPilesData;
-
-
 
     void Start()
     {
@@ -40,45 +37,8 @@ public class HandManager : MonoBehaviour
         //Debug.Log("[Removing card "+cardId+" from hand]");
         //listOfCardsOnHand.Remove(listOfCardsOnHand.Find((x) => (x.GetComponent<CardOnHandManager>().id == cardId)));
         listOfCardsOnHand.Remove(cardId);
-        RelocateCards();
-      
+        RelocateCards();      
         
-    }
-
-    private void RelocateCards()
-    {
-        
-        float counter = 0;
-        float depth = GameSettings.HAND_CARD_SPRITE_Z;
-        float halfWidth = listOfCardsOnHand.Values.Count * GameSettings.HAND_CARD_GAP/2;
-        float offset = listOfCardsOnHand.Values.Count % 2 == 0 ? GameSettings.HAND_CARD_GAP / 2 : 0;
-
-       // Debug.Log("----------------------------Relocate cards halfWidth=" + halfWidth);
-
-        foreach (GameObject card in listOfCardsOnHand.Values)        
-        {
-            Vector3 pos = Vector3.zero;
-            pos.x = counter * GameSettings.HAND_CARD_GAP - halfWidth + offset;
-            pos.y = Camera.main.orthographicSize * -1;
-            pos.z = depth;
-            card.transform.position = pos;
-
-            //var angle = (float)(counter * Mathf.PI * 2);                   
-            var angle = (float)(pos.x * Mathf.PI * 2);                   
-
-
-            //newCard.transform.position = pos;
-            Vector3 rot = card.transform.eulerAngles;
-            rot.z = angle / -2;
-            card.transform.eulerAngles = rot;
-            card.GetComponent<CardOnHandManager>().targetRotation = rot;
-            card.GetComponent<CardOnHandManager>().targetPosition = pos;
-            card.transform.localScale = Vector3.one;
-
-            counter++;
-            depth--;
-
-        }
     }
 
     private void Awake()
@@ -101,8 +61,21 @@ public class HandManager : MonoBehaviour
 
     private void OnDrawCards()
     {
-        if (cardPilesData == null) return;
-        Debug.Log("**********************************************[OnDrawCards] " );
+        if (cardPilesData == null)
+        {
+            Debug.Log("[OnDrawCards]No cards data at all. Retrieving");
+            GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+            Invoke("OnDrawCards",0.2f);
+            return;
+        }
+        else if(cardPilesData.data.hand.Count < 1)
+        {
+            Debug.Log("[OnDrawCards]No hands cards data. Retrieving");
+            GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+            Invoke("OnDrawCards", 0.2f);
+            return;
+        }
+        Debug.Log("**********************************************[OnDrawCards]draw.count: "+ cardPilesData.data.draw.Count+", hand.count:"+cardPilesData.data.hand.Count);
         //Generate cards hand
         listOfCardsOnHand.Clear();
         handDeck = new Deck();
@@ -118,14 +91,18 @@ public class HandManager : MonoBehaviour
         float delayStep = 0.1f;
         float delay = delayStep * handDeck.cards.Count;
 
-        foreach (Card card in handDeck.cards)
+        /*foreach (Card card in handDeck.cards)
         //for (var i= 0; i < (handDeck.cards.Count - 4);i++)
         {
            // var card = handDeck.cards[3];
             var angle = (float)(counter * Mathf.PI * 2);
             Debug.Log("card.cardId: "+card.id);
+
+            
             GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
             listOfCardsOnHand.Add(card.id,newCard);
+
+
             newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
             Vector3 pos = newCard.transform.position;
             pos.x = counter * 2.2f;//TODO: this value has to be beased on the number of cards to display them from the center
@@ -148,91 +125,91 @@ public class HandManager : MonoBehaviour
             counter++;
             depth--;
 
+        }*/
+        foreach (Card card in handDeck.cards)
+        {
+            GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
+            listOfCardsOnHand.Add(card.id, newCard);
+            newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);            
         }
-
-        maxDepth = --depth;
 
         foreach (Card card in drawDeck.cards)
         {
             GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
-            listOfCardsOnDraw.Add(card.id, newCard);
+            listOfCardsOnHand.Add(card.id, newCard);
             newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
-            newCard.GetComponent<CardOnHandManager>().DisableCardContent(false);
+            newCard.GetComponent<CardOnHandManager>().DisableCardContent(false);//disable and not notify
+        }
+
+        RelocateCards(true);
+    }
+
+    private void RelocateCards(bool move = false)
+    {
+
+        float counter = 0;
+        float depth = GameSettings.HAND_CARD_SPRITE_Z;
+        float halfWidth = handDeck.cards.Count * GameSettings.HAND_CARD_GAP / 2;
+        float offset = handDeck.cards.Count % 2 == 0 ? 0 : GameSettings.HAND_CARD_GAP / 2 ;
+        float delayStep = 0.1f;
+        float delay = delayStep * handDeck.cards.Count;
+
+         Debug.Log("----------------------------Relocate cards offset=" + offset);
+        foreach (Card cardData in handDeck.cards)
+        {
+            //  foreach (GameObject card in listOfCardsOnHand.Values)
+            //  {
+            GameObject card;
+            if (listOfCardsOnHand.TryGetValue(cardData.id, out card))
+            {
+                Vector3 pos = Vector3.zero;
+                pos.x = counter * GameSettings.HAND_CARD_GAP - halfWidth + offset;
+                pos.y = Camera.main.orthographicSize * -1;
+               // pos.y = Camera.main.orthographicSize * Mathf.Cos(pos.x);
+                pos.z = depth;
+                card.transform.position = pos;
+
+                //var angle = (float)(counter * Mathf.PI * 2);                   
+                var angle = (float)(pos.x * Mathf.PI * 2);
+
+
+                //newCard.transform.position = pos;
+                Vector3 rot = card.transform.eulerAngles;
+                rot.z = angle / -2;
+                card.transform.eulerAngles = rot;
+                card.GetComponent<CardOnHandManager>().targetRotation = rot;
+                card.GetComponent<CardOnHandManager>().targetPosition = pos;
+                card.transform.localScale = Vector3.one;
+
+                counter++;
+                depth--;
+
+                if (move)
+                {
+                    card.GetComponent<CardOnHandManager>().MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, true, pos, delay);
+                    delay -= delayStep;
+                }
+            }    
+
         }
     }
 
     private void OnCardsPilesUpdated(CardPiles data)
     {
-        Debug.Log("**********************************************[OnCardsPilesUpdated] ");
+      // Debug.Log("**********************************************[OnCardsPilesUpdated] ");
         cardPilesData = data;
 
-        if (cardPilesData.data.hand.Count > listOfCardsOnHand.Count)
-        {
-           /* foreach (GameObject obj in listOfCardsOnHand.Values)
-            {
-                Destroy(obj);
-            }*/
+        handDeck = new Deck();
+        handDeck.cards = cardPilesData.data.hand;
 
+        drawDeck = new Deck();
+        drawDeck.cards = cardPilesData.data.draw;
+
+      /*  if (cardPilesData.data.hand.Count > listOfCardsOnHand.Count)
+        {
             listOfCardsOnHand.Clear();
             OnDrawCards();
-        }
+        }*/
 
-    }
-
-   /* private void OnDrawCardsCalled()
-    {
-        GameManager.Instance.
-    }*/
-
-  /*  private void OnCardMouseExit(string cardId)
-    {
-        //Debug.Log("[-----OnCardMouseExit]cardid=" + cardId);
-
-        foreach (GameObject go in listOfCardsOnHand.Values)
-        {
-            CardOnHandManager cardData = go.GetComponent<CardOnHandManager>();
-
-           go.transform.DOMove(cardData.targetPosition, 0.1f);
-           go.transform.DORotate(cardData.targetRotation, 0.2f);
-           go.transform.DOScale(Vector3.one , 0.2f);
-
-        }
-    }*/
-
-   /* private void OnCardMouseEnter(string cardId)
-    {
-        // Debug.Log("[++++++OnCardMouseEnter]cardid="+cardId);
-        // GameObject selectedCard = listOfCardsOnHand.Find((x) => (x.GetComponent<CardOnHandManager>().id == cardId));
-        GameObject selectedCard = listOfCardsOnHand[cardId];
-       
-
-        foreach (GameObject go in listOfCardsOnHand.Values)
-        {            
-            CardOnHandManager cardData = go.GetComponent<CardOnHandManager>();
-            go.transform.DOMove(cardData.targetPosition, 0.1f);
-            //go.transform.position = cardData.targetPosition;
-
-            if (cardData.th != cardId)
-            {
-                float xx = go.transform.position.x - selectedCard.transform.position.x;
-               // Debug.Log("---this card is the " + (xx > 0 ? "left" : "right"));
-                float movex = xx > 0 ? 0.5f : -0.5f;
-                Vector3 pos = cardData.targetPosition;
-                pos.x += movex;
-                
-                go.transform.DOMove(pos, 0.1f);
-            }
-            else
-            {
-                go.transform.DOScale(Vector3.one*1.25f,0.2f);//TODO:magic number for scale,move to settings
-                Vector3 pos = cardData.targetPosition;
-                pos.y += 1.5f;
-                pos.z = maxDepth;
-                go.transform.DOMove(pos,0.2f);
-
-                go.transform.DORotate(Vector3.zero,0.2f);
-            }
-        }
-    }*/
-   
+    }   
 }

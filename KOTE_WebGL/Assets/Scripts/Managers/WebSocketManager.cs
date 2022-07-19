@@ -155,6 +155,7 @@ public class WebSocketManager : MonoBehaviour
     {
         //NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
         //GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState,WS_QUERY_TYPE.MAP_NODE_SELECTED);
+        
         SWSM_Parser.ParseJSON(data);
 
         //Debug.Log("OnNodeClickedAnswer: " + nodeState);
@@ -220,7 +221,7 @@ public class WebSocketManager : MonoBehaviour
 
     private void OnGenericWSDataRequest(WS_DATA_REQUEST_TYPES dataType)
     {
-        Debug.Log("[OnGenericWSDataRequest]"+ dataType.ToString());
+       // Debug.Log("[OnGenericWSDataRequest]"+ dataType.ToString());
         rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_GET_DATA,dataType.ToString());
     }
 }
