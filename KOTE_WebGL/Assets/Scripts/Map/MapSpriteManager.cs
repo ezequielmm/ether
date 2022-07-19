@@ -78,13 +78,26 @@ namespace map
 
             newPos.x += scrollSpeed;
 
-            //limit left scroll
-            if (newPos.x < -mapBounds.max.x) newPos.x = -mapBounds.max.x;
+            bool overEdge = false;
+            // limit scroll on the right (Boss Side)
+            float rightEdge = mapBounds.extents.x + mapBounds.center.x + newPos.x;
+            if (rightEdge < 0)
+            {
+                rightEdge = 0;
+                newPos.x = -(mapBounds.extents.x + mapBounds.center.x + rightEdge);
+                overEdge = true;
+            }
 
-            //limit the map move to the right
-            if (newPos.x > 0 || mapBounds.max.x < halfScreenWidth * 2) newPos.x = 0 - halfScreenWidth;
+            // limit the map move on the Left (House Side)
+            float leftEdge = -mapBounds.extents.x + mapBounds.center.x + newPos.x;
+            if (leftEdge > 0)
+            {
+                leftEdge = 0;
+                newPos.x = -(-mapBounds.extents.x + mapBounds.center.x + leftEdge);
+                overEdge = true;
+            }
 
-            if (newPos.x < 0)
+            if (overEdge)
             {
                 nodesHolder.transform.localPosition = Vector3.SmoothDamp(currentMapPos, newPos, ref velocity, 0.03f);
             }
@@ -104,7 +117,7 @@ namespace map
                 KillActiveTween();
                 if (direction)
                 {
-                    scrollSpeed = GameSettings.MAP_SCROLL_SPEED * -1; //TODO magic number
+                    scrollSpeed = GameSettings.MAP_SCROLL_SPEED * -1;
                 }
                 else
                 {
@@ -127,12 +140,6 @@ namespace map
             newPos.x = Camera.main.ScreenToWorldPoint(Input.mousePosition).x - dragOffset.x;
             newPos = transform.InverseTransformPoint(newPos);
             newPos.z = 0;
-
-            //limit left scroll
-            if (newPos.x < -mapBounds.max.x) newPos.x = -mapBounds.max.x;
-
-            //limit the map move to the right
-            if (newPos.x > 0 || mapBounds.max.x < halfScreenWidth * 2) newPos.x = 0 - halfScreenWidth;
 
             nodesHolder.transform.localPosition = newPos;
         }
@@ -245,7 +252,7 @@ namespace map
 
         void InstantiateMapNodes(MapStructure mapStructure)
         {
-            float columnOffsetCounter = GameSettings.MAP_SPRITE_NODE_X_OFFSET;
+            float columnOffsetCounter = 0;
             float columnIncrement = GameSettings.MAP_SPRITE_NODE_X_OFFSET;
 
 
@@ -430,10 +437,10 @@ namespace map
 
         void CalculateLocalBounds()
         {
-            Quaternion currentRotation = this.transform.rotation;
-            this.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            Quaternion currentRotation = nodesHolder.transform.rotation;
+            nodesHolder.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
-            Bounds bounds = new Bounds(this.transform.position, Vector3.zero);
+            Bounds bounds = new Bounds(nodesHolder.transform.position, Vector3.zero);
 
             foreach (Renderer renderer in nodesHolder.GetComponentsInChildren<Renderer>())
             {
@@ -451,8 +458,30 @@ namespace map
 
             bounds.extents = new Vector3(newBoundsX, bounds.extents.y, bounds.extents.z);
 
-            this.transform.rotation = currentRotation;
+            nodesHolder.transform.rotation = currentRotation;
             mapBounds = bounds;
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (mapBounds != null) 
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawLine(
+                    new Vector3(mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20),
+                    new Vector3(-mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20));
+                Gizmos.DrawLine(
+                    new Vector3(mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, -mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20),
+                    new Vector3(-mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, -mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20));
+                Gizmos.color = Color.blue;
+                Gizmos.DrawLine(
+                    new Vector3(mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20),
+                    new Vector3(mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, -mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20));
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(
+                    new Vector3(-mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, -mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20),
+                    new Vector3(-mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20));
+            }
         }
 
         // kills the active tween to allow for player override
