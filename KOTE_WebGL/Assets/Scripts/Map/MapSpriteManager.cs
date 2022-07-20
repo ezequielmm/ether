@@ -22,6 +22,8 @@ namespace map
         public GameObject LeftButton;
         public GameObject RightScrollButton;
 
+        public Transform MapLeftEdge;
+
         private float scrollSpeed;
 
         public Bounds mapBounds;
@@ -450,17 +452,20 @@ namespace map
                 bounds.Encapsulate(renderer.bounds);
             }
 
-
-            // Take out half a screen from both sides.
-            float newBoundsX = bounds.extents.x - halfScreenWidth;
-            bounds.extents = new Vector3(newBoundsX, bounds.extents.y, bounds.extents.z);
+            // need to remove left side bounds to keep houses on left edge
+            float leftEdge = Mathf.Abs(MapLeftEdge.position.x);
+            // Now we shrink and shift our bounds to the right
+            // subtract half of left edge from extents
+            bounds.extents = new Vector3(bounds.extents.x - (leftEdge/2), bounds.extents.y, bounds.extents.z);
+            // add left edge to center
+            bounds.center = new Vector3(bounds.center.x + (leftEdge / 2), bounds.center.y, bounds.center.z);
 
             nodesHolder.transform.rotation = currentRotation;
             mapBounds = bounds;
             Debug.Log("[Map] Map Bounds Recalculated.");
         }
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             if (mapBounds != null) 
             {
@@ -481,6 +486,10 @@ namespace map
                     new Vector3(-mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, -mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20),
                     new Vector3(-mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20));
             }
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawLine(
+                new Vector3(MapLeftEdge.position.x, -10, 20),
+                new Vector3(MapLeftEdge.position.x, 10, 20));
         }
 
         // kills the active tween to allow for player override

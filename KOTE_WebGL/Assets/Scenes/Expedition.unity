@@ -6919,6 +6919,7 @@ MonoBehaviour:
   nodesHolder: {fileID: 1923504842}
   LeftButton: {fileID: 2051162291}
   RightScrollButton: {fileID: 1954662557}
+  SpriteMask: {fileID: 2100204865}
   mapBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
