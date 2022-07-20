@@ -23,7 +23,8 @@ public static class GameSettings
     public const float HAND_CARD_RESET_POSITION_TIME = 0.2f;
     public const float HAND_CARD_MAX_XX_DRAG_DELTA = 5f;
     public static Vector3 HAND_CARDS_GENERATION_POINT = new Vector3(-7, -5, -9);
-    
+    public static float CARD_SFX_MIN_RATE = 0.1f; // Time in seconds between SFX of cards
+
 
 
 

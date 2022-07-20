@@ -22,6 +22,9 @@ public class HandManager : MonoBehaviour
   
     CardPiles cardPilesData;
 
+    int cardsDrawn = 0;
+    bool audioRunning = false;
+
     void Start()
     {
         Debug.Log("[HandManager]Start");
@@ -46,6 +49,7 @@ public class HandManager : MonoBehaviour
         Debug.Log("[HandManager]Awake");
         GameManager.Instance.EVENT_CARDS_PILES_UPDATED.AddListener(OnCardsPilesUpdated);
         GameManager.Instance.EVENT_CARD_DRAW_CARDS.AddListener(OnDrawCards);
+        GameManager.Instance.EVENT_CARD_DRAW.AddListener(OnCardDraw);
     }
 
     private void OnEnable()
@@ -54,17 +58,28 @@ public class HandManager : MonoBehaviour
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
     }
 
-    private void CreateCard()
+    private void OnCardDraw()
     {
-
+        Debug.Log($"[Hand Pile] Card Drawn.");
+        cardsDrawn++;
+        StartCoroutine(DrawCardSFX());
     }
 
-    private IEnumerator DrawCardSFX(int cardsDrawn) 
+    private IEnumerator DrawCardSFX() 
     {
-        for (; cardsDrawn > 0; cardsDrawn--) 
+        if (!audioRunning)
         {
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Soft Card Scrape");
-            yield return new WaitForSeconds(0.1f);
+            audioRunning = true;
+            for (; cardsDrawn >= 0; cardsDrawn--)
+            {
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Soft Card Scrape");
+                yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
+            }
+            if (cardsDrawn < 0) 
+            {
+                cardsDrawn = 0;
+            }
+            audioRunning = false;
         }
     }
 
@@ -100,7 +115,6 @@ public class HandManager : MonoBehaviour
         float delayStep = 0.1f;
         float delay = delayStep * handDeck.cards.Count;
 
-        StartCoroutine(DrawCardSFX(handDeck.cards.Count));
 
         /*foreach (Card card in handDeck.cards)
         //for (var i= 0; i < (handDeck.cards.Count - 4);i++)
@@ -141,7 +155,7 @@ public class HandManager : MonoBehaviour
         {
             GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
             listOfCardsOnHand.Add(card.id, newCard);
-            newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);            
+            newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
         }
 
         foreach (Card card in drawDeck.cards)

@@ -127,6 +127,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<CardToMoveData> EVENT_MOVE_CARD = new UnityEvent<CardToMoveData>();
     [HideInInspector] public UnityEvent<string> EVENT_CARD_DISABLED = new UnityEvent<string>();//id fo the cards being destroyed
     [HideInInspector] public UnityEvent EVENT_CARD_NO_ENERGY = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_CARD_DRAW = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_CARD_DISCARD = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_CARD_EXHAUST = new UnityEvent();
 
     //Gameplay events
     [HideInInspector] public UnityEvent<GameStatuses> EVENT_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
