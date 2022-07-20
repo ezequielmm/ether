@@ -336,12 +336,14 @@ namespace map
 
         #endregion
 
-        void ScrollBackToPlayerIcon(float scrollTime = GameSettings.MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON)
+        void ScrollBackToPlayerIcon(float scrollTime = GameSettings.MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON, float knightPositionOnScreen = GameSettings.KNIGHT_SCREEN_POSITION_ON_CENTER)
         {
-            float targetx = playerIcon.transform.localPosition.x / -2;
+            // Put knight to center
+            // Distance between knight and node origin.
+            float disToKnight = playerIcon.transform.position.x - nodesHolder.transform.position.x;
+            // Subtract desired knight position by distance to get node position.
+            float targetx = (halfScreenWidth * knightPositionOnScreen) - disToKnight;
 
-           //Debug.Log("node:" + nodesHolder.transform.localPosition.x);
-            //Debug.Log("targetx:" + targetx);
 
             if ((mapBounds.max.x < halfScreenWidth * 2) == false)
             {
@@ -371,11 +373,12 @@ namespace map
 
         private IEnumerator RevealMapThenReturnToPlayer(Vector3 mapPos, float animDuration)
         {
+            yield return new WaitForSeconds(1); // Wait for map to load
             activeTween = nodesHolder.transform.DOLocalMoveX(-mapBounds.max.x, animDuration);
             yield return activeTween.WaitForCompletion();
 
             nodesHolder.transform.localPosition = new Vector3(-mapBounds.max.x, 0, 0);
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(2); // pause before return
             ScrollBackToPlayerIcon(GameSettings.MAP_SCROLL_ANIMATION_DURATION);
         }
 
@@ -390,7 +393,7 @@ namespace map
         private IEnumerator ScrollFromBossToPlayer()
         {
             yield return new WaitForSeconds(1); // pause for loading
-            ScrollBackToPlayerIcon(GameSettings.MAP_SCROLL_ANIMATION_DURATION);
+            ScrollBackToPlayerIcon(GameSettings.MAP_SCROLL_ANIMATION_DURATION, 0);
         }
 
         // get the boss node so we can move to it
@@ -460,12 +463,14 @@ namespace map
 
             nodesHolder.transform.rotation = currentRotation;
             mapBounds = bounds;
+            Debug.Log("[Map] Map Bounds Recalculated.");
         }
 
         private void OnDrawGizmos()
         {
             if (mapBounds != null) 
             {
+                // highlights the bounds in editor for debugging
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawLine(
                     new Vector3(mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20),
