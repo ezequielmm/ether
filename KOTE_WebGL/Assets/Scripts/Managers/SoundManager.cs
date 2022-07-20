@@ -20,6 +20,10 @@ public class SoundManager : MonoBehaviour
         public List<AudioClip> clips;
     }
 
+    public void Start()
+    {
+        GameManager.Instance.EVENT_PLAY_SFX.AddListener(PlaySfx);
+    }
 
     public void PlaySfx(string sound)
     {
@@ -34,6 +38,7 @@ public class SoundManager : MonoBehaviour
             Debug.LogError($"[Sound Manager] Audio clip for \"{sound}\" could not be found. Make sure you spelled it right and make sure the clip exists in the Sound Manager.");
             return;
         }
+        Debug.Log($"[Sound Manager] Playing Sound: {sound}");
         AudioSource.PlayClipAtPoint(clip, location, MasterVolume);
     }
 

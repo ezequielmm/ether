@@ -150,6 +150,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<EnemyData> EVENT_UPDATE_ENEMY = new UnityEvent<EnemyData>();
 
 
+    // Audio Events
+    [HideInInspector] public UnityEvent<string> EVENT_PLAY_SFX = new UnityEvent<string>();
+
     public inGameScenes
         nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
 
