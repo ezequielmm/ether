@@ -28,6 +28,26 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    private void ProcessNewData(PlayerData old, PlayerData current)
+    {
+        if (old == null || current == null)
+        {
+            return;
+        }
+        if (old.defense > current.defense && (current.defense > 0 ||
+            (current.defense == 0 && old.hpCurrent == current.hpCurrent))) // Hit and defence didn't fall or it did and no damage
+        {
+            // Play Armored Clang
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Armored Clang");
+        }
+        if (current.defense <= 0 && old.hpCurrent > current.hpCurrent) // Damage Taken no armor
+        {
+            // Play Attack audio
+            // Can be specific, but we'll default to "Attack"
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Attack");
+        }
+    }
+
     private void SetHealth()
     {
         Debug.Log("[SetHealth]min=" + playerData.hpCurrent + "/" + playerData.hpMax);
@@ -55,6 +75,7 @@ public class PlayerManager : MonoBehaviour
         GameManager.Instance.EVENT_PLAY_PLAYER_ATTACK.AddListener(Attack);
         GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener(OnUpdatePlayer);
         GameManager.Instance.EVENT_WS_CONNECTED.AddListener(OnWSConnected);
+        GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
 
 
         spineAnimationsManagement = GetComponent<SpineAnimationsManagement>();
@@ -68,6 +89,15 @@ public class PlayerManager : MonoBehaviour
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
     }
 
+    private void OnUpdateEnergy(int currentEnergy, int maxEnergy) 
+    {
+        if (currentEnergy == 0) 
+        {
+            // Out of energy audio
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Power Down");
+        }
+    }
+
     private void OnWSConnected()
     {
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
@@ -75,6 +105,7 @@ public class PlayerManager : MonoBehaviour
 
     private void OnUpdatePlayer(PlayerData newPlayerData)
     {
+        ProcessNewData(PlayerData, newPlayerData);
         PlayerData = newPlayerData;
     }
 

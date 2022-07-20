@@ -29,6 +29,26 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    private void ProcessNewData(EnemyData old, EnemyData current) 
+    {
+        if (old == null || current == null)
+        {
+            return;
+        }
+        if (old.defense > current.defense && (current.defense > 0 ||
+            (current.defense == 0 && old.hpCurrent == current.hpCurrent))) // Hit and defence didn't fall or it did and no damage
+        {
+            // Play Armored Clang
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Armored Clang");
+        }
+        if (current.defense <= 0 && old.hpCurrent > current.hpCurrent) // Damage Taken no armor
+        {
+            // Play Attack audio
+            // Can be specific, but we'll default to "Attack"
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Attack");
+        }
+    }
+
     private void SetDefense()
     {
         defenseTF.SetText(enemyData.defense.ToString());
@@ -43,9 +63,8 @@ public class EnemyManager : MonoBehaviour
     {
         if (newEnemyData.enemyId == enemyData.enemyId)
         {
-            
-
             // healthBar.DOValue(newEnemyData.hpMin, 1);
+            ProcessNewData(EnemyData, newEnemyData);
             EnemyData = newEnemyData;
         }
     }
