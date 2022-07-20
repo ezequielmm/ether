@@ -63,61 +63,61 @@ namespace map
 
         private void Update()
         {
-            if (!scrollMap)
+            if (scrollMap)
             {
-                scrollSpeed = Mathf.SmoothStep(scrollSpeed, 0, Time.fixedDeltaTime * 2);
-                // Debug.Log("scrollSpeed:" + scrollSpeed);
+                scrollSpeed = Mathf.SmoothStep(scrollSpeed, 0, Time.fixedDeltaTime * GameSettings.MAP_SCROLL_BUTTON_TIME_MULTIPLIER);
+                //Debug.Log($"[Map] scrollSpeed: {scrollSpeed}");
             }
 
-            if (Mathf.Abs(scrollSpeed) < 0.01f) scrollSpeed = 0;
+            if (Mathf.Abs(scrollSpeed) < 0.01f) 
+            {
+                scrollSpeed = 0;
+                scrollMap = false;
+            }
 
             Vector3 velocity = Vector3.zero;
             Vector3 currentMapPos = nodesHolder.transform.localPosition;
 
             Vector3 newPos = nodesHolder.transform.localPosition;
 
-            newPos.x += scrollSpeed;
+            if(scrollMap)
+                newPos.x += scrollSpeed;
 
             bool overEdge = false;
             // limit scroll on the right (Boss Side)
             float rightEdge = mapBounds.extents.x + mapBounds.center.x + newPos.x;
             if (rightEdge < 0)
             {
-                rightEdge = 0;
-                newPos.x = -(mapBounds.extents.x + mapBounds.center.x + rightEdge);
+                newPos.x = -(mapBounds.extents.x + mapBounds.center.x);
                 overEdge = true;
+                //Debug.Log($"[Map] Right Pass Bounds [{rightEdge} -/- {newPos.x}]");
             }
 
             // limit the map move on the Left (House Side)
             float leftEdge = -mapBounds.extents.x + mapBounds.center.x + newPos.x;
             if (leftEdge > 0)
             {
-                leftEdge = 0;
-                newPos.x = -(-mapBounds.extents.x + mapBounds.center.x + leftEdge);
+                newPos.x = -(-mapBounds.extents.x + mapBounds.center.x);
                 overEdge = true;
+                //Debug.Log($"[Map] Left Pass Bounds [{leftEdge} -/- {newPos.x}]");
             }
 
-            if (overEdge)
+            if (overEdge || scrollMap)
             {
                 nodesHolder.transform.localPosition = Vector3.SmoothDamp(currentMapPos, newPos, ref velocity, 0.03f);
-            }
-            else
-            {
-                scrollSpeed = GameSettings.MAP_SCROLL_SPEED;
             }
         }
 
 
         private void OnScrollButtonClicked(bool active, bool direction)
         {
-            scrollMap = active;
-
             if (active)
             {
+                scrollMap = true;
                 KillActiveTween();
                 if (direction)
                 {
-                    scrollSpeed = GameSettings.MAP_SCROLL_SPEED * -1;
+                    scrollSpeed = -GameSettings.MAP_SCROLL_SPEED;
                 }
                 else
                 {
@@ -444,21 +444,15 @@ namespace map
             nodesHolder.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
             Bounds bounds = new Bounds(nodesHolder.transform.position, Vector3.zero);
-
+            
             foreach (Renderer renderer in nodesHolder.GetComponentsInChildren<Renderer>())
             {
                 bounds.Encapsulate(renderer.bounds);
             }
 
-            // the bounds puts the final node in the middle of the screen, but we want it at the right edge
 
-
-            // but just that cuts off the last node, so we need the size of the node as well
-            float nodeWidth = nodes[nodes.Count - 1].GetComponent<BoxCollider2D>().size.x;
-
-            // and subtract it from the bounds, but add the node width so it doesn't get cut off
-            float newBoundsX = (bounds.extents.x - halfScreenWidth + nodeWidth);
-
+            // Take out half a screen from both sides.
+            float newBoundsX = bounds.extents.x - halfScreenWidth;
             bounds.extents = new Vector3(newBoundsX, bounds.extents.y, bounds.extents.z);
 
             nodesHolder.transform.rotation = currentRotation;

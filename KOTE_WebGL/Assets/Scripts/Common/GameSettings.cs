@@ -8,7 +8,8 @@ public static class GameSettings
     public const float MAP_SPRITE_NODE_X_OFFSET_RH = 8f;
     public const string MAP_ELEMENTS_SORTING_LAYER_NAME = "MapElements";
     public const int MAP_LINE_RENDERER_SORTING_LAYER_ORDER = 50;
-    public const float MAP_SCROLL_SPEED = 2f;
+    public const float MAP_SCROLL_SPEED = 1f;
+    public const float MAP_SCROLL_BUTTON_TIME_MULTIPLIER = 5f;
     public const float MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON = 2;
     public const float MAP_SCROLL_ANIMATION_DURATION = 5f;
     public const float MAP_REVEAL_ANIMATION_SPEED = 0.1f;
