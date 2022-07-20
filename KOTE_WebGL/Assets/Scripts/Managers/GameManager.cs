@@ -130,6 +130,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_CARD_DRAW = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CARD_DISCARD = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CARD_EXHAUST = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_CARD_SHUFFLE = new UnityEvent();
 
     //Gameplay events
     [HideInInspector] public UnityEvent<GameStatuses> EVENT_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();

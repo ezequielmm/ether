@@ -38,6 +38,7 @@ public class DiscardedCardPileManager : MonoBehaviour
             {
                 GameManager.Instance.EVENT_PLAY_SFX.Invoke("Discard");
                 yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
+                cardsDiscarded = 0; // Forces the audio to only play once
             }
             if (cardsDiscarded < 0)
             {

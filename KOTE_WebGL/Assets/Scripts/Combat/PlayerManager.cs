@@ -46,6 +46,16 @@ public class PlayerManager : MonoBehaviour
             // Can be specific, but we'll default to "Attack"
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Attack");
         }
+        if (current.defense > old.defense) // Defense Buffed
+        {
+            // Play Metallic Ring
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Metallic Ring");
+        }
+        if (current.hpCurrent > old.hpCurrent) // Healed!
+        {
+            // Play Rising Chimes
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Rising Chimes");
+        }
     }
 
     private void SetHealth()

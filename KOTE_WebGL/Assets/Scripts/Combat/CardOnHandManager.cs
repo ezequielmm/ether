@@ -223,19 +223,13 @@ public class CardOnHandManager : MonoBehaviour
                     break;
                 case CARDS_POSITIONS_TYPES.discard:
                     destination = discardPileOrthoPosition;
-                    if(origin != destination)
-                        GameManager.Instance.EVENT_CARD_DISCARD.Invoke();
                     break;
                 case CARDS_POSITIONS_TYPES.hand:
                     destination = pos;
                     activateCardAfterMove = true;
-                    if (origin != destination)
-                        GameManager.Instance.EVENT_CARD_DRAW.Invoke();
                     break;
                 case CARDS_POSITIONS_TYPES.exhaust:
                     destination = exhaustPileOrthoPosition;
-                    if (origin != destination)
-                        GameManager.Instance.EVENT_CARD_EXHAUST.Invoke();
                     break;
             }
         }
@@ -245,6 +239,7 @@ public class CardOnHandManager : MonoBehaviour
             switch (destinationType)
             {
                 case CARDS_POSITIONS_TYPES.draw:
+                    GameManager.Instance.EVENT_CARD_SHUFFLE.Invoke();
                     break;
                 case CARDS_POSITIONS_TYPES.discard:
                     GameManager.Instance.EVENT_CARD_DISCARD.Invoke();
