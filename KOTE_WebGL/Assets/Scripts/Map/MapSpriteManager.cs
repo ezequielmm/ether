@@ -443,7 +443,9 @@ namespace map
         void CalculateLocalBounds()
         {
             Quaternion currentRotation = nodesHolder.transform.rotation;
-            nodesHolder.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            Vector3 currentPosition = nodesHolder.transform.position;
+            nodesHolder.transform.position = Vector3.zero;
+            nodesHolder.transform.rotation = Quaternion.identity;
 
             Bounds bounds = new Bounds(nodesHolder.transform.position, Vector3.zero);
             
@@ -461,6 +463,7 @@ namespace map
             bounds.center = new Vector3(bounds.center.x + (leftEdge / 2), bounds.center.y, bounds.center.z);
 
             nodesHolder.transform.rotation = currentRotation;
+            nodesHolder.transform.position = currentPosition;
             mapBounds = bounds;
             Debug.Log("[Map] Map Bounds Recalculated.");
         }
