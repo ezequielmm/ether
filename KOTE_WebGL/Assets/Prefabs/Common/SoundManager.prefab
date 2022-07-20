@@ -43,4 +43,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63cab5eac8d20554f94bb2da14539f44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundClipList: []
+  soundClipList:
+  - name: Card Play
+    clips:
+    - {fileID: 8300000, guid: 3d672ba9ea4328149a0b3b2bbc7daa85, type: 3}
+  - name: Cancellation
+    clips:
+    - {fileID: 8300000, guid: 52409cb3cd7d85e4bbcba30f7472b67e, type: 3}
+  - name: Soft Card Scrape
+    clips:
+    - {fileID: 8300000, guid: 9b4188879784843488c5eb42f5ab2a93, type: 3}
+  - name: Armored Clang
+    clips:
+    - {fileID: 8300000, guid: 6aeb74c2c061eab4498be91fff87ecba, type: 3}
+  - name: Ash
+    clips:
+    - {fileID: 8300000, guid: 6a5125291594a60438b400fdd63a5c91, type: 3}
+  - name: Attack1
+    clips:
+    - {fileID: 8300000, guid: 2915d1e296184da4da0f1031b3f18b2e, type: 3}
+  - name: Attack2
+    clips:
+    - {fileID: 8300000, guid: e60f4bcde85ae424a9d12687e0b1da22, type: 3}
+  - name: Attack3
+    clips:
+    - {fileID: 8300000, guid: f0391a992109c6344b4312a95e42ab5f, type: 3}
+  - name: Attack4
+    clips:
+    - {fileID: 8300000, guid: f2996e869a3128c47b40ba7ccd11cbed, type: 3}
+  - name: Attack Punch
+    clips:
+    - {fileID: 8300000, guid: 2915d1e296184da4da0f1031b3f18b2e, type: 3}
+    - {fileID: 8300000, guid: e60f4bcde85ae424a9d12687e0b1da22, type: 3}
+    - {fileID: 8300000, guid: f0391a992109c6344b4312a95e42ab5f, type: 3}
+  - name: Attack Knife
+    clips:
+    - {fileID: 8300000, guid: f2996e869a3128c47b40ba7ccd11cbed, type: 3}
+  - name: Buff
+    clips:
+    - {fileID: 8300000, guid: afcffbe0a25548840bc261e593c4e484, type: 3}
+  - name: Discard
+    clips:
+    - {fileID: 8300000, guid: dc525b61ea1961443983ce690072ea6a, type: 3}
+  - name: Metallic Ring
+    clips:
+    - {fileID: 8300000, guid: 470ceafef64e1824c834d66368a41c23, type: 3}
+  - name: Power Down
+    clips:
+    - {fileID: 8300000, guid: 6eaa37120c0547948a5ffd2a161bfea9, type: 3}
+  - name: Rising Chimes
+    clips:
+    - {fileID: 8300000, guid: 8470e8d94612377419e21c6f2e1ada42, type: 3}
+  - name: Shuffle
+    clips:
+    - {fileID: 8300000, guid: debf95c098654bb478250d0fd224a54c, type: 3}
+  - name: Whoosh
+    clips:
+    - {fileID: 8300000, guid: 9484701aefd524946b18372f573b2d16, type: 3}
