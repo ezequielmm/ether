@@ -16,7 +16,8 @@ public class SoundManager : MonoBehaviour
     private class SoundClip
     {
         public string name;
-        public AudioClip clip;
+        [Tooltip("A Random sound will be returned upon query")]
+        public List<AudioClip> clips;
     }
 
 
@@ -43,6 +44,6 @@ public class SoundManager : MonoBehaviour
         {
             return null;
         }
-        return relatedClip.clip;
+        return relatedClip.clips[Random.Range(0, relatedClip.clips.Count)];
     }
 }
