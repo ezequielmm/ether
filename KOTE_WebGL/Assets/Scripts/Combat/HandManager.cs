@@ -59,6 +59,15 @@ public class HandManager : MonoBehaviour
 
     }
 
+    private IEnumerator DrawCardSFX(int cardsDrawn) 
+    {
+        for (; cardsDrawn > 0; cardsDrawn--) 
+        {
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Soft Card Scrape");
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
     private void OnDrawCards()
     {
         if (cardPilesData == null)
@@ -90,6 +99,8 @@ public class HandManager : MonoBehaviour
         float depth = GameSettings.HAND_CARD_SPRITE_Z;
         float delayStep = 0.1f;
         float delay = delayStep * handDeck.cards.Count;
+
+        StartCoroutine(DrawCardSFX(handDeck.cards.Count));
 
         /*foreach (Card card in handDeck.cards)
         //for (var i= 0; i < (handDeck.cards.Count - 4);i++)
