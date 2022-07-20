@@ -17,6 +17,7 @@ public class PointerManager : MonoBehaviour
     [HideInInspector] public bool overEnemy;
 
     public EnemyData enemyData;
+    bool pointerActive;
 
     private void Start()
     {
@@ -60,6 +61,13 @@ public class PointerManager : MonoBehaviour
 
         pointerTarget.transform.position = arrowPosition;
         RotateArrowTowardsMouse(mousePosition, cardPosition);
+
+        // Play Card Play sound
+        if (!pointerActive)
+        {
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Play");
+            pointerActive = true;
+        }
     }
 
     private void OnPointerDeactivated(string id)
@@ -68,11 +76,22 @@ public class PointerManager : MonoBehaviour
         if (overEnemy)
         {
             GameManager.Instance.EVENT_CARD_PLAYED.Invoke(id,enemyData.enemyId);
+        } 
+        else if (pointerActive)
+        {
+            // Play Cancellation sound
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Cancellation");
+        }
+
+        if (pointerActive)
+        {
+            pointerActive = false;
         }
 
         // else return it to the deck
         //GameManager.Instance.EVENT_CARD_MOUSE_EXIT.Invoke(id);
         pointerContainer.SetActive(false);
+        
     }
 
     private void RotateArrowTowardsMouse(Vector3 mousePosition, Vector3 cardPosition)
