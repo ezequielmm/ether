@@ -86,12 +86,18 @@ namespace map
                 newPos.x += scrollSpeed;
 
             bool overEdge = false;
+            bool overHardLimit = false;
             // limit scroll on the right (Boss Side)
             float rightEdge = mapBounds.extents.x + mapBounds.center.x + newPos.x;
             if (rightEdge < 0)
             {
-                newPos.x = -(mapBounds.extents.x + mapBounds.center.x);
+                newPos.x = 0 - (mapBounds.extents.x + mapBounds.center.x);
                 overEdge = true;
+            }
+            if (rightEdge < -GameSettings.MAP_STRETCH_LIMIT + -0.01f)
+            {
+                newPos.x = -GameSettings.MAP_STRETCH_LIMIT - (mapBounds.extents.x + mapBounds.center.x);
+                overHardLimit = true;
                 //Debug.Log($"[Map] Right Pass Bounds [{rightEdge} -/- {newPos.x}]");
             }
 
@@ -99,16 +105,21 @@ namespace map
             float leftEdge = -mapBounds.extents.x + mapBounds.center.x + newPos.x;
             if (leftEdge > 0)
             {
-                newPos.x = -(-mapBounds.extents.x + mapBounds.center.x);
+                newPos.x = 0 - (-mapBounds.extents.x + mapBounds.center.x);
                 overEdge = true;
                 //Debug.Log($"[Map] Left Pass Bounds [{leftEdge} -/- {newPos.x}]");
             }
+            if (leftEdge > GameSettings.MAP_STRETCH_LIMIT + 0.01f)
+            {
+                newPos.x = GameSettings.MAP_STRETCH_LIMIT - (-mapBounds.extents.x + mapBounds.center.x);
+                overHardLimit = true;
+            }
 
-            if (scrollMap)
+            if (overEdge || scrollMap)
             {
                 nodesHolder.transform.localPosition = Vector3.SmoothDamp(currentMapPos, newPos, ref velocity, 0.03f);
             }
-            else if (overEdge) 
+            if (overHardLimit) 
             {
                 nodesHolder.transform.localPosition = newPos;
             }
@@ -462,8 +473,8 @@ namespace map
             float leftEdge = Mathf.Abs(MapLeftEdge.position.x);
             // Now we shrink and shift our bounds to the right
             // subtract half of left edge from extents
-            bounds.extents = new Vector3(bounds.extents.x - (leftEdge/2), bounds.extents.y, bounds.extents.z);
-            // add left edge to center
+            bounds.extents = new Vector3(bounds.extents.x - (leftEdge / 2), bounds.extents.y, bounds.extents.z);
+            // add half of the left edge to center
             bounds.center = new Vector3(bounds.center.x + (leftEdge / 2), bounds.center.y, bounds.center.z);
 
             nodesHolder.transform.rotation = currentRotation;
