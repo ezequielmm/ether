@@ -22,12 +22,13 @@ namespace map
         public GameObject LeftButton;
         public GameObject RightScrollButton;
 
-        private float scrollSpeed;
+        private float scrollTime;
 
         public Bounds mapBounds;
         private Bounds maskBounds;
 
         private bool scrollMap;
+        private bool scrollDirection;
 
         private Tween activeTween;
 
@@ -65,15 +66,21 @@ namespace map
 
         private void Update()
         {
+            float currentScrollSpeed = 0;
             if (scrollMap)
             {
-                scrollSpeed = Mathf.SmoothStep(scrollSpeed, 0, Time.fixedDeltaTime * GameSettings.MAP_SCROLL_BUTTON_TIME_MULTIPLIER);
-                //Debug.Log($"[Map] scrollSpeed: {scrollSpeed}");
+                currentScrollSpeed = Mathf.SmoothStep(scrollDirection ? -GameSettings.MAP_SCROLL_SPEED : GameSettings.MAP_SCROLL_SPEED, 0, scrollTime / GameSettings.MAP_SCROLL_BUTTON_TIME);
+                if (scrollTime >= GameSettings.MAP_SCROLL_BUTTON_TIME)
+                {
+                    scrollMap = false;
+                    scrollTime = 0;
+                }
+                scrollTime += Time.deltaTime;
             }
 
-            if (Mathf.Abs(scrollSpeed) < GameSettings.MAP_SCROLL_SPEED_CUTOFF) 
+            if (Mathf.Abs(currentScrollSpeed) < GameSettings.MAP_SCROLL_SPEED_CUTOFF) 
             {
-                scrollSpeed = 0;
+                currentScrollSpeed = 0;
                 scrollMap = false;
             }
 
@@ -84,7 +91,7 @@ namespace map
             
 
             if(scrollMap)
-                newPos.x += scrollSpeed;
+                newPos.x += currentScrollSpeed;
 
             Vector3 limitPos = newPos;
 
@@ -139,14 +146,8 @@ namespace map
             {
                 scrollMap = true;
                 KillActiveTween();
-                if (direction)
-                {
-                    scrollSpeed = -GameSettings.MAP_SCROLL_SPEED;
-                }
-                else
-                {
-                    scrollSpeed = GameSettings.MAP_SCROLL_SPEED;
-                }
+                scrollDirection = direction;
+                scrollTime = 0;
             }
         }
 
@@ -157,7 +158,7 @@ namespace map
             KillActiveTween();
 
             // make sure this script isn't scrolling
-            scrollSpeed = 0;
+            scrollTime = 0;
             // and keep the map in bounds
 
             Vector3 newPos = nodesHolder.transform.localPosition;
@@ -409,7 +410,7 @@ namespace map
 
         void ScrollFromBoss()
         {
-            scrollSpeed = 0;
+            scrollTime = 0;
             nodesHolder.transform.localPosition = new Vector3(-mapBounds.max.x, 0, 0);
             StartCoroutine(ScrollFromBossToPlayer());
         }
@@ -483,16 +484,27 @@ namespace map
             }
             else
             {
+                //  Sets Left Edge
+
                 // need to remove left side bounds to keep houses on left edge
-                float leftEdge = Mathf.Abs(-maskBounds.extents.x + maskBounds.center.x);
+                float leftEdge = Mathf.Abs(-maskBounds.extents.x + maskBounds.center.x) * GameSettings.MAP_LEFT_EDGE_MULTIPLIER;
                 // Now we shrink and shift our bounds to the right
                 // subtract half of left edge from extents
                 bounds.extents = new Vector3(bounds.extents.x - (leftEdge / 2), bounds.extents.y, bounds.extents.z);
                 // add half of the left edge to center
                 bounds.center = new Vector3(bounds.center.x + (leftEdge / 2), bounds.center.y, bounds.center.z);
+
+                // Sets Right Edge
+
+                float rightEdge = Mathf.Abs(maskBounds.extents.x + maskBounds.center.x) * GameSettings.MAP_RIGHT_EDGE_MULTIPLIER;
+                // Now we shrink and shift our bounds to the left
+                // subtract half of right edge from extents
+                bounds.extents = new Vector3(bounds.extents.x - (rightEdge / 2), bounds.extents.y, bounds.extents.z);
+                // subtract half of the right edge to center
+                bounds.center = new Vector3(bounds.center.x - (rightEdge / 2), bounds.center.y, bounds.center.z);
             }
 
-                nodesHolder.transform.rotation = currentRotation;
+            nodesHolder.transform.rotation = currentRotation;
             nodesHolder.transform.position = currentPosition;
             mapBounds = bounds;
             Debug.Log("[Map] Map Bounds Recalculated.");
