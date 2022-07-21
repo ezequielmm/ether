@@ -80,7 +80,9 @@ public class EnemyManager : MonoBehaviour
             {
                 Debug.Log("----------invoking attack play");
                 GameManager.Instance.EVENT_PLAY_PLAYER_ATTACK.Invoke();
-                OnHit();
+                // TODO: Replace magic number with actual timing from the knight's animation.
+                // Note: The knight's animation may be differently timed depending on the animation.
+                StartCoroutine(OnHit(0.3f));
             }
             else
             {
@@ -91,8 +93,9 @@ public class EnemyManager : MonoBehaviour
        
     }
 
-    private void OnHit()
+    private IEnumerator OnHit(float hitTiming = 0)
     {
+        yield return new WaitForSeconds(hitTiming);
         spine.PlayAnimationSequence("Hit");
         spine.PlayAnimationSequence("Idle");
 
