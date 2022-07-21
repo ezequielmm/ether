@@ -50,3 +50,6 @@ TagManager:
   - name: MapElements
     uniqueID: 1449054989
     locked: 0
+  - name: CombatElements
+    uniqueID: 499267637
+    locked: 0

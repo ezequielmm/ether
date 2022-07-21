@@ -179,7 +179,13 @@ public class SWSM_Parser
     private static void ProcessCreateCard(string data)
     {
         Debug.Log("[ProcessCreateCard] data:"+data);
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+        SWSM_CardMove cardMoveData = JsonUtility.FromJson<SWSM_CardMove>(data);
+        // GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+       
+        foreach (CardToMoveData cardData in cardMoveData.data.data)
+        {
+            GameManager.Instance.EVENT_CARD_CREATE.Invoke(cardData.id);
+        }
     }
 
     private static void ProcessUpdatePlayer(string data)

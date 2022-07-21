@@ -38,6 +38,7 @@ public class CardOnHandManager : MonoBehaviour
         public Sprite frame;
     }
 
+    public TextMeshPro cardidTF;
     public TextMeshPro energyTF;
     public TextMeshPro nameTF;
     public TextMeshPro rarityTF;
@@ -86,10 +87,12 @@ public class CardOnHandManager : MonoBehaviour
     [Header("Movement")] 
     public ParticleSystem movePs;
 
-    private Card thisCardValues;
+    public Card thisCardValues;
     private bool activateCardAfterMove;
     private bool cardIsShowingUp;
     private bool pointerIsActive;
+
+    private int currentPlayerEnergy;
 
  
     private void Awake()
@@ -111,6 +114,20 @@ public class CardOnHandManager : MonoBehaviour
         GameManager.Instance.EVENT_MOVE_CARD.AddListener(OnCardToMove);
         GameManager.Instance.EVENT_CARD_SHOWING_UP.AddListener(OnCardMouseShowingUp);
         GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);
+        GameManager.Instance.EVENT_CARD_CREATE.AddListener(OnCreateCard);
+    }
+
+    private void OnCreateCard(string cardID)
+    {
+        if (cardID == thisCardValues.id)
+        {
+            /*cardcontent.SetActive(true);
+            cardActive = true;
+            card_can_be_played = true;*/
+
+            MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand);
+        }
+        
     }
 
     private void OnCardMouseExit(string cardId)
@@ -148,6 +165,7 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnUpdateEnergy(int currentEnergy, int maxEnergy)
     {
+        currentPlayerEnergy = currentEnergy;
        // Debug.Log("[CardOnHandManager] OnUpdateEnergy = "+currentEnergy);
         if (cardActive)
         {
@@ -157,6 +175,7 @@ public class CardOnHandManager : MonoBehaviour
 
     internal void Populate(Card card, int energy)
     {
+        //cardidTF.SetText(card.id);
         energyTF.SetText(card.energy.ToString());
         nameTF.SetText(card.name);
         rarityTF.SetText(card.rarity);
@@ -185,7 +204,7 @@ public class CardOnHandManager : MonoBehaviour
 
     public void MoveCard(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType, bool activateCard = false, Vector3 pos = default(Vector3), float delay = 0)
     {
-        Debug.Log("[CardOnHandManager] MoveCard = " + originType + " to " + destinationType);
+        Debug.Log("[CardOnHandManager] MoveCard = " + originType + " to " + destinationType +"........card id: "+thisCardValues.id);
         movePs.Play();
 
         Vector3 origin = new Vector3();
@@ -270,7 +289,15 @@ public class CardOnHandManager : MonoBehaviour
         //this.gameObject.SetActive(false);
         movePs.Stop();
 
-        DisableCardContent(true);
+        if (!activateCardAfterMove)
+        {
+            DisableCardContent(true);
+        }
+        else
+        {
+            cardActive = true;
+            card_can_be_played = true;
+        }       
        
 
        // Destroy(this.gameObject);
@@ -301,6 +328,15 @@ public class CardOnHandManager : MonoBehaviour
         // DOTween.Kill(this.transform);
         this.cardcontent.SetActive(false);
         if (notify) GameManager.Instance.EVENT_CARD_DISABLED.Invoke(thisCardValues.id);
+    }
+
+    public void EnableCardContent()
+    {
+        // DOTween.Kill(this.transform);
+        this.cardcontent.SetActive(true);
+        ActivateCard();
+        UpdateCardBasedOnEnergy(currentPlayerEnergy);
+
     }
 
 
