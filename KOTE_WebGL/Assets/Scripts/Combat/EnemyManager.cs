@@ -40,6 +40,7 @@ public class EnemyManager : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.EVENT_UPDATE_ENEMY.AddListener(OnUpdateEnemy);
+        GameManager.Instance.EVENT_PLAY_ENEMY_ATTACK.AddListener(onAttack);
 
         // Grab first spine animation management script we find. This is a default. We'll set this when spawning the enemy usually.
         if (activeEnemy == null)
@@ -82,7 +83,7 @@ public class EnemyManager : MonoBehaviour
                 GameManager.Instance.EVENT_PLAY_PLAYER_ATTACK.Invoke();
                 // TODO: Replace magic number with actual timing from the knight's animation.
                 // Note: The knight's animation may be differently timed depending on the animation.
-                StartCoroutine(OnHit(0.3f));
+                StartCoroutine(OnHit(0.45f));
             }
             else
             {
@@ -91,6 +92,20 @@ public class EnemyManager : MonoBehaviour
         }       
 
        
+    }
+
+    private void onAttack(int enemyId) 
+    {
+        //if (enemyData.enemyId == enemyId)
+            Attack();
+    }
+
+    private void Attack() 
+    {
+        Debug.Log("+++++++++++++++[Enemy]Attack");
+
+        spine.PlayAnimationSequence("Attack");
+        spine.PlayAnimationSequence("Idle");
     }
 
     private IEnumerator OnHit(float hitTiming = 0)

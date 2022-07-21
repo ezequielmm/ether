@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: 0bc4b11558976482fb435c32796b293e, type: 2}
+  skeletonDataAsset: {fileID: 0}
   initialSkinName: 
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
@@ -185,6 +185,13 @@ MonoBehaviour:
   animationJson: {fileID: 4900000, guid: db4f030ee69bd444da7fcbfb65a4a715, type: 3}
   atlasAssetBase: {fileID: 11400000, guid: eaec6c3ab294e49a5b14a597bcc9dc3e, type: 2}
   animations:
+  - sequenceName: Attack
+    sequence:
+    - track: 1
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 1
   - sequenceName: Idle
     sequence:
     - track: 1

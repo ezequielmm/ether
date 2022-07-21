@@ -300,36 +300,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1045377431794367041}
     m_Modifications:
-    - target: {fileID: 2684754372630962848, guid: 900e09cef49f44a4a946c1a397bbe063,
-        type: 3}
-      propertyPath: animations.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2684754372630962848, guid: 900e09cef49f44a4a946c1a397bbe063,
-        type: 3}
-      propertyPath: animations.Array.data[2].sequenceName
-      value: Death
-      objectReference: {fileID: 0}
-    - target: {fileID: 2684754372630962848, guid: 900e09cef49f44a4a946c1a397bbe063,
-        type: 3}
-      propertyPath: animations.Array.data[2].sequence.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2684754372630962848, guid: 900e09cef49f44a4a946c1a397bbe063,
-        type: 3}
-      propertyPath: animations.Array.data[2].sequence.Array.data[0].name
-      value: death
-      objectReference: {fileID: 0}
-    - target: {fileID: 2684754372630962848, guid: 900e09cef49f44a4a946c1a397bbe063,
-        type: 3}
-      propertyPath: animations.Array.data[2].sequence.Array.data[0].track
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6300869125946065469, guid: 900e09cef49f44a4a946c1a397bbe063,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7839970432105090531, guid: 900e09cef49f44a4a946c1a397bbe063,
         type: 3}
       propertyPath: m_RootOrder

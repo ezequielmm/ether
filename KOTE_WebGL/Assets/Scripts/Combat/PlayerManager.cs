@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Collections;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -10,8 +11,6 @@ public class PlayerManager : MonoBehaviour
     public TMP_Text defenseTF;
     public TMP_Text healthTF;
     public Slider healthBar;
-
-    public ParticleSystem hitPS;
 
     private PlayerData playerData;
     public PlayerData PlayerData
@@ -38,15 +37,16 @@ public class PlayerManager : MonoBehaviour
 
         if (healthBar.value != playerData.hpCurrent)
         {
-
-            if (playerData.hpCurrent < healthBar.value)
-            {
-                hitPS.Play();
-            }
-
             healthBar.DOValue(playerData.hpCurrent, 1).OnComplete(CheckDeath);
 
-           
+            if (healthBar.value > playerData.hpCurrent) // damage taken
+            {
+                // This should be called by the backend at some point
+                GameManager.Instance.EVENT_PLAY_ENEMY_ATTACK.Invoke(-1);
+                // TODO: Replace magic number with actual timing from the enemy's animation.
+                // Note: The enemy's animation may be differently timed depending on the animation.
+                StartCoroutine(OnHit(0.9f));
+            }
         }
     }
 
@@ -59,8 +59,8 @@ public class PlayerManager : MonoBehaviour
 
         spineAnimationsManagement = GetComponent<SpineAnimationsManagement>();
         //spineAnimationsManagement.SetSkin("weapon/sword");
-        spineAnimationsManagement.PlayAnimationSequence("Idle");     
-       
+        spineAnimationsManagement.PlayAnimationSequence("Idle");
+
     }
 
     private void OnEnable()
@@ -70,7 +70,7 @@ public class PlayerManager : MonoBehaviour
 
     private void OnWSConnected()
     {
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
+
     }
 
     private void OnUpdatePlayer(PlayerData newPlayerData)
@@ -93,6 +93,13 @@ public class PlayerManager : MonoBehaviour
     {
         Debug.Log("+++++++++++++++[Player]Attack");
         spineAnimationsManagement.PlayAnimationSequence("Attack");
+        spineAnimationsManagement.PlayAnimationSequence("Idle");
+    }
+
+    private IEnumerator OnHit(float hitTiming = 0)
+    {
+        yield return new WaitForSeconds(hitTiming);
+        spineAnimationsManagement.PlayAnimationSequence("Hit");
         spineAnimationsManagement.PlayAnimationSequence("Idle");
     }
 
