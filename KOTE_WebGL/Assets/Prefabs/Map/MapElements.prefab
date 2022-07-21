@@ -32,7 +32,6 @@ Transform:
   - {fileID: 5758494260706819150}
   - {fileID: 5758494260882502599}
   - {fileID: 5758494261547567398}
-  - {fileID: 5758494260985197218}
   m_Father: {fileID: 5758494260307054459}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -88,7 +87,7 @@ MonoBehaviour:
   nodesHolder: {fileID: 5758494260706819151}
   LeftButton: {fileID: 5758494260838671926}
   RightScrollButton: {fileID: 5758494260742172184}
-  MapLeftEdge: {fileID: 5758494260985197218}
+  MapLeftEdge: {fileID: 0}
   mapBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
@@ -497,36 +496,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodesHolder: {fileID: 5758494260706819151}
---- !u!1 &5758494260985197219
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5758494260985197218}
-  m_Layer: 0
-  m_Name: Left Edge
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5758494260985197218
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5758494260985197219}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.25, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 5758494260201197930}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5758494261437137038
 GameObject:
   m_ObjectHideFlags: 0

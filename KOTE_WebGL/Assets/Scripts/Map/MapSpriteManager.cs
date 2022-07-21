@@ -22,11 +22,10 @@ namespace map
         public GameObject LeftButton;
         public GameObject RightScrollButton;
 
-        public Transform MapLeftEdge;
-
         private float scrollSpeed;
 
         public Bounds mapBounds;
+        private Bounds maskBounds;
 
         private bool scrollMap;
 
@@ -51,6 +50,7 @@ namespace map
 
             // we need half the width of the screen for various checks
             halfScreenWidth = Camera.main.orthographicSize * Camera.main.aspect;
+            maskBounds = GetComponentInChildren<SpriteMask>().GetComponent<BoxCollider2D>().bounds;
         }
 
         private void OnToggleMap(bool data)
@@ -484,7 +484,7 @@ namespace map
             else
             {
                 // need to remove left side bounds to keep houses on left edge
-                float leftEdge = Mathf.Abs(MapLeftEdge.position.x);
+                float leftEdge = Mathf.Abs(-maskBounds.extents.x + maskBounds.center.x);
                 // Now we shrink and shift our bounds to the right
                 // subtract half of left edge from extents
                 bounds.extents = new Vector3(bounds.extents.x - (leftEdge / 2), bounds.extents.y, bounds.extents.z);
@@ -504,25 +504,32 @@ namespace map
             {
                 // highlights the bounds in editor for debugging
                 Gizmos.color = Color.yellow;
-                Gizmos.DrawLine(
-                    new Vector3(mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20),
-                    new Vector3(-mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20));
-                Gizmos.DrawLine(
-                    new Vector3(mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, -mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20),
-                    new Vector3(-mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, -mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20));
-                Gizmos.color = Color.blue;
-                Gizmos.DrawLine(
-                    new Vector3(mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20),
-                    new Vector3(mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, -mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20));
-                Gizmos.color = Color.red;
-                Gizmos.DrawLine(
-                    new Vector3(-mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, -mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20),
-                    new Vector3(-mapBounds.extents.x + mapBounds.center.x + nodesHolder.transform.position.x, mapBounds.extents.y + mapBounds.center.y + nodesHolder.transform.position.y, 20));
+                GizmoDrawBox(mapBounds, nodesHolder.transform.position);
             }
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawLine(
-                new Vector3(MapLeftEdge.position.x, -10, 20),
-                new Vector3(MapLeftEdge.position.x, 10, 20));
+            if (maskBounds != null)
+            {
+                // Shows where the mask is
+                Gizmos.color = Color.magenta;
+                GizmoDrawBox(maskBounds);
+            }
+        }
+
+        private void GizmoDrawBox(Bounds bounds, Vector2 offset = default(Vector2))
+        {
+            offset += (Vector2)bounds.center;
+            GizmoDrawBox(
+                new Vector2(bounds.extents.x + offset.x, bounds.extents.y + offset.y),
+                new Vector2(-bounds.extents.x + offset.x, bounds.extents.y + offset.y),
+                new Vector2(bounds.extents.x + offset.x, -bounds.extents.y + offset.y),
+                new Vector2(-bounds.extents.x + offset.x, -bounds.extents.y + offset.y));
+        }
+
+        private void GizmoDrawBox(Vector2 TopLeft, Vector2 TopRight, Vector2 BottomLeft, Vector2 BottomRight) 
+        {
+            Gizmos.DrawLine(TopLeft, TopRight);
+            Gizmos.DrawLine(TopRight, BottomRight);
+            Gizmos.DrawLine(BottomRight, BottomLeft);
+            Gizmos.DrawLine(BottomLeft, TopLeft);
         }
 
         // kills the active tween to allow for player override
