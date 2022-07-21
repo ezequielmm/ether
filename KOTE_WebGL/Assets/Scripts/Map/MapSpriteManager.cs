@@ -81,9 +81,12 @@ namespace map
             Vector3 currentMapPos = nodesHolder.transform.localPosition;
 
             Vector3 newPos = nodesHolder.transform.localPosition;
+            
 
             if(scrollMap)
                 newPos.x += scrollSpeed;
+
+            Vector3 limitPos = newPos;
 
             bool overEdge = false;
             bool overHardLimit = false;
@@ -96,7 +99,7 @@ namespace map
             }
             if (rightEdge < -GameSettings.MAP_STRETCH_LIMIT + -0.01f)
             {
-                newPos.x = -GameSettings.MAP_STRETCH_LIMIT - (mapBounds.extents.x + mapBounds.center.x);
+                limitPos.x = -GameSettings.MAP_STRETCH_LIMIT - (mapBounds.extents.x + mapBounds.center.x);
                 overHardLimit = true;
                 //Debug.Log($"[Map] Right Pass Bounds [{rightEdge} -/- {newPos.x}]");
             }
@@ -111,7 +114,7 @@ namespace map
             }
             if (leftEdge > GameSettings.MAP_STRETCH_LIMIT + 0.01f)
             {
-                newPos.x = GameSettings.MAP_STRETCH_LIMIT - (-mapBounds.extents.x + mapBounds.center.x);
+                limitPos.x = GameSettings.MAP_STRETCH_LIMIT - (-mapBounds.extents.x + mapBounds.center.x);
                 overHardLimit = true;
             }
 
@@ -120,6 +123,10 @@ namespace map
                 nodesHolder.transform.localPosition = Vector3.SmoothDamp(currentMapPos, newPos, ref velocity, 0.03f);
             }
             if (overHardLimit) 
+            {
+                nodesHolder.transform.localPosition = limitPos;
+            }
+            if (overEdge && mapBounds.extents.x == 0) 
             {
                 nodesHolder.transform.localPosition = newPos;
             }
@@ -469,15 +476,23 @@ namespace map
                 bounds.Encapsulate(renderer.bounds);
             }
 
-            // need to remove left side bounds to keep houses on left edge
-            float leftEdge = Mathf.Abs(MapLeftEdge.position.x);
-            // Now we shrink and shift our bounds to the right
-            // subtract half of left edge from extents
-            bounds.extents = new Vector3(bounds.extents.x - (leftEdge / 2), bounds.extents.y, bounds.extents.z);
-            // add half of the left edge to center
-            bounds.center = new Vector3(bounds.center.x + (leftEdge / 2), bounds.center.y, bounds.center.z);
+            // if small map
+            if (bounds.max.x < halfScreenWidth * 2)
+            {
+                bounds.extents = new Vector3(0, bounds.extents.y, bounds.extents.z);
+            }
+            else
+            {
+                // need to remove left side bounds to keep houses on left edge
+                float leftEdge = Mathf.Abs(MapLeftEdge.position.x);
+                // Now we shrink and shift our bounds to the right
+                // subtract half of left edge from extents
+                bounds.extents = new Vector3(bounds.extents.x - (leftEdge / 2), bounds.extents.y, bounds.extents.z);
+                // add half of the left edge to center
+                bounds.center = new Vector3(bounds.center.x + (leftEdge / 2), bounds.center.y, bounds.center.z);
+            }
 
-            nodesHolder.transform.rotation = currentRotation;
+                nodesHolder.transform.rotation = currentRotation;
             nodesHolder.transform.position = currentPosition;
             mapBounds = bounds;
             Debug.Log("[Map] Map Bounds Recalculated.");
