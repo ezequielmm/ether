@@ -197,8 +197,15 @@ MonoBehaviour:
     - track: 1
       name: hit
       loop: 0
+      delay: 0.5
+      animationEvent: 1
+  - sequenceName: Death
+    sequence:
+    - track: 1
+      name: death
+      loop: 0
       delay: 0
-      animationEvent: 0
+      animationEvent: 1
   availableAnimations:
   - attack1
   - attack2

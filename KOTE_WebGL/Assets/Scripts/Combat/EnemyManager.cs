@@ -15,6 +15,9 @@ public class EnemyManager : MonoBehaviour
     private bool firstAttack = true;
     public TMP_Text healthTF;
     public TMP_Text defenseTF;
+    public GameObject activeEnemy;
+
+    private SpineAnimationsManagement spine;
 
     public EnemyData EnemyData { 
         set
@@ -37,14 +40,24 @@ public class EnemyManager : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.EVENT_UPDATE_ENEMY.AddListener(OnUpdateEnemy);
+
+        // Grab first spine animation management script we find. This is a default. We'll set this when spawning the enemy usually.
+        if (activeEnemy == null)
+        {
+            activeEnemy = GetComponentInChildren<SpineAnimationsManagement>()?.gameObject;
+            if (activeEnemy == null) 
+            {
+                Debug.Log($"[Enemy Manager] Could not find enemy animation");
+            }
+        }
+        spine = activeEnemy.GetComponent<SpineAnimationsManagement>();
+        spine.PlayAnimationSequence("Idle");
     }
 
     private void OnUpdateEnemy(EnemyData newEnemyData)
     {
         if (newEnemyData.enemyId == enemyData.enemyId)
         {
-            
-
             // healthBar.DOValue(newEnemyData.hpMin, 1);
             EnemyData = newEnemyData;
         }
@@ -67,7 +80,7 @@ public class EnemyManager : MonoBehaviour
             {
                 Debug.Log("----------invoking attack play");
                 GameManager.Instance.EVENT_PLAY_PLAYER_ATTACK.Invoke();
-
+                OnHit();
             }
             else
             {
@@ -78,6 +91,13 @@ public class EnemyManager : MonoBehaviour
        
     }
 
+    private void OnHit()
+    {
+        spine.PlayAnimationSequence("Hit");
+        spine.PlayAnimationSequence("Idle");
+
+    }
+
     private void CheckDeath()
     {
         if (enemyData.hpCurrent < 1)
@@ -85,7 +105,8 @@ public class EnemyManager : MonoBehaviour
             explodePS.transform.parent = null;
             explodePS.Play();
             Destroy(explodePS.gameObject, 2);
-            Destroy(this.gameObject);
+            spine.PlayAnimationSequence("Death");
+            Destroy(this.gameObject,2);
         }
     }
 }
