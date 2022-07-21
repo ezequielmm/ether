@@ -12,6 +12,8 @@ public static class GameSettings
     public const float MAP_SCROLL_BUTTON_TIME_MULTIPLIER = 5f;
     public const float MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON = 2;
     public const float MAP_SCROLL_ANIMATION_DURATION = 5f;
+    public const float MAP_SCROLL_HOLD_DELAY_DURATION = 0.8f;
+    public const float MAP_SCROLL_SPEED_CUTOFF = 0.1f;
     public const float MAP_REVEAL_ANIMATION_SPEED = 0.1f;
     public static float DOUBLE_CLICK_TIME_DELTA = 0.5f;
     public static float PORTAL_ACTIVATION_ANIMATION_TIME = 2;

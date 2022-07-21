@@ -71,7 +71,7 @@ namespace map
                 //Debug.Log($"[Map] scrollSpeed: {scrollSpeed}");
             }
 
-            if (Mathf.Abs(scrollSpeed) < 0.01f) 
+            if (Mathf.Abs(scrollSpeed) < GameSettings.MAP_SCROLL_SPEED_CUTOFF) 
             {
                 scrollSpeed = 0;
                 scrollMap = false;

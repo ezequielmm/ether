@@ -5,19 +5,38 @@ using UnityEngine;
 public class MapScrollButton : MonoBehaviour
 {
     public bool scrollRight;
+
+    private bool beingHeld;
+    private float holdTime = 0;
+
     private void OnMouseDown()
     {
-      
-        GameManager.Instance.EVENT_MAP_SCROLL_CLICK.Invoke(true, scrollRight);       
+        Scroll();
+        beingHeld = true;
+        holdTime = GameSettings.MAP_SCROLL_HOLD_DELAY_DURATION;
     }
 
-    private void OnMouseUp()
+    private void Update()
     {
-       // Debug.Log("Mouse up");
-        GameManager.Instance.EVENT_MAP_SCROLL_CLICK.Invoke(false,scrollRight);
+        if (Input.GetMouseButton(0) && beingHeld)
+        {
+            if (holdTime > 0)
+            {
+                holdTime -= Time.deltaTime;
+            }
+            else 
+            {
+                Scroll();
+            }
+        }
+        else if (!Input.GetMouseButtonDown(0) && beingHeld) 
+        {
+            beingHeld = false;
+        }
     }
-    private void OnMouseDrag()
+
+    private void Scroll() 
     {
-        //GameManager.Instance.EVENT_MAP_SCROLL_CLICK.Invoke(true, scrollRight);
+        GameManager.Instance.EVENT_MAP_SCROLL_CLICK.Invoke(true, scrollRight);
     }
 }
