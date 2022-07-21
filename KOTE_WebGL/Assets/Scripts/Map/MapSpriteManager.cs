@@ -104,9 +104,13 @@ namespace map
                 //Debug.Log($"[Map] Left Pass Bounds [{leftEdge} -/- {newPos.x}]");
             }
 
-            if (overEdge || scrollMap)
+            if (scrollMap)
             {
                 nodesHolder.transform.localPosition = Vector3.SmoothDamp(currentMapPos, newPos, ref velocity, 0.03f);
+            }
+            else if (overEdge) 
+            {
+                nodesHolder.transform.localPosition = newPos;
             }
         }
 
