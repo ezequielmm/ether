@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6851389893674049951}
   - component: {fileID: 8608101784006158570}
   - component: {fileID: 6577647237056338955}
+  - component: {fileID: 2684754372630962848}
   m_Layer: 0
   m_Name: Spine GameObject (SporeMonger)
   m_TagString: Enemy
@@ -169,3 +170,42 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &2684754372630962848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de6881dad5d0cd1408e58105013f4428, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationJson: {fileID: 4900000, guid: db4f030ee69bd444da7fcbfb65a4a715, type: 3}
+  atlasAssetBase: {fileID: 11400000, guid: eaec6c3ab294e49a5b14a597bcc9dc3e, type: 2}
+  animations:
+  - sequenceName: Idle
+    sequence:
+    - track: 1
+      name: idle
+      loop: 1
+      delay: 0
+      animationEvent: 0
+  - sequenceName: Hit
+    sequence:
+    - track: 1
+      name: hit
+      loop: 0
+      delay: 0
+      animationEvent: 0
+  availableAnimations:
+  - attack1
+  - attack2
+  - cast1
+  - cast1 v2
+  - death
+  - hit
+  - idle
+  - mouthOpen
+  - slime
