@@ -66,7 +66,7 @@ public class HandManager : MonoBehaviour
         StartCoroutine(DrawCardSFX());
     }
 
-    private IEnumerator DrawCardSFX() 
+    private IEnumerator DrawCardSFX()
     {
         if (!audioRunning)
         {
@@ -76,12 +76,14 @@ public class HandManager : MonoBehaviour
                 GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Draw");
                 yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
             }
-            if (cardsDrawn < 0) 
+            if (cardsDrawn < 0)
             {
                 cardsDrawn = 0;
             }
             audioRunning = false;
         }
+    }
+
     private void CreateCard(string cardID)
     {
         Debug.Log("Create card "+cardID);
