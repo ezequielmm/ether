@@ -7836,6 +7836,18 @@ MonoBehaviour:
   EVENT_CARD_NO_ENERGY:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_CARD_DRAW:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_DISCARD:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_EXHAUST:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_SHUFFLE:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_GAME_STATUS_CHANGE:
     m_PersistentCalls:
       m_Calls: []
@@ -7870,9 +7882,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   EVENT_UPDATE_ENEMY:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_PLAY_SFX:
     m_PersistentCalls:
       m_Calls: []
   nextSceneToLoad: 0
