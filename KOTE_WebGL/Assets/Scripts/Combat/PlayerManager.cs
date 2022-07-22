@@ -38,7 +38,7 @@ public class PlayerManager : MonoBehaviour
             (current.defense == 0 && old.hpCurrent == current.hpCurrent))) // Hit and defence didn't fall or it did and no damage
         {
             // Play Armored Clang
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Armored Clang");
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defence Block");
         }
         if (current.defense <= 0 && old.hpCurrent > current.hpCurrent) // Damage Taken no armor
         {
@@ -49,12 +49,12 @@ public class PlayerManager : MonoBehaviour
         if (current.defense > old.defense) // Defense Buffed
         {
             // Play Metallic Ring
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Metallic Ring");
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defence Up");
         }
         if (current.hpCurrent > old.hpCurrent) // Healed!
         {
             // Play Rising Chimes
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Rising Chimes");
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
         }
     }
 
@@ -104,7 +104,7 @@ public class PlayerManager : MonoBehaviour
         if (currentEnergy == 0) 
         {
             // Out of energy audio
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Power Down");
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Out Of Energy");
         }
     }
 

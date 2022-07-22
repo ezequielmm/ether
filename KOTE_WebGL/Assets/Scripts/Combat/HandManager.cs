@@ -72,7 +72,7 @@ public class HandManager : MonoBehaviour
             audioRunning = true;
             for (; cardsDrawn >= 0; cardsDrawn--)
             {
-                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Soft Card Scrape");
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Draw");
                 yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
             }
             if (cardsDrawn < 0) 

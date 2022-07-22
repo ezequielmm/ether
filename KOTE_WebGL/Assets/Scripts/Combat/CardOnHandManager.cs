@@ -392,7 +392,7 @@ public class CardOnHandManager : MonoBehaviour
             if (cardIsDisplaced)
             {
                 // Play Cancellation sound
-                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Cancellation");
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Cancel");
             }
 
             ResetCardPosition();

@@ -80,7 +80,7 @@ public class PointerManager : MonoBehaviour
         else if (pointerActive)
         {
             // Play Cancellation sound
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Cancellation");
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Cancel");
         }
 
         if (pointerActive)

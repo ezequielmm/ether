@@ -34,7 +34,7 @@ public class ExhaustedCardPileManager : MonoBehaviour
             audioRunning = true;
             for (; cardsExhausted >= 0; cardsExhausted--)
             {
-                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Ash");
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Exhaust");
                 yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
             }
             if (cardsExhausted < 0)

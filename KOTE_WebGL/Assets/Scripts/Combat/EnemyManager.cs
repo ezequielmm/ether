@@ -39,13 +39,23 @@ public class EnemyManager : MonoBehaviour
             (current.defense == 0 && old.hpCurrent == current.hpCurrent))) // Hit and defence didn't fall or it did and no damage
         {
             // Play Armored Clang
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Armored Clang");
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defence Block");
         }
         if (current.defense <= 0 && old.hpCurrent > current.hpCurrent) // Damage Taken no armor
         {
             // Play Attack audio
             // Can be specific, but we'll default to "Attack"
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Attack");
+        }
+        if (current.defense > old.defense) // Defense Buffed
+        {
+            // Play Metallic Ring
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defence Up");
+        }
+        if (current.hpCurrent > old.hpCurrent) // Healed!
+        {
+            // Play Rising Chimes
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
         }
     }
 
