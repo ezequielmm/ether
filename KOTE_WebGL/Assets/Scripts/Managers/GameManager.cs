@@ -153,6 +153,7 @@ public class GameManager : SingleTon<GameManager>
     //Enemies events
     [HideInInspector] public UnityEvent<EnemiesData> EVENT_UPDATE_ENEMIES = new UnityEvent<EnemiesData>();
     [HideInInspector] public UnityEvent<EnemyData> EVENT_UPDATE_ENEMY = new UnityEvent<EnemyData>();
+    [HideInInspector] public UnityEvent<EnemyIntent> EVENT_UPDATE_INTENT = new UnityEvent<EnemyIntent>();
 
 
     // Audio Events

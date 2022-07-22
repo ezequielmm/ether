@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SWSM_Parser
@@ -243,9 +244,20 @@ public class SWSM_Parser
     }
     private static void ProcessEnemyIntents(string action, string data)
     {
-        Debug.Log("[ProcessEnemyIntents]");
-       // SWSM_NodeData nodeBase = JsonUtility.FromJson<SWSM_NodeData>(data);
-       // NodeStateData nodeState = nodeBase.data;
+        Debug.Log($"[ProcessEnemyIntents] data = {data}");
+        SWSM_IntentData swsm_intentData = JsonUtility.FromJson<SWSM_IntentData>(data);
+        List<EnemyIntent> enemyIntents = swsm_intentData.data.data;
+        switch (action) 
+        {
+            case "update_enemy_intents":
+                foreach (EnemyIntent enemyIntent in enemyIntents) {
+                    GameManager.Instance.EVENT_UPDATE_INTENT.Invoke(enemyIntent);
+                }
+                break;
+            default:
+                Debug.Log($"[SWSM_Parser] Enemy Intents - {action}: Action not found.");
+                break;
+        }
     }
 
     private static void ProcessErrorAction(string action, string data)

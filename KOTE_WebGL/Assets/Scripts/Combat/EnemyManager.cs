@@ -67,6 +67,7 @@ public class EnemyManager : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.EVENT_UPDATE_ENEMY.AddListener(OnUpdateEnemy);
+        Debug.Log($"[Enemy Manager] Enemy ID: {enemyData.id}");
     }
 
     private void OnUpdateEnemy(EnemyData newEnemyData)
