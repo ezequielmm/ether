@@ -4,15 +4,92 @@ using UnityEngine;
 
 public class EnemyIntentManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField]
+    GameObject iconPrefab;
+    [SerializeField]
+    SpriteSpacer iconContainer;
+    EnemyManager enemyManager;
+
+    string enemyId => enemyManager.EnemyData.id;
+
     void Start()
     {
-        
+        if (iconPrefab == null)
+        {
+            Debug.LogError($"[EnemyIntentManager] Missing Icon Prefab.");
+        }
+        if (iconContainer == null)
+        {
+            Debug.LogError($"[EnemyIntentManager] Missing Icon Container.");
+        }
+        enemyManager = GetComponentInParent<EnemyManager>();
+        if (enemyManager == null) 
+        {
+            Debug.LogError($"[EnemyIntentManager] Manager does not belong to an enemy.");
+        }
+        GameManager.Instance.EVENT_UPDATE_INTENT.AddListener(OnUpdateIntent);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnUpdateIntent(EnemyIntent newIntent) 
     {
-        
+        if (newIntent.id != enemyId) return;
+
+        Dictionary<EnemyIntent.Intent, int> intentMap = new Dictionary<EnemyIntent.Intent, int>();
+        foreach (var intent in newIntent.intents) 
+        {
+            if (intentMap.ContainsKey(intent))
+            {
+                intentMap[intent]++;
+            }
+            else 
+            {
+                intentMap[intent] = 1;
+            }
+        }
+        foreach (var intentItem in intentMap) 
+        {
+            var intent = intentItem.Key;
+            int count = intentItem.Value;
+
+            GameObject icon = Instantiate(iconPrefab);
+            var intentIcon = icon.GetComponent<IntentIcon>();
+            intentIcon.SetValue(intent.value, count);
+            intentIcon.SetIcon(intentFromString(intent.type), intent.value);
+            intentIcon.SetTooltip(intent.description);
+
+            iconContainer.AddIcon(icon);
+            iconContainer.ReorganizeSprites();
+        }
     }
+
+    private ENEMY_INTENT intentFromString(string value) 
+    {
+        value = value.ToLower().Trim();
+        switch (value)
+        {
+            case "attack":
+            case "attacking":
+                return ENEMY_INTENT.attack;
+            case "defend":
+            case "defending":
+                return ENEMY_INTENT.defend;
+            case "plot":
+            case "buff":
+            case "plotting":
+                return ENEMY_INTENT.plot;
+            case "scheme":
+            case "schemeing":
+            case "debuff":
+                return ENEMY_INTENT.scheme;
+            case "stun":
+            case "nothing":
+            case "stunned":
+                return ENEMY_INTENT.stunned;
+            case "unknown":
+            default:
+                return ENEMY_INTENT.unknown;
+        }
+    
+    }
+
 }
