@@ -11,22 +11,24 @@ public class BeginOfTurnUIManager : MonoBehaviour
     public TextMeshProUGUI enemyLabel;
 
     bool firstPlay = true;
+    string lastTurn;
+    bool inAnimation = false;
+    bool animationInterrupted = false;
     // Start is called before the first frame update
     void Start()
     {
         GameManager.Instance.EVENT_CHANGE_TURN.AddListener(OnBeginOfTurn);
+        GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.AddListener(OnMapPanelToggle);
         DeactivateLabels();
     }
 
     
     void OnBeginOfTurn(string who)
     {
-        /*if(firstPlay)
-        {
-            firstPlay = false;
-            return;
-        }*/
         Debug.Log("[OnBeginOfTurn]who: " + who);
+        lastTurn = who;
+        inAnimation = true;
+        animationInterrupted = false;
         switch (who)
         {
             case "player":
@@ -41,8 +43,26 @@ public class BeginOfTurnUIManager : MonoBehaviour
         }
     }
 
+    void OnMapPanelToggle(bool mapOpen) 
+    {
+        if (mapOpen)
+        {
+            if (inAnimation)
+            {
+                animationInterrupted = true;
+            }
+            DeactivateLabels();
+        }
+        else if (animationInterrupted) 
+        {
+            animationInterrupted = false;
+            OnBeginOfTurn(lastTurn);
+        }
+    }
+
     void OnComplete()
     {
+        inAnimation = false;
         //DeactivateLabels();
     }
 
