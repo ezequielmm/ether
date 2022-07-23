@@ -17,8 +17,8 @@ public class SpriteSpacer : MonoBehaviour
         spacers = new List<GameObject>();
         container = new GameObject();
         container.transform.SetParent(this.transform);
-        container.transform.localPosition = transform.position;
-        container.transform.localRotation = transform.rotation;
+        container.transform.localPosition = Vector3.zero;
+        container.transform.localRotation = Quaternion.identity;
         container.name = "Sprite Container";
     }
 
@@ -26,7 +26,7 @@ public class SpriteSpacer : MonoBehaviour
     {
         Quaternion lastRotation = container.transform.rotation;
         container.transform.rotation = Quaternion.identity;
-        Vector3 lastPosition = container.transform.position;
+        Vector3 lastPosition = container.transform.localPosition;
         container.transform.position = Vector3.zero;
 
         DestorySpacers();
@@ -59,7 +59,7 @@ public class SpriteSpacer : MonoBehaviour
 
         lastPosition.x = -(length / 2);
 
-        container.transform.position = lastPosition;
+        container.transform.localPosition = lastPosition;
         container.transform.rotation = lastRotation;
     }
 

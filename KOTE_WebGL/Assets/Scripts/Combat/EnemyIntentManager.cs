@@ -12,6 +12,7 @@ public class EnemyIntentManager : MonoBehaviour
 
     string enemyId => enemyManager.EnemyData.id;
 
+    
     void Start()
     {
         if (iconPrefab == null)
@@ -28,11 +29,22 @@ public class EnemyIntentManager : MonoBehaviour
             Debug.LogError($"[EnemyIntentManager] Manager does not belong to an enemy.");
         }
         GameManager.Instance.EVENT_UPDATE_INTENT.AddListener(OnUpdateIntent);
+        GameManager.Instance.EVENT_CHANGE_TURN.AddListener(onTurnChange);
+    }
+
+    private void onTurnChange(string whosTurn) 
+    {
+        if (whosTurn == "enemy") 
+        {
+            iconContainer.ClearIcons();
+        }
     }
 
     private void OnUpdateIntent(EnemyIntent newIntent) 
     {
         if (newIntent.id != enemyId) return;
+
+        iconContainer.ClearIcons();
 
         Dictionary<EnemyIntent.Intent, int> intentMap = new Dictionary<EnemyIntent.Intent, int>();
         foreach (var intent in newIntent.intents) 
@@ -53,6 +65,7 @@ public class EnemyIntentManager : MonoBehaviour
 
             GameObject icon = Instantiate(iconPrefab);
             var intentIcon = icon.GetComponent<IntentIcon>();
+            intentIcon.Initialize();
             intentIcon.SetValue(intent.value, count);
             intentIcon.SetIcon(intentFromString(intent.type), intent.value);
             intentIcon.SetTooltip(intent.description);

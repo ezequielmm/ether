@@ -251,7 +251,8 @@ public class SWSM_Parser
         {
             case "update_enemy_intents":
                 foreach (EnemyIntent enemyIntent in enemyIntents) {
-                    GameManager.Instance.EVENT_UPDATE_INTENT.Invoke(enemyIntent);
+                    if(enemyIntent != null)
+                        GameManager.Instance.EVENT_UPDATE_INTENT.Invoke(enemyIntent);
                 }
                 break;
             default:

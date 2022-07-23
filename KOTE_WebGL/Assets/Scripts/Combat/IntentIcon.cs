@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using TMPro;
+using DG.Tweening;
 
 [RequireComponent(typeof(Image))]
 public class IntentIcon : MonoBehaviour
@@ -13,6 +14,10 @@ public class IntentIcon : MonoBehaviour
     [SerializeField]
     List<IconMap> iconMap;
     private Image icon;
+    [SerializeField]
+    GameObject tooltipContainer;
+    [SerializeField]
+    TextMeshProUGUI description;
 
     [System.Serializable]
     private class IconMap 
@@ -26,14 +31,36 @@ public class IntentIcon : MonoBehaviour
     void Start()
     {
         icon = GetComponent<Image>();
+        if (icon == null)
+        {
+            Debug.LogError("[Intent Icon] Image component could not be found.");
+        }    
         iconMap.Sort((item1, item2) => item2.valueThreshold - item1.valueThreshold);
         if (text == null) 
         {
             text = GetComponentInChildren<TextMeshProUGUI>();
         }
-        ClearIntent();
-        SetIcon(ENEMY_INTENT.attack, 22);
-        SetValue(22, 4);
+        tooltipContainer.SetActive(false);
+    }
+
+    private void OnMouseEnter()
+    {
+        if (!string.IsNullOrEmpty(description.text))
+        {
+            tooltipContainer.SetActive(true);
+            tooltipContainer.transform.localScale = Vector3.zero;
+            tooltipContainer.transform.DOScale(Vector3.one, GameSettings.INTENT_TOOLTIP_SPEED);
+        }
+    }
+    private void OnMouseExit()
+    {
+        tooltipContainer.transform.DOScale(Vector3.zero, GameSettings.INTENT_TOOLTIP_SPEED);
+    }
+
+
+    public void Initialize()
+    {
+        Start();
     }
 
     public void ClearIntent() 
@@ -56,7 +83,7 @@ public class IntentIcon : MonoBehaviour
 
     public void SetTooltip(string tooltip) 
     {
-        
+        description.text = tooltip;
     }
 
     public void SetIcon(ENEMY_INTENT type, int value = 0) 
