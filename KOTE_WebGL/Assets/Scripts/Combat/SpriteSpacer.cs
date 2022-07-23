@@ -12,7 +12,7 @@ public class SpriteSpacer : MonoBehaviour
     GameObject container;
     [Tooltip("Space between all sprites.")]
     public float iconSpace = 0.1f;
-    public float fadeSpeed = GameSettings.INTENT_FADE_SPEED;
+    [HideInInspector] public float fadeSpeed = GameSettings.INTENT_FADE_SPEED;
 
     private void Awake()
     {
