@@ -7999,8 +7999,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d670978ffee4edb46ad19aafbe3a5833, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PacketJson: 
-  RunOnStart: 0
+  PacketJson: '{"data":{"message_type":"enemy_intents","action":"update_enemy_intents","data":[{"id":"62da997631135fc7ffd08886","intents":[{"value":11,"description":"This
+    Enemy will attack for 11 Damage","type":"attack"},{"value":11,"description":"This
+    Enemy will attack for 11 Damage","type":"attack"},{"value":0,"description":"This
+    Enemy will Buff","type":"buff"}]}]}}'
   Run: 0
 --- !u!4 &1931311285
 Transform:
