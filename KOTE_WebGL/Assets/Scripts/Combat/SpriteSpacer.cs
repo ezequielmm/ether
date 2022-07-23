@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class SpriteSpacer : MonoBehaviour
     GameObject container;
     [Tooltip("Space between all sprites.")]
     public float iconSpace = 0.1f;
+    public float fadeSpeed = GameSettings.INTENT_FADE_SPEED;
 
     private void Awake()
     {
@@ -47,6 +49,7 @@ public class SpriteSpacer : MonoBehaviour
                 if (spacer != null) 
                 {
                     GameObject _spacer = Instantiate(spacer, container.transform);
+                    spacers.Add(_spacer);
                     RectTransform spacerTransform = _spacer.transform as RectTransform;
                     var spaceWidth = spacerTransform.rect.width;
 
@@ -72,23 +75,32 @@ public class SpriteSpacer : MonoBehaviour
     public void RemoveIcon(GameObject icon) 
     {
         icons.Remove(icon);
+        icon.transform.DOScale(0, fadeSpeed);
+        StartCoroutine(DestoryAfterTime(icon));
+    }
+
+    private IEnumerator DestoryAfterTime(GameObject icon)
+    {
+        yield return new WaitForSeconds(fadeSpeed);
         Destroy(icon);
     }
 
     public void ClearIcons() 
     {
+        DestorySpacers();
         for (int i = 0; i < icons.Count;) 
         {
             RemoveIcon(icons[i]);
         }
-        ReorganizeSprites();
     }
 
     private void DestorySpacers() 
     {
-        for (int i = 0; i < spacers.Count;) 
+        Debug.Log("Spacers Destroyed!");
+        for (int i = 0; i < spacers.Count; i++) 
         {
-            Destroy(spacers[i]);
+            spacers[i].transform.DOScale(0, fadeSpeed);
+            StartCoroutine(DestoryAfterTime(spacers[i]));
         }
         spacers.Clear();
     }

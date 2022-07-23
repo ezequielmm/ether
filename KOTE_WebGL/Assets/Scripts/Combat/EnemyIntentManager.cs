@@ -1,6 +1,8 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class EnemyIntentManager : MonoBehaviour
 {
@@ -12,7 +14,6 @@ public class EnemyIntentManager : MonoBehaviour
 
     string enemyId => enemyManager.EnemyData.id;
 
-    
     void Start()
     {
         if (iconPrefab == null)
@@ -49,9 +50,10 @@ public class EnemyIntentManager : MonoBehaviour
         Dictionary<EnemyIntent.Intent, int> intentMap = new Dictionary<EnemyIntent.Intent, int>();
         foreach (var intent in newIntent.intents) 
         {
-            if (intentMap.ContainsKey(intent))
+            var key = intentMap.Keys.FirstOrDefault(i => i.type == intent.type && i.value == intent.value);
+            if (key != null)
             {
-                intentMap[intent]++;
+                intentMap[key]++;
             }
             else 
             {
@@ -71,8 +73,10 @@ public class EnemyIntentManager : MonoBehaviour
             intentIcon.SetTooltip(intent.description);
 
             iconContainer.AddIcon(icon);
-            iconContainer.ReorganizeSprites();
         }
+        iconContainer.ReorganizeSprites();
+        transform.localScale = Vector3.zero;
+        transform.DOScale(1, GameSettings.INTENT_FADE_SPEED);
     }
 
     private ENEMY_INTENT intentFromString(string value) 
