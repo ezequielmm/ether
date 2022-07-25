@@ -127,6 +127,10 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<CardToMoveData> EVENT_MOVE_CARD = new UnityEvent<CardToMoveData>();
     [HideInInspector] public UnityEvent<string> EVENT_CARD_DISABLED { get; } = new UnityEvent<string>();//id fo the cards being destroyed
     [HideInInspector] public UnityEvent EVENT_CARD_NO_ENERGY = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_CARD_DRAW = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_CARD_DISCARD = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_CARD_EXHAUST = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_CARD_SHUFFLE = new UnityEvent();
     [HideInInspector] public UnityEvent<string> EVENT_CARD_CREATE = new UnityEvent<string>();
 
     //Gameplay events
@@ -139,7 +143,8 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<int,int> EVENT_UPDATE_ENERGY = new UnityEvent<int,int>();//current energy, max energy 
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_PLAYER_HEALTH = new UnityEvent<int, int>();//current health, max health
     [HideInInspector] public UnityEvent EVENT_PLAY_PLAYER_ATTACK = new UnityEvent();
-    
+    [HideInInspector] public UnityEvent<int> EVENT_PLAY_ENEMY_ATTACK = new UnityEvent<int>(); // enemyId
+
 
     //Common events
     [HideInInspector] public UnityEvent<WS_DATA_REQUEST_TYPES> EVENT_GENERIC_WS_DATA = new UnityEvent<WS_DATA_REQUEST_TYPES>();
@@ -151,6 +156,8 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<EnemyData> EVENT_UPDATE_ENEMY = new UnityEvent<EnemyData>();
 
 
+    // Audio Events
+    [HideInInspector] public UnityEvent<string> EVENT_PLAY_SFX { get; } = new UnityEvent<string>();
 
     public inGameScenes
         nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat

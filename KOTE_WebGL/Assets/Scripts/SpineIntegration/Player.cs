@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Collections;
 
 public class Player : MonoBehaviour
 {
@@ -38,9 +39,16 @@ public class Player : MonoBehaviour
         {
             healthBar.DOValue(playerData.hpCurrent, 1).OnComplete(CheckDeath);
 
-           
+            if (healthBar.value > playerData.hpCurrent) // damage taken
+            {
+                // This should be called by the backend at some point
+                GameManager.Instance.EVENT_PLAY_ENEMY_ATTACK.Invoke(-1);
+                // TODO: Replace magic number with actual timing from the enemy's animation.
+                // Note: The enemy's animation may be differently timed depending on the animation.
+                StartCoroutine(OnHit(0.3f));
+            }
+            }
         }
-    }
 
     private void Start()
     {
@@ -85,6 +93,13 @@ public class Player : MonoBehaviour
     {
         Debug.Log("+++++++++++++++[Player]Attack");
         spineAnimationsManagement.PlayAnimationSequence("Attack");
+        spineAnimationsManagement.PlayAnimationSequence("Idle");
+    }
+
+    private IEnumerator OnHit(float hitTiming = 0)
+    {
+        yield return new WaitForSeconds(hitTiming);
+        spineAnimationsManagement.PlayAnimationSequence("Hit");
         spineAnimationsManagement.PlayAnimationSequence("Idle");
     }
 

@@ -91,6 +91,7 @@ public class CardOnHandManager : MonoBehaviour
     private bool activateCardAfterMove;
     private bool cardIsShowingUp;
     private bool pointerIsActive;
+    private bool cardIsDisplaced;
 
     private int currentPlayerEnergy;
 
@@ -253,6 +254,25 @@ public class CardOnHandManager : MonoBehaviour
             }
         }
 
+        if (originType != destinationType) 
+        {
+            switch (destinationType)
+            {
+                case CARDS_POSITIONS_TYPES.draw:
+                    GameManager.Instance.EVENT_CARD_SHUFFLE.Invoke();
+                    break;
+                case CARDS_POSITIONS_TYPES.discard:
+                    GameManager.Instance.EVENT_CARD_DISCARD.Invoke();
+                    break;
+                case CARDS_POSITIONS_TYPES.hand:
+                    GameManager.Instance.EVENT_CARD_DRAW.Invoke();
+                    break;
+                case CARDS_POSITIONS_TYPES.exhaust:
+                    GameManager.Instance.EVENT_CARD_EXHAUST.Invoke();
+                    break;
+            }
+        }
+
         //cardActive = (originType == CARDS_POSITIONS_TYPES.draw && destinationType == CARDS_POSITIONS_TYPES.hand);
         //cardActive = activateCardAfterMove;
         cardActive = false;
@@ -388,8 +408,9 @@ public class CardOnHandManager : MonoBehaviour
         {
             // Debug.Log("[ResetCardPosition]");
             if (auraPS.gameObject.activeSelf) auraPS.Stop();
-            
+
             cardIsShowingUp = false;
+            cardIsDisplaced = false;
             transform.DOMove(targetPosition, GameSettings.HAND_CARD_RESET_POSITION_TIME);
             transform.DOScale(Vector3.one, GameSettings.HAND_CARD_RESET_POSITION_TIME);
             transform.DORotate(targetRotation, GameSettings.HAND_CARD_RESET_POSITION_TIME);
@@ -404,6 +425,12 @@ public class CardOnHandManager : MonoBehaviour
         {
             // Debug.Log("[OnMouseExit]");
             GameManager.Instance.EVENT_CARD_MOUSE_EXIT.Invoke(thisCardValues.id);
+
+            if (cardIsDisplaced)
+            {
+                // Play Cancellation sound
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Cancel");
+            }
 
             ResetCardPosition();
         }
@@ -485,6 +512,7 @@ public class CardOnHandManager : MonoBehaviour
             else
             {
                 Debug.Log("card is far from center");
+                cardIsDisplaced = true;
                 //MoveCardBackToOriginalHandPosition();
             }
         }

@@ -24,6 +24,9 @@ public class HandManager : MonoBehaviour
 
     CardPiles cardPilesData;
 
+    int cardsDrawn = 0;
+    bool audioRunning = false;
+
     void Start()
     {
         Debug.Log("[HandManager]Start");
@@ -49,6 +52,7 @@ public class HandManager : MonoBehaviour
         Debug.Log("[HandManager]Awake");
         GameManager.Instance.EVENT_CARDS_PILES_UPDATED.AddListener(OnCardsPilesUpdated);
         GameManager.Instance.EVENT_CARD_DRAW_CARDS.AddListener(OnDrawCards);
+        GameManager.Instance.EVENT_CARD_DRAW.AddListener(OnCardDraw);
         GameManager.Instance.EVENT_CARD_CREATE.AddListener(CreateCard);
     }
 
@@ -56,6 +60,31 @@ public class HandManager : MonoBehaviour
     {
         Debug.Log("[HandManager]OnEnable");
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+    }
+
+    private void OnCardDraw()
+    {
+        Debug.Log($"[Hand Pile] Card Drawn.");
+        cardsDrawn++;
+        StartCoroutine(DrawCardSFX());
+    }
+
+    private IEnumerator DrawCardSFX()
+    {
+        if (!audioRunning)
+        {
+            audioRunning = true;
+            for (; cardsDrawn >= 0; cardsDrawn--)
+            {
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Draw");
+                yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
+            }
+            if (cardsDrawn < 0)
+            {
+                cardsDrawn = 0;
+            }
+            audioRunning = false;
+        }
     }
 
     private void CreateCard(string cardID)
