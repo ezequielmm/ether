@@ -126,7 +126,7 @@ public class CardOnHandManager : MonoBehaviour
             cardActive = true;
             card_can_be_played = true;*/
 
-            MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand);
+            MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, true);
         }
         
     }
@@ -330,7 +330,6 @@ public class CardOnHandManager : MonoBehaviour
             var main = auraPS.main;
             main.startColor = greenColor;
             outlineMaterial = greenOutlineMaterial;//TODO:apply blue if card has a special condition
-            //cardActive = true;
             card_can_be_played = true;
         }
         else
@@ -339,7 +338,6 @@ public class CardOnHandManager : MonoBehaviour
             energyTF.color = redColor;
             outlineMaterial = greenOutlineMaterial;
             card_can_be_played = false;
-            //cardActive = false;
         }
     }
 

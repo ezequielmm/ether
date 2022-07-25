@@ -8,7 +8,7 @@ public class HandManager : MonoBehaviour
 {    
     public GameObject spriteCardPrefab;
     //  public List<GameObject> listOfCardsOnHand;
-    public Dictionary<string, GameObject> listOfCardsOnHand = new Dictionary<string, GameObject>();
+    public Dictionary<string, GameObject> listOfCardsOnHand = new Dictionary<string, GameObject>(); // CardID <--> Card Obj
    // public Dictionary<string, GameObject> listOfCardsOnDraw = new Dictionary<string, GameObject>();
 
 
@@ -17,9 +17,10 @@ public class HandManager : MonoBehaviour
     private string currentCardID;
     private GameObject currentCard;
 
-    public  Deck handDeck;
-    public  Deck drawDeck;
-  
+    public Deck handDeck;
+    public Deck drawDeck;
+    public Deck discardDeck;
+
     CardPiles cardPilesData;
 
     int cardsDrawn = 0;
@@ -38,8 +39,14 @@ public class HandManager : MonoBehaviour
     private void OnCardDestroyed(string cardId)
     {
         Debug.Log("[Removing card "+cardId+" from hand]");
-        //listOfCardsOnHand.Remove(listOfCardsOnHand.Find((x) => (x.GetComponent<CardOnHandManager>().id == cardId)));
-        listOfCardsOnHand.Remove(cardId);
+
+        var cardMoved = handDeck.cards.Find(card => card.id == cardId);
+        if (cardMoved != null)
+        {
+            handDeck.cards.Remove(cardMoved);
+            discardDeck.cards.Add(cardMoved);
+        }
+
         RelocateCards();      
         
     }
@@ -86,7 +93,28 @@ public class HandManager : MonoBehaviour
 
     private void CreateCard(string cardID)
     {
-        Debug.Log("Create card "+cardID);
+        Debug.Log($"[HandManager] Moving card [{cardID}] from Draw to Hand");
+        var cardMoved = drawDeck.cards.Find(card => card.id == cardID);
+        if (cardMoved == null) 
+        {
+            cardMoved = discardDeck.cards.Find(card => card.id == cardID);
+        }
+        if (cardMoved == null) 
+        {
+            Debug.LogWarning($"[HandManager] Card [{cardID}] could not be found. No card has been created.");
+            return;
+        }
+        drawDeck.cards.Remove(cardMoved);
+        discardDeck.cards.Remove(cardMoved);
+        handDeck.cards.Add(cardMoved);
+        //if (!listOfCardsOnHand.ContainsKey(cardID))
+        //{
+        //    Debug.Log($"[HandManager] Instantiating created card [{cardID}]");
+        //    GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
+        //    listOfCardsOnHand.Add(cardID, newCard);
+        //    newCard.GetComponent<CardOnHandManager>().Populate(cardMoved, cardPilesData.data.energy);
+        //}
+        //RelocateCards();
     }
 
     private void OnDrawCards()
@@ -113,6 +141,9 @@ public class HandManager : MonoBehaviour
 
         drawDeck = new Deck();
         drawDeck.cards = cardPilesData.data.draw;
+
+        discardDeck = new Deck();
+        discardDeck.cards = cardPilesData.data.discard;
 
         Vector3 spawnPosition = GameSettings.HAND_CARDS_GENERATION_POINT;
 
@@ -184,6 +215,19 @@ public class HandManager : MonoBehaviour
                 
         }
 
+        foreach (Card card in discardDeck.cards)
+        {
+            if (!listOfCardsOnHand.ContainsKey(card.id))
+            {
+                Debug.Log("3 Instantiating card " + card.id);
+                GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
+                listOfCardsOnHand.Add(card.id, newCard);
+                newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
+                newCard.GetComponent<CardOnHandManager>().DisableCardContent(false);//disable and not notify
+            }
+
+        }
+
         RelocateCards(true);
     }
 
@@ -233,9 +277,10 @@ public class HandManager : MonoBehaviour
                 counter++;
                 depth--;
 
+                var manager = card.GetComponent<CardOnHandManager>();
                 if (move)
                 {
-                    card.GetComponent<CardOnHandManager>().MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, true, pos, delay);
+                    manager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, true, pos, delay);
                     delay -= delayStep;
                 }
                 else
