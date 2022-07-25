@@ -5,7 +5,9 @@ using UnityEngine;
 public class CombatTurnQueue : MonoBehaviour
 {
     Queue<CombatTurnData> queue;
+    [SerializeField]
     bool awaitToContinue;
+
     void Start()
     {
         awaitToContinue = false;
@@ -15,12 +17,14 @@ public class CombatTurnQueue : MonoBehaviour
     }
 
     private void QueueAttack(CombatTurnData data) 
-    { 
+    {
+        Debug.Log($"[CombatQueue] [{queue.Count}] Action Enqueued... [{data.origin}] --> [{data.target}]");
         queue.Enqueue(data);
     }
 
     private void OnTurnUnblock() 
     {
+        Debug.Log($"[CombatQueue] Action Completed!");
         queue.Dequeue();
         awaitToContinue = false;
         if (queue.Count == 0) 
@@ -31,6 +35,7 @@ public class CombatTurnQueue : MonoBehaviour
 
     private void ProcessTurn(CombatTurnData data) 
     {
+        Debug.Log($"[CombatQueue] [{queue.Count}] New Action [{data.origin}] --> [{data.target}]  ******************");
         GameManager.Instance.EVENT_ATTACK_REQUEST.Invoke(data);
         awaitToContinue = true;
     }

@@ -29,18 +29,27 @@ public class PlayerManager : MonoBehaviour
     {
         if(attack.origin != "player") return;
 
+        Debug.Log($"[PlayerManager] Combat Request GET!");
+
         // Run Attack Animation Or Status effects
-        if (attack.defenseDelta != 0 || attack.healthDelta != 0) 
+        if (attack.defenseDelta != 0 || attack.healthDelta != 0)
         {
             // Run Attack
             Attack();
             RunAfterTime(0.45f, // hard coded player animation attack point
                 () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
         }
+        else 
+        {
+            // If no conditions are met, close the event
+            GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke();
+        }
     }
     private void OnAttackResponse(CombatTurnData attack) 
     {
         if (attack.target != "player") return;
+
+        Debug.Log($"[PlayerManager] Combat Response GET!");
 
         float waitDuration = 0;
         if (attack.defenseDelta < 0 && attack.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
@@ -63,7 +72,12 @@ public class PlayerManager : MonoBehaviour
         RunAfterTime(waitDuration, () => GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke());
     }
 
-    private IEnumerator RunAfterTime(float time, Action toRun) 
+    private void RunAfterTime(float time, Action toRun) 
+    {
+        StartCoroutine(runCoroutine(time, toRun));
+    }
+
+    private IEnumerator runCoroutine(float time, Action toRun) 
     {
         yield return new WaitForSeconds(time);
         toRun.Invoke();
@@ -71,6 +85,13 @@ public class PlayerManager : MonoBehaviour
 
     private PlayerData ProcessNewData(PlayerData old, PlayerData current)
     {
+        if (old == null) 
+        {
+            SetDefense(current.defense);
+            SetHealth(current.hpCurrent, current.hpMax);
+            return current;
+        }
+
         bool isAttack = false;
 
         int hpDelta = current.hpCurrent - old.hpCurrent;
@@ -110,17 +131,25 @@ public class PlayerManager : MonoBehaviour
         return current;
     }
 
-    private void SetHealth()
+    private void SetHealth(int? current = null, int? max = null)
     {
-        Debug.Log("[SetHealth]min=" + playerData.hpCurrent + "/" + playerData.hpMax);
-
-        healthTF.SetText(playerData.hpCurrent + "/" + playerData.hpMax);
-
-        healthBar.maxValue = playerData.hpMax;
-
-        if (healthBar.value != playerData.hpCurrent)
+        if (current == null) 
         {
-            healthBar.DOValue(playerData.hpCurrent, 1).OnComplete(CheckDeath);
+            current = playerData.hpCurrent;
+        }
+        if (max == null) 
+        {
+            max = playerData.hpMax;
+        }
+        Debug.Log($"[PlayerManager] Health: {current}/{max}");
+
+        healthTF.SetText($"{current}/{max}");
+
+        healthBar.maxValue = max.Value;
+
+        if (healthBar.value != current)
+        {
+            healthBar.DOValue(current.Value, 1).OnComplete(CheckDeath);
         }
     }
 
@@ -163,9 +192,13 @@ public class PlayerManager : MonoBehaviour
         PlayerData = newPlayerData;
     }
 
-    private void SetDefense()
+    private void SetDefense(int? value = null)
     {
-        defenseTF.SetText(playerData.defense.ToString());
+        if (value == null) 
+        {
+            value = playerData.defense;
+        }
+        defenseTF.SetText(value.ToString());
     }
 
 
