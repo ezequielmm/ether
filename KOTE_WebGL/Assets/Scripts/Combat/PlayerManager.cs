@@ -17,9 +17,7 @@ public class PlayerManager : MonoBehaviour
     {
         set
         {
-            playerData = value;
-            SetDefense();
-            SetHealth();
+            playerData = ProcessNewData(playerData, value);
         }
         get
         {
@@ -27,17 +25,23 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    private void ProcessNewData(PlayerData old, PlayerData current)
+    private void OnAttack(CombatTurnData attack) 
     {
-        if (old == null || current == null)
-        {
-            return;
-        }
+        if (attack.target != "player") return;
+
+
+    }
+
+    private PlayerData ProcessNewData(PlayerData old, PlayerData current)
+    {
+        bool isAttack = false;
+
+        /*
         if (old.defense > current.defense && (current.defense > 0 ||
             (current.defense == 0 && old.hpCurrent == current.hpCurrent))) // Hit and defence didn't fall or it did and no damage
         {
             // Play Armored Clang
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defence Block");
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Block");
         }
         if (current.defense <= 0 && old.hpCurrent > current.hpCurrent) // Damage Taken no armor
         {
@@ -45,16 +49,43 @@ public class PlayerManager : MonoBehaviour
             // Can be specific, but we'll default to "Attack"
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Attack");
         }
-        if (current.defense > old.defense) // Defense Buffed
+        */
+
+        int hpDelta = current.hpCurrent - old.hpCurrent;
+        int defenseDelta = current.defense - old.defense;
+
+        if (defenseDelta > 0) // Defense Buffed
         {
             // Play Metallic Ring
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defence Up");
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Up");
         }
-        if (current.hpCurrent > old.hpCurrent) // Healed!
+        if (hpDelta > 0) // Healed!
         {
             // Play Rising Chimes
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
         }
+
+        // This will add to the Event Queue. 
+        if (hpDelta < 0 || defenseDelta < 0) 
+        {
+            isAttack = true;
+            var attack = new CombatTurnData()
+            {
+                origin = "Unknown",
+                target = "player",
+                healthDelta = hpDelta,
+                defenseDelta = defenseDelta
+            };
+            GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(attack);
+        }
+        
+
+        if (isAttack == false) 
+        {
+            SetDefense();
+            SetHealth();
+        }
+        return current;
     }
 
     private void SetHealth()
@@ -115,7 +146,6 @@ public class PlayerManager : MonoBehaviour
 
     private void OnUpdatePlayer(PlayerData newPlayerData)
     {
-        ProcessNewData(PlayerData, newPlayerData);
         PlayerData = newPlayerData;
     }
 

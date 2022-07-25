@@ -435,3 +435,13 @@ public class SWSM_ChangeTurn
     }
 
 }
+
+[Serializable]
+public class CombatTurnData 
+{
+    public string origin;
+    public string target;
+
+    public int healthDelta;
+    public int defenseDelta;
+}

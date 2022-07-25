@@ -7880,6 +7880,9 @@ MonoBehaviour:
   EVENT_CARD_SHUFFLE:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_CARD_CREATE:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_GAME_STATUS_CHANGE:
     m_PersistentCalls:
       m_Calls: []
@@ -7898,7 +7901,19 @@ MonoBehaviour:
   EVENT_UPDATE_PLAYER_HEALTH:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_ENEMY_ATTACKED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_PLAYER_ATTACKED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_ATTACK:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_PLAY_PLAYER_ATTACK:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_PLAY_ENEMY_ATTACK:
     m_PersistentCalls:
       m_Calls: []
   EVENT_GENERIC_WS_DATA:
@@ -8493,6 +8508,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: SoundManager
       objectReference: {fileID: 0}
+    - target: {fileID: 436434705706889939, guid: b1478249d5d3cd549b34d7d0286d7c68,
+        type: 3}
+      propertyPath: soundClipList.Array.data[5].name
+      value: Defense Block
+      objectReference: {fileID: 0}
+    - target: {fileID: 436434705706889939, guid: b1478249d5d3cd549b34d7d0286d7c68,
+        type: 3}
+      propertyPath: soundClipList.Array.data[11].name
+      value: Defense Up
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1478249d5d3cd549b34d7d0286d7c68, type: 3}
 --- !u!1001 &902047206778775444
@@ -8683,6 +8708,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbdd4e610b5965a43ab79393317c0c99, type: 3}
+--- !u!1001 &4039695724517363271
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2838924256175582911, guid: 661646597b908fb4680920af56789180,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2838924256175582911, guid: 661646597b908fb4680920af56789180,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2838924256175582911, guid: 661646597b908fb4680920af56789180,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2838924256175582911, guid: 661646597b908fb4680920af56789180,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2838924256175582911, guid: 661646597b908fb4680920af56789180,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2838924256175582911, guid: 661646597b908fb4680920af56789180,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2838924256175582911, guid: 661646597b908fb4680920af56789180,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2838924256175582911, guid: 661646597b908fb4680920af56789180,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2838924256175582911, guid: 661646597b908fb4680920af56789180,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2838924256175582911, guid: 661646597b908fb4680920af56789180,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2838924256175582911, guid: 661646597b908fb4680920af56789180,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3506483993005858841, guid: 661646597b908fb4680920af56789180,
+        type: 3}
+      propertyPath: m_Name
+      value: AttackQueue
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 661646597b908fb4680920af56789180, type: 3}
 --- !u!4 &5215664067151052177 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1787672423935589736, guid: 33c4b6f1a2d560847a90ef3bf749f7c8,
