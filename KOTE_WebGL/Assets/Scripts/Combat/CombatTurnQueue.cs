@@ -31,16 +31,8 @@ public class CombatTurnQueue : MonoBehaviour
 
     private void ProcessTurn(CombatTurnData data) 
     {
-        if (data.target == "player")
-        {
-            GameManager.Instance.EVENT_PLAYER_ATTACKED.Invoke(data);
-            awaitToContinue = true;
-        }
-        else // Enemy
-        {
-            GameManager.Instance.EVENT_ENEMY_ATTACKED.Invoke(data);
-            awaitToContinue = true;
-        }
+        GameManager.Instance.EVENT_ATTACK_REQUEST.Invoke(data);
+        awaitToContinue = true;
     }
 
     private void Update()

@@ -25,31 +25,53 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    private void OnAttack(CombatTurnData attack) 
+    private void OnAttackRequest(CombatTurnData attack) 
+    {
+        if(attack.origin != "player") return;
+
+        // Run Attack Animation Or Status effects
+        if (attack.defenseDelta != 0 || attack.healthDelta != 0) 
+        {
+            // Run Attack
+            Attack();
+            RunAfterTime(0.45f, // hard coded player animation attack point
+                () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+        }
+    }
+    private void OnAttackResponse(CombatTurnData attack) 
     {
         if (attack.target != "player") return;
 
+        float waitDuration = 0;
+        if (attack.defenseDelta < 0 && attack.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
+        {
+            // Play Armored Clang
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Block");
+        } 
+        else if (attack.healthDelta < 0) // Damage Taken no armor
+        {
+            // Play Attack audio
+            // Can be specific, but we'll default to "Attack"
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Attack");
+            waitDuration += OnHit();
+        }
+        SetDefense();
+        SetHealth();
 
+        // You can add status effect changes in here as well**
+
+        RunAfterTime(waitDuration, () => GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke());
+    }
+
+    private IEnumerator RunAfterTime(float time, Action toRun) 
+    {
+        yield return new WaitForSeconds(time);
+        toRun.Invoke();
     }
 
     private PlayerData ProcessNewData(PlayerData old, PlayerData current)
     {
         bool isAttack = false;
-
-        /*
-        if (old.defense > current.defense && (current.defense > 0 ||
-            (current.defense == 0 && old.hpCurrent == current.hpCurrent))) // Hit and defence didn't fall or it did and no damage
-        {
-            // Play Armored Clang
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Block");
-        }
-        if (current.defense <= 0 && old.hpCurrent > current.hpCurrent) // Damage Taken no armor
-        {
-            // Play Attack audio
-            // Can be specific, but we'll default to "Attack"
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Attack");
-        }
-        */
 
         int hpDelta = current.hpCurrent - old.hpCurrent;
         int defenseDelta = current.defense - old.defense;
@@ -99,21 +121,13 @@ public class PlayerManager : MonoBehaviour
         if (healthBar.value != playerData.hpCurrent)
         {
             healthBar.DOValue(playerData.hpCurrent, 1).OnComplete(CheckDeath);
-
-            if (healthBar.value > playerData.hpCurrent) // damage taken
-            {
-                // This should be called by the backend at some point
-                GameManager.Instance.EVENT_PLAY_ENEMY_ATTACK.Invoke(-1);
-                // TODO: Replace magic number with actual timing from the enemy's animation.
-                // Note: The enemy's animation may be differently timed depending on the animation.
-                StartCoroutine(OnHit(0.9f));
-            }
         }
     }
 
     private void Start()
     {
-        GameManager.Instance.EVENT_PLAY_PLAYER_ATTACK.AddListener(Attack);
+        GameManager.Instance.EVENT_ATTACK_REQUEST.AddListener(OnAttackRequest);
+        GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnAttackResponse);
         GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener(OnUpdatePlayer);
         GameManager.Instance.EVENT_WS_CONNECTED.AddListener(OnWSConnected);
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
@@ -160,18 +174,24 @@ public class PlayerManager : MonoBehaviour
         Attack();
     }
 
-    public void Attack()
+    public float Attack()
     {
         Debug.Log("+++++++++++++++[Player]Attack");
-        spineAnimationsManagement.PlayAnimationSequence("Attack");
+        float length = spineAnimationsManagement.PlayAnimationSequence("Attack");
         spineAnimationsManagement.PlayAnimationSequence("Idle");
+        return length;
     }
 
-    private IEnumerator OnHit(float hitTiming = 0)
+    private float OnHit()
     {
-        yield return new WaitForSeconds(hitTiming);
-        spineAnimationsManagement.PlayAnimationSequence("Hit");
+        float length = spineAnimationsManagement.PlayAnimationSequence("Hit");
         spineAnimationsManagement.PlayAnimationSequence("Idle");
+        return length;
+    }
+
+    private void OnDeath() 
+    {
+        // TODO: Add Death Animation
     }
 
     private void CheckDeath()
@@ -182,7 +202,7 @@ public class PlayerManager : MonoBehaviour
             explodePS.Play();
             Destroy(explodePS.gameObject, 2);
             Destroy(this.gameObject);*/
-
+            OnDeath();
             Debug.Log("GAME OVER");
         }
     }
