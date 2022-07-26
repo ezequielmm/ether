@@ -331,12 +331,17 @@ public class SWSM_NodeData
 [Serializable]
 public class SWSM_IntentData
 {
-    public List<EnemyIntent> data;
-    public string action;
-    public string message_type;
+    public Data data;
+    [Serializable]
+    public class Data
+    {
+        public List<EnemyIntent> data;
+        public string action;
+        public string message_type;
+    }
 }
 
-[Serializable]
+    [Serializable]
 public class EnemyIntent
 {
     public string id;

@@ -148,7 +148,7 @@ public class GameManager : SingleTon<GameManager>
     //Common events
     [HideInInspector] public UnityEvent<WS_DATA_REQUEST_TYPES> EVENT_GENERIC_WS_DATA = new UnityEvent<WS_DATA_REQUEST_TYPES>();
     [HideInInspector] public UnityEvent EVENT_WS_CONNECTED = new UnityEvent();    
-    [HideInInspector] public UnityEvent<string> EVENT_CHANGE_TURN = new UnityEvent<string>();    
+    [HideInInspector] public UnityEvent<string> EVENT_CHANGE_TURN = new UnityEvent<string>();
 
     //Enemies events
     [HideInInspector] public UnityEvent<EnemiesData> EVENT_UPDATE_ENEMIES = new UnityEvent<EnemiesData>();

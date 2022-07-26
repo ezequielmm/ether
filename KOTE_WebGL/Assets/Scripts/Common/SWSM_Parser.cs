@@ -19,7 +19,8 @@ public class SWSM_Parser
                 ProcessCombatUpdate(swsm.data.action, data);
                 break;
             case nameof(WS_MESSAGE_TYPES.enemy_intents):
-                ProcessEnemyIntents(swsm.data.action, data);
+                //ProcessEnemyIntents(swsm.data.action, data);
+                Debug.LogWarning($"[SWSM Parser] Enemy Intents are no longer listened for.");
                 break;
             case nameof(WS_MESSAGE_TYPES.player_state_update):
                 ProcessPlayerStateUpdate( data);
@@ -252,7 +253,7 @@ public class SWSM_Parser
     {
         Debug.Log($"[ProcessEnemyIntents] data = {data}");
         SWSM_IntentData swsm_intentData = JsonUtility.FromJson<SWSM_IntentData>(data);
-        List<EnemyIntent> enemyIntents = swsm_intentData.data;
+        List<EnemyIntent> enemyIntents = swsm_intentData.data.data;
         switch (action) 
         {
             case "update_enemy_intents":

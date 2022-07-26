@@ -11,6 +11,8 @@ public class EnemyIntentManager : MonoBehaviour
     [SerializeField]
     SpriteSpacer iconContainer;
     EnemyManager enemyManager;
+    static bool askedForIntent;
+    bool intentSet;
 
     string enemyId => enemyManager.EnemyData.id;
 
@@ -31,6 +33,21 @@ public class EnemyIntentManager : MonoBehaviour
         }
         GameManager.Instance.EVENT_UPDATE_INTENT.AddListener(OnUpdateIntent);
         GameManager.Instance.EVENT_CHANGE_TURN.AddListener(onTurnChange);
+        intentSet = false; 
+    }
+
+    private void Update()
+    {
+        if (!intentSet && !askedForIntent) 
+        {
+            askForIntent();
+        }
+    }
+
+    private void askForIntent() 
+    {
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.EnemyIntents);
+        askedForIntent = true;
     }
 
     private void onTurnChange(string whosTurn) 
@@ -38,10 +55,11 @@ public class EnemyIntentManager : MonoBehaviour
         if (whosTurn == "enemy")
         {
             iconContainer.ClearIcons();
+            askedForIntent = false;
         }
-        else 
+        else if (!askedForIntent) 
         {
-            GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.EnemyIntents);
+            askForIntent();
         }
     }
 
@@ -81,6 +99,8 @@ public class EnemyIntentManager : MonoBehaviour
         iconContainer.ReorganizeSprites();
         transform.localScale = Vector3.zero;
         transform.DOScale(1, GameSettings.INTENT_FADE_SPEED);
+        askedForIntent = false;
+        intentSet = true;
     }
 
     private ENEMY_INTENT intentFromString(string value) 
