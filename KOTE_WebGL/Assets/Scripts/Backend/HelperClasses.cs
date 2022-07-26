@@ -441,9 +441,15 @@ public class CombatTurnData
 {
     public string origin;
     public List<Target> targets;
+    public float delay;
 
     public CombatTurnData() { }
-    public CombatTurnData(string origin, List<Target> targets) { this.origin = origin; this.targets = targets; }
+    public CombatTurnData(string origin, List<Target> targets, float delay = GameSettings.COMBAT_ANIMATION_DELAY) 
+    {
+        this.origin = origin; 
+        this.targets = targets;
+        this.delay = delay;
+    }
 
     public bool ContainsTarget(string targetID) 
     {

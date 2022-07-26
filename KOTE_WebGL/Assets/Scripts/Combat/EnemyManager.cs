@@ -61,7 +61,7 @@ public class EnemyManager : MonoBehaviour
             var targets = new List<CombatTurnData.Target>();
             // We will need an "Attack" acction to handle multiple targets
             targets.Add(new CombatTurnData.Target(enemyData.id, hpDelta, defenseDelta));
-            var attack = new CombatTurnData("player", targets);
+            var attack = new CombatTurnData("player", targets, 0); // player attacks target. Happens right away!
             GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(attack);
         }
 

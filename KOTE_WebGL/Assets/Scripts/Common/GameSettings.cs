@@ -25,7 +25,8 @@ public static class GameSettings
     public static Vector3 HAND_CARDS_GENERATION_POINT = new Vector3(-7, -5, -9);
     public static float CARD_SFX_MIN_RATE = 0.1f; // Time in seconds between SFX of cards
 
-
+    // COMBAT
+    public const float COMBAT_ANIMATION_DELAY = 0.5f;
 
 
     /*//////////////  

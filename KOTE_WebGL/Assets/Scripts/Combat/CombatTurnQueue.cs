@@ -19,6 +19,19 @@ public class CombatTurnQueue : MonoBehaviour
     private void QueueAttack(CombatTurnData data) 
     {
         Debug.Log($"[CombatQueue] [{queue.Count}] Action Enqueued... {data.ToString()}");
+
+        //if (queue.Count == 0) // No delay on first hit in total
+        //{
+        //    data.delay = 0;
+        //}
+        foreach (CombatTurnData turn in queue) // No delay on multiple hits from the same party
+        {
+            if (turn.origin == data.origin)
+            {
+                data.delay = 0;
+            }
+        }
+
         queue.Enqueue(data);
     }
 
@@ -44,7 +57,14 @@ public class CombatTurnQueue : MonoBehaviour
     {
         if (queue.Count > 0 && !awaitToContinue) 
         {
-            ProcessTurn(queue.Peek());
+            if (queue.Peek().delay > 0)
+            {
+                queue.Peek().delay -= Time.deltaTime;
+            }
+            else
+            {
+                ProcessTurn(queue.Peek());
+            }
         }
     }
 }
