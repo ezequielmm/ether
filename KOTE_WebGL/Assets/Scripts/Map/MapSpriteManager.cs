@@ -93,7 +93,7 @@ namespace map
             if(scrollMap)
                 newPos.x += currentScrollSpeed;
 
-            Vector3 limitPos = newPos;
+            Vector3 limitPos = currentMapPos;
 
             bool overEdge = false;
             bool overHardLimit = false;
@@ -129,7 +129,7 @@ namespace map
             {
                 nodesHolder.transform.localPosition = Vector3.SmoothDamp(currentMapPos, newPos, ref velocity, 0.03f);
             }
-            if (overHardLimit) 
+            if (overHardLimit && !scrollMap) 
             {
                 nodesHolder.transform.localPosition = limitPos;
             }
