@@ -4,10 +4,22 @@ using UnityEngine;
 
 public class StatusManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField]
+    GameObject iconPrefab;
+    [SerializeField]
+    SpriteSpacer iconContainer;
+    
+    
     void Start()
     {
-        
+        if (iconPrefab == null)
+        {
+            Debug.LogError($"[StatusManager] Missing Icon Prefab.");
+        }
+        if (iconContainer == null)
+        {
+            Debug.LogError($"[StatusManager] Missing Icon Container.");
+        }
     }
 
     // Update is called once per frame
