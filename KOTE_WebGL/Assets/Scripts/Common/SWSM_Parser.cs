@@ -227,6 +227,12 @@ public class SWSM_Parser
             case nameof(WS_DATA_REQUEST_TYPES.Players):
                 ProcessUpdatePlayer(data);
                 break;
+            case nameof(WS_DATA_REQUEST_TYPES.EnemyIntents):
+                ProcessEnemyIntents("update_enemy_intents", data);
+                break;
+            default:
+                Debug.Log($"[SWSM Parser] [Generic Data] Uncaught Action \"{action}\". Data = {data}");
+                break;
         }
     }
 
@@ -246,7 +252,7 @@ public class SWSM_Parser
     {
         Debug.Log($"[ProcessEnemyIntents] data = {data}");
         SWSM_IntentData swsm_intentData = JsonUtility.FromJson<SWSM_IntentData>(data);
-        List<EnemyIntent> enemyIntents = swsm_intentData.data.data;
+        List<EnemyIntent> enemyIntents = swsm_intentData.data;
         switch (action) 
         {
             case "update_enemy_intents":

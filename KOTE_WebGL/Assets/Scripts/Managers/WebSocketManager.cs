@@ -93,8 +93,8 @@ public class WebSocketManager : MonoBehaviour
         //customNamespace.On<string>("ExpeditionMap", (arg1) => Debug.Log("Data from ReceiveExpeditionStatus:" + arg1));
         rootSocket.On<string>(WS_MESSAGE_EXPEDITION_MAP, GenericParser);
         rootSocket.On<string>(WS_MESSAGE_PLAYER_STATE, GenericParser);
-        //rootSocket.On<string>(WS_MESSAGE_INIT_COMBAT, GenericParser);
-        rootSocket.On<string>(WS_MESSAGE_ENEMY_INTENTS, GenericParser);
+        rootSocket.On<string>(WS_MESSAGE_INIT_COMBAT, GenericParser);
+        //rootSocket.On<string>(WS_MESSAGE_ENEMY_INTENTS, GenericParser);
         rootSocket.On<string>(WS_MESSAGE_PUT_DATA, GenericParser);
 
 
