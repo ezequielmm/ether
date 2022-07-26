@@ -36,6 +36,16 @@ public class EnemyIntentManager : MonoBehaviour
         intentSet = false; 
     }
 
+    private void OnDrawGizmos()
+    {
+        var scale = Vector3.one * iconContainer.transform.localScale.y;
+        var scale2 = scale + new Vector3(scale.x * 2, 0, 0);
+        Gizmos.color = Color.cyan;
+        Utils.GizmoDrawBox(new Bounds(transform.position, scale), new Vector3(0, scale.y / 2, 0));
+        Gizmos.color = Color.red;
+        Utils.GizmoDrawBox(new Bounds(transform.position, scale2), new Vector3(0, scale.y / 2, 0));
+    }
+
     private void Update()
     {
         if (!intentSet && !askedForIntent) 
