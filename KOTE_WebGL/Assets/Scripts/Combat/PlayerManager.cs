@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.UI;
 using DG.Tweening;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -31,15 +32,19 @@ public class PlayerManager : MonoBehaviour
 
         Debug.Log($"[PlayerManager] Combat Request GET!");
 
-        // Run Attack Animation Or Status effects
-        if (attack.defenseDelta != 0 || attack.healthDelta != 0)
-        {
-            // Run Attack
-            Attack();
-            RunAfterTime(0.45f, // hard coded player animation attack point
-                () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+        bool endCalled = false;
+        foreach (var target in attack.targets) {
+            // Run Attack Animation Or Status effects
+            if (target.defenseDelta != 0 || target.healthDelta != 0)
+            {
+                // Run Attack
+                Attack();
+                endCalled = true;
+                RunAfterTime(0.45f, // hard coded player animation attack point
+                    () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+            }
         }
-        else 
+        if (!endCalled)
         {
             // If no conditions are met, close the event
             GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke();
@@ -47,17 +52,18 @@ public class PlayerManager : MonoBehaviour
     }
     private void OnAttackResponse(CombatTurnData attack) 
     {
-        if (attack.target != "player") return;
+        var target = attack.GetTarget("player");
+        if (target == null) return;
 
         Debug.Log($"[PlayerManager] Combat Response GET!");
 
         float waitDuration = 0;
-        if (attack.defenseDelta < 0 && attack.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
+        if (target.defenseDelta < 0 && target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
         {
             // Play Armored Clang
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Block");
         } 
-        else if (attack.healthDelta < 0) // Damage Taken no armor
+        else if (target.healthDelta < 0) // Damage Taken no armor
         {
             // Play Attack audio
             // Can be specific, but we'll default to "Attack"
@@ -112,13 +118,11 @@ public class PlayerManager : MonoBehaviour
         if (hpDelta < 0 || defenseDelta < 0) 
         {
             isAttack = true;
-            var attack = new CombatTurnData()
-            {
-                origin = "Unknown",
-                target = "player",
-                healthDelta = hpDelta,
-                defenseDelta = defenseDelta
-            };
+            var targets = new List<CombatTurnData.Target>();
+            targets.Add(new CombatTurnData.Target("player", hpDelta, defenseDelta));
+            // The player won't know who hit them
+            var attack = new CombatTurnData("unknown", targets);
+
             GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(attack);
         }
         

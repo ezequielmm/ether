@@ -58,13 +58,10 @@ public class EnemyManager : MonoBehaviour
         if (hpDelta < 0 || defenseDelta < 0)
         {
             isAttack = true;
-            var attack = new CombatTurnData()
-            {
-                origin = "player",
-                target = enemyData.id,
-                healthDelta = hpDelta,
-                defenseDelta = defenseDelta
-            };
+            var targets = new List<CombatTurnData.Target>();
+            // We will need an "Attack" acction to handle multiple targets
+            targets.Add(new CombatTurnData.Target(enemyData.id, hpDelta, defenseDelta));
+            var attack = new CombatTurnData("player", targets);
             GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(attack);
         }
 
@@ -85,15 +82,20 @@ public class EnemyManager : MonoBehaviour
 
         Debug.Log($"[EnemyManager] Combat Request GET!");
 
-        // Run Attack Animation Or Status effects
-        if (attack.defenseDelta != 0 || attack.healthDelta != 0)
+        bool endCalled = false;
+        foreach (var target in attack.targets)
         {
-            // Run Attack
-            Attack();
-            RunAfterTime(0.9f, // hard coded enemy animation attack point
-                () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+            // Run Attack Animation Or Status effects
+            if (target.defenseDelta != 0 || target.healthDelta != 0)
+            {
+                // Run Attack
+                Attack();
+                endCalled = true;
+                RunAfterTime(0.9f, // hard coded enemy animation attack point
+                    () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+            }
         }
-        else
+        if (!endCalled) 
         {
             // If no conditions are met, close the event
             GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke();
@@ -101,18 +103,18 @@ public class EnemyManager : MonoBehaviour
     }
     private void OnAttackResponse(CombatTurnData attack)
     {
-        if (attack.target != enemyData.id) return;
-        if (attack.target == "player") return;
+        var target = attack.GetTarget(enemyData.id);
+        if (target == null) return;
 
         Debug.Log($"[EnemyManager] Combat Response GET!");
 
         float waitDuration = 0;
-        if (attack.defenseDelta < 0 && attack.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
+        if (target.defenseDelta < 0 && target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
         {
             // Play Armored Clang
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Block");
         }
-        else if (attack.healthDelta < 0) // Damage Taken no armor
+        else if (target.healthDelta < 0) // Damage Taken no armor
         {
             // Play Attack audio
             // Can be specific, but we'll default to "Attack"

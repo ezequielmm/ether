@@ -18,7 +18,7 @@ public class CombatTurnQueue : MonoBehaviour
 
     private void QueueAttack(CombatTurnData data) 
     {
-        Debug.Log($"[CombatQueue] [{queue.Count}] Action Enqueued... [{data.origin}] --> [{data.target}]");
+        Debug.Log($"[CombatQueue] [{queue.Count}] Action Enqueued... {data.ToString()}");
         queue.Enqueue(data);
     }
 
@@ -35,7 +35,7 @@ public class CombatTurnQueue : MonoBehaviour
 
     private void ProcessTurn(CombatTurnData data) 
     {
-        Debug.Log($"[CombatQueue] [{queue.Count}] New Action [{data.origin}] --> [{data.target}]  ******************");
+        Debug.Log($"[CombatQueue] [{queue.Count}] New Action {data.ToString()}  ******************");
         GameManager.Instance.EVENT_ATTACK_REQUEST.Invoke(data);
         awaitToContinue = true;
     }

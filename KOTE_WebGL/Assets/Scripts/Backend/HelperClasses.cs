@@ -440,8 +440,59 @@ public class SWSM_ChangeTurn
 public class CombatTurnData 
 {
     public string origin;
-    public string target;
+    public List<Target> targets;
 
-    public int healthDelta;
-    public int defenseDelta;
+    public CombatTurnData() { }
+    public CombatTurnData(string origin, List<Target> targets) { this.origin = origin; this.targets = targets; }
+
+    public bool ContainsTarget(string targetID) 
+    {
+        foreach (Target target in targets) 
+        {
+            if (target.targetID == targetID) 
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Target GetTarget(string targetID) 
+    {
+        foreach (Target target in targets)
+        {
+            if (target.targetID == targetID)
+            {
+                return target;
+            }
+        }
+        return null;
+    }
+    
+    public class Target
+    {
+        public Target() { }
+        public Target(string target, int healthDelta, int defenseDelta) 
+        {
+            this.targetID = target;
+            this.healthDelta = healthDelta;
+            this.defenseDelta = defenseDelta;
+        }
+
+        public string targetID;
+
+        public int healthDelta;
+        public int defenseDelta;
+    }
+
+    public override string ToString()
+    {
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        sb.Append($"[{origin}] --> [");
+        foreach (var target in targets) 
+        {
+            sb.Append(target.ToString() + ", ");
+        }
+        return sb.ToString().Substring(0, sb.Length - 2) + "]";
+    }
 }

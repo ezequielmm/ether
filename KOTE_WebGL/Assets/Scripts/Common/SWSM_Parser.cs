@@ -109,7 +109,6 @@ public class SWSM_Parser
 
     private static void ProcessEnemyAffected(string action, string data)
     {
-        Debug.Log($"[SWSM] Enemy Affected: data={data}");
         switch (action)
         {
             case nameof(WS_MESSAGE_ACTIONS.update_energy):
