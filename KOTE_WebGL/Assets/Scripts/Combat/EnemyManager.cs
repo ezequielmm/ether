@@ -70,6 +70,7 @@ public class EnemyManager : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.EVENT_UPDATE_ENEMY.AddListener(OnUpdateEnemy);
+        Debug.Log($"[Enemy Manager] Enemy ID: {enemyData.id}");
         GameManager.Instance.EVENT_PLAY_ENEMY_ATTACK.AddListener(onAttack);
 
         // Grab first spine animation management script we find. This is a default. We'll set this when spawning the enemy usually.
