@@ -5,15 +5,19 @@ using UnityEngine;
 
 public class StatusIcon : IconMap<STATUS>
 {
-    // Start is called before the first frame update
     void Awake()
     {
         this.tooltipSpeed = GameSettings.INTENT_TOOLTIP_SPEED;
     }
-
-    // Update is called once per frame
-    void Update()
+    public void SetValue(int value) 
     {
-        
+        if (value <= 0)
+        {
+            SetDisplayText(string.Empty);
+        }
+        else 
+        {
+            SetDisplayText(value.ToString());
+        }
     }
 }

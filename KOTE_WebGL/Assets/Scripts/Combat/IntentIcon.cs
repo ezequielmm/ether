@@ -8,7 +8,6 @@ using DG.Tweening;
 
 public class IntentIcon : IconMap<ENEMY_INTENT>
 {
-    // Start is called before the first frame update
     void Awake()
     {
         tooltipSpeed = GameSettings.INTENT_TOOLTIP_SPEED;
