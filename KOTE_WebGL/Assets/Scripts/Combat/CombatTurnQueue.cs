@@ -35,20 +35,26 @@ public class CombatTurnQueue : MonoBehaviour
         queue.Enqueue(data);
     }
 
-    private void OnTurnUnblock() 
+    private void OnTurnUnblock(string attackId) 
     {
+        if (queue.Peek().attackId != attackId) return;
         Debug.Log($"[CombatQueue] Action Completed!");
+        var last = queue.Peek();
         queue.Dequeue();
         awaitToContinue = false;
         if (queue.Count == 0) 
         {
             GameManager.Instance.EVENT_COMBAT_QUEUE_EMPTY.Invoke();
+        } 
+        else if (queue.Peek().origin != last.origin) // On Origin Change
+        {
+            GameManager.Instance.EVENT_COMBAT_ORIGIN_CHANGE.Invoke();
         }
     }
 
     private void ProcessTurn(CombatTurnData data) 
     {
-        Debug.Log($"[CombatQueue] [{queue.Count}] New Action {data.ToString()}  ******************");
+        Debug.Log($"[CombatQueue] [{queue.Count}] Action Being Run --==| {data.ToString()} |==--");
         GameManager.Instance.EVENT_ATTACK_REQUEST.Invoke(data);
         awaitToContinue = true;
     }

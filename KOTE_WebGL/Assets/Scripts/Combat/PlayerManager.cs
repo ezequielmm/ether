@@ -47,7 +47,7 @@ public class PlayerManager : MonoBehaviour
         if (!endCalled)
         {
             // If no conditions are met, close the event
-            GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke();
+            GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId);
         }
     }
     private void OnAttackResponse(CombatTurnData attack) 
@@ -70,12 +70,12 @@ public class PlayerManager : MonoBehaviour
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Attack");
             waitDuration += OnHit();
         }
-        SetDefense();
-        SetHealth();
+        SetDefense(target.finalDefense);
+        SetHealth(target.finalHealth);
 
         // You can add status effect changes in here as well**
 
-        RunAfterTime(waitDuration, () => GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke());
+        RunAfterTime(waitDuration, () => GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId));
     }
 
     private void RunAfterTime(float time, Action toRun) 
@@ -119,7 +119,7 @@ public class PlayerManager : MonoBehaviour
         {
             isAttack = true;
             var targets = new List<CombatTurnData.Target>();
-            targets.Add(new CombatTurnData.Target("player", hpDelta, defenseDelta));
+            targets.Add(new CombatTurnData.Target("player", hpDelta, current.hpCurrent, defenseDelta, current.defense));
             // The player won't know who hit them
             var attack = new CombatTurnData("unknown", targets);
 

@@ -60,7 +60,7 @@ public class EnemyManager : MonoBehaviour
             isAttack = true;
             var targets = new List<CombatTurnData.Target>();
             // We will need an "Attack" acction to handle multiple targets
-            targets.Add(new CombatTurnData.Target(enemyData.id, hpDelta, defenseDelta));
+            targets.Add(new CombatTurnData.Target(enemyData.id, hpDelta, current.hpCurrent, defenseDelta, current.defense));
             var attack = new CombatTurnData("player", targets, 0); // player attacks target. Happens right away!
             GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(attack);
         }
@@ -95,10 +95,10 @@ public class EnemyManager : MonoBehaviour
                     () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
         }
-        if (!endCalled) 
+        if (!endCalled)
         {
             // If no conditions are met, close the event
-            GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke();
+            GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId);
         }
     }
     private void OnAttackResponse(CombatTurnData attack)
@@ -121,12 +121,12 @@ public class EnemyManager : MonoBehaviour
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Attack");
             waitDuration += OnHit();
         }
-        SetDefense();
-        SetHealth();
+        SetDefense(target.finalDefense);
+        SetHealth(target.finalHealth);
 
         // You can add status effect changes in here as well**
 
-        RunAfterTime(waitDuration, () => GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke());
+        RunAfterTime(waitDuration, () => GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId));
     }
 
     private void SetDefense(int? value = null)
