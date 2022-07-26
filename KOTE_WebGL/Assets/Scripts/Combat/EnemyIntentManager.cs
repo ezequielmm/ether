@@ -35,9 +35,13 @@ public class EnemyIntentManager : MonoBehaviour
 
     private void onTurnChange(string whosTurn) 
     {
-        if (whosTurn == "enemy") 
+        if (whosTurn == "enemy")
         {
             iconContainer.ClearIcons();
+        }
+        else 
+        {
+            GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.EnemyIntents);
         }
     }
 
