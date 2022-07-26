@@ -28,6 +28,8 @@ public static class GameSettings
     //Combat
     public static float INTENT_TOOLTIP_SPEED = 0.2f;
     public static float INTENT_FADE_SPEED = 0.2f;
+    public static float STATUS_TOOLTIP_SPEED = 0.2f;
+    public static float STATUS_FADE_SPEED = 0.2f;
 
 
     /*//////////////  

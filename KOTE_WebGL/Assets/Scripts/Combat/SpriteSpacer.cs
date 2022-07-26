@@ -14,7 +14,7 @@ public class SpriteSpacer : MonoBehaviour
     public float iconSpace = 0.1f;
     [HideInInspector] public float fadeSpeed = 1;
     public ContentAlign contentAlign = ContentAlign.Center;
-    public Display display = Display.Vertical;
+    public Display display = Display.Horizontal;
 
     public enum ContentAlign 
     {

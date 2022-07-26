@@ -228,40 +228,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 403001305724367112}
   iconMap:
-  - type: 0
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: de9cc711dbd32c248aba9d3f27cd287c, type: 3}
-  - type: 0
-    valueThreshold: 5
-    icon: {fileID: 21300000, guid: 6be7e722b02742f4da0685d233698e94, type: 3}
-  - type: 0
-    valueThreshold: 10
-    icon: {fileID: 21300000, guid: 5d30c953baae7554ab32444bab807b26, type: 3}
-  - type: 0
-    valueThreshold: 15
-    icon: {fileID: 21300000, guid: 6505c6528abe57849bb9a6acf6db6239, type: 3}
-  - type: 0
-    valueThreshold: 20
-    icon: {fileID: 21300000, guid: 656484c234c19ab4cbd73abffffc2398, type: 3}
-  - type: 0
-    valueThreshold: 25
-    icon: {fileID: 21300000, guid: a195829afe6ffe14ea902234fc576be5, type: 3}
-  - type: 0
-    valueThreshold: 30
-    icon: {fileID: 21300000, guid: 1a16903ed53b97b42a63d70b8df63413, type: 3}
   - type: 1
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: ccf386d72bbd50d43a5f2bef6a32ea48, type: 3}
+    icon: {fileID: 21300000, guid: de9cc711dbd32c248aba9d3f27cd287c, type: 3}
+  - type: 1
+    valueThreshold: 5
+    icon: {fileID: 21300000, guid: 6be7e722b02742f4da0685d233698e94, type: 3}
+  - type: 1
+    valueThreshold: 10
+    icon: {fileID: 21300000, guid: 5d30c953baae7554ab32444bab807b26, type: 3}
+  - type: 1
+    valueThreshold: 15
+    icon: {fileID: 21300000, guid: 6505c6528abe57849bb9a6acf6db6239, type: 3}
+  - type: 1
+    valueThreshold: 20
+    icon: {fileID: 21300000, guid: 656484c234c19ab4cbd73abffffc2398, type: 3}
+  - type: 1
+    valueThreshold: 25
+    icon: {fileID: 21300000, guid: a195829afe6ffe14ea902234fc576be5, type: 3}
+  - type: 1
+    valueThreshold: 30
+    icon: {fileID: 21300000, guid: 1a16903ed53b97b42a63d70b8df63413, type: 3}
   - type: 2
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: c54ce00ff6c24414ca7729fa4ede5479, type: 3}
+    icon: {fileID: 21300000, guid: ccf386d72bbd50d43a5f2bef6a32ea48, type: 3}
   - type: 3
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: 2ed4d5112add18146a864eeab8df5f4e, type: 3}
+    icon: {fileID: 21300000, guid: c54ce00ff6c24414ca7729fa4ede5479, type: 3}
   - type: 4
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: 8108457e473b1f34db532a583167735a, type: 3}
+    icon: {fileID: 21300000, guid: 2ed4d5112add18146a864eeab8df5f4e, type: 3}
   - type: 5
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 8108457e473b1f34db532a583167735a, type: 3}
+  - type: 0
     valueThreshold: 0
     icon: {fileID: 21300000, guid: fab1e312b26865b40a21db0d4565e487, type: 3}
   tooltipContainer: {fileID: 7955218166915299577}

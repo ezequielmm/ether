@@ -1,22 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class StatusIcon : MonoBehaviour
+public class StatusIcon : IconMap<STATUS>
 {
-
-    [System.Serializable]
-    private class IconMap
-    {
-        public ENEMY_INTENT type;
-        public int valueThreshold;
-        public Sprite icon;
-    }
-
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        this.tooltipSpeed = GameSettings.INTENT_TOOLTIP_SPEED;
     }
 
     // Update is called once per frame
