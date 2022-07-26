@@ -15,6 +15,9 @@ public class EnemyManager : MonoBehaviour
     private bool firstAttack = true;
     public TMP_Text healthTF;
     public TMP_Text defenseTF;
+    public GameObject activeEnemy;
+
+    private SpineAnimationsManagement spine;
 
     public EnemyData EnemyData { 
         set
@@ -68,6 +71,19 @@ public class EnemyManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_UPDATE_ENEMY.AddListener(OnUpdateEnemy);
         Debug.Log($"[Enemy Manager] Enemy ID: {enemyData.id}");
+        GameManager.Instance.EVENT_PLAY_ENEMY_ATTACK.AddListener(onAttack);
+
+        // Grab first spine animation management script we find. This is a default. We'll set this when spawning the enemy usually.
+        if (activeEnemy == null)
+        {
+            activeEnemy = GetComponentInChildren<SpineAnimationsManagement>()?.gameObject;
+            if (activeEnemy == null) 
+            {
+                Debug.Log($"[Enemy Manager] Could not find enemy animation");
+            }
+        }
+        spine = activeEnemy.GetComponent<SpineAnimationsManagement>();
+        spine.PlayAnimationSequence("Idle");
     }
 
     private void OnUpdateEnemy(EnemyData newEnemyData)
@@ -97,7 +113,9 @@ public class EnemyManager : MonoBehaviour
             {
                 Debug.Log("----------invoking attack play");
                 GameManager.Instance.EVENT_PLAY_PLAYER_ATTACK.Invoke();
-
+                // TODO: Replace magic number with actual timing from the knight's animation.
+                // Note: The knight's animation may be differently timed depending on the animation.
+                StartCoroutine(OnHit(0.45f));
             }
             else
             {
@@ -108,6 +126,28 @@ public class EnemyManager : MonoBehaviour
        
     }
 
+    private void onAttack(int enemyId) 
+    {
+        //if (enemyData.enemyId == enemyId)
+            Attack();
+    }
+
+    private void Attack() 
+    {
+        Debug.Log("+++++++++++++++[Enemy]Attack");
+
+        spine.PlayAnimationSequence("Attack");
+        spine.PlayAnimationSequence("Idle");
+    }
+
+    private IEnumerator OnHit(float hitTiming = 0)
+    {
+        yield return new WaitForSeconds(hitTiming);
+        spine.PlayAnimationSequence("Hit");
+        spine.PlayAnimationSequence("Idle");
+
+    }
+
     private void CheckDeath()
     {
         if (enemyData.hpCurrent < 1)
@@ -115,7 +155,8 @@ public class EnemyManager : MonoBehaviour
             explodePS.transform.parent = null;
             explodePS.Play();
             Destroy(explodePS.gameObject, 2);
-            Destroy(this.gameObject);
+            spine.PlayAnimationSequence("Death");
+            Destroy(this.gameObject,2);
         }
     }
 }

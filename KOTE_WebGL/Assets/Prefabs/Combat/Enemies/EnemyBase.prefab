@@ -154,6 +154,7 @@ MonoBehaviour:
   healthBar: {fileID: 4758985974409029657}
   healthTF: {fileID: 5772324957062389230}
   defenseTF: {fileID: 7646895336557231015}
+  activeEnemy: {fileID: 0}
 --- !u!1001 &213677133786757572
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -300,11 +301,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1045377431794367041}
     m_Modifications:
-    - target: {fileID: 6300869125946065469, guid: 900e09cef49f44a4a946c1a397bbe063,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7839970432105090531, guid: 900e09cef49f44a4a946c1a397bbe063,
         type: 3}
       propertyPath: m_RootOrder

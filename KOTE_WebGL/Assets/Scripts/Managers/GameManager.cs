@@ -125,7 +125,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_CARD_DRAW_CARDS = new UnityEvent();
     [HideInInspector] public UnityEvent<CardPiles> EVENT_CARDS_PILES_UPDATED = new UnityEvent<CardPiles>();
     [HideInInspector] public UnityEvent<CardToMoveData> EVENT_MOVE_CARD = new UnityEvent<CardToMoveData>();
-    [HideInInspector] public UnityEvent<string> EVENT_CARD_DISABLED = new UnityEvent<string>();//id fo the cards being destroyed
+    [HideInInspector] public UnityEvent<string> EVENT_CARD_DISABLED { get; } = new UnityEvent<string>();//id fo the cards being destroyed
     [HideInInspector] public UnityEvent EVENT_CARD_NO_ENERGY = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CARD_DRAW = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CARD_DISCARD = new UnityEvent();
@@ -143,7 +143,8 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<int,int> EVENT_UPDATE_ENERGY = new UnityEvent<int,int>();//current energy, max energy 
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_PLAYER_HEALTH = new UnityEvent<int, int>();//current health, max health
     [HideInInspector] public UnityEvent EVENT_PLAY_PLAYER_ATTACK = new UnityEvent();
-    
+    [HideInInspector] public UnityEvent<int> EVENT_PLAY_ENEMY_ATTACK = new UnityEvent<int>(); // enemyId
+
 
     //Common events
     [HideInInspector] public UnityEvent<WS_DATA_REQUEST_TYPES> EVENT_GENERIC_WS_DATA = new UnityEvent<WS_DATA_REQUEST_TYPES>();
