@@ -40,7 +40,7 @@ public class EnemyIntentManager : MonoBehaviour
     private void OnDrawGizmos()
     {
         var scale = Vector3.one * iconContainer.transform.localScale.y;
-        var scale2 = scale + new Vector3(scale.x * 2, 0, 0);
+        var scale2 = (scale + new Vector3(scale.x * 3, 0, 0)) * 1.05f;
         Gizmos.color = Color.cyan;
         Utils.GizmoDrawBox(new Bounds(transform.position, scale), new Vector3(0, scale.y / 2, transform.position.z));
         Gizmos.color = Color.red;
