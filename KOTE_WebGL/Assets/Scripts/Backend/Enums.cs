@@ -72,6 +72,16 @@ public enum NODE_STATUS
     
 }
 
+public enum ENEMY_INTENT 
+{
+    attack,
+    defend,
+    plot, // buff
+    scheme, // debuff
+    stunned, // nothing
+    unknown
+}
+
 public enum EntityType
 {
     Player,

@@ -147,13 +147,21 @@ MonoBehaviour:
   - sequenceName: Attack
     sequence:
     - track: 1
-      name: attack
+      name: attack-v2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: Hit
+    sequence:
+    - track: 1
+      name: hit
       loop: 0
       delay: 0
       animationEvent: 1
   availableAnimations:
-  - attack
-  - attack2
+  - attack-v2
+  - attack2- v2
+  - attack3
   - cast
   - death
   - debuff

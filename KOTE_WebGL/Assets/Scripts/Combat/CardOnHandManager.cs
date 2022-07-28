@@ -311,7 +311,7 @@ public class CardOnHandManager : MonoBehaviour
 
         if (!activateCardAfterMove)
         {
-            DisableCardContent(true);
+            DisableCardContent(false);
         }
         else
         {
