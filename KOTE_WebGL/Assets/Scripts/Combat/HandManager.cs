@@ -179,7 +179,6 @@ public class HandManager : MonoBehaviour
 
         RelocateCards(true);
     }
-
     private void RelocateCards(bool move = false)
     {
 
@@ -206,13 +205,14 @@ public class HandManager : MonoBehaviour
             {
                 Vector3 pos = Vector3.zero;
                 pos.x = counter * GameSettings.HAND_CARD_GAP - halfWidth + offset;
-                pos.y = Camera.main.orthographicSize * -1;
+                pos.y = GameSettings.HAND_CARD_REST_Y;
                // pos.y = Camera.main.orthographicSize * Mathf.Cos(pos.x);
                 pos.z = depth;
                 //card.transform.position = pos;
 
                 //var angle = (float)(counter * Mathf.PI * 2);                   
                 var angle = (float)(pos.x * Mathf.PI * 2);
+                pos.y += Mathf.Cos(Mathf.PI * pos.x);
 
 
                 //newCard.transform.position = pos;
@@ -224,7 +224,7 @@ public class HandManager : MonoBehaviour
                 card.transform.localScale = Vector3.one;
 
                 counter++;
-                depth--;
+                depth -= GameSettings.HAND_CARD_SPRITE_Z_INTERVAL;
 
                 if (move)
                 {

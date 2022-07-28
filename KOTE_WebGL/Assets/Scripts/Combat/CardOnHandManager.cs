@@ -95,6 +95,7 @@ public class CardOnHandManager : MonoBehaviour
 
     private int currentPlayerEnergy;
 
+    private bool awaitMouseUp;
  
     private void Awake()
     {
@@ -387,10 +388,11 @@ public class CardOnHandManager : MonoBehaviour
             cardIsShowingUp = true;
 
             //  Debug.Log("ShowUp");
-            transform.DOScale(Vector3.one * GameSettings.HAND_CARD_SHOW_UP_Y, GameSettings.HAND_CARD_SHOW_UP_TIME);
+            transform.DOScale(Vector3.one * GameSettings.HAND_CARD_SHOW_UP_SCALE, GameSettings.HAND_CARD_SHOW_UP_TIME);
 
-           
-            transform.DOMoveY(1.5f, 0.2f).SetRelative(true);
+
+            transform.DOMoveY(GameSettings.HAND_CARD_SHOW_UP_Y, GameSettings.HAND_CARD_SHOW_UP_TIME);//.SetRelative(true);
+            transform.DOMoveZ(GameSettings.HAND_CARD_SHOW_UP_Z, GameSettings.HAND_CARD_SHOW_UP_TIME);
 
             transform.DORotate(Vector3.zero, GameSettings.HAND_CARD_SHOW_UP_TIME);
 
@@ -408,6 +410,8 @@ public class CardOnHandManager : MonoBehaviour
         {
             // Debug.Log("[ResetCardPosition]");
             if (auraPS.gameObject.activeSelf) auraPS.Stop();
+
+            DOTween.Kill(this.transform);
 
             cardIsShowingUp = false;
             cardIsDisplaced = false;
@@ -432,6 +436,18 @@ public class CardOnHandManager : MonoBehaviour
                 GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Cancel");
             }
 
+            if (!Input.GetMouseButton(0))
+                ResetCardPosition();
+            else
+                awaitMouseUp = true;
+        }
+    }
+
+    private void Update()
+    {
+        if (awaitMouseUp && !Input.GetMouseButton(0)) 
+        {
+            awaitMouseUp = false;
             ResetCardPosition();
         }
     }
