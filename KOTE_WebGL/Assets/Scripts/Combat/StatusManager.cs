@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,10 +10,18 @@ public class StatusManager : MonoBehaviour
     [SerializeField]
     SpriteSpacer iconContainer;
 
+    [SerializeField]
     EnemyManager enemyManager;
+    [SerializeField]
     PlayerManager playerManager;
 
-    string entityID => enemyManager?.EnemyData.id ?? "player"; // playerManager?.PlayerData.id;
+    List<StatusData.Status> statusList;
+
+    string entityType => (enemyManager == null ? "player" : "enemy");
+    int entityID => enemyManager?.EnemyData.enemyId ?? playerManager?.PlayerData.playerId ?? -1;
+
+    static bool askedForStatus = false;
+    bool statusSet = false;
 
     void Start()
     {
@@ -24,12 +33,17 @@ public class StatusManager : MonoBehaviour
         {
             Debug.LogError($"[StatusManager] Missing Icon Container.");
         }
-        enemyManager = GetComponentInParent<EnemyManager>();
-        playerManager = GetComponentInParent<PlayerManager>();
+        if(enemyManager == null)
+            enemyManager = GetComponentInParent<EnemyManager>();
+        if(playerManager == null)
+            playerManager = GetComponentInParent<PlayerManager>();
         if (enemyManager == null && playerManager == null)
         {
             Debug.LogError($"[StatusManager] Manager does not belong either an enemy or a player.");
         }
+        GameManager.Instance.EVENT_UPDATE_STATUS_EFFECTS.AddListener(OnUpdateStatus);
+        iconContainer.SetFadeSpeed(GameSettings.STATUS_FADE_SPEED);
+        iconContainer.fadeOnCreate = true;
     }
 
     private void OnDrawGizmos()
@@ -45,14 +59,56 @@ public class StatusManager : MonoBehaviour
         Utils.GizmoDrawBox(new Bounds(rt.position + transform.position, size2 * 1.05f), new Vector3(size.x * 2, 0, transform.position.z - 0.1f));
     }
 
-    private void AddStatus() 
+    private void onTurnChange() 
     {
-        
+        if (!askedForStatus)
+        {
+            askForStatus();
+        }
     }
 
-    private void OnUpdateStatus() 
+    private void DrawStatus() 
     {
-        
+        iconContainer.ClearIcons();
+        foreach (var status in statusList) 
+        {
+            GameObject iconObject = Instantiate(iconPrefab);
+            var statusIcon = iconPrefab.GetComponent<StatusIcon>();
+            statusIcon.Initialize();
+
+            STATUS stat = ToEnum(status.name);
+            statusIcon.SetValue(status.counter);
+            statusIcon.SetIcon(stat);
+            statusIcon.SetTooltip(status.description);
+
+            iconContainer.AddIcon(iconObject);
+        }
+        iconContainer.ReorganizeSprites();
+
+        askedForStatus = false;
+        statusSet = true;
+    }
+
+    private void Update()
+    {
+        if (!statusSet && !askedForStatus)
+        {
+            askForStatus();
+        }
+    }
+
+    private void askForStatus()
+    {
+        askedForStatus = true;
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Statuses);
+    }
+
+    private void OnUpdateStatus(StatusData status) 
+    {
+        if (status.targetEntity != entityType || status.id != entityID) return;
+
+        statusList = status.statuses;
+        DrawStatus();
     }
 
     private STATUS ToEnum(string str) 

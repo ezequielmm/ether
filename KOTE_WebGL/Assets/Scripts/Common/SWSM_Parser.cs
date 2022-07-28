@@ -45,7 +45,7 @@ public class SWSM_Parser
                 ProcessBeginTurn(swsm.data.action, data);
                 break;
             default:
-                Debug.LogError("No message_type processed. Data Received: " + data);
+                Debug.LogError("[SWSM Parser] No message_type processed. Data Received: " + data);
                 break;
         } ;
     }
@@ -232,9 +232,23 @@ public class SWSM_Parser
             case nameof(WS_DATA_REQUEST_TYPES.EnemyIntents):
                 ProcessEnemyIntents("update_enemy_intents", data);
                 break;
+            case nameof(WS_DATA_REQUEST_TYPES.Statuses):
+                ProcessStatusUpdate(data);
+                break;
             default:
                 Debug.Log($"[SWSM Parser] [Generic Data] Uncaught Action \"{action}\". Data = {data}");
                 break;
+        }
+    }
+
+    private static void ProcessStatusUpdate(string data) 
+    {
+        Debug.Log($"[SWSM_Parser][ProcessStatusUpdate] data = {data}");
+        SWSM_StatusData statusData = JsonUtility.FromJson<SWSM_StatusData>(data);
+        List <StatusData> statuses = statusData.data.data;
+        foreach (StatusData status in statuses) 
+        {
+            GameManager.Instance.EVENT_UPDATE_STATUS_EFFECTS.Invoke(status);
         }
     }
 
@@ -252,7 +266,7 @@ public class SWSM_Parser
     }
     private static void ProcessEnemyIntents(string action, string data)
     {
-        Debug.Log($"[ProcessEnemyIntents] data = {data}");
+        //Debug.Log($"[SWSM_Parser][ProcessEnemyIntents] data = {data}");
         SWSM_IntentData swsm_intentData = JsonUtility.FromJson<SWSM_IntentData>(data);
         List<EnemyIntent> enemyIntents = swsm_intentData.data.data;
         switch (action) 

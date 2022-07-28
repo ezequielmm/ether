@@ -15,6 +15,7 @@ public class SpriteSpacer : MonoBehaviour
     [HideInInspector] public float fadeSpeed = 1;
     public ContentAlign contentAlign = ContentAlign.Center;
     public Display display = Display.Horizontal;
+    public bool fadeOnCreate = false;
 
     public enum ContentAlign 
     {
@@ -67,6 +68,11 @@ public class SpriteSpacer : MonoBehaviour
                 width = rectTransform.rect.height;
                 item.transform.localPosition = new Vector3(0, length + (width / 2), 0);
             }
+            if (fadeOnCreate) 
+            {
+                item.transform.localScale = Vector3.zero;
+                item.transform.DOScale(1, fadeSpeed);
+            }
             
             length += width;
 
@@ -89,6 +95,12 @@ public class SpriteSpacer : MonoBehaviour
                     
                     length += spaceWidth;
                     length += iconSpace;
+
+                    if (fadeOnCreate)
+                    {
+                        _spacer.transform.localScale = Vector3.zero;
+                        _spacer.transform.DOScale(1, fadeSpeed);
+                    }
                 }
             }
         }

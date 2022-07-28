@@ -173,14 +173,17 @@ public class PlayerData
 {
     public string playerName;
     public string characterClass;
+    /// <summary>
+    /// Index of Player
+    /// </summary>
+    public int playerId = 1; // This will be static for now. We'll need this when we have multiple players
     public int hpCurrent;
     public int hpMax;//current
     public int gold;
-    //public int energy;
-    //public int energyMax;
+    public int energy;
+    public int energyMax;
     public int defense;
     public List<Card> cards;
-
 }
 
 [Serializable]
@@ -341,7 +344,7 @@ public class SWSM_IntentData
     }
 }
 
-    [Serializable]
+[Serializable]
 public class EnemyIntent
 {
     public string id;
@@ -356,6 +359,37 @@ public class EnemyIntent
     }
 
 }
+
+[Serializable]
+public class SWSM_StatusData 
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public string message_type;
+        public string action;
+        public List<StatusData> data;
+    }
+}
+
+[Serializable]
+public class StatusData
+{
+    public string targetEntity;
+    public int id;
+    public List<Status> statuses;
+
+    [Serializable]
+    public class Status 
+    {
+        public string name;
+        public int counter;
+        public string description;
+    }
+}
+
 
 [Serializable]
 public class SWSM_ErrorData
@@ -404,8 +438,14 @@ public class EnemiesData
 [Serializable]
 public class EnemyData
 {
+    /// <summary>
+    /// GUID of enemy
+    /// </summary>
     public string id;
     public string name;
+    /// <summary>
+    /// Index of enemy
+    /// </summary>
     public int enemyId;
     public int defense;
     public int hpCurrent;//current
