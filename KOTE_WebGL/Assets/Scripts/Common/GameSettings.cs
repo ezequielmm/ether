@@ -26,6 +26,7 @@ public static class GameSettings
     public const float HAND_CARD_MAX_XX_DRAG_DELTA = 5f;
     public static float HAND_CARD_REST_Y => (Camera.main.orthographicSize * -1) - 0.5f;
     public static float HAND_CARD_SHOW_UP_Y => HAND_CARD_REST_Y + 3f;
+    public static float HAND_CARD_Y_CURVE = 0.25f;
     public static Vector3 HAND_CARDS_GENERATION_POINT = new Vector3(-7, -5, -9);
     public static float CARD_SFX_MIN_RATE = 0.1f; // Time in seconds between SFX of cards
 

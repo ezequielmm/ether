@@ -92,6 +92,7 @@ public class CardOnHandManager : MonoBehaviour
     private bool cardIsShowingUp;
     private bool pointerIsActive;
     private bool cardIsDisplaced;
+    private bool discardAfterMove;
 
     private int currentPlayerEnergy;
 
@@ -244,6 +245,10 @@ public class CardOnHandManager : MonoBehaviour
                     break;
                 case CARDS_POSITIONS_TYPES.discard:
                     destination = discardPileOrthoPosition;
+                    if (originType == CARDS_POSITIONS_TYPES.hand)
+                    {
+                        discardAfterMove = true;
+                    }
                     break;
                 case CARDS_POSITIONS_TYPES.hand:
                     destination = pos;
@@ -300,7 +305,12 @@ public class CardOnHandManager : MonoBehaviour
     {
         cardActive = activateCardAfterMove;
         movePs.Stop();
-        
+        if (discardAfterMove)
+        {
+            discardAfterMove = false;
+            GameManager.Instance.EVENT_CARD_DISABLED.Invoke(thisCardValues.id);
+        }
+
     }
 
     private void HideAndDeactivateCard()
@@ -309,6 +319,12 @@ public class CardOnHandManager : MonoBehaviour
         //cardActive = false;
         //this.gameObject.SetActive(false);
         movePs.Stop();
+
+        if (discardAfterMove)
+        {
+            discardAfterMove = false;
+            GameManager.Instance.EVENT_CARD_DISABLED.Invoke(thisCardValues.id);
+        }
 
         if (!activateCardAfterMove)
         {

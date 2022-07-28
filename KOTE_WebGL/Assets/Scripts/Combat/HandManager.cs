@@ -179,6 +179,11 @@ public class HandManager : MonoBehaviour
 
         RelocateCards(true);
     }
+
+    /// <summary>
+    /// Relocates the cards in hands. If move is on, card movement is send to the cards themselves to be preformed.
+    /// </summary>
+    /// <param name="move">True to do a draw animation to hand.</param>
     private void RelocateCards(bool move = false)
     {
 
@@ -212,7 +217,7 @@ public class HandManager : MonoBehaviour
 
                 //var angle = (float)(counter * Mathf.PI * 2);                   
                 var angle = (float)(pos.x * Mathf.PI * 2);
-                pos.y += Mathf.Cos(Mathf.PI * pos.x);
+                pos.y += Mathf.Cos(pos.x * GameSettings.HAND_CARD_Y_CURVE);
 
 
                 //newCard.transform.position = pos;
