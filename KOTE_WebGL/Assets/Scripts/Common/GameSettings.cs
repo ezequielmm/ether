@@ -12,7 +12,7 @@ public static class GameSettings
     public const float MAP_SCROLL_BUTTON_TIME = 0.6f; // How long the screen scrolls for on a click
     public const float MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON = 2; // For continues
     public const float MAP_SCROLL_ANIMATION_DURATION = 5f; // For reveals
-    public const float MAP_SCROLL_HOLD_DELAY_DURATION = 0.5f; // Button press before constant scroll
+    public const float MAP_SCROLL_HOLD_DELAY_DURATION = 0f; // Button press before constant scroll
     public const float MAP_SCROLL_SPEED_CUTOFF = 0.01f; // Lowend cutoff when ending a scroll
     public const float MAP_REVEAL_ANIMATION_SPEED = 0.1f;
     public const float MAP_LEFT_EDGE_MULTIPLIER = 1f;
