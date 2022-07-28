@@ -90,6 +90,7 @@ public class IconMap<T> : MonoBehaviour
 
     public void SetIcon(T type, int value = 0)
     {
+        gameObject.name = type.ToString();
         Icon selected = null;
         foreach (var icon in iconMap)
         {

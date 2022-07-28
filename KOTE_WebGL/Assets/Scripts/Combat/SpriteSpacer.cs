@@ -68,13 +68,14 @@ public class SpriteSpacer : MonoBehaviour
                 width = rectTransform.rect.height;
                 item.transform.localPosition = new Vector3(0, length + (width / 2), 0);
             }
-            if (fadeOnCreate) 
+            
+            length += width;
+
+            if (fadeOnCreate)
             {
                 item.transform.localScale = Vector3.zero;
                 item.transform.DOScale(1, fadeSpeed);
             }
-            
-            length += width;
 
             if (i != icons.Count - 1) 
             {

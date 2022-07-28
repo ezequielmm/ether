@@ -42,6 +42,7 @@ public class StatusManager : MonoBehaviour
             Debug.LogError($"[StatusManager] Manager does not belong either an enemy or a player.");
         }
         GameManager.Instance.EVENT_UPDATE_STATUS_EFFECTS.AddListener(OnUpdateStatus);
+        GameManager.Instance.EVENT_CHANGE_TURN.AddListener(onTurnChange);
         iconContainer.SetFadeSpeed(GameSettings.STATUS_FADE_SPEED);
         iconContainer.fadeOnCreate = true;
     }
@@ -59,7 +60,7 @@ public class StatusManager : MonoBehaviour
         Utils.GizmoDrawBox(new Bounds(rt.position + transform.position, size2 * 1.05f), new Vector3(size.x * 2, 0, transform.position.z - 0.1f));
     }
 
-    private void onTurnChange() 
+    private void onTurnChange(string next) 
     {
         if (!askedForStatus)
         {
@@ -73,7 +74,7 @@ public class StatusManager : MonoBehaviour
         foreach (var status in statusList) 
         {
             GameObject iconObject = Instantiate(iconPrefab);
-            var statusIcon = iconPrefab.GetComponent<StatusIcon>();
+            var statusIcon = iconObject.GetComponent<StatusIcon>();
             statusIcon.Initialize();
 
             STATUS stat = ToEnum(status.name);
@@ -105,7 +106,7 @@ public class StatusManager : MonoBehaviour
 
     private void OnUpdateStatus(StatusData status) 
     {
-        if (status.targetEntity != entityType || status.id != entityID) return;
+        if ((status.targetEntity != entityType || status.id != entityID) && status.targetEntity != "all") return;
 
         statusList = status.statuses;
         DrawStatus();

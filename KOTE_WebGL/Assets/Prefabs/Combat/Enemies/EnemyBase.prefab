@@ -412,6 +412,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Status Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 5700161109314355938, guid: 59429e3372c534941b6533fe6df20c13,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59429e3372c534941b6533fe6df20c13, type: 3}
 --- !u!224 &1376716784019429680 stripped
