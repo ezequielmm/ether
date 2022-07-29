@@ -174,7 +174,7 @@ public class SpriteSpacer : MonoBehaviour
 
     private void DestorySpacers() 
     {
-        Debug.Log("Spacers Destroyed!");
+        //Debug.Log("Spacers Destroyed!");
         for (int i = 0; i < spacers.Count; i++) 
         {
             spacers[i].transform.DOScale(0, fadeSpeed);

@@ -241,11 +241,11 @@ public class SWSM_Parser
         }
     }
 
-    private static void ProcessStatusUpdate(string data) 
+    private static void ProcessStatusUpdate(string data)
     {
-        Debug.Log($"[SWSM_Parser][ProcessStatusUpdate] data = {data}");
         SWSM_StatusData statusData = JsonUtility.FromJson<SWSM_StatusData>(data);
-        List <StatusData> statuses = statusData.data.data;
+        Debug.Log($"[SWSM_Parser][ProcessStatusUpdate] Source --> [ {statusData.data.message_type} | {statusData.data.action} ]");
+        List<StatusData> statuses = statusData.data.data;
         foreach (StatusData status in statuses) 
         {
             GameManager.Instance.EVENT_UPDATE_STATUS_EFFECTS.Invoke(status);
@@ -261,6 +261,12 @@ public class SWSM_Parser
             case "begin_combat":
                 
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Combat);
+                break;
+            case "update_statuses":
+                ProcessStatusUpdate(data);
+                break;
+            default:
+                Debug.Log($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
                 break;
         }
     }
