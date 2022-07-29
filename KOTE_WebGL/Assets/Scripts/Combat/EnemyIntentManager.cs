@@ -33,17 +33,18 @@ public class EnemyIntentManager : MonoBehaviour
         }
         GameManager.Instance.EVENT_UPDATE_INTENT.AddListener(OnUpdateIntent);
         GameManager.Instance.EVENT_CHANGE_TURN.AddListener(onTurnChange);
-        intentSet = false; 
+        intentSet = false;
+        iconContainer.SetFadeSpeed(GameSettings.INTENT_FADE_SPEED);
     }
 
     private void OnDrawGizmos()
     {
         var scale = Vector3.one * iconContainer.transform.localScale.y;
-        var scale2 = scale + new Vector3(scale.x * 2, 0, 0);
+        var scale2 = (scale + new Vector3(scale.x * 3, 0, 0)) * 1.05f;
         Gizmos.color = Color.cyan;
-        Utils.GizmoDrawBox(new Bounds(transform.position, scale), new Vector3(0, scale.y / 2, 0));
+        Utils.GizmoDrawBox(new Bounds(transform.position, scale), new Vector3(0, scale.y / 2, transform.position.z));
         Gizmos.color = Color.red;
-        Utils.GizmoDrawBox(new Bounds(transform.position, scale2), new Vector3(0, scale.y / 2, 0));
+        Utils.GizmoDrawBox(new Bounds(transform.position, scale2), new Vector3(0, scale.y / 2, transform.position.z - 0.1f));
     }
 
     private void Update()
@@ -100,9 +101,10 @@ public class EnemyIntentManager : MonoBehaviour
             GameObject icon = Instantiate(iconPrefab);
             var intentIcon = icon.GetComponent<IntentIcon>();
             intentIcon.Initialize();
-            intentIcon.SetValue(intent.value, count);
-            intentIcon.SetIcon(intentFromString(intent.type), intent.value);
-            intentIcon.SetTooltip(intent.description);
+            var intentType = intentFromString(intent.type);
+            intentIcon.SetValue(intentType == ENEMY_INTENT.attack ? intent.value : 0, count);
+            intentIcon.SetIcon(intentType, intent.value);
+            intentIcon.SetTooltip(intentType != ENEMY_INTENT.unknown ? intent.description : "Unknown");
 
             iconContainer.AddIcon(icon);
         }

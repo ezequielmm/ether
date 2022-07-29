@@ -99,3 +99,5 @@ MonoBehaviour:
   spacer: {fileID: 7042914909701256969, guid: f816c708991394a4db59958e7b4b9bd5, type: 3}
   iconSpace: 0.1
   fadeSpeed: 0.2
+  contentAlign: 0
+  display: 0

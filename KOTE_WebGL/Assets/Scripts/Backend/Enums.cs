@@ -74,12 +74,73 @@ public enum NODE_STATUS
 
 public enum ENEMY_INTENT 
 {
+    unknown = 0,
+
     attack,
     defend,
     plot, // buff
     scheme, // debuff
-    stunned, // nothing
-    unknown
+    stunned // nothing
+}
+
+public enum STATUS
+{
+    unknown = 0,
+
+    resolve,
+    fortitude,
+    distraught,
+    feeble,
+    fatigue,
+    resist,
+    spirited,
+    spikes,
+    dodge,
+    forceField,
+    regeneration,
+    intercept,
+    enraged,
+    heraldDelayed,
+    heralding,
+    gritted,
+    grittedPlus,
+    resolveExpires,
+    bolstered,
+    anticipating,
+    siphoning,
+    turtling,
+    imbued,
+    doubleDown,
+    praying,
+    trinity,
+    trinityPlus,
+    enflamed,
+    gifted,
+    finelyEdged,
+    finelyEdgedPlus,
+    armoredUp,
+    armoredUpPlus,
+    dewDrop,
+    burn,
+    tasteOfBlood,
+    confusion,
+    confused,
+    stunned,
+    drained,
+    summoned,
+    clearheaded,
+    blinded,
+    blighted,
+    oiled,
+    trapping,
+    mimic,
+    moldy,
+    squishy,
+    combustible,
+    hidden,
+    reactive,
+    mysteriousFigure,
+    emptyFade
 }
 
 public enum EntityType
@@ -98,7 +159,8 @@ public enum WS_DATA_REQUEST_TYPES
     Enemies,
     EnemyIntents,
     Potions,
-    Trinkets
+    Trinkets,
+    Statuses
 }
 
 [Serializable]

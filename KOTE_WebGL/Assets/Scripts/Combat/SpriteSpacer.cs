@@ -12,7 +12,24 @@ public class SpriteSpacer : MonoBehaviour
     GameObject container;
     [Tooltip("Space between all sprites.")]
     public float iconSpace = 0.1f;
-    [HideInInspector] public float fadeSpeed = GameSettings.INTENT_FADE_SPEED;
+    [HideInInspector] public float fadeSpeed = 1;
+    public ContentAlign contentAlign = ContentAlign.Center;
+    public Display display = Display.Horizontal;
+    public bool fadeOnCreate = false;
+
+    public enum ContentAlign 
+    {
+        Left = -1,
+        Center = 0,
+        Right = 1,
+        Top = -1,
+        Bottom = 1
+    }
+    public enum Display
+    {
+        Horizontal,
+        Vertical
+    }
 
     private void Awake()
     {
@@ -22,6 +39,11 @@ public class SpriteSpacer : MonoBehaviour
         container.transform.localPosition = Vector3.zero;
         container.transform.localRotation = Quaternion.identity;
         container.name = "Sprite Container";
+    }
+
+    public void SetFadeSpeed(float value) 
+    {
+        fadeSpeed = value;
     }
 
     public void ReorganizeSprites() 
@@ -39,9 +61,21 @@ public class SpriteSpacer : MonoBehaviour
 
             RectTransform rectTransform = item.transform as RectTransform;
             var width = rectTransform.rect.width;
+            item.transform.localPosition = new Vector3(length + (width / 2), 0, 0);
+
+            if (display == Display.Vertical) 
+            {
+                width = rectTransform.rect.height;
+                item.transform.localPosition = new Vector3(0, length + (width / 2), 0);
+            }
             
-            item.transform.localPosition = new Vector3(length + (width/2), 0, 0);
             length += width;
+
+            if (fadeOnCreate)
+            {
+                item.transform.localScale = Vector3.zero;
+                item.transform.DOScale(1, fadeSpeed);
+            }
 
             if (i != icons.Count - 1) 
             {
@@ -52,15 +86,59 @@ public class SpriteSpacer : MonoBehaviour
                     spacers.Add(_spacer);
                     RectTransform spacerTransform = _spacer.transform as RectTransform;
                     var spaceWidth = spacerTransform.rect.width;
+                    _spacer.transform.localPosition = new Vector3(length + (spaceWidth / 2), 0, 0);
 
-                    _spacer.transform.localPosition = new Vector3(length + (spaceWidth/2), 0, 0);
+                    if (display == Display.Vertical)
+                    {
+                        spaceWidth = spacerTransform.rect.height;
+                        _spacer.transform.localPosition = new Vector3(0, length + (spaceWidth / 2), 0);
+                    }
+                    
                     length += spaceWidth;
                     length += iconSpace;
+
+                    if (fadeOnCreate)
+                    {
+                        _spacer.transform.localScale = Vector3.zero;
+                        _spacer.transform.DOScale(1, fadeSpeed);
+                    }
                 }
             }
         }
 
-        lastPosition.x = -(length / 2);
+        switch (display) 
+        {
+            case Display.Horizontal:
+                switch (contentAlign)
+                {
+                    case ContentAlign.Left:
+                        // Alight Left by design
+                        break;
+                    case ContentAlign.Center:
+                        lastPosition.x = -(length / 2);
+                        break;
+                    case ContentAlign.Right:
+                        lastPosition.x = -length;
+                        break;
+                }
+                break;
+            case Display.Vertical:
+                switch (contentAlign)
+                {
+                    case ContentAlign.Top:
+                        // Alight Top by design
+                        break;
+                    case ContentAlign.Center:
+                        lastPosition.y = -(length / 2);
+                        break;
+                    case ContentAlign.Bottom:
+                        lastPosition.y = -length;
+                        break;
+                }
+                break;
+        }
+
+
 
         container.transform.localPosition = lastPosition;
         container.transform.rotation = lastRotation;
@@ -96,7 +174,7 @@ public class SpriteSpacer : MonoBehaviour
 
     private void DestorySpacers() 
     {
-        Debug.Log("Spacers Destroyed!");
+        //Debug.Log("Spacers Destroyed!");
         for (int i = 0; i < spacers.Count; i++) 
         {
             spacers[i].transform.DOScale(0, fadeSpeed);
