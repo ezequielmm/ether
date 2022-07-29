@@ -129,8 +129,8 @@ public class PlayerManager : MonoBehaviour
 
         if (isAttack == false) 
         {
-            SetDefense();
-            SetHealth();
+            SetDefense(current.defense);
+            SetHealth(current.hpCurrent, current.hpMax);
         }
         return current;
     }
