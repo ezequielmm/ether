@@ -22,11 +22,13 @@ namespace map
         public GameObject LeftButton;
         public GameObject RightScrollButton;
 
-        private float scrollSpeed;
+        private float scrollTime;
 
         public Bounds mapBounds;
+        private Bounds maskBounds;
 
         private bool scrollMap;
+        private bool scrollDirection;
 
         private Tween activeTween;
 
@@ -49,6 +51,7 @@ namespace map
 
             // we need half the width of the screen for various checks
             halfScreenWidth = Camera.main.orthographicSize * Camera.main.aspect;
+            maskBounds = GetComponentInChildren<SpriteMask>().GetComponent<BoxCollider2D>().bounds;
         }
 
         private void OnToggleMap(bool data)
@@ -63,53 +66,88 @@ namespace map
 
         private void Update()
         {
-            if (!scrollMap)
+            float currentScrollSpeed = 0;
+            if (scrollMap)
             {
-                scrollSpeed = Mathf.SmoothStep(scrollSpeed, 0, Time.fixedDeltaTime * 2);
-                // Debug.Log("scrollSpeed:" + scrollSpeed);
+                currentScrollSpeed = Mathf.SmoothStep(scrollDirection ? -GameSettings.MAP_SCROLL_SPEED : GameSettings.MAP_SCROLL_SPEED, 0, scrollTime / GameSettings.MAP_SCROLL_BUTTON_TIME);
+                if (scrollTime >= GameSettings.MAP_SCROLL_BUTTON_TIME)
+                {
+                    scrollMap = false;
+                    scrollTime = 0;
+                }
+                scrollTime += Time.deltaTime;
             }
 
-            if (Mathf.Abs(scrollSpeed) < 0.01f) scrollSpeed = 0;
+            if (Mathf.Abs(currentScrollSpeed) < GameSettings.MAP_SCROLL_SPEED_CUTOFF) 
+            {
+                currentScrollSpeed = 0;
+                scrollMap = false;
+            }
 
             Vector3 velocity = Vector3.zero;
             Vector3 currentMapPos = nodesHolder.transform.localPosition;
 
             Vector3 newPos = nodesHolder.transform.localPosition;
+            
 
-            newPos.x += scrollSpeed;
+            if(scrollMap)
+                newPos.x += currentScrollSpeed;
 
-            //limit left scroll
-            if (newPos.x < -mapBounds.max.x) newPos.x = -mapBounds.max.x;
+            Vector3 limitPos = currentMapPos;
 
-            //limit the map move to the right
-            if (newPos.x > 0 || mapBounds.max.x < halfScreenWidth * 2) newPos.x = 0 - halfScreenWidth;
+            bool overEdge = false;
+            bool overHardLimit = false;
+            // limit scroll on the right (Boss Side)
+            float rightEdge = mapBounds.extents.x + mapBounds.center.x + newPos.x;
+            if (rightEdge < 0)
+            {
+                newPos.x = 0 - (mapBounds.extents.x + mapBounds.center.x);
+                overEdge = true;
+            }
+            if (rightEdge < -GameSettings.MAP_STRETCH_LIMIT + -0.01f)
+            {
+                limitPos.x = -GameSettings.MAP_STRETCH_LIMIT - (mapBounds.extents.x + mapBounds.center.x);
+                overHardLimit = true;
+                //Debug.Log($"[Map] Right Pass Bounds [{rightEdge} -/- {newPos.x}]");
+            }
 
-            if (newPos.x < 0)
+            // limit the map move on the Left (House Side)
+            float leftEdge = -mapBounds.extents.x + mapBounds.center.x + newPos.x;
+            if (leftEdge > 0)
+            {
+                newPos.x = 0 - (-mapBounds.extents.x + mapBounds.center.x);
+                overEdge = true;
+                //Debug.Log($"[Map] Left Pass Bounds [{leftEdge} -/- {newPos.x}]");
+            }
+            if (leftEdge > GameSettings.MAP_STRETCH_LIMIT + 0.01f)
+            {
+                limitPos.x = GameSettings.MAP_STRETCH_LIMIT - (-mapBounds.extents.x + mapBounds.center.x);
+                overHardLimit = true;
+            }
+
+            if (overEdge || scrollMap)
             {
                 nodesHolder.transform.localPosition = Vector3.SmoothDamp(currentMapPos, newPos, ref velocity, 0.03f);
             }
-            else
+            if (overHardLimit && !scrollMap) 
             {
-                scrollSpeed = GameSettings.MAP_SCROLL_SPEED;
+                nodesHolder.transform.localPosition = limitPos;
+            }
+            if (overEdge && mapBounds.extents.x == 0) 
+            {
+                nodesHolder.transform.localPosition = newPos;
             }
         }
 
 
         private void OnScrollButtonClicked(bool active, bool direction)
         {
-            scrollMap = active;
-
             if (active)
             {
+                scrollMap = true;
                 KillActiveTween();
-                if (direction)
-                {
-                    scrollSpeed = GameSettings.MAP_SCROLL_SPEED * -1; //TODO magic number
-                }
-                else
-                {
-                    scrollSpeed = GameSettings.MAP_SCROLL_SPEED;
-                }
+                scrollDirection = direction;
+                scrollTime = 0;
             }
         }
 
@@ -120,19 +158,13 @@ namespace map
             KillActiveTween();
 
             // make sure this script isn't scrolling
-            scrollSpeed = 0;
+            scrollTime = 0;
             // and keep the map in bounds
 
             Vector3 newPos = nodesHolder.transform.localPosition;
             newPos.x = Camera.main.ScreenToWorldPoint(Input.mousePosition).x - dragOffset.x;
             newPos = transform.InverseTransformPoint(newPos);
             newPos.z = 0;
-
-            //limit left scroll
-            if (newPos.x < -mapBounds.max.x) newPos.x = -mapBounds.max.x;
-
-            //limit the map move to the right
-            if (newPos.x > 0 || mapBounds.max.x < halfScreenWidth * 2) newPos.x = 0 - halfScreenWidth;
 
             nodesHolder.transform.localPosition = newPos;
         }
@@ -245,7 +277,7 @@ namespace map
 
         void InstantiateMapNodes(MapStructure mapStructure)
         {
-            float columnOffsetCounter = GameSettings.MAP_SPRITE_NODE_X_OFFSET;
+            float columnOffsetCounter = 0;
             float columnIncrement = GameSettings.MAP_SPRITE_NODE_X_OFFSET;
 
 
@@ -329,12 +361,14 @@ namespace map
 
         #endregion
 
-        void ScrollBackToPlayerIcon(float scrollTime = GameSettings.MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON)
+        void ScrollBackToPlayerIcon(float scrollTime = GameSettings.MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON, float knightPositionOnScreen = GameSettings.KNIGHT_SCREEN_POSITION_ON_CENTER)
         {
-            float targetx = playerIcon.transform.localPosition.x / -2;
+            // Put knight to center
+            // Distance between knight and node origin.
+            float disToKnight = playerIcon.transform.position.x - nodesHolder.transform.position.x;
+            // Subtract desired knight position by distance to get node position.
+            float targetx = (halfScreenWidth * knightPositionOnScreen) - disToKnight;
 
-           //Debug.Log("node:" + nodesHolder.transform.localPosition.x);
-            //Debug.Log("targetx:" + targetx);
 
             if ((mapBounds.max.x < halfScreenWidth * 2) == false)
             {
@@ -364,18 +398,19 @@ namespace map
 
         private IEnumerator RevealMapThenReturnToPlayer(Vector3 mapPos, float animDuration)
         {
+            yield return new WaitForSeconds(1); // Wait for map to load
             activeTween = nodesHolder.transform.DOLocalMoveX(-mapBounds.max.x, animDuration);
             yield return activeTween.WaitForCompletion();
 
             nodesHolder.transform.localPosition = new Vector3(-mapBounds.max.x, 0, 0);
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(2); // pause before return
             ScrollBackToPlayerIcon(GameSettings.MAP_SCROLL_ANIMATION_DURATION);
         }
 
 
         void ScrollFromBoss()
         {
-            scrollSpeed = 0;
+            scrollTime = 0;
             nodesHolder.transform.localPosition = new Vector3(-mapBounds.max.x, 0, 0);
             StartCoroutine(ScrollFromBossToPlayer());
         }
@@ -383,7 +418,7 @@ namespace map
         private IEnumerator ScrollFromBossToPlayer()
         {
             yield return new WaitForSeconds(1); // pause for loading
-            ScrollBackToPlayerIcon(GameSettings.MAP_SCROLL_ANIMATION_DURATION);
+            ScrollBackToPlayerIcon(GameSettings.MAP_SCROLL_ANIMATION_DURATION, 0);
         }
 
         // get the boss node so we can move to it
@@ -430,29 +465,83 @@ namespace map
 
         void CalculateLocalBounds()
         {
-            Quaternion currentRotation = this.transform.rotation;
-            this.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            Quaternion currentRotation = nodesHolder.transform.rotation;
+            Vector3 currentPosition = nodesHolder.transform.position;
+            nodesHolder.transform.position = Vector3.zero;
+            nodesHolder.transform.rotation = Quaternion.identity;
 
-            Bounds bounds = new Bounds(this.transform.position, Vector3.zero);
-
+            Bounds bounds = new Bounds(nodesHolder.transform.position, Vector3.zero);
+            
             foreach (Renderer renderer in nodesHolder.GetComponentsInChildren<Renderer>())
             {
                 bounds.Encapsulate(renderer.bounds);
             }
 
-            // the bounds puts the final node in the middle of the screen, but we want it at the right edge
+            // if small map
+            if (bounds.max.x < halfScreenWidth * 2)
+            {
+                bounds.extents = new Vector3(0, bounds.extents.y, bounds.extents.z);
+            }
+            else
+            {
+                //  Sets Left Edge
 
+                // need to remove left side bounds to keep houses on left edge
+                float leftEdge = Mathf.Abs(-maskBounds.extents.x + maskBounds.center.x) * GameSettings.MAP_LEFT_EDGE_MULTIPLIER;
+                // Now we shrink and shift our bounds to the right
+                // subtract half of left edge from extents
+                bounds.extents = new Vector3(bounds.extents.x - (leftEdge / 2), bounds.extents.y, bounds.extents.z);
+                // add half of the left edge to center
+                bounds.center = new Vector3(bounds.center.x + (leftEdge / 2), bounds.center.y, bounds.center.z);
 
-            // but just that cuts off the last node, so we need the size of the node as well
-            float nodeWidth = nodes[nodes.Count - 1].GetComponent<BoxCollider2D>().size.x;
+                // Sets Right Edge
 
-            // and subtract it from the bounds, but add the node width so it doesn't get cut off
-            float newBoundsX = (bounds.extents.x - halfScreenWidth + nodeWidth);
+                float rightEdge = Mathf.Abs(maskBounds.extents.x + maskBounds.center.x) * GameSettings.MAP_RIGHT_EDGE_MULTIPLIER;
+                // Now we shrink and shift our bounds to the left
+                // subtract half of right edge from extents
+                bounds.extents = new Vector3(bounds.extents.x - (rightEdge / 2), bounds.extents.y, bounds.extents.z);
+                // subtract half of the right edge to center
+                bounds.center = new Vector3(bounds.center.x - (rightEdge / 2), bounds.center.y, bounds.center.z);
+            }
 
-            bounds.extents = new Vector3(newBoundsX, bounds.extents.y, bounds.extents.z);
-
-            this.transform.rotation = currentRotation;
+            nodesHolder.transform.rotation = currentRotation;
+            nodesHolder.transform.position = currentPosition;
             mapBounds = bounds;
+            Debug.Log("[Map] Map Bounds Recalculated.");
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (mapBounds != null) 
+            {
+                // highlights the bounds in editor for debugging
+                Gizmos.color = Color.yellow;
+                GizmoDrawBox(mapBounds, nodesHolder.transform.position);
+            }
+            if (maskBounds != null)
+            {
+                // Shows where the mask is
+                Gizmos.color = Color.magenta;
+                GizmoDrawBox(maskBounds);
+            }
+        }
+
+        private void GizmoDrawBox(Bounds bounds, Vector2 offset = default(Vector2))
+        {
+            offset += (Vector2)bounds.center;
+            GizmoDrawBox(
+                new Vector2(bounds.extents.x + offset.x, bounds.extents.y + offset.y),
+                new Vector2(-bounds.extents.x + offset.x, bounds.extents.y + offset.y),
+                new Vector2(bounds.extents.x + offset.x, -bounds.extents.y + offset.y),
+                new Vector2(-bounds.extents.x + offset.x, -bounds.extents.y + offset.y));
+        }
+
+        private void GizmoDrawBox(Vector2 TopLeft, Vector2 TopRight, Vector2 BottomLeft, Vector2 BottomRight) 
+        {
+            Gizmos.DrawLine(TopLeft, TopRight);
+            Gizmos.DrawLine(TopRight, BottomRight);
+            Gizmos.DrawLine(BottomRight, BottomLeft);
+            Gizmos.DrawLine(BottomLeft, TopLeft);
         }
 
         // kills the active tween to allow for player override
