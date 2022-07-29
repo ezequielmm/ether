@@ -375,6 +375,20 @@ public class SWSM_StatusData
 }
 
 [Serializable]
+public class SWSM_CombatAction 
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public string message_type;
+        public string action;
+        public List<CombatTurnData> data;
+    }
+}
+
+[Serializable]
 public class StatusData
 {
     public string targetEntity;

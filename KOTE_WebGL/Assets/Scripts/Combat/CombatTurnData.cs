@@ -14,6 +14,7 @@ public class CombatTurnData
     public CombatTurnData()
     {
         attackId = new Guid().ToString();
+        delay = GameSettings.COMBAT_ANIMATION_DELAY;
     }
     public CombatTurnData(string origin, List<Target> targets, float delay = GameSettings.COMBAT_ANIMATION_DELAY)
     {
@@ -65,6 +66,7 @@ public class CombatTurnData
         public int finalHealth;
         public int defenseDelta;
         public int finalDefense;
+        public List<StatusData.Status> statuses;
     }
 
     public override string ToString()

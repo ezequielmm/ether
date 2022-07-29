@@ -259,15 +259,27 @@ public class SWSM_Parser
         switch (action)
         {
             case "begin_combat":
-                
+
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Combat);
                 break;
             case "update_statuses":
                 ProcessStatusUpdate(data);
                 break;
+            case "combat_queue":
+                ProcessCombatQueue(data);
+                break;
             default:
                 Debug.Log($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
                 break;
+        }
+    }
+
+    private static void ProcessCombatQueue(string data) 
+    {
+        SWSM_CombatAction combatAction = JsonUtility.FromJson<SWSM_CombatAction>(data);
+        foreach (CombatTurnData combatData in combatAction.data.data) 
+        {
+            GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(combatData);
         }
     }
     private static void ProcessEnemyIntents(string action, string data)
