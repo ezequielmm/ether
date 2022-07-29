@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SWSM_Parser
@@ -18,7 +19,8 @@ public class SWSM_Parser
                 ProcessCombatUpdate(swsm.data.action, data);
                 break;
             case nameof(WS_MESSAGE_TYPES.enemy_intents):
-                ProcessEnemyIntents(swsm.data.action, data);
+                //ProcessEnemyIntents(swsm.data.action, data);
+                Debug.LogWarning($"[SWSM Parser] Enemy Intents are no longer listened for.");
                 break;
             case nameof(WS_MESSAGE_TYPES.player_state_update):
                 ProcessPlayerStateUpdate( data);
@@ -213,7 +215,8 @@ public class SWSM_Parser
             case nameof(WS_DATA_REQUEST_TYPES.CardsPiles):
                 
                 SWSM_CardsPiles deck = JsonUtility.FromJson<SWSM_CardsPiles>(data);
-                Debug.Log("Cardspiles ,draw count:" + deck.data.data.draw.Count+" ,hand.count:"+deck.data.data.hand.Count);
+                Debug.Log($"Cards Pile Counts: [Draw] {deck.data.data.draw.Count} | [Hand] {deck.data.data.hand.Count} " +
+                    $"| [Discard] {deck.data.data.discard.Count} | [Exhaust] {deck.data.data.exhaust.Count}");
                 
                 GameManager.Instance.EVENT_CARDS_PILES_UPDATED.Invoke(deck.data);
                 break;
@@ -225,6 +228,12 @@ public class SWSM_Parser
                 break;
             case nameof(WS_DATA_REQUEST_TYPES.Players):
                 ProcessUpdatePlayer(data);
+                break;
+            case nameof(WS_DATA_REQUEST_TYPES.EnemyIntents):
+                ProcessEnemyIntents("update_enemy_intents", data);
+                break;
+            default:
+                Debug.Log($"[SWSM Parser] [Generic Data] Uncaught Action \"{action}\". Data = {data}");
                 break;
         }
     }
@@ -243,9 +252,21 @@ public class SWSM_Parser
     }
     private static void ProcessEnemyIntents(string action, string data)
     {
-        Debug.Log("[ProcessEnemyIntents]");
-       // SWSM_NodeData nodeBase = JsonUtility.FromJson<SWSM_NodeData>(data);
-       // NodeStateData nodeState = nodeBase.data;
+        Debug.Log($"[ProcessEnemyIntents] data = {data}");
+        SWSM_IntentData swsm_intentData = JsonUtility.FromJson<SWSM_IntentData>(data);
+        List<EnemyIntent> enemyIntents = swsm_intentData.data.data;
+        switch (action) 
+        {
+            case "update_enemy_intents":
+                foreach (EnemyIntent enemyIntent in enemyIntents) {
+                    if(enemyIntent != null)
+                        GameManager.Instance.EVENT_UPDATE_INTENT.Invoke(enemyIntent);
+                }
+                break;
+            default:
+                Debug.Log($"[SWSM_Parser] Enemy Intents - {action}: Action not found.");
+                break;
+        }
     }
 
     private static void ProcessErrorAction(string action, string data)
