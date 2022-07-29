@@ -17,9 +17,11 @@ public class HandManager : MonoBehaviour
     private string currentCardID;
     private GameObject currentCard;
 
-    public  Deck handDeck;
-    public  Deck drawDeck;
-  
+    public Deck handDeck;
+    public Deck drawDeck;
+    public Deck discardDeck;
+    public Deck exhaustDeck;
+
     CardPiles cardPilesData;
 
     int cardsDrawn = 0;
@@ -39,6 +41,7 @@ public class HandManager : MonoBehaviour
     {
         Debug.Log("[Removing card "+cardId+" from hand]");
         //listOfCardsOnHand.Remove(listOfCardsOnHand.Find((x) => (x.GetComponent<CardOnHandManager>().id == cardId)));
+        Destroy(listOfCardsOnHand[cardId]);
         listOfCardsOnHand.Remove(cardId);
         RelocateCards();      
         
@@ -106,13 +109,19 @@ public class HandManager : MonoBehaviour
             return;
         }
         Debug.Log("**********************************************[OnDrawCards]draw.count: "+ cardPilesData.data.draw.Count+", hand.count:"+cardPilesData.data.hand.Count);
+        
         //Generate cards hand
-       // listOfCardsOnHand.Clear();
         handDeck = new Deck();
         handDeck.cards = cardPilesData.data.hand;
 
         drawDeck = new Deck();
         drawDeck.cards = cardPilesData.data.draw;
+
+        discardDeck = new Deck();
+        discardDeck.cards = cardPilesData.data.discard;
+
+        exhaustDeck = new Deck();
+        exhaustDeck.cards = cardPilesData.data.exhaust;
 
         Vector3 spawnPosition = GameSettings.HAND_CARDS_GENERATION_POINT;
 
@@ -121,72 +130,60 @@ public class HandManager : MonoBehaviour
         float delayStep = 0.1f;
         float delay = delayStep * handDeck.cards.Count;
 
-
-        /*foreach (Card card in handDeck.cards)
-        //for (var i= 0; i < (handDeck.cards.Count - 4);i++)
-        {
-           // var card = handDeck.cards[3];
-            var angle = (float)(counter * Mathf.PI * 2);
-            Debug.Log("card.cardId: "+card.id);
-
-            
-            GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
-            listOfCardsOnHand.Add(card.id,newCard);
-
-
-            newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
-            Vector3 pos = newCard.transform.position;
-            pos.x = counter * 2.2f;//TODO: this value has to be beased on the number of cards to display them from the center
-                                   // pos.y = (Mathf.Cos(angle * Mathf.Deg2Rad) * handDeck.cards.Count) - 9.5F;//TODO:magic numbers 5,9
-            pos.y = Camera.main.orthographicSize * -1;//TODO:magic numbers 5,9
-            pos.z = depth;
-            newCard.GetComponent<CardOnHandManager>().targetPosition = pos;//we need this to put the card back after mouse interaction
-            newCard.transform.position = spawnPosition;
-
-            Debug.Log("[***************************************************************Moving cards from Draw creation]");
-            newCard.GetComponent<CardOnHandManager>().MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand,true, pos, delay);
-
-            Vector3 rot = newCard.transform.eulerAngles;
-            rot.z = angle / -2;
-            newCard.transform.eulerAngles = rot;
-            newCard.GetComponent<CardOnHandManager>().targetRotation = rot;
-
-            delay -= delayStep;
-
-            counter++;
-            depth--;
-
-        }*/
         Debug.Log("[OnDrawCards] listOfCardsOnHand.Count:" + listOfCardsOnHand.Count);
 
         foreach (Card card in handDeck.cards)
         {
             if (!listOfCardsOnHand.ContainsKey(card.id))
             {
-                Debug.Log("1 Instantiating card " + card.id);
+                Debug.Log("[HandManager | Hand Deck] Instantiating card " + card.id);
                 GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
                 listOfCardsOnHand.Add(card.id, newCard);
                 newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
             }
                      
         }
-
         foreach (Card card in drawDeck.cards)
         {
             if (!listOfCardsOnHand.ContainsKey(card.id))
             {
-                Debug.Log("2 Instantiating card " + card.id);
+                Debug.Log("[HandManager | Draw Deck] Instantiating card " + card.id);
+                GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
+                listOfCardsOnHand.Add(card.id, newCard);
+                newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
+                newCard.GetComponent<CardOnHandManager>().DisableCardContent(false);//disable and not notify
+            }    
+        }
+        foreach (Card card in discardDeck.cards)
+        {
+            if (!listOfCardsOnHand.ContainsKey(card.id))
+            {
+                Debug.Log("[HandManager | Discard Deck] Instantiating card " + card.id);
                 GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
                 listOfCardsOnHand.Add(card.id, newCard);
                 newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
                 newCard.GetComponent<CardOnHandManager>().DisableCardContent(false);//disable and not notify
             }
-                
+        }
+        foreach (Card card in exhaustDeck.cards)
+        {
+            if (!listOfCardsOnHand.ContainsKey(card.id))
+            {
+                Debug.Log("[HandManager | Exhaust Deck] Instantiating card " + card.id);
+                GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
+                listOfCardsOnHand.Add(card.id, newCard);
+                newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
+                newCard.GetComponent<CardOnHandManager>().DisableCardContent(false);//disable and not notify
+            }
         }
 
         RelocateCards(true);
     }
 
+    /// <summary>
+    /// Relocates the cards in hands. If move is on, card movement is send to the cards themselves to be preformed.
+    /// </summary>
+    /// <param name="move">True to do a draw animation to hand.</param>
     private void RelocateCards(bool move = false)
     {
 
@@ -213,13 +210,14 @@ public class HandManager : MonoBehaviour
             {
                 Vector3 pos = Vector3.zero;
                 pos.x = counter * GameSettings.HAND_CARD_GAP - halfWidth + offset;
-                pos.y = Camera.main.orthographicSize * -1;
+                pos.y = GameSettings.HAND_CARD_REST_Y;
                // pos.y = Camera.main.orthographicSize * Mathf.Cos(pos.x);
                 pos.z = depth;
                 //card.transform.position = pos;
 
                 //var angle = (float)(counter * Mathf.PI * 2);                   
                 var angle = (float)(pos.x * Mathf.PI * 2);
+                pos.y += Mathf.Cos(pos.x * GameSettings.HAND_CARD_Y_CURVE);
 
 
                 //newCard.transform.position = pos;
@@ -231,7 +229,7 @@ public class HandManager : MonoBehaviour
                 card.transform.localScale = Vector3.one;
 
                 counter++;
-                depth--;
+                depth -= GameSettings.HAND_CARD_SPRITE_Z_INTERVAL;
 
                 if (move)
                 {

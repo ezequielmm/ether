@@ -94,7 +94,7 @@ public class WebSocketManager : MonoBehaviour
         rootSocket.On<string>(WS_MESSAGE_EXPEDITION_MAP, GenericParser);
         rootSocket.On<string>(WS_MESSAGE_PLAYER_STATE, GenericParser);
         rootSocket.On<string>(WS_MESSAGE_INIT_COMBAT, GenericParser);
-        rootSocket.On<string>(WS_MESSAGE_ENEMY_INTENTS, GenericParser);
+        //rootSocket.On<string>(WS_MESSAGE_ENEMY_INTENTS, GenericParser);
         rootSocket.On<string>(WS_MESSAGE_PUT_DATA, GenericParser);
 
 

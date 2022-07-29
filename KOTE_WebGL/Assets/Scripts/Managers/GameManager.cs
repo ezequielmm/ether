@@ -125,7 +125,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_CARD_DRAW_CARDS = new UnityEvent();
     [HideInInspector] public UnityEvent<CardPiles> EVENT_CARDS_PILES_UPDATED = new UnityEvent<CardPiles>();
     [HideInInspector] public UnityEvent<CardToMoveData> EVENT_MOVE_CARD = new UnityEvent<CardToMoveData>();
-    [HideInInspector] public UnityEvent<string> EVENT_CARD_DISABLED = new UnityEvent<string>();//id fo the cards being destroyed
+    [HideInInspector] public UnityEvent<string> EVENT_CARD_DISABLED { get; } = new UnityEvent<string>();//id fo the cards being destroyed
     [HideInInspector] public UnityEvent EVENT_CARD_NO_ENERGY = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CARD_DRAW = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CARD_DISCARD = new UnityEvent();
@@ -148,16 +148,18 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_COMBAT_TURN_END = new UnityEvent<string>();
     [HideInInspector] public UnityEvent EVENT_COMBAT_QUEUE_EMPTY = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_COMBAT_ORIGIN_CHANGE = new UnityEvent();
+    [HideInInspector] public UnityEvent<StatusData> EVENT_UPDATE_STATUS_EFFECTS = new UnityEvent<StatusData>();
 
 
     //Common events
     [HideInInspector] public UnityEvent<WS_DATA_REQUEST_TYPES> EVENT_GENERIC_WS_DATA = new UnityEvent<WS_DATA_REQUEST_TYPES>();
     [HideInInspector] public UnityEvent EVENT_WS_CONNECTED = new UnityEvent();    
-    [HideInInspector] public UnityEvent<string> EVENT_CHANGE_TURN = new UnityEvent<string>();    
+    [HideInInspector] public UnityEvent<string> EVENT_CHANGE_TURN = new UnityEvent<string>();
 
     //Enemies events
     [HideInInspector] public UnityEvent<EnemiesData> EVENT_UPDATE_ENEMIES = new UnityEvent<EnemiesData>();
     [HideInInspector] public UnityEvent<EnemyData> EVENT_UPDATE_ENEMY = new UnityEvent<EnemyData>();
+    [HideInInspector] public UnityEvent<EnemyIntent> EVENT_UPDATE_INTENT = new UnityEvent<EnemyIntent>();
 
 
     // Audio Events
