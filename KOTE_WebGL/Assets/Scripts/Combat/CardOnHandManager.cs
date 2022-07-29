@@ -217,6 +217,7 @@ public class CardOnHandManager : MonoBehaviour
         {
             case CARDS_POSITIONS_TYPES.draw:
                 origin = drawPileOrthoPosition;
+                transform.localScale = Vector3.zero;
                 break;
             case CARDS_POSITIONS_TYPES.discard:
                 origin = discardPileOrthoPosition;
@@ -288,6 +289,11 @@ public class CardOnHandManager : MonoBehaviour
         if (delay > 0)
         {
             transform.DOMove(destination, 1f).SetDelay(delay, true).SetEase(Ease.InCirc).OnComplete(OnMoveCompleted).From(origin);
+            if (originType == CARDS_POSITIONS_TYPES.draw && destinationType == CARDS_POSITIONS_TYPES.hand)
+            {
+                transform.localScale = Vector3.zero;
+                transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutElastic).OnComplete(OnMoveCompleted);
+            }
      
             // transform.DOMoveX(destination.x, .5f).SetEase(Ease.Linear);
             // transform.DOMoveY(destination.y, .5f).SetEase(Ease.InCirc);
@@ -295,7 +301,15 @@ public class CardOnHandManager : MonoBehaviour
         else
         {
             transform.DOMove(destination, 1f).From(origin).SetEase(Ease.OutCirc);
-            transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InElastic).OnComplete(HideAndDeactivateCard);
+            if (originType == CARDS_POSITIONS_TYPES.draw && destinationType == CARDS_POSITIONS_TYPES.hand)
+            {
+                transform.localScale = Vector3.zero;
+                transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutElastic).OnComplete(OnMoveCompleted);
+            }
+            else
+            {
+                transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InElastic).OnComplete(HideAndDeactivateCard);
+            }
         }
 
         //transform.DOPlay();
