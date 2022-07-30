@@ -5373,28 +5373,96 @@ MonoBehaviour:
   cardImages:
   - cardName: default
     image: {fileID: 21300000, guid: c14fb330c6215ff4aa0378fdf06c3adc, type: 3}
+  - cardName: Adept
+    image: {fileID: 21300000, guid: 392ecbd71ee18744eab4b81de518da57, type: 3}
+  - cardName: armor_up
+    image: {fileID: 21300000, guid: 53627e187537aa840934e77f58b192b2, type: 3}
+  - cardName: backflip
+    image: {fileID: 21300000, guid: 01b4e6fde7ef55a46a3b277fc93ebb9c, type: 3}
+  - cardName: backhand
+    image: {fileID: 21300000, guid: ba7eab75cf7dfd643921d9bc2bbdcd92, type: 3}
+  - cardName: bluster
+    image: {fileID: 21300000, guid: cc6f520166eccdb489fc516d0f0f6d76, type: 3}
   - cardName: brace
     image: {fileID: 21300000, guid: 8aff0cbb42a5e574ab8375e223e2ca94, type: 3}
   - cardName: counter
     image: {fileID: 21300000, guid: 7f3a4656b23c5044e96b0b02431b923b, type: 3}
-  - cardName: heavens_grace
+  - cardName: double_down
+    image: {fileID: 21300000, guid: 51e950b22fe4ce8418d7efe9062e48b6, type: 3}
+  - cardName: empty_fade
+    image: {fileID: 21300000, guid: 6f3535e1f73238c4f9ef4e2b35fb4e0b, type: 3}
+  - cardName: executioners_blow
+    image: {fileID: 21300000, guid: 3ba7bc95306968944b13543054f6b676, type: 3}
+  - cardName: fade
+    image: {fileID: 21300000, guid: 3ea6b7f01f6329d418cb4478db70b000, type: 3}
+  - cardName: feint
+    image: {fileID: 21300000, guid: 09d06802da161154184ea79319a4284e, type: 3}
+  - cardName: fine_edge
+    image: {fileID: 21300000, guid: 7f4175076a5df7b458b7646518443553, type: 3}
+  - cardName: flurry
+    image: {fileID: 21300000, guid: 25fa0531deebafd40b124203d3381a8d, type: 3}
+  - cardName: force_field
+    image: {fileID: 21300000, guid: 8eabe07569c337d4fa08e440dc2e1d3f, type: 3}
+  - cardName: front_flip
+    image: {fileID: 21300000, guid: e6c9a5c26d82382489de0409b51a79b8, type: 3}
+  - cardName: fud
+    image: {fileID: 21300000, guid: d1345296c5c0cd64bb699024877f34bc, type: 3}
+  - cardName: give_no_ground
+    image: {fileID: 21300000, guid: bfe9af477aa3661498a431f387b1efe6, type: 3}
+  - cardName: gn
+    image: {fileID: 21300000, guid: 8dc3a2c2df41171459defa7cfbe085c4, type: 3}
+  - cardName: grit_teeth
+    image: {fileID: 21300000, guid: d1818895e9cea354c991cff9b4befb9e, type: 3}
+  - cardName: Heaven's Grace
     image: {fileID: 21300000, guid: c38e407db55cab24589233b74cd450bb, type: 3}
   - cardName: invoke_blessing
     image: {fileID: 21300000, guid: ee65ee8e8ba34f84fbbef84b0bd8cdda, type: 3}
+  - cardName: ignite
+    image: {fileID: 21300000, guid: 31897846e874d514a8630eab799d2f3c, type: 3}
+  - cardName: invoke_blessing
+    image: {fileID: 21300000, guid: d1818895e9cea354c991cff9b4befb9e, type: 3}
+  - cardName: kindle
+    image: {fileID: 21300000, guid: ad5d6755d3713a34f829e68b6bfc55b1, type: 3}
   - cardName: knock_down
     image: {fileID: 21300000, guid: bdcb1dfb6fe644d449f209282a35d183, type: 3}
+  - cardName: last_reminder
+    image: {fileID: 21300000, guid: f0bb5205b35850f4faab7d269faa44d3, type: 3}
+  - cardName: layered_steel
+    image: {fileID: 21300000, guid: 2123ab540bc7bb045a5912c4d3f83312, type: 3}
+  - cardName: levitate
+    image: {fileID: 21300000, guid: de97aca3458e6104fae7d8e108bca801, type: 3}
   - cardName: on_a_roll
     image: {fileID: 21300000, guid: 9b065b69be5f6d942b15692431a4a374, type: 3}
+  - cardName: parry
+    image: {fileID: 21300000, guid: c30e97021ee844c4f931dc0e71e2b950, type: 3}
+  - cardName: perfect_timing
+    image: {fileID: 21300000, guid: e4dc4c6e31e816942aa9f88369757c5d, type: 3}
+  - cardName: pray
+    image: {fileID: 21300000, guid: eba100a2715e0174d9c03d8beced3c29, type: 3}
+  - cardName: recover
+    image: {fileID: 21300000, guid: e7ac986f4ec1ab64e81eb8fa32451cdb, type: 3}
+  - cardName: refocus
+    image: {fileID: 21300000, guid: 1917c294e084e1843b812d1a19547a37, type: 3}
+  - cardName: shake_it_off
+    image: {fileID: 21300000, guid: 76e0a8da6e0cf22438ff25ffad5ed502, type: 3}
+  - cardName: shout
+    image: {fileID: 21300000, guid: 2b31eaad28ee1254ebc371a1f4341668, type: 3}
   - cardName: shrug_it_off
     image: {fileID: 21300000, guid: 13673517d04713e49a2f66bf8b446df5, type: 3}
+  - cardName: switch_hands
+    image: {fileID: 21300000, guid: b8aefdebf58ed5d4284c211aad661ab5, type: 3}
   - cardName: tighten_grip
     image: {fileID: 21300000, guid: 5bbf36e09aeedf04b9678cb2214f78dc, type: 3}
   - cardName: tighten_straps
     image: {fileID: 21300000, guid: 3df833841dee6ca44b487456096b8e9c, type: 3}
   - cardName: trinity
     image: {fileID: 21300000, guid: d1818895e9cea354c991cff9b4befb9e, type: 3}
-  - cardName: ultra_lethality
+  - cardName: twist_blade
+    image: {fileID: 21300000, guid: 28d85428058345e4abb82e1aa2c85920, type: 3}
+  - cardName: ulta_lethality
     image: {fileID: 21300000, guid: 033115893e7e9d5409fbe58bf1e53b13, type: 3}
+  - cardName: wraith
+    image: {fileID: 21300000, guid: 924dbf29464593e429536daea8dba182, type: 3}
   Gems:
   - type: attack
     gem: {fileID: 21300000, guid: 8e28d90fcfe29c440b2b5cc0e693c1ea, type: 3}
