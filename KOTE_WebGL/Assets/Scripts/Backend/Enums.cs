@@ -160,7 +160,8 @@ public enum WS_DATA_REQUEST_TYPES
     EnemyIntents,
     Potions,
     Trinkets,
-    Statuses
+    Statuses,
+    PlayerDeck
 }
 
 [Serializable]
