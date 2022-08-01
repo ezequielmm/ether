@@ -5,18 +5,10 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class UIDisableGameWhenOpen : MonoBehaviour
 {
-    [SerializeField]
-    bool DisableGameOnOpen = true;
-    [SerializeField]
-    bool EnableGameOnClose = true;
-
     private static int windowsOpenCount;
     private void OnDisable()
     {
-        if (EnableGameOnClose)
-        {
-            windowsOpenCount--;
-        }
+        windowsOpenCount--;
         if (windowsOpenCount == 0) 
         {
             GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(false);
@@ -24,10 +16,7 @@ public class UIDisableGameWhenOpen : MonoBehaviour
     }
     private void OnEnable()
     {
-        if (DisableGameOnOpen)
-        {
-            windowsOpenCount++;
-        }
+        windowsOpenCount++;
         if (windowsOpenCount > 0) 
         {
             GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(true);
