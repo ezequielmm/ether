@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-[RequireComponent(typeof(Collider2D))]
 public class IconMap<T> : MonoBehaviour
 {
     [SerializeField]
@@ -52,20 +51,6 @@ public class IconMap<T> : MonoBehaviour
         {
             text = GetComponentInChildren<TextMeshProUGUI>();
         }
-    }
-
-    private void OnMouseEnter()
-    {
-        if (!string.IsNullOrEmpty(tooltipDescription) && !string.IsNullOrEmpty(tooltipTitle))
-        {
-            List<Tooltip> tooltips = new List<Tooltip>() { new Tooltip() { description = tooltipDescription, title = tooltipTitle } };
-            GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.TopCenter, Vector3.zero, null);
-            // Tooltip On
-        }
-    }
-    private void OnMouseExit()
-    {
-        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
     }
 
     public void Initialize()

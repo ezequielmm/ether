@@ -159,4 +159,17 @@ public class EnemyManager : MonoBehaviour
             Destroy(this.gameObject,2);
         }
     }
+
+    private void OnMouseEnter()
+    {
+        // Tooltip On
+        List<Tooltip> tooltips = new List<Tooltip>() { new Tooltip() { title = "test", description = "The End Is Never The End Is Never" } };
+
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.MiddleLeft, Vector3.zero, null);
+    }
+    private void OnMouseExit()
+    {
+        // Tooltip Off
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
+    }
 }
