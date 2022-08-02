@@ -145,6 +145,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_PLAY_PLAYER_ATTACK = new UnityEvent();
     [HideInInspector] public UnityEvent<int> EVENT_PLAY_ENEMY_ATTACK = new UnityEvent<int>(); // enemyId
     [HideInInspector] public UnityEvent<StatusData> EVENT_UPDATE_STATUS_EFFECTS = new UnityEvent<StatusData>();
+    [HideInInspector] public UnityEvent EVENT_CLEAR_TOOLTIPS = new UnityEvent();
+    [HideInInspector] public UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform> EVENT_SET_TOOLTIPS = 
+        new UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>();
 
 
     //Common events

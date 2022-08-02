@@ -80,7 +80,7 @@ public class StatusManager : MonoBehaviour
             STATUS stat = ToEnum(status.name);
             statusIcon.SetValue(status.counter);
             statusIcon.SetIcon(stat);
-            statusIcon.SetTooltip(status.description);
+            statusIcon.SetTooltip(status.name, status.description);
 
             iconContainer.AddIcon(iconObject);
         }

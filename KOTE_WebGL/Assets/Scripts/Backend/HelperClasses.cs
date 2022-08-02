@@ -44,6 +44,13 @@ public class Step
     public List<NodeDataHelper> nodesData = new List<NodeDataHelper>();
 }
 
+[Serializable]
+public class Tooltip
+{ 
+    public string title;
+    public string description;
+}
+
 
 [Serializable]
 public class ExpeditionStatusData

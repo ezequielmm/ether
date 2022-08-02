@@ -18,16 +18,12 @@ public class IconMap<T> : MonoBehaviour
     private List<Icon> iconMap;
 
     [SerializeField]
-    [Tooltip("The gameobject holding all the tooltip stuff")]
-    private GameObject tooltipContainer;
-
-    [SerializeField]
-    [Tooltip("The tooltip's text")]
-    private TextMeshProUGUI description;
-
-    [SerializeField]
     [Tooltip("The speed at which the tooltip appears and fades")]
     protected float tooltipSpeed = 1f;
+
+    private string tooltipTitle;
+    private string tooltipDescription;
+
 
     /// <summary>
     /// The image component
@@ -56,21 +52,20 @@ public class IconMap<T> : MonoBehaviour
         {
             text = GetComponentInChildren<TextMeshProUGUI>();
         }
-        tooltipContainer.SetActive(false);
     }
 
     private void OnMouseEnter()
     {
-        if (!string.IsNullOrEmpty(description.text))
+        if (!string.IsNullOrEmpty(tooltipDescription) && !string.IsNullOrEmpty(tooltipTitle))
         {
-            tooltipContainer.SetActive(true);
-            tooltipContainer.transform.localScale = Vector3.zero;
-            tooltipContainer.transform.DOScale(Vector3.one, tooltipSpeed);
+            List<Tooltip> tooltips = new List<Tooltip>() { new Tooltip() { description = tooltipDescription, title = tooltipTitle } };
+            GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.TopCenter, Vector3.zero, null);
+            // Tooltip On
         }
     }
     private void OnMouseExit()
     {
-        tooltipContainer.transform.DOScale(Vector3.zero, tooltipSpeed);
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
     }
 
     public void Initialize()
@@ -78,9 +73,10 @@ public class IconMap<T> : MonoBehaviour
         Start();
     }
 
-    public void SetTooltip(string tooltip)
+    public void SetTooltip(string title, string description)
     {
-        description.text = tooltip;
+        tooltipTitle = title;
+        tooltipDescription = description;
     }
 
     public void SetDisplayText(string value)
