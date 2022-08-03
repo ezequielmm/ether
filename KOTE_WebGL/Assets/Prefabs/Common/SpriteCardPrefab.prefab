@@ -5417,6 +5417,10 @@ MonoBehaviour:
     image: {fileID: 21300000, guid: 31897846e874d514a8630eab799d2f3c, type: 3}
   - cardId: 97
     image: {fileID: 21300000, guid: 9dc879558d5bb4b418e275818f66c5f8, type: 3}
+  - cardId: 99
+    image: {fileID: 21300000, guid: 13673517d04713e49a2f66bf8b446df5, type: 3}
+  - cardId: 103
+    image: {fileID: 21300000, guid: b8aefdebf58ed5d4284c211aad661ab5, type: 3}
   - cardId: 107
     image: {fileID: 21300000, guid: bdcb1dfb6fe644d449f209282a35d183, type: 3}
   - cardId: 111
