@@ -64,6 +64,15 @@ public class IconMap<T> : MonoBehaviour
         tooltipDescription = description;
     }
 
+    public Tooltip GetTooltip() 
+    {
+        return new Tooltip()
+        {
+            title = Utils.PrettyText(tooltipTitle).Replace(" Plus", "+"),
+            description = tooltipDescription
+        };
+    }
+
     public void SetDisplayText(string value)
     {
         text.text = value;

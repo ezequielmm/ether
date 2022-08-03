@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 public static class Utils
@@ -60,5 +61,26 @@ public static class Utils
         Gizmos.DrawLine(TopRight, BottomRight);
         Gizmos.DrawLine(BottomRight, BottomLeft);
         Gizmos.DrawLine(BottomLeft, TopLeft);
+    }
+
+    public static string PrettyText(string input) 
+    {
+        StringBuilder sb = new StringBuilder();
+        var charArr = input.ToCharArray();
+        for(int i = 0; i < charArr.Length; i++) 
+        {
+            char c = charArr[i];
+            if (Char.IsUpper(c)) 
+            {
+                sb.Append(" ");
+            }
+
+            if (i == 0) 
+            {
+                c = Char.ToUpper(c);
+            }
+            sb.Append(c);
+        }
+        return sb.ToString().Trim();
     }
 }

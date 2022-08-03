@@ -11,6 +11,9 @@ public class TooltipController : MonoBehaviour
     [SerializeField]
     GameObject tooltipContainer;
 
+    [SerializeField]
+    bool active;
+
     RectTransform rectTransform;
 
     List<TooltipComponent> activeTooltips;
@@ -25,11 +28,24 @@ public class TooltipController : MonoBehaviour
 
     void Start()
     {
+        active = true;
         rectTransform = tooltipContainer.GetComponent<RectTransform>();
         followPoint = false;
         activeTooltips = new List<TooltipComponent>();
         GameManager.Instance.EVENT_CLEAR_TOOLTIPS.AddListener(ClearTooltips);
         GameManager.Instance.EVENT_SET_TOOLTIPS.AddListener(SetTooltips);
+        GameManager.Instance.EVENT_CARD_ACTIVATE_POINTER.AddListener(OnPointerActivated);
+        GameManager.Instance.EVENT_CARD_DEACTIVATE_POINTER.AddListener(OnPointerDeactivated);
+    }
+
+    public void OnPointerActivated(Vector3 data) 
+    {
+        active = false;
+        ClearTooltips();
+    }
+    public void OnPointerDeactivated(string data) 
+    {
+        active = true;
     }
 
     public void ClearTooltips() 
@@ -46,6 +62,7 @@ public class TooltipController : MonoBehaviour
     public void SetTooltips(List<Tooltip> tooltips, Anchor position, Vector3 location, Transform follow)
     {
         ClearTooltips();
+        if (!active) return;
         foreach (Tooltip data in tooltips) {
             var tooltipObj = Instantiate(tooltipPrefab, tooltipContainer.transform);
             var tooltip = tooltipObj.GetComponent<TooltipComponent>();
@@ -101,6 +118,7 @@ public class TooltipController : MonoBehaviour
 
     private void Update()
     {
+        if (!active) return;
         Vector2 newSize = new Vector2(rectTransform.rect.width, rectTransform.rect.height);
         if (newSize != size) 
         {

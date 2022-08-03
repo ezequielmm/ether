@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 
+[RequireComponent(typeof(Collider2D))]
 public class EnemyManager : MonoBehaviour
 {
     private EnemyData enemyData;
@@ -18,6 +19,8 @@ public class EnemyManager : MonoBehaviour
     public GameObject activeEnemy;
 
     private SpineAnimationsManagement spine;
+
+    Collider2D collider;
 
     public EnemyData EnemyData { 
         set
@@ -72,6 +75,7 @@ public class EnemyManager : MonoBehaviour
         GameManager.Instance.EVENT_UPDATE_ENEMY.AddListener(OnUpdateEnemy);
         Debug.Log($"[Enemy Manager] Enemy ID: {enemyData.id}");
         GameManager.Instance.EVENT_PLAY_ENEMY_ATTACK.AddListener(onAttack);
+        collider = GetComponent<Collider2D>();
 
         // Grab first spine animation management script we find. This is a default. We'll set this when spawning the enemy usually.
         if (activeEnemy == null)
@@ -160,12 +164,29 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    private List<Tooltip> GetTooltipInfo() 
+    {
+        List<Tooltip> list = new List<Tooltip>();
+
+        foreach (IntentIcon icon in GetComponentsInChildren<IntentIcon>()) 
+        {
+            list.Add(icon.GetTooltip());
+        }
+
+        foreach (StatusIcon icon in GetComponentsInChildren<StatusIcon>()) 
+        {
+            list.Add(icon.GetTooltip());
+        }
+
+        return list;
+    }
+
     private void OnMouseEnter()
     {
+        Vector3 anchorPoint =  new Vector3(collider.bounds.center.x - collider.bounds.extents.x, 
+            collider.bounds.center.y, 0);
         // Tooltip On
-        List<Tooltip> tooltips = new List<Tooltip>() { new Tooltip() { title = "test", description = "The End Is Never The End Is Never" } };
-
-        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.MiddleLeft, Vector3.zero, null);
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(GetTooltipInfo(), TooltipController.Anchor.MiddleRight, anchorPoint, null);
     }
     private void OnMouseExit()
     {

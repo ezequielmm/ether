@@ -51,10 +51,10 @@ public class TooltipComponent : MonoBehaviour
     }
     public void Disable() 
     {
-        transform.SetParent(transform.parent.parent);
+        transform?.SetParent(transform.parent.parent);
         background?.DOFade(0, fadeSpeed);
-        title.DOFade(0, fadeSpeed);
-        description.DOFade(0, fadeSpeed).OnComplete(() => {
+        title?.DOFade(0, fadeSpeed);
+        description?.DOFade(0, fadeSpeed).OnComplete(() => {
             DOTween.Kill(this.gameObject);
             gameObject.SetActive(false);
         });
@@ -68,7 +68,7 @@ public class TooltipComponent : MonoBehaviour
         description.color = new Color(description.color.r, description.color.g, description.color.b, 0);
 
         background?.DOFade(1, fadeSpeed).SetDelay(0.1f);
-        title.DOFade(1, fadeSpeed).SetDelay(0.1f);
-        description.DOFade(1, fadeSpeed).SetDelay(0.1f);
+        title?.DOFade(1, fadeSpeed).SetDelay(0.1f);
+        description?.DOFade(1, fadeSpeed).SetDelay(0.1f);
     }
 }

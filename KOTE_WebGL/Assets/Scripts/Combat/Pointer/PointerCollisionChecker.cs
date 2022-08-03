@@ -11,7 +11,12 @@ public class PointerCollisionChecker : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             pointerManager.overEnemy = true;
-            pointerManager.enemyData = collision.transform.parent.GetComponent<EnemyManager>().EnemyData;
+            pointerManager.enemyData = collision.gameObject.GetComponentInChildren<EnemyManager>().EnemyData;
+            if (pointerManager.enemyData == null) 
+            {
+                pointerManager.overEnemy = false;
+                return;
+            }
             Debug.Log("over enemy");
         }
     }
