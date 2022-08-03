@@ -34,6 +34,7 @@ public class RegisterPanelManager : MonoBehaviour
     private bool validPassword;
     private bool passwordConfirmed;
     public Toggle showPassword;
+    public Toggle showConfirmPassword;
 
     private void Awake()
     {
@@ -48,7 +49,11 @@ public class RegisterPanelManager : MonoBehaviour
     {
         passwordInputField.contentType = showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
         passwordInputField.ForceLabelUpdate();
-        confirmPasswordInputField.contentType = showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
+    }
+
+    public void OnShowConfirmPassword()
+    {
+        confirmPasswordInputField.contentType = showConfirmPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
         confirmPasswordInputField.ForceLabelUpdate();
     }
 
