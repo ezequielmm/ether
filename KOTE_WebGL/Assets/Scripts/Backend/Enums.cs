@@ -15,7 +15,7 @@ public enum PileTypes
     Exhausted,
     Discarded
 }
-
+[Serializable]
 public enum GameStatuses
 {
     Combat,
@@ -72,8 +72,137 @@ public enum NODE_STATUS
     
 }
 
+public enum ENEMY_INTENT 
+{
+    unknown = 0,
+
+    attack,
+    defend,
+    plot, // buff
+    scheme, // debuff
+    stunned // nothing
+}
+
+public enum STATUS
+{
+    unknown = 0,
+
+    resolve,
+    fortitude,
+    distraught,
+    feeble,
+    fatigue,
+    resist,
+    spirited,
+    spikes,
+    dodge,
+    forceField,
+    regeneration,
+    intercept,
+    enraged,
+    heraldDelayed,
+    heralding,
+    gritted,
+    grittedPlus,
+    resolveExpires,
+    bolstered,
+    anticipating,
+    siphoning,
+    turtling,
+    imbued,
+    doubleDown,
+    praying,
+    trinity,
+    trinityPlus,
+    enflamed,
+    gifted,
+    finelyEdged,
+    finelyEdgedPlus,
+    armoredUp,
+    armoredUpPlus,
+    dewDrop,
+    burn,
+    tasteOfBlood,
+    confusion,
+    confused,
+    stunned,
+    drained,
+    summoned,
+    clearheaded,
+    blinded,
+    blighted,
+    oiled,
+    trapping,
+    mimic,
+    moldy,
+    squishy,
+    combustible,
+    hidden,
+    reactive,
+    mysteriousFigure,
+    emptyFade
+}
+
 public enum EntityType
 {
     Player,
     Enemy
 }
+
+[Serializable]
+public enum WS_DATA_REQUEST_TYPES
+{
+    Energy,//done
+    Health,
+    Players,
+    CardsPiles,//done
+    Enemies,
+    EnemyIntents,
+    Potions,
+    Trinkets,
+    Statuses,
+    PlayerDeck
+}
+
+[Serializable]
+public enum WS_ERROR_TYPES
+{
+    card_unplayable,
+    invalid_card,
+    insufficient_energy
+}
+
+[Serializable]
+public enum WS_MESSAGE_TYPES
+{
+    map_update,
+    combat_update,
+    enemy_intents,
+    player_state_update,
+    error,
+    generic_data,
+    enemy_affected,
+    player_affected,
+    end_turn,
+    begin_turn
+}
+
+public enum WS_MESSAGE_ACTIONS
+{
+    update_energy,
+    move_card,
+    update_enemy,
+    update_player,
+    change_turn,
+    create_card
+
+}
+
+public enum CARDS_POSITIONS_TYPES
+{
+    discard,
+    hand,
+    exhaust,
+    draw
+}
+

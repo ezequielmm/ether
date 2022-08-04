@@ -18,8 +18,17 @@ public class Potion : MonoBehaviour
         potionImage.sprite = unusedPotionSprite;
     }
 
-    public void OnPotionUsed()
+    public void OnPotion()
     {
+        
+    }
+
+    public void OnPotionUsed(GameObject invoker)
+    {
+        if (invoker != gameObject) return;
+
+        Debug.Log($"Potion used");
+
         potionImage.sprite = usedPotionSprite;
         potionButton.interactable = false;
 

@@ -11,7 +11,7 @@ public class NodeData : MonoBehaviour
     [Serializable]
     public struct BackgroundImage
     {
-        public NODE_TYPES type;
+        public NODE_SUBTYPES type;
         public GameObject imageGo;
     }
 
@@ -29,7 +29,8 @@ public class NodeData : MonoBehaviour
     public Material lineMat;
     public Material grayscaleMaterial;
     [FormerlySerializedAs("pSystem")] public ParticleSystem availableParticleSystem;
-   
+    public TextMeshPro idText;
+
 
     public bool nodeClickDisabled = false;
 
@@ -42,18 +43,9 @@ public class NodeData : MonoBehaviour
 
     private void Awake()
     {
-        //Debug.Log("Node data awake");
-
-        foreach (BackgroundImage bgimg in bgSprites)
-        {
-            bgimg.imageGo.SetActive(false);
-        }
+        HideNode();
     }
 
-    private void Start()
-    {
-        //GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.AddListener(ActivatePortal);
-    }
 
     private void OnMouseDown()
     {
@@ -63,15 +55,14 @@ public class NodeData : MonoBehaviour
             // if clicking on a royal house node, we want to ask the player for confirmation before activating the node
             if (type == NODE_TYPES.royal_house)
             {
-                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Do you want to enter" + Utils.CapitalizeEveryWordOfEnum(subType), OnConfirmRoyalHouse);
+                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
+                    "Do you want to enter" + Utils.CapitalizeEveryWordOfEnum(subType), OnConfirmRoyalHouse);
                 return;
             }
             else
             {
                 GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);
             }
-
-            
         }
     }
 
@@ -86,13 +77,30 @@ public class NodeData : MonoBehaviour
     }
 
     #endregion
+
+    public void HideNode()
+    {
+        foreach (BackgroundImage bgimg in bgSprites)
+        {
+            bgimg.imageGo.SetActive(false);
+        }
+
+        idText.gameObject.SetActive(false);
+    }
+
+    public void ShowNode()
+    {
+        SelectNodeImage();
+        UpdateNodeStatusVisuals();
+    }
+
     public void Populate(NodeDataHelper nodeData)
     {
         PopulateNodeInformation(nodeData);
-        SelectNodeImage(nodeData);
-        UpdateNodeStatusVisuals(nodeData);
+        SelectNodeImage();
+        UpdateNodeStatusVisuals();
     }
-    
+
     private void PopulateNodeInformation(NodeDataHelper nodeData)
     {
         status = Utils.ParseEnum<NODE_STATUS>(nodeData.status);
@@ -101,11 +109,13 @@ public class NodeData : MonoBehaviour
         subType = Utils.ParseEnum<NODE_SUBTYPES>(nodeData.subType);
         exits = nodeData.exits;
         name = nodeData.type + "_" + nodeData.id;
+        act = nodeData.act;
+        step = nodeData.step;
     }
 
-    private void SelectNodeImage(NodeDataHelper nodeData)
+    private void SelectNodeImage()
     {
-        BackgroundImage bgi = bgSprites.Find(x => x.type == type);
+        BackgroundImage bgi = bgSprites.Find(x => x.type == subType);
         if (bgi.imageGo != null)
         {
             bgi.imageGo.SetActive(true);
@@ -116,25 +126,25 @@ public class NodeData : MonoBehaviour
         }
         else
         {
-            Debug.Log(" nodeData.type " + nodeData.type + " not found ");
+            Debug.Log(" nodeData.type " + type + " not found ");
         }
     }
 
-    private void UpdateNodeStatusVisuals(NodeDataHelper nodeData)
+    private void UpdateNodeStatusVisuals()
     {
         Color indexColor = Color.grey;
 
-        switch (Enum.Parse(typeof(NODE_STATUS), nodeData.status))
+        switch (status)
         {
             case NODE_STATUS.disabled:
-                this.nodeClickDisabled = true;
+                nodeClickDisabled = true;
                 break;
             case NODE_STATUS.completed:
                 indexColor = Color.red;
-                this.nodeClickDisabled = true;
+                nodeClickDisabled = true;
                 break;
             case NODE_STATUS.active:
-                if (nodeData.type == NODE_TYPES.portal.ToString()) this.nodeClickDisabled = true;
+                if (type == NODE_TYPES.portal) nodeClickDisabled = true;
                 indexColor = Color.cyan;
                 break;
             case NODE_STATUS.available:
@@ -143,13 +153,14 @@ public class NodeData : MonoBehaviour
                 break;
         }
 
-        GetComponentInChildren<TextMeshPro>().SetText(nodeData.id.ToString());
-        GetComponentInChildren<TextMeshPro>().color = indexColor;
+        idText.SetText(id.ToString());
+        idText.color = indexColor;
+        idText.gameObject.SetActive(true);
     }
 
 
     // when we update the sprite shape, we pass it the node data for the exit node directly, because it needs three things from it
-    public void UpdateSpriteShape(NodeData exitNode)
+    public void CreateSpriteShape(NodeData exitNode)
     {
         if (exitNode != null)
         {
@@ -161,8 +172,8 @@ public class NodeData : MonoBehaviour
 
     private void OnConfirmRoyalHouse()
     {
-        GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);        
-    }  
+        GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);
+    }
 
     #region oldFunctions
 

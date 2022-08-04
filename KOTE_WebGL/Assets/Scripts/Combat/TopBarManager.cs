@@ -73,9 +73,9 @@ public class TopBarManager : MonoBehaviour
 
     public void SetPlayerState(PlayerStateData playerState) 
     {        
-        SetNameText(playerState.data.player_state.player_name);
-        SetHealthText(playerState.data.player_state.hp_current, playerState.data.player_state.hp_max);
-        SetCoinsText(playerState.data.player_state.gold);
+        SetNameText(playerState.data.playerState.playerName);
+        SetHealthText(playerState.data.playerState.hpCurrent, playerState.data.playerState.hpMax);
+        SetCoinsText(playerState.data.playerState.gold);
     }
 
     public void SetClassSelected(string classSelected)

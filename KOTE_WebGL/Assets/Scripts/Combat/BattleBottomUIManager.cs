@@ -12,7 +12,7 @@ public class BattleBottomUIManager : MonoBehaviour
     {
         container.SetActive(false);
         GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeDataUpdated);//TODO: this will change as not all nodes will be combat
-        GameManager.Instance.EVENT_MAP_PANEL_TOOGLE.AddListener(OnMapPanelToogle);
+        GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.AddListener(OnMapPanelToogle);
 }
 
     private void OnMapPanelToogle(bool arg0)

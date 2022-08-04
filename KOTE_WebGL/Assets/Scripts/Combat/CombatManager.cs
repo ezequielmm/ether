@@ -11,11 +11,17 @@ public class CombatManager : MonoBehaviour
     private void Start()
     {
         combatContainer.SetActive(false);
-        GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeDataUpdated);//TODO: this will change as not all nodes will be combat
+        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.AddListener(OnToggleCombatElements);
+        GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.AddListener(OnMapPanelToggle);
     }
 
-    private void OnNodeDataUpdated(NodeStateData nodeState,WS_QUERY_TYPE wsType)
+    private void OnToggleCombatElements(bool data)
     {
-        if(wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED)combatContainer.SetActive(true);
+        combatContainer.SetActive(data);
+    }
+
+    private void OnMapPanelToggle(bool mapOpen) 
+    {
+        combatContainer.SetActive(!mapOpen);
     }
 }
