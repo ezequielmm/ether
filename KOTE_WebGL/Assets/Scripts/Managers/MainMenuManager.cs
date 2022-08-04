@@ -36,7 +36,7 @@ public class MainMenuManager : MonoBehaviour
 
         _hasExpedition = hasExpedition;
 
-        textField?.SetText( hasExpedition? "Resume" : "Play");
+        textField?.SetText( hasExpedition? "RESUME" : "PLAY");
         
         newExpeditionButton.gameObject.SetActive(_hasExpedition);
     }
