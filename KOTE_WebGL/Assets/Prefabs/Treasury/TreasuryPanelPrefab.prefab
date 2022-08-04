@@ -966,8 +966,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -641, y: 1}
-  m_SizeDelta: {x: 393, y: 652}
+  m_AnchoredPosition: {x: -582, y: 0}
+  m_SizeDelta: {x: 393, y: 396.7606}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4875443206657732938
 CanvasRenderer:
@@ -1167,7 +1167,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 663, y: -448}
+  m_AnchoredPosition: {x: 628, y: -448}
   m_SizeDelta: {x: 432, y: 69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2125352255418590425
@@ -1300,7 +1300,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -171, y: -448}
+  m_AnchoredPosition: {x: -144, y: -448}
   m_SizeDelta: {x: 432, y: 69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2543878646220893869
@@ -1582,13 +1582,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tabsNavigatorManager: {fileID: 1105841658741440106}
-  panelTransforms:
-  - {fileID: 8568124338811891660}
-  - {fileID: 7934301651696720677}
-  - {fileID: 7332653985670341115}
-  - {fileID: 4522013329714808495}
+  nftPanel: {fileID: 8568124338811891660}
+  cardPanel: {fileID: 7934301651696720677}
+  powerPanel: {fileID: 7332653985670341115}
+  armorPanel: {fileID: 4522013329714808495}
   characterList: {fileID: 4844148999373937329}
   tabContentPrefab: {fileID: 6145099774662437866, guid: 7ccef22af53efac4c91b9442707cf437,
+    type: 3}
+  treasuryCardPrefab: {fileID: 4478483465847663076, guid: 083cfdff4662b024784c6e73857df683,
+    type: 3}
+  treasuryNftPrefab: {fileID: 5248840075696290227, guid: 5ccce59e9c81d6340b9ab71dfc750228,
     type: 3}
   treasuryContainer: {fileID: 384784449783811510}
 --- !u!1 &4214822047080320766
@@ -3383,8 +3386,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -112}
-  m_SizeDelta: {x: 341, y: 652}
+  m_AnchoredPosition: {x: 0, y: -0.0001564}
+  m_SizeDelta: {x: 341, y: 396.76}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &9147269399593600800
 MonoBehaviour:
@@ -3699,10 +3702,10 @@ MonoBehaviour:
   m_ChildAlignment: 3
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 200, y: 275}
+  m_CellSize: {x: 298, y: 302}
   m_Spacing: {x: 50, y: 50}
   m_Constraint: 1
-  m_ConstraintCount: 4
+  m_ConstraintCount: 3
 --- !u!114 &696299576585486600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3814,7 +3817,7 @@ MonoBehaviour:
   m_ChildAlignment: 3
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 200, y: 275}
+  m_CellSize: {x: 226, y: 316}
   m_Spacing: {x: 50, y: 50}
   m_Constraint: 1
   m_ConstraintCount: 4
