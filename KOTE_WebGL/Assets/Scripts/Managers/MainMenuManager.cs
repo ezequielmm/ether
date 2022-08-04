@@ -60,13 +60,11 @@ public class MainMenuManager : MonoBehaviour
     {
         nameText.gameObject.SetActive(!preLoginStatus);
         moneyText.gameObject.SetActive(!preLoginStatus);
-        playButton.interactable = !preLoginStatus;
-        treasuryButton.interactable = !preLoginStatus;
+        playButton.gameObject.SetActive(!preLoginStatus);
+        treasuryButton.gameObject.SetActive(!preLoginStatus);
         newExpeditionButton.gameObject.SetActive(!preLoginStatus);
         registerButton.gameObject.SetActive(preLoginStatus);
         loginButton.gameObject.SetActive(preLoginStatus);
-        registerButton.interactable = preLoginStatus;
-        loginButton.interactable = preLoginStatus;
         nameButton.gameObject.SetActive(!preLoginStatus);
         fiefButton.gameObject.SetActive(!preLoginStatus);
         settingButton.gameObject.SetActive(!preLoginStatus);
