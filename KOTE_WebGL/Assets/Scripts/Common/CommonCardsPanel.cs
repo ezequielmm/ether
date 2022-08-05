@@ -19,9 +19,8 @@ public class CommonCardsPanel : MonoBehaviour
     {
         CommonCardsContainer.SetActive(false);
         GameManager.Instance.EVENT_CARD_PILE_CLICKED.AddListener(DisplayCards);
-        //GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusUpdate);
-        //GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeStateDateUpdate);
         GameManager.Instance.EVENT_CARDS_PILES_UPDATED.AddListener(OnPilesUpdate);
+        GameManager.Instance.EVENT_CARD_PILE_SHOW_DECK.AddListener(onFullDeckShow);
     }
 
     private void OnPilesUpdate(CardPiles data)
@@ -32,8 +31,7 @@ public class CommonCardsPanel : MonoBehaviour
 
         drawDeck.cards = data.data.draw;
         discardDeck.cards = data.data.discard;
-        exhaustDeck.cards = data.data.exhaust;       
-
+        exhaustDeck.cards = data.data.exhaust;
     }
 
     private void OnNodeStateDateUpdate(NodeStateData nodeState,WS_QUERY_TYPE wsType)
@@ -60,11 +58,6 @@ public class CommonCardsPanel : MonoBehaviour
         
     }
 
-    private void OnPlayerStatusUpdate(PlayerStateData playerState)
-    {
-        playerDeck.cards = playerState.data.playerState.cards;
-    }
-
     private void DisplayCards(PileTypes pileType)
     {
         if (CommonCardsContainer.activeSelf)
@@ -80,16 +73,28 @@ public class CommonCardsPanel : MonoBehaviour
         
     }
 
-    private void ShowCards(PileTypes pileType)
+    private void onFullDeckShow(Deck deck) 
     {
-        for (int i =0; i < gridCardsContainer.transform.childCount;i++)
+        playerDeck = deck;
+        CommonCardsContainer.SetActive(true);
+        DestoryCards();
+        GenerateCards(playerDeck);
+    }
+
+    private void DestoryCards() 
+    {
+        for (int i = 0; i < gridCardsContainer.transform.childCount; i++)
         {
             Destroy(gridCardsContainer.transform.GetChild(i).gameObject);
         }
+    }
 
+    private void ShowCards(PileTypes pileType)
+    {
+        DestoryCards();
         switch (pileType)
         {
-            case PileTypes.Deck: GenerateCards(playerDeck); break;
+            case PileTypes.Deck: GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.PlayerDeck); break;
             case PileTypes.Draw: GenerateCards(drawDeck); break;
             case PileTypes.Discarded: GenerateCards(discardDeck); break;
             case PileTypes.Exhausted: GenerateCards(exhaustDeck); break;

@@ -203,11 +203,12 @@ public class Card
     public string rarity;
     public int energy;
     public string cardType;
+    public bool isUpgraded;
+
     public string pool;
     public bool showPointer;
     public Effects properties;
     public List<string> keywords;
-    public bool isUpgraded;
 }
 
 [Serializable]
@@ -236,6 +237,7 @@ public class Deck
 {
     public List<Card> cards;
 }
+
 
 [Serializable]
 public class CardPiles
@@ -327,6 +329,20 @@ public class SWSM_Base
 }
 
 [Serializable]
+public class SWSM_PlayerDeckData
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public string message_type;
+        public string action;
+        public List<Card> data;
+    }
+}
+
+    [Serializable]
 public class SWSM_MapData
 {
     public ExpeditionMapData data;
