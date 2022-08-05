@@ -10,14 +10,7 @@ using UnityEngine.Serialization;
 public class CardOnHandManager : MonoBehaviour
 {
     public GameObject cardcontent;
-
-    [Serializable]
-    public struct CardImage
-    {
-        public int cardId;
-        public Sprite image;
-    }
-
+    
     [Serializable]
     public struct Gem
     {
@@ -58,11 +51,12 @@ public class CardOnHandManager : MonoBehaviour
     public Vector3 targetRotation;
     public bool cardActive = false;
 
-    [Header("Card Variation Sprites")] public List<CardImage> cardImages;
+    [Header("Card Variation Sprites")]
     public List<Gem> Gems;
     public List<Banner> banners;
     public List<Frame> frames;
-
+    [FormerlySerializedAs("images")] public List<Sprite> cardImages;
+    
     [Header("Outline effects")] public ParticleSystem auraPS;
 
     public Material greenOutlineMaterial;
@@ -184,14 +178,13 @@ public class CardOnHandManager : MonoBehaviour
         gemSprite.sprite = Gems.Find(gem => gem.type == cardType).gem;
         frameSprite.sprite = frames.Find(frame => frame.pool == card.pool).frame;
         bannerSprite.sprite = banners.Find(banner => banner.rarity == card.rarity).banner;
-        if (cardImages.Exists(image => image.cardId == card.cardId || image.cardId + 1 == card.cardId))
+        if (cardImages.Exists(image => int.Parse(image.name) == card.cardId || int.Parse(image.name) + 1 == card.cardId))
         {
-            cardImage.sprite = cardImages.Find(image => image.cardId == card.cardId || image.cardId + 1 == card.cardId)
-                .image;
+            cardImage.sprite = cardImages.Find(image => int.Parse(image.name) == card.cardId || int.Parse(image.name) + 1 == card.cardId);
         }
         else
         {
-            cardImage.sprite = cardImages[0].image;
+            cardImage.sprite = cardImages[0];
         }
         /* this.id = card.id;
           card_energy_cost = card.energy;*/

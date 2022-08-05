@@ -5370,97 +5370,6 @@ MonoBehaviour:
   targetPosition: {x: 0, y: 0, z: 0}
   targetRotation: {x: 0, y: 0, z: 0}
   cardActive: 0
-  cardImages:
-  - cardId: 0
-    image: {fileID: 21300000, guid: c14fb330c6215ff4aa0378fdf06c3adc, type: 3}
-  - cardId: 5
-    image: {fileID: 21300000, guid: 8aff0cbb42a5e574ab8375e223e2ca94, type: 3}
-  - cardId: 7
-    image: {fileID: 21300000, guid: 7f3a4656b23c5044e96b0b02431b923b, type: 3}
-  - cardId: 23
-    image: {fileID: 21300000, guid: eba100a2715e0174d9c03d8beced3c29, type: 3}
-  - cardId: 37
-    image: {fileID: 21300000, guid: c30e97021ee844c4f931dc0e71e2b950, type: 3}
-  - cardId: 39
-    image: {fileID: 21300000, guid: 6f3535e1f73238c4f9ef4e2b35fb4e0b, type: 3}
-  - cardId: 41
-    image: {fileID: 21300000, guid: 3ea6b7f01f6329d418cb4478db70b000, type: 3}
-  - cardId: 43
-    image: {fileID: 21300000, guid: e7ac986f4ec1ab64e81eb8fa32451cdb, type: 3}
-  - cardId: 45
-    image: {fileID: 21300000, guid: 09d06802da161154184ea79319a4284e, type: 3}
-  - cardId: 53
-    image: {fileID: 21300000, guid: 9b065b69be5f6d942b15692431a4a374, type: 3}
-  - cardId: 57
-    image: {fileID: 21300000, guid: 7f4175076a5df7b458b7646518443553, type: 3}
-  - cardId: 64
-    image: {fileID: 21300000, guid: cc6f520166eccdb489fc516d0f0f6d76, type: 3}
-  - cardId: 66
-    image: {fileID: 21300000, guid: 2b31eaad28ee1254ebc371a1f4341668, type: 3}
-  - cardId: 68
-    image: {fileID: 21300000, guid: ba7eab75cf7dfd643921d9bc2bbdcd92, type: 3}
-  - cardId: 72
-    image: {fileID: 21300000, guid: 3df833841dee6ca44b487456096b8e9c, type: 3}
-  - cardId: 74
-    image: {fileID: 21300000, guid: 53627e187537aa840934e77f58b192b2, type: 3}
-  - cardId: 75
-    image: {fileID: 21300000, guid: c38e407db55cab24589233b74cd450bb, type: 3}
-  - cardId: 79
-    image: {fileID: 21300000, guid: ee65ee8e8ba34f84fbbef84b0bd8cdda, type: 3}
-  - cardId: 81
-    image: {fileID: 21300000, guid: d1345296c5c0cd64bb699024877f34bc, type: 3}
-  - cardId: 83
-    image: {fileID: 21300000, guid: 25fa0531deebafd40b124203d3381a8d, type: 3}
-  - cardId: 91
-    image: {fileID: 21300000, guid: ad5d6755d3713a34f829e68b6bfc55b1, type: 3}
-  - cardId: 93
-    image: {fileID: 21300000, guid: 31897846e874d514a8630eab799d2f3c, type: 3}
-  - cardId: 97
-    image: {fileID: 21300000, guid: 9dc879558d5bb4b418e275818f66c5f8, type: 3}
-  - cardId: 99
-    image: {fileID: 21300000, guid: 13673517d04713e49a2f66bf8b446df5, type: 3}
-  - cardId: 103
-    image: {fileID: 21300000, guid: b8aefdebf58ed5d4284c211aad661ab5, type: 3}
-  - cardId: 107
-    image: {fileID: 21300000, guid: bdcb1dfb6fe644d449f209282a35d183, type: 3}
-  - cardId: 111
-    image: {fileID: 21300000, guid: 5bbf36e09aeedf04b9678cb2214f78dc, type: 3}
-  - cardId: 113
-    image: {fileID: 21300000, guid: 51e950b22fe4ce8418d7efe9062e48b6, type: 3}
-  - cardId: 115
-    image: {fileID: 21300000, guid: 924dbf29464593e429536daea8dba182, type: 3}
-  - cardId: 119
-    image: {fileID: 21300000, guid: 8dc3a2c2df41171459defa7cfbe085c4, type: 3}
-  - cardId: 121
-    image: {fileID: 21300000, guid: 01b4e6fde7ef55a46a3b277fc93ebb9c, type: 3}
-  - cardId: 123
-    image: {fileID: 21300000, guid: e6c9a5c26d82382489de0409b51a79b8, type: 3}
-  - cardId: 129
-    image: {fileID: 21300000, guid: bfe9af477aa3661498a431f387b1efe6, type: 3}
-  - cardId: 131
-    image: {fileID: 21300000, guid: 76e0a8da6e0cf22438ff25ffad5ed502, type: 3}
-  - cardId: 133
-    image: {fileID: 21300000, guid: 392ecbd71ee18744eab4b81de518da57, type: 3}
-  - cardId: 135
-    image: {fileID: 21300000, guid: 2123ab540bc7bb045a5912c4d3f83312, type: 3}
-  - cardId: 137
-    image: {fileID: 21300000, guid: de97aca3458e6104fae7d8e108bca801, type: 3}
-  - cardId: 143
-    image: {fileID: 21300000, guid: d1818895e9cea354c991cff9b4befb9e, type: 3}
-  - cardId: 147
-    image: {fileID: 21300000, guid: 033115893e7e9d5409fbe58bf1e53b13, type: 3}
-  - cardId: 151
-    image: {fileID: 21300000, guid: 8eabe07569c337d4fa08e440dc2e1d3f, type: 3}
-  - cardId: 153
-    image: {fileID: 21300000, guid: f0bb5205b35850f4faab7d269faa44d3, type: 3}
-  - cardId: 155
-    image: {fileID: 21300000, guid: 3ba7bc95306968944b13543054f6b676, type: 3}
-  - cardId: 157
-    image: {fileID: 21300000, guid: 1917c294e084e1843b812d1a19547a37, type: 3}
-  - cardId: 159
-    image: {fileID: 21300000, guid: e4dc4c6e31e816942aa9f88369757c5d, type: 3}
-  - cardId: 161
-    image: {fileID: 21300000, guid: 28d85428058345e4abb82e1aa2c85920, type: 3}
   Gems:
   - type: attack
     gem: {fileID: 21300000, guid: 8e28d90fcfe29c440b2b5cc0e693c1ea, type: 3}
@@ -5510,6 +5419,52 @@ MonoBehaviour:
     frame: {fileID: 21300000, guid: 95635fcc514685b49b9dbc9df8c2dc3b, type: 3}
   - pool: status
     frame: {fileID: 21300000, guid: 2468302d43541e94c92dc37508a5ba26, type: 3}
+  cardImages:
+  - {fileID: 21300000, guid: c14fb330c6215ff4aa0378fdf06c3adc, type: 3}
+  - {fileID: 21300000, guid: f7e02324243fdd948826097af695638e, type: 3}
+  - {fileID: 21300000, guid: 65373ac347505224aabb3fb641c49979, type: 3}
+  - {fileID: 21300000, guid: 7da2523b26da948499542031fcb6b4db, type: 3}
+  - {fileID: 21300000, guid: 128c5ebcd471ee44c8a2ff8a34dc461d, type: 3}
+  - {fileID: 21300000, guid: d34478b68abb5c6459f53c1cc0c3b8c5, type: 3}
+  - {fileID: 21300000, guid: 16af5fd581d6b364dac4925ca31abce2, type: 3}
+  - {fileID: 21300000, guid: 312f1682a41642e4e899540c00a094a4, type: 3}
+  - {fileID: 21300000, guid: abcadf033d49fc7419d341943672528d, type: 3}
+  - {fileID: 21300000, guid: f9446ea623ff9904b9ced583b0c09f1b, type: 3}
+  - {fileID: 21300000, guid: d33d79493c14b9c4abde970347ed280b, type: 3}
+  - {fileID: 21300000, guid: 144486b59e705004cbbd1d8b5ba6d0c7, type: 3}
+  - {fileID: 21300000, guid: d76c6c5c334447c40b2a23ea7c96fb5b, type: 3}
+  - {fileID: 21300000, guid: dc3d4b0a3def9ad418007a8894e7aae8, type: 3}
+  - {fileID: 21300000, guid: e8cd096ca42ad2c4aaccdfa63d173ae1, type: 3}
+  - {fileID: 21300000, guid: 8f0be8fb1800dfd4294b358b08e30b64, type: 3}
+  - {fileID: 21300000, guid: b1478c7d6a8064b4bbd15dc080a4dfb7, type: 3}
+  - {fileID: 21300000, guid: 155a2108c367a7f4d8630612c15f2c20, type: 3}
+  - {fileID: 21300000, guid: cee48c2357125924eaf20e921fe5089c, type: 3}
+  - {fileID: 21300000, guid: 13096ffa27094ed49853aa52f0852ee1, type: 3}
+  - {fileID: 21300000, guid: 62653d67c7b11b148b9d3ad4cdccbe24, type: 3}
+  - {fileID: 21300000, guid: 42ec895ca768d9947804c9d6b8ea8095, type: 3}
+  - {fileID: 21300000, guid: 0b24c167a8d995347bc047f90feb918b, type: 3}
+  - {fileID: 21300000, guid: 727d0ba33f0601248a9ad1b8448cdb48, type: 3}
+  - {fileID: 21300000, guid: 9920d57f06c875b4f9e59f207ec47506, type: 3}
+  - {fileID: 21300000, guid: 418c3a4870d635242a7e7a32366bbf29, type: 3}
+  - {fileID: 21300000, guid: 428c8acdfdc095d4c9edd9c418c7c1ff, type: 3}
+  - {fileID: 21300000, guid: 02ee4f2f87cdd9844adad0ceaa0ee903, type: 3}
+  - {fileID: 21300000, guid: 1efa33064d3d7624f83fb2a20524a3f5, type: 3}
+  - {fileID: 21300000, guid: 6b7fc93dc88bb7a4eafb6b30418c57c8, type: 3}
+  - {fileID: 21300000, guid: 9151f0d5deacc0744bac818fb4d098ed, type: 3}
+  - {fileID: 21300000, guid: a56aab9d71c1ac84dbc6aeac96e4004f, type: 3}
+  - {fileID: 21300000, guid: 8c0f67f04a61b3f47988e64d224518ce, type: 3}
+  - {fileID: 21300000, guid: 8388228ca6c809c45852ac7013a21e0a, type: 3}
+  - {fileID: 21300000, guid: c7883e914b90cea4fad576164be62052, type: 3}
+  - {fileID: 21300000, guid: 0484fa796ad27b547b4db56717988dc0, type: 3}
+  - {fileID: 21300000, guid: e58af6555c892f847ae0c9a0bdbb141e, type: 3}
+  - {fileID: 21300000, guid: 2e4c49aafbdbd5d42b9cd1b50ccad581, type: 3}
+  - {fileID: 21300000, guid: b5b57261114778244a0172d364efbc7e, type: 3}
+  - {fileID: 21300000, guid: aa53a50192d05c540a213c0aca79e217, type: 3}
+  - {fileID: 21300000, guid: 0f68feb61b8a7bc43b25a91c8d21b305, type: 3}
+  - {fileID: 21300000, guid: 6468ea8144a0c6c498d186d8bb37cf8c, type: 3}
+  - {fileID: 21300000, guid: 48f78182fc7109c4d94e1fe15f05659d, type: 3}
+  - {fileID: 21300000, guid: c0ada8da4f8823a448ef0489a338efc1, type: 3}
+  - {fileID: 21300000, guid: d799a935ed6aad948bd7b26cc2d80792, type: 3}
   auraPS: {fileID: 2455367811583604567}
   greenOutlineMaterial: {fileID: 2100000, guid: 2336fb1f44d8f764980e28d82722fd08,
     type: 2}
@@ -5526,12 +5481,12 @@ MonoBehaviour:
     rarity: 
     energy: 0
     cardType: 
+    isUpgraded: 0
     pool: 
     showPointer: 0
     properties:
       effects: []
     keywords: []
-    isUpgraded: 0
 --- !u!61 &1590421481447034592
 BoxCollider2D:
   m_ObjectHideFlags: 0
