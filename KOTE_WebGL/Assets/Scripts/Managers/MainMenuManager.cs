@@ -102,8 +102,8 @@ public class MainMenuManager : MonoBehaviour
         {
             //show the character selection panel
             //koteLabel.gameObject.SetActive(false);
-            buttonPanel.interactable = false;
-            GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
+            //buttonPanel.interactable = false;
+            GameManager.Instance.EVENT_ARMORYPANEL_ACTIVATION_REQUEST.Invoke(true);
         }
     }
 
