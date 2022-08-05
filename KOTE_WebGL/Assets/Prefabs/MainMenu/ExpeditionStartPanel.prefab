@@ -386,7 +386,7 @@ GameObject:
   - component: {fileID: 8810683574543873112}
   - component: {fileID: 8806749287695687492}
   m_Layer: 5
-  m_Name: CharacterSelection
+  m_Name: ExpeditionStartPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

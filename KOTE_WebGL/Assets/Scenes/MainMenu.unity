@@ -511,7 +511,7 @@ PrefabInstance:
     - target: {fileID: 1615893368132996980, guid: d3f702376591541489069d8b2e73cf9e,
         type: 3}
       propertyPath: m_Name
-      value: CharacterSelection
+      value: ExpeditionStartPanel
       objectReference: {fileID: 0}
     - target: {fileID: 8810683574543873112, guid: d3f702376591541489069d8b2e73cf9e,
         type: 3}
