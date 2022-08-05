@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7310896486854911635}
   - component: {fileID: 5326262550756075371}
   - component: {fileID: 4600450425268501471}
+  - component: {fileID: 4850266190292357200}
   m_Layer: 5
   m_Name: DeckButton
   m_TagString: Untagged
@@ -132,6 +133,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4850266190292357200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375113516877208647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac5ef6d53727d5145818aa04e74a43bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltips:
+  - title: Deck
+    description: View all of the cards in your deck.
 --- !u!1 &1097162515938390710
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,6 +159,7 @@ GameObject:
   - component: {fileID: 5420280834148390626}
   - component: {fileID: 161677660591146923}
   - component: {fileID: 5275244311620830146}
+  - component: {fileID: 1862463598510058649}
   m_Layer: 0
   m_Name: coins
   m_TagString: Untagged
@@ -208,6 +225,24 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1862463598510058649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1097162515938390710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d564c94f5ffeef74e9bb166a65247142, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltips:
+  - title: Wallet
+    description: How much gold you are carrying. Gold is the basic currency in Knights
+      of The Ether.
+  anchor: 1
+  limit: {x: -1, y: 4}
 --- !u!1 &2003996880713825566
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,6 +368,7 @@ GameObject:
   - component: {fileID: 7637453973785293083}
   - component: {fileID: 7169653654886877552}
   - component: {fileID: 4223043362899098417}
+  - component: {fileID: 8010080689113171180}
   m_Layer: 0
   m_Name: class_icon
   m_TagString: Untagged
@@ -400,6 +436,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8010080689113171180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3035052704644184722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d564c94f5ffeef74e9bb166a65247142, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltips:
+  - title: Hit Points (HP)
+    description: If you run out of HP, you die.
+  anchor: 0
+  limit: {x: -1, y: 4}
 --- !u!1 &3234512082084416682
 GameObject:
   m_ObjectHideFlags: 0
@@ -621,6 +674,7 @@ GameObject:
   - component: {fileID: 1616349945405405799}
   - component: {fileID: 5832713713771495790}
   - component: {fileID: 6629466022464491164}
+  - component: {fileID: 7991325401856477996}
   m_Layer: 5
   m_Name: MapButton
   m_TagString: Untagged
@@ -741,6 +795,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7991325401856477996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5309821371168514389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac5ef6d53727d5145818aa04e74a43bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltips:
+  - title: Map
+    description: View the current Web 3.0 map.
 --- !u!1 &7612459576622820769
 GameObject:
   m_ObjectHideFlags: 0
@@ -1325,6 +1394,7 @@ GameObject:
   - component: {fileID: 7612459577923966456}
   - component: {fileID: 7612459577923966459}
   - component: {fileID: 7612459577923966458}
+  - component: {fileID: 629142596555184417}
   m_Layer: 5
   m_Name: SettingButton
   m_TagString: Untagged
@@ -1445,6 +1515,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &629142596555184417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7612459577923966460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac5ef6d53727d5145818aa04e74a43bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltips:
+  - title: Settings
+    description: Opens the game menu. Change or update your graphics, audio, and
+      gameplay preferences here.
 --- !u!1 &7612459578312946484
 GameObject:
   m_ObjectHideFlags: 0

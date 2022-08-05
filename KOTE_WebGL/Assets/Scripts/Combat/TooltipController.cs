@@ -25,9 +25,11 @@ public class TooltipController : MonoBehaviour
     Anchor anchor;
     bool followPoint;
     Vector2 size;
+    Vector3 limit;
 
     void Start()
     {
+        limit = -Vector3.one;
         active = true;
         rectTransform = tooltipContainer.GetComponent<RectTransform>();
         followPoint = false;
@@ -75,6 +77,9 @@ public class TooltipController : MonoBehaviour
         if (follow != null)
         {
             toFollow = follow;
+            followPoint = true;
+            if(location != Vector3.zero)
+                limit = location;
         }
         this.location = location;
         anchor = position;
@@ -131,9 +136,22 @@ public class TooltipController : MonoBehaviour
         }
         if (followPoint) 
         {
-            var location = Camera.main.WorldToScreenPoint(toFollow.position);
-            location.z = 0;
-            tooltipContainer.transform.position = location + offset;
+            var followLocation = toFollow.position;
+            followLocation.z = 0;
+            if (limit.x != -1) 
+            {
+                followLocation.x = limit.x;
+            }
+            if (limit.y != -1) 
+            {
+                followLocation.y = limit.y;
+            }
+
+            followLocation = Camera.main.WorldToScreenPoint(followLocation);
+
+            //Debug.Log($"[{gameObject.name}] toFollow: {toFollow.position} | screenSpace: {followLocation} | offset: {offset}");
+
+            tooltipContainer.transform.position = followLocation + offset;
         }
     }
 

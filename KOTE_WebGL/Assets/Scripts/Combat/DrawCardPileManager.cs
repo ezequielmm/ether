@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.EventSystems;
 
-public class DrawCardPileManager : MonoBehaviour
+public class DrawCardPileManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public TextMeshProUGUI amountOfCardsTF;
     int cardsShuffled = 0;
     bool audioRunning = false;
+    RectTransform rectTransform;
+
     void Start()
     {
+        rectTransform = transform as RectTransform;
         // GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeStateDateUpdate);
         GameManager.Instance.EVENT_CARDS_PILES_UPDATED.AddListener(OnPilesUpdate);
         GameManager.Instance.EVENT_CARD_SHUFFLE.AddListener(OnShuffle);
@@ -55,5 +59,25 @@ public class DrawCardPileManager : MonoBehaviour
     public void OnPileClick()
     {
         GameManager.Instance.EVENT_CARD_PILE_CLICKED.Invoke(PileTypes.Draw);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Vector3 anchorPoint = new Vector3(transform.position.x + rectTransform.rect.center.x + ((rectTransform.rect.width * rectTransform.lossyScale.x) / 2),
+            transform.position.y + rectTransform.rect.center.y - ((rectTransform.rect.height * rectTransform.lossyScale.y) / 2), 0);
+        anchorPoint = Camera.main.ScreenToWorldPoint(anchorPoint);
+        List<Tooltip> tooltips = new List<Tooltip>() { new Tooltip()
+        {
+            title = "Draw Pile",
+            description = "At the start of each turn, 5 cards are drawn from here.\n\nClick to view the cards in your draw pile (shuffled)."
+        }};
+        // Tooltip On
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.BottomLeft, anchorPoint, null);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        // Tooltip Off
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
     }
 }

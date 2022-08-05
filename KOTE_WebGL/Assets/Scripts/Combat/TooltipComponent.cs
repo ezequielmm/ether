@@ -15,6 +15,7 @@ public class TooltipComponent : MonoBehaviour
 
     [SerializeField]
     float fadeSpeed = 0.2f;
+    bool showing = false;
 
     Image background;
 
@@ -41,27 +42,40 @@ public class TooltipComponent : MonoBehaviour
 
     public void Delete()
     {
+        killTweens();
+
         transform.SetParent(transform.parent.parent);
         background?.DOFade(0, fadeSpeed);
         title.DOFade(0, fadeSpeed);
         description.DOFade(0, fadeSpeed).OnComplete(() => {
-            DOTween.Kill(this.gameObject);
-            Destroy(gameObject);
+            killTweens();
+            Destroy(this.gameObject);
         });
     }
+
+    private void killTweens() 
+    {
+        DOTween.Kill(transform);
+        if(background != null)
+            DOTween.Kill(background);
+        DOTween.Kill(title);
+        DOTween.Kill(description);
+    }
+
     public void Disable() 
     {
+        killTweens();
         transform?.SetParent(transform.parent.parent);
         background?.DOFade(0, fadeSpeed);
         title?.DOFade(0, fadeSpeed);
         description?.DOFade(0, fadeSpeed).OnComplete(() => {
-            DOTween.Kill(this.gameObject);
+            killTweens();
             gameObject.SetActive(false);
         });
     }
     public void Enable() 
     {
-        DOTween.Kill(this.gameObject);
+        killTweens();
         if (background != null)
             background.color = new Color(background.color.r, background.color.g, background.color.b, 0);
         title.color = new Color(title.color.r, title.color.g, title.color.b, 0);
@@ -69,6 +83,9 @@ public class TooltipComponent : MonoBehaviour
 
         background?.DOFade(1, fadeSpeed).SetDelay(0.1f);
         title?.DOFade(1, fadeSpeed).SetDelay(0.1f);
-        description?.DOFade(1, fadeSpeed).SetDelay(0.1f);
+        description?.DOFade(1, fadeSpeed).SetDelay(0.1f).OnComplete(() => 
+        {
+            showing = true;
+        });
     }
 }

@@ -3,15 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class DiscardedCardPileManager : MonoBehaviour
+public class DiscardedCardPileManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public TextMeshProUGUI amountOfCardsTF;
     int cardsDiscarded = 0;
     bool audioRunning = false;
+    RectTransform rectTransform;
 
     void Start()
     {
+        rectTransform = transform as RectTransform;
         //GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeStateDateUpdate);
         GameManager.Instance.EVENT_CARDS_PILES_UPDATED.AddListener(OnPilesUpdate);
         GameManager.Instance.EVENT_CARD_DISCARD.AddListener(OnCardDiscard);
@@ -56,5 +59,25 @@ public class DiscardedCardPileManager : MonoBehaviour
     public void OnPileClick()
     {
         GameManager.Instance.EVENT_CARD_PILE_CLICKED.Invoke(PileTypes.Discarded);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Vector3 anchorPoint = new Vector3(transform.position.x + rectTransform.rect.center.x - ((rectTransform.rect.width * rectTransform.lossyScale.x) / 2),
+            transform.position.y + rectTransform.rect.center.y - ((rectTransform.rect.height * rectTransform.lossyScale.y) / 2), 0);
+        anchorPoint = Camera.main.ScreenToWorldPoint(anchorPoint);
+        List<Tooltip> tooltips = new List<Tooltip>() { new Tooltip()
+        {
+            title = "Discard Pile",
+            description = "If your draw pile is empty, the discard pile is shuffled into the draw pile.\n\nClick to view the cards in your discard pile."
+        }};
+        // Tooltip On
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.BottomRight, anchorPoint, null);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        // Tooltip Off
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
     }
 }

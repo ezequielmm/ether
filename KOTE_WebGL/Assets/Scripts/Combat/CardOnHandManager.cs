@@ -77,8 +77,8 @@ public class CardOnHandManager : MonoBehaviour
     public Color blueColor;
     public Color redColor;
 
-    [HideInInspector] 
-    public Sequence mySequence;
+    [HideInInspector]
+    public List<Tooltip> tooltips;
 
     private Vector3 drawPileOrthoPosition;
     private Vector3 discardPileOrthoPosition;
@@ -97,11 +97,14 @@ public class CardOnHandManager : MonoBehaviour
     private int currentPlayerEnergy;
 
     private bool awaitMouseUp;
+
+    private new BoxCollider2D collider;
  
     private void Awake()
     {
         //Screenspace is defined in pixels. The bottom-left of the screen is (0,0); the right-top is (pixelWidth,pixelHeight). The z position is in world units from the camera.
         //Viewport space is normalized and relative to the camera. The bottom-left of the camera is (0,0); the top-right is (1,1). The z position is in world units from the camera.
+        tooltips = new List<Tooltip>();
 
         drawPileOrthoPosition = TransformUIToOrtho("DrawCardPile");
         discardPileOrthoPosition = TransformUIToOrtho("DiscardCardPile");
@@ -112,7 +115,7 @@ public class CardOnHandManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mySequence = DOTween.Sequence();
+        collider = GetComponent<BoxCollider2D>();
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
         GameManager.Instance.EVENT_MOVE_CARD.AddListener(OnCardToMove);
         GameManager.Instance.EVENT_CARD_SHOWING_UP.AddListener(OnCardMouseShowingUp);
@@ -201,6 +204,13 @@ public class CardOnHandManager : MonoBehaviour
           card_energy_cost = card.energy;*/
 
         thisCardValues = card;
+        foreach (var keyword in card.keywords) 
+        {
+            tooltips.Add(new Tooltip() {
+                title = Utils.PrettyText(keyword),
+                description = "TODO // Send Description Over Websocket with Cards"
+            });
+        }
 
         UpdateCardBasedOnEnergy(energy);
     }
@@ -393,9 +403,10 @@ public class CardOnHandManager : MonoBehaviour
     {
         if (cardActive && card_can_be_played)
         {
-           // DOTween.PlayForward(this.gameObject);
-           // GameManager.Instance.EVENT_CARD_MOUSE_ENTER.Invoke(thisCardValues.cardId);
-            
+            // DOTween.PlayForward(this.gameObject);
+            // GameManager.Instance.EVENT_CARD_MOUSE_ENTER.Invoke(thisCardValues.cardId);
+
+
             ShowUpCard();
         }
            
@@ -422,7 +433,12 @@ public class CardOnHandManager : MonoBehaviour
             transform.DOMoveY(GameSettings.HAND_CARD_SHOW_UP_Y, GameSettings.HAND_CARD_SHOW_UP_TIME);//.SetRelative(true);
             transform.DOMoveZ(GameSettings.HAND_CARD_SHOW_UP_Z, GameSettings.HAND_CARD_SHOW_UP_TIME);
 
-            transform.DORotate(Vector3.zero, GameSettings.HAND_CARD_SHOW_UP_TIME);
+            transform.DORotate(Vector3.zero, GameSettings.HAND_CARD_SHOW_UP_TIME).OnComplete(() => 
+            {
+                Vector3 topRightOfCard = new Vector3(transform.position.x + (collider.bounds.size.x / 2) + 0.2f, 
+                    transform.position.y + (collider.bounds.size.y / 2), 0);
+                GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.TopLeft, topRightOfCard, null);
+            });
 
             GameManager.Instance.EVENT_CARD_SHOWING_UP.Invoke(thisCardValues.id, this.targetPosition);
         }
@@ -451,6 +467,8 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnMouseExit()
     {
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
+
         if (pointerIsActive) return;
 
         if (cardActive && cardIsShowingUp)
@@ -502,6 +520,8 @@ public class CardOnHandManager : MonoBehaviour
             //TODO: show no energy message
             return;
         }
+
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
 
         float xxDelta = Mathf.Abs(this.transform.position.x - targetPosition.x);
 

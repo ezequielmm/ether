@@ -19,7 +19,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_NAME_SUCESSFUL = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_NAME_ERROR = new UnityEvent<string>();
 
-    
+
     //LOGIN EVENTS
     [HideInInspector] public UnityEvent<string, string> EVENT_REQUEST_LOGIN = new UnityEvent<string, string>();
     [HideInInspector] public UnityEvent<string, int> EVENT_REQUEST_LOGIN_SUCESSFUL = new UnityEvent<string, int>();
@@ -98,7 +98,7 @@ public class GameManager : SingleTon<GameManager>
     /// <summary>
     /// Scroll map buttons events. First bool enable/disable, second bool direction left/right
     /// </summary>
-    [HideInInspector] public UnityEvent<bool,bool> EVENT_MAP_SCROLL_CLICK = new UnityEvent<bool,bool>();
+    [HideInInspector] public UnityEvent<bool, bool> EVENT_MAP_SCROLL_CLICK = new UnityEvent<bool, bool>();
     [HideInInspector] public UnityEvent<Vector3> EVENT_MAP_SCROLL_DRAG = new UnityEvent<Vector3>();
     [HideInInspector] public UnityEvent EVENT_MAP_MASK_DOUBLECLICK = new UnityEvent();
 
@@ -118,10 +118,10 @@ public class GameManager : SingleTon<GameManager>
     //CARDS EVENTS
     [HideInInspector] public UnityEvent<PileTypes> EVENT_CARD_PILE_CLICKED = new UnityEvent<PileTypes>();
     [HideInInspector] public UnityEvent<string> EVENT_CARD_MOUSE_ENTER = new UnityEvent<string>();
-    [HideInInspector] public UnityEvent<string,Vector3> EVENT_CARD_SHOWING_UP = new UnityEvent<string,Vector3>();
+    [HideInInspector] public UnityEvent<string, Vector3> EVENT_CARD_SHOWING_UP = new UnityEvent<string, Vector3>();
     [HideInInspector] public UnityEvent<string> EVENT_CARD_MOUSE_EXIT = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<Vector3> EVENT_CARD_ACTIVATE_POINTER = new UnityEvent<Vector3>();
-    [HideInInspector] public UnityEvent<string> EVENT_CARD_DEACTIVATE_POINTER = new UnityEvent<string>();   
+    [HideInInspector] public UnityEvent<string> EVENT_CARD_DEACTIVATE_POINTER = new UnityEvent<string>();
     [HideInInspector] public UnityEvent EVENT_CARD_DRAW_CARDS = new UnityEvent();
     [HideInInspector] public UnityEvent<CardPiles> EVENT_CARDS_PILES_UPDATED = new UnityEvent<CardPiles>();
     [HideInInspector] public UnityEvent<CardToMoveData> EVENT_MOVE_CARD = new UnityEvent<CardToMoveData>();
@@ -135,18 +135,18 @@ public class GameManager : SingleTon<GameManager>
 
     //Gameplay events
     [HideInInspector] public UnityEvent<GameStatuses> EVENT_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
-    [HideInInspector] public UnityEvent<string,int> EVENT_CARD_PLAYED = new UnityEvent<string,int>();
+    [HideInInspector] public UnityEvent<string, int> EVENT_CARD_PLAYED = new UnityEvent<string, int>();
     [HideInInspector] public UnityEvent EVENT_END_TURN_CLICKED = new UnityEvent();
 
     //Combat events
-    [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();   
-    [HideInInspector] public UnityEvent<int,int> EVENT_UPDATE_ENERGY = new UnityEvent<int,int>();//current energy, max energy 
+    [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_ENERGY = new UnityEvent<int, int>();//current energy, max energy 
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_PLAYER_HEALTH = new UnityEvent<int, int>();//current health, max health
     [HideInInspector] public UnityEvent EVENT_PLAY_PLAYER_ATTACK = new UnityEvent();
     [HideInInspector] public UnityEvent<int> EVENT_PLAY_ENEMY_ATTACK = new UnityEvent<int>(); // enemyId
     [HideInInspector] public UnityEvent<StatusData> EVENT_UPDATE_STATUS_EFFECTS = new UnityEvent<StatusData>();
     [HideInInspector] public UnityEvent EVENT_CLEAR_TOOLTIPS = new UnityEvent();
-    [HideInInspector] public UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform> EVENT_SET_TOOLTIPS = 
+    [HideInInspector] public UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>  EVENT_SET_TOOLTIPS { get; } = 
         new UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>();
 
 
