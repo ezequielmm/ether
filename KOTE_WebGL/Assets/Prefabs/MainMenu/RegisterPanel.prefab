@@ -1053,7 +1053,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5185505309533442102}
         m_TargetAssemblyTypeName: RegisterPanelManager, Assembly-CSharp
-        m_MethodName: PerfomAllValidations
+        m_MethodName: CheckIfCanActivateRegisterButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1318,7 +1318,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5185505309533442102}
         m_TargetAssemblyTypeName: RegisterPanelManager, Assembly-CSharp
-        m_MethodName: PerfomAllValidations
+        m_MethodName: CheckIfCanActivateRegisterButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2009,7 +2009,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5185505309533442102}
         m_TargetAssemblyTypeName: RegisterPanelManager, Assembly-CSharp
-        m_MethodName: PerfomAllValidations
+        m_MethodName: CheckIfCanActivateRegisterButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2884,7 +2884,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5185505309533442102}
         m_TargetAssemblyTypeName: RegisterPanelManager, Assembly-CSharp
-        m_MethodName: UpdateRegisterButton
+        m_MethodName: CheckIfCanActivateRegisterButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3340,7 +3340,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 5185505309533442102}
         m_TargetAssemblyTypeName: RegisterPanelManager, Assembly-CSharp
-        m_MethodName: PerfomAllValidations
+        m_MethodName: CheckIfCanActivateRegisterButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
