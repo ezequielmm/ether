@@ -52,6 +52,9 @@ public class GameManager : SingleTon<GameManager>
     //TREASURY EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_TREASURYPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
+    //ARMORY EVENTS
+    [HideInInspector] public UnityEvent<bool> EVENT_ARMORYPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
+    
     //CHARACTER SELECTION EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<string> EVENT_CHARACTERSELECTED = new UnityEvent<string>();
