@@ -235,10 +235,20 @@ public class SWSM_Parser
             case nameof(WS_DATA_REQUEST_TYPES.Statuses):
                 ProcessStatusUpdate(data);
                 break;
+            case nameof(WS_DATA_REQUEST_TYPES.PlayerDeck):
+                ProcessPlayerFullDeck(data);
+                break;
             default:
                 Debug.Log($"[SWSM Parser] [Generic Data] Uncaught Action \"{action}\". Data = {data}");
                 break;
         }
+    }
+
+    private static void ProcessPlayerFullDeck(string data)
+    {
+        SWSM_PlayerDeckData deckData = JsonUtility.FromJson<SWSM_PlayerDeckData>(data);
+        Deck deck = new Deck() { cards = deckData.data.data };
+        GameManager.Instance.EVENT_CARD_PILE_SHOW_DECK.Invoke(deck);
     }
 
     private static void ProcessStatusUpdate(string data)
