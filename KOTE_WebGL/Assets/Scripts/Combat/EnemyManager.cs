@@ -54,16 +54,16 @@ public class EnemyManager : MonoBehaviour
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
         }
 
-        // This will add to the Event Queue. 
-        if (hpDelta < 0 || defenseDelta < 0)
-        {
-            isAttack = true;
-            var targets = new List<CombatTurnData.Target>();
-            // We will need an "Attack" acction to handle multiple targets
-            targets.Add(new CombatTurnData.Target(enemyData.id, hpDelta, current.hpCurrent, defenseDelta, current.defense));
-            var attack = new CombatTurnData("player", targets, 0); // player attacks target. Happens right away!
-            GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(attack);
-        }
+        //// This will add to the Event Queue. 
+        //if (hpDelta < 0 || defenseDelta < 0)
+        //{
+        //    //isAttack = true;
+        //    //var targets = new List<CombatTurnData.Target>();
+        //    //// We will need an "Attack" acction to handle multiple targets
+        //    //targets.Add(new CombatTurnData.Target(enemyData.id, hpDelta, current.hpCurrent, defenseDelta, current.defense));
+        //    //var attack = new CombatTurnData("player", targets, 0); // player attacks target. Happens right away!
+        //    //GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(attack);
+        //}
 
 
         if (isAttack == false)
@@ -77,8 +77,7 @@ public class EnemyManager : MonoBehaviour
     private void OnAttackRequest(CombatTurnData attack)
     {
         // TODO: Ensure that the player sets the correct enemy when attacked.
-        //if (attack.origin != enemyData.id) return;
-        if (attack.origin == "player") return;
+        if (attack.originId != enemyData.id) return;
 
         Debug.Log($"[EnemyManager] Combat Request GET!");
 

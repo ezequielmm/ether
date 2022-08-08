@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
 
     private void OnAttackRequest(CombatTurnData attack)
     {
-        if (attack.origin != "player") return;
+        if (attack.originId != "player") return;
 
         Debug.Log($"[PlayerManager] Combat Request GET!");
 
@@ -115,17 +115,17 @@ public class Player : MonoBehaviour
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
         }
 
-        // This will add to the Event Queue. 
-        if (hpDelta < 0 || defenseDelta < 0)
-        {
-            isAttack = true;
-            var targets = new List<CombatTurnData.Target>();
-            targets.Add(new CombatTurnData.Target("player", hpDelta, current.hpCurrent, defenseDelta, current.hpCurrent));
-            // The player won't know who hit them
-            var attack = new CombatTurnData("unknown", targets);
+        //// This will add to the Event Queue. 
+        //if (hpDelta < 0 || defenseDelta < 0)
+        //{
+        //    isAttack = true;
+        //    var targets = new List<CombatTurnData.Target>();
+        //    targets.Add(new CombatTurnData.Target("player", hpDelta, current.hpCurrent, defenseDelta, current.hpCurrent));
+        //    // The player won't know who hit them
+        //    var attack = new CombatTurnData("unknown", targets);
 
-            GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(attack);
-        }
+        //    GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(attack);
+        //}
 
 
         if (isAttack == false)

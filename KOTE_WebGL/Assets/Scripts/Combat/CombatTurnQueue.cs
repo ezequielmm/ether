@@ -18,6 +18,10 @@ public class CombatTurnQueue : MonoBehaviour
 
     private void QueueAttack(CombatTurnData data) 
     {
+        if (data.attackId == System.Guid.Empty)
+        {
+            data.attackId = System.Guid.NewGuid();
+        }
         Debug.Log($"[CombatQueue] [{queue.Count}] Action Enqueued... {data.ToString()}");
 
         //if (queue.Count == 0) // No delay on first hit in total
@@ -26,7 +30,7 @@ public class CombatTurnQueue : MonoBehaviour
         //}
         foreach (CombatTurnData turn in queue) // No delay on multiple hits from the same party
         {
-            if (turn.origin == data.origin)
+            if (turn.originId == data.originId)
             {
                 data.delay = 0;
             }
@@ -35,8 +39,9 @@ public class CombatTurnQueue : MonoBehaviour
         queue.Enqueue(data);
     }
 
-    private void OnTurnUnblock(string attackId) 
+    private void OnTurnUnblock(System.Guid attackId) 
     {
+        if (queue.Count == 0) return;
         if (queue.Peek().attackId != attackId) return;
         Debug.Log($"[CombatQueue] Action Completed!");
         var last = queue.Peek();
@@ -46,7 +51,7 @@ public class CombatTurnQueue : MonoBehaviour
         {
             GameManager.Instance.EVENT_COMBAT_QUEUE_EMPTY.Invoke();
         } 
-        else if (queue.Peek().origin != last.origin) // On Origin Change
+        else if (queue.Peek().originId != last.originId) // On Origin Change
         {
             GameManager.Instance.EVENT_COMBAT_ORIGIN_CHANGE.Invoke();
         }
