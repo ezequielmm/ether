@@ -37,13 +37,21 @@ public class PlayerManager : MonoBehaviour
         bool endCalled = false;
         foreach (var target in attack.targets) {
             // Run Attack Animation Or Status effects
-            if (target.defenseDelta != 0 || target.healthDelta != 0)
+            if (target.defenseDelta < 0 || target.healthDelta < 0)
             {
                 // Run Attack
                 Attack();
                 endCalled = true;
                 RunAfterTime(0.45f, // hard coded player animation attack point
                     () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+            }
+            else if (target.defenseDelta > 0) // Defense Up
+            {
+
+            }
+            else if (target.healthDelta > 0) // Health Up
+            { 
+            
             }
         }
         if (!endCalled)
@@ -59,6 +67,7 @@ public class PlayerManager : MonoBehaviour
 
         Debug.Log($"[PlayerManager] Combat Response GET!");
 
+        // Negitive Deltas
         float waitDuration = 0;
         if (target.defenseDelta < 0 && target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
         {
@@ -72,8 +81,28 @@ public class PlayerManager : MonoBehaviour
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Attack");
             waitDuration += OnHit();
         }
-        SetDefense(target.finalDefense);
-        SetHealth(target.finalHealth);
+
+        // Positive Deltas
+        if (target.defenseDelta > 0) // Defense Buffed
+        {
+            // Play Metallic Ring
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Up");
+        }
+        if (target.healthDelta > 0) // Healed!
+        {
+            // Play Rising Chimes
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
+        }
+
+        // Update the UI
+        if (target.defenseDelta != 0)
+        {
+            SetDefense(target.finalDefense);
+        }
+        if (target.healthDelta != 0)
+        {
+            SetHealth(target.finalHealth);
+        }
 
         // Add status changes
         if (target.statuses != null)
@@ -107,15 +136,9 @@ public class PlayerManager : MonoBehaviour
         int hpDelta = current.hpCurrent - old.hpCurrent;
         int defenseDelta = current.defense - old.defense;
 
-        if (defenseDelta > 0) // Defense Buffed
+        if (defenseDelta < 0) 
         {
-            // Play Metallic Ring
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Up");
-        }
-        if (hpDelta > 0) // Healed!
-        {
-            // Play Rising Chimes
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
+            // Natural Defense Fall (eg: New Turn)
         }
 
         SetDefense(current.defense);
@@ -200,6 +223,13 @@ public class PlayerManager : MonoBehaviour
     private void OnMouseDown()
     {
         Attack();
+    }
+
+    public float PlayAnimation(string animationSequence) 
+    {
+        float length = spineAnimationsManagement.PlayAnimationSequence(animationSequence);
+        spineAnimationsManagement.PlayAnimationSequence("Idle");
+        return length;
     }
 
     public float Attack()

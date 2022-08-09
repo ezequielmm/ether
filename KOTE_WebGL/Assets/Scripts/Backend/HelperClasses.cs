@@ -400,8 +400,7 @@ public class SWSM_CombatAction
     {
         public string message_type;
         public string action;
-        // public List<CombatTurnData> data; //Can be a list eventually
-        public CombatTurnData data;
+        public List<CombatTurnData> data;
     }
 }
 

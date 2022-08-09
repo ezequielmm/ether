@@ -288,11 +288,10 @@ public class SWSM_Parser
     {
         SWSM_CombatAction combatAction = JsonUtility.FromJson<SWSM_CombatAction>(data);
         Debug.Log($"[SWSM Parser] Combat Queue Data: {data}");
-        //foreach (CombatTurnData combatData in combatAction.data.data) // For when it's a list.
-        //{
-        //    GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(combatData);
-        //}
-        GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(combatAction.data.data);
+        foreach (CombatTurnData combatData in combatAction.data.data) // For when it's a list.
+        {
+            GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(combatData);
+        }
     }
     private static void ProcessEnemyIntents(string action, string data)
     {
