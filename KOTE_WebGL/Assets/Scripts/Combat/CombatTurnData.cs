@@ -29,7 +29,7 @@ public class CombatTurnData
     {
         foreach (Target target in targets)
         {
-            if (target.targetID == targetID)
+            if (target.targetId == targetID)
             {
                 return true;
             }
@@ -41,7 +41,7 @@ public class CombatTurnData
     {
         foreach (Target target in targets)
         {
-            if (target.targetID == targetID || targetID == target.targetType)
+            if (target.targetId == targetID || targetID == target.targetType)
             {
                 return target;
             }
@@ -55,7 +55,7 @@ public class CombatTurnData
         public Target() { }
         public Target(string target, int healthDelta, int finalHealth, int defenseDelta, int finalDefense)
         {
-            this.targetID = target;
+            this.targetId = target;
             this.healthDelta = healthDelta;
             this.finalHealth = finalHealth;
             this.defenseDelta = defenseDelta;
@@ -63,7 +63,7 @@ public class CombatTurnData
         }
 
         public string targetType = string.Empty;
-        public string targetID = string.Empty;
+        public string targetId = string.Empty;
 
         public int healthDelta;
         public int finalHealth;
@@ -73,7 +73,7 @@ public class CombatTurnData
 
         public override string ToString() 
         {
-            return $"[{targetType} | {targetID}]";
+            return $"[{targetType} | {targetId}]";
         }
     }
 

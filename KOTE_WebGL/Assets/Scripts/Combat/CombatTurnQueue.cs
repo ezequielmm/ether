@@ -50,10 +50,13 @@ public class CombatTurnQueue : MonoBehaviour
         if (queue.Count == 0) 
         {
             GameManager.Instance.EVENT_COMBAT_QUEUE_EMPTY.Invoke();
-        } 
+            Debug.Log($"[CombatQueue] End of Combat Queue!");
+            queue.Clear();
+        }
         else if (queue.Peek().originId != last.originId) // On Origin Change
         {
             GameManager.Instance.EVENT_COMBAT_ORIGIN_CHANGE.Invoke();
+            Debug.Log($"[CombatQueue] New Origin for Events!");
         }
     }
 

@@ -254,7 +254,7 @@ public class SWSM_Parser
     private static void ProcessStatusUpdate(string data)
     {
         SWSM_StatusData statusData = JsonUtility.FromJson<SWSM_StatusData>(data);
-        Debug.Log($"[SWSM_Parser][ProcessStatusUpdate] Source --> [ {statusData.data.message_type} | {statusData.data.action} ]");
+        Debug.Log($"[SWSM_Parser][ProcessStatusUpdate] Source --> [ {statusData.data.message_type} | {statusData.data.action} ] {data}");
         List<StatusData> statuses = statusData.data.data;
         foreach (StatusData status in statuses) 
         {

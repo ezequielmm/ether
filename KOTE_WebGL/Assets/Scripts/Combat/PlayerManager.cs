@@ -13,6 +13,8 @@ public class PlayerManager : MonoBehaviour
     public TMP_Text healthTF;
     public Slider healthBar;
 
+    private StatusManager statusManager;
+
     private PlayerData playerData;
     public PlayerData PlayerData
     {
@@ -73,7 +75,11 @@ public class PlayerManager : MonoBehaviour
         SetDefense(target.finalDefense);
         SetHealth(target.finalHealth);
 
-        // You can add status effect changes in here as well**
+        // Add status changes
+        if (target.statuses != null)
+        {
+            statusManager.UpdateStatus(target.statuses);
+        }
 
         RunAfterTime(waitDuration, () => GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId));
     }
@@ -98,8 +104,6 @@ public class PlayerManager : MonoBehaviour
             return current;
         }
 
-        bool isAttack = false;
-
         int hpDelta = current.hpCurrent - old.hpCurrent;
         int defenseDelta = current.defense - old.defense;
 
@@ -114,24 +118,9 @@ public class PlayerManager : MonoBehaviour
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
         }
 
-        //// This will add to the Event Queue. 
-        //if (hpDelta < 0 || defenseDelta < 0) 
-        //{
-        //    isAttack = true;
-        //    var targets = new List<CombatTurnData.Target>();
-        //    targets.Add(new CombatTurnData.Target("player", hpDelta, current.hpCurrent, defenseDelta, current.defense));
-        //    // The player won't know who hit them
-        //    var attack = new CombatTurnData("unknown", targets);
+        SetDefense(current.defense);
+        SetHealth(current.hpCurrent, current.hpMax);
 
-        //    GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(attack);
-        //}
-        
-
-        if (isAttack == false) 
-        {
-            SetDefense(current.defense);
-            SetHealth(current.hpCurrent, current.hpMax);
-        }
         return current;
     }
 
@@ -165,8 +154,10 @@ public class PlayerManager : MonoBehaviour
         GameManager.Instance.EVENT_WS_CONNECTED.AddListener(OnWSConnected);
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
 
+        statusManager = GetComponentInChildren<StatusManager>();
 
-        spineAnimationsManagement = GetComponent<SpineAnimationsManagement>();
+        if(spineAnimationsManagement == null)
+            spineAnimationsManagement = GetComponent<SpineAnimationsManagement>();
         //spineAnimationsManagement.SetSkin("weapon/sword");
         spineAnimationsManagement.PlayAnimationSequence("Idle");
 
