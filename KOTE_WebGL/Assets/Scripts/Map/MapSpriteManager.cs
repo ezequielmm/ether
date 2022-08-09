@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 using UnityEngine.U2D;
 
@@ -24,11 +26,11 @@ namespace map
         public ParticleSystem portalAnimation;
         public GameObject nodesHolder;
 
-        // tilemap testing
+        // tilemap references
         public Tilemap MapGrid;
-        public Tile pathTile;
-        public Tile nodeTile;
-        public Tile notPathTile;
+        public Tile[] grassTiles;
+        public Tile[] mountainTiles;
+        public Tile[] forestTiles;
 
         public Vector3Int startPoint;
         public int startX;
@@ -392,6 +394,12 @@ namespace map
 
         private void GenerateMapGrid()
         {
+            GeneratePathBackground();
+            GenerateMapBackground();
+        }
+
+        private void GenerateMapBackground()
+        {
             //in order for the grid to populate properly, we have to use SetTile, as BoxFill doesn't resize the grid
             // calculate the horizontal bounds of the grid first
             int gridStart = 0 - (int)halfScreenWidth;
@@ -402,10 +410,32 @@ namespace map
             {
                 for (int width = gridStart; width < gridEnd; width++)
                 {
-                    MapGrid.SetTile(new Vector3Int(width, height, 0), notPathTile);
+                    // randomly pick a tile type
+                    int randomType = Random.Range(0, 2);
+                    // we have to set the z to a constant, as for some reason you can two tiles in the same spot with different z levels
+                    Vector3Int tilePos = new Vector3Int(width, height, (int)GameSettings.MAP_SPRITE_ELEMENTS_Z);
+                    if (MapGrid.HasTile(tilePos) == false)
+                    {
+                        // pick a random tile of whatever type was selected
+                        if (randomType == 0)
+                        {
+                            int randomTile = Random.Range(0, mountainTiles.Length);
+                            MapGrid.SetTile(tilePos, mountainTiles[randomTile]);
+                        }
+
+                        if (randomType == 1)
+                        {
+                            int randomTile = Random.Range(0, forestTiles.Length);
+                            MapGrid.SetTile(tilePos, forestTiles[randomTile]);
+                        }
+                    }
                 }
             }
+        }
 
+        private void GeneratePathBackground()
+        {
+            //Generate the grass around the path
             if (pathManagers.Count > 0)
             {
                 foreach (PathManager path in pathManagers)
@@ -423,105 +453,117 @@ namespace map
                         Vector3 pointPosition = pathSpline.GetPosition(i);
                         pointPosition = pathTransform.TransformPoint(pointPosition);
                         Vector3Int cellPosition = MapGrid.layoutGrid.WorldToCell(pointPosition);
-                        MapGrid.SetTile(cellPosition, pathTile);
+                        
+                        // we have to set the z to a constant, as for some reason you can two tiles in the same spot with different z levels
+                        cellPosition = new Vector3Int(cellPosition.x, cellPosition.y,
+                            (int)GameSettings.MAP_SPRITE_ELEMENTS_Z);
+
+                        int randomTile = Random.Range(0, grassTiles.Length);
+                        MapGrid.SetTile(cellPosition, grassTiles[randomTile]);
+                        
+                        // if it's not the last point on the spline, move towards the next point and mark the tiles as path
                         if (i != splinePoints - 1)
                         {
-                            // if it's not the last point on the spline, move towards the next point and mark the tiles as path
                             Vector3 nextPoint = pathTransform.TransformPoint(pathSpline.GetPosition(i + 1));
                             Vector3 nextTilePos = Vector3.MoveTowards(pointPosition, nextPoint, 0.1f);
+                            
                             while (Vector3.Distance(nextTilePos, nextPoint) > 0.1f)
                             {
                                 Vector3Int nextTilePosition = MapGrid.layoutGrid.WorldToCell(nextTilePos);
-                                MapGrid.SetTile(nextTilePosition, pathTile);
-                                Vector3Int sideTilePos = MapGrid.layoutGrid.WorldToCell(
-                                    new Vector3(nextTilePos.x + 0.5f, nextTilePos.y));
-                                MapGrid.SetTile(sideTilePos, pathTile);
-                                sideTilePos = MapGrid.layoutGrid.WorldToCell(
-                                    new Vector3(nextTilePos.x - 0.5f, nextTilePos.y));
-                                MapGrid.SetTile(sideTilePos, pathTile);
-                                sideTilePos = MapGrid.layoutGrid.WorldToCell(
-                                    new Vector3(nextTilePos.x, nextTilePos.y + 0.5f));
-                                MapGrid.SetTile(sideTilePos, pathTile);
-                                sideTilePos = MapGrid.layoutGrid.WorldToCell(
-                                    new Vector3(nextTilePos.x, nextTilePos.y - 0.5f));
-                                MapGrid.SetTile(sideTilePos, pathTile);
-
+                                
+                                // we have to set the z to a constant, as for some reason you can two tiles in the same spot with different z levels
+                                nextTilePosition = new Vector3Int(nextTilePosition.x, nextTilePosition.y,
+                                    (int)GameSettings.MAP_SPRITE_ELEMENTS_Z);
+                                
+                                // set a random grass tile at that position
+                                randomTile = Random.Range(0, grassTiles.Length);
+                                MapGrid.SetTile(nextTilePosition, grassTiles[randomTile]);
+                                
                                 nextTilePos = Vector3.MoveTowards(nextTilePos, nextPoint, 0.1f);
                             }
                         }
                     }
                 }
+            }
+        }
 
-                foreach (NodeData node in nodes)
+        private void GenerateNodeBackground()
+        {
+            foreach (NodeData node in nodes)
+            {
+                Vector3 nodePos = nodesHolder.transform.TransformPoint(node.transform.position);
+                Vector3Int nodeCelPos = MapGrid.layoutGrid.WorldToCell(nodePos);
+                MapGrid.SetTile(nodeCelPos, grassTiles[0]);
+                Debug.Log("nodePos: " + nodePos + " nodeCelPos: " + MapGrid.CellToWorld(nodeCelPos));
+                // now we need to know where the node is in relation to the cell
+                Vector3 cellPosition = MapGrid.CellToWorld(nodeCelPos);
+                // we need to determine if it's in the center of the cell
+                if (cellPosition.y - 0.2f < nodePos.y && nodePos.y < cellPosition.y + 0.2f)
                 {
-                    Vector3 nodePos = nodesHolder.transform.TransformPoint(node.transform.position);
-                    Vector3Int nodeCelPos = MapGrid.layoutGrid.WorldToCell(nodePos);
-                    MapGrid.SetTile(nodeCelPos, nodeTile);
-                    Debug.Log("nodePos: " + nodePos + " nodeCelPos: " + MapGrid.CellToWorld(nodeCelPos));
-                    // now we need to know where the node is in relation to the cell
-                    Vector3 cellPosition = MapGrid.CellToWorld(nodeCelPos);
-                    // we need to determine if it's in the center of the cell
-                    if (cellPosition.y - 0.2f < nodePos.y && nodePos.y < cellPosition.y + 0.2f)
+                    if (nodePos.x < cellPosition.x)
                     {
-                        if (nodePos.x < cellPosition.x)
-                        {
-                            // node is on the left side, so color relevant tiles
-                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y, nodeCelPos.z), nodeTile);
-                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y + 1, nodeCelPos.z), nodeTile);
-                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y - 1, nodeCelPos.z), nodeTile);
-                        }
-
-                        if (nodePos.x > cellPosition.x)
-                        {
-                            // node is on the right side, so color those tiles
-                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y, nodeCelPos.z), nodeTile);
-                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y + 1, nodeCelPos.z), nodeTile);
-                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y - 1, nodeCelPos.z), nodeTile);
-                        }
-                        else
-                        {
-                            // node is in the center, so color those tiles
-                        }
+                        // node is on the left side, so color relevant tiles
+                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y, nodeCelPos.z), grassTiles[0]);
+                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y + 1, nodeCelPos.z),
+                            grassTiles[0]);
+                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y - 1, nodeCelPos.z),
+                            grassTiles[0]);
                     }
 
-                    // or if it's in the top section
-                    if (nodePos.y > cellPosition.y + 0.2f)
+                    if (nodePos.x > cellPosition.x)
                     {
-                        if (nodePos.x <= cellPosition.x)
-                        {
-                            // node is on the left side, so color relevant tiles
-                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y, nodeCelPos.z), nodeTile);
-                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y + 1, nodeCelPos.z), nodeTile);
-                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y + 1, nodeCelPos.z), nodeTile);
-                        }
+                        // node is on the right side, so color those tiles
+                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y, nodeCelPos.z), grassTiles[0]);
+                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y + 1, nodeCelPos.z), grassTiles[0]);
+                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y - 1, nodeCelPos.z), grassTiles[0]);
+                    }
+                    else
+                    {
+                        // node is in the center, so color those tiles
+                    }
+                }
 
-                        if (nodePos.x > cellPosition.x)
-                        {
-                            // node is on the right side, so color those tiles
-                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y, nodeCelPos.z), nodeTile);
-                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y + 1, nodeCelPos.z), nodeTile);
-                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y + 1, nodeCelPos.z), nodeTile);
-                        }
+                // or if it's in the top section
+                if (nodePos.y > cellPosition.y + 0.2f)
+                {
+                    if (nodePos.x <= cellPosition.x)
+                    {
+                        // node is on the left side, so color relevant tiles
+                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y, nodeCelPos.z), grassTiles[0]);
+                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y + 1, nodeCelPos.z), grassTiles[0]);
+                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y + 1, nodeCelPos.z),
+                            grassTiles[0]);
                     }
 
-                    // or if it's in the bottom section
-                    if (nodePos.y < cellPosition.y - 0.2f)
+                    if (nodePos.x > cellPosition.x)
                     {
-                        if (nodePos.x <= cellPosition.x)
-                        {
-                            // node is on the left side, so color relevant tiles
-                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y, nodeCelPos.z), nodeTile);
-                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y - 1, nodeCelPos.z), nodeTile);
-                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y - 1, nodeCelPos.z), nodeTile);
-                        }
+                        // node is on the right side, so color those tiles
+                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y, nodeCelPos.z), grassTiles[0]);
+                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y + 1, nodeCelPos.z), grassTiles[0]);
+                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y + 1, nodeCelPos.z),
+                            grassTiles[0]);
+                    }
+                }
 
-                        if (nodePos.x > cellPosition.x)
-                        {
-                            // node is on the right side, so color those tiles
-                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y, nodeCelPos.z), nodeTile);
-                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y - 1, nodeCelPos.z), nodeTile);
-                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y - 1, nodeCelPos.z), nodeTile);
-                        }
+                // or if it's in the bottom section
+                if (nodePos.y < cellPosition.y - 0.2f)
+                {
+                    if (nodePos.x <= cellPosition.x)
+                    {
+                        // node is on the left side, so color relevant tiles
+                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y, nodeCelPos.z), grassTiles[0]);
+                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y - 1, nodeCelPos.z), grassTiles[0]);
+                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y - 1, nodeCelPos.z),
+                            grassTiles[0]);
+                    }
+
+                    if (nodePos.x > cellPosition.x)
+                    {
+                        // node is on the right side, so color those tiles
+                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y, nodeCelPos.z), grassTiles[0]);
+                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y - 1, nodeCelPos.z), grassTiles[0]);
+                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y - 1, nodeCelPos.z),
+                            grassTiles[0]);
                     }
                 }
             }
