@@ -14,6 +14,7 @@ namespace map
         public NodeData nodePrefab;
 
         List<NodeData> nodes = new List<NodeData>();
+
         // we need a list of the path spriteshapes to use with the background grid
         private List<PathManager> pathManagers = new List<PathManager>();
 
@@ -22,7 +23,7 @@ namespace map
         public GameObject playerIcon;
         public ParticleSystem portalAnimation;
         public GameObject nodesHolder;
-        
+
         // tilemap testing
         public Tilemap MapGrid;
         public Tile pathTile;
@@ -88,16 +89,19 @@ namespace map
             float currentScrollSpeed = 0;
             if (scrollMap)
             {
-                currentScrollSpeed = Mathf.SmoothStep(scrollDirection ? -GameSettings.MAP_SCROLL_SPEED : GameSettings.MAP_SCROLL_SPEED, 0, scrollTime / GameSettings.MAP_SCROLL_BUTTON_TIME);
+                currentScrollSpeed =
+                    Mathf.SmoothStep(scrollDirection ? -GameSettings.MAP_SCROLL_SPEED : GameSettings.MAP_SCROLL_SPEED,
+                        0, scrollTime / GameSettings.MAP_SCROLL_BUTTON_TIME);
                 if (scrollTime >= GameSettings.MAP_SCROLL_BUTTON_TIME)
                 {
                     scrollMap = false;
                     scrollTime = 0;
                 }
+
                 scrollTime += Time.deltaTime;
             }
 
-            if (Mathf.Abs(currentScrollSpeed) < GameSettings.MAP_SCROLL_SPEED_CUTOFF) 
+            if (Mathf.Abs(currentScrollSpeed) < GameSettings.MAP_SCROLL_SPEED_CUTOFF)
             {
                 currentScrollSpeed = 0;
                 scrollMap = false;
@@ -107,9 +111,9 @@ namespace map
             Vector3 currentMapPos = nodesHolder.transform.localPosition;
 
             Vector3 newPos = nodesHolder.transform.localPosition;
-            
 
-            if(scrollMap)
+
+            if (scrollMap)
                 newPos.x += currentScrollSpeed;
 
             Vector3 limitPos = currentMapPos;
@@ -123,6 +127,7 @@ namespace map
                 newPos.x = 0 - (mapBounds.extents.x + mapBounds.center.x);
                 overEdge = true;
             }
+
             if (rightEdge < -GameSettings.MAP_STRETCH_LIMIT + -0.01f)
             {
                 limitPos.x = -GameSettings.MAP_STRETCH_LIMIT - (mapBounds.extents.x + mapBounds.center.x);
@@ -138,6 +143,7 @@ namespace map
                 overEdge = true;
                 //Debug.Log($"[Map] Left Pass Bounds [{leftEdge} -/- {newPos.x}]");
             }
+
             if (leftEdge > GameSettings.MAP_STRETCH_LIMIT + 0.01f)
             {
                 limitPos.x = GameSettings.MAP_STRETCH_LIMIT - (-mapBounds.extents.x + mapBounds.center.x);
@@ -148,11 +154,13 @@ namespace map
             {
                 nodesHolder.transform.localPosition = Vector3.SmoothDamp(currentMapPos, newPos, ref velocity, 0.03f);
             }
-            if (overHardLimit && !scrollMap) 
+
+            if (overHardLimit && !scrollMap)
             {
                 nodesHolder.transform.localPosition = limitPos;
             }
-            if (overEdge && mapBounds.extents.x == 0) 
+
+            if (overEdge && mapBounds.extents.x == 0)
             {
                 nodesHolder.transform.localPosition = newPos;
             }
@@ -249,7 +257,7 @@ namespace map
 
             Debug.Log("last node position: " + nodes[nodes.Count - 1].transform.position + " last node localPosition" +
                       nodes[nodes.Count - 1].transform.localPosition);
-            
+
             GenerateMapGrid();
         }
 
@@ -368,7 +376,7 @@ namespace map
                     {
                         //go.GetComponent<NodeData>().UpdateLine(targetOb);
                         PathManager path = curNode.GetComponent<NodeData>().CreateSpriteShape(exitNode);
-                        if(path != null ) pathManagers.Add(path);
+                        if (path != null) pathManagers.Add(path);
                     }
                     else
                     {
@@ -376,7 +384,7 @@ namespace map
                             .GetComponent<
                                 LineRenderer>()); //as we are not longet using sprite renderer maybe we can remove this line
                         PathManager path = curNode.GetComponent<NodeData>().CreateSpriteShape(null);
-                        if(path != null) pathManagers.Add(path);
+                        if (path != null) pathManagers.Add(path);
                     }
                 }
             }
@@ -388,9 +396,9 @@ namespace map
             // calculate the horizontal bounds of the grid first
             int gridStart = 0 - (int)halfScreenWidth;
             int gridEnd = (int)(mapBounds.max.x + halfScreenWidth * 2);
-            
+
             // the vertical bounds of the map grid can be constant, as that's not going to change
-            for(int height = -6; height < 6; height++)
+            for (int height = -6; height < 6; height++)
             {
                 for (int width = gridStart; width < gridEnd; width++)
                 {
@@ -402,27 +410,117 @@ namespace map
             {
                 foreach (PathManager path in pathManagers)
                 {
-                    Debug.Log("pathManagers checked");
+                    // get the references we need to generate the paths on the grid
                     SpriteShapeController pathSpriteController = path.pathController;
                     Spline pathSpline = pathSpriteController.spline;
                     int splinePoints = pathSpriteController.spline.GetPointCount();
                     Transform pathTransform = pathSpriteController.transform;
+
+                    // for each of the points in the spline
                     for (int i = 0; i < splinePoints; i++)
                     {
+                        // mark the grid tile underneath it as part of the path
                         Vector3 pointPosition = pathSpline.GetPosition(i);
                         pointPosition = pathTransform.TransformPoint(pointPosition);
                         Vector3Int cellPosition = MapGrid.layoutGrid.WorldToCell(pointPosition);
                         MapGrid.SetTile(cellPosition, pathTile);
                         if (i != splinePoints - 1)
                         {
+                            // if it's not the last point on the spline, move towards the next point and mark the tiles as path
                             Vector3 nextPoint = pathTransform.TransformPoint(pathSpline.GetPosition(i + 1));
-                            Vector3 nextTilePos = Vector3.MoveTowards(pointPosition, nextPoint, 0.5f);
-                            while (Vector3.Distance(nextTilePos, nextPoint) > 0.5f)
+                            Vector3 nextTilePos = Vector3.MoveTowards(pointPosition, nextPoint, 0.1f);
+                            while (Vector3.Distance(nextTilePos, nextPoint) > 0.1f)
                             {
                                 Vector3Int nextTilePosition = MapGrid.layoutGrid.WorldToCell(nextTilePos);
                                 MapGrid.SetTile(nextTilePosition, pathTile);
-                                nextTilePos = Vector3.MoveTowards(nextTilePos, nextPoint, 0.5f);
+                                Vector3Int sideTilePos = MapGrid.layoutGrid.WorldToCell(
+                                    new Vector3(nextTilePos.x + 0.5f, nextTilePos.y));
+                                MapGrid.SetTile(sideTilePos, pathTile);
+                                sideTilePos = MapGrid.layoutGrid.WorldToCell(
+                                    new Vector3(nextTilePos.x - 0.5f, nextTilePos.y));
+                                MapGrid.SetTile(sideTilePos, pathTile);
+                                sideTilePos = MapGrid.layoutGrid.WorldToCell(
+                                    new Vector3(nextTilePos.x, nextTilePos.y + 0.5f));
+                                MapGrid.SetTile(sideTilePos, pathTile);
+                                sideTilePos = MapGrid.layoutGrid.WorldToCell(
+                                    new Vector3(nextTilePos.x, nextTilePos.y - 0.5f));
+                                MapGrid.SetTile(sideTilePos, pathTile);
+
+                                nextTilePos = Vector3.MoveTowards(nextTilePos, nextPoint, 0.1f);
                             }
+                        }
+                    }
+                }
+
+                foreach (NodeData node in nodes)
+                {
+                    Vector3 nodePos = nodesHolder.transform.TransformPoint(node.transform.position);
+                    Vector3Int nodeCelPos = MapGrid.layoutGrid.WorldToCell(nodePos);
+                    MapGrid.SetTile(nodeCelPos, nodeTile);
+                    Debug.Log("nodePos: " + nodePos + " nodeCelPos: " + MapGrid.CellToWorld(nodeCelPos));
+                    // now we need to know where the node is in relation to the cell
+                    Vector3 cellPosition = MapGrid.CellToWorld(nodeCelPos);
+                    // we need to determine if it's in the center of the cell
+                    if (cellPosition.y - 0.2f < nodePos.y && nodePos.y < cellPosition.y + 0.2f)
+                    {
+                        if (nodePos.x < cellPosition.x)
+                        {
+                            // node is on the left side, so color relevant tiles
+                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y, nodeCelPos.z), nodeTile);
+                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y + 1, nodeCelPos.z), nodeTile);
+                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y - 1, nodeCelPos.z), nodeTile);
+                        }
+
+                        if (nodePos.x > cellPosition.x)
+                        {
+                            // node is on the right side, so color those tiles
+                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y, nodeCelPos.z), nodeTile);
+                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y + 1, nodeCelPos.z), nodeTile);
+                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y - 1, nodeCelPos.z), nodeTile);
+                        }
+                        else
+                        {
+                            // node is in the center, so color those tiles
+                        }
+                    }
+
+                    // or if it's in the top section
+                    if (nodePos.y > cellPosition.y + 0.2f)
+                    {
+                        if (nodePos.x <= cellPosition.x)
+                        {
+                            // node is on the left side, so color relevant tiles
+                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y, nodeCelPos.z), nodeTile);
+                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y + 1, nodeCelPos.z), nodeTile);
+                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y + 1, nodeCelPos.z), nodeTile);
+                        }
+
+                        if (nodePos.x > cellPosition.x)
+                        {
+                            // node is on the right side, so color those tiles
+                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y, nodeCelPos.z), nodeTile);
+                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y + 1, nodeCelPos.z), nodeTile);
+                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y + 1, nodeCelPos.z), nodeTile);
+                        }
+                    }
+
+                    // or if it's in the bottom section
+                    if (nodePos.y < cellPosition.y - 0.2f)
+                    {
+                        if (nodePos.x <= cellPosition.x)
+                        {
+                            // node is on the left side, so color relevant tiles
+                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y, nodeCelPos.z), nodeTile);
+                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y - 1, nodeCelPos.z), nodeTile);
+                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y - 1, nodeCelPos.z), nodeTile);
+                        }
+
+                        if (nodePos.x > cellPosition.x)
+                        {
+                            // node is on the right side, so color those tiles
+                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y, nodeCelPos.z), nodeTile);
+                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y - 1, nodeCelPos.z), nodeTile);
+                            MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y - 1, nodeCelPos.z), nodeTile);
                         }
                     }
                 }
@@ -431,7 +529,8 @@ namespace map
 
         #endregion
 
-        void ScrollBackToPlayerIcon(float scrollTime = GameSettings.MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON, float knightPositionOnScreen = GameSettings.KNIGHT_SCREEN_POSITION_ON_CENTER)
+        void ScrollBackToPlayerIcon(float scrollTime = GameSettings.MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON,
+            float knightPositionOnScreen = GameSettings.KNIGHT_SCREEN_POSITION_ON_CENTER)
         {
             // Put knight to center
             // Distance between knight and node origin.
@@ -463,7 +562,8 @@ namespace map
 
             StartCoroutine(RevealMapThenReturnToPlayer(nodesHolder.transform.localPosition, numberOfSteps));
             */
-            StartCoroutine(RevealMapThenReturnToPlayer(nodesHolder.transform.localPosition, GameSettings.MAP_SCROLL_ANIMATION_DURATION));
+            StartCoroutine(RevealMapThenReturnToPlayer(nodesHolder.transform.localPosition,
+                GameSettings.MAP_SCROLL_ANIMATION_DURATION));
         }
 
         private IEnumerator RevealMapThenReturnToPlayer(Vector3 mapPos, float animDuration)
@@ -541,7 +641,7 @@ namespace map
             nodesHolder.transform.rotation = Quaternion.identity;
 
             Bounds bounds = new Bounds(nodesHolder.transform.position, Vector3.zero);
-            
+
             foreach (Renderer renderer in nodesHolder.GetComponentsInChildren<Renderer>())
             {
                 bounds.Encapsulate(renderer.bounds);
@@ -557,7 +657,8 @@ namespace map
                 //  Sets Left Edge
 
                 // need to remove left side bounds to keep houses on left edge
-                float leftEdge = Mathf.Abs(-maskBounds.extents.x + maskBounds.center.x) * GameSettings.MAP_LEFT_EDGE_MULTIPLIER;
+                float leftEdge = Mathf.Abs(-maskBounds.extents.x + maskBounds.center.x) *
+                                 GameSettings.MAP_LEFT_EDGE_MULTIPLIER;
                 // Now we shrink and shift our bounds to the right
                 // subtract half of left edge from extents
                 bounds.extents = new Vector3(bounds.extents.x - (leftEdge / 2), bounds.extents.y, bounds.extents.z);
@@ -566,7 +667,8 @@ namespace map
 
                 // Sets Right Edge
 
-                float rightEdge = Mathf.Abs(maskBounds.extents.x + maskBounds.center.x) * GameSettings.MAP_RIGHT_EDGE_MULTIPLIER;
+                float rightEdge = Mathf.Abs(maskBounds.extents.x + maskBounds.center.x) *
+                                  GameSettings.MAP_RIGHT_EDGE_MULTIPLIER;
                 // Now we shrink and shift our bounds to the left
                 // subtract half of right edge from extents
                 bounds.extents = new Vector3(bounds.extents.x - (rightEdge / 2), bounds.extents.y, bounds.extents.z);
@@ -582,12 +684,13 @@ namespace map
 
         private void OnDrawGizmosSelected()
         {
-            if (mapBounds != null) 
+            if (mapBounds != null)
             {
                 // highlights the bounds in editor for debugging
                 Gizmos.color = Color.yellow;
                 GizmoDrawBox(mapBounds, nodesHolder.transform.position);
             }
+
             if (maskBounds != null)
             {
                 // Shows where the mask is
@@ -606,7 +709,7 @@ namespace map
                 new Vector2(-bounds.extents.x + offset.x, -bounds.extents.y + offset.y));
         }
 
-        private void GizmoDrawBox(Vector2 TopLeft, Vector2 TopRight, Vector2 BottomLeft, Vector2 BottomRight) 
+        private void GizmoDrawBox(Vector2 TopLeft, Vector2 TopRight, Vector2 BottomLeft, Vector2 BottomRight)
         {
             Gizmos.DrawLine(TopLeft, TopRight);
             Gizmos.DrawLine(TopRight, BottomRight);
