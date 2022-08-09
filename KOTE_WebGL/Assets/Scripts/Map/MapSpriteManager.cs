@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Tilemaps;
+using UnityEngine.U2D;
 
 namespace map
 {
@@ -12,12 +14,26 @@ namespace map
         public NodeData nodePrefab;
 
         List<NodeData> nodes = new List<NodeData>();
+        // we need a list of the path spriteshapes to use with the background grid
+        private List<PathManager> pathManagers = new List<PathManager>();
 
         private bool royal_houses_mode_on = false;
 
         public GameObject playerIcon;
         public ParticleSystem portalAnimation;
         public GameObject nodesHolder;
+        
+        // tilemap testing
+        public Tilemap MapGrid;
+        public Tile pathTile;
+        public Tile nodeTile;
+        public Tile notPathTile;
+
+        public Vector3Int startPoint;
+        public int startX;
+        public int startY;
+        public int endX;
+        public int endY;
 
         public GameObject LeftButton;
         public GameObject RightScrollButton;
@@ -52,6 +68,9 @@ namespace map
             // we need half the width of the screen for various checks
             halfScreenWidth = Camera.main.orthographicSize * Camera.main.aspect;
             maskBounds = GetComponentInChildren<SpriteMask>().GetComponent<BoxCollider2D>().bounds;
+
+            //TODO TESTING ONLY
+            //GenerateMapGrid();
         }
 
         private void OnToggleMap(bool data)
@@ -230,6 +249,8 @@ namespace map
 
             Debug.Log("last node position: " + nodes[nodes.Count - 1].transform.position + " last node localPosition" +
                       nodes[nodes.Count - 1].transform.localPosition);
+            
+            GenerateMapGrid();
         }
 
         #region generateMap
@@ -346,14 +367,63 @@ namespace map
                     if (exitNode)
                     {
                         //go.GetComponent<NodeData>().UpdateLine(targetOb);
-                        curNode.GetComponent<NodeData>().CreateSpriteShape(exitNode);
+                        PathManager path = curNode.GetComponent<NodeData>().CreateSpriteShape(exitNode);
+                        if(path != null ) pathManagers.Add(path);
                     }
                     else
                     {
                         Destroy(curNode
                             .GetComponent<
                                 LineRenderer>()); //as we are not longet using sprite renderer maybe we can remove this line
-                        curNode.GetComponent<NodeData>().CreateSpriteShape(null);
+                        PathManager path = curNode.GetComponent<NodeData>().CreateSpriteShape(null);
+                        if(path != null) pathManagers.Add(path);
+                    }
+                }
+            }
+        }
+
+        private void GenerateMapGrid()
+        {
+            //in order for the grid to populate properly, we have to use SetTile, as BoxFill doesn't resize the grid
+            // calculate the horizontal bounds of the grid first
+            int gridStart = 0 - (int)halfScreenWidth;
+            int gridEnd = (int)(mapBounds.max.x + halfScreenWidth * 2);
+            
+            // the vertical bounds of the map grid can be constant, as that's not going to change
+            for(int height = -6; height < 6; height++)
+            {
+                for (int width = gridStart; width < gridEnd; width++)
+                {
+                    MapGrid.SetTile(new Vector3Int(width, height, 0), notPathTile);
+                }
+            }
+
+            if (pathManagers.Count > 0)
+            {
+                foreach (PathManager path in pathManagers)
+                {
+                    Debug.Log("pathManagers checked");
+                    SpriteShapeController pathSpriteController = path.pathController;
+                    Spline pathSpline = pathSpriteController.spline;
+                    int splinePoints = pathSpriteController.spline.GetPointCount();
+                    Transform pathTransform = pathSpriteController.transform;
+                    for (int i = 0; i < splinePoints; i++)
+                    {
+                        Vector3 pointPosition = pathSpline.GetPosition(i);
+                        pointPosition = pathTransform.TransformPoint(pointPosition);
+                        Vector3Int cellPosition = MapGrid.layoutGrid.WorldToCell(pointPosition);
+                        MapGrid.SetTile(cellPosition, pathTile);
+                        if (i != splinePoints - 1)
+                        {
+                            Vector3 nextPoint = pathTransform.TransformPoint(pathSpline.GetPosition(i + 1));
+                            Vector3 nextTilePos = Vector3.MoveTowards(pointPosition, nextPoint, 0.5f);
+                            while (Vector3.Distance(nextTilePos, nextPoint) > 0.5f)
+                            {
+                                Vector3Int nextTilePosition = MapGrid.layoutGrid.WorldToCell(nextTilePos);
+                                MapGrid.SetTile(nextTilePosition, pathTile);
+                                nextTilePos = Vector3.MoveTowards(nextTilePos, nextPoint, 0.5f);
+                            }
+                        }
                     }
                 }
             }
