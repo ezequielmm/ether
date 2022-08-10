@@ -41,11 +41,13 @@ public static class GameSettings
     public static Vector3 HAND_CARDS_GENERATION_POINT = new Vector3(-7, -5, -9);
     public static float CARD_SFX_MIN_RATE = 0.1f; // Time in seconds between SFX of cards
 
-    //Combat
+    // COMBAT
+    public const float COMBAT_ANIMATION_DELAY = 0.5f;
     public static float INTENT_TOOLTIP_SPEED = 0.2f;
     public static float INTENT_FADE_SPEED = 0.2f;
     public static float STATUS_TOOLTIP_SPEED = 0.2f;
     public static float STATUS_FADE_SPEED = 0.2f;
+    public static float VICTORY_LABEL_ANIMATION_DELAY = 1f;
 
 
     /*//////////////  

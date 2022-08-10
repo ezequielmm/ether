@@ -14,16 +14,14 @@ public class RegisterPanelManager : MonoBehaviour
     public TMP_InputField passwordInputField;
     public TMP_InputField confirmPasswordInputField;
 
-    [Space(20)]
-    public TMP_Text validEmailLabel;
+    [Space(20)] public TMP_Text validEmailLabel;
 
     public TMP_Text emailNotMatchLabel;
     public TMP_Text validPasswordLabel;
     public TMP_Text passwordNotMatchLabel;
     public TMP_Text nameText;
 
-    [Space(20)]
-    public Toggle termsAndConditions;
+    [Space(20)] public Toggle termsAndConditions;
 
     public Button registerButton;
     public GameObject registerContainer;
@@ -34,6 +32,7 @@ public class RegisterPanelManager : MonoBehaviour
     private bool validPassword;
     private bool passwordConfirmed;
     public Toggle showPassword;
+    public Toggle showConfirmPassword;
 
     private void Awake()
     {
@@ -46,9 +45,16 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void OnShowPassword()
     {
-        passwordInputField.contentType = showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
+        passwordInputField.contentType =
+            showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
         passwordInputField.ForceLabelUpdate();
-        confirmPasswordInputField.contentType = showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
+    }
+
+    public void OnShowConfirmPassword()
+    {
+        confirmPasswordInputField.contentType = showConfirmPassword.isOn
+            ? TMP_InputField.ContentType.Standard
+            : TMP_InputField.ContentType.Password;
         confirmPasswordInputField.ForceLabelUpdate();
     }
 
@@ -89,14 +95,10 @@ public class RegisterPanelManager : MonoBehaviour
         passwordNotMatchLabel.gameObject.SetActive(false);
     }
 
-    public void UpdateRegisterButton()
-    {
-        registerButton.interactable = emailConfirmed && passwordConfirmed && termsAndConditions.isOn;
-    }
-
     #region
+
     public bool VerifyEmail()
-    {   
+    {
         validEmail = ParseString.IsEmail(emailInputField.text);
         validEmailLabel.gameObject.SetActive(!validEmail);
         return validEmail;
@@ -117,12 +119,13 @@ public class RegisterPanelManager : MonoBehaviour
     }
 
     public bool ConfirmPassword()
-    {        
+    {
         passwordConfirmed = validPassword && (passwordInputField.text == confirmPasswordInputField.text);
         passwordNotMatchLabel.gameObject.SetActive(!passwordConfirmed && validPassword);
 
         return passwordConfirmed;
     }
+
     #endregion
 
     public void RequestNewName()
@@ -133,6 +136,11 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void OnRegister()
     {
+        if (!VerifyEmail()) return;
+        if (!ConfirmEmail()) return;
+        if (!VerifyPassword()) return;
+        if (!ConfirmPassword()) return;
+
         string name = nameText.text;
         string email = emailInputField.text;
         string password = passwordInputField.text;
@@ -154,15 +162,14 @@ public class RegisterPanelManager : MonoBehaviour
         registerContainer.SetActive(activate);
     }
 
-    public void PerfomAllValidations()
+    public void CheckIfCanActivateRegisterButton()
     {
-        DeactivateAllErrorLabels();
+        if (emailInputField.text.Length < 8 || passwordInputField.text.Length < 8 || !termsAndConditions.isOn)
+        {
+            registerButton.interactable = false;
+            return;
+        }
 
-        if(!VerifyEmail())return;
-        if(!ConfirmEmail())return;
-        if(!VerifyPassword())return;
-        if(!ConfirmPassword())return;
-
-        UpdateRegisterButton();
+        registerButton.interactable = true;
     }
 }
