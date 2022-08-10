@@ -29,7 +29,37 @@ public class PlayerManager : MonoBehaviour
 
     private void ProcessNewData(PlayerData old, PlayerData current)
     {
-        if (old == null || current == null)
+
+        if(attack.originType != "player") return;
+
+        Debug.Log($"[PlayerManager] Combat Request GET!");
+
+        bool endCalled = false;
+        foreach (CombatTurnData.Target target in attack.targets) {
+            // Run Attack Animation Or Status effects
+           // if (target.defenseDelta < 0 || target.healthDelta < 0)
+            if (target.effectType == nameof(ATTACK_EFFECT_TYPES.damage) )
+            {
+                // Run Attack
+                Attack();
+                endCalled = true;
+                RunAfterTime(0.45f, // hard coded player animation attack point
+                    () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+            }
+            else if (target.defenseDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
+            {
+                endCalled = true;
+                RunAfterTime(0.45f, // hard coded player animation attack point
+                   () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+            }
+            else if (target.healthDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.health)) // Health Up
+            {
+                endCalled = true;
+                RunAfterTime(0.45f, // hard coded player animation attack point
+                   () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+            }
+        }
+        if (!endCalled)
         {
             return;
         }

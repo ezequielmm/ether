@@ -38,8 +38,49 @@ public class EnemyManager : MonoBehaviour
         {
             return;
         }
-        if (old.defense > current.defense && (current.defense > 0 ||
-            (current.defense == 0 && old.hpCurrent == current.hpCurrent))) // Hit and defence didn't fall or it did and no damage
+        
+        SetDefense(current.defense);
+        SetHealth(current.hpCurrent, current.hpMax);
+
+        return current;
+    }
+
+    private void OnAttackRequest(CombatTurnData attack)
+    {
+        // TODO: Ensure that the player sets the correct enemy when attacked.
+        if (attack.originId != enemyData.id) return;
+
+        Debug.Log($"[EnemyManager] Combat Request GET!");
+
+        bool endCalled = false;
+        foreach (CombatTurnData.Target target in attack.targets)
+        {            
+            // Run Attack Animation Or Status effects
+            if (target.defenseDelta != 0 || target.healthDelta != 0)
+            {
+                // Run Attack
+                Attack();
+                endCalled = true;
+                RunAfterTime(0.9f, // hard coded enemy animation attack point
+                    () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+            }
+        }
+        if (!endCalled)
+        {
+            // If no conditions are met, close the event
+            GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId);
+        }
+    }
+    private void OnAttackResponse(CombatTurnData attack)
+    {
+        var target = attack.GetTarget(enemyData.id);
+        if (target == null) return;
+
+        Debug.Log($"[EnemyManager] Combat Response GET!");
+
+        // Negitive Deltas
+        float waitDuration = 0;
+        if (target.defenseDelta < 0 && target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
         {
             // Play Armored Clang
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defence Block");
@@ -107,23 +148,8 @@ public class EnemyManager : MonoBehaviour
         if (healthBar.value != enemyData.hpCurrent)
         {
             hitPS.Play();
-            healthBar.DOValue(enemyData.hpCurrent, 1).OnComplete(CheckDeath);
-
-            if (!firstAttack)
-            {
-                Debug.Log("----------invoking attack play");
-                GameManager.Instance.EVENT_PLAY_PLAYER_ATTACK.Invoke();
-                // TODO: Replace magic number with actual timing from the knight's animation.
-                // Note: The knight's animation may be differently timed depending on the animation.
-                StartCoroutine(OnHit(0.45f));
-            }
-            else
-            {
-                firstAttack = false;
-            }
-        }       
-
-       
+            healthBar.DOValue(current.Value, 1).OnComplete(()=>CheckDeath(current.Value));
+        }
     }
 
     private void onAttack(int enemyId) 
@@ -148,9 +174,10 @@ public class EnemyManager : MonoBehaviour
 
     }
 
-    private void CheckDeath()
+    private void CheckDeath(int current)
     {
-        if (enemyData.hpCurrent < 1)
+       // if (enemyData.hpCurrent < 1)//TODO: enemyData is not up to date
+        if (current  < 1)
         {
             explodePS.transform.parent = null;
             explodePS.Play();
