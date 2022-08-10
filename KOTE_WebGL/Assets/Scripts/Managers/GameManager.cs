@@ -141,10 +141,14 @@ public class GameManager : SingleTon<GameManager>
 
     //Combat events
     [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();   
-    [HideInInspector] public UnityEvent<int,int> EVENT_UPDATE_ENERGY = new UnityEvent<int,int>();//current energy, max energy 
+    [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_ENERGY = new UnityEvent<int, int>();//current energy, max energy 
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_PLAYER_HEALTH = new UnityEvent<int, int>();//current health, max health
-    [HideInInspector] public UnityEvent EVENT_PLAY_PLAYER_ATTACK = new UnityEvent();
-    [HideInInspector] public UnityEvent<int> EVENT_PLAY_ENEMY_ATTACK = new UnityEvent<int>(); // enemyId
+    [HideInInspector] public UnityEvent<CombatTurnData> EVENT_ATTACK_REQUEST = new UnityEvent<CombatTurnData>();
+    [HideInInspector] public UnityEvent<CombatTurnData> EVENT_ATTACK_RESPONSE = new UnityEvent<CombatTurnData>();
+    [HideInInspector] public UnityEvent<CombatTurnData> EVENT_COMBAT_TURN_ENQUEUE = new UnityEvent<CombatTurnData>();
+    [HideInInspector] public UnityEvent<Guid> EVENT_COMBAT_TURN_END = new UnityEvent<Guid>();
+    [HideInInspector] public UnityEvent EVENT_COMBAT_QUEUE_EMPTY = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_COMBAT_ORIGIN_CHANGE = new UnityEvent();
     [HideInInspector] public UnityEvent<StatusData> EVENT_UPDATE_STATUS_EFFECTS = new UnityEvent<StatusData>();
 
 

@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static StatusData;
 
 public class StatusManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class StatusManager : MonoBehaviour
     [SerializeField]
     PlayerManager playerManager;
 
-    List<StatusData.Status> statusList;
+    List<Status> statusList = new List<Status>();
 
     string entityType => (enemyManager == null ? "player" : "enemy");
     int entityID => enemyManager?.EnemyData.enemyId ?? playerManager?.PlayerData.playerId ?? -1;
@@ -41,7 +42,7 @@ public class StatusManager : MonoBehaviour
         {
             Debug.LogError($"[StatusManager] Manager does not belong either an enemy or a player.");
         }
-        GameManager.Instance.EVENT_UPDATE_STATUS_EFFECTS.AddListener(OnUpdateStatus);
+        GameManager.Instance.EVENT_UPDATE_STATUS_EFFECTS.AddListener(OnSetStatus);
         //GameManager.Instance.EVENT_CHANGE_TURN.AddListener(onTurnChange);
         iconContainer.SetFadeSpeed(GameSettings.STATUS_FADE_SPEED);
         iconContainer.fadeOnCreate = true;
@@ -106,7 +107,29 @@ public class StatusManager : MonoBehaviour
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Statuses);
     }
 
-    private void OnUpdateStatus(StatusData status) 
+    public void UpdateStatus(List<Status> newStatuses) 
+    {
+        foreach (var newStatus in newStatuses)
+        {
+            bool set = false;
+            for (int i = 0; i < statusList.Count; i++)
+            {
+                if (statusList[i].name == newStatus.name)
+                {
+                    statusList[i] = newStatus;
+                    set = true;
+                    break;
+                }
+            }
+            if (!set)
+            {
+                statusList.Add(newStatus);
+            }
+        }
+        DrawStatus();
+    }
+
+    private void OnSetStatus(StatusData status) 
     {
         if ((status.targetEntity != entityType || status.id != entityID) && (status.targetEntity != "all" || status.targetEntity != "player")) return;
 

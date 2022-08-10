@@ -12,19 +12,18 @@ public class EnemyManager : MonoBehaviour
     public ParticleSystem hitPS;
     public ParticleSystem explodePS;
     public Slider healthBar;
-    private bool firstAttack = true;
     public TMP_Text healthTF;
     public TMP_Text defenseTF;
     public GameObject activeEnemy;
 
     private SpineAnimationsManagement spine;
 
+    private StatusManager statusManager;
+
     public EnemyData EnemyData { 
         set
         {
-            enemyData = value;
-            SetDefense();
-            SetHealth();
+            enemyData = ProcessNewData(enemyData, value);
         }
         get
         {
@@ -32,11 +31,13 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
-    private void ProcessNewData(EnemyData old, EnemyData current) 
+    private EnemyData ProcessNewData(EnemyData old, EnemyData current)
     {
-        if (old == null || current == null)
+        if (old == null)
         {
-            return;
+            SetDefense(current.defense);
+            SetHealth(current.hpCurrent, current.hpMax);
+            return current;
         }
         
         SetDefense(current.defense);
@@ -83,36 +84,61 @@ public class EnemyManager : MonoBehaviour
         if (target.defenseDelta < 0 && target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
         {
             // Play Armored Clang
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defence Block");
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Block");
         }
-        if (current.defense <= 0 && old.hpCurrent > current.hpCurrent) // Damage Taken no armor
+        else if (target.healthDelta < 0) // Damage Taken no armor
         {
             // Play Attack audio
             // Can be specific, but we'll default to "Attack"
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Attack");
+            waitDuration += OnHit();
         }
-        if (current.defense > old.defense) // Defense Buffed
+
+        // Positive Deltas
+        if (target.defenseDelta > 0) // Defense Buffed
         {
             // Play Metallic Ring
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defence Up");
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Up");
         }
-        if (current.hpCurrent > old.hpCurrent) // Healed!
+        if (target.healthDelta > 0) // Healed!
         {
             // Play Rising Chimes
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
         }
+
+        // Update the UI
+        if (target.defenseDelta != 0)
+        {
+            SetDefense(target.finalDefense);
+        }
+        if (target.healthDelta != 0)
+        {
+            SetHealth(target.finalHealth);
+        }
+
+        // Add status changes
+        if (target.statuses != null)
+        {
+            statusManager.UpdateStatus(target.statuses);
+        }
+
+        RunAfterTime(waitDuration, () => GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId));
     }
 
-    private void SetDefense()
+    private void SetDefense(int? value = null)
     {
-        defenseTF.SetText(enemyData.defense.ToString());
+        if (value == null)
+        {
+            value = enemyData.defense;
+        }
+        defenseTF.SetText(value.ToString());
     }
 
     private void Start()
     {
         GameManager.Instance.EVENT_UPDATE_ENEMY.AddListener(OnUpdateEnemy);
-        Debug.Log($"[Enemy Manager] Enemy ID: {enemyData.id}");
-        GameManager.Instance.EVENT_PLAY_ENEMY_ATTACK.AddListener(onAttack);
+        GameManager.Instance.EVENT_ATTACK_REQUEST.AddListener(OnAttackRequest);
+        GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnAttackResponse);
 
         // Grab first spine animation management script we find. This is a default. We'll set this when spawning the enemy usually.
         if (activeEnemy == null)
@@ -125,6 +151,7 @@ public class EnemyManager : MonoBehaviour
         }
         spine = activeEnemy.GetComponent<SpineAnimationsManagement>();
         spine.PlayAnimationSequence("Idle");
+        statusManager = GetComponentInChildren<StatusManager>();
     }
 
     private void OnUpdateEnemy(EnemyData newEnemyData)
@@ -132,45 +159,47 @@ public class EnemyManager : MonoBehaviour
         if (newEnemyData.enemyId == enemyData.enemyId)
         {
             // healthBar.DOValue(newEnemyData.hpMin, 1);
-            ProcessNewData(EnemyData, newEnemyData);
             EnemyData = newEnemyData;
         }
     }
 
-    public void SetHealth()
+    public void SetHealth(int? current = null, int? max = null)
     {
-        Debug.Log("[SetHealth]min="+enemyData.hpCurrent + "/"+enemyData.hpMax);
+        if (current == null)
+        {
+            current = enemyData.hpCurrent;
+        }
+        if (max == null)
+        {
+            max = enemyData.hpMax;
+        }
+        Debug.Log($"[EnemyManager] Health: {current}/{max}");
 
-        healthTF.SetText(enemyData.hpCurrent + "/" + enemyData.hpMax);
+        healthTF.SetText($"{current}/{max}");
 
-        healthBar.maxValue = enemyData.hpMax;
+        healthBar.maxValue = max.Value;
 
-        if (healthBar.value != enemyData.hpCurrent)
+        if (healthBar.value != current)
         {
             hitPS.Play();
             healthBar.DOValue(current.Value, 1).OnComplete(()=>CheckDeath(current.Value));
         }
     }
 
-    private void onAttack(int enemyId) 
-    {
-        //if (enemyData.enemyId == enemyId)
-            Attack();
-    }
-
-    private void Attack() 
+    private float Attack() 
     {
         Debug.Log("+++++++++++++++[Enemy]Attack");
 
-        spine.PlayAnimationSequence("Attack");
+        float length = spine.PlayAnimationSequence("Attack");
         spine.PlayAnimationSequence("Idle");
+        return length;
     }
 
-    private IEnumerator OnHit(float hitTiming = 0)
+    private float OnHit()
     {
-        yield return new WaitForSeconds(hitTiming);
-        spine.PlayAnimationSequence("Hit");
+        float length = spine.PlayAnimationSequence("Hit");
         spine.PlayAnimationSequence("Idle");
+        return length;
 
     }
 
@@ -185,5 +214,15 @@ public class EnemyManager : MonoBehaviour
             spine.PlayAnimationSequence("Death");
             Destroy(this.gameObject,2);
         }
+    }
+
+    private void RunAfterTime(float time, Action toRun)
+    {
+        StartCoroutine(runCoroutine(time, toRun));
+    }
+    private IEnumerator runCoroutine(float time, Action toRun)
+    {
+        yield return new WaitForSeconds(time);
+        toRun.Invoke();
     }
 }
