@@ -72,8 +72,6 @@ public class SpineAnimationsManagement : MonoBehaviour
         skeletonAnimationScript.skeletonDataAsset = skeletonDataAsset;
         skeletonAnimationScript.Initialize(true);
 
-        skeletonAnimationScript.AnimationState.Event += HandleEvent;
-
         availableAnimations.Clear();
         foreach (Animation animation in skeletonData.Animations)
         {
@@ -112,6 +110,10 @@ public class SpineAnimationsManagement : MonoBehaviour
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
+                    if (te != null) 
+                    {
+                        te.Event += HandleEvent;
+                    }
                 }
                 return duration;
             }
@@ -121,6 +123,7 @@ public class SpineAnimationsManagement : MonoBehaviour
 
     private void HandleEvent(TrackEntry trackEntry, Spine.Event e) 
     {
+        Debug.Log($"[Spine] Event Triggered: {e.Data.Name}");
         ANIMATION_EVENT.Invoke(e.Data.Name);
     }
 

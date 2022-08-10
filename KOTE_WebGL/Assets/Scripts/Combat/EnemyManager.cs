@@ -17,6 +17,7 @@ public class EnemyManager : MonoBehaviour
     public GameObject activeEnemy;
 
     private SpineAnimationsManagement spine;
+    private Action RunWithEvent;
 
     private StatusManager statusManager;
 
@@ -62,8 +63,19 @@ public class EnemyManager : MonoBehaviour
                 // Run Attack
                 Attack();
                 endCalled = true;
-                RunAfterTime(0.9f, // hard coded enemy animation attack point
-                    () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+            }
+            else if (target.defenseDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
+            {
+                PlayAnimation("Cast");
+                endCalled = true;
+                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+            }
+            else if (target.healthDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.health)) // Health Up
+            {
+                PlayAnimation("Cast");
+                endCalled = true;
+                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
         }
         if (!endCalled)
@@ -150,7 +162,9 @@ public class EnemyManager : MonoBehaviour
             }
         }
         spine = activeEnemy.GetComponent<SpineAnimationsManagement>();
+        spine.ANIMATION_EVENT.AddListener(OnAnimationEvent);
         spine.PlayAnimationSequence("Idle");
+
         statusManager = GetComponentInChildren<StatusManager>();
     }
 
@@ -186,6 +200,13 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    public float PlayAnimation(string animationSequence)
+    {
+        float length = spine.PlayAnimationSequence(animationSequence);
+        spine.PlayAnimationSequence("Idle");
+        return length;
+    }
+
     private float Attack() 
     {
         Debug.Log("+++++++++++++++[Enemy]Attack");
@@ -216,6 +237,17 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    private void RunAfterEvent(Action toRun)
+    {
+        RunWithEvent = toRun;
+    }
+    private void OnAnimationEvent(string eventName)
+    {
+        if (eventName.Equals("attack") || eventName.Equals("release"))
+        {
+            RunWithEvent.Invoke();
+        }
+    }
     private void RunAfterTime(float time, Action toRun)
     {
         StartCoroutine(runCoroutine(time, toRun));
