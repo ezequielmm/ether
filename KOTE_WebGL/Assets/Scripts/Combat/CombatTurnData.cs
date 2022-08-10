@@ -53,14 +53,14 @@ public class CombatTurnData
     public class Target
     {
         public Target() { }
-        public Target(string target, int healthDelta, int finalHealth, int defenseDelta, int finalDefense)
+       /* public Target(string target, int healthDelta, int finalHealth, int defenseDelta, int finalDefense)
         {
             this.targetId = target;
             this.healthDelta = healthDelta;
             this.finalHealth = finalHealth;
             this.defenseDelta = defenseDelta;
             this.finalDefense = finalDefense;
-        }
+        }*/
 
         public string targetType = string.Empty;
         public string targetId = string.Empty;
@@ -69,6 +69,7 @@ public class CombatTurnData
         public int finalHealth;
         public int defenseDelta;
         public int finalDefense;
+        public string effectType;
         public List<StatusData.Status> statuses;
 
         public override string ToString() 
@@ -87,4 +88,5 @@ public class CombatTurnData
         }
         return sb.ToString().Substring(0, sb.Length - 2);
     }
+    
 }

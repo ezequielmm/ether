@@ -30,6 +30,12 @@ public class CharacterSelectionManager : MonoBehaviour
         GameManager.Instance.LoadScene(inGameScenes.Expedition);
     }
 
+    public void OnArmoryButton()
+    {
+        GameManager.Instance.EVENT_ARMORYPANEL_ACTIVATION_REQUEST.Invoke(true);
+        ActivateInnerCharacterSelectionPanel(false);
+    }
+
     public void OnCharacterSelected(GameObject currentCharacterBorder)
     {
         startExpeditionButton.interactable = true;

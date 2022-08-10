@@ -47,6 +47,7 @@ public static class GameSettings
     public static float INTENT_FADE_SPEED = 0.2f;
     public static float STATUS_TOOLTIP_SPEED = 0.2f;
     public static float STATUS_FADE_SPEED = 0.2f;
+    public static float VICTORY_LABEL_ANIMATION_DELAY = 1f;
 
 
     /*//////////////  

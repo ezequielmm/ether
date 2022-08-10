@@ -39,15 +39,7 @@ public class EnemyManager : MonoBehaviour
             SetHealth(current.hpCurrent, current.hpMax);
             return current;
         }
-
-        int hpDelta = current.hpCurrent - old.hpCurrent;
-        int defenseDelta = current.defense - old.defense;
-
-        if (defenseDelta < 0)
-        {
-            // Natural Defense Fall (eg: New Turn)
-        }
-
+        
         SetDefense(current.defense);
         SetHealth(current.hpCurrent, current.hpMax);
 
@@ -62,8 +54,8 @@ public class EnemyManager : MonoBehaviour
         Debug.Log($"[EnemyManager] Combat Request GET!");
 
         bool endCalled = false;
-        foreach (var target in attack.targets)
-        {
+        foreach (CombatTurnData.Target target in attack.targets)
+        {            
             // Run Attack Animation Or Status effects
             if (target.defenseDelta != 0 || target.healthDelta != 0)
             {
@@ -190,7 +182,7 @@ public class EnemyManager : MonoBehaviour
         if (healthBar.value != current)
         {
             hitPS.Play();
-            healthBar.DOValue(current.Value, 1).OnComplete(CheckDeath);
+            healthBar.DOValue(current.Value, 1).OnComplete(()=>CheckDeath(current.Value));
         }
     }
 
@@ -211,9 +203,10 @@ public class EnemyManager : MonoBehaviour
 
     }
 
-    private void CheckDeath()
+    private void CheckDeath(int current)
     {
-        if (enemyData.hpCurrent < 1)
+       // if (enemyData.hpCurrent < 1)//TODO: enemyData is not up to date
+        if (current  < 1)
         {
             explodePS.transform.parent = null;
             explodePS.Play();

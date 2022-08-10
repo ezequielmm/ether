@@ -43,11 +43,28 @@ public class SWSM_Parser
                 break;
             case nameof(WS_MESSAGE_TYPES.begin_turn):
                 ProcessBeginTurn(swsm.data.action, data);
+                break; 
+            case nameof(WS_MESSAGE_TYPES.end_combat):
+                ProcessEndCombat(swsm.data.action, data);
                 break;
             default:
                 Debug.LogError("[SWSM Parser] No message_type processed. Data Received: " + data);
                 break;
         } ;
+    }
+
+    private static void ProcessEndCombat(string action, string data)
+    {
+        switch (action)
+        {
+            case nameof(WS_MESSAGE_ACTIONS.enemies_defeated):
+                Debug.Log("Should move cards from draw to hand");
+                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.players_defeated):
+                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
+                break;
+        }
     }
 
     private static void ProcessPlayerStateUpdate(string data)
