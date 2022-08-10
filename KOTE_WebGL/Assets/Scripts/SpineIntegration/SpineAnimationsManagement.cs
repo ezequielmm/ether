@@ -74,21 +74,31 @@ public class SpineAnimationsManagement : MonoBehaviour
         }
     }
 
-    public void PlayAnimationSequence(string animationSequenceName)
+    /// <summary>
+    /// Runs an animation by name
+    /// </summary>
+    /// <param name="animationSequenceName"></param>
+    /// <returns>Duration of the animation</returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public float PlayAnimationSequence(string animationSequenceName)
     {
         foreach (AnimationSequence animationSequence in animations)
         {
             if (animationSequence.sequenceName == animationSequenceName)
             {
+                float duration = 0;
                 foreach (AnimationSequence.Animation animation in animationSequence.sequence)
                 {
+                    TrackEntry te;
                     switch (animation.animationEvent)
                     {
                         case AnimationEvent.Add:
-                            skeletonAnimationScript.AnimationState.AddAnimation(animation.track, animation.name, animation.loop, animation.delay);
+                            te = skeletonAnimationScript.AnimationState.AddAnimation(animation.track, animation.name, animation.loop, animation.delay);
+                            duration += te.Animation.Duration + animation.delay;
                             break;
                         case AnimationEvent.Set:
-                            skeletonAnimationScript.AnimationState.SetAnimation(animation.track, animation.name, animation.loop);
+                            te = skeletonAnimationScript.AnimationState.SetAnimation(animation.track, animation.name, animation.loop);
+                            duration = te.Animation.Duration;
                             break;
                         case AnimationEvent.None:
                             break;
@@ -96,38 +106,15 @@ public class SpineAnimationsManagement : MonoBehaviour
                             throw new ArgumentOutOfRangeException();
                     }
                 }
-
-                return;
+                return duration;
             }
         }
+        return 0;
     }
 
-    public void PlayAnimationSequence(AnimationSequence animationSequence)
+    public float PlayAnimationSequence(AnimationSequence animationSequence)
     {
-        foreach (AnimationSequence animationSequenceInList in animations)
-        {
-            if (animationSequenceInList.sequenceName == animationSequence.sequenceName)
-            {
-                foreach (AnimationSequence.Animation animation in animationSequenceInList.sequence)
-                {
-                    switch (animation.animationEvent)
-                    {
-                        case AnimationEvent.Add:
-                            skeletonAnimationScript.AnimationState.AddAnimation(animation.track, animation.name, animation.loop, animation.delay);
-                            break;
-                        case AnimationEvent.Set:
-                            skeletonAnimationScript.AnimationState.SetAnimation(animation.track, animation.name, animation.loop);
-                            break;
-                        case AnimationEvent.None:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-
-                return;
-            }
-        }
+        return PlayAnimationSequence(animationSequence.sequenceName);
     }
 
     public void SetSkin(string skin)
