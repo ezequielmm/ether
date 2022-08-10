@@ -63,7 +63,7 @@ public class BeginOfTurnUIManager : MonoBehaviour
     void OnComplete()
     {
         inAnimation = false;
-        //DeactivateLabels();
+        DeactivateLabels();
     }
 
     private void DeactivateLabels()

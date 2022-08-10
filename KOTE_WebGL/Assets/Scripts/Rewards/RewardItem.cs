@@ -4,46 +4,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public enum RewardItemType
-{
-    Cards,
-    Coins,
-    Potion,
-    Trinket,
-    Fief
-}
+
 
 public class RewardItem : MonoBehaviour
 {
     public TMP_Text rewardText;
     public RewardItemType rewardItemType;
+    private RewardItemData rewardData;    
 
-    public void SetRewardTypeProperties(RewardItemType rewardItemType)
+    public void PopulateRewardItem(RewardItemData reward)
     {
-        this.rewardItemType = rewardItemType;
-
-        rewardText.text = rewardItemType.ToString();
-    }
-
-    public void OnRewardClaimed()
-    {
+        rewardItemType = Utils.ParseEnum<RewardItemType>(reward.type);
+        rewardData = reward;
         switch (rewardItemType)
         {
-            case RewardItemType.Cards:
-                GameManager.Instance.EVENT_CARDS_REWARDPANEL_ACTIVATION_REQUEST.Invoke(true);
+            case RewardItemType.cards:
                 break;
-            case RewardItemType.Coins:
+            case RewardItemType.gold:
+                rewardText.text = reward.amount + " gold";
                 break;
-            case RewardItemType.Potion:
+            case RewardItemType.potion:
                 break;
-            case RewardItemType.Trinket:
+            case RewardItemType.trinket:
                 break;
-            case RewardItemType.Fief:
+            case RewardItemType.fief:
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
+        
+    }
 
-        Debug.Log($"Reward Type: {rewardItemType}");
+    public void OnRewardClaimed()
+    {
+        Debug.Log("onClickFired");
+        GameManager.Instance.EVENT_REWARD_SELECTED.Invoke(rewardData.id);
     }
 }

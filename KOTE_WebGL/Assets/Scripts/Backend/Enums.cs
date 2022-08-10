@@ -221,4 +221,14 @@ public enum ATTACK_EFFECT_TYPES
     health
 }
 
+[Serializable]
+public enum RewardItemType
+{
+    cards,
+    gold,
+    potion,
+    trinket,
+    fief
+}
+
 
