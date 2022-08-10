@@ -6,7 +6,6 @@ using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 
-
 public class GameManager : SingleTon<GameManager>
 {
     //REGISTER ACCOUNT EVENTS
@@ -43,14 +42,27 @@ public class GameManager : SingleTon<GameManager>
     //WALLETS EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_WALLETSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
-    [HideInInspector]
-    public UnityEvent<bool, GameObject> EVENT_DISCONNECTWALLETPANEL_ACTIVATION_REQUEST =
+    [HideInInspector] public UnityEvent<bool, GameObject> EVENT_DISCONNECTWALLETPANEL_ACTIVATION_REQUEST =
         new UnityEvent<bool, GameObject>();
 
     [HideInInspector] public UnityEvent<bool> EVENT_DISCONNECTWALLET_CONFIRMED = new UnityEvent<bool>();
 
     //TREASURY EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_TREASURYPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
+
+    //ARMORY EVENTS
+    [HideInInspector] public UnityEvent<bool> EVENT_ARMORYPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
+
+    //CONFIRMATION PANEL EVENTS
+    [HideInInspector]
+    public UnityEvent<string, Action> EVENT_SHOW_CONFIRMATION_PANEL = new UnityEvent<string, Action>();
+
+    [HideInInspector] public UnityEvent<string, Action, Action> EVENT_SHOW_CONFIRMATION_PANEL_WITH_BACK_ACTION =
+        new UnityEvent<string, Action, Action>();
+
+    [HideInInspector]
+    public UnityEvent<string, Action, Action, string[]> EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL =
+        new UnityEvent<string, Action, Action, string[]>();
 
     //CHARACTER SELECTION EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
@@ -81,8 +93,10 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_REQUEST_EXPEDITION_CANCEL = new UnityEvent();
 
     //MAP EVENTS
-    [HideInInspector] public UnityEvent<NodeStateData, WS_QUERY_TYPE> EVENT_NODE_DATA_UPDATE = new UnityEvent<NodeStateData, WS_QUERY_TYPE>();
-    [HideInInspector] public UnityEvent<string, Action> EVENT_SHOW_CONFIRMATION_PANEL = new UnityEvent<string, Action>();//TODO: move this event as it is not map exclusive
+    [HideInInspector]
+    public UnityEvent<NodeStateData, WS_QUERY_TYPE> EVENT_NODE_DATA_UPDATE =
+        new UnityEvent<NodeStateData, WS_QUERY_TYPE>();
+
     [HideInInspector] public UnityEvent<SWSM_MapData> EVENT_ALL_MAP_NODES_UPDATE = new UnityEvent<SWSM_MapData>();
     [HideInInspector] public UnityEvent<int> EVENT_MAP_NODE_SELECTED = new UnityEvent<int>();
     [HideInInspector] public UnityEvent<int> EVENT_MAP_NODE_MOUSE_OVER = new UnityEvent<int>();
@@ -91,6 +105,7 @@ public class GameManager : SingleTon<GameManager>
     // map animation events
     [HideInInspector] public UnityEvent<SWSM_MapData> EVENT_MAP_REVEAL = new UnityEvent<SWSM_MapData>();
     [HideInInspector] public UnityEvent<int, int> EVENT_MAP_ANIMATE_STEP = new UnityEvent<int, int>();
+
     [HideInInspector] public UnityEvent<SWSM_MapData> EVENT_MAP_ACTIVATE_PORTAL = new UnityEvent<SWSM_MapData>();
     //[HideInInspector]
     //public UnityEvent<bool> EVENT_MAP_TOGGLE_MAP = new UnityEvent<bool>();
@@ -103,8 +118,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_MAP_MASK_DOUBLECLICK = new UnityEvent();
 
     //MAP PANEL EVENTS
-    [HideInInspector]
-    public UnityEvent<bool> EVENT_MAP_PANEL_TOOGLE = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<bool> EVENT_MAP_PANEL_TOOGLE = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<bool> EVENT_MAP_PANEL_TOGGLE = new UnityEvent<bool>();
 
     //PLAYER DATA EVENTS
@@ -126,7 +140,10 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_CARD_DRAW_CARDS = new UnityEvent();
     [HideInInspector] public UnityEvent<CardPiles> EVENT_CARDS_PILES_UPDATED = new UnityEvent<CardPiles>();
     [HideInInspector] public UnityEvent<CardToMoveData> EVENT_MOVE_CARD = new UnityEvent<CardToMoveData>();
-    [HideInInspector] public UnityEvent<string> EVENT_CARD_DISABLED { get; } = new UnityEvent<string>();//id fo the cards being destroyed
+
+    [HideInInspector]
+    public UnityEvent<string> EVENT_CARD_DISABLED { get; } = new UnityEvent<string>(); //id fo the cards being destroyed
+
     [HideInInspector] public UnityEvent EVENT_CARD_NO_ENERGY = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CARD_DRAW = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CARD_DISCARD = new UnityEvent();
@@ -140,11 +157,15 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_END_TURN_CLICKED = new UnityEvent();
 
     //Combat events
-    [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();   
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_ENERGY = new UnityEvent<int, int>();//current energy, max energy 
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_PLAYER_HEALTH = new UnityEvent<int, int>();//current health, max health
-    [HideInInspector] public UnityEvent EVENT_PLAY_PLAYER_ATTACK = new UnityEvent();
-    [HideInInspector] public UnityEvent<int> EVENT_PLAY_ENEMY_ATTACK = new UnityEvent<int>(); // enemyId
+    [HideInInspector] public UnityEvent<CombatTurnData> EVENT_ATTACK_REQUEST = new UnityEvent<CombatTurnData>();
+    [HideInInspector] public UnityEvent<CombatTurnData> EVENT_ATTACK_RESPONSE = new UnityEvent<CombatTurnData>();
+    [HideInInspector] public UnityEvent<CombatTurnData> EVENT_COMBAT_TURN_ENQUEUE = new UnityEvent<CombatTurnData>();
+    [HideInInspector] public UnityEvent<Guid> EVENT_COMBAT_TURN_END = new UnityEvent<Guid>();
+    [HideInInspector] public UnityEvent EVENT_COMBAT_QUEUE_EMPTY = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_COMBAT_ORIGIN_CHANGE = new UnityEvent();
     [HideInInspector] public UnityEvent<StatusData> EVENT_UPDATE_STATUS_EFFECTS = new UnityEvent<StatusData>();
     [HideInInspector] public UnityEvent EVENT_CLEAR_TOOLTIPS = new UnityEvent();
     [HideInInspector] public UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>  EVENT_SET_TOOLTIPS { get; } = 
@@ -152,8 +173,10 @@ public class GameManager : SingleTon<GameManager>
 
 
     //Common events
-    [HideInInspector] public UnityEvent<WS_DATA_REQUEST_TYPES> EVENT_GENERIC_WS_DATA = new UnityEvent<WS_DATA_REQUEST_TYPES>();
-    [HideInInspector] public UnityEvent EVENT_WS_CONNECTED = new UnityEvent();    
+    [HideInInspector]
+    public UnityEvent<WS_DATA_REQUEST_TYPES> EVENT_GENERIC_WS_DATA = new UnityEvent<WS_DATA_REQUEST_TYPES>();
+
+    [HideInInspector] public UnityEvent EVENT_WS_CONNECTED = new UnityEvent();
     [HideInInspector] public UnityEvent<string> EVENT_CHANGE_TURN = new UnityEvent<string>();
 
     //Enemies events
@@ -170,7 +193,6 @@ public class GameManager : SingleTon<GameManager>
 
     public WebRequesterManager webRequester;
 
-    
 
     // Start is called before the first frame update
     void Start()

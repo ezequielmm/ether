@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class RoyalHouseManager : MonoBehaviour
@@ -13,7 +14,9 @@ public class RoyalHouseManager : MonoBehaviour
     public GameObject blessingItemPrefab;
 
     public GameObject armoryContent;
+    public Scrollbar armoryScroll;
     public GameObject blessingContent;
+    public Scrollbar masterAtArmsScroll;
 
     [Space(20)]
     public TMP_Text encumbranceText, confirmationText;
@@ -144,5 +147,25 @@ public class RoyalHouseManager : MonoBehaviour
     public void ActivateInnerRoyalHousePanel(bool activate)
     {
         royalHouseContainer.SetActive(activate);
+    }
+
+    public void OnArmoryUpArrow()
+    {
+        if(armoryScroll.value < 1) armoryScroll.value += 0.1f;
+    }
+
+    public void OnArmoryDownArrow()
+    {
+        if(armoryScroll.value > 0) armoryScroll.value -= 0.1f;
+    }
+    
+    public void OnMaaUpArrow()
+    {
+        if(masterAtArmsScroll.value < 1) masterAtArmsScroll.value += 0.1f;
+    }
+
+    public void OnMaaDownArrow()
+    {
+        if(masterAtArmsScroll.value > 0) masterAtArmsScroll.value -= 0.1f;
     }
 }
