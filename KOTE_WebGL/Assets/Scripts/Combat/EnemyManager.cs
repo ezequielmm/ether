@@ -59,6 +59,7 @@ public class EnemyManager : MonoBehaviour
         {
             // Play Rising Chimes
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
+            GameManager.Instance.EVENT_HEAL.Invoke(EnemyData.id, old.hpCurrent - current.hpCurrent);
         }
     }
 

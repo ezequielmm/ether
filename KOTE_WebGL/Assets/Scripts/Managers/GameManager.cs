@@ -146,6 +146,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_PLAY_PLAYER_ATTACK = new UnityEvent();
     [HideInInspector] public UnityEvent<int> EVENT_PLAY_ENEMY_ATTACK = new UnityEvent<int>(); // enemyId
     [HideInInspector] public UnityEvent<StatusData> EVENT_UPDATE_STATUS_EFFECTS = new UnityEvent<StatusData>();
+    [HideInInspector] public UnityEvent<string, int> EVENT_HEAL = new UnityEvent<string, int>(); // id, healed amount
 
 
     //Common events

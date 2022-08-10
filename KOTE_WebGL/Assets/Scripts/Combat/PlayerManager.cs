@@ -54,6 +54,7 @@ public class PlayerManager : MonoBehaviour
         {
             // Play Rising Chimes
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
+            GameManager.Instance.EVENT_HEAL.Invoke(/*PlayerData.id*/ "player", old.hpCurrent - current.hpCurrent);
         }
     }
 
