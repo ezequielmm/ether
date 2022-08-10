@@ -4,6 +4,7 @@ using UnityEngine;
 using Spine;
 using Spine.Unity;
 using Animation = Spine.Animation;
+using UnityEngine.Events;
 
 [Serializable, RequireComponent(typeof(SkeletonAnimation))]
 public class SpineAnimationsManagement : MonoBehaviour
@@ -34,6 +35,8 @@ public class SpineAnimationsManagement : MonoBehaviour
         }
     }
 
+    public UnityEvent<string> ANIMATION_EVENT = new UnityEvent<string>();
+
     private SkeletonData skeletonData;
 
     private SkeletonDataAsset skeletonDataAsset;
@@ -41,6 +44,8 @@ public class SpineAnimationsManagement : MonoBehaviour
 
     public TextAsset animationJson;
     public AtlasAssetBase atlasAssetBase;
+
+
 
     [SerializeField]
     public List<AnimationSequence> animations = new List<AnimationSequence>();
@@ -67,6 +72,8 @@ public class SpineAnimationsManagement : MonoBehaviour
         skeletonAnimationScript.skeletonDataAsset = skeletonDataAsset;
         skeletonAnimationScript.Initialize(true);
 
+        skeletonAnimationScript.AnimationState.Event += HandleEvent;
+
         availableAnimations.Clear();
         foreach (Animation animation in skeletonData.Animations)
         {
@@ -89,7 +96,7 @@ public class SpineAnimationsManagement : MonoBehaviour
                 float duration = 0;
                 foreach (AnimationSequence.Animation animation in animationSequence.sequence)
                 {
-                    TrackEntry te;
+                    TrackEntry te = null;
                     switch (animation.animationEvent)
                     {
                         case AnimationEvent.Add:
@@ -110,6 +117,11 @@ public class SpineAnimationsManagement : MonoBehaviour
             }
         }
         return 0;
+    }
+
+    private void HandleEvent(TrackEntry trackEntry, Spine.Event e) 
+    {
+        ANIMATION_EVENT.Invoke(e.Data.Name);
     }
 
     public float PlayAnimationSequence(AnimationSequence animationSequence)
