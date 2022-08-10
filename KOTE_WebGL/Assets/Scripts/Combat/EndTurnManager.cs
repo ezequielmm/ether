@@ -32,9 +32,12 @@ public class EndTurnManager : MonoBehaviour
         if (timeLimit > 0 && listenForEmptyQueue) 
         {
             timeLimit -= Time.deltaTime;
-            if (timeLimit <= 0) 
+            if (timeLimit < 0) 
             {
+                Debug.LogWarning($"[EndTurnManager] Enemy Turn Hit Timelimit (10s). Maybe an attack didn't go through?");
                 GameManager.Instance.EVENT_END_TURN_CLICKED.Invoke();
+                GameManager.Instance.EVENT_CLEAR_COMBAT_QUEUE.Invoke();
+                timeLimit = 0;
             }
         }
     }
