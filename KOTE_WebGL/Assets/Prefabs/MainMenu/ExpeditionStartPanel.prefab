@@ -305,7 +305,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: START EXPEDTION
+  m_text: START EXPEDITION
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 49b8082b72726c34a8355b694d8d21d2, type: 2}
   m_sharedMaterial: {fileID: 8475095954227767653, guid: 49b8082b72726c34a8355b694d8d21d2,
