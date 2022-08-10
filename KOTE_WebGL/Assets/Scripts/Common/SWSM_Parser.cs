@@ -235,16 +235,26 @@ public class SWSM_Parser
             case nameof(WS_DATA_REQUEST_TYPES.Statuses):
                 ProcessStatusUpdate(data);
                 break;
+            case nameof(WS_DATA_REQUEST_TYPES.PlayerDeck):
+                ProcessPlayerFullDeck(data);
+                break;
             default:
                 Debug.Log($"[SWSM Parser] [Generic Data] Uncaught Action \"{action}\". Data = {data}");
                 break;
         }
     }
 
+    private static void ProcessPlayerFullDeck(string data)
+    {
+        SWSM_PlayerDeckData deckData = JsonUtility.FromJson<SWSM_PlayerDeckData>(data);
+        Deck deck = new Deck() { cards = deckData.data.data };
+        GameManager.Instance.EVENT_CARD_PILE_SHOW_DECK.Invoke(deck);
+    }
+
     private static void ProcessStatusUpdate(string data)
     {
         SWSM_StatusData statusData = JsonUtility.FromJson<SWSM_StatusData>(data);
-        Debug.Log($"[SWSM_Parser][ProcessStatusUpdate] Source --> [ {statusData.data.message_type} | {statusData.data.action} ]");
+        Debug.Log($"[SWSM_Parser][ProcessStatusUpdate] Source --> [ {statusData.data.message_type} | {statusData.data.action} ] {data}");
         List<StatusData> statuses = statusData.data.data;
         foreach (StatusData status in statuses) 
         {
@@ -259,15 +269,28 @@ public class SWSM_Parser
         switch (action)
         {
             case "begin_combat":
-                
+
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Combat);
                 break;
             case "update_statuses":
                 ProcessStatusUpdate(data);
                 break;
+            case "combat_queue":
+                ProcessCombatQueue(data);
+                break;
             default:
                 Debug.Log($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
                 break;
+        }
+    }
+
+    private static void ProcessCombatQueue(string data) 
+    {
+        SWSM_CombatAction combatAction = JsonUtility.FromJson<SWSM_CombatAction>(data);
+        Debug.Log($"[SWSM Parser] Combat Queue Data: {data}");
+        foreach (CombatTurnData combatData in combatAction.data.data) // For when it's a list.
+        {
+            GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(combatData);
         }
     }
     private static void ProcessEnemyIntents(string action, string data)

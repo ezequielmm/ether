@@ -6,28 +6,30 @@ using UnityEngine;
 [Serializable]
 public class CombatTurnData
 {
-    public string origin;
+    public string originType = string.Empty;
+    public string originId = string.Empty;
     public List<Target> targets;
     public float delay;
-    public string attackId;
+    public Guid attackId;
 
     public CombatTurnData()
     {
-        attackId = new Guid().ToString();
+        attackId = new Guid();
+        delay = GameSettings.COMBAT_ANIMATION_DELAY;
     }
     public CombatTurnData(string origin, List<Target> targets, float delay = GameSettings.COMBAT_ANIMATION_DELAY)
     {
-        this.origin = origin;
+        this.originId = origin;
         this.targets = targets;
         this.delay = delay;
-        attackId = new Guid().ToString();
+        attackId = new Guid();
     }
 
     public bool ContainsTarget(string targetID)
     {
         foreach (Target target in targets)
         {
-            if (target.targetID == targetID)
+            if (target.targetId == targetID)
             {
                 return true;
             }
@@ -39,7 +41,7 @@ public class CombatTurnData
     {
         foreach (Target target in targets)
         {
-            if (target.targetID == targetID)
+            if (target.targetId == targetID || targetID == target.targetType)
             {
                 return target;
             }
@@ -47,34 +49,42 @@ public class CombatTurnData
         return null;
     }
 
+    [Serializable]
     public class Target
     {
         public Target() { }
         public Target(string target, int healthDelta, int finalHealth, int defenseDelta, int finalDefense)
         {
-            this.targetID = target;
+            this.targetId = target;
             this.healthDelta = healthDelta;
             this.finalHealth = finalHealth;
             this.defenseDelta = defenseDelta;
             this.finalDefense = finalDefense;
         }
 
-        public string targetID;
+        public string targetType = string.Empty;
+        public string targetId = string.Empty;
 
         public int healthDelta;
         public int finalHealth;
         public int defenseDelta;
         public int finalDefense;
+        public List<StatusData.Status> statuses;
+
+        public override string ToString() 
+        {
+            return $"[{targetType} | {targetId}]";
+        }
     }
 
     public override string ToString()
     {
         System.Text.StringBuilder sb = new System.Text.StringBuilder();
-        sb.Append($"[{origin}] --> [");
+        sb.Append($"[{originType} | {originId}] --> ");
         foreach (var target in targets)
         {
             sb.Append(target.ToString() + ", ");
         }
-        return sb.ToString().Substring(0, sb.Length - 2) + "]";
+        return sb.ToString().Substring(0, sb.Length - 2);
     }
 }

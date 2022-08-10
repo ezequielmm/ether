@@ -18,6 +18,8 @@ public class EnemyManager : MonoBehaviour
 
     private SpineAnimationsManagement spine;
 
+    private StatusManager statusManager;
+
     public EnemyData EnemyData { 
         set
         {
@@ -38,47 +40,24 @@ public class EnemyManager : MonoBehaviour
             return current;
         }
 
-        bool isAttack = false;
-
         int hpDelta = current.hpCurrent - old.hpCurrent;
         int defenseDelta = current.defense - old.defense;
 
-        if (defenseDelta > 0) // Defense Buffed
+        if (defenseDelta < 0)
         {
-            // Play Metallic Ring
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Up");
-        }
-        if (hpDelta > 0) // Healed!
-        {
-            // Play Rising Chimes
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
+            // Natural Defense Fall (eg: New Turn)
         }
 
-        // This will add to the Event Queue. 
-        if (hpDelta < 0 || defenseDelta < 0)
-        {
-            isAttack = true;
-            var targets = new List<CombatTurnData.Target>();
-            // We will need an "Attack" acction to handle multiple targets
-            targets.Add(new CombatTurnData.Target(enemyData.id, hpDelta, current.hpCurrent, defenseDelta, current.defense));
-            var attack = new CombatTurnData("player", targets, 0); // player attacks target. Happens right away!
-            GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(attack);
-        }
+        SetDefense(current.defense);
+        SetHealth(current.hpCurrent, current.hpMax);
 
-
-        if (isAttack == false)
-        {
-            SetDefense(current.defense);
-            SetHealth(current.hpCurrent, current.hpMax);
-        }
         return current;
     }
 
     private void OnAttackRequest(CombatTurnData attack)
     {
         // TODO: Ensure that the player sets the correct enemy when attacked.
-        //if (attack.origin != enemyData.id) return;
-        if (attack.origin == "player") return;
+        if (attack.originId != enemyData.id) return;
 
         Debug.Log($"[EnemyManager] Combat Request GET!");
 
@@ -108,6 +87,7 @@ public class EnemyManager : MonoBehaviour
 
         Debug.Log($"[EnemyManager] Combat Response GET!");
 
+        // Negitive Deltas
         float waitDuration = 0;
         if (target.defenseDelta < 0 && target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
         {
@@ -121,10 +101,34 @@ public class EnemyManager : MonoBehaviour
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Attack");
             waitDuration += OnHit();
         }
-        SetDefense(target.finalDefense);
-        SetHealth(target.finalHealth);
 
-        // You can add status effect changes in here as well**
+        // Positive Deltas
+        if (target.defenseDelta > 0) // Defense Buffed
+        {
+            // Play Metallic Ring
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Up");
+        }
+        if (target.healthDelta > 0) // Healed!
+        {
+            // Play Rising Chimes
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
+        }
+
+        // Update the UI
+        if (target.defenseDelta != 0)
+        {
+            SetDefense(target.finalDefense);
+        }
+        if (target.healthDelta != 0)
+        {
+            SetHealth(target.finalHealth);
+        }
+
+        // Add status changes
+        if (target.statuses != null)
+        {
+            statusManager.UpdateStatus(target.statuses);
+        }
 
         RunAfterTime(waitDuration, () => GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId));
     }
@@ -155,6 +159,7 @@ public class EnemyManager : MonoBehaviour
         }
         spine = activeEnemy.GetComponent<SpineAnimationsManagement>();
         spine.PlayAnimationSequence("Idle");
+        statusManager = GetComponentInChildren<StatusManager>();
     }
 
     private void OnUpdateEnemy(EnemyData newEnemyData)

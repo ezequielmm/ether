@@ -13,6 +13,8 @@ public class PlayerManager : MonoBehaviour
     public TMP_Text healthTF;
     public Slider healthBar;
 
+    private StatusManager statusManager;
+
     private PlayerData playerData;
     public PlayerData PlayerData
     {
@@ -28,20 +30,28 @@ public class PlayerManager : MonoBehaviour
 
     private void OnAttackRequest(CombatTurnData attack) 
     {
-        if(attack.origin != "player") return;
+        if(attack.originType != "player") return;
 
         Debug.Log($"[PlayerManager] Combat Request GET!");
 
         bool endCalled = false;
         foreach (var target in attack.targets) {
             // Run Attack Animation Or Status effects
-            if (target.defenseDelta != 0 || target.healthDelta != 0)
+            if (target.defenseDelta < 0 || target.healthDelta < 0)
             {
                 // Run Attack
                 Attack();
                 endCalled = true;
                 RunAfterTime(0.45f, // hard coded player animation attack point
                     () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+            }
+            else if (target.defenseDelta > 0) // Defense Up
+            {
+
+            }
+            else if (target.healthDelta > 0) // Health Up
+            { 
+            
             }
         }
         if (!endCalled)
@@ -57,6 +67,7 @@ public class PlayerManager : MonoBehaviour
 
         Debug.Log($"[PlayerManager] Combat Response GET!");
 
+        // Negitive Deltas
         float waitDuration = 0;
         if (target.defenseDelta < 0 && target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
         {
@@ -70,10 +81,34 @@ public class PlayerManager : MonoBehaviour
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Attack");
             waitDuration += OnHit();
         }
-        SetDefense(target.finalDefense);
-        SetHealth(target.finalHealth);
 
-        // You can add status effect changes in here as well**
+        // Positive Deltas
+        if (target.defenseDelta > 0) // Defense Buffed
+        {
+            // Play Metallic Ring
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Up");
+        }
+        if (target.healthDelta > 0) // Healed!
+        {
+            // Play Rising Chimes
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
+        }
+
+        // Update the UI
+        if (target.defenseDelta != 0)
+        {
+            SetDefense(target.finalDefense);
+        }
+        if (target.healthDelta != 0)
+        {
+            SetHealth(target.finalHealth);
+        }
+
+        // Add status changes
+        if (target.statuses != null)
+        {
+            statusManager.UpdateStatus(target.statuses);
+        }
 
         RunAfterTime(waitDuration, () => GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId));
     }
@@ -98,40 +133,17 @@ public class PlayerManager : MonoBehaviour
             return current;
         }
 
-        bool isAttack = false;
-
         int hpDelta = current.hpCurrent - old.hpCurrent;
         int defenseDelta = current.defense - old.defense;
 
-        if (defenseDelta > 0) // Defense Buffed
+        if (defenseDelta < 0) 
         {
-            // Play Metallic Ring
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Up");
-        }
-        if (hpDelta > 0) // Healed!
-        {
-            // Play Rising Chimes
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
+            // Natural Defense Fall (eg: New Turn)
         }
 
-        // This will add to the Event Queue. 
-        if (hpDelta < 0 || defenseDelta < 0) 
-        {
-            isAttack = true;
-            var targets = new List<CombatTurnData.Target>();
-            targets.Add(new CombatTurnData.Target("player", hpDelta, current.hpCurrent, defenseDelta, current.defense));
-            // The player won't know who hit them
-            var attack = new CombatTurnData("unknown", targets);
+        SetDefense(current.defense);
+        SetHealth(current.hpCurrent, current.hpMax);
 
-            GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(attack);
-        }
-        
-
-        if (isAttack == false) 
-        {
-            SetDefense(current.defense);
-            SetHealth(current.hpCurrent, current.hpMax);
-        }
         return current;
     }
 
@@ -165,8 +177,10 @@ public class PlayerManager : MonoBehaviour
         GameManager.Instance.EVENT_WS_CONNECTED.AddListener(OnWSConnected);
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
 
+        statusManager = GetComponentInChildren<StatusManager>();
 
-        spineAnimationsManagement = GetComponent<SpineAnimationsManagement>();
+        if(spineAnimationsManagement == null)
+            spineAnimationsManagement = GetComponent<SpineAnimationsManagement>();
         //spineAnimationsManagement.SetSkin("weapon/sword");
         spineAnimationsManagement.PlayAnimationSequence("Idle");
 
@@ -209,6 +223,13 @@ public class PlayerManager : MonoBehaviour
     private void OnMouseDown()
     {
         Attack();
+    }
+
+    public float PlayAnimation(string animationSequence) 
+    {
+        float length = spineAnimationsManagement.PlayAnimationSequence(animationSequence);
+        spineAnimationsManagement.PlayAnimationSequence("Idle");
+        return length;
     }
 
     public float Attack()
