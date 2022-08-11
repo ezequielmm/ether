@@ -168,7 +168,7 @@ public class PathManager : MonoBehaviour
             pathController.spline.SetPosition(i, pos);
             splinePointPositions[i] = pathController.spline.GetPosition(i);
         }
-
+        
         // set the dotted line to the exact same position
         MatchSplinesToEachOther();
     }
