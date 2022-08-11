@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEditor;
 using Random = UnityEngine.Random;
 
 public class TopBarManager : MonoBehaviour
@@ -16,6 +17,8 @@ public class TopBarManager : MonoBehaviour
 
     public GameObject classIcon, className, showmapbutton;
 
+    // we need to keep track of this, as the attack response data doesn't relay this information
+    private int maxHealth;
     private void Start()
     {
         //TODO : Now, all this will be implemented after the websocket is connected
@@ -29,8 +32,10 @@ public class TopBarManager : MonoBehaviour
         //SetHealth(Random.Range(30, 81));
 
         GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
-        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(SetPlayerState);
+        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnCombatStart);
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.AddListener(OnToggleMapIcon);
+        GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnPlayerAttacked);
+
     }
 
     private void OnToggleMapIcon(bool arg0)
@@ -55,9 +60,9 @@ public class TopBarManager : MonoBehaviour
     }
 
 
-    public void SetHealthText(int health, int maxHealth)
+    public void SetHealthText(int health)
     {
-        healthText.text = health.ToString() + "/" + maxHealth.ToString();
+        healthText.text = health + "/" + maxHealth;
     }
 
     public void SetCoinsText(int coins)
@@ -71,10 +76,18 @@ public class TopBarManager : MonoBehaviour
         SetCoinsText(profileData.data.coins);
     }
 
-    public void SetPlayerState(PlayerStateData playerState) 
+    public void OnPlayerAttacked(CombatTurnData combatTurnData) 
+    {        
+        var target = combatTurnData.GetTarget("player");
+        if (target == null) return;
+        SetHealthText(target.finalHealth);
+    }
+    
+    public void OnCombatStart(PlayerStateData playerState) 
     {        
         SetNameText(playerState.data.playerState.playerName);
-        SetHealthText(playerState.data.playerState.hpCurrent, playerState.data.playerState.hpMax);
+        maxHealth = playerState.data.playerState.hpMax;
+        SetHealthText(playerState.data.playerState.hpCurrent);
         SetCoinsText(playerState.data.playerState.gold);
     }
 
