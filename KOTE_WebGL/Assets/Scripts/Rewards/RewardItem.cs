@@ -37,7 +37,6 @@ public class RewardItem : MonoBehaviour
 
     public void OnRewardClaimed()
     {
-        Debug.Log("onClickFired");
         GameManager.Instance.EVENT_REWARD_SELECTED.Invoke(rewardData.id);
     }
 }
