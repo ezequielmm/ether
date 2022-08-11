@@ -1669,7 +1669,6 @@ MonoBehaviour:
   nameText: {fileID: 7612459577253896924}
   healthText: {fileID: 3680571990128504187}
   coinsText: {fileID: 7612459576903324760}
-  stageText: {fileID: 6128235263261647718}
   classIcon: {fileID: 3035052704644184722}
   className: {fileID: 7612459577253896926}
   showmapbutton: {fileID: 5309821371168514389}
