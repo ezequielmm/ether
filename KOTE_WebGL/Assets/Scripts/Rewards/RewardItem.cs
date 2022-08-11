@@ -27,23 +27,6 @@ public class RewardItem : MonoBehaviour
 
     public void OnRewardClaimed()
     {
-        switch (rewardItemType)
-        {
-            case RewardItemType.Cards:
-                GameManager.Instance.EVENT_CARDS_REWARDPANEL_ACTIVATION_REQUEST.Invoke(true);
-                break;
-            case RewardItemType.Coins:
-                break;
-            case RewardItemType.Potion:
-                break;
-            case RewardItemType.Trinket:
-                break;
-            case RewardItemType.Fief:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-
-        Debug.Log($"Reward Type: {rewardItemType}");
+        GameManager.Instance.EVENT_REWARD_SELECTED.Invoke(rewardData.id);
     }
 }
