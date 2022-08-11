@@ -193,8 +193,7 @@ public class Card
     public string name;
 
     public string id;
-
-    //  public int cardId;
+    public int cardId;
     public string description;
     public string rarity;
     public int energy;
