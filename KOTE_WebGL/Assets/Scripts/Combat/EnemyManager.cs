@@ -65,6 +65,18 @@ public class EnemyManager : MonoBehaviour
                 RunAfterTime(0.9f, // hard coded enemy animation attack point
                     () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
+            else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
+            {
+                endCalled = true;
+                RunAfterTime(0.45f, // hard coded player animation attack point
+                   () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+            }
+            else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.heal)) // Health Up
+            {
+                endCalled = true;
+                RunAfterTime(0.45f, // hard coded player animation attack point
+                   () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+            }
         }
         if (!endCalled)
         {
@@ -104,7 +116,8 @@ public class EnemyManager : MonoBehaviour
         {
             // Play Rising Chimes
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
-            GameManager.Instance.EVENT_HEAL.Invoke(EnemyData.id, old.hpCurrent - current.hpCurrent);
+            GameManager.Instance.EVENT_HEAL.Invoke(EnemyData.id, target.healthDelta);
+            waitDuration += 1;
         }
 
         // Update the UI
