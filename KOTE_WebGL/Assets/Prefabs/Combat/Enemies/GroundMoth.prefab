@@ -168,9 +168,6 @@ MonoBehaviour:
   - attack1
   - attack2
   - cast1
-  - cast1 v2
   - death
   - hit
   - idle
-  - mouthOpen
-  - slime
