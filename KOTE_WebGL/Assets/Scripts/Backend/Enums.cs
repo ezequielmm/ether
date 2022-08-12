@@ -22,7 +22,9 @@ public enum GameStatuses
     Map,
     Encounter,
     Merchant,
-    RoyalHouse
+    RoyalHouse,
+    RewardsPanel,
+    GameOver
 }
 
 public enum WS_QUERY_TYPE
@@ -160,7 +162,8 @@ public enum WS_DATA_REQUEST_TYPES
     EnemyIntents,
     Potions,
     Trinkets,
-    Statuses
+    Statuses,
+    PlayerDeck
 }
 
 [Serializable]
@@ -183,9 +186,11 @@ public enum WS_MESSAGE_TYPES
     enemy_affected,
     player_affected,
     end_turn,
-    begin_turn
+    begin_turn,
+    end_combat
 }
 
+[Serializable]
 public enum WS_MESSAGE_ACTIONS
 {
     update_energy,
@@ -193,10 +198,13 @@ public enum WS_MESSAGE_ACTIONS
     update_enemy,
     update_player,
     change_turn,
-    create_card
+    create_card,
+    enemies_defeated,
+    players_defeated
 
 }
 
+[Serializable]
 public enum CARDS_POSITIONS_TYPES
 {
     discard,
@@ -204,4 +212,13 @@ public enum CARDS_POSITIONS_TYPES
     exhaust,
     draw
 }
+
+[Serializable]
+public enum ATTACK_EFFECT_TYPES
+{
+    damage,
+    defense,
+    health
+}
+
 

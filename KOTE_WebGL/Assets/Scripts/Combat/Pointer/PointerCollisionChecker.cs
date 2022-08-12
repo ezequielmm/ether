@@ -7,12 +7,12 @@ public class PointerCollisionChecker : MonoBehaviour
     //TODO get the enemy's id and make sure it's the same one on exit
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Collision happening");
+        //Debug.Log("[Pointer] Collider Enter");
         if (collision.gameObject.CompareTag("Enemy"))
         {
+            //Debug.Log("[Pointer] Over Enemy");
             pointerManager.overEnemy = true;
-            pointerManager.enemyData = collision.transform.parent.GetComponent<EnemyManager>().EnemyData;
-            Debug.Log("over enemy");
+            pointerManager.enemyData = collision.gameObject.GetComponentInChildren<EnemyManager>().EnemyData;
         }
     }
 

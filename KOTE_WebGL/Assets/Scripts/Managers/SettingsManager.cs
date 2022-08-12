@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using BestHTTP.SecureProtocol.Org.BouncyCastle.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ using UnityEngine.UI;
 public class SettingsManager : MonoBehaviour
 {
     public Slider volumeSlider;
+    public TMP_Text volumeText;
     public TMP_Dropdown languageDropdown;
     public GameObject settingsContainer;
     public GameObject logoutConfirmContainer;
@@ -35,6 +37,9 @@ public class SettingsManager : MonoBehaviour
     public void OnVolumeChanged()
     {
         AudioListener.volume = volumeSlider.value;
+        float volumePercent = volumeSlider.value * 100;
+        string volumeAmount = volumePercent.ToString("F0");
+        volumeText.text = (volumeAmount);
         PlayerPrefs.SetFloat("settings_volume", AudioListener.volume);
         PlayerPrefs.Save();
     }
