@@ -446,6 +446,29 @@ public class SWSM_EnergyArray
 }
 
 [Serializable]
+public class SWSM_CurrentStep
+{
+    public StepData data;
+
+    [Serializable]
+    public class StepData
+    {
+        public string message_type;
+        public string action;
+
+        //public string data;
+        public CurrentStep data;
+        
+        
+    }
+}
+[Serializable]
+public class CurrentStep{
+    public int act;
+    public int step;
+}
+
+[Serializable]
 public class SWSM_CardsPiles
 {
     public CardPiles data;

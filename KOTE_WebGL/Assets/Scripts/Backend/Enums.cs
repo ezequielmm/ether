@@ -164,7 +164,7 @@ public enum WS_DATA_REQUEST_TYPES
     Trinkets,
     Statuses,
     PlayerDeck,
-    CurrentStep
+    CurrentNode
 }
 
 [Serializable]

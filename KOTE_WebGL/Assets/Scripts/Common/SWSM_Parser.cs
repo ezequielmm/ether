@@ -255,7 +255,7 @@ public class SWSM_Parser
             case nameof(WS_DATA_REQUEST_TYPES.PlayerDeck):
                 ProcessPlayerFullDeck(data);
                 break;
-            case nameof(WS_DATA_REQUEST_TYPES.CurrentStep):
+            case nameof(WS_DATA_REQUEST_TYPES.CurrentNode):
                 ProcessStepUpdate(data);
                 break;
             default:
@@ -284,8 +284,8 @@ public class SWSM_Parser
 
     private static void ProcessStepUpdate(string data)
     {
-        // TODO create a helper class to send the data directly
-        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(data);
+        SWSM_CurrentStep currentStepData = JsonUtility.FromJson<SWSM_CurrentStep>(data);
+        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(currentStepData);
     }
 
     private static void ProcessCombatUpdate(string action, string data)
@@ -295,11 +295,10 @@ public class SWSM_Parser
         switch (action)
         {
             case "begin_combat":
-
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Combat);
                 // this will need to be moved later, but for now this is the best place for this call
                 // the current step call will update the top bar with the new step
-                GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CurrentStep);
+                GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CurrentNode);
                 break;
             case "update_statuses":
                 ProcessStatusUpdate(data);
@@ -379,6 +378,8 @@ public class SWSM_Parser
                GameManager.Instance.EVENT_MAP_REVEAL.Invoke(mapData);
                 break;
         }
+        // update the top bar with the node information
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CurrentNode);
     }
 
     private static void UpdateEnergy(string data)
