@@ -7,12 +7,16 @@ using UnityEngine.UI;
 public class TreasuryManager : MonoBehaviour
 {
     public TreasuryTabsNavigatorManager tabsNavigatorManager;
-    public List<Transform> panelTransforms;
+    [Header("Treasury Panels")] public Transform nftPanel;
+    public Transform cardPanel;
+    public Transform powerPanel;
+    public Transform armorPanel;
 
-    [Space(20)]
-    public GameObject characterList;
+    [Space(20)] public GameObject characterList;
 
     public GameObject tabContentPrefab;
+    public GameObject treasuryCardPrefab;
+    public GameObject treasuryNftPrefab;
     public GameObject treasuryContainer;
 
     private void Start()
@@ -25,24 +29,37 @@ public class TreasuryManager : MonoBehaviour
 
     public void OnCharacterButton()
     {
-        tabsNavigatorManager.SelectTab(tabsNavigatorManager.tabButtons[0], tabsNavigatorManager.panels[0]);
+        tabsNavigatorManager.SelectFirstTab();
 
-        SetTestingObjects();
+        SetNftPanelContent();
+        SetCardPanelContent();
+        SetPowerPanelContent();
+        SetArmorPanelContent();
     }
 
-    //just setting random objects for testing
-    private void SetTestingObjects()
+    // setting random object for testing, but each panel will eventually be handled differently
+    private void SetNftPanelContent()
     {
-        //setting random amount of objects for testing purposes
-        foreach (Transform panelTransform in panelTransforms)
-        {
-            DestroyChildren(panelTransform);
-        }
+        DestroyChildren(nftPanel);
+        SetObjects(nftPanel, treasuryNftPrefab);
+    }
 
-        foreach (Transform panelTransform in panelTransforms)
-        {
-            SetObjects(panelTransform);
-        }
+    private void SetCardPanelContent()
+    {
+        DestroyChildren(cardPanel);
+        SetObjects(cardPanel, treasuryCardPrefab);
+    }
+
+    private void SetPowerPanelContent()
+    {
+        DestroyChildren(powerPanel);
+        SetObjects(powerPanel, tabContentPrefab);
+    }
+
+    private void SetArmorPanelContent()
+    {
+        DestroyChildren(armorPanel);
+        SetObjects(armorPanel, tabContentPrefab);
     }
 
     public void DestroyChildren(Transform transform)
@@ -53,14 +70,15 @@ public class TreasuryManager : MonoBehaviour
         }
     }
 
-    public void SetObjects(Transform transform)
+    public void SetObjects(Transform transform, GameObject contentPrefab)
     {
         int objectsAmount = Random.Range(7, 20);
 
         for (int i = 0; i < objectsAmount; i++)
         {
-            GameObject localObject = Instantiate(tabContentPrefab, transform);
-            localObject.transform.GetChild(0).GetComponent<TMP_Text>().text = i.ToString();
+            GameObject localObject = Instantiate(contentPrefab, transform);
+            TMP_Text objectText = localObject.GetComponent<TMP_Text>();
+            if (objectText != null) objectText.text = i.ToString();
         }
     }
 

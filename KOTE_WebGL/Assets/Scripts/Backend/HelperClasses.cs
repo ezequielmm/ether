@@ -191,7 +191,7 @@ public class Card
 {
     public string name;
     public string id;
-  //  public int cardId;
+    public int cardId;
     public string description;
     public string rarity;
     public int energy;
@@ -387,6 +387,20 @@ public class SWSM_StatusData
         public string message_type;
         public string action;
         public List<StatusData> data;
+    }
+}
+
+[Serializable]
+public class SWSM_CombatAction 
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public string message_type;
+        public string action;
+        public List<CombatTurnData> data;
     }
 }
 

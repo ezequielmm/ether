@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 3643dceb6d344ad4c81173a421a2e196
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Amiri
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 2d99c58df0721584f927ed14a69071ed, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

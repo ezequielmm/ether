@@ -13,8 +13,8 @@ public class MainMenuManager : MonoBehaviour
     public CanvasGroup buttonPanel;
     [Tooltip("Main menu buttons for individual control")]
     public Button playButton, newExpeditionButton, treasuryButton, registerButton, loginButton, nameButton, fiefButton, settingButton;
-    
 
+    private bool _hasWallet;
     private bool _hasExpedition;
 
     private void Start()
@@ -36,7 +36,7 @@ public class MainMenuManager : MonoBehaviour
 
         _hasExpedition = hasExpedition;
 
-        textField?.SetText( hasExpedition? "Resume" : "Play");
+        textField?.SetText( hasExpedition? "RESUME" : "PLAY");
         
         newExpeditionButton.gameObject.SetActive(_hasExpedition);
     }
@@ -60,13 +60,11 @@ public class MainMenuManager : MonoBehaviour
     {
         nameText.gameObject.SetActive(!preLoginStatus);
         moneyText.gameObject.SetActive(!preLoginStatus);
-        playButton.interactable = !preLoginStatus;
-        treasuryButton.interactable = !preLoginStatus;
+        playButton.gameObject.SetActive(!preLoginStatus);
+        treasuryButton.gameObject.SetActive(!preLoginStatus);
         newExpeditionButton.gameObject.SetActive(!preLoginStatus);
         registerButton.gameObject.SetActive(preLoginStatus);
         loginButton.gameObject.SetActive(preLoginStatus);
-        registerButton.interactable = preLoginStatus;
-        loginButton.interactable = preLoginStatus;
         nameButton.gameObject.SetActive(!preLoginStatus);
         fiefButton.gameObject.SetActive(!preLoginStatus);
         settingButton.gameObject.SetActive(!preLoginStatus);
@@ -102,11 +100,34 @@ public class MainMenuManager : MonoBehaviour
         }
         else
         {
-            //show the character selection panel
-            //koteLabel.gameObject.SetActive(false);
-            buttonPanel.interactable = false;
-            GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
+            // if there's no wallet, ask if they want to connect one
+            if (!CheckForWallet())
+            {
+                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(
+                    "No Wallet connected, would you like to add one?",
+                    () => { GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.Invoke(true); },
+                    () => { GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true); },
+                    new []{"Manage Wallet", "Play Without Wallet"});
+                return;
+            }
+
+            // else open the armory panel
+            GameManager.Instance.EVENT_ARMORYPANEL_ACTIVATION_REQUEST.Invoke(true);
         }
+    }
+
+    private bool CheckForWallet()
+    {
+        //TODO add functionality to check if there's a wallet attached to the account
+        
+        // this will return false once so that the functionality can be shown off, this is just for mockup purposes
+        if (!_hasWallet)
+        {
+            _hasWallet = true;
+            return false;
+        }
+
+        return true;
     }
 
     public void OnNewExpeditionButton()
