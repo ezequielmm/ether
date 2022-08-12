@@ -10,13 +10,7 @@ using UnityEngine.Serialization;
 public class CardOnHandManager : MonoBehaviour
 {
     public GameObject cardcontent;
-    [Serializable]
-    public struct CardImage
-    {
-        public String cardName;
-        public Sprite image;
-    }
-
+    
     [Serializable]
     public struct Gem
     {
@@ -58,34 +52,32 @@ public class CardOnHandManager : MonoBehaviour
     public bool cardActive = false;
 
     [Header("Card Variation Sprites")]
-    public List<CardImage> cardImages;
     public List<Gem> Gems;
     public List<Banner> banners;
     public List<Frame> frames;
-
-    [Header("Outline effects")] 
-    public ParticleSystem auraPS;
+    [FormerlySerializedAs("images")] public List<Sprite> cardImages;
     
+    [Header("Outline effects")] public ParticleSystem auraPS;
+
     public Material greenOutlineMaterial;
     public Material blueOutlineMaterial;
 
     private Material defaultMaterial;
     private Material outlineMaterial;
 
-    [Header("Colors")]
-    public Color greenColor;
+    [Header("Colors")] public Color greenColor;
     public Color blueColor;
     public Color redColor;
 
     [HideInInspector]
     public List<Tooltip> tooltips;
+    [HideInInspector] public Sequence mySequence;
 
     private Vector3 drawPileOrthoPosition;
     private Vector3 discardPileOrthoPosition;
     private Vector3 exhaustPileOrthoPosition;
 
-    [Header("Movement")] 
-    public ParticleSystem movePs;
+    [Header("Movement")] public ParticleSystem movePs;
 
     public Card thisCardValues;
     private bool activateCardAfterMove;
@@ -133,7 +125,6 @@ public class CardOnHandManager : MonoBehaviour
 
             MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, true);
         }
-        
     }
 
     private void OnCardMouseExit(string cardId)
@@ -159,11 +150,11 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnCardToMove(CardToMoveData data)
     {
-       // Debug.Log("[OnCardToMove]thisCardValues.id ="+ thisCardValues.id+ " || data.id="+ data.id);
+        // Debug.Log("[OnCardToMove]thisCardValues.id ="+ thisCardValues.id+ " || data.id="+ data.id);
         if (thisCardValues.id == data.id)
         {
             System.Enum.TryParse(data.source, out CARDS_POSITIONS_TYPES origin);
-            System.Enum.TryParse(data.destination, out CARDS_POSITIONS_TYPES destination);           
+            System.Enum.TryParse(data.destination, out CARDS_POSITIONS_TYPES destination);
 
             MoveCard(origin, destination);
         }
@@ -172,7 +163,7 @@ public class CardOnHandManager : MonoBehaviour
     private void OnUpdateEnergy(int currentEnergy, int maxEnergy)
     {
         currentPlayerEnergy = currentEnergy;
-       // Debug.Log("[CardOnHandManager] OnUpdateEnergy = "+currentEnergy);
+        // Debug.Log("[CardOnHandManager] OnUpdateEnergy = "+currentEnergy);
         if (cardActive)
         {
             UpdateCardBasedOnEnergy(currentEnergy);
@@ -188,17 +179,17 @@ public class CardOnHandManager : MonoBehaviour
         descriptionTF.SetText(card.description);
         // we've got to check if the card is upgraded when picking the gem, hence the extra variable
         string cardType = card.cardType;
-       // if (card.isUpgraded) cardType += "+";
+        // if (card.isUpgraded) cardType += "+";
         gemSprite.sprite = Gems.Find(gem => gem.type == cardType).gem;
         frameSprite.sprite = frames.Find(frame => frame.pool == card.pool).frame;
         bannerSprite.sprite = banners.Find(banner => banner.rarity == card.rarity).banner;
-        if (cardImages.Exists(image => image.cardName == card.name))
+        if (cardImages.Exists(image => int.Parse(image.name) == card.cardId || int.Parse(image.name) + 1 == card.cardId))
         {
-            cardImage.sprite = cardImages.Find(image => image.cardName == card.name).image;
+            cardImage.sprite = cardImages.Find(image => int.Parse(image.name) == card.cardId || int.Parse(image.name) + 1 == card.cardId);
         }
         else
         {
-            cardImage.sprite = cardImages[0].image;
+            cardImage.sprite = cardImages[0];
         }
         /* this.id = card.id;
           card_energy_cost = card.energy;*/
@@ -215,9 +206,11 @@ public class CardOnHandManager : MonoBehaviour
         UpdateCardBasedOnEnergy(energy);
     }
 
-    public void MoveCard(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType, bool activateCard = false, Vector3 pos = default(Vector3), float delay = 0)
+    public void MoveCard(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType,
+        bool activateCard = false, Vector3 pos = default(Vector3), float delay = 0)
     {
-        Debug.Log("[CardOnHandManager] MoveCard = " + originType + " to " + destinationType +"........card id: "+thisCardValues.id);
+        Debug.Log("[CardOnHandManager] MoveCard = " + originType + " to " + destinationType + "........card id: " +
+                  thisCardValues.id);
         movePs.Play();
 
         Vector3 origin = new Vector3();
@@ -260,6 +253,7 @@ public class CardOnHandManager : MonoBehaviour
                     {
                         discardAfterMove = true;
                     }
+
                     break;
                 case CARDS_POSITIONS_TYPES.hand:
                     destination = pos;
@@ -271,7 +265,7 @@ public class CardOnHandManager : MonoBehaviour
             }
         }
 
-        if (originType != destinationType) 
+        if (originType != destinationType)
         {
             switch (destinationType)
             {
@@ -298,13 +292,14 @@ public class CardOnHandManager : MonoBehaviour
 
         if (delay > 0)
         {
-            transform.DOMove(destination, 1f).SetDelay(delay, true).SetEase(Ease.InCirc).OnComplete(OnMoveCompleted).From(origin);
+            transform.DOMove(destination, 1f).SetDelay(delay, true).SetEase(Ease.InCirc).OnComplete(OnMoveCompleted)
+                .From(origin);
             if (originType == CARDS_POSITIONS_TYPES.draw && destinationType == CARDS_POSITIONS_TYPES.hand)
             {
                 transform.localScale = Vector3.zero;
                 transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutElastic).OnComplete(OnMoveCompleted);
             }
-     
+
             // transform.DOMoveX(destination.x, .5f).SetEase(Ease.Linear);
             // transform.DOMoveY(destination.y, .5f).SetEase(Ease.InCirc);
         }
@@ -334,7 +329,6 @@ public class CardOnHandManager : MonoBehaviour
             discardAfterMove = false;
             GameManager.Instance.EVENT_CARD_DISABLED.Invoke(thisCardValues.id);
         }
-
     }
 
     private void HideAndDeactivateCard()
@@ -358,10 +352,10 @@ public class CardOnHandManager : MonoBehaviour
         {
             cardActive = true;
             card_can_be_played = true;
-        }       
-       
+        }
 
-       // Destroy(this.gameObject);
+
+        // Destroy(this.gameObject);
     }
 
     private void UpdateCardBasedOnEnergy(int energy)
@@ -370,12 +364,11 @@ public class CardOnHandManager : MonoBehaviour
         {
             var main = auraPS.main;
             main.startColor = greenColor;
-            outlineMaterial = greenOutlineMaterial;//TODO:apply blue if card has a special condition
+            outlineMaterial = greenOutlineMaterial; //TODO:apply blue if card has a special condition
             card_can_be_played = true;
         }
         else
         {
-          
             energyTF.color = redColor;
             outlineMaterial = greenOutlineMaterial;
             card_can_be_played = false;
@@ -395,7 +388,6 @@ public class CardOnHandManager : MonoBehaviour
         this.cardcontent.SetActive(true);
         ActivateCard();
         UpdateCardBasedOnEnergy(currentPlayerEnergy);
-
     }
 
 
@@ -406,10 +398,8 @@ public class CardOnHandManager : MonoBehaviour
             // DOTween.PlayForward(this.gameObject);
             // GameManager.Instance.EVENT_CARD_MOUSE_ENTER.Invoke(thisCardValues.cardId);
 
-
             ShowUpCard();
         }
-           
     }
 
     private void ShowUpCard()
@@ -430,7 +420,8 @@ public class CardOnHandManager : MonoBehaviour
             transform.DOScale(Vector3.one * GameSettings.HAND_CARD_SHOW_UP_SCALE, GameSettings.HAND_CARD_SHOW_UP_TIME);
 
 
-            transform.DOMoveY(GameSettings.HAND_CARD_SHOW_UP_Y, GameSettings.HAND_CARD_SHOW_UP_TIME);//.SetRelative(true);
+            transform.DOMoveY(GameSettings.HAND_CARD_SHOW_UP_Y,
+                GameSettings.HAND_CARD_SHOW_UP_TIME); //.SetRelative(true);
             transform.DOMoveZ(GameSettings.HAND_CARD_SHOW_UP_Z, GameSettings.HAND_CARD_SHOW_UP_TIME);
 
             transform.DORotate(Vector3.zero, GameSettings.HAND_CARD_SHOW_UP_TIME).OnComplete(() => 
@@ -491,7 +482,7 @@ public class CardOnHandManager : MonoBehaviour
 
     private void Update()
     {
-        if (awaitMouseUp && !Input.GetMouseButton(0)) 
+        if (awaitMouseUp && !Input.GetMouseButton(0))
         {
             awaitMouseUp = false;
             ResetCardPosition();
@@ -515,7 +506,7 @@ public class CardOnHandManager : MonoBehaviour
             return;
         }
 
-        if (!cardActive )//card_can_be_played
+        if (!cardActive) //card_can_be_played
         {
             //TODO: show no energy message
             return;
