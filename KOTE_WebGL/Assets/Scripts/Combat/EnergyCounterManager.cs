@@ -42,7 +42,7 @@ public class EnergyCounterManager : MonoBehaviour, IPointerEnterHandler, IPointe
     public void OnPointerEnter(PointerEventData eventData)
     {
         Vector3 anchorPoint = new Vector3(rectTransform.rect.center.x,
-            rectTransform.rect.center.y + ((rectTransform.rect.height * rectTransform.lossyScale.y)/2), 0);
+            transform.position.y + rectTransform.rect.center.y + ((rectTransform.rect.height * rectTransform.lossyScale.y)/2), 0);
         anchorPoint = Camera.main.ScreenToWorldPoint(anchorPoint);
         List<Tooltip> tooltips = new List<Tooltip>() { new Tooltip()
         {
