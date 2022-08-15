@@ -55,7 +55,7 @@ public class ExhaustedCardPileManager : MonoBehaviour, IPointerEnterHandler, IPo
 
     public void OnPileClick()
     {
-        GameManager.Instance.EVENT_CARD_PILE_CLICKED.Invoke(PileTypes.Discarded);
+        GameManager.Instance.EVENT_CARD_PILE_CLICKED.Invoke(PileTypes.Exhausted);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

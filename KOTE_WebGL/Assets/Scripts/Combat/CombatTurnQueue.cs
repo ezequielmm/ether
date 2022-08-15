@@ -71,6 +71,12 @@ public class CombatTurnQueue : MonoBehaviour
         queue.Enqueue(data);
     }
 
+    private void ClearCombatQueue() 
+    {
+        awaitToContinue = false;
+        queue.Clear();
+    }
+
     private void OnTurnUnblock(System.Guid attackId) 
     {
         if (queue.Count == 0) 
