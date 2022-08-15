@@ -17,6 +17,8 @@ public class EnemyManager : MonoBehaviour
     public GameObject activeEnemy;
 
     private SpineAnimationsManagement spine;
+    private Action RunWithEvent;
+    private bool CalledEvent;
 
     private StatusManager statusManager;
 
@@ -54,16 +56,32 @@ public class EnemyManager : MonoBehaviour
         Debug.Log($"[EnemyManager] Combat Request GET!");
 
         bool endCalled = false;
+        float afterEvent = 0;
+        RunAfterTime(0.1f, () => { CalledEvent = false; });
         foreach (CombatTurnData.Target target in attack.targets)
-        {            
+        {
             // Run Attack Animation Or Status effects
             if (target.defenseDelta != 0 || target.healthDelta != 0)
             {
                 // Run Attack
-                Attack();
+                var f = Attack();
+                if (f > afterEvent) afterEvent = f;
                 endCalled = true;
-                RunAfterTime(0.9f, // hard coded enemy animation attack point
-                    () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+            }
+            else if (target.defenseDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
+            {
+                var f = PlayAnimation("Cast");
+                if (f > afterEvent) afterEvent = f;
+                endCalled = true;
+                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+            }
+            else if (target.healthDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.health)) // Health Up
+            {
+                var f = PlayAnimation("Cast");
+                if (f > afterEvent) afterEvent = f;
+                endCalled = true;
+                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
             else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
             {
@@ -82,6 +100,17 @@ public class EnemyManager : MonoBehaviour
         {
             // If no conditions are met, close the event
             GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId);
+        }
+        else if (afterEvent > 0) 
+        {
+            RunAfterTime(afterEvent, () => 
+            {
+                if (RunWithEvent != null && !CalledEvent) 
+                {
+                    Debug.LogWarning($"[{gameObject.name}] Animation is missing a 'attack' or 'release' event!");
+                    RunWithEvent.Invoke();
+                }
+            });
         }
     }
     private void OnAttackResponse(CombatTurnData attack)
@@ -164,7 +193,9 @@ public class EnemyManager : MonoBehaviour
             }
         }
         spine = activeEnemy.GetComponent<SpineAnimationsManagement>();
+        spine.ANIMATION_EVENT.AddListener(OnAnimationEvent);
         spine.PlayAnimationSequence("Idle");
+
         statusManager = GetComponentInChildren<StatusManager>();
     }
 
@@ -200,6 +231,13 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    public float PlayAnimation(string animationSequence)
+    {
+        float length = spine.PlayAnimationSequence(animationSequence);
+        spine.PlayAnimationSequence("Idle");
+        return length;
+    }
+
     private float Attack() 
     {
         Debug.Log("+++++++++++++++[Enemy]Attack");
@@ -230,6 +268,18 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    private void RunAfterEvent(Action toRun)
+    {
+        RunWithEvent = toRun;
+    }
+    private void OnAnimationEvent(string eventName)
+    {
+        if (eventName.Equals("attack") || eventName.Equals("release"))
+        {
+            CalledEvent = true;
+            RunWithEvent.Invoke();
+        }
+    }
     private void RunAfterTime(float time, Action toRun)
     {
         StartCoroutine(runCoroutine(time, toRun));

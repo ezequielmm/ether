@@ -52,6 +52,6 @@ public class ExhaustedCardPileManager : MonoBehaviour
 
     public void OnPileClick()
     {
-        GameManager.Instance.EVENT_CARD_PILE_CLICKED.Invoke(PileTypes.Discarded);
+        GameManager.Instance.EVENT_CARD_PILE_CLICKED.Invoke(PileTypes.Exhausted);
     }
 }
