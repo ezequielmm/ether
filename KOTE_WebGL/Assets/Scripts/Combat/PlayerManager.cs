@@ -14,6 +14,8 @@ public class PlayerManager : MonoBehaviour
     public Slider healthBar;
 
     private StatusManager statusManager;
+    private Action RunWithEvent;
+    private bool CalledEvent;
 
     private PlayerData playerData;
     public PlayerData PlayerData
@@ -31,42 +33,54 @@ public class PlayerManager : MonoBehaviour
     private void OnAttackRequest(CombatTurnData attack) 
     {
         if(attack.originType != "player") return;
+        RunAfterEvent(null);
 
         Debug.Log($"[PlayerManager] Combat Request GET!");
 
         bool endCalled = false;
-        foreach (CombatTurnData.Target target in attack.targets) {
+        float afterEvent = 0;
+        RunAfterTime(0.1f, () => { CalledEvent = false; });
+        foreach (CombatTurnData.Target target in attack.targets)
+        {
             // Run Attack Animation Or Status effects
-           // if (target.defenseDelta < 0 || target.healthDelta < 0)
-            if (target.effectType == nameof(ATTACK_EFFECT_TYPES.damage) )
+            if (target.defenseDelta != 0 || target.healthDelta != 0)
             {
                 // Run Attack
-                Attack();
+                var f = Attack();
+                if (f > afterEvent) afterEvent = f;
                 endCalled = true;
-                RunAfterTime(0.45f, // hard coded player animation attack point
-                    () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
             else if (target.defenseDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
             {
+                var f = PlayAnimation("Cast");
+                if (f > afterEvent) afterEvent = f;
                 endCalled = true;
-                RunAfterTime(0.45f, // hard coded player animation attack point
-                   () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
             else if (target.healthDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.health)) // Health Up
             {
+                var f = PlayAnimation("Cast");
+                if (f > afterEvent) afterEvent = f;
                 endCalled = true;
-                RunAfterTime(0.45f, // hard coded player animation attack point
-                   () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
-        }
-        if (!endCalled)
-        {
-            return;
         }
         if (!endCalled)
         {
             // If no conditions are met, close the event
             GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId);
+        }
+        else if (afterEvent > 0)
+        {
+            RunAfterTime(afterEvent, () =>
+            {
+                if (RunWithEvent != null && !CalledEvent)
+                {
+                    Debug.LogWarning($"[{gameObject.name}] Animation is missing a 'attack' or 'release' event!");
+                    RunWithEvent.Invoke();
+                }
+            });
         }
     }
     private void OnAttackResponse(CombatTurnData attack) 
@@ -120,6 +134,19 @@ public class PlayerManager : MonoBehaviour
         }
 
         RunAfterTime(waitDuration, () => GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId));
+    }
+    private void RunAfterEvent(Action toRun) 
+    {
+        RunWithEvent = toRun;
+    }
+
+    private void OnAnimationEvent(string eventName) 
+    {
+        if (eventName.Equals("attack") || eventName.Equals("release")) 
+        {
+            CalledEvent = true;
+            RunWithEvent.Invoke();
+        }
     }
 
     private void RunAfterTime(float time, Action toRun) 
@@ -190,6 +217,8 @@ public class PlayerManager : MonoBehaviour
 
         if(spineAnimationsManagement == null)
             spineAnimationsManagement = GetComponent<SpineAnimationsManagement>();
+        spineAnimationsManagement.ANIMATION_EVENT.AddListener(OnAnimationEvent);
+
         //spineAnimationsManagement.SetSkin("weapon/sword");
         spineAnimationsManagement.PlayAnimationSequence("Idle");
 

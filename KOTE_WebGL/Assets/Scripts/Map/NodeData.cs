@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.U2D;
 
 [Serializable]
 public class NodeData : MonoBehaviour
@@ -43,6 +44,8 @@ public class NodeData : MonoBehaviour
 
     private void Awake()
     {
+        // the particleSystem's sorting layer has to be set manually, because the the settings in the component don't work
+        availableParticleSystem.GetComponent<Renderer>().sortingLayerName = GameSettings.MAP_ELEMENTS_SORTING_LAYER_NAME;
         HideNode();
     }
 
@@ -160,14 +163,18 @@ public class NodeData : MonoBehaviour
 
 
     // when we update the sprite shape, we pass it the node data for the exit node directly, because it needs three things from it
-    public void CreateSpriteShape(NodeData exitNode)
+    public PathManager CreateSpriteShape(NodeData exitNode)
     {
         if (exitNode != null)
         {
             spriteShape = Instantiate(spriteShapePrefab, this.transform);
             // spriteShape.GetComponent<SpriteShapeController>().spline.SetPosition(4, spriteShape.transform.InverseTransformPoint(targetOb.transform.position));
-            spriteShape.GetComponent<PathManager>().Populate(exitNode, status);
+            PathManager path = spriteShape.GetComponent<PathManager>();
+            path.Populate(exitNode, status);
+            return path;
         }
+
+        return null;
     }
 
     private void OnConfirmRoyalHouse()
