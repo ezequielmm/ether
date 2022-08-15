@@ -16,6 +16,9 @@ public class EnemyManager : MonoBehaviour
     public TMP_Text defenseTF;
     public GameObject activeEnemy;
 
+    [SerializeField]
+    private Dictionary<string, GameObject> enemyMap;
+
     private SpineAnimationsManagement spine;
     private Action RunWithEvent;
     private bool CalledEvent;
