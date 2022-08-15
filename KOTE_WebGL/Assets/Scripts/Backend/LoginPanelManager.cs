@@ -61,6 +61,12 @@ public class LoginPanelManager : MonoBehaviour
         passwordInputField.ForceLabelUpdate();
     }
 
+    public void OnRegisterButton()
+    {
+        ActivateInnerLoginPanel(false);
+        GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(true);
+    }
+
     private void OnLoginSucessful(string userName, int fiefAmount)
     {
         if (rememberMe.isOn)
