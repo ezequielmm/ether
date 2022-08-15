@@ -46,7 +46,7 @@ public class EndOfCombatUIManager : MonoBehaviour
     void OnVictoryComplete()
     {
         DeactivateLabels();
-        GameManager.Instance.EVENT_SHOW_REWARDS_PANEL.Invoke(true, ReloadScene);
+        GameManager.Instance.EVENT_SHOW_REWARDS_PANEL.Invoke(true);
     }
 
     void ReloadScene()

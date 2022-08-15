@@ -200,8 +200,9 @@ public enum WS_MESSAGE_ACTIONS
     change_turn,
     create_card,
     enemies_defeated,
-    players_defeated
-
+    players_defeated,
+    select_another_reward,
+    show_map
 }
 
 [Serializable]

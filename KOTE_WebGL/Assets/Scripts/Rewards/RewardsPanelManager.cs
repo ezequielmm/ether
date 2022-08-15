@@ -14,25 +14,29 @@ public class RewardsPanelManager : MonoBehaviour
 
     public GameObject rewardsContent;
     public TMP_Text buttonText;
-    private Action onRewardsDoneAction;
-
+    private List<RewardItem> _rewardItems;
     private void Start()
     {
         GameManager.Instance.EVENT_CARDS_REWARDPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerChooseCardsPanel);
         GameManager.Instance.EVENT_SHOW_REWARDS_PANEL.AddListener(ActivateInnerRewardsPanel);
         GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.AddListener(SetRewards);
+        _rewardItems = new List<RewardItem>();
     }
 
     public void SetRewards(SWSM_RewardsData rewards)
     {
         bool rewardsRemaining = false;
+        
+        ClearRewardItems();
         foreach (RewardItemData rewardItem in rewards.data.data.rewards)
         {
             // if the reward item has been taken, don't show it
             if (rewardItem.taken) continue;
             // else add it to the list
             GameObject currentReward = Instantiate(rewardItemPrefab, rewardsContent.transform);
-            currentReward.GetComponent<RewardItem>().PopulateRewardItem(rewardItem);
+            RewardItem reward = currentReward.GetComponent<RewardItem>();
+            reward.PopulateRewardItem(rewardItem);
+            _rewardItems.Add(reward);
             rewardsRemaining = true;
         }
 
@@ -46,6 +50,17 @@ public class RewardsPanelManager : MonoBehaviour
         }
     }
 
+    private void ClearRewardItems()
+    {
+        if (_rewardItems.Count == 0) return;
+        foreach (RewardItem reward in _rewardItems)
+        {
+            Destroy(reward.gameObject);
+        }
+
+        _rewardItems.Clear();
+    }
+
     public void ActivateInnerRewardsGivenPanel(bool activate)
     {
         rewardsGivenContainer.SetActive(activate);
@@ -57,14 +72,14 @@ public class RewardsPanelManager : MonoBehaviour
         chooseCardsContainer.SetActive(activate);
     }
 
-    private void ActivateInnerRewardsPanel(bool activate, Action onRewardsDone)
+    private void ActivateInnerRewardsPanel(bool activate)
     {
         rewardsContainer.SetActive(activate);
-        onRewardsDoneAction = onRewardsDone;
     }
 
     public void OnRewardsButtonClicked()
     {
-        if (onRewardsDoneAction != null) onRewardsDoneAction.Invoke();
+        GameManager.Instance.LoadScene(inGameScenes.Expedition);
+        //GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
     }
 }
