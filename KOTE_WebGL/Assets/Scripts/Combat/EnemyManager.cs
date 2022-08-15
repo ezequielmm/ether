@@ -61,7 +61,7 @@ public class EnemyManager : MonoBehaviour
         foreach (CombatTurnData.Target target in attack.targets)
         {
             // Run Attack Animation Or Status effects
-            if (target.defenseDelta != 0 || target.healthDelta != 0)
+            if (target.effectType == nameof(ATTACK_EFFECT_TYPES.damage))
             {
                 // Run Attack
                 var f = Attack();
