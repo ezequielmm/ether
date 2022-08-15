@@ -71,9 +71,9 @@ namespace map
             // we need half the width of the screen for various checks
             halfScreenWidth = Camera.main.orthographicSize * Camera.main.aspect;
             maskBounds = GetComponentInChildren<SpriteMask>().GetComponent<BoxCollider2D>().bounds;
-
-            //TODO TESTING ONLY
-            //GenerateMapGrid();
+            
+            // the particleSystem's sorting layer has to be set manually, because the the settings in the component don't work
+            portalAnimation.GetComponent<Renderer>().sortingLayerName = GameSettings.MAP_ELEMENTS_SORTING_LAYER_NAME;
         }
 
         private void OnToggleMap(bool data)
@@ -273,6 +273,9 @@ namespace map
                 nodes.Remove(node);
                 Destroy(node.gameObject);
             }
+            
+            // clear the references to the map paths
+            pathManagers.Clear();
         }
 
         MapStructure GenerateMapStructure(SWSM_MapData expeditionMapData)
