@@ -22,24 +22,15 @@ public class HandManager : MonoBehaviour
     public Deck discardDeck;
     public Deck exhaustDeck;
 
+
     CardPiles cardPilesData;
 
     int cardsDrawn = 0;
     bool audioRunning = false;
 
-    void Start()
-    {
-        Debug.Log("[HandManager]Start");
-        //GameManager.Instance.EVENT_CARD_MOUSE_ENTER.AddListener(OnCardMouseEnter);
-       // GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);
-        GameManager.Instance.EVENT_CARD_DISABLED.AddListener(OnCardDestroyed);
-       
-      
-    }
-
     private void OnCardDestroyed(string cardId)
     {
-        Debug.Log("[Removing card "+cardId+" from hand]");
+        Debug.Log("[HandManager] Removing card "+cardId+" from hand");
 
         var cardMoved = handDeck.cards.Find(card => card.id == cardId);
         if (cardMoved != null)
@@ -48,25 +39,21 @@ public class HandManager : MonoBehaviour
             discardDeck.cards.Add(cardMoved);
         }
 
-        //listOfCardsOnHand.Remove(listOfCardsOnHand.Find((x) => (x.GetComponent<CardOnHandManager>().id == cardId)));
-        Destroy(listOfCardsOnHand[cardId]);
-        listOfCardsOnHand.Remove(cardId);
-        RelocateCards();      
+        StartCoroutine(RelocateCards());
         
     }
 
     private void Awake()
     {
-        Debug.Log("[HandManager]Awake");
         GameManager.Instance.EVENT_CARDS_PILES_UPDATED.AddListener(OnCardsPilesUpdated);
         GameManager.Instance.EVENT_CARD_DRAW_CARDS.AddListener(OnDrawCards);
-        GameManager.Instance.EVENT_CARD_DRAW.AddListener(OnCardDraw);
+        GameManager.Instance.EVENT_CARD_DRAW.AddListener(OnCardDraw); // SFX
         GameManager.Instance.EVENT_CARD_CREATE.AddListener(CreateCard);
+        GameManager.Instance.EVENT_CARD_DISABLED.AddListener(OnCardDestroyed);
     }
 
-    private void OnEnable()
+    private void Start()
     {
-        Debug.Log("[HandManager]OnEnable");
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
     }
 
@@ -108,36 +95,30 @@ public class HandManager : MonoBehaviour
             Debug.LogWarning($"[HandManager] Card [{cardID}] could not be found. No card has been created.");
             return;
         }
+
         drawDeck.cards.Remove(cardMoved);
         discardDeck.cards.Remove(cardMoved);
+
         handDeck.cards.Add(cardMoved);
-        //if (!listOfCardsOnHand.ContainsKey(cardID))
-        //{
-        //    Debug.Log($"[HandManager] Instantiating created card [{cardID}]");
-        //    GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
-        //    listOfCardsOnHand.Add(cardID, newCard);
-        //    newCard.GetComponent<CardOnHandManager>().Populate(cardMoved, cardPilesData.data.energy);
-        //}
-        //RelocateCards();
     }
 
     private void OnDrawCards()
     {
         if (cardPilesData == null)
         {
-            Debug.Log("[OnDrawCards]No cards data at all. Retrieving");
+            Debug.Log("[HandManager] No cards data at all. Retrieving");
             GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
             Invoke("OnDrawCards",0.2f);
             return;
         }
         else if(cardPilesData.data.hand.Count < 1)
         {
-            Debug.Log("[OnDrawCards]No hands cards data. Retrieving");
+            Debug.Log("[HandManager] No hands cards data. Retrieving");
             GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
             Invoke("OnDrawCards", 0.2f);
             return;
         }
-        Debug.Log("**********************************************[OnDrawCards]draw.count: "+ cardPilesData.data.draw.Count+", hand.count:"+cardPilesData.data.hand.Count);
+        Debug.Log($"[HandManager] draw.count: {cardPilesData.data.draw.Count} | hand.count: {cardPilesData.data.hand.Count} | discard.count: {cardPilesData.data.discard.Count} | exhaust.count: {cardPilesData.data.exhaust.Count}");
         
         //Generate cards hand
         handDeck = new Deck();
@@ -158,8 +139,6 @@ public class HandManager : MonoBehaviour
         float depth = GameSettings.HAND_CARD_SPRITE_Z;
         float delayStep = 0.1f;
         float delay = delayStep * handDeck.cards.Count;
-
-        Debug.Log("[OnDrawCards] listOfCardsOnHand.Count:" + listOfCardsOnHand.Count);
 
         foreach (Card card in handDeck.cards)
         {
@@ -206,27 +185,16 @@ public class HandManager : MonoBehaviour
             }
         }
 
-        foreach (Card card in discardDeck.cards)
-        {
-            if (!listOfCardsOnHand.ContainsKey(card.id))
-            {
-                Debug.Log("3 Instantiating card " + card.id);
-                GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
-                listOfCardsOnHand.Add(card.id, newCard);
-                newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
-                newCard.GetComponent<CardOnHandManager>().DisableCardContent(false);//disable and not notify
-            }
+        Debug.Log("[HandManager] listOfCardsOnHand.Count:" + listOfCardsOnHand.Count);
 
-        }
-
-        RelocateCards(true);
+        StartCoroutine(RelocateCards(true));
     }
 
     /// <summary>
     /// Relocates the cards in hands. If move is on, card movement is send to the cards themselves to be preformed.
     /// </summary>
     /// <param name="move">True to do a draw animation to hand.</param>
-    private void RelocateCards(bool move = false)
+    private IEnumerator RelocateCards(bool move = false)
     {
 
         float counter = 0;
@@ -243,6 +211,39 @@ public class HandManager : MonoBehaviour
         float delay = delayStep * handDeck.cards.Count;
 
         // Debug.Log("----------------------------Relocate cards offset=" + offset);
+        if (move)
+        {
+            bool pause = false;
+            foreach (Card cardData in drawDeck.cards)
+            {
+                GameObject card;
+                if (listOfCardsOnHand.TryGetValue(cardData.id, out card))
+                {
+                    var manager = card.GetComponent<CardOnHandManager>();
+                    if (manager.MoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw)) 
+                    {
+                        yield return new WaitForSeconds(0.1f);
+                        pause = true;
+                    }
+                }
+            }
+            foreach (Card cardData in handDeck.cards)
+            {
+                GameObject card;
+                if (listOfCardsOnHand.TryGetValue(cardData.id, out card))
+                {
+                    var manager = card.GetComponent<CardOnHandManager>();
+                    if (manager.MoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw))
+                    {
+                        yield return new WaitForSeconds(0.1f);
+                        pause = true;
+                    }
+                }
+            }
+            if (pause) {
+                yield return new WaitForSeconds(1f);
+            }
+        }
         foreach (Card cardData in handDeck.cards)
         {
             //  foreach (GameObject card in listOfCardsOnHand.Values)
@@ -284,13 +285,13 @@ public class HandManager : MonoBehaviour
                     card.transform.DOMove(pos,0.3f);
                 }
             }    
-
         }
     }
 
+
     private void OnCardsPilesUpdated(CardPiles data)
     {
-      // Debug.Log("**********************************************[OnCardsPilesUpdated] ");
+        Debug.Log("[HandManager] OnCardPilesUpdated");
         cardPilesData = data;
 
         handDeck = new Deck();
@@ -299,6 +300,10 @@ public class HandManager : MonoBehaviour
         drawDeck = new Deck();
         drawDeck.cards = cardPilesData.data.draw;
                 
+        discardDeck = new Deck();
+        discardDeck.cards = cardPilesData.data.discard;
 
+        exhaustDeck = new Deck();
+        exhaustDeck.cards = cardPilesData.data.exhaust;
     }   
 }

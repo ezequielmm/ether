@@ -32,10 +32,12 @@ public class BeginOfTurnUIManager : MonoBehaviour
         switch (who)
         {
             case "player":
+                enemyLabel.gameObject.SetActive(false);
                 playerLabel.gameObject.SetActive(true);
                 playerLabel.DOFade(1, 2).From(0).SetLoops(2, LoopType.Yoyo).OnComplete(OnComplete);
                 break;
             case "enemy":
+                playerLabel.gameObject.SetActive(false);
                 enemyLabel.gameObject.SetActive(true);
                 enemyLabel.DOFade(1, 2).From(0).SetLoops(2, LoopType.Yoyo).OnComplete(OnComplete);
                 break;
