@@ -41,14 +41,9 @@ public class TopBarManager : MonoBehaviour
         showmapbutton.SetActive(arg0);
     }
 
-    private void UpdateStageText(SWSM_CurrentStep data)
+    private void UpdateStageText(int act, int step)
     {
-        if (data.data.data == null)
-        {
-            stageText.SetText("Stage ?-?");
-            return;
-        }
-        stageText.SetText("Stage " + data.data.data.act + "-" + data.data.data.step);
+        stageText.SetText("Stage " + act + "-" + step);
     }
 
     public void SetTextValues(string nameText, string classText, int health, int coins)

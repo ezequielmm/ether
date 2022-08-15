@@ -255,9 +255,6 @@ public class SWSM_Parser
             case nameof(WS_DATA_REQUEST_TYPES.PlayerDeck):
                 ProcessPlayerFullDeck(data);
                 break;
-            case nameof(WS_DATA_REQUEST_TYPES.CurrentNode):
-                ProcessStepUpdate(data);
-                break;
             default:
                 Debug.Log($"[SWSM Parser] [Generic Data] Uncaught Action \"{action}\". Data = {data}");
                 break;
@@ -282,12 +279,6 @@ public class SWSM_Parser
         }
     }
 
-    private static void ProcessStepUpdate(string data)
-    {
-        SWSM_CurrentStep currentStepData = JsonUtility.FromJson<SWSM_CurrentStep>(data);
-        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(currentStepData);
-    }
-
     private static void ProcessCombatUpdate(string action, string data)
     {
         SWSM_NodeData nodeBase = JsonUtility.FromJson<SWSM_NodeData>(data);
@@ -296,9 +287,6 @@ public class SWSM_Parser
         {
             case "begin_combat":
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Combat);
-                // this will need to be moved later, but for now this is the best place for this call
-                // the current step call will update the top bar with the new step
-                GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CurrentNode);
                 break;
             case "update_statuses":
                 ProcessStatusUpdate(data);
@@ -378,8 +366,6 @@ public class SWSM_Parser
                GameManager.Instance.EVENT_MAP_REVEAL.Invoke(mapData);
                 break;
         }
-        // update the top bar with the node information
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CurrentNode);
     }
 
     private static void UpdateEnergy(string data)

@@ -129,7 +129,7 @@ public class GameManager : SingleTon<GameManager>
     //TOP BAR EVENTS
     [HideInInspector] public UnityEvent EVENT_MAP_ICON_CLICKED = new UnityEvent();
     [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_TOPBAR_MAP_ICON = new UnityEvent<bool>();
-    [HideInInspector] public UnityEvent<SWSM_CurrentStep> EVENT_UPDATE_CURRENT_STEP_TEXT = new UnityEvent<SWSM_CurrentStep>();
+    [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_CURRENT_STEP_TEXT = new UnityEvent<int, int>();
 
     //CARDS EVENTS
     [HideInInspector] public UnityEvent<PileTypes> EVENT_CARD_PILE_CLICKED = new UnityEvent<PileTypes>();
