@@ -80,7 +80,11 @@ public class TopBarManager : MonoBehaviour
     {        
         var target = combatTurnData.GetTarget("player");
         if (target == null) return;
-        SetHealthText(target.finalHealth);
+        // only update the text if the player's health has changed
+        if (target.healthDelta != 0)
+        {
+            SetHealthText(target.finalHealth);
+        }
     }
     
     public void OnCombatStart(PlayerStateData playerState) 
