@@ -195,12 +195,20 @@ public class CardOnHandManager : MonoBehaviour
           card_energy_cost = card.energy;*/
 
         thisCardValues = card;
-        foreach (var keyword in card.keywords) 
+        foreach (var status in card.properties.statuses) 
         {
-            tooltips.Add(new Tooltip() {
-                title = Utils.PrettyText(keyword),
-                description = "TODO // Send Description Over Websocket with Cards"
-            });
+            if (!string.IsNullOrEmpty(status.tooltip.title))
+            {
+                tooltips.Add(status.tooltip);
+            }
+            else 
+            {
+                tooltips.Add(new Tooltip()
+                {
+                    title = Utils.PrettyText(status.name),
+                    description = "TODO // Send Tooltip Over Websocket with Cards on Status Line"
+                });
+            }
         }
 
         UpdateCardBasedOnEnergy(energy);

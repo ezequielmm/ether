@@ -41,16 +41,11 @@ public class EnergyCounterManager : MonoBehaviour, IPointerEnterHandler, IPointe
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Vector3 anchorPoint = new Vector3(rectTransform.rect.center.x,
-            transform.position.y + rectTransform.rect.center.y + ((rectTransform.rect.height * rectTransform.lossyScale.y)/2), 0);
+        Vector3 anchorPoint = new Vector3(transform.position.x,
+            transform.position.y + ((rectTransform.rect.height * rectTransform.lossyScale.y)), 0);
         anchorPoint = Camera.main.ScreenToWorldPoint(anchorPoint);
-        List<Tooltip> tooltips = new List<Tooltip>() { new Tooltip()
-        {
-            title = "Energy",
-            description = "Your current energy count.\nCards require energy to play."
-        }};
         // Tooltip On
-        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.BottomLeft, anchorPoint, null);
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(ToolTipValues.Instance.EnergyCounterTooltips, TooltipController.Anchor.BottomLeft, anchorPoint, null);
     }
 
     public void OnPointerExit(PointerEventData eventData)

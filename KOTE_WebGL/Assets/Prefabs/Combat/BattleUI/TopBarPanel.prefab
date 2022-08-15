@@ -145,9 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac5ef6d53727d5145818aa04e74a43bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltips:
-  - title: Deck
-    description: View all of the cards in your deck.
+  tooltipName: deck
 --- !u!1 &983062196398485992
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,10 +307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d564c94f5ffeef74e9bb166a65247142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltips:
-  - title: Wallet
-    description: How much gold you are carrying. Gold is the basic currency in Knights
-      of The Ether.
+  tooltipName: coins
   anchor: 1
   limit: {x: -1, y: 4}
 --- !u!1 &2003996880713825566
@@ -860,9 +855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac5ef6d53727d5145818aa04e74a43bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltips:
-  - title: Map
-    description: View the current Web 3.0 map.
+  tooltipName: map
 --- !u!1 &6701073246499067039
 GameObject:
   m_ObjectHideFlags: 0
@@ -913,9 +906,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d564c94f5ffeef74e9bb166a65247142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltips:
-  - title: Hit Points (HP)
-    description: If you run out of HP, you die.
+  tooltipName: health
   anchor: 0
   limit: {x: -1, y: 4}
 --- !u!1 &7612459576622820769
@@ -1655,10 +1646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac5ef6d53727d5145818aa04e74a43bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltips:
-  - title: Settings
-    description: Opens the game menu. Change or update your graphics, audio, and
-      gameplay preferences here.
+  tooltipName: settings
 --- !u!1 &7612459578312946484
 GameObject:
   m_ObjectHideFlags: 0

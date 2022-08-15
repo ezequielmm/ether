@@ -2,7 +2,6 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static StatusData;
 
 public class StatusManager : MonoBehaviour
 {
@@ -16,7 +15,7 @@ public class StatusManager : MonoBehaviour
     [SerializeField]
     PlayerManager playerManager;
 
-    List<Status> statusList = new List<Status>();
+    List<StatusData.Status> statusList = new List<StatusData.Status>();
 
     string entityType => (enemyManager == null ? "player" : "enemy");
     int entityID => enemyManager?.EnemyData.enemyId ?? playerManager?.PlayerData.playerId ?? -1;
@@ -107,7 +106,7 @@ public class StatusManager : MonoBehaviour
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Statuses);
     }
 
-    public void UpdateStatus(List<Status> newStatuses) 
+    public void UpdateStatus(List<StatusData.Status> newStatuses) 
     {
         foreach (var newStatus in newStatuses)
         {

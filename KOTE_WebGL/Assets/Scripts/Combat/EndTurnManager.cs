@@ -20,16 +20,11 @@ public class EndTurnManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Vector3 anchorPoint = new Vector3(transform.position.x + rectTransform.rect.center.x - ((rectTransform.rect.width * rectTransform.lossyScale.x) / 2),
-            transform.position.y + rectTransform.rect.center.y - ((rectTransform.rect.height * rectTransform.lossyScale.y) / 2), 0);
+        Vector3 anchorPoint = new Vector3(transform.position.x - ((rectTransform.rect.width * rectTransform.lossyScale.x) * 1f),
+            transform.position.y, 0);
         anchorPoint = Camera.main.ScreenToWorldPoint(anchorPoint);
-        List<Tooltip> tooltips = new List<Tooltip>() { new Tooltip()
-        {
-            title = "End Turn",
-            description = "Pressing this button will end your turn.\n\nYou will discard your hand, enemies will take their turn, you will draw 5 cards, then it will be your turn again."
-        }};
         // Tooltip On
-        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.BottomRight, anchorPoint, null);
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(ToolTipValues.Instance.EndTurnButtonTooltips, TooltipController.Anchor.BottomRight, anchorPoint, null);
     }
 
     public void OnPointerExit(PointerEventData eventData)

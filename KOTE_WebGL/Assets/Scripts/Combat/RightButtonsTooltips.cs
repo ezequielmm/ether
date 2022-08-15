@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class RightButtonsTooltips : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public List<Tooltip> tooltips;
+    public string tooltipName;
     RectTransform rectTransform;
 
 
@@ -20,7 +20,7 @@ public class RightButtonsTooltips : MonoBehaviour, IPointerEnterHandler, IPointe
             (Screen.height * -0.03f) + transform.position.y + rectTransform.rect.center.y - ((rectTransform.rect.height * rectTransform.lossyScale.y) / 2), 0);
         anchorPoint = Camera.main.ScreenToWorldPoint(anchorPoint);
         // Tooltip On
-        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.TopRight, anchorPoint, null);
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(ToolTipValues.Instance.GetTooltips(tooltipName), TooltipController.Anchor.TopRight, anchorPoint, null);
     }
 
     public void OnPointerExit(PointerEventData eventData)

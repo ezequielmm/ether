@@ -5,7 +5,8 @@ using UnityEngine.EventSystems;
 
 public class TooltipAtCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public List<Tooltip> tooltips;
+    public string tooltipName;
+    private List<Tooltip> tooltips = null;
     public TooltipController.Anchor anchor;
     public Vector2 limit = -Vector2.one;
 
@@ -24,14 +25,14 @@ public class TooltipAtCursor : MonoBehaviour, IPointerEnterHandler, IPointerExit
         tooltips = newTooltips;
         if (isHoveringOver) 
         {
-            GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, anchor, limit, cursor);
+            SetTooltip();
         }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         // Tooltip On
-        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, anchor, limit, cursor);
+        SetTooltip();
         isHoveringOver = true;
     }
 
@@ -40,5 +41,15 @@ public class TooltipAtCursor : MonoBehaviour, IPointerEnterHandler, IPointerExit
         // Tooltip Off
         GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
         isHoveringOver = false;
+    }
+
+    private void SetTooltip() 
+    {
+        List<Tooltip> tempTooltip = tooltips;
+        if (tooltips == null) 
+        {
+            tempTooltip = ToolTipValues.Instance.GetTooltips(tooltipName);
+        }
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tempTooltip, anchor, limit, cursor);
     }
 }

@@ -13,16 +13,10 @@ public class Potion : MonoBehaviour
     private TooltipAtCursor tooltipController;
 
     private Tooltip unknown;
-    private Tooltip emptySlot;
 
     private void Start()
     {
         tooltipController = GetComponent<TooltipAtCursor>();
-        emptySlot = new Tooltip()
-        {
-            title = "Potion Slot",
-            description = "Use potions durring combat to gain bonuses or hinder enemies."
-        };
         unknown = new Tooltip()
         {
             title = "Mysterious Elixir",
@@ -38,7 +32,7 @@ public class Potion : MonoBehaviour
     public void OnPotion()
     {
         potionImage.sprite = usedPotionSprite;
-        tooltipController.SetTooltips(new List<Tooltip>() { emptySlot });
+        tooltipController.SetTooltips(null);
     }
 
     public void OnPotionUsed(GameObject invoker)

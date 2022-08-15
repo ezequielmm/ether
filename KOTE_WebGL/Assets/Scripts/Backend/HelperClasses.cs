@@ -215,6 +215,22 @@ public class Card
 public class Effects
 {
     public List<Effect> effects;
+    public List<Statuses> statuses;
+}
+
+[Serializable]
+public class Statuses 
+{
+    public string name;
+    public Args args;
+    public Tooltip tooltip;
+
+    [Serializable]
+    public class Args 
+    {
+        public int value;
+        public string attachTo;
+    }
 }
 
 [Serializable]

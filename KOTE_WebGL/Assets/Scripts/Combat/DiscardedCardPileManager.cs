@@ -63,16 +63,11 @@ public class DiscardedCardPileManager : MonoBehaviour, IPointerEnterHandler, IPo
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Vector3 anchorPoint = new Vector3(transform.position.x + rectTransform.rect.center.x - ((rectTransform.rect.width * rectTransform.lossyScale.x) / 2),
-            transform.position.y + rectTransform.rect.center.y - ((rectTransform.rect.height * rectTransform.lossyScale.y) / 2), 0);
+        Vector3 anchorPoint = new Vector3(transform.position.x - ((rectTransform.rect.width * rectTransform.lossyScale.x) * 1f),
+            transform.position.y - ((rectTransform.rect.height * rectTransform.lossyScale.y) * 0.5f), 0);
         anchorPoint = Camera.main.ScreenToWorldPoint(anchorPoint);
-        List<Tooltip> tooltips = new List<Tooltip>() { new Tooltip()
-        {
-            title = "Discard Pile",
-            description = "If your draw pile is empty, the discard pile is shuffled into the draw pile.\n\nClick to view the cards in your discard pile."
-        }};
         // Tooltip On
-        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.BottomRight, anchorPoint, null);
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(ToolTipValues.Instance.DiscardPileTooltips, TooltipController.Anchor.BottomRight, anchorPoint, null);
     }
 
     public void OnPointerExit(PointerEventData eventData)

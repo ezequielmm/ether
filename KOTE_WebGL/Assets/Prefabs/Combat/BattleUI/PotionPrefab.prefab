@@ -160,6 +160,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d564c94f5ffeef74e9bb166a65247142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltips: []
+  tooltipName: noPotion
   anchor: 1
   limit: {x: -1, y: 4}

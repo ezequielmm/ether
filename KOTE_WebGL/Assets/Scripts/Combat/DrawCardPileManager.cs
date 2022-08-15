@@ -63,16 +63,11 @@ public class DrawCardPileManager : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Vector3 anchorPoint = new Vector3(transform.position.x + rectTransform.rect.center.x + ((rectTransform.rect.width * rectTransform.lossyScale.x) / 2),
-            transform.position.y + rectTransform.rect.center.y - ((rectTransform.rect.height * rectTransform.lossyScale.y) / 2), 0);
+        Vector3 anchorPoint = new Vector3(transform.position.x + ((rectTransform.rect.width * rectTransform.lossyScale.x) * 1f),
+            transform.position.y, 0);
         anchorPoint = Camera.main.ScreenToWorldPoint(anchorPoint);
-        List<Tooltip> tooltips = new List<Tooltip>() { new Tooltip()
-        {
-            title = "Draw Pile",
-            description = "At the start of each turn, 5 cards are drawn from here.\n\nClick to view the cards in your draw pile (shuffled)."
-        }};
         // Tooltip On
-        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.BottomLeft, anchorPoint, null);
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(ToolTipValues.Instance.DrawPileTooltips, TooltipController.Anchor.BottomLeft, anchorPoint, null);
     }
 
     public void OnPointerExit(PointerEventData eventData)
