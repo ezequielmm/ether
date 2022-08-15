@@ -44,6 +44,8 @@ public class NodeData : MonoBehaviour
 
     private void Awake()
     {
+        // the particleSystem's sorting layer has to be set manually, because the the settings in the component don't work
+        availableParticleSystem.GetComponent<Renderer>().sortingLayerName = GameSettings.MAP_ELEMENTS_SORTING_LAYER_NAME;
         HideNode();
     }
 

@@ -208,6 +208,7 @@ public enum WS_MESSAGE_ACTIONS
 [Serializable]
 public enum CARDS_POSITIONS_TYPES
 {
+    none = 0,
     discard,
     hand,
     exhaust,
