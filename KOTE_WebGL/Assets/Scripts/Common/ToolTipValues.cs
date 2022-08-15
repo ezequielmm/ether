@@ -34,6 +34,9 @@ public class ToolTipValues
     private ToolTipValues() 
     {
         GenericToolTips = new Dictionary<string, List<Tooltip>>();
+
+        Debug.LogWarning($"[ToolTipValues] Tooltip values are currently hardcoded instead of grabbed from the back end. Please update this!");
+
         GenericToolTips.Add("energy", new List<Tooltip>() { new Tooltip()
         {
             title = "Energy",
@@ -86,8 +89,8 @@ public class ToolTipValues
         }});
         GenericToolTips.Add("noPotion", new List<Tooltip>() { new Tooltip()
         {
-            title = "Wallet",
-            description = "How much gold you are carrying. Gold is the basic currency in Knights of The Ether."
+            title = "Potion Slot",
+            description = "Use potions durring combat to gain bonuses or to hinder enemies."
         }});
     }
 }
