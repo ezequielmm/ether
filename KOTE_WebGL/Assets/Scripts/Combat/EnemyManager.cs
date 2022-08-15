@@ -76,7 +76,7 @@ public class EnemyManager : MonoBehaviour
                 endCalled = true;
                 RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
-            else if (target.healthDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.health)) // Health Up
+            else if (target.healthDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.heal)) // Health Up
             {
                 var f = PlayAnimation("Cast");
                 if (f > afterEvent) afterEvent = f;
