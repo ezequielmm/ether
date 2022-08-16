@@ -2300,7 +2300,7 @@ PrefabInstance:
     - target: {fileID: 2838924256175582911, guid: 661646597b908fb4680920af56789180,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2838924256175582911, guid: 661646597b908fb4680920af56789180,
         type: 3}
@@ -3342,12 +3342,6 @@ MonoBehaviour:
   EVENT_UPDATE_STATUS_EFFECTS:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_PLAY_ENEMY_ATTACK:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_UPDATE_STATUS_EFFECTS:
-    m_PersistentCalls:
-      m_Calls: []
   EVENT_GENERIC_WS_DATA:
     m_PersistentCalls:
       m_Calls: []
@@ -4002,7 +3996,7 @@ PrefabInstance:
     - target: {fileID: 1793463218884153947, guid: fbdd4e610b5965a43ab79393317c0c99,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10
+      value: -2.01
       objectReference: {fileID: 0}
     - target: {fileID: 1793463218884153947, guid: fbdd4e610b5965a43ab79393317c0c99,
         type: 3}
