@@ -14,10 +14,16 @@ public class EnemyManager : MonoBehaviour
     public Slider healthBar;
     public TMP_Text healthTF;
     public TMP_Text defenseTF;
-    public GameObject activeEnemy;
+    public Transform TopBar;
+    public Transform BottomBar;
+
+    public bool overrideEnemy = false;
+    public EnemyTypes enemyType;
 
     [SerializeField]
-    private Dictionary<string, GameObject> enemyMap;
+    private List<GameObject> enemyMap;
+    private EnemyPrefab enemyPlacementData;
+    private GameObject activeEnemy;
 
     private SpineAnimationsManagement spine;
     private Action RunWithEvent;
@@ -38,13 +44,29 @@ public class EnemyManager : MonoBehaviour
 
     private EnemyData ProcessNewData(EnemyData old, EnemyData current)
     {
+        if (activeEnemy == null)
+        {
+            var prefab = GetEnemyPrefab(current.name);
+            if (prefab != null)
+            {
+                activeEnemy = Instantiate(prefab, transform);
+                activeEnemy.transform.localPosition = Vector3.zero;
+                enemyPlacementData = activeEnemy.GetComponent<EnemyPrefab>();
+                // Add the cursorEnter and Exit for tooltips
+                // Set mounting points
+                TopBar.position = enemyPlacementData.intentMountingPoint.position;
+                BottomBar.position = enemyPlacementData.healthMountingPoint.position;
+                Instantiate();
+            }
+        }
+
         if (old == null)
         {
             SetDefense(current.defense);
             SetHealth(current.hpCurrent, current.hpMax);
             return current;
         }
-        
+
         SetDefense(current.defense);
         SetHealth(current.hpCurrent, current.hpMax);
 
@@ -172,20 +194,28 @@ public class EnemyManager : MonoBehaviour
         GameManager.Instance.EVENT_ATTACK_REQUEST.AddListener(OnAttackRequest);
         GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnAttackResponse);
 
+        statusManager = GetComponentInChildren<StatusManager>();
+    }
+
+    private void Instantiate() 
+    {
         // Grab first spine animation management script we find. This is a default. We'll set this when spawning the enemy usually.
         if (activeEnemy == null)
         {
             activeEnemy = GetComponentInChildren<SpineAnimationsManagement>()?.gameObject;
-            if (activeEnemy == null) 
+            if (activeEnemy == null)
             {
-                Debug.Log($"[Enemy Manager] Could not find enemy animation");
+                Debug.LogWarning($"[Enemy Manager] Could not find enemy animation");
             }
         }
-        spine = activeEnemy.GetComponent<SpineAnimationsManagement>();
-        spine.ANIMATION_EVENT.AddListener(OnAnimationEvent);
-        spine.PlayAnimationSequence("Idle");
 
-        statusManager = GetComponentInChildren<StatusManager>();
+        if (activeEnemy != null) 
+        {
+            spine = activeEnemy.GetComponent<SpineAnimationsManagement>();
+            spine.ANIMATION_EVENT.AddListener(OnAnimationEvent);
+            spine.PlayAnimationSequence("Idle");
+        }
+        
     }
 
     private void OnUpdateEnemy(EnemyData newEnemyData)
@@ -277,5 +307,22 @@ public class EnemyManager : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         toRun.Invoke();
+    }
+
+    private GameObject GetEnemyPrefab(string enemyName) 
+    {
+        if (overrideEnemy) 
+        {
+            enemyName = enemyType.ToString();
+        }
+        foreach (var enemy in enemyMap) 
+        {
+            if (enemy.name.ToLower().Equals(enemyName.ToLower()))
+            {
+                return enemy;
+            }
+        }
+        Debug.LogError($"[EnemyManager] Missing {enemyName} prefab.");
+        return null;
     }
 }

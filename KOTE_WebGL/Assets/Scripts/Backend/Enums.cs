@@ -145,6 +145,25 @@ public enum STATUS
     emptyFade
 }
 
+[Serializable]
+public enum EnemyTypes 
+{
+    sporeMonger = 0,
+    ancientOne,
+    barkcharger,
+    fungalBrute,
+    fungalBruteMinion,
+    groundMoth,
+    mimicFrog1,
+    queenOrchid,
+    stingFae1,
+    swampGoblin1,
+    swampGoblin2,
+    thornWolf,
+    trapelican,
+    treant
+}
+
 public enum EntityType
 {
     Player,
