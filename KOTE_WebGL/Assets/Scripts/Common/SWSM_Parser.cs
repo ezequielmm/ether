@@ -71,7 +71,7 @@ public class SWSM_Parser
                 GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(updatedRewardsData);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.show_map):
-                UpdateMapActionPicker(action, data);
+                GameManager.Instance.LoadScene(inGameScenes.Expedition);
                 break;
         }
     }

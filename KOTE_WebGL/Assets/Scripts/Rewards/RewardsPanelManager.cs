@@ -79,7 +79,6 @@ public class RewardsPanelManager : MonoBehaviour
 
     public void OnRewardsButtonClicked()
     {
-        GameManager.Instance.LoadScene(inGameScenes.Expedition);
-        //GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
+        GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
     }
 }
