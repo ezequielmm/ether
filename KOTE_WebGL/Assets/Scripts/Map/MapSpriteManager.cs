@@ -306,7 +306,6 @@ namespace map
                 mapCamera.transform.position = new Vector3(nodesHolder.transform.position.x + (i * width), nodesHolder.transform.position.y, mapCamera.transform.position.z);
                 yield return new WaitForSeconds(0.1f);
                 var img = toTexture2D(mapRenderTexture);
-                img.alphaIsTransparency = true;
 
                 mapImages.Add(img);
                 GameObject imgObj = new GameObject();

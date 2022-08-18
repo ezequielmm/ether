@@ -2452,7 +2452,7 @@ GameObject:
   - component: {fileID: 1518586939}
   m_Layer: 0
   m_Name: Map Camera
-  m_TagString: Untagged
+  m_TagString: MapPath
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2467,7 +2467,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 1, g: 0, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -2490,11 +2490,11 @@ Camera:
     serializedVersion: 2
     m_Bits: 136
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
+  m_TargetTexture: {fileID: 8400000, guid: 9b4d838c9cc0f034f8df591b8044dcf4, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
-  m_AllowMSAA: 1
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -3558,7 +3558,7 @@ PrefabInstance:
         type: 3}
       propertyPath: mapRenderTexture
       value: 
-      objectReference: {fileID: 8400000, guid: 9bbff037da39dce4baf58f947f2388c9, type: 2}
+      objectReference: {fileID: 8400000, guid: 9b4d838c9cc0f034f8df591b8044dcf4, type: 2}
     - target: {fileID: 5758494260307054459, guid: 2743bb4d3bf2c854ab9b74f4b670cbb4,
         type: 3}
       propertyPath: m_RootOrder
