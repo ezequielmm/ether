@@ -88,6 +88,8 @@ public class CardOnHandManager : MonoBehaviour
 
     private bool awaitMouseUp;
 
+    private bool inTransit;
+
     private void Awake()
     {
         //Screenspace is defined in pixels. The bottom-left of the screen is (0,0); the right-top is (pixelWidth,pixelHeight). The z position is in world units from the camera.
@@ -96,6 +98,7 @@ public class CardOnHandManager : MonoBehaviour
         drawPileOrthoPosition = TransformUIToOrtho("DrawCardPile");
         discardPileOrthoPosition = TransformUIToOrtho("DiscardCardPile");
         exhaustPileOrthoPosition = TransformUIToOrtho("ExhaustedPilePrefab");
+        inTransit = false;
     }
 
 
@@ -143,16 +146,38 @@ public class CardOnHandManager : MonoBehaviour
         }
     }
 
-    private void OnCardToMove(CardToMoveData data)
+    static float delay;
+
+    private void OnCardToMove(CardToMoveData data, float delayIndex)
     {
-        // Debug.Log("[OnCardToMove]thisCardValues.id ="+ thisCardValues.id+ " || data.id="+ data.id);
         if (thisCardValues.id == data.id)
         {
             System.Enum.TryParse(data.source, out CARDS_POSITIONS_TYPES origin);
             System.Enum.TryParse(data.destination, out CARDS_POSITIONS_TYPES destination);
+            if (origin == CARDS_POSITIONS_TYPES.discard) 
+            {
+                delay += 0.1f;
+            }
+            if (inTransit) 
+            {
+                delay += 1.1f;
+            }
 
-            MoveCard(origin, destination);
+            if (delay > 0)
+            {
+                StartCoroutine(MoveAfterTime(delay, origin, destination));
+            }
+            else 
+            {
+                MoveCard(origin, destination);
+            }
         }
+    }
+
+    private IEnumerator MoveAfterTime(float delay, CARDS_POSITIONS_TYPES origin, CARDS_POSITIONS_TYPES destination) 
+    {
+        yield return new WaitForSeconds(delay);
+        MoveCard(origin, destination);
     }
 
     private void OnUpdateEnergy(int currentEnergy, int maxEnergy)
@@ -167,6 +192,7 @@ public class CardOnHandManager : MonoBehaviour
 
     internal void Populate(Card card, int energy)
     {
+        Debug.Log(card);
         //cardidTF.SetText(card.id);
         energyTF.SetText(card.energy.ToString());
         nameTF.SetText(card.name);
@@ -194,6 +220,36 @@ public class CardOnHandManager : MonoBehaviour
         UpdateCardBasedOnEnergy(energy);
     }
 
+    public bool MoveCardIfClose(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType) 
+    {
+        Vector3 origin = new Vector3();
+        switch (originType)
+        {
+            case CARDS_POSITIONS_TYPES.draw:
+                origin = drawPileOrthoPosition;
+                break;
+            case CARDS_POSITIONS_TYPES.discard:
+                origin = discardPileOrthoPosition;
+                break;
+            case CARDS_POSITIONS_TYPES.hand:
+                origin = this.transform.position;
+                break;
+            case CARDS_POSITIONS_TYPES.exhaust:
+                origin = exhaustPileOrthoPosition;
+                break;
+        }
+        if (Mathf.Abs((this.transform.position - origin).magnitude) <= 0.1f)
+        {
+            MoveCard(originType, destinationType);
+            return true;
+        }
+        else 
+        {
+            Debug.Log($"[CardOnHandManager] Card {thisCardValues.id} is not from {originType} and will not be moved to {destinationType}.");
+            return false;
+        }
+    }
+
     public void MoveCard(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType,
         bool activateCard = false, Vector3 pos = default(Vector3), float delay = 0)
     {
@@ -212,12 +268,14 @@ public class CardOnHandManager : MonoBehaviour
                 break;
             case CARDS_POSITIONS_TYPES.discard:
                 origin = discardPileOrthoPosition;
+                transform.localScale = Vector3.one * 0.2f;
                 break;
             case CARDS_POSITIONS_TYPES.hand:
                 origin = this.transform.position;
                 break;
             case CARDS_POSITIONS_TYPES.exhaust:
                 origin = exhaustPileOrthoPosition;
+                transform.localScale = Vector3.one * 0.2f;
                 break;
         }
 
@@ -241,7 +299,6 @@ public class CardOnHandManager : MonoBehaviour
                     {
                         discardAfterMove = true;
                     }
-
                     break;
                 case CARDS_POSITIONS_TYPES.hand:
                     destination = pos;
@@ -280,19 +337,21 @@ public class CardOnHandManager : MonoBehaviour
 
         if (delay > 0)
         {
-            transform.DOMove(destination, 1f).SetDelay(delay, true).SetEase(Ease.InCirc).OnComplete(OnMoveCompleted)
-                .From(origin);
+            inTransit = true;
+            transform.DOMove(destination, 1f).SetDelay(delay, true).SetEase(Ease.InCirc).From(origin);
             if (originType == CARDS_POSITIONS_TYPES.draw && destinationType == CARDS_POSITIONS_TYPES.hand)
             {
                 transform.localScale = Vector3.zero;
-                transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutElastic).OnComplete(OnMoveCompleted);
+                transform.DOScale(Vector3.one, 1f).SetDelay(delay, true).SetEase(Ease.OutElastic).OnComplete(OnMoveCompleted);
             }
-
-            // transform.DOMoveX(destination.x, .5f).SetEase(Ease.Linear);
-            // transform.DOMoveY(destination.y, .5f).SetEase(Ease.InCirc);
+            else 
+            {
+                transform.DOScale(Vector3.zero, 1f).SetDelay(delay, true).SetEase(Ease.InElastic).OnComplete(HideAndDeactivateCard);
+            }
         }
         else
         {
+            inTransit = true;
             transform.DOMove(destination, 1f).From(origin).SetEase(Ease.OutCirc);
             if (originType == CARDS_POSITIONS_TYPES.draw && destinationType == CARDS_POSITIONS_TYPES.hand)
             {
@@ -310,6 +369,7 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnMoveCompleted()
     {
+        inTransit = false;
         cardActive = activateCardAfterMove;
         movePs.Stop();
         if (discardAfterMove)
@@ -317,14 +377,17 @@ public class CardOnHandManager : MonoBehaviour
             discardAfterMove = false;
             GameManager.Instance.EVENT_CARD_DISABLED.Invoke(thisCardValues.id);
         }
+        if (activateCardAfterMove && transform.position.magnitude < 0.2f) 
+        {
+            ResetCardPosition();
+        }
     }
 
     private void HideAndDeactivateCard()
     {
-        //Debug.Log("HideAndDeactivateCard, activateCardAfterMove="+ activateCardAfterMove);
-        //cardActive = false;
-        //this.gameObject.SetActive(false);
         movePs.Stop();
+
+        inTransit = false;
 
         if (discardAfterMove)
         {
@@ -341,9 +404,6 @@ public class CardOnHandManager : MonoBehaviour
             cardActive = true;
             card_can_be_played = true;
         }
-
-
-        // Destroy(this.gameObject);
     }
 
     private void UpdateCardBasedOnEnergy(int energy)
@@ -467,6 +527,11 @@ public class CardOnHandManager : MonoBehaviour
         {
             awaitMouseUp = false;
             ResetCardPosition();
+        }
+        if (delay > 0) 
+        {
+            delay -= Time.deltaTime;
+            if(delay < 0) delay = 0;
         }
     }
 
