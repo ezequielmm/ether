@@ -41,6 +41,10 @@ namespace map
         public GameObject LeftButton;
         public GameObject RightScrollButton;
 
+        public Camera mapCamera;
+        public RenderTexture mapRenderTexture;
+        public List<Texture2D> mapImages;
+
         private float scrollTime;
 
         public Bounds mapBounds;
@@ -261,9 +265,84 @@ namespace map
                       nodes[nodes.Count - 1].transform.localPosition);
 
             GenerateMapGrid();
+
+            // Generate Map Images
+            StartCoroutine(GenerateMapImages());
         }
 
         #region generateMap
+
+        private IEnumerator GenerateMapImages() 
+        {
+            mapImages.Clear();
+            yield return new WaitForSeconds(0.1f);
+
+            float height = 2f * mapCamera.orthographicSize;
+            float width = height * mapCamera.aspect;
+
+            //mapRenderTexture.width = mapCamera.pixelWidth;
+            //mapRenderTexture.height = mapCamera.pixelHeight;
+
+            yield return new WaitForSeconds(0.1f);
+
+            Quaternion currentRotation = nodesHolder.transform.rotation;
+            Vector3 currentPosition = nodesHolder.transform.position;
+            nodesHolder.transform.position = Vector3.zero;
+            nodesHolder.transform.rotation = Quaternion.identity;
+
+            Bounds bounds = new Bounds(nodesHolder.transform.position, Vector3.zero);
+
+            foreach (Renderer renderer in nodesHolder.GetComponentsInChildren<Renderer>())
+            {
+                bounds.Encapsulate(renderer.bounds);
+            }
+
+            nodesHolder.transform.rotation = currentRotation;
+            nodesHolder.transform.position = currentPosition;
+
+            int imageCount = (int)Mathf.Ceil(bounds.size.x / width);
+            for (int i = 0; i < imageCount; i++) 
+            {
+                mapCamera.transform.position = new Vector3(nodesHolder.transform.position.x + (i * width), nodesHolder.transform.position.y, mapCamera.transform.position.z);
+                yield return new WaitForSeconds(0.1f);
+                var img = toTexture2D(mapRenderTexture);
+                img.alphaIsTransparency = true;
+
+                mapImages.Add(img);
+                GameObject imgObj = new GameObject();
+                imgObj.transform.position = new Vector3(nodesHolder.transform.position.x + (i * width), nodesHolder.transform.position.y, nodesHolder.transform.position.z - 15);
+                imgObj.transform.SetParent(nodesHolder.transform);
+                imgObj.name = $"MapPathImage({i})";
+                var sprite = imgObj.AddComponent<SpriteRenderer>();
+                
+                sprite.sortingLayerName = "MapElements";
+                sprite.sortingOrder = 1;
+                sprite.sprite = Sprite.Create(img, new Rect(0,0, mapRenderTexture.width, mapRenderTexture.height), Vector2.one * 0.5f);
+                sprite.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+
+                // Scaling
+                float widthScale = width / sprite.bounds.size.x;
+                float heightScale = height / sprite.bounds.size.y;
+
+                sprite.transform.localScale = new Vector3(widthScale, heightScale, 1);
+            }
+
+            foreach (var gameObj in GameObject.FindGameObjectsWithTag("MapPath")) 
+            {
+                Destroy(gameObj);
+            }
+        }
+
+        Texture2D toTexture2D(RenderTexture rTex)
+        {
+            RenderTexture.active = rTex;
+            Texture2D tex = new Texture2D(rTex.width, rTex.height, TextureFormat.RGBA32, false);
+            // ReadPixels looks at the active RenderTexture.
+            tex.ReadPixels(new Rect(0, 0, rTex.width, rTex.height), 0, 0);
+            tex.Apply();
+            RenderTexture.active = null;
+            return tex;
+        }
 
         private void ClearMap()
         {

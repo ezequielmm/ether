@@ -29,7 +29,7 @@ Shader "Custom/PathShader"
         ZWrite Off
 
         CGPROGRAM
-        #pragma surface surf NoLighting alpha:fade
+        #pragma surface surf NoLighting alpha:auto
 
         struct Input
         {

@@ -59,9 +59,9 @@ GameObject:
   - component: {fileID: 3650832521303193249}
   - component: {fileID: 1732859673047892804}
   - component: {fileID: 7163704449398746698}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PathSpriteShape
-  m_TagString: Untagged
+  m_TagString: MapPath
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,10 +125,10 @@ SpriteShapeRenderer:
   m_MaskInteraction: 1
   m_ShapeTexture: {fileID: 0}
   m_Sprites:
-  - {fileID: 21300000, guid: 121cf6a84a8073b428afc637f7ff2397, type: 3}
+  - {fileID: 21300000, guid: ff49f582f88898648be5db82565473e3, type: 3}
   m_LocalAABB:
-    m_Center: {x: 4.038017, y: 0.5270603, z: 0}
-    m_Extent: {x: 4.044122, y: 1.3543642, z: 0}
+    m_Center: {x: 4.03809, y: 0.5270596, z: 0}
+    m_Extent: {x: 4.0440135, y: 1.3443645, z: 0}
 --- !u!114 &7163704449398746698
 MonoBehaviour:
   m_ObjectHideFlags: 0
