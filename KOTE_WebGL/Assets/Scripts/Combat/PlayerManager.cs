@@ -43,7 +43,7 @@ public class PlayerManager : MonoBehaviour
         foreach (CombatTurnData.Target target in attack.targets)
         {
             // Run Attack Animation Or Status effects
-            if (target.defenseDelta != 0 || target.healthDelta != 0)
+            if (target.effectType == nameof(ATTACK_EFFECT_TYPES.damage))
             {
                 // Run Attack
                 var f = Attack();
@@ -51,14 +51,14 @@ public class PlayerManager : MonoBehaviour
                 endCalled = true;
                 RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
-            else if (target.defenseDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
+            else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
             {
                 var f = PlayAnimation("Cast");
                 if (f > afterEvent) afterEvent = f;
                 endCalled = true;
                 RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
-            else if (target.healthDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.health)) // Health Up
+            else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.heal)) // Health Up
             {
                 var f = PlayAnimation("Cast");
                 if (f > afterEvent) afterEvent = f;
@@ -115,6 +115,8 @@ public class PlayerManager : MonoBehaviour
         {
             // Play Rising Chimes
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
+            GameManager.Instance.EVENT_HEAL.Invoke(/*PlayerData.id*/ "player", target.healthDelta);
+            waitDuration += 1;
         }
 
         // Update the UI
