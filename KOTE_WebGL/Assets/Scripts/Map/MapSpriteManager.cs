@@ -43,7 +43,7 @@ namespace map
 
         public Camera mapCamera;
         public RenderTexture mapRenderTexture;
-        public List<Texture2D> mapImages;
+        private List<GameObject> hiddenMapItems;
 
         private float scrollTime;
 
@@ -58,6 +58,10 @@ namespace map
         // keep track of this so the map doesn't move if it's not bigger than the visible area
         private float halfScreenWidth;
 
+        private void Awake()
+        {
+            hiddenMapItems = new List<GameObject>();
+        }
 
         void Start()
         {
@@ -251,6 +255,7 @@ namespace map
 
             ClearMap();
 
+
             MapStructure mapStructure = GenerateMapStructure(expeditionMapData);
 
             InstantiateMapNodes(mapStructure);
@@ -274,7 +279,6 @@ namespace map
 
         private IEnumerator GenerateMapImages() 
         {
-            mapImages.Clear();
             yield return new WaitForSeconds(0.1f);
 
             float height = 2f * mapCamera.orthographicSize;
@@ -306,12 +310,11 @@ namespace map
                 mapCamera.transform.position = new Vector3(nodesHolder.transform.position.x + (i * width), nodesHolder.transform.position.y, mapCamera.transform.position.z);
                 yield return new WaitForSeconds(0.1f);
                 var img = toTexture2D(mapRenderTexture);
-
-                mapImages.Add(img);
                 GameObject imgObj = new GameObject();
                 imgObj.transform.position = new Vector3(nodesHolder.transform.position.x + (i * width), nodesHolder.transform.position.y, nodesHolder.transform.position.z - 15);
                 imgObj.transform.SetParent(nodesHolder.transform);
                 imgObj.name = $"MapPathImage({i})";
+                imgObj.tag = "MapImage";
                 var sprite = imgObj.AddComponent<SpriteRenderer>();
                 
                 sprite.sortingLayerName = "MapElements";
@@ -328,7 +331,8 @@ namespace map
 
             foreach (var gameObj in GameObject.FindGameObjectsWithTag("MapPath")) 
             {
-                Destroy(gameObj);
+                gameObj.SetActive(false);
+                hiddenMapItems.Add(gameObj);
             }
         }
 
@@ -345,13 +349,24 @@ namespace map
 
         private void ClearMap()
         {
+            foreach (var gameObj in hiddenMapItems)
+            {
+                gameObj.SetActive(true);
+            }
+            hiddenMapItems.Clear();
+
             while (nodes.Count > 0)
             {
                 NodeData node = nodes[0];
                 nodes.Remove(node);
                 Destroy(node.gameObject);
             }
-            
+
+            foreach (var gameObj in GameObject.FindGameObjectsWithTag("MapImage"))
+            {
+                Destroy(gameObj);
+            }
+
             // clear the references to the map paths
             pathManagers.Clear();
         }
