@@ -48,7 +48,7 @@ public class TopBarManager : MonoBehaviour
 
     private void UpdateStageText(int act, int step)
     {
-        stageText.SetText("Stage " + act + "-" + step);
+        stageText.SetText("Stage " + act + "-" + (step + 1));
     }
 
     public void SetTextValues(string nameText, string classText, int health, int coins)
