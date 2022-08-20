@@ -4,7 +4,7 @@ public static class GameSettings
 {   
     //MAP
     public const float MAP_SPRITE_ELEMENTS_Z = -20f;
-    public const float MAP_SPRITE_NODE_X_OFFSET = 3.5f;
+    public const float MAP_SPRITE_NODE_X_OFFSET = 4.5f;
     public const float MAP_SPRITE_NODE_X_OFFSET_RH = 8f;
     public const string MAP_ELEMENTS_SORTING_LAYER_NAME = "MapElements";
     public const int MAP_LINE_RENDERER_SORTING_LAYER_ORDER = 50;

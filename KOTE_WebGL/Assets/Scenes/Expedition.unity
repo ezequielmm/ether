@@ -2300,7 +2300,7 @@ PrefabInstance:
     - target: {fileID: 2838924256175582911, guid: 661646597b908fb4680920af56789180,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2838924256175582911, guid: 661646597b908fb4680920af56789180,
         type: 3}
@@ -3342,10 +3342,7 @@ MonoBehaviour:
   EVENT_UPDATE_STATUS_EFFECTS:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_PLAY_ENEMY_ATTACK:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_UPDATE_STATUS_EFFECTS:
+  EVENT_HEAL:
     m_PersistentCalls:
       m_Calls: []
   EVENT_GENERIC_WS_DATA:
@@ -3398,6 +3395,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MapElements
+      objectReference: {fileID: 0}
+    - target: {fileID: 5758494260307054458, guid: 2743bb4d3bf2c854ab9b74f4b670cbb4,
+        type: 3}
+      propertyPath: columnFuzziness
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 5758494260307054459, guid: 2743bb4d3bf2c854ab9b74f4b670cbb4,
         type: 3}
