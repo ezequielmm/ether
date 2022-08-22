@@ -2166,6 +2166,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1335378694}
   m_CullTransparentMesh: 1
+--- !u!4 &1367139030 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3968802887354735061, guid: cc000a19b1ce1c2478b0dd0d551b0c32,
+    type: 3}
+  m_PrefabInstance: {fileID: 1195175773828713605}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1371504684
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2300,7 +2306,7 @@ PrefabInstance:
     - target: {fileID: 2838924256175582911, guid: 661646597b908fb4680920af56789180,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2838924256175582911, guid: 661646597b908fb4680920af56789180,
         type: 3}
@@ -2422,6 +2428,7 @@ Transform:
   - {fileID: 1035199795}
   - {fileID: 5215664067151052177}
   - {fileID: 11680376}
+  - {fileID: 1367139030}
   m_Father: {fileID: 1023257130}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3342,10 +3349,13 @@ MonoBehaviour:
   EVENT_UPDATE_STATUS_EFFECTS:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_PLAY_ENEMY_ATTACK:
+  EVENT_HEAL:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_UPDATE_STATUS_EFFECTS:
+  EVENT_REQUEST_CARD_IMAGE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SEND_CARD_IMAGE:
     m_PersistentCalls:
       m_Calls: []
   EVENT_GENERIC_WS_DATA:
@@ -3972,6 +3982,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d70a85a2e42ea4540b500ab28ec9ecbd, type: 3}
+--- !u!1001 &1195175773828713605
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1678849051}
+    m_Modifications:
+    - target: {fileID: 3382859683205716808, guid: cc000a19b1ce1c2478b0dd0d551b0c32,
+        type: 3}
+      propertyPath: m_Name
+      value: CardManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968802887354735061, guid: cc000a19b1ce1c2478b0dd0d551b0c32,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968802887354735061, guid: cc000a19b1ce1c2478b0dd0d551b0c32,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968802887354735061, guid: cc000a19b1ce1c2478b0dd0d551b0c32,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968802887354735061, guid: cc000a19b1ce1c2478b0dd0d551b0c32,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968802887354735061, guid: cc000a19b1ce1c2478b0dd0d551b0c32,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968802887354735061, guid: cc000a19b1ce1c2478b0dd0d551b0c32,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968802887354735061, guid: cc000a19b1ce1c2478b0dd0d551b0c32,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968802887354735061, guid: cc000a19b1ce1c2478b0dd0d551b0c32,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968802887354735061, guid: cc000a19b1ce1c2478b0dd0d551b0c32,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968802887354735061, guid: cc000a19b1ce1c2478b0dd0d551b0c32,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3968802887354735061, guid: cc000a19b1ce1c2478b0dd0d551b0c32,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cc000a19b1ce1c2478b0dd0d551b0c32, type: 3}
 --- !u!1001 &1793463218632432425
 PrefabInstance:
   m_ObjectHideFlags: 0
