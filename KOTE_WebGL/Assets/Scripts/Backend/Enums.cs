@@ -238,7 +238,7 @@ public enum ATTACK_EFFECT_TYPES
 {
     damage,
     defense,
-    health
+    heal
 }
 
 
