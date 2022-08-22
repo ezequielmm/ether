@@ -173,6 +173,10 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_COMBAT_ORIGIN_CHANGE = new UnityEvent();
     [HideInInspector] public UnityEvent<StatusData> EVENT_UPDATE_STATUS_EFFECTS = new UnityEvent<StatusData>();
     [HideInInspector] public UnityEvent<string, int> EVENT_HEAL = new UnityEvent<string, int>(); // id, healed amount
+    
+    //Card Manager Events
+    [HideInInspector] public UnityEvent<int> EVENT_REQUEST_CARD_IMAGE = new UnityEvent<int>();
+    [HideInInspector] public UnityEvent<int, Sprite> EVENT_SEND_CARD_IMAGE = new UnityEvent<int, Sprite>();
 
 
     //Common events

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166fea724da6f124ba2eab8a9bdc8519, type: 3}
+  m_Name: CardBanners
+  m_EditorClassIdentifier: 
+  NamedSpriteList:
+  - name: starter
+    image: {fileID: 21300000, guid: 3569de8c378700941aa0308eef558264, type: 3}
+  - name: common
+    image: {fileID: 21300000, guid: bce8ad9b5aad89f46816da35e1e65bbb, type: 3}
+  - name: uncommon
+    image: {fileID: 21300000, guid: 100a1dc41d5ba0c448760ef5d0b78d25, type: 3}
+  - name: rare
+    image: {fileID: 21300000, guid: 628ab8e150abdc1449a86d09dd6352a5, type: 3}
+  - name: legend
+    image: {fileID: 21300000, guid: b62425a39eff23948b434dcb48c580de, type: 3}
+  - name: special
+    image: {fileID: 21300000, guid: 2623ba0d744ff3f47b624b536cbe36d6, type: 3}

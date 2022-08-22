@@ -204,19 +204,10 @@ public class CardOnHandManager : MonoBehaviour
         gemSprite.sprite = Gems.Find(gem => gem.type == cardType).gem;
         frameSprite.sprite = frames.Find(frame => frame.pool == card.pool).frame;
         bannerSprite.sprite = banners.Find(banner => banner.rarity == card.rarity).banner;
-        if (cardImages.Exists(image => int.Parse(image.name) == card.cardId || int.Parse(image.name) + 1 == card.cardId))
-        {
-            cardImage.sprite = cardImages.Find(image => int.Parse(image.name) == card.cardId || int.Parse(image.name) + 1 == card.cardId);
-        }
-        else
-        {
-            cardImage.sprite = cardImages[0];
-        }
+        cardImage.sprite = CardManager.Instance.GetCardImage(card.cardId);
         /* this.id = card.id;
           card_energy_cost = card.energy;*/
-
         thisCardValues = card;
-
         UpdateCardBasedOnEnergy(energy);
     }
 
