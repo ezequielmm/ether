@@ -195,7 +195,7 @@ public class WebSocketManager : MonoBehaviour
         cardData.targetId = enemyId;//TODO: here we will poulate the actual array of enemies rather than just one
 
         string data = JsonUtility.ToJson(cardData).ToString();
-        Debug.Log("sending WS playedcard test=" + data);
+        Debug.Log("[WebSocket Manager] OnCardPlayed data: " + data);
 
         //rootSocket.ExpectAcknowledgement<string>(OnCardPlayedAnswer).Emit(WS_MESSAGE_CARD_PLAYED, data);
         rootSocket.Emit(WS_MESSAGE_CARD_PLAYED, data);
