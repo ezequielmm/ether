@@ -10,27 +10,6 @@ using UnityEngine.Serialization;
 public class CardOnHandManager : MonoBehaviour
 {
     public GameObject cardcontent;
-    
-    [Serializable]
-    public struct Gem
-    {
-        public string type;
-        public Sprite gem;
-    }
-
-    [Serializable]
-    public struct Banner
-    {
-        public string rarity;
-        public Sprite banner;
-    }
-
-    [Serializable]
-    public struct Frame
-    {
-        public string pool;
-        public Sprite frame;
-    }
 
     public TextMeshPro cardidTF;
     public TextMeshPro energyTF;
@@ -50,12 +29,6 @@ public class CardOnHandManager : MonoBehaviour
     public Vector3 targetPosition;
     public Vector3 targetRotation;
     public bool cardActive = false;
-
-    [Header("Card Variation Sprites")]
-    public List<Gem> Gems;
-    public List<Banner> banners;
-    public List<Frame> frames;
-    [FormerlySerializedAs("images")] public List<Sprite> cardImages;
     
     [Header("Outline effects")] public ParticleSystem auraPS;
 
@@ -154,11 +127,12 @@ public class CardOnHandManager : MonoBehaviour
         {
             System.Enum.TryParse(data.source, out CARDS_POSITIONS_TYPES origin);
             System.Enum.TryParse(data.destination, out CARDS_POSITIONS_TYPES destination);
-            if (origin == CARDS_POSITIONS_TYPES.discard) 
+            if (origin == CARDS_POSITIONS_TYPES.discard)
             {
                 delay += 0.1f;
             }
-            if (inTransit) 
+
+            if (inTransit)
             {
                 delay += 1.1f;
             }
@@ -167,14 +141,14 @@ public class CardOnHandManager : MonoBehaviour
             {
                 StartCoroutine(MoveAfterTime(delay, origin, destination));
             }
-            else 
+            else
             {
                 MoveCard(origin, destination);
             }
         }
     }
 
-    private IEnumerator MoveAfterTime(float delay, CARDS_POSITIONS_TYPES origin, CARDS_POSITIONS_TYPES destination) 
+    private IEnumerator MoveAfterTime(float delay, CARDS_POSITIONS_TYPES origin, CARDS_POSITIONS_TYPES destination)
     {
         yield return new WaitForSeconds(delay);
         MoveCard(origin, destination);
@@ -201,17 +175,18 @@ public class CardOnHandManager : MonoBehaviour
         // we've got to check if the card is upgraded when picking the gem, hence the extra variable
         string cardType = card.cardType;
         // if (card.isUpgraded) cardType += "+";
-        gemSprite.sprite = Gems.Find(gem => gem.type == cardType).gem;
-        frameSprite.sprite = frames.Find(frame => frame.pool == card.pool).frame;
-        bannerSprite.sprite = banners.Find(banner => banner.rarity == card.rarity).banner;
-        cardImage.sprite = CardManager.Instance.GetCardImage(card.cardId);
+        CardAssetManager cardAssetManager = CardAssetManager.Instance;
+        gemSprite.sprite = cardAssetManager.GetGem(card.cardType);
+        frameSprite.sprite = cardAssetManager.GetFrame(card.pool);
+        bannerSprite.sprite = cardAssetManager.GetBanner(card.rarity);
+        cardImage.sprite = cardAssetManager.GetCardImage(card.cardId);
         /* this.id = card.id;
           card_energy_cost = card.energy;*/
         thisCardValues = card;
         UpdateCardBasedOnEnergy(energy);
     }
 
-    public bool MoveCardIfClose(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType) 
+    public bool MoveCardIfClose(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType)
     {
         Vector3 origin = new Vector3();
         switch (originType)
@@ -229,14 +204,16 @@ public class CardOnHandManager : MonoBehaviour
                 origin = exhaustPileOrthoPosition;
                 break;
         }
+
         if (Mathf.Abs((this.transform.position - origin).magnitude) <= 0.1f)
         {
             MoveCard(originType, destinationType);
             return true;
         }
-        else 
+        else
         {
-            Debug.Log($"[CardOnHandManager] Card {thisCardValues.id} is not from {originType} and will not be moved to {destinationType}.");
+            Debug.Log(
+                $"[CardOnHandManager] Card {thisCardValues.id} is not from {originType} and will not be moved to {destinationType}.");
             return false;
         }
     }
@@ -290,6 +267,7 @@ public class CardOnHandManager : MonoBehaviour
                     {
                         discardAfterMove = true;
                     }
+
                     break;
                 case CARDS_POSITIONS_TYPES.hand:
                     destination = pos;
@@ -333,11 +311,13 @@ public class CardOnHandManager : MonoBehaviour
             if (originType == CARDS_POSITIONS_TYPES.draw && destinationType == CARDS_POSITIONS_TYPES.hand)
             {
                 transform.localScale = Vector3.zero;
-                transform.DOScale(Vector3.one, 1f).SetDelay(delay, true).SetEase(Ease.OutElastic).OnComplete(OnMoveCompleted);
+                transform.DOScale(Vector3.one, 1f).SetDelay(delay, true).SetEase(Ease.OutElastic)
+                    .OnComplete(OnMoveCompleted);
             }
-            else 
+            else
             {
-                transform.DOScale(Vector3.zero, 1f).SetDelay(delay, true).SetEase(Ease.InElastic).OnComplete(HideAndDeactivateCard);
+                transform.DOScale(Vector3.zero, 1f).SetDelay(delay, true).SetEase(Ease.InElastic)
+                    .OnComplete(HideAndDeactivateCard);
             }
         }
         else
@@ -368,7 +348,8 @@ public class CardOnHandManager : MonoBehaviour
             discardAfterMove = false;
             GameManager.Instance.EVENT_CARD_DISABLED.Invoke(thisCardValues.id);
         }
-        if (activateCardAfterMove && transform.position.magnitude < 0.2f) 
+
+        if (activateCardAfterMove && transform.position.magnitude < 0.2f)
         {
             ResetCardPosition();
         }
@@ -519,10 +500,11 @@ public class CardOnHandManager : MonoBehaviour
             awaitMouseUp = false;
             ResetCardPosition();
         }
-        if (delay > 0) 
+
+        if (delay > 0)
         {
             delay -= Time.deltaTime;
-            if(delay < 0) delay = 0;
+            if (delay < 0) delay = 0;
         }
     }
 

@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardManager : SingleTon<CardManager>
+public class CardAssetManager : SingleTon<CardAssetManager>
 {
     public Sprite defaultImage;
 
+    public CardSpriteList banners;
+    public CardSpriteList frames;
+    public CardSpriteList gems;
     [Tooltip("Place all CardImageList object here to populate the card images")]
     public List<CardImageList> cardImageLists;
 
@@ -23,6 +26,21 @@ public class CardManager : SingleTon<CardManager>
         }
     }
 
+    public Sprite GetGem(string cardType)
+    {
+        return gems.NamedSpriteList.Find(gem => gem.name == cardType).image;
+    }
+
+    public Sprite GetFrame(string cardPool)
+    {
+        return frames.NamedSpriteList.Find(frame => frame.name == cardPool).image;
+    }
+
+    public Sprite GetBanner(string cardRarity)
+    {
+        return banners.NamedSpriteList.Find(banner => banner.name == cardRarity).image;
+    }
+    
     public Sprite GetCardImage(int cardId)
     {
         
