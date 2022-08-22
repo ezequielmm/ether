@@ -49,7 +49,15 @@ public class CardOnHandManager : MonoBehaviour
 
     public Vector3 targetPosition;
     public Vector3 targetRotation;
-    public bool cardActive = false;
+    [SerializeField]
+    private bool _cardActive = false;
+    public bool cardActive { get => _cardActive;
+        set 
+        {
+            _cardActive = value;
+            UpdateCardBasedOnEnergy(currentPlayerEnergy);
+        } 
+    }
 
     [Header("Card Variation Sprites")]
     public List<Gem> Gems;
@@ -217,6 +225,8 @@ public class CardOnHandManager : MonoBehaviour
 
         thisCardValues = card;
 
+        currentPlayerEnergy = energy;
+
         UpdateCardBasedOnEnergy(energy);
     }
 
@@ -381,6 +391,10 @@ public class CardOnHandManager : MonoBehaviour
         {
             ResetCardPosition();
         }
+        if (cardActive)
+        {
+            UpdateCardBasedOnEnergy(currentPlayerEnergy);
+        }
     }
 
     private void HideAndDeactivateCard()
@@ -402,7 +416,6 @@ public class CardOnHandManager : MonoBehaviour
         else
         {
             cardActive = true;
-            card_can_be_played = true;
         }
     }
 
@@ -413,13 +426,16 @@ public class CardOnHandManager : MonoBehaviour
             var main = auraPS.main;
             main.startColor = greenColor;
             outlineMaterial = greenOutlineMaterial; //TODO:apply blue if card has a special condition
+            energyTF.color = new Color(1,1,1);
             card_can_be_played = true;
+            Debug.Log($"[CardOnHandManager] [{thisCardValues.name}] Card is now playable {energy}/{thisCardValues.energy}");
         }
         else
         {
             energyTF.color = redColor;
             outlineMaterial = greenOutlineMaterial;
             card_can_be_played = false;
+            Debug.Log($"[CardOnHandManager] [{thisCardValues.name}] Card is no longer playable {energy}/{thisCardValues.energy}");
         }
     }
 
@@ -435,7 +451,7 @@ public class CardOnHandManager : MonoBehaviour
         // DOTween.Kill(this.transform);
         this.cardcontent.SetActive(true);
         ActivateCard();
-        UpdateCardBasedOnEnergy(currentPlayerEnergy);
+        cardActive = true;
     }
 
 
