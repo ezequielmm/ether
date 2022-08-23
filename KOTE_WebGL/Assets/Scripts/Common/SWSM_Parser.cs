@@ -18,6 +18,9 @@ public class SWSM_Parser
             case nameof(WS_MESSAGE_TYPES.combat_update):               
                 ProcessCombatUpdate(swsm.data.action, data);
                 break;
+            case nameof(WS_MESSAGE_TYPES.treasure_update):
+                ProcessTreasureUpdate(swsm.data.action, data);
+                break;
             case nameof(WS_MESSAGE_TYPES.enemy_intents):
                 //ProcessEnemyIntents(swsm.data.action, data);
                 Debug.LogWarning($"[SWSM Parser] Enemy Intents are no longer listened for.");
@@ -290,24 +293,36 @@ public class SWSM_Parser
         }
     }
 
+    private static void ProcessTreasureUpdate(string action, string data) 
+    {
+        switch (action) 
+        {
+            case nameof(WS_TREASURE_ACTIONS.begin_treasure):
+                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Treasure);
+                break;
+            default:
+                Debug.LogWarning($"[SWSM Parser][Treasure Update] Unknown Action \"{action}\". Data = {data}");
+                break;
+        }
+    }
+
     private static void ProcessCombatUpdate(string action, string data)
     {
         SWSM_NodeData nodeBase = JsonUtility.FromJson<SWSM_NodeData>(data);
         NodeStateData nodeState = nodeBase.data;
         switch (action)
         {
-            case "begin_combat":
-
+            case nameof(WS_COMBAT_ACTIONS.begin_combat):
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Combat);
                 break;
-            case "update_statuses":
+            case nameof(WS_COMBAT_ACTIONS.update_statuses):
                 ProcessStatusUpdate(data);
                 break;
-            case "combat_queue":
+            case nameof(WS_COMBAT_ACTIONS.combat_queue):
                 ProcessCombatQueue(data);
                 break;
             default:
-                Debug.Log($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
+                Debug.LogWarning($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
                 break;
         }
     }

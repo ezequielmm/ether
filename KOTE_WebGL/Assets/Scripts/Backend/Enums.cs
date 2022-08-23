@@ -19,6 +19,7 @@ public enum PileTypes
 public enum GameStatuses
 {
     Combat,
+    Treasure,
     Map,
     Encounter,
     Merchant,
@@ -179,6 +180,7 @@ public enum WS_MESSAGE_TYPES
 {
     map_update,
     combat_update,
+    treasure_update,
     enemy_intents,
     player_state_update,
     error,
@@ -187,7 +189,21 @@ public enum WS_MESSAGE_TYPES
     player_affected,
     end_turn,
     begin_turn,
-    end_combat
+    end_combat,
+}
+
+[Serializable]
+public enum WS_COMBAT_ACTIONS 
+{
+    begin_combat,
+    update_statuses,
+    combat_queue
+}
+
+[Serializable]
+public enum WS_TREASURE_ACTIONS
+{
+    begin_treasure
 }
 
 [Serializable]
