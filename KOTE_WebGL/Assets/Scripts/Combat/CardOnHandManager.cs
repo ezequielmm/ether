@@ -49,7 +49,15 @@ public class CardOnHandManager : MonoBehaviour
 
     public Vector3 targetPosition;
     public Vector3 targetRotation;
-    public bool cardActive = false;
+    [SerializeField]
+    private bool _cardActive = false;
+    public bool cardActive { get => _cardActive;
+        set 
+        {
+            _cardActive = value;
+            UpdateCardBasedOnEnergy(currentPlayerEnergy);
+        } 
+    }
 
     [Header("Card Variation Sprites")]
     public List<Gem> Gems;
@@ -69,8 +77,6 @@ public class CardOnHandManager : MonoBehaviour
     public Color blueColor;
     public Color redColor;
 
-    [HideInInspector]
-    public List<Tooltip> tooltips;
     [HideInInspector] public Sequence mySequence;
 
     private Vector3 drawPileOrthoPosition;
@@ -90,15 +96,12 @@ public class CardOnHandManager : MonoBehaviour
 
     private bool awaitMouseUp;
 
-    private new BoxCollider2D collider;
- 
     private bool inTransit;
 
     private void Awake()
     {
         //Screenspace is defined in pixels. The bottom-left of the screen is (0,0); the right-top is (pixelWidth,pixelHeight). The z position is in world units from the camera.
         //Viewport space is normalized and relative to the camera. The bottom-left of the camera is (0,0); the top-right is (1,1). The z position is in world units from the camera.
-        tooltips = new List<Tooltip>();
 
         drawPileOrthoPosition = TransformUIToOrtho("DrawCardPile");
         discardPileOrthoPosition = TransformUIToOrtho("DiscardCardPile");
@@ -110,7 +113,7 @@ public class CardOnHandManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        collider = GetComponent<BoxCollider2D>();
+        mySequence = DOTween.Sequence();
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
         GameManager.Instance.EVENT_MOVE_CARD.AddListener(OnCardToMove);
         GameManager.Instance.EVENT_CARD_SHOWING_UP.AddListener(OnCardMouseShowingUp);
@@ -221,21 +224,8 @@ public class CardOnHandManager : MonoBehaviour
           card_energy_cost = card.energy;*/
 
         thisCardValues = card;
-        foreach (var status in card.properties.statuses) 
-        {
-            if (!string.IsNullOrEmpty(status.tooltip.title))
-            {
-                tooltips.Add(status.tooltip);
-            }
-            else 
-            {
-                tooltips.Add(new Tooltip()
-                {
-                    title = Utils.PrettyText(status.name),
-                    description = "TODO // Send Tooltip Over Websocket with Cards on Status Line"
-                });
-            }
-        }
+
+        currentPlayerEnergy = energy;
 
         UpdateCardBasedOnEnergy(energy);
     }
@@ -401,6 +391,10 @@ public class CardOnHandManager : MonoBehaviour
         {
             ResetCardPosition();
         }
+        if (cardActive)
+        {
+            UpdateCardBasedOnEnergy(currentPlayerEnergy);
+        }
     }
 
     private void HideAndDeactivateCard()
@@ -422,7 +416,6 @@ public class CardOnHandManager : MonoBehaviour
         else
         {
             cardActive = true;
-            card_can_be_played = true;
         }
     }
 
@@ -433,13 +426,16 @@ public class CardOnHandManager : MonoBehaviour
             var main = auraPS.main;
             main.startColor = greenColor;
             outlineMaterial = greenOutlineMaterial; //TODO:apply blue if card has a special condition
+            energyTF.color = new Color(1,1,1);
             card_can_be_played = true;
+            Debug.Log($"[CardOnHandManager] [{thisCardValues.name}] Card is now playable {energy}/{thisCardValues.energy}");
         }
         else
         {
             energyTF.color = redColor;
             outlineMaterial = greenOutlineMaterial;
             card_can_be_played = false;
+            Debug.Log($"[CardOnHandManager] [{thisCardValues.name}] Card is no longer playable {energy}/{thisCardValues.energy}");
         }
     }
 
@@ -455,17 +451,25 @@ public class CardOnHandManager : MonoBehaviour
         // DOTween.Kill(this.transform);
         this.cardcontent.SetActive(true);
         ActivateCard();
-        UpdateCardBasedOnEnergy(currentPlayerEnergy);
+        cardActive = true;
     }
 
 
     private void OnMouseEnter()
     {
-        if (cardActive && card_can_be_played)
+        if (cardActive && card_can_be_played && !Input.GetMouseButton(0))
         {
             // DOTween.PlayForward(this.gameObject);
             // GameManager.Instance.EVENT_CARD_MOUSE_ENTER.Invoke(thisCardValues.cardId);
 
+            ShowUpCard();
+        }
+    }
+
+    private void OnMouseOver()
+    {
+        if (Input.GetMouseButtonUp(0)) 
+        {
             ShowUpCard();
         }
     }
@@ -476,9 +480,8 @@ public class CardOnHandManager : MonoBehaviour
 
         if (cardActive)
         {
-            // mySequence.Kill();
-            DOTween.Kill(this.transform);
             ResetCardPosition();
+            DOTween.Kill(this.transform);
 
             auraPS.Play();
 
@@ -488,17 +491,11 @@ public class CardOnHandManager : MonoBehaviour
             transform.DOScale(Vector3.one * GameSettings.HAND_CARD_SHOW_UP_SCALE, GameSettings.HAND_CARD_SHOW_UP_TIME);
 
 
-            transform.DOMoveY(GameSettings.HAND_CARD_SHOW_UP_Y,
-                GameSettings.HAND_CARD_SHOW_UP_TIME); //.SetRelative(true);
-            transform.DOMoveZ(GameSettings.HAND_CARD_SHOW_UP_Z, GameSettings.HAND_CARD_SHOW_UP_TIME);
+            Vector3 showUpPosition = new Vector3(targetPosition.x, GameSettings.HAND_CARD_SHOW_UP_Y, GameSettings.HAND_CARD_SHOW_UP_Z);
+            transform.DOMove(showUpPosition, GameSettings.HAND_CARD_SHOW_UP_TIME);
+            
 
-            transform.DORotate(Vector3.zero, GameSettings.HAND_CARD_SHOW_UP_TIME).OnComplete(() => 
-            {
-                Vector3 topRightOfCard = new Vector3(transform.position.x + (collider.bounds.size.x / 2) + 0.2f, 
-                    transform.position.y + (collider.bounds.size.y / 2), 0);
-                GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.TopLeft, topRightOfCard, null);
-            });
-
+            transform.DORotate(Vector3.zero, GameSettings.HAND_CARD_SHOW_UP_TIME);
             GameManager.Instance.EVENT_CARD_SHOWING_UP.Invoke(thisCardValues.id, this.targetPosition);
         }
         else
@@ -526,8 +523,6 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnMouseExit()
     {
-        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
-
         if (pointerIsActive) return;
 
         if (cardActive && cardIsShowingUp)
@@ -585,8 +580,6 @@ public class CardOnHandManager : MonoBehaviour
             return;
         }
 
-        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
-
         float xxDelta = Mathf.Abs(this.transform.position.x - targetPosition.x);
 
 
@@ -596,6 +589,10 @@ public class CardOnHandManager : MonoBehaviour
         {
             //show the pointer instead of following the mouse
             GameManager.Instance.EVENT_CARD_ACTIVATE_POINTER.Invoke(transform.position);
+
+            Vector3 showUpPosition = new Vector3(0, GameSettings.HAND_CARD_SHOW_UP_Y, GameSettings.HAND_CARD_SHOW_UP_Z);
+            transform.DOMove(showUpPosition, GameSettings.HAND_CARD_SHOW_UP_TIME);
+
             pointerIsActive = true;
             return;
         }

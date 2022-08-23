@@ -69,8 +69,11 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_CHARACTERSELECTED = new UnityEvent<string>();
 
     //REWARDS EVENTS
-    [HideInInspector] public UnityEvent<bool> EVENT_REWARDSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<bool> EVENT_SHOW_REWARDS_PANEL = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<bool> EVENT_CARDS_REWARDPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<SWSM_RewardsData> EVENT_POPULATE_REWARDS_PANEL = new UnityEvent<SWSM_RewardsData>();
+    [HideInInspector] public UnityEvent<string> EVENT_REWARD_SELECTED = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent EVENT_CONTINUE_EXPEDITION = new UnityEvent();
 
     //POTIONS EVENTS
     [HideInInspector] public UnityEvent<Potion> EVENT_POTION_USED = new UnityEvent<Potion>();
@@ -174,6 +177,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_CLEAR_TOOLTIPS = new UnityEvent();
     [HideInInspector] public UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>  EVENT_SET_TOOLTIPS { get; } = 
         new UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>();
+    [HideInInspector] public UnityEvent<string, int> EVENT_HEAL = new UnityEvent<string, int>(); // id, healed amount
 
 
     //Common events
