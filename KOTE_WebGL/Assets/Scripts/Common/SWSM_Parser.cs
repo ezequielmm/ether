@@ -59,10 +59,19 @@ public class SWSM_Parser
         {
             case nameof(WS_MESSAGE_ACTIONS.enemies_defeated):
                 Debug.Log("Should move cards from draw to hand");
+                SWSM_RewardsData rewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
+                GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(rewardsData);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.players_defeated):
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.select_another_reward):
+                SWSM_RewardsData updatedRewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
+                GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(updatedRewardsData);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.show_map):
+                GameManager.Instance.LoadScene(inGameScenes.Expedition);
                 break;
         }
     }
