@@ -29,6 +29,7 @@ public class EnemyManager : MonoBehaviour
     private Action RunWithEvent;
     private bool CalledEvent;
 
+    Collider2D collider;
     private StatusManager statusManager;
 
     public EnemyData EnemyData { 
@@ -53,6 +54,8 @@ public class EnemyManager : MonoBehaviour
                 activeEnemy.transform.localPosition = Vector3.zero;
                 enemyPlacementData = activeEnemy.GetComponent<EnemyPrefab>();
                 // Add the cursorEnter and Exit for tooltips
+                enemyPlacementData.onCursorEnter.AddListener(setTooltip);
+                enemyPlacementData.onCursorExit.AddListener(removeTooltip);
                 // Set mounting points
                 TopBar.position = enemyPlacementData.intentMountingPoint.position;
                 BottomBar.position = enemyPlacementData.healthMountingPoint.position;
@@ -228,6 +231,8 @@ public class EnemyManager : MonoBehaviour
             spine = activeEnemy.GetComponent<SpineAnimationsManagement>();
             spine.ANIMATION_EVENT.AddListener(OnAnimationEvent);
             spine.PlayAnimationSequence("Idle");
+
+            collider = GetComponentInChildren<Collider2D>();
         }
         
     }
@@ -338,5 +343,34 @@ public class EnemyManager : MonoBehaviour
         }
         Debug.LogError($"[EnemyManager] Missing {enemyName} prefab.");
         return null;
+    }
+    private List<Tooltip> GetTooltipInfo()
+    {
+        List<Tooltip> list = new List<Tooltip>();
+
+        foreach (IntentIcon icon in GetComponentsInChildren<IntentIcon>())
+        {
+            list.Add(icon.GetTooltip());
+        }
+
+        foreach (StatusIcon icon in GetComponentsInChildren<StatusIcon>())
+        {
+            list.Add(icon.GetTooltip());
+        }
+
+        return list;
+    }
+
+    private void setTooltip()
+    {
+        Vector3 anchorPoint = new Vector3(collider.bounds.center.x - collider.bounds.extents.x,
+            collider.bounds.center.y, 0);
+        // Tooltip On
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(GetTooltipInfo(), TooltipController.Anchor.MiddleRight, anchorPoint, null);
+    }
+    private void removeTooltip() 
+    {
+        // Tooltip Off
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
     }
 }

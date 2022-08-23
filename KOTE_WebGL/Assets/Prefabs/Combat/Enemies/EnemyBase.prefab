@@ -193,7 +193,7 @@ MonoBehaviour:
   defenseTF: {fileID: 7646895336557231015}
   TopBar: {fileID: 7179701136310191698}
   BottomBar: {fileID: 3611210916364116004}
-  overrideEnemy: 1
+  overrideEnemy: 0
   enemyType: 12
   enemyMap:
   - {fileID: 9145094296802414103, guid: eefb14fc925eccd44b35e1474ddf6bdc, type: 3}
