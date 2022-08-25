@@ -47,6 +47,9 @@ public class GameStatusManager : MonoBehaviour
             case GameStatuses.Map:
                 InitializeMapMode();
                 break;
+            case GameStatuses.Treasure:
+                InitializeTreasureMode();
+                break;
             case GameStatuses.Encounter:break;
             case GameStatuses.Merchant:break;
             case GameStatuses.RoyalHouse:break;
@@ -61,17 +64,28 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(false);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(true);
         GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
+        GameManager.Instance.EVENT_TOOGLE_TREASURE_ELEMENTS.Invoke(false);
     }
 
     private void InitializeCombatmode()
     {
-        //tell top bar to hide the map icon
+        //tell top bar to show the map icon
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
         GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(true);
+        GameManager.Instance.EVENT_TOOGLE_TREASURE_ELEMENTS.Invoke(false);
         //GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
         GameManager.Instance.EVENT_CARD_DRAW_CARDS.Invoke();
         //Invoke("InvokeDrawCards", 0.2f);
+
+    }
+    private void InitializeTreasureMode()
+    {
+        //tell top bar to show the map icon
+        GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
+        GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
+        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
+        GameManager.Instance.EVENT_TOOGLE_TREASURE_ELEMENTS.Invoke(true);
 
     }
 
