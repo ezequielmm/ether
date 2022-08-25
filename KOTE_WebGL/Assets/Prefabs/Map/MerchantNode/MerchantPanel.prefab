@@ -1470,12 +1470,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shopLocationContainer: {fileID: 7005334169173046270}
-  cardLayout: {fileID: 0}
-  trinketLayout: {fileID: 0}
-  potionLayout: {fileID: 0}
-  gearLayout: {fileID: 0}
-  merchantCardPrefab: {fileID: 0}
-  merchantItemPrefab: {fileID: 0}
+  cardLayout: {fileID: 2788787571693040983}
+  trinketLayout: {fileID: 8281469431494913413}
+  potionLayout: {fileID: 2321383572914827361}
+  gearLayout: {fileID: 3431859280552038107}
+  merchantCardPrefab: {fileID: 6561661996959935494, guid: 98d0d7044da63bf4aa5c555b8d0c7434,
+    type: 3}
+  merchantItemPrefab: {fileID: 3962427404838598650, guid: 744b523f5ac905f44addde118a92fff8,
+    type: 3}
 --- !u!1 &6084532224094271566
 GameObject:
   m_ObjectHideFlags: 0

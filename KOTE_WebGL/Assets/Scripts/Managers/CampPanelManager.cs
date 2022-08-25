@@ -7,10 +7,10 @@ public class CampPanelManager : MonoBehaviour
    public GameObject CampContainer;
    private void Start()
    {
-      CampContainer.SetActive(false);
+      GameManager.Instance.EVENT_SHOW_CAMP_PANEL.AddListener(ShowCampPanel);
    }
 
-   private void OnCampSelected()
+   private void ShowCampPanel()
    {
       CampContainer.SetActive(true);
    }
@@ -19,11 +19,13 @@ public class CampPanelManager : MonoBehaviour
    {
       //TODO add rest functionality
       CampContainer.SetActive(false);
+      GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
    }
 
    public void OnSmithSelected()
    {
       //TODO add smithing functionality
       CampContainer.SetActive(false);
+      GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
    }
 }

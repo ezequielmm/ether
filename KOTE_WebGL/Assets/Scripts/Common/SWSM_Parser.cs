@@ -92,7 +92,7 @@ public class SWSM_Parser
         switch (action)
         {
             case "begin_encounter":
-                GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
+                GameManager.Instance.EVENT_SHOW_ENCOUNTER_PANEL.Invoke();
                 break;
         }
     }
@@ -112,7 +112,7 @@ public class SWSM_Parser
         switch (action)
         {
             case "begin_camp":
-                GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
+                GameManager.Instance.EVENT_SHOW_CAMP_PANEL.Invoke();
                 break;
         }
     }
