@@ -277,6 +277,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6302334512568715801}
+  - component: {fileID: 268926116809680367}
   m_Layer: 5
   m_Name: EncounterContainer
   m_TagString: Untagged
@@ -308,6 +309,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &268926116809680367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5539786164183534571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d40b57fa675efa4fb9dc005060d602b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6035120984478793935
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,7 +356,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1929, y: 1072}
+  m_SizeDelta: {x: 1455.303, y: 783.0784}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5481825370862395732
 CanvasRenderer:
@@ -373,8 +386,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 10fc4e7ef197d3944922811870852e0e, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 50ba2d2951a5c9346a6b540835e96c37, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
