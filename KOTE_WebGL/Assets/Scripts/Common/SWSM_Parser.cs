@@ -99,7 +99,7 @@ public class SWSM_Parser
         switch (action)
         {
             case "begin_merchant":
-                GameManager.Instance.EVENT_MERCHANT_ACTIVATE.Invoke();
+                GameManager.Instance.EVENT_SHOW_MERCHANT_PANEL.Invoke();
                 break;
         }
     }

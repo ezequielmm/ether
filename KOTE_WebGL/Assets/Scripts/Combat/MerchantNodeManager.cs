@@ -19,7 +19,7 @@ public class MerchantNodeManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.EVENT_MERCHANT_ACTIVATE.AddListener(ActivateInnerMerchantPanel);
+        GameManager.Instance.EVENT_SHOW_MERCHANT_PANEL.AddListener(ActivateInnerMerchantPanel);
     }
 
     private void ActivateInnerMerchantPanel()

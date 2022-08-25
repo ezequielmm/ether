@@ -85,10 +85,14 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector]
     public UnityEvent<BlessingItem, bool> EVENT_SELECTBLESSING_ITEM = new UnityEvent<BlessingItem, bool>();
 
+    //ENCOUNTER EVENTS
+    [HideInInspector] public UnityEvent EVENT_SHOW_ENCOUNTER_PANEL = new UnityEvent();
 
-    //SHOP LOCATION EVENTS
-    [HideInInspector] public UnityEvent EVENT_MERCHANT_ACTIVATE = new UnityEvent();
+    //MERCHANT PANEL EVENTS
+    [HideInInspector] public UnityEvent EVENT_SHOW_MERCHANT_PANEL = new UnityEvent();
 
+    //CAMP EVENTS
+    [HideInInspector] public UnityEvent EVENT_SHOW_CAMP_PANEL = new UnityEvent();
 
     //EXPEDITION EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_EXPEDITION_STATUS_UPDATE = new UnityEvent<bool>();
