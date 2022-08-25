@@ -54,11 +54,47 @@ public static class Utils
             new Vector3(-bounds.extents.x + offset.x, -bounds.extents.y + offset.y, offset.z));
     }
 
+    public static void GizmoDrawBox(float width, float height, Vector3 offset = default(Vector3))
+    {
+        GizmoDrawBox(
+            new Vector3((width / 2) + offset.x, (height / 2) + offset.y, offset.z),
+            new Vector3(-(width / 2) + offset.x, (height / 2) + offset.y, offset.z),
+            new Vector3((width / 2) + offset.x, -(height / 2) + offset.y, offset.z),
+            new Vector3(-(width / 2) + offset.x, -(height / 2) + offset.y, offset.z));
+    }
+
     public static void GizmoDrawBox(Vector3 TopLeft, Vector3 TopRight, Vector3 BottomLeft, Vector3 BottomRight)
     {
         Gizmos.DrawLine(TopLeft, TopRight);
         Gizmos.DrawLine(TopRight, BottomRight);
         Gizmos.DrawLine(BottomRight, BottomLeft);
         Gizmos.DrawLine(BottomLeft, TopLeft);
+    }
+
+    public static float PixelToScreenSize(float pixelSize, int screenHeight = 1080)
+    {
+        float height = 2 * Camera.main.orthographicSize; // 10
+        float pixToScene = height / screenHeight;
+        return pixelSize * pixToScene;
+    }
+
+    public static float GetSceneSize(Size size) 
+    {
+        switch (size)
+        {
+            case Size.tiny:
+                return PixelToScreenSize(75, 1080);
+            case Size.small:
+                return PixelToScreenSize(154, 1080);
+            default:
+            case Size.medium:
+                return PixelToScreenSize(233, 1080);
+            case Size.mediumWide:
+                return PixelToScreenSize(312, 1080);
+            case Size.large:
+                return PixelToScreenSize(470, 1080);
+            case Size.giant:
+                return PixelToScreenSize(707, 1080);
+        }
     }
 }

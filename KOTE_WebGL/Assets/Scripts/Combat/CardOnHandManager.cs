@@ -428,14 +428,14 @@ public class CardOnHandManager : MonoBehaviour
             outlineMaterial = greenOutlineMaterial; //TODO:apply blue if card has a special condition
             energyTF.color = new Color(1,1,1);
             card_can_be_played = true;
-            Debug.Log($"[CardOnHandManager] [{thisCardValues.name}] Card is now playable {energy}/{thisCardValues.energy}");
+            //Debug.Log($"[CardOnHandManager] [{thisCardValues.name}] Card is now playable {energy}/{thisCardValues.energy}");
         }
         else
         {
             energyTF.color = redColor;
             outlineMaterial = greenOutlineMaterial;
             card_can_be_played = false;
-            Debug.Log($"[CardOnHandManager] [{thisCardValues.name}] Card is no longer playable {energy}/{thisCardValues.energy}");
+            //Debug.Log($"[CardOnHandManager] [{thisCardValues.name}] Card is no longer playable {energy}/{thisCardValues.energy}");
         }
     }
 
@@ -631,7 +631,7 @@ public class CardOnHandManager : MonoBehaviour
             if (Vector2.Distance(this.transform.position, Vector2.zero) < 1.5f)
             {
                 Debug.Log("card is on center");
-                GameManager.Instance.EVENT_CARD_PLAYED.Invoke(thisCardValues.id, -1);
+                GameManager.Instance.EVENT_CARD_PLAYED.Invoke(thisCardValues.id, "-1");
                 cardActive = false;
             }
             else

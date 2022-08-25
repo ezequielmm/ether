@@ -176,8 +176,10 @@ public class PlayerData
     /// <summary>
     /// Index of Player
     /// </summary>
-    public int playerId = 1; // This will be static for now. We'll need this when we have multiple players
+    [Obsolete("Int IDs will be phased out")]
+    public int playerId { get; set; } = 1; // This will be static for now. We'll need this when we have multiple players
 
+    public string id;
     public int hpCurrent;
     public int hpMax; //current
     public int gold;
@@ -293,7 +295,7 @@ public class Cards
 public class CardPlayedData //outgoing data
 {
     public string cardId;
-    public int targetId;
+    public string targetId;
 }
 
 [Serializable]
@@ -476,6 +478,7 @@ public class EnemyData
     /// <summary>
     /// Index of enemy
     /// </summary>
+    [Obsolete("Int IDs will be phased out")]
     public int enemyId;
 
     public int defense;

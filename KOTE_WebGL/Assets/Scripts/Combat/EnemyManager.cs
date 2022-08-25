@@ -29,6 +29,7 @@ public class EnemyManager : MonoBehaviour
     private Action RunWithEvent;
     private bool CalledEvent;
 
+    new public Collider2D collider;
     private StatusManager statusManager;
 
     public EnemyData EnemyData { 
@@ -228,17 +229,24 @@ public class EnemyManager : MonoBehaviour
             spine = activeEnemy.GetComponent<SpineAnimationsManagement>();
             spine.ANIMATION_EVENT.AddListener(OnAnimationEvent);
             spine.PlayAnimationSequence("Idle");
+            collider = GetComponentInChildren<Collider2D>();
         }
         
     }
 
     private void OnUpdateEnemy(EnemyData newEnemyData)
     {
-        if (newEnemyData.enemyId == enemyData.enemyId)
+        if (newEnemyData.id == enemyData.id)
         {
             // healthBar.DOValue(newEnemyData.hpMin, 1);
             EnemyData = newEnemyData;
         }
+    }
+    private void OnDrawGizmos()
+    {
+        float size = Utils.GetSceneSize(Utils.ParseEnum<Size>(enemyData.size));
+        Gizmos.color = Color.cyan;
+        Utils.GizmoDrawBox(size, size * 2, (Vector3.up * size) + transform.position);
     }
 
     public void SetHealth(int? current = null, int? max = null)
