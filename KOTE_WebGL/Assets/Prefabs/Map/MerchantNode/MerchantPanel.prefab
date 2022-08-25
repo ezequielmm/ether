@@ -1410,7 +1410,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4179388299481887058}
         m_TargetAssemblyTypeName: ShopLocationManager, Assembly-CSharp
-        m_MethodName: ActivateInnerShopLocationPanel
+        m_MethodName: ActivateInnerMerchantPanel
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

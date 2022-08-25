@@ -197,6 +197,9 @@ public enum WS_ERROR_TYPES
 public enum WS_MESSAGE_TYPES
 {
     map_update,
+    encounter_update,
+    merchant_update,
+    camp_update,
     combat_update,
     enemy_intents,
     player_state_update,

@@ -87,7 +87,7 @@ public class GameManager : SingleTon<GameManager>
 
 
     //SHOP LOCATION EVENTS
-    [HideInInspector] public UnityEvent<bool> EVENT_SHOPLOCATION_ACTIVATION_REQUEST = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent EVENT_MERCHANT_ACTIVATE = new UnityEvent();
 
 
     //EXPEDITION EVENTS
