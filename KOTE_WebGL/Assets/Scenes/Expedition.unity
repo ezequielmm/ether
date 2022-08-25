@@ -463,6 +463,7 @@ RectTransform:
   - {fileID: 358337462}
   - {fileID: 1963112302}
   - {fileID: 1597033911}
+  - {fileID: 1355152813}
   - {fileID: 974997430}
   - {fileID: 1741122749}
   - {fileID: 684885777}
@@ -1055,7 +1056,7 @@ RectTransform:
   - {fileID: 1324528669}
   - {fileID: 1335378695}
   m_Father: {fileID: 252026739}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1107,7 +1108,7 @@ RectTransform:
   - {fileID: 470859933}
   - {fileID: 1044270327}
   m_Father: {fileID: 252026739}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2167,6 +2168,131 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1335378694}
   m_CullTransparentMesh: 1
+--- !u!1001 &1355152812
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 252026739}
+    m_Modifications:
+    - target: {fileID: 6007782403552800906, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_Name
+      value: MerchantPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 85fcd610dfa64284c8f96c821210c654, type: 3}
+--- !u!224 &1355152813 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
+    type: 3}
+  m_PrefabInstance: {fileID: 1355152812}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1371504684
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2686,7 +2812,7 @@ RectTransform:
   m_Children:
   - {fileID: 104544482}
   m_Father: {fileID: 252026739}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3302,10 +3428,19 @@ MonoBehaviour:
   EVENT_CHARACTERSELECTED:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_REWARDSPANEL_ACTIVATION_REQUEST:
+  EVENT_SHOW_REWARDS_PANEL:
     m_PersistentCalls:
       m_Calls: []
   EVENT_CARDS_REWARDPANEL_ACTIVATION_REQUEST:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_POPULATE_REWARDS_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_REWARD_SELECTED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CONTINUE_EXPEDITION:
     m_PersistentCalls:
       m_Calls: []
   EVENT_POTION_USED:
@@ -3320,7 +3455,7 @@ MonoBehaviour:
   EVENT_SELECTBLESSING_ITEM:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_SHOPLOCATION_ACTIVATION_REQUEST:
+  EVENT_MERCHANT_ACTIVATE:
     m_PersistentCalls:
       m_Calls: []
   EVENT_EXPEDITION_STATUS_UPDATE:
@@ -3471,6 +3606,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   EVENT_UPDATE_STATUS_EFFECTS:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_HEAL:
     m_PersistentCalls:
       m_Calls: []
   EVENT_GENERIC_WS_DATA:
