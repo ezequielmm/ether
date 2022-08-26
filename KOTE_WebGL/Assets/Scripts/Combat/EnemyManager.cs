@@ -230,6 +230,11 @@ public class EnemyManager : MonoBehaviour
             spine.ANIMATION_EVENT.AddListener(OnAnimationEvent);
             spine.PlayAnimationSequence("Idle");
             collider = GetComponentInChildren<Collider2D>();
+            var lowerBar = GetComponent<LowerBarConrtroller>();
+            if (lowerBar != null) 
+            {
+                lowerBar.SetSize(Utils.ParseEnum<Size>(EnemyData.size));
+            }
         }
         
     }
@@ -244,9 +249,12 @@ public class EnemyManager : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        float size = Utils.GetSceneSize(Utils.ParseEnum<Size>(enemyData.size));
-        Gizmos.color = Color.cyan;
-        Utils.GizmoDrawBox(size, size * 2, (Vector3.up * size) + transform.position);
+        if (!string.IsNullOrEmpty(enemyData.size))
+        {
+            float size = Utils.GetSceneSize(Utils.ParseEnum<Size>(enemyData.size));
+            Gizmos.color = Color.cyan;
+            Utils.GizmoDrawBox(size, size * 2, (Vector3.up * size) + transform.position);
+        }
     }
 
     public void SetHealth(int? current = null, int? max = null)

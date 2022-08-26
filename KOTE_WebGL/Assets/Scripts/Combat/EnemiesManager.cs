@@ -121,12 +121,18 @@ public class EnemiesManager : MonoBehaviour
         float spacing = Mathf.Max(0, (extent * 2) - width) / (enemies.Count);
         float leftEdge = transform.position.x + -(width / 2f) + -spillOver + -spacing/2;
         StringBuilder sb = new StringBuilder();
+
         foreach (var enemyObj in enemies)
         {
             var enemy = enemyObj.GetComponent<EnemyManager>();
             sb.Append($"[{enemy.EnemyData.enemyId} | {enemy.EnemyData.id}], ");
             float size = getSize(enemy.EnemyData.size); //enemy.collider.bounds.size.x;
-            Vector3 desiredPosition = new Vector3(leftEdge + size / 2, transform.position.y + floor, transform.position.z);
+            float xPos = leftEdge + size / 2;
+            if (enemies.Count <= 1)
+            {
+                xPos = transform.position.x;
+            }
+            Vector3 desiredPosition = new Vector3(xPos, transform.position.y + floor, transform.position.z);
             enemy.transform.DOMove(desiredPosition, 1);
             leftEdge += size + spacing;
         }

@@ -71,9 +71,9 @@ public static class Utils
         Gizmos.DrawLine(BottomLeft, TopLeft);
     }
 
-    public static float PixelToScreenSize(float pixelSize, int screenHeight = 1080)
+    public static float PixelToSceneSize(float pixelSize, int screenHeight = 1080)
     {
-        float height = 2 * Camera.main.orthographicSize; // 10
+        float height = 2 * (Camera.main?.orthographicSize ?? 5f); // 10
         float pixToScene = height / screenHeight;
         return pixelSize * pixToScene;
     }
@@ -83,18 +83,45 @@ public static class Utils
         switch (size)
         {
             case Size.tiny:
-                return PixelToScreenSize(75, 1080);
+                return PixelToSceneSize(75, 1080);
             case Size.small:
-                return PixelToScreenSize(154, 1080);
+                return PixelToSceneSize(154, 1080);
             default:
             case Size.medium:
-                return PixelToScreenSize(233, 1080);
+                return PixelToSceneSize(233, 1080);
             case Size.mediumWide:
-                return PixelToScreenSize(312, 1080);
+                return PixelToSceneSize(312, 1080);
             case Size.large:
-                return PixelToScreenSize(470, 1080);
+                return PixelToSceneSize(470, 1080);
             case Size.giant:
-                return PixelToScreenSize(707, 1080);
+                return PixelToSceneSize(707, 1080);
         }
+    }
+
+    public static int GetPixelSize(Size size, int screenHeight = 1080)
+    {
+        switch (size)
+        {
+            case Size.tiny:
+                return (int)((75 / 1080f) * 1080);
+            case Size.small:
+                return (int)((154 / 1080f) * 1080);
+            default:
+            case Size.medium:
+                return (int)((233 / 1080f) * 1080);
+            case Size.mediumWide:
+                return (int)((312 / 1080f) * 1080);
+            case Size.large:
+                return (int)((470 / 1080f) * 1080);
+            case Size.giant:
+                return (int)((707 / 1080f) * 1080);
+        }
+    }
+
+    public static IEnumerator RunAfterTime(Action action, float seconds) 
+    {
+        yield return new WaitForSeconds(seconds);
+        action.Invoke();
+        
     }
 }

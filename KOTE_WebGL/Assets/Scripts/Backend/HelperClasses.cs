@@ -411,7 +411,7 @@ public class SWSM_CombatAction
 public class StatusData
 {
     public string targetEntity;
-    public int id;
+    public string id;
     public List<Status> statuses;
 
     [Serializable]
