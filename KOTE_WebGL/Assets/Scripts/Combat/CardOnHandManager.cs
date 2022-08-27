@@ -38,11 +38,11 @@ public class CardOnHandManager : MonoBehaviour
         } 
     }
 
-    [Header("Card Variation Sprites")]
+   /* [Header("Card Variation Sprites")]
     public List<Gem> Gems;
     public List<Banner> banners;
     public List<Frame> frames;
-    [FormerlySerializedAs("images")] public List<Sprite> cardImages;
+    [FormerlySerializedAs("images")] public List<Sprite> cardImages;*/
     
     [Header("Outline effects")] public ParticleSystem auraPS;
 
