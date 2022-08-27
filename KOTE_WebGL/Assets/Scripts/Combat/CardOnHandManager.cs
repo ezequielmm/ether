@@ -255,7 +255,7 @@ public class CardOnHandManager : MonoBehaviour
         }
         else 
         {
-            Debug.Log($"[CardOnHandManager] Card {thisCardValues.id} is not from {originType} and will not be moved to {destinationType}.");
+           // Debug.Log($"[CardOnHandManager] Card {thisCardValues.id} is not from {originType} and will not be moved to {destinationType}.");
             return false;
         }
     }
@@ -263,8 +263,7 @@ public class CardOnHandManager : MonoBehaviour
     public void MoveCard(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType,
         bool activateCard = false, Vector3 pos = default(Vector3), float delay = 0)
     {
-        Debug.Log("[CardOnHandManager] MoveCard = " + originType + " to " + destinationType + "........card id: " +
-                  thisCardValues.id);
+      //  Debug.Log("[CardOnHandManager] MoveCard = " + originType + " to " + destinationType + "........card id: " +                  thisCardValues.id);
         movePs.Play();
 
         Vector3 origin = new Vector3();
