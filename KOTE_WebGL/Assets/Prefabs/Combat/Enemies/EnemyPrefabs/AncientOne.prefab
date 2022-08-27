@@ -92,7 +92,7 @@ Transform:
   m_GameObject: {fileID: 9145094296802414103}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 0.42, y: 0.42, z: 0.6}
   m_Children:
   - {fileID: 3221196400085153970}
   - {fileID: 4780662325673088803}
@@ -126,16 +126,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 044f6451672e87e48ac388cde4cb1849, type: 2}
-  - {fileID: 2100000, guid: 28ccabe69ceb03044b74b97bce592f21, type: 2}
-  - {fileID: 2100000, guid: bf21ba93c3401634cbdd1f8b9c060f7a, type: 2}
-  - {fileID: 2100000, guid: 044f6451672e87e48ac388cde4cb1849, type: 2}
-  - {fileID: 2100000, guid: 824be1b1d3aa9c7419ba1a0e527d449f, type: 2}
-  - {fileID: 2100000, guid: 044f6451672e87e48ac388cde4cb1849, type: 2}
-  - {fileID: 2100000, guid: 28ccabe69ceb03044b74b97bce592f21, type: 2}
-  - {fileID: 2100000, guid: 044f6451672e87e48ac388cde4cb1849, type: 2}
-  - {fileID: 2100000, guid: bf21ba93c3401634cbdd1f8b9c060f7a, type: 2}
-  - {fileID: 2100000, guid: 834a5e3c0bafad24c866c163c5e566af, type: 2}
+  - {fileID: 2100000, guid: f8223987a998ff24092d0ed5bb1de6cc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -213,31 +204,66 @@ MonoBehaviour:
   animationJson: {fileID: 4900000, guid: 28ea4ca4b8922c54e9b9690870a7002f, type: 3}
   atlasAssetBase: {fileID: 11400000, guid: d78b9d6bdd882ba41a8aa21928442f29, type: 2}
   animations:
-  - sequenceName: Attack
+  - sequenceName: attack
     sequence:
     - track: 1
       name: attack1
       loop: 0
       delay: 0
       animationEvent: 1
-  - sequenceName: Idle
+  - sequenceName: cast
+    sequence:
+    - track: 1
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: idle
     sequence:
     - track: 1
       name: idle
       loop: 1
       delay: 0
       animationEvent: 0
-  - sequenceName: Hit
+  - sequenceName: hit
     sequence:
     - track: 1
       name: hit
       loop: 0
       delay: 0.5
       animationEvent: 1
-  - sequenceName: Death
+  - sequenceName: death
     sequence:
     - track: 1
       name: death
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: roar
+    sequence:
+    - track: 1
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: bite
+    sequence:
+    - track: 1
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: charge
+    sequence:
+    - track: 1
+      name: attack2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: fade
+    sequence:
+    - track: 1
+      name: cast2
       loop: 0
       delay: 0
       animationEvent: 1
@@ -249,7 +275,6 @@ MonoBehaviour:
   - death
   - hit
   - idle
-  - Idlepose
 --- !u!61 &210636523318743020
 BoxCollider2D:
   m_ObjectHideFlags: 0

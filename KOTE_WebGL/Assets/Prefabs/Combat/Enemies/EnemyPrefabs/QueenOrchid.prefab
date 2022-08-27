@@ -204,31 +204,59 @@ MonoBehaviour:
   animationJson: {fileID: 4900000, guid: 8f4bd5e6e6f0b3f41875870a6850f615, type: 3}
   atlasAssetBase: {fileID: 11400000, guid: 30d7cef557ac8224ab44baa8f78fafe2, type: 2}
   animations:
-  - sequenceName: Attack
+  - sequenceName: attack
     sequence:
     - track: 1
       name: attack1
       loop: 0
       delay: 0
       animationEvent: 1
-  - sequenceName: Idle
+  - sequenceName: cast
+    sequence:
+    - track: 1
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: idle
     sequence:
     - track: 1
       name: idle
       loop: 1
       delay: 0
       animationEvent: 0
-  - sequenceName: Hit
+  - sequenceName: hit
     sequence:
     - track: 1
       name: hit
       loop: 0
       delay: 0.5
       animationEvent: 1
-  - sequenceName: Death
+  - sequenceName: death
     sequence:
     - track: 1
       name: death
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: pheromoneCloud
+    sequence:
+    - track: 1
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: constrict
+    sequence:
+    - track: 1
+      name: attack3
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: bite
+    sequence:
+    - track: 1
+      name: attack2
       loop: 0
       delay: 0
       animationEvent: 1

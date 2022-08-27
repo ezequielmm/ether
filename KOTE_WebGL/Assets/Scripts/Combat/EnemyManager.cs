@@ -132,7 +132,7 @@ public class EnemyManager : MonoBehaviour
             {
                 if (RunWithEvent != null && !CalledEvent) 
                 {
-                    Debug.LogWarning($"[{gameObject.name}] Animation is missing a 'attack' or 'release' event!");
+                    Debug.LogWarning($"[EnemyManager | {enemyData.name}] Animation is missing a 'attack' or 'release' event!");
                     RunWithEvent.Invoke();
                 }
             });

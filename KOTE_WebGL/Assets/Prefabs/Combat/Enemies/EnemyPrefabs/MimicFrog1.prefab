@@ -92,7 +92,7 @@ Transform:
   m_GameObject: {fileID: 9145094296802414103}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 0.35, y: 0.35, z: 0.6}
   m_Children:
   - {fileID: 2746094267836832852}
   - {fileID: 7226610427191325544}
@@ -204,31 +204,80 @@ MonoBehaviour:
   animationJson: {fileID: 4900000, guid: 25763b8654a27d147920fec7a5239a5e, type: 3}
   atlasAssetBase: {fileID: 11400000, guid: 3566d480837313246b8c8557945ea157, type: 2}
   animations:
-  - sequenceName: Attack
+  - sequenceName: attack
     sequence:
     - track: 1
       name: attack1
       loop: 0
       delay: 0
       animationEvent: 1
-  - sequenceName: Idle
+  - sequenceName: cast
+    sequence:
+    - track: 1
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: idle
     sequence:
     - track: 1
       name: idle
       loop: 1
       delay: 0
       animationEvent: 0
-  - sequenceName: Hit
+  - sequenceName: hit
     sequence:
     - track: 1
       name: hit
       loop: 0
       delay: 0.5
       animationEvent: 1
-  - sequenceName: Death
+  - sequenceName: death
     sequence:
     - track: 1
       name: death
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: croak
+    sequence:
+    - track: 1
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: swipe
+    sequence:
+    - track: 1
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: lick
+    sequence:
+    - track: 1
+      name: attack2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: enterHide
+    sequence:
+    - track: 1
+      name: cast2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: idleHide
+    sequence:
+    - track: 1
+      name: idle_hide
+      loop: 1
+      delay: 0
+      animationEvent: 0
+  - sequenceName: exitHide
+    sequence:
+    - track: 1
+      name: idle_exit
       loop: 0
       delay: 0
       animationEvent: 1
@@ -242,6 +291,7 @@ MonoBehaviour:
   - idle
   - idle_exit
   - idle_hide
+  - mockup_fullHide
 --- !u!61 &1698277156229044708
 BoxCollider2D:
   m_ObjectHideFlags: 0
