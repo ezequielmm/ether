@@ -54,11 +54,74 @@ public static class Utils
             new Vector3(-bounds.extents.x + offset.x, -bounds.extents.y + offset.y, offset.z));
     }
 
+    public static void GizmoDrawBox(float width, float height, Vector3 offset = default(Vector3))
+    {
+        GizmoDrawBox(
+            new Vector3((width / 2) + offset.x, (height / 2) + offset.y, offset.z),
+            new Vector3(-(width / 2) + offset.x, (height / 2) + offset.y, offset.z),
+            new Vector3((width / 2) + offset.x, -(height / 2) + offset.y, offset.z),
+            new Vector3(-(width / 2) + offset.x, -(height / 2) + offset.y, offset.z));
+    }
+
     public static void GizmoDrawBox(Vector3 TopLeft, Vector3 TopRight, Vector3 BottomLeft, Vector3 BottomRight)
     {
         Gizmos.DrawLine(TopLeft, TopRight);
         Gizmos.DrawLine(TopRight, BottomRight);
         Gizmos.DrawLine(BottomRight, BottomLeft);
         Gizmos.DrawLine(BottomLeft, TopLeft);
+    }
+
+    public static float PixelToSceneSize(float pixelSize, int screenHeight = 1080)
+    {
+        float height = 2 * (Camera.main?.orthographicSize ?? 5f); // 10
+        float pixToScene = height / screenHeight;
+        return pixelSize * pixToScene;
+    }
+
+    public static float GetSceneSize(Size size) 
+    {
+        switch (size)
+        {
+            case Size.tiny:
+                return PixelToSceneSize(75, 1080);
+            case Size.small:
+                return PixelToSceneSize(154, 1080);
+            default:
+            case Size.medium:
+                return PixelToSceneSize(233, 1080);
+            case Size.mediumWide:
+                return PixelToSceneSize(312, 1080);
+            case Size.large:
+                return PixelToSceneSize(470, 1080);
+            case Size.giant:
+                return PixelToSceneSize(707, 1080);
+        }
+    }
+
+    public static int GetPixelSize(Size size, int screenHeight = 1080)
+    {
+        switch (size)
+        {
+            case Size.tiny:
+                return (int)((75 / 1080f) * 1080);
+            case Size.small:
+                return (int)((154 / 1080f) * 1080);
+            default:
+            case Size.medium:
+                return (int)((233 / 1080f) * 1080);
+            case Size.mediumWide:
+                return (int)((312 / 1080f) * 1080);
+            case Size.large:
+                return (int)((470 / 1080f) * 1080);
+            case Size.giant:
+                return (int)((707 / 1080f) * 1080);
+        }
+    }
+
+    public static IEnumerator RunAfterTime(Action action, float seconds) 
+    {
+        yield return new WaitForSeconds(seconds);
+        action.Invoke();
+        
     }
 }
