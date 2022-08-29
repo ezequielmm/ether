@@ -19,6 +19,7 @@ public class EnemyManager : MonoBehaviour
 
     public bool overrideEnemy = false;
     public EnemyTypes enemyType;
+    public bool setEnemy = false;
 
     [SerializeField]
     private List<GameObject> enemyMap;
@@ -31,6 +32,7 @@ public class EnemyManager : MonoBehaviour
 
     private StatusManager statusManager;
 
+
     public EnemyData EnemyData { 
         set
         {
@@ -42,22 +44,12 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+
     private EnemyData ProcessNewData(EnemyData old, EnemyData current)
     {
         if (activeEnemy == null)
         {
-            var prefab = GetEnemyPrefab(current.name);
-            if (prefab != null)
-            {
-                activeEnemy = Instantiate(prefab, transform);
-                activeEnemy.transform.localPosition = Vector3.zero;
-                enemyPlacementData = activeEnemy.GetComponent<EnemyPrefab>();
-                // Add the cursorEnter and Exit for tooltips
-                // Set mounting points
-                TopBar.position = enemyPlacementData.intentMountingPoint.position;
-                BottomBar.position = enemyPlacementData.healthMountingPoint.position;
-                Instantiate();
-            }
+            SetEnemyPrefab(current.name);
         }
 
         if (old == null)
@@ -71,6 +63,43 @@ public class EnemyManager : MonoBehaviour
         SetHealth(current.hpCurrent, current.hpMax);
 
         return current;
+    }
+
+    private void Update()
+    {
+        if (setEnemy) 
+        {
+            setEnemy = false;
+            SetEnemyPrefab(Enum.GetName(typeof(EnemyTypes), enemyType));
+        }
+    }
+
+    private void SetEnemyPrefab(string enemyType)
+    {
+        var currentPrefab = GetComponentInChildren<EnemyPrefab>();
+        if (currentPrefab != null)
+            Destroy(currentPrefab.gameObject);
+        var prefab = GetEnemyPrefab(enemyType);
+        if (prefab != null)
+        {
+            activeEnemy = Instantiate(prefab, transform);
+            activeEnemy.transform.localPosition = Vector3.zero;
+            enemyPlacementData = activeEnemy.GetComponent<EnemyPrefab>();
+            enemyPlacementData.FitColliderToArt();
+            // Add the cursorEnter and Exit for tooltips
+            // Set mounting points
+            Vector3 top = enemyPlacementData.intentMountingPoint.position;
+            top.y = Mathf.Min(GameSettings.INTENT_MAX_HEIGHT, top.y);
+            TopBar.position = top;
+            Vector3 bottom = enemyPlacementData.healthMountingPoint.position;
+            bottom.y = Mathf.Max(transform.position.y, bottom.y);
+            BottomBar.position = bottom;
+
+            this.enemyType = Utils.ParseEnum<EnemyTypes>(enemyType);
+            gameObject.name = Enum.GetName(typeof(EnemyTypes), enemyType);
+
+            Instantiate();
+        }
     }
 
     private void OnAttackRequest(CombatTurnData attack)
@@ -329,14 +358,25 @@ public class EnemyManager : MonoBehaviour
         {
             enemyName = enemyType.ToString();
         }
-        foreach (var enemy in enemyMap) 
+        var enemy = findPrefab(enemyName);
+        if(enemy != null) return enemy;
+        Debug.LogError($"[EnemyManager] Missing {enemyName} prefab. Using SporeMonger as a backup");
+        enemyName = "SporeMonger";
+        enemy = findPrefab(enemyName);
+        if (enemy != null) return enemy;
+        Debug.LogError($"[EnemyManager] Missing {enemyName} prefab.");
+        return null;
+    }
+
+    private GameObject findPrefab(string enemyName)
+    {
+        foreach (var enemy in enemyMap)
         {
             if (enemy.name.ToLower().Equals(enemyName.ToLower()))
             {
                 return enemy;
             }
         }
-        Debug.LogError($"[EnemyManager] Missing {enemyName} prefab.");
         return null;
     }
 }

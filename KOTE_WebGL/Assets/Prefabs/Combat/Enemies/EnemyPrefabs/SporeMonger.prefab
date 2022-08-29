@@ -92,7 +92,7 @@ Transform:
   m_GameObject: {fileID: 9145094296802414103}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 6018179547981109339}
   - {fileID: 3813565034362172044}
@@ -300,6 +300,10 @@ MonoBehaviour:
   onCursorExit:
     m_PersistentCalls:
       m_Calls: []
+  spineAnimationsManagement: {fileID: 0}
+  setBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!50 &8226951231972184851
 Rigidbody2D:
   serializedVersion: 4
