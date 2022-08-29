@@ -25,11 +25,7 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
 
     private Vector3 originalScale;
     public float scaleOnHover = 2;
-
-    List<Sprite> cardImages => managerReference.cardImages;
-    List<Gem> Gems => managerReference.Gems;
-    List<Frame> frames => managerReference.frames;
-    List<Banner> banners => managerReference.banners;
+    
 
     private Card card;
 
@@ -47,21 +43,13 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
         descriptionTF.SetText(card.description);
 
         string cardType = card.cardType;
-
-        gemSprite.sprite = Gems.Find(gem => gem.type == cardType).gem;
-        frameSprite.sprite = frames.Find(frame => frame.pool == card.pool).frame;
-        bannerSprite.sprite = banners.Find(banner => banner.rarity == card.rarity).banner;
-        if (cardImages.Exists(image => int.Parse(image.name) == card.cardId || int.Parse(image.name) + 1 == card.cardId))
-        {
-            cardImage.sprite = cardImages.Find(image => int.Parse(image.name) == card.cardId || int.Parse(image.name) + 1 == card.cardId);
-        }
-        else
-        {
-            cardImage.sprite = cardImages[0];
-        }
-
+        CardAssetManager cardAssetManager = CardAssetManager.Instance;
+        gemSprite.sprite = cardAssetManager.GetGem(card.cardType);
+        frameSprite.sprite = cardAssetManager.GetFrame(card.pool);
+        bannerSprite.sprite = cardAssetManager.GetBanner(card.rarity);
+        cardImage.sprite = cardAssetManager.GetCardImage(card.cardId);
+      
         this.card = card;
-
     }
 
     public void OnPointerEnter(PointerEventData eventData)

@@ -9,6 +9,7 @@ public class SWSM_Parser
         SWSM_Base swsm = JsonUtility.FromJson<SWSM_Base>(data);
 
         Debug.Log("[MessageType]" + swsm.data.message_type + " , [Action]" + swsm.data.action);
+        Debug.Log(data);
 
         switch (swsm.data.message_type)
         {
@@ -59,10 +60,19 @@ public class SWSM_Parser
         {
             case nameof(WS_MESSAGE_ACTIONS.enemies_defeated):
                 Debug.Log("Should move cards from draw to hand");
+                SWSM_RewardsData rewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
+                GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(rewardsData);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.players_defeated):
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.select_another_reward):
+                SWSM_RewardsData updatedRewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
+                GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(updatedRewardsData);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.show_map):
+                GameManager.Instance.LoadScene(inGameScenes.Expedition);
                 break;
         }
     }
@@ -175,11 +185,8 @@ public class SWSM_Parser
     {
 
         SWSM_Enemies enemiesData = JsonUtility.FromJson<SWSM_Enemies>(rawData);
-        foreach (EnemyData enemyData in enemiesData.data.data)
-        {
-            GameManager.Instance.EVENT_UPDATE_ENEMY.Invoke(enemyData);
-            break;//TODO: process all enemis , not only one
-        }
+
+        GameManager.Instance.EVENT_UPDATE_ENEMIES.Invoke(enemiesData.data);
     }
 
     private static void ProcessMoveCard(string rawData)

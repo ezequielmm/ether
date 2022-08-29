@@ -164,7 +164,6 @@ public class PlayerStateData
     public class Data
     {
         public PlayerData playerState;
-
     }
 }
 
@@ -173,12 +172,16 @@ public class PlayerData
 {
     public string playerName;
     public string characterClass;
+
     /// <summary>
     /// Index of Player
     /// </summary>
-    public int playerId = 1; // This will be static for now. We'll need this when we have multiple players
+    [Obsolete("Int IDs will be phased out")]
+    public int playerId { get; set; } = 1; // This will be static for now. We'll need this when we have multiple players
+
+    public string id;
     public int hpCurrent;
-    public int hpMax;//current
+    public int hpMax; //current
     public int gold;
     public int energy;
     public int energyMax;
@@ -190,6 +193,7 @@ public class PlayerData
 public class Card
 {
     public string name;
+
     public string id;
     public int cardId;
     public string description;
@@ -219,9 +223,9 @@ public class Effect
 
 [Serializable]
 public class EffectArgs
-{  
-    public int base_value;//TODO change name on backend
-    public int calculated_value;//TODO change name on backend
+{
+    public int base_value; //TODO change name on backend
+    public int calculated_value; //TODO change name on backend
     public string targeted;
 }
 
@@ -269,7 +273,6 @@ public class NodeStateData
                 public int hand_size;
 
                 public Cards cards;
-
             }
         }
     }
@@ -289,10 +292,10 @@ public class Cards
 #endregion
 
 [Serializable]
-public class CardPlayedData//outgoing data
+public class CardPlayedData //outgoing data
 {
     public string cardId;
-    public int targetId;
+    public string targetId;
 }
 
 [Serializable]
@@ -335,7 +338,7 @@ public class SWSM_PlayerDeckData
     }
 }
 
-    [Serializable]
+[Serializable]
 public class SWSM_MapData
 {
     public ExpeditionMapData data;
@@ -351,6 +354,7 @@ public class SWSM_NodeData
 public class SWSM_IntentData
 {
     public Data data;
+
     [Serializable]
     public class Data
     {
@@ -367,17 +371,16 @@ public class EnemyIntent
     public List<Intent> intents;
 
     [Serializable]
-    public class Intent 
+    public class Intent
     {
         public int value;
         public string description;
         public string type;
     }
-
 }
 
 [Serializable]
-public class SWSM_StatusData 
+public class SWSM_StatusData
 {
     public Data data;
 
@@ -391,7 +394,7 @@ public class SWSM_StatusData
 }
 
 [Serializable]
-public class SWSM_CombatAction 
+public class SWSM_CombatAction
 {
     public Data data;
 
@@ -408,11 +411,11 @@ public class SWSM_CombatAction
 public class StatusData
 {
     public string targetEntity;
-    public int id;
+    public string id;
     public List<Status> statuses;
 
     [Serializable]
-    public class Status 
+    public class Status
     {
         public string name;
         public int counter;
@@ -426,10 +429,10 @@ public class SWSM_ErrorData
 {
     public String data;
 }
+
 public class SWSM_PlayerState
 {
     public PlayerStateData data;
-
 }
 
 [Serializable]
@@ -440,9 +443,8 @@ public class SWSM_EnergyArray
     [Serializable]
     public class EnergyData
     {
-        public int[] data;    
+        public int[] data;
     }
-
 }
 
 [Serializable]
@@ -478,14 +480,12 @@ public class SWSM_CardsPiles
 public class SWSM_Enemies
 {
     public EnemiesData data;
-
 }
 
 [Serializable]
 public class EnemiesData
 {
     public List<EnemyData> data;
-
 }
 
 [Serializable]
@@ -495,33 +495,33 @@ public class EnemyData
     /// GUID of enemy
     /// </summary>
     public string id;
+
     public string name;
+
     /// <summary>
     /// Index of enemy
     /// </summary>
+    [Obsolete("Int IDs will be phased out")]
     public int enemyId;
+
     public int defense;
-    public int hpCurrent;//current
+    public int hpCurrent; //current
     public int hpMax;
     public string type;
     public string category;
     public string size;
-
 }
 
 public class SWSM_Players
 {
     public PlayersData data;
-
 }
 
 [Serializable]
 public class PlayersData
 {
-    public PlayerData data;//future array when multiplayer
-
+    public PlayerData data; //future array when multiplayer
 }
-
 
 
 public class SWSM_CardMove
@@ -532,7 +532,6 @@ public class SWSM_CardMove
     public class Data
     {
         public CardToMoveData[] data;
-
     }
 }
 
@@ -542,7 +541,6 @@ public class CardToMoveData
     public string source;
     public string destination;
     public string id;
-
 }
 
 public class SWSM_ChangeTurn
@@ -553,7 +551,32 @@ public class SWSM_ChangeTurn
     public class Data
     {
         public string data;
-
     }
+}
 
+public class SWSM_RewardsData
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public RewardsData data;
+        
+        [Serializable]
+        public class RewardsData
+        {
+            public List<RewardItemData> rewards;
+    
+        }
+    }
+}
+
+[Serializable]
+public class RewardItemData
+{
+    public string id;
+    public string type;
+    public int amount;
+    public bool taken;
 }
