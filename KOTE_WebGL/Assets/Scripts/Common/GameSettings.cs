@@ -28,7 +28,7 @@ public static class GameSettings
 
     //HAND OF CARDS
     public const float HAND_CARD_GAP = 2.2f;
-    public const float HAND_CARD_SPRITE_Z = -12f;
+    public const float HAND_CARD_SPRITE_Z = -20f;
     public const float HAND_CARD_SPRITE_Z_INTERVAL = 0.5f;
     public static float HAND_CARD_SHOW_UP_Z => HAND_CARD_SPRITE_Z - (HAND_CARD_SPRITE_Z_INTERVAL * 20);
     public const float HAND_CARD_SHOW_UP_SCALE = 1.25f;
