@@ -403,8 +403,12 @@ namespace map
 
                         float columnRan = Random.Range(columnFuzziness.x, columnFuzziness.y);
 
-                        newNode.transform.localPosition = newNode.transform.InverseTransformPoint(MapGrid.layoutGrid.CellToWorld(
-                            MapGrid.layoutGrid.WorldToCell(newNode.transform.TransformPoint(new Vector3(columnOffsetCounter + columnRan, yy, GameSettings.MAP_SPRITE_ELEMENTS_Z)))));
+                        // Set Cell's Position
+                        newNode.transform.localPosition = new Vector3(columnOffsetCounter + columnRan, yy, GameSettings.MAP_SPRITE_ELEMENTS_Z);
+
+                        // Snap cell to grid
+                        newNode.transform.position = MapGrid.layoutGrid.CellToWorld(MapGrid.layoutGrid.WorldToCell(newNode.transform.position));
+
 
                         newNode.GetComponent<NodeData>().Populate(nodeData);
 
@@ -461,8 +465,10 @@ namespace map
         {
             Random.InitState(MapSeeds[0]);
             GeneratePathBackground();
+
             Random.InitState(MapSeeds[1]);
             CurvePath();
+
             Random.InitState(MapSeeds[2]);
             GenerateMapBackground();
         }
