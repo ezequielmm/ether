@@ -611,9 +611,10 @@ public class CardOnHandManager : MonoBehaviour
 
         if (cardActive)
         {
-            if (overPlayer)
+            if(transform.position.y > GameSettings.HAND_CARD_SHOW_UP_Y && card_can_be_played)//if (overPlayer)
             {
                 Debug.Log("card is on center");
+                // Get Player ID
                 GameManager.Instance.EVENT_CARD_PLAYED.Invoke(thisCardValues.id, "-1");
                 cardActive = false;
             }
