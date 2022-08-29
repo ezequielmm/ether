@@ -296,7 +296,6 @@ public class SWSM_Parser
         switch (action)
         {
             case "begin_combat":
-
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Combat);
                 break;
             case "update_statuses":

@@ -193,7 +193,8 @@ public enum WS_DATA_REQUEST_TYPES
     Potions,
     Trinkets,
     Statuses,
-    PlayerDeck
+    PlayerDeck,
+    CurrentNode
 }
 
 [Serializable]

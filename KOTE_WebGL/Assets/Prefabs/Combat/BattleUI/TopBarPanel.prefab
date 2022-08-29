@@ -565,7 +565,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Stage 1-3
+  m_text: Stage ?-?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 49b8082b72726c34a8355b694d8d21d2, type: 2}
   m_sharedMaterial: {fileID: 8475095954227767653, guid: 49b8082b72726c34a8355b694d8d21d2,
@@ -1701,6 +1701,7 @@ MonoBehaviour:
   nameText: {fileID: 7612459577253896924}
   healthText: {fileID: 7612459576622820767}
   coinsText: {fileID: 7612459576903324760}
+  stageText: {fileID: 6128235263261647718}
   classIcon: {fileID: 3035052704644184722}
   className: {fileID: 0}
   showmapbutton: {fileID: 5309821371168514389}
