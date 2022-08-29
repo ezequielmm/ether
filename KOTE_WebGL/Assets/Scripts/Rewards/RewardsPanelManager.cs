@@ -1,38 +1,64 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class RewardsPanelManager : MonoBehaviour
 {
     public GameObject rewardsContainer, rewardsGivenContainer, chooseCardsContainer;
 
-    [Space(20)]
-    public GameObject rewardItemPrefab;
+    [Space(20)] public GameObject rewardItemPrefab;
 
     public GameObject rewardsContent;
-
+    public TMP_Text buttonText;
+    private List<RewardItem> _rewardItems;
     private void Start()
     {
         GameManager.Instance.EVENT_CARDS_REWARDPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerChooseCardsPanel);
-        GameManager.Instance.EVENT_REWARDSPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerRewardsPanel);
-
-        SetRewards();
+        GameManager.Instance.EVENT_SHOW_REWARDS_PANEL.AddListener(ActivateInnerRewardsPanel);
+        GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.AddListener(SetRewards);
+        _rewardItems = new List<RewardItem>();
     }
 
-    public void SetRewards()
+    public void SetRewards(SWSM_RewardsData rewards)
     {
-        for (int i = 0; i < 3; i++)
+        bool rewardsRemaining = false;
+        
+        ClearRewardItems();
+        foreach (RewardItemData rewardItem in rewards.data.data.rewards)
         {
-            int randomReward = Random.Range(0, Enum.GetValues(typeof(RewardItemType)).Length);
-
+            // if the reward item has been taken, don't show it
+            if (rewardItem.taken) continue;
+            // else add it to the list
             GameObject currentReward = Instantiate(rewardItemPrefab, rewardsContent.transform);
-            currentReward.GetComponent<RewardItem>().SetRewardTypeProperties((RewardItemType) randomReward);
+            RewardItem reward = currentReward.GetComponent<RewardItem>();
+            reward.PopulateRewardItem(rewardItem);
+            _rewardItems.Add(reward);
+            rewardsRemaining = true;
         }
 
-        GameObject cardsReward = Instantiate(rewardItemPrefab, rewardsContent.transform);
-        cardsReward.GetComponent<RewardItem>().SetRewardTypeProperties(RewardItemType.Cards);
+        if (rewardsRemaining)
+        {
+            buttonText.text = "Abandon Loot";
+        }
+        else
+        {
+            buttonText.text = "Continue";
+        }
+    }
+
+    private void ClearRewardItems()
+    {
+        if (_rewardItems.Count == 0) return;
+        foreach (RewardItem reward in _rewardItems)
+        {
+            Destroy(reward.gameObject);
+        }
+
+        _rewardItems.Clear();
     }
 
     public void ActivateInnerRewardsGivenPanel(bool activate)
@@ -46,8 +72,13 @@ public class RewardsPanelManager : MonoBehaviour
         chooseCardsContainer.SetActive(activate);
     }
 
-    public void ActivateInnerRewardsPanel(bool activate)
+    private void ActivateInnerRewardsPanel(bool activate)
     {
         rewardsContainer.SetActive(activate);
+    }
+
+    public void OnRewardsButtonClicked()
+    {
+        GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
     }
 }
