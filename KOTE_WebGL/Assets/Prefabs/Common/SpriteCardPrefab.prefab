@@ -324,7 +324,7 @@ SpriteRenderer:
   m_SortingLayerID: 499267637
   m_SortingLayer: 3
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: b6a35261bdffc7549b9467c2609f7333, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bce8ad9b5aad89f46816da35e1e65bbb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5396,18 +5396,18 @@ MonoBehaviour:
   - type: statusUpgraded
     gem: {fileID: 21300000, guid: 6f964a85ba65f1d459ff72f3fe64ab19, type: 3}
   banners:
-  - rarity: common
-    banner: {fileID: 21300000, guid: 2f72b78740abd2f48bc0b6cdcb2110e5, type: 3}
-  - rarity: legend
-    banner: {fileID: 21300000, guid: 89e4e52b9e37ab84c8b8744a18fc8e50, type: 3}
-  - rarity: rare
-    banner: {fileID: 21300000, guid: 0dc09acc238bb704e9e3ca6339a0916e, type: 3}
-  - rarity: special
-    banner: {fileID: 21300000, guid: 81d1a2140aa8e21448dbee1aad29befb, type: 3}
   - rarity: starter
-    banner: {fileID: 21300000, guid: d8a5d3bacfe9c5740a927ae22b243e87, type: 3}
+    banner: {fileID: 21300000, guid: 3569de8c378700941aa0308eef558264, type: 3}
+  - rarity: common
+    banner: {fileID: 21300000, guid: bce8ad9b5aad89f46816da35e1e65bbb, type: 3}
   - rarity: uncommon
-    banner: {fileID: 21300000, guid: b6a35261bdffc7549b9467c2609f7333, type: 3}
+    banner: {fileID: 21300000, guid: 100a1dc41d5ba0c448760ef5d0b78d25, type: 3}
+  - rarity: rare
+    banner: {fileID: 21300000, guid: 628ab8e150abdc1449a86d09dd6352a5, type: 3}
+  - rarity: legend
+    banner: {fileID: 21300000, guid: b62425a39eff23948b434dcb48c580de, type: 3}
+  - rarity: special
+    banner: {fileID: 21300000, guid: 2623ba0d744ff3f47b624b536cbe36d6, type: 3}
   frames:
   - pool: curse
     frame: {fileID: 21300000, guid: f383a8671927f53499fad44c44896ac0, type: 3}

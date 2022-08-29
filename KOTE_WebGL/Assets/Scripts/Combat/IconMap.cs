@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-[RequireComponent(typeof(Collider2D))]
 public class IconMap<T> : MonoBehaviour
 {
     [SerializeField]
@@ -18,16 +17,12 @@ public class IconMap<T> : MonoBehaviour
     private List<Icon> iconMap;
 
     [SerializeField]
-    [Tooltip("The gameobject holding all the tooltip stuff")]
-    private GameObject tooltipContainer;
-
-    [SerializeField]
-    [Tooltip("The tooltip's text")]
-    private TextMeshProUGUI description;
-
-    [SerializeField]
     [Tooltip("The speed at which the tooltip appears and fades")]
     protected float tooltipSpeed = 1f;
+
+    private string tooltipTitle;
+    private string tooltipDescription;
+
 
     /// <summary>
     /// The image component
@@ -56,21 +51,6 @@ public class IconMap<T> : MonoBehaviour
         {
             text = GetComponentInChildren<TextMeshProUGUI>();
         }
-        tooltipContainer.SetActive(false);
-    }
-
-    private void OnMouseEnter()
-    {
-        if (!string.IsNullOrEmpty(description.text))
-        {
-            tooltipContainer.SetActive(true);
-            tooltipContainer.transform.localScale = Vector3.zero;
-            tooltipContainer.transform.DOScale(Vector3.one, tooltipSpeed);
-        }
-    }
-    private void OnMouseExit()
-    {
-        tooltipContainer.transform.DOScale(Vector3.zero, tooltipSpeed);
     }
 
     public void Initialize()
@@ -78,9 +58,19 @@ public class IconMap<T> : MonoBehaviour
         Start();
     }
 
-    public void SetTooltip(string tooltip)
+    public void SetTooltip(string title, string description)
     {
-        description.text = tooltip;
+        tooltipTitle = title;
+        tooltipDescription = description;
+    }
+
+    public Tooltip GetTooltip() 
+    {
+        return new Tooltip()
+        {
+            title = Utils.PrettyText(tooltipTitle).Replace(" Plus", "+"),
+            description = tooltipDescription
+        };
     }
 
     public void SetDisplayText(string value)
