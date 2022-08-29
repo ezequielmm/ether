@@ -144,7 +144,7 @@ public class HandManager : MonoBehaviour
         {
             if (!listOfCardsOnHand.ContainsKey(card.id))
             {
-                Debug.Log("[HandManager | Hand Deck] Instantiating card " + card.id);
+               // Debug.Log("[HandManager | Hand Deck] Instantiating card " + card.id);
                 GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
                 listOfCardsOnHand.Add(card.id, newCard);
                 newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
@@ -155,7 +155,7 @@ public class HandManager : MonoBehaviour
         {
             if (!listOfCardsOnHand.ContainsKey(card.id))
             {
-                Debug.Log("[HandManager | Draw Deck] Instantiating card " + card.id);
+               // Debug.Log("[HandManager | Draw Deck] Instantiating card " + card.id);
                 GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
                 listOfCardsOnHand.Add(card.id, newCard);
                 newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
@@ -166,7 +166,7 @@ public class HandManager : MonoBehaviour
         {
             if (!listOfCardsOnHand.ContainsKey(card.id))
             {
-                Debug.Log("[HandManager | Discard Deck] Instantiating card " + card.id);
+                //Debug.Log("[HandManager | Discard Deck] Instantiating card " + card.id);
                 GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
                 listOfCardsOnHand.Add(card.id, newCard);
                 newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
@@ -177,7 +177,7 @@ public class HandManager : MonoBehaviour
         {
             if (!listOfCardsOnHand.ContainsKey(card.id))
             {
-                Debug.Log("[HandManager | Exhaust Deck] Instantiating card " + card.id);
+               // Debug.Log("[HandManager | Exhaust Deck] Instantiating card " + card.id);
                 GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
                 listOfCardsOnHand.Add(card.id, newCard);
                 newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
@@ -185,7 +185,7 @@ public class HandManager : MonoBehaviour
             }
         }
 
-        Debug.Log("[HandManager] listOfCardsOnHand.Count:" + listOfCardsOnHand.Count);
+       // Debug.Log("[HandManager] listOfCardsOnHand.Count:" + listOfCardsOnHand.Count);
 
         StartCoroutine(RelocateCards(true));
     }

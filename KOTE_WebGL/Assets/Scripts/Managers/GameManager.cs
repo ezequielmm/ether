@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -159,7 +160,7 @@ public class GameManager : SingleTon<GameManager>
 
     //Gameplay events
     [HideInInspector] public UnityEvent<GameStatuses> EVENT_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
-    [HideInInspector] public UnityEvent<string, int> EVENT_CARD_PLAYED = new UnityEvent<string, int>();
+    [HideInInspector] public UnityEvent<string, string> EVENT_CARD_PLAYED = new UnityEvent<string, string>(); // cardID, targetID
     [HideInInspector] public UnityEvent EVENT_END_TURN_CLICKED = new UnityEvent();
 
     //Combat events
@@ -178,8 +179,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>  EVENT_SET_TOOLTIPS { get; } = 
         new UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>();
     [HideInInspector] public UnityEvent<string, int> EVENT_HEAL = new UnityEvent<string, int>(); // id, healed amount
-
-
+    
     //Common events
     [HideInInspector]
     public UnityEvent<WS_DATA_REQUEST_TYPES> EVENT_GENERIC_WS_DATA = new UnityEvent<WS_DATA_REQUEST_TYPES>();

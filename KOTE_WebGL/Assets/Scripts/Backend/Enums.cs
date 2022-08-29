@@ -27,6 +27,17 @@ public enum GameStatuses
     GameOver
 }
 
+[Serializable]
+public enum Size 
+{
+    medium = 0,
+    tiny,
+    small,
+    mediumWide,
+    large,
+    giant
+}
+
 public enum WS_QUERY_TYPE
 {
     MAP_NODE_SELECTED,

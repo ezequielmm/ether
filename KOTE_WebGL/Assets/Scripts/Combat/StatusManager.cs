@@ -18,7 +18,7 @@ public class StatusManager : MonoBehaviour
     List<StatusData.Status> statusList = new List<StatusData.Status>();
 
     string entityType => (enemyManager == null ? "player" : "enemy");
-    int entityID => enemyManager?.EnemyData.enemyId ?? playerManager?.PlayerData.playerId ?? -1;
+    string entityID => enemyManager?.EnemyData.id ?? playerManager?.PlayerData.id ?? "-1";
 
     static bool askedForStatus = false;
     bool statusSet = false;
