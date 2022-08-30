@@ -48,12 +48,157 @@ public class SpriteSpacer : MonoBehaviour
 
     public void ReorganizeSprites() 
     {
+        // Set transformations to zero
+        Quaternion lastRotation = container.transform.rotation;
+        container.transform.rotation = Quaternion.identity;
+        Vector3 lastPosition = container.transform.localPosition;
+        container.transform.position = Vector3.zero;
+
+
+        int spacersNeeded = 0;
+        float length = 0;
+        for (int i = 0; i < icons.Count; i++)
+        {
+            GameObject item = icons[i];
+
+            bool newItem = item.transform.localPosition == -Vector3.one;
+
+            RectTransform rectTransform = item.transform as RectTransform;
+            var width = rectTransform.rect.width;
+            var desiredlocalPosition = new Vector3(length + (width / 2), 0, 0);
+
+            if (display == Display.Vertical)
+            {
+                width = rectTransform.rect.height;
+                desiredlocalPosition = new Vector3(0, length + (width / 2), 0);
+            }
+
+            length += width;
+
+            if (newItem)
+            {
+                item.transform.localPosition = desiredlocalPosition;
+                if (fadeOnCreate)
+                {
+                    item.transform.localScale = Vector3.zero;
+                    item.transform.DOScale(1, fadeSpeed);
+                }
+            }
+            else 
+            {
+                item.transform.DOLocalMove(desiredlocalPosition, fadeSpeed).SetEase(Ease.InOutCirc);
+            }
+
+            if (i != icons.Count - 1)
+            {
+                length += iconSpace;
+                if (spacer != null)
+                {
+                    spacersNeeded++;
+                    if (spacers.Count < spacersNeeded)
+                    {
+                        length = CreateSpacer(length);
+                    }
+                    else 
+                    {
+                        length += GetSpacerLength();
+                    }
+                }
+            }
+        }
+
+        for (int i = spacers.Count; i > spacersNeeded; i--) 
+        {
+            DestorySpacer(spacers[i-1]);
+        }
+
+
+        // Place based on content size
+        switch (display)
+        {
+            case Display.Horizontal:
+                switch (contentAlign)
+                {
+                    case ContentAlign.Left:
+                        // Alight Left by design
+                        break;
+                    case ContentAlign.Center:
+                        lastPosition.x = -(length / 2);
+                        break;
+                    case ContentAlign.Right:
+                        lastPosition.x = -length;
+                        break;
+                }
+                break;
+            case Display.Vertical:
+                switch (contentAlign)
+                {
+                    case ContentAlign.Top:
+                        // Alight Top by design
+                        break;
+                    case ContentAlign.Center:
+                        lastPosition.y = -(length / 2);
+                        break;
+                    case ContentAlign.Bottom:
+                        lastPosition.y = -length;
+                        break;
+                }
+                break;
+        }
+
+        // Return transformation back
+        container.transform.localPosition = lastPosition;
+        container.transform.rotation = lastRotation;
+    }
+
+    private float GetSpacerLength() 
+    {
+        RectTransform spacerTransform = spacer.transform as RectTransform;
+        var spaceWidth = spacerTransform.rect.width;
+        float length = 0;
+
+        length += spaceWidth;
+        length += iconSpace;
+
+        return length;
+    }
+
+    private float CreateSpacer(float length) 
+    {
+        GameObject _spacer = Instantiate(spacer, container.transform);
+        spacers.Add(_spacer);
+        RectTransform spacerTransform = _spacer.transform as RectTransform;
+        var spaceWidth = spacerTransform.rect.width;
+        _spacer.transform.localPosition = new Vector3(length + (spaceWidth / 2), 0, 0);
+
+        if (display == Display.Vertical)
+        {
+            spaceWidth = spacerTransform.rect.height;
+            _spacer.transform.localPosition = new Vector3(0, length + (spaceWidth / 2), 0);
+        }
+
+        length += spaceWidth;
+        length += iconSpace;
+
+        if (fadeOnCreate)
+        {
+            _spacer.transform.localScale = Vector3.zero;
+            _spacer.transform.DOScale(1, fadeSpeed);
+        }
+
+        return length;
+    }
+
+    public void CreateSprites() 
+    {
+        // Set transformations to zero
         Quaternion lastRotation = container.transform.rotation;
         container.transform.rotation = Quaternion.identity;
         Vector3 lastPosition = container.transform.localPosition;
         container.transform.position = Vector3.zero;
 
         DestorySpacers();
+
         float length = 0;
         for(int i = 0; i < icons.Count; i++)
         {
@@ -82,30 +227,12 @@ public class SpriteSpacer : MonoBehaviour
                 length += iconSpace;
                 if (spacer != null) 
                 {
-                    GameObject _spacer = Instantiate(spacer, container.transform);
-                    spacers.Add(_spacer);
-                    RectTransform spacerTransform = _spacer.transform as RectTransform;
-                    var spaceWidth = spacerTransform.rect.width;
-                    _spacer.transform.localPosition = new Vector3(length + (spaceWidth / 2), 0, 0);
-
-                    if (display == Display.Vertical)
-                    {
-                        spaceWidth = spacerTransform.rect.height;
-                        _spacer.transform.localPosition = new Vector3(0, length + (spaceWidth / 2), 0);
-                    }
-                    
-                    length += spaceWidth;
-                    length += iconSpace;
-
-                    if (fadeOnCreate)
-                    {
-                        _spacer.transform.localScale = Vector3.zero;
-                        _spacer.transform.DOScale(1, fadeSpeed);
-                    }
+                    length = CreateSpacer(length);
                 }
             }
         }
 
+        // Place based on content size
         switch (display) 
         {
             case Display.Horizontal:
@@ -138,8 +265,7 @@ public class SpriteSpacer : MonoBehaviour
                 break;
         }
 
-
-
+        // Return transformation back
         container.transform.localPosition = lastPosition;
         container.transform.rotation = lastRotation;
     }
@@ -148,19 +274,16 @@ public class SpriteSpacer : MonoBehaviour
     {
         icon.transform.SetParent(container.transform);
         icons.Add(icon);
+        icon.transform.localPosition = -Vector3.one;
     }
 
-    public void RemoveIcon(GameObject icon) 
+    public void DeleteIcon(GameObject icon) 
     {
         icons.Remove(icon);
-        icon.transform.DOScale(0, fadeSpeed);
-        StartCoroutine(DestoryAfterTime(icon));
-    }
-
-    private IEnumerator DestoryAfterTime(GameObject icon)
-    {
-        yield return new WaitForSeconds(fadeSpeed);
-        Destroy(icon);
+        icon.transform.DOScale(0, fadeSpeed).OnComplete(() => 
+        {
+            Destroy(icon);
+        });
     }
 
     public void ClearIcons() 
@@ -168,24 +291,30 @@ public class SpriteSpacer : MonoBehaviour
         DestorySpacers();
         for (int i = 0; i < icons.Count;) 
         {
-            RemoveIcon(icons[i]);
+            DeleteIcon(icons[i]);
         }
     }
 
     private void DestorySpacers() 
     {
-        //Debug.Log("Spacers Destroyed!");
-        for (int i = 0; i < spacers.Count; i++) 
+        for (int i = 0; i < spacers.Count;) 
         {
-            spacers[i].transform.DOScale(0, fadeSpeed);
-            StartCoroutine(DestoryAfterTime(spacers[i]));
+            DestorySpacer(spacers[i]);
         }
-        spacers.Clear();
+    }
+
+    private void DestorySpacer(GameObject spacer) 
+    {
+        spacers.Remove(spacer);
+        spacer.transform.DOScale(0, fadeSpeed).OnComplete(() =>
+        {
+            Destroy(spacer);
+        });
     }
 
     public void SetSpacer(GameObject spacer) 
     {
         this.spacer = spacer;
-        ReorganizeSprites();
+        CreateSprites();
     }
 }

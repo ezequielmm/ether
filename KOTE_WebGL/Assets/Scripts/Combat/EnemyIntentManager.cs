@@ -108,7 +108,7 @@ public class EnemyIntentManager : MonoBehaviour
 
             iconContainer.AddIcon(icon);
         }
-        iconContainer.ReorganizeSprites();
+        iconContainer.CreateSprites();
         transform.localScale = Vector3.zero;
         transform.DOScale(1, GameSettings.INTENT_FADE_SPEED);
         askedForIntent = false;
