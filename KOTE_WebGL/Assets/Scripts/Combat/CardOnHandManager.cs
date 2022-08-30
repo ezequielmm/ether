@@ -219,7 +219,7 @@ public class CardOnHandManager : MonoBehaviour
             }
             else
             {
-                var description = status.args.description ?? "TODO // Send Tooltip Over Websocket with Cards on Status Line";
+                var description = status.args.description ?? "TODO // Add Description";
                 tooltips.Add(new Tooltip()
                 {
                     title = Utils.PrettyText(status.name),
