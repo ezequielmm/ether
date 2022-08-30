@@ -186,7 +186,7 @@ public class CardOnHandManager : MonoBehaviour
 
     internal void Populate(Card card, int energy)
     {
-        Debug.Log(card);
+        //Debug.Log(card);
         //cardidTF.SetText(card.id);
         energyTF.SetText(card.energy.ToString());
         nameTF.SetText(card.name);

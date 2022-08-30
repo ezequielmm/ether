@@ -22,7 +22,7 @@ public class DrawCardPileManager : MonoBehaviour, IPointerEnterHandler, IPointer
 
     private void OnShuffle()
     {
-        Debug.Log($"[Draw Pile] Card Shuffled.");
+        //Debug.Log($"[Draw Pile] Card Shuffled.");
         cardsShuffled++;
         StartCoroutine(ShuffleCardSFX());
     }

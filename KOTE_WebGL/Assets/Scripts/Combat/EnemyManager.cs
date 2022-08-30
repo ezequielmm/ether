@@ -97,37 +97,27 @@ public class EnemyManager : MonoBehaviour
                 endCalled = true;
                 RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
-            else if (target.defenseDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
-            {
-                var f = PlayAnimation("Cast");
-                if (f > afterEvent) afterEvent = f;
-                endCalled = true;
-                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
-            }
-            else if (target.healthDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.heal)) // Health Up
-            {
-                var f = PlayAnimation("Cast");
-                if (f > afterEvent) afterEvent = f;
-                endCalled = true;
-                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
-            }
             else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
             {
+                var f = PlayAnimation("Cast");
+                if (f > afterEvent) afterEvent = f;
                 endCalled = true;
-                RunAfterTime(0.45f, // hard coded player animation attack point
-                   () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
             else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.heal)) // Health Up
             {
+                var f = PlayAnimation("Cast");
+                if (f > afterEvent) afterEvent = f;
                 endCalled = true;
-                RunAfterTime(0.45f, // hard coded player animation attack point
-                   () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
         }
         if (!endCalled)
-        {
-            // If no conditions are met, close the event
-            GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId);
+        { // If no conditions met, pass onto the target and play cast
+            var f = PlayAnimation("Cast");
+            if (f > afterEvent) afterEvent = f;
+            endCalled = true;
+            RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
         }
         else if (afterEvent > 0) 
         {
