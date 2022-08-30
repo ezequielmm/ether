@@ -26,11 +26,11 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1525055814050004970}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4094448198474781868}
+  m_Father: {fileID: 709570172392886815}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -159,7 +159,6 @@ GameObject:
   - component: {fileID: 4094448198474781868}
   - component: {fileID: 7490453527194386678}
   - component: {fileID: 2546459744686008938}
-  - component: {fileID: 6600897650020344872}
   m_Layer: 0
   m_Name: Status Icon
   m_TagString: Untagged
@@ -178,14 +177,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 891242416679222566}
+  - {fileID: 709570172392886815}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0.4, y: 0.4}
+  m_SizeDelta: {x: 0.6, y: 0.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7490453527194386678
 CanvasRenderer:
@@ -215,7 +214,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 735fcbc825f85b24d9c9586262528537, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f7729943589940d4988f43f937b34aec, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -225,13 +224,90 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6600897650020344872
+--- !u!1 &5278473669670092077
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 709570172392886815}
+  - component: {fileID: 6595511444720237313}
+  - component: {fileID: 2703225559329334269}
+  - component: {fileID: 3678026952093808659}
+  m_Layer: 0
+  m_Name: Icon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &709570172392886815
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5278473669670092077}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 891242416679222566}
+  m_Father: {fileID: 4094448198474781868}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0.4, y: 0.4}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6595511444720237313
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5278473669670092077}
+  m_CullTransparentMesh: 1
+--- !u!114 &2703225559329334269
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4793172278357556370}
+  m_GameObject: {fileID: 5278473669670092077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 14cf73f0ebe10cf4299e6624089bc87d, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3678026952093808659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5278473669670092077}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f8469cf6cdd3804b995d02bf73858bd, type: 3}
@@ -242,166 +318,166 @@ MonoBehaviour:
   - type: 0
     valueThreshold: 0
     icon: {fileID: 21300000, guid: 735fcbc825f85b24d9c9586262528537, type: 3}
-  - type: 29
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 12252df62ba66a44ba6ad6d628680f57, type: 3}
-  - type: 30
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 8a0696310dc1e0b4196998c11175af0d, type: 3}
-  - type: 31
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 1360742e2b9c5cf48af67e24b6cff239, type: 3}
-  - type: 32
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 7009af00d30596d4c9d2b718c15649ce, type: 3}
-  - type: 33
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: aa144991dd866034dab75a9fc404eff4, type: 3}
-  - type: 34
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 5f9bdc68fe8b02f4991ee5c407fbdf0f, type: 3}
-  - type: 35
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 551b8f2f57959d34b82dc1e9b4b5743b, type: 3}
-  - type: 36
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: c93b6b7540b401b48b9f0e5576bcb12f, type: 3}
-  - type: 37
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 40cf78c58c152034fa5c6f477fd1f790, type: 3}
-  - type: 38
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 50866aa747e5e2d47a9e8fa2799c2079, type: 3}
-  - type: 39
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 5203b79c2bee59d4d84a8d4772e678d7, type: 3}
-  - type: 41
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 23f2354780453cb4db320ef70616dedb, type: 3}
-  - type: 53
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: b9326449f31c0a0489a4f8b92d2d019e, type: 3}
-  - type: 42
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 3dec17e459c0b8c4096b11da38794df8, type: 3}
-  - type: 43
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 7f0a3a1f952bbc64994c55dd5dd8f98e, type: 3}
-  - type: 44
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: bf7dee9b8e4f7ce4d986d36e674470c9, type: 3}
-  - type: 45
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 73e618c72849338499b8fcc6a223dfb1, type: 3}
-  - type: 46
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 298b612afaa1629429392c2a08a99523, type: 3}
-  - type: 47
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 801e8256d55b0fa488458a1523fa2aac, type: 3}
-  - type: 48
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 64715f0f2d1d1f449861606c3a767b10, type: 3}
-  - type: 49
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 598a27ac1a9bcfd438b0b38abf3da440, type: 3}
-  - type: 50
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 74f60ad943f65424d92813ab166dc2a1, type: 3}
-  - type: 51
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: c895b232352449749a9b3a504bb59d58, type: 3}
-  - type: 52
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: dc40fb2df70fc6e4b8812042f742803d, type: 3}
-  - type: 28
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: c47575e78da5cd449b79c63cca43b867, type: 3}
-  - type: 40
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: bef5c5ea4e8872e4e8b655ae2c8805a9, type: 3}
-  - type: 27
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 43f213a52a4279f4eb82b196733f2300, type: 3}
-  - type: 12
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 29aea092cf05d3348ae900d934efe00b, type: 3}
   - type: 1
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: 862688eec74b1f842b7aa1cd228c79ef, type: 3}
+    icon: {fileID: 21300000, guid: 9924afd0ee05b8744a9e8a5231d2b8a6, type: 3}
   - type: 2
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: 8d676b20f59f82749949a1d38c4cf2b8, type: 3}
+    icon: {fileID: 21300000, guid: ecbfbea374a434b45bccd06b369a6400, type: 3}
   - type: 3
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: 791e35353a036554e93197efbaf66f77, type: 3}
+    icon: {fileID: 21300000, guid: 46584cf324cc18b419525e9f962c1023, type: 3}
   - type: 4
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: 510237459565c3440aae4ed9eb40d751, type: 3}
+    icon: {fileID: 21300000, guid: e5dde790e9482b944b25cc5a2e7936ce, type: 3}
   - type: 5
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: 04373f601b04f8746b8372f597e8d454, type: 3}
+    icon: {fileID: 21300000, guid: af817928fa05c4543baaaa83afd67bf7, type: 3}
   - type: 6
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: eee2f3ed4ddb3494bb0eaaf1977eb47c, type: 3}
+    icon: {fileID: 21300000, guid: 78a317125834e2b4387e32533ea677cb, type: 3}
   - type: 7
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: 66bae951cdf1d574a8310080f0ea2c99, type: 3}
+    icon: {fileID: 21300000, guid: 50da98894d75f8640a2fc46e7548da94, type: 3}
   - type: 8
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: 8161c3a79913fb44db0b8070984730a9, type: 3}
+    icon: {fileID: 21300000, guid: 38c5683132ae48c4da20647271b99ee0, type: 3}
   - type: 9
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: 82accd445f924344098b82b770a21d48, type: 3}
+    icon: {fileID: 21300000, guid: c6e0d978c9b9cbe4d8c7513d24e4092e, type: 3}
   - type: 10
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: 2bae1849563fe454a96c7206a7108861, type: 3}
+    icon: {fileID: 21300000, guid: 43a41787b2ed8484f9801c26405ef5fa, type: 3}
   - type: 11
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: 23670ef6672143f47827bae33841113d, type: 3}
+    icon: {fileID: 21300000, guid: 19ff0ff10ce50ca40ad68aa310210906, type: 3}
+  - type: 12
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 7adefac3415d0584fba44e21830d2331, type: 3}
   - type: 13
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: 9d88f3798e4972d469ac2ce26ab2fe66, type: 3}
-  - type: 25
-    valueThreshold: 0
-    icon: {fileID: 21300000, guid: 84b0a18b58289d04eb17aaa3f66b6c9d, type: 3}
+    icon: {fileID: 21300000, guid: d41302f222bcae3489b99e795e876237, type: 3}
   - type: 14
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: 9741dbdef75317a4f9b9dc56a2392cb9, type: 3}
+    icon: {fileID: 21300000, guid: f48c9ee1d333ee249bd5ae93d34ae0bc, type: 3}
   - type: 15
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: 2a192bf42391e65428d4c0a20e7186cf, type: 3}
+    icon: {fileID: 21300000, guid: 18cfcae18e3373548a69badc89c781d6, type: 3}
   - type: 16
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: cf4edc2c7a28fa042a902356e5edc448, type: 3}
+    icon: {fileID: 21300000, guid: 8aa7bfbdc76b2444e87a31d765721818, type: 3}
   - type: 17
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: 87bf2db5aa35dfe4cbce882940058506, type: 3}
+    icon: {fileID: 21300000, guid: e6533388c9757c64290e1b29bcd0e32a, type: 3}
   - type: 18
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: 78292a13afd425f468583e4c4c61c2ad, type: 3}
+    icon: {fileID: 21300000, guid: 87f55fa60045c1f4891f0e15bfb7d002, type: 3}
   - type: 19
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: d939188452171664d84a8c09b08697a2, type: 3}
+    icon: {fileID: 21300000, guid: 0191484b967608942884e6dd9d81b2ef, type: 3}
   - type: 20
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: d1b4349c8e7abc7428fc7f9cc8b5a2b9, type: 3}
+    icon: {fileID: 21300000, guid: e14a4a873774b8540ac2fa0e8bc78929, type: 3}
   - type: 21
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: 9572811b4f681754a9375a169f9b8350, type: 3}
+    icon: {fileID: 21300000, guid: 3c27dfd6b1781ee48a20906fb631e320, type: 3}
   - type: 22
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: f2d4822691611c84d9297ca84078aa67, type: 3}
+    icon: {fileID: 21300000, guid: 2ff9fe522b6e7e14293e89f2dd85a45c, type: 3}
   - type: 23
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: c54a5563a8ce4ea4e9f4b3383834abb5, type: 3}
+    icon: {fileID: 21300000, guid: 91e6eea7712249f49aa3535e2b914236, type: 3}
   - type: 24
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: efae089d02542a14c91d0503e0d8e28d, type: 3}
+    icon: {fileID: 21300000, guid: 9dab33e74780dbd44b55ffa320c4fa83, type: 3}
+  - type: 25
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: da06f4d7f945a4146b47760db1769176, type: 3}
   - type: 26
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: cfbc7e29f6b4d804f85de2cc4d110447, type: 3}
+    icon: {fileID: 21300000, guid: df0a9ae9c8467ae41910e5805748f6cb, type: 3}
+  - type: 27
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 4990a712567edc943b1fa1076a305655, type: 3}
+  - type: 28
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: d617ca8f3e5ed854ba63099ffc89ea2b, type: 3}
+  - type: 29
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 25605611fa62b59409b95f42649d4abd, type: 3}
+  - type: 30
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: f4488beedee3ae641a3971083f4aa70f, type: 3}
+  - type: 31
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: e349e31057e232241851f6459c384ec6, type: 3}
+  - type: 32
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: d3ee69046b4a2d6448051c879f470d76, type: 3}
+  - type: 33
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: af0080ed791e9e14bb4cdaa912c6acd0, type: 3}
+  - type: 34
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 769f06f16a80ac5438f3bc85e1781c24, type: 3}
+  - type: 35
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 6c8d3c19a30c3c248811bd0b30e50c53, type: 3}
+  - type: 36
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 65190e81357c8ed4bbf37187d635beeb, type: 3}
+  - type: 37
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 566e6b97442337549b0436e679ce8c2c, type: 3}
+  - type: 38
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 3bccb04ab3a22dc429abd5bad1ac1d02, type: 3}
+  - type: 39
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 6e1a9dea8f011104287b46a1f7338e4c, type: 3}
+  - type: 40
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 20967e6642d0d9c4fb5a509fa3e781c1, type: 3}
+  - type: 41
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 760cd753b62590440937274bd9154e8b, type: 3}
+  - type: 42
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: cd7e0bf06e909074d99b4494aeb2a48a, type: 3}
+  - type: 43
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 765ba72f0ed7e204e9ea65359f043503, type: 3}
+  - type: 44
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: cadfd6ffec5f31e47867322eb23191bd, type: 3}
+  - type: 45
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: b247ac3c6f27ba448b315ab09e78b797, type: 3}
+  - type: 46
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 582240936026fee4e87556536b99ba70, type: 3}
+  - type: 47
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 14cf73f0ebe10cf4299e6624089bc87d, type: 3}
+  - type: 48
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: f71a465012a03c941b13f7d823ee0879, type: 3}
+  - type: 49
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 163dedd6ae9d2f045afa0fa23fe2fc00, type: 3}
+  - type: 50
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: e26aead0f46e3f94aa6746c657123e70, type: 3}
+  - type: 51
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 8d8271be5e086af4a8e32bb37ae50a2b, type: 3}
+  - type: 52
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: e26a83f36d64cd04cb79cf55517803bc, type: 3}
   - type: 53
     valueThreshold: 0
-    icon: {fileID: 21300000, guid: a22b61d6749682e43bb3e86a7d6ad789, type: 3}
+    icon: {fileID: 21300000, guid: 0fc18a4d8acc0cc4bb665aa97aa74ab1, type: 3}
+  - type: 54
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 34039c27376dc4c409acefb5feb28510, type: 3}
   tooltipSpeed: 1
