@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class SWSM_Parser
 {
+    static SWSM_Parser() 
+    {
+        // Turns off non-exception logging when outside of development enviroment
+        // Also seen in WebSocketManager.cs
+        #if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
+            Debug.unityLogger.filterLogType = LogType.Exception;
+        #endif
+    }
+
     public static void ParseJSON(string data)
     {
         SWSM_Base swsm = JsonUtility.FromJson<SWSM_Base>(data);
