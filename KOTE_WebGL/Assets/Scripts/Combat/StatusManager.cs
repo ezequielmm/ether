@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static StatusData;
 
 public class StatusManager : MonoBehaviour
 {
@@ -75,7 +76,7 @@ public class StatusManager : MonoBehaviour
         STATUS stat = ToEnum(status.name);
         statusIcon.SetValue(status.counter);
         statusIcon.SetIcon(stat);
-        statusIcon.SetTooltip(status.description);
+        statusIcon.SetTooltip(status.name, status.description);
     }
 
     private void setStatusInfo(Status status, GameObject iconObject) 
