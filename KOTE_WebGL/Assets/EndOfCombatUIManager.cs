@@ -11,6 +11,8 @@ public class EndOfCombatUIManager : MonoBehaviour
 
     public TextMeshProUGUI victoryLabel;
 
+    GameStatuses lastState;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,14 +22,18 @@ public class EndOfCombatUIManager : MonoBehaviour
 
     private void OnGameStatusChange(GameStatuses data)
     {
+        lastState = data;
         switch (data)
         {
             case GameStatuses.GameOver:
+                // Throw up click blocker
+                GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(true);
                 gameoverLabel.gameObject.SetActive(true);
                 gameoverLabel.DOFade(1, 2).From(0).SetLoops(2, LoopType.Yoyo).OnComplete(OnGameOverComplete);
                 break;
             case GameStatuses.RewardsPanel:
-
+                // Throw up click blocker
+                GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(true);
                 victoryLabel.DOFade(1, 2).SetDelay(GameSettings.VICTORY_LABEL_ANIMATION_DELAY).From(0)
                     .SetLoops(2, LoopType.Yoyo).OnComplete(OnVictoryComplete).OnStart(() =>
                     {
@@ -51,6 +57,11 @@ public class EndOfCombatUIManager : MonoBehaviour
 
     void ReloadScene()
     {
+        if (lastState == GameStatuses.GameOver) 
+        {
+            GameManager.Instance.LoadScene(inGameScenes.MainMenu);
+            return;
+        }
         GameManager.Instance.LoadScene(inGameScenes.Expedition);
     }
 
