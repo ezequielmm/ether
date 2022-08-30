@@ -80,6 +80,11 @@ public class CardOnHandManager : MonoBehaviour
     private bool inTransit;
     new Collider2D collider;
 
+
+    private bool overPlayer = false;
+    private PlayerData playerData = null;
+    private GameObject lastOver;
+
     private void Awake()
     {
         //Screenspace is defined in pixels. The bottom-left of the screen is (0,0); the right-top is (pixelWidth,pixelHeight). The z position is in world units from the camera.
@@ -648,9 +653,10 @@ public class CardOnHandManager : MonoBehaviour
 
         if (cardActive)
         {
-            if (Vector2.Distance(this.transform.position, Vector2.zero) < 1.5f)
+            if(transform.position.y > GameSettings.HAND_CARD_SHOW_UP_Y && card_can_be_played)//if (overPlayer)
             {
                 Debug.Log("card is on center");
+                // Get Player ID
                 GameManager.Instance.EVENT_CARD_PLAYED.Invoke(thisCardValues.id, "-1");
                 cardActive = false;
             }
@@ -661,6 +667,64 @@ public class CardOnHandManager : MonoBehaviour
                 //MoveCardBackToOriginalHandPosition();
             }
         }
+    }
+
+    private void PlayerEnter(GameObject obj) 
+    {
+        lastOver = obj;
+        if (obj.CompareTag("Player") && card_can_be_played && transform.position.y > GameSettings.HAND_CARD_SHOW_UP_Y)
+        {
+            overPlayer = true;
+            playerData = obj.GetComponentInChildren<PlayerManager>().PlayerData;
+        }
+    }
+
+    private void PlayerExit(GameObject obj) 
+    {
+        if (obj.CompareTag("Player"))
+        {
+            overPlayer = false;
+            playerData = null;
+        }
+        lastOver = null;
+    }
+    
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        bool isOver = false;
+        if (collision != null && collision.gameObject.CompareTag("Player"))
+        {
+            var other = collision.gameObject.GetComponentInParent<PlayerManager>();
+            if (other != null)
+                isOver = true;
+        }
+        if (overPlayer != isOver)
+        {
+            if (isOver)
+            {
+                PlayerEnter(collision.gameObject);
+            }
+            else
+            {
+                if (lastOver != null)
+                {
+                    PlayerExit(lastOver);
+                }
+            }
+        }
+        else if (isOver && collision.gameObject != lastOver)
+        {
+            if (lastOver != null)
+            {
+                PlayerExit(lastOver);
+            }
+            PlayerEnter(collision.gameObject);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        OnTriggerStay2D(null);
     }
 
 
