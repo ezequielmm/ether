@@ -226,7 +226,7 @@ namespace BestHTTP
             this.Context.Add("IsFromCache", isFromCache);
         }
 
-        public virtual bool Receive(long forceReadRawContentLength = -1, bool readPayloadData = true, bool sendUpgradedEvent = true)
+        public bool Receive(long forceReadRawContentLength = -1, bool readPayloadData = true, bool sendUpgradedEvent = true)
         {
             if (this.baseRequest.IsCancellationRequested)
                 return false;

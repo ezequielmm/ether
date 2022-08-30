@@ -968,13 +968,15 @@ namespace BestHTTP
             // Always set the Content-Length header if possible
             // http://tools.ietf.org/html/rfc2616#section-4.4 : For compatibility with HTTP/1.0 applications, HTTP/1.1 requests containing a message-body MUST include a valid Content-Length header field unless the server is known to be HTTP/1.1 compliant.
             // 2018.06.03: Changed the condition so that content-length header will be included for zero length too.
+            // 2022.05.25: Don't send a Content-Length (: 0) header if there's an Upgrade header. Upgrade is set for websocket, and it might be not true that the client doesn't send any bytes.
             if (
 #if !UNITY_WEBGL || UNITY_EDITOR
                 contentLength >= 0
 #else
                 contentLength != -1
 #endif
-                && !HasHeader("Content-Length"))
+                && !HasHeader("Content-Length")
+                && !HasHeader("Upgrade"))
                 SetHeader("Content-Length", contentLength.ToString());
 
 #if !UNITY_WEBGL || UNITY_EDITOR
@@ -1394,6 +1396,7 @@ namespace BestHTTP
         public HTTPRequest Send()
         {
             this.IsCancellationRequested = false;
+            this.Exception = null;
 
             return HTTPManager.SendRequest(this);
         }
@@ -1452,6 +1455,7 @@ namespace BestHTTP
 
             this.IsRedirected = false;
             this.RedirectCount = 0;
+            this.Exception = null;
         }
 
         private void VerboseLogging(string str)

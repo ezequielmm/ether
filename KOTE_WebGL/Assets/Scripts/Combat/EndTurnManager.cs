@@ -2,18 +2,19 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class EndTurnManager : MonoBehaviour
+public class EndTurnManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     bool listenForEmptyQueue = false;
     float timeLimit;
     bool isPlayersTurn = true;
     float originalPos;
-    RectTransform rt;
+    RectTransform rectTransform;
 
     void Start()
     {
-        rt = GetComponent<RectTransform>();
+        rectTransform = transform as RectTransform;
         GameManager.Instance.EVENT_CHANGE_TURN.AddListener(onTurnChange);
         GameManager.Instance.EVENT_COMBAT_QUEUE_EMPTY.AddListener(onQueueEmpty);
         originalPos = transform.position.x;
@@ -52,7 +53,7 @@ public class EndTurnManager : MonoBehaviour
         }
         else if(who == "enemy")
         {
-            transform.DOMoveX(originalPos + rt.rect.width + 5, 0.5f);
+            transform.DOMoveX(originalPos + rectTransform.rect.width + 5, 0.5f);
             listenForEmptyQueue = true;
             timeLimit += 10; // This is only because sometimes the enemy does nothing
             isPlayersTurn = false;
@@ -65,5 +66,20 @@ public class EndTurnManager : MonoBehaviour
         {
             GameManager.Instance.EVENT_END_TURN_CLICKED.Invoke();
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Vector3 anchorPoint = new Vector3(transform.position.x - ((rectTransform.rect.width * rectTransform.lossyScale.x) * 1f),
+            transform.position.y, 0);
+        anchorPoint = Camera.main.ScreenToWorldPoint(anchorPoint);
+        // Tooltip On
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(ToolTipValues.Instance.EndTurnButtonTooltips, TooltipController.Anchor.BottomRight, anchorPoint, null);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        // Tooltip Off
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
     }
 }
