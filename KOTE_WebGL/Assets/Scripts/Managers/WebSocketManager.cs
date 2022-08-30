@@ -32,6 +32,14 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_GET_DATA = "GetData";
     private const string WS_MESSAGE_CONTINUE_EXPEDITION = "ContinueExpedition";
 
+    private void Awake()
+    {
+        // Turns off non-exception logging when outside of development enviroment
+        // Also seen in SWSM_Parser.cs
+        #if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
+            Debug.unityLogger.filterLogType = LogType.Exception;
+        #endif
+    }
 
     void Start()
     {
@@ -194,7 +202,7 @@ public class WebSocketManager : MonoBehaviour
         cardData.targetId = id;
 
         string data = JsonUtility.ToJson(cardData).ToString();
-        Debug.Log("sending WS playedcard test=" + data);
+        Debug.Log("[WebSocket Manager] OnCardPlayed data: " + data);
 
         //rootSocket.ExpectAcknowledgement<string>(OnCardPlayedAnswer).Emit(WS_MESSAGE_CARD_PLAYED, data);
         rootSocket.Emit(WS_MESSAGE_CARD_PLAYED, data);
