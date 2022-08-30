@@ -9,6 +9,7 @@ public class SWSM_Parser
         SWSM_Base swsm = JsonUtility.FromJson<SWSM_Base>(data);
 
         Debug.Log("[MessageType]" + swsm.data.message_type + " , [Action]" + swsm.data.action);
+        Debug.Log(data);
 
         switch (swsm.data.message_type)
         {
@@ -184,11 +185,8 @@ public class SWSM_Parser
     {
 
         SWSM_Enemies enemiesData = JsonUtility.FromJson<SWSM_Enemies>(rawData);
-        foreach (EnemyData enemyData in enemiesData.data.data)
-        {
-            GameManager.Instance.EVENT_UPDATE_ENEMY.Invoke(enemyData);
-            break;//TODO: process all enemis , not only one
-        }
+
+        GameManager.Instance.EVENT_UPDATE_ENEMIES.Invoke(enemiesData.data);
     }
 
     private static void ProcessMoveCard(string rawData)
@@ -243,6 +241,7 @@ public class SWSM_Parser
             case nameof(WS_DATA_REQUEST_TYPES.CardsPiles):
                 
                 SWSM_CardsPiles deck = JsonUtility.FromJson<SWSM_CardsPiles>(data);
+                Debug.Log($"[SWSM Parser] CardPiles data => {data}");
                 Debug.Log($"Cards Pile Counts: [Draw] {deck.data.data.draw.Count} | [Hand] {deck.data.data.hand.Count} " +
                     $"| [Discard] {deck.data.data.discard.Count} | [Exhaust] {deck.data.data.exhaust.Count}");
                 
@@ -297,7 +296,6 @@ public class SWSM_Parser
         switch (action)
         {
             case "begin_combat":
-
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Combat);
                 break;
             case "update_statuses":

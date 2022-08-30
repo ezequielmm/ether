@@ -75,7 +75,7 @@ public class PointerManager : MonoBehaviour
         //if the pointer is over an enemy, play the card
         if (overEnemy)
         {
-            GameManager.Instance.EVENT_CARD_PLAYED.Invoke(id,enemyData.enemyId);
+            GameManager.Instance.EVENT_CARD_PLAYED.Invoke(id,enemyData.id);
         } 
         else if (pointerActive)
         {

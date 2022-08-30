@@ -14,6 +14,7 @@ public class TopBarManager : MonoBehaviour
     public TMP_Text nameText;
     public TMP_Text healthText;
     public TMP_Text coinsText;
+    public TMP_Text stageText;
 
     public GameObject classIcon, className, showmapbutton;
 
@@ -34,6 +35,7 @@ public class TopBarManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnCombatStart);
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.AddListener(OnToggleMapIcon);
+        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.AddListener(UpdateStageText);
         GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnPlayerAttacked);
 
     }
@@ -44,6 +46,10 @@ public class TopBarManager : MonoBehaviour
         showmapbutton.SetActive(arg0);
     }
 
+    private void UpdateStageText(int act, int step)
+    {
+        stageText.SetText("Stage " + act + "-" + (step + 1));
+    }
 
     public void SetTextValues(string nameText, string classText, int health, int coins)
    // public void SetTextValues(string nameText, string classText, string healthText, int coins)
