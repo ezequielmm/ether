@@ -25,7 +25,7 @@ public class NoEnergyManager : MonoBehaviour
 
     void OnComplete()
     {
-        //DeactivateLabels();
+        DeactivateLabels();
     }
 
     private void DeactivateLabels()

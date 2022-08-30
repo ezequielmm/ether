@@ -50,6 +50,8 @@ namespace BestHTTP.SignalRCore.Transports
             }
 
 #if !UNITY_WEBGL || UNITY_EDITOR
+            this.webSocket.StartPingThread = true;
+
             // prepare the internal http request
             if (this.connection.AuthenticationProvider != null)
                 webSocket.OnInternalRequestCreated = (ws, internalRequest) => this.connection.AuthenticationProvider.PrepareRequest(internalRequest);
@@ -71,7 +73,7 @@ namespace BestHTTP.SignalRCore.Transports
             {
                 BufferPool.Release(msg.Data);
 
-                this.OnError(this.webSocket, "Send called while the websocket is null or isn't open! Transport's State: " + this.State);
+                //this.OnError(this.webSocket, "Send called while the websocket is null or isn't open! Transport's State: " + this.State);
                 return;
             }
 
@@ -192,7 +194,7 @@ namespace BestHTTP.SignalRCore.Transports
         {
             HTTPManager.Logger.Verbose("WebSocketTransport", "StartClose", this.Context);
 
-            if (this.webSocket != null)
+            if (this.webSocket != null && this.webSocket.IsOpen)
             {
                 this.State = TransportStates.Closing;
                 this.webSocket.Close();

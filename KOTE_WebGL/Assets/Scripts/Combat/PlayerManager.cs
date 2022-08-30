@@ -6,6 +6,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(Collider2D))]
 public class PlayerManager : MonoBehaviour
 {
     public SpineAnimationsManagement spineAnimationsManagement;
@@ -13,6 +14,7 @@ public class PlayerManager : MonoBehaviour
     public TMP_Text healthTF;
     public Slider healthBar;
 
+    private Collider2D collider;
     private StatusManager statusManager;
     private Action RunWithEvent;
     private bool CalledEvent;
@@ -43,7 +45,7 @@ public class PlayerManager : MonoBehaviour
         foreach (CombatTurnData.Target target in attack.targets)
         {
             // Run Attack Animation Or Status effects
-            if (target.defenseDelta != 0 || target.healthDelta != 0)
+            if (target.effectType == nameof(ATTACK_EFFECT_TYPES.damage))
             {
                 // Run Attack
                 var f = Attack();
@@ -51,14 +53,14 @@ public class PlayerManager : MonoBehaviour
                 endCalled = true;
                 RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
-            else if (target.defenseDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
+            else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
             {
                 var f = PlayAnimation("Cast");
                 if (f > afterEvent) afterEvent = f;
                 endCalled = true;
                 RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
-            else if (target.healthDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.health)) // Health Up
+            else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.heal)) // Health Up
             {
                 var f = PlayAnimation("Cast");
                 if (f > afterEvent) afterEvent = f;
@@ -115,6 +117,8 @@ public class PlayerManager : MonoBehaviour
         {
             // Play Rising Chimes
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
+            GameManager.Instance.EVENT_HEAL.Invoke(/*PlayerData.id*/ "player", target.healthDelta);
+            waitDuration += 1;
         }
 
         // Update the UI
@@ -213,6 +217,9 @@ public class PlayerManager : MonoBehaviour
         GameManager.Instance.EVENT_WS_CONNECTED.AddListener(OnWSConnected);
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
 
+        collider = GetComponent<Collider2D>();
+
+        if (spineAnimationsManagement == null)
         statusManager = GetComponentInChildren<StatusManager>();
 
         if(spineAnimationsManagement == null)
@@ -301,5 +308,35 @@ public class PlayerManager : MonoBehaviour
             OnDeath();
             Debug.Log("GAME OVER");
         }
+    }
+
+    private List<Tooltip> GetTooltipInfo()
+    {
+        List<Tooltip> list = new List<Tooltip>();
+
+        foreach (IntentIcon icon in GetComponentsInChildren<IntentIcon>())
+        {
+            list.Add(icon.GetTooltip());
+        }
+
+        foreach (StatusIcon icon in GetComponentsInChildren<StatusIcon>())
+        {
+            list.Add(icon.GetTooltip());
+        }
+
+        return list;
+    }
+
+    private void OnMouseEnter()
+    {
+        Vector3 anchorPoint = new Vector3(collider.bounds.center.x + collider.bounds.extents.x,
+            collider.bounds.center.y, 0);
+        // Tooltip On
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(GetTooltipInfo(), TooltipController.Anchor.MiddleLeft, anchorPoint, null);
+    }
+    private void OnMouseExit()
+    {
+        // Tooltip Off
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
     }
 }

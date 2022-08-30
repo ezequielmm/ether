@@ -15,7 +15,7 @@ using BestHTTP.Logger;
 
 namespace BestHTTP.WebSocket
 {
-    public sealed class WebSocketResponse : HTTPResponse, IHeartbeat, IProtocol
+    public sealed class WebSocketResponse : HTTPResponse, IProtocol
     {
         /// <summary>
         /// Capacity of the RTT buffer where the latencies are kept.
@@ -118,7 +118,10 @@ namespace BestHTTP.WebSocket
         /// </summary>
         private DateTime lastPing = DateTime.MinValue;
 
-        private bool waitingForPong = false;
+        /// <summary>
+        /// True if waiting for an answer to our ping request. Ping timeout is used only why waitingForPong is true.
+        /// </summary>
+        private volatile bool waitingForPong = false;
 
         /// <summary>
         /// A circular buffer to store the last N rtt times calculated by the pong messages.
@@ -301,9 +304,6 @@ namespace BestHTTP.WebSocket
             lastMessage = DateTime.UtcNow;
 
             SendPing();
-
-            HTTPManager.Heartbeats.Subscribe(this);
-            HTTPUpdateDelegator.OnApplicationForegroundStateChanged += OnApplicationForegroundStateChanged;
         }
 
         #endregion
@@ -320,7 +320,37 @@ namespace BestHTTP.WebSocket
                     {
                         //if (HTTPManager.Logger.Level <= Logger.Loglevels.All)
                         //    HTTPManager.Logger.Information("WebSocketResponse", "SendThread - Waiting...", this.Context);
-                        newFrameSignal.WaitOne();
+
+                        TimeSpan waitTime = TimeSpan.FromMilliseconds(int.MaxValue);
+
+                        if (this.PingFrequnecy != TimeSpan.Zero)
+                        {
+                            DateTime now = DateTime.UtcNow;
+                            waitTime = lastMessage + PingFrequnecy - now;
+
+                            if (waitTime <= TimeSpan.Zero)
+                            {
+                                if (!waitingForPong && now - lastMessage >= PingFrequnecy)
+                                {
+                                    if (!SendPing())
+                                        continue;
+                                }
+
+                                waitTime = PingFrequnecy;
+                            }
+
+                            if (waitingForPong && now - lastPing > this.WebSocket.CloseAfterNoMessage)
+                            {
+                                HTTPManager.Logger.Warning("WebSocketResponse",
+                                    string.Format("No message received in the given time! Closing WebSocket. LastPing: {0}, PingFrequency: {1}, Close After: {2}, Now: {3}",
+                                    this.lastPing, this.PingFrequnecy, this.WebSocket.CloseAfterNoMessage, now), this.Context);
+
+                                CloseWithError(HTTPRequestStates.Error, "No message received in the given time!");
+                                continue;
+                            }
+                        }
+
+                        newFrameSignal.WaitOne(waitTime);
 
                         try
                         {
@@ -362,6 +392,11 @@ namespace BestHTTP.WebSocket
 
                     HTTPManager.Logger.Information("WebSocketResponse", string.Format("Ending Send thread. Closed: {0}, closeSent: {1}", closed, closeSent), this.Context);
                 }
+            }
+            catch (Exception ex)
+            {
+                if (HTTPManager.Logger.Level == Loglevels.All)
+                    HTTPManager.Logger.Exception("WebSocketResponse", "SendThread", ex);
             }
             finally
             {
@@ -445,15 +480,10 @@ namespace BestHTTP.WebSocket
                                 break;
 
                             case WebSocketFrameTypes.Pong:
-                                waitingForPong = false;
-
                                 try
                                 {
-                                    // Get the ticks from the frame's payload
-                                    long ticksSent = BitConverter.ToInt64(frame.Data, 0);
-
                                     // the difference between the current time and the time when the ping message is sent
-                                    TimeSpan diff = TimeSpan.FromTicks(lastMessage.Ticks - ticksSent);
+                                    TimeSpan diff = TimeSpan.FromTicks(this.lastMessage.Ticks - this.lastPing.Ticks);
 
                                     // add it to the buffer
                                     this.rtts.Add((int)diff.TotalMilliseconds);
@@ -467,6 +497,10 @@ namespace BestHTTP.WebSocket
                                     // A Pong frame MAY be sent unsolicited.  This serves as a
                                     // unidirectional heartbeat.  A response to an unsolicited Pong frame is
                                     // not expected. 
+                                }
+                                finally
+                                {
+                                    waitingForPong = false;
                                 }
 
                                 break;
@@ -501,9 +535,6 @@ namespace BestHTTP.WebSocket
             }
             finally
             {
-                HTTPManager.Heartbeats.Unsubscribe(this);
-                HTTPUpdateDelegator.OnApplicationForegroundStateChanged -= OnApplicationForegroundStateChanged;
-
                 HTTPManager.Logger.Information("WebSocketResponse", "ReceiveThread - Closed!", this.Context);
 
                 TryToCleanup();
@@ -596,34 +627,7 @@ namespace BestHTTP.WebSocket
 
         #endregion
 
-        #region IHeartbeat Implementation
-
-        void IHeartbeat.OnHeartbeatUpdate(TimeSpan dif)
-        {
-            DateTime now = DateTime.UtcNow;
-
-            if (!waitingForPong && now - lastMessage >= PingFrequnecy)
-                SendPing();
-
-            if (waitingForPong && now - lastPing > this.WebSocket.CloseAfterNoMessage)
-            {
-                HTTPManager.Logger.Warning("WebSocketResponse", 
-                    string.Format("No message received in the given time! Closing WebSocket. LastPing: {0}, PingFrequency: {1}, Close After: {2}, Now: {3}", 
-                    this.lastPing, this.PingFrequnecy, this.WebSocket.CloseAfterNoMessage, now), this.Context);
-
-                CloseWithError(HTTPRequestStates.Error, "No message received in the given time!");
-            }
-        }
-
-        #endregion
-
-        private void OnApplicationForegroundStateChanged(bool isPaused)
-        {
-            if (!isPaused)
-                lastMessage = DateTime.UtcNow;
-        }
-
-        private void SendPing()
+        private bool SendPing()
         {
             HTTPManager.Logger.Information("WebSocketResponse", "Sending Ping frame, waiting for a pong...", this.Context);
 
@@ -632,10 +636,7 @@ namespace BestHTTP.WebSocket
 
             try
             {
-                long ticks = DateTime.UtcNow.Ticks;
-                var ticksBytes = BitConverter.GetBytes(ticks);
-
-                var pingFrame = new WebSocketFrame(this.WebSocket, WebSocketFrameTypes.Ping, ticksBytes);
+                var pingFrame = new WebSocketFrame(this.WebSocket, WebSocketFrameTypes.Ping, null);
 
                 Send(pingFrame);
             }
@@ -643,7 +644,11 @@ namespace BestHTTP.WebSocket
             {
                 HTTPManager.Logger.Information("WebSocketResponse", "Error while sending PING message! Closing WebSocket.", this.Context);
                 CloseWithError(HTTPRequestStates.Error, "Error while sending PING message!");
+
+                return false;
             }
+
+            return true;
         }
 
         private void CloseWithError(HTTPRequestStates state, string message)
@@ -653,9 +658,6 @@ namespace BestHTTP.WebSocket
             this.baseRequest.State = state;
 
             this.closed = true;
-
-            HTTPManager.Heartbeats.Unsubscribe(this);
-            HTTPUpdateDelegator.OnApplicationForegroundStateChanged -= OnApplicationForegroundStateChanged;
 
             CloseStream();
             ProtocolEventHelper.EnqueueProtocolEvent(new ProtocolEventInfo(this));
@@ -687,12 +689,23 @@ namespace BestHTTP.WebSocket
                 newFrameSignal = null;
 
                 CloseStream();
+
+                HTTPManager.Logger.Information("WebSocketResponse", "TryToCleanup - finished!", this.Context);
             }
         }
 
         public override string ToString()
         {
             return this.ConnectionKey.ToString();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            IncompleteFrames.Clear();
+            CompletedFrames.Clear();
+            unsentFrames.Clear();
         }
     }
 }

@@ -103,6 +103,7 @@ namespace BestHTTP.Connections
                     // Redirected
                     case 301: // http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.2
                     case 302: // http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.3
+                    case 303: // "See Other"
                     case 307: // http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.8
                     case 308: // http://tools.ietf.org/html/rfc7238
                         {

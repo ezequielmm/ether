@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1313713970707168265}
   - component: {fileID: 4181620752201893534}
   - component: {fileID: 2005858638215017387}
+  - component: {fileID: -7895583937951683920}
   m_Layer: 5
   m_Name: PotionPrefab
   m_TagString: Untagged
@@ -147,3 +148,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unusedPotionSprite: {fileID: 21300000, guid: ab3abad86f2155e49a6ebc923797b678, type: 3}
   usedPotionSprite: {fileID: 21300000, guid: 28de461271fc1de48af1bcb5f94e7175, type: 3}
+--- !u!114 &-7895583937951683920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 385602747326501089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d564c94f5ffeef74e9bb166a65247142, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltipName: noPotion
+  anchor: 1
+  limit: {x: -1, y: 4}

@@ -23,18 +23,18 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_NODE_SELECTED = "NodeSelected";
     private const string WS_MESSAGE_CARD_PLAYED = "CardPlayed";
     private const string WS_MESSAGE_END_TURN = "EndTurn";
+    private const string WS_MESSAGE_REWARD_SELECTED = "RewardSelected";
     /*private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
     private const string WS_MESSAGE_GET_CARD_PILES = "GetCardPiles";
     private const string WS_MESSAGE_GET_PLAYER_HEALTH = "GetPlayerHealth";
     private const string WS_MESSAGE_GET_PLAYERS = "GetPlayers";
     private const string WS_MESSAGE_GET_ENEMIES = "GetEnemies";*/
     private const string WS_MESSAGE_GET_DATA = "GetData";
+    private const string WS_MESSAGE_CONTINUE_EXPEDITION = "ContinueExpedition";
 
 
     void Start()
     {
-       
-
         options = new SocketOptions();
         ConnectSocket(); //Disabled connection until actual implementation
     }
@@ -119,6 +119,8 @@ public class WebSocketManager : MonoBehaviour
         GameManager.Instance.EVENT_CARD_PLAYED.AddListener(OnCardPlayed);
         GameManager.Instance.EVENT_END_TURN_CLICKED.AddListener(OnEndTurn);
         GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener(OnGenericWSDataRequest);
+        GameManager.Instance.EVENT_REWARD_SELECTED.AddListener(OnRewardSelected);
+        GameManager.Instance.EVENT_CONTINUE_EXPEDITION.AddListener(OnContinueExpedition);
 
         GameManager.Instance.EVENT_WS_CONNECTED.Invoke();
     }
@@ -176,8 +178,6 @@ public class WebSocketManager : MonoBehaviour
         Debug.Log("Data from OnExpeditionMap: " + data);
         // GameManager.Instance.EVENT_MAP_NODES_UPDATE.Invoke(data);
         SWSM_Parser.ParseJSON(data);
-
-      
     }
 
     void OnPlayerState(string data)
@@ -187,21 +187,25 @@ public class WebSocketManager : MonoBehaviour
         Debug.Log("Data from OnPlayerState: " + playerState);
     }
 
-    private void OnCardPlayed(string cardId,int enemyId)//TODO: enemyId will an array 
+    private void OnCardPlayed(string cardId, string id)//int enemyId)//TODO: enemyId will an array 
     {
         CardPlayedData cardData = new CardPlayedData();
-        //  obj.card_id = "87d501f6-0583-484c-bf1d-d09d822c68fa";
         cardData.cardId = cardId;
-        cardData.targetId = enemyId;//TODO: here we will poulate the actual array of enemies rather than just one
+        cardData.targetId = id;
 
         string data = JsonUtility.ToJson(cardData).ToString();
-        Debug.Log("sending WS playedcard test=" + data);
+        Debug.Log("[WebSocket Manager] OnCardPlayed data: " + data);
 
         //rootSocket.ExpectAcknowledgement<string>(OnCardPlayedAnswer).Emit(WS_MESSAGE_CARD_PLAYED, data);
         rootSocket.Emit(WS_MESSAGE_CARD_PLAYED, data);
 
     }
 
+    void OnRewardSelected(string rewardId)
+    {
+        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_REWARD_SELECTED, rewardId);
+    }
+    
     private void OnEndTurn()
     {
         rootSocket.ExpectAcknowledgement<string>(OnEndOfTurnAnswer).Emit(WS_MESSAGE_END_TURN);
@@ -215,6 +219,11 @@ public class WebSocketManager : MonoBehaviour
             NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
             GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, WS_QUERY_TYPE.END_OF_TURN);
         }
+    }
+
+    private void OnContinueExpedition()
+    {
+        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_CONTINUE_EXPEDITION);
     }
 
     #endregion 
