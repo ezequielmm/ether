@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static StatusData;
 
 public class StatusManager : MonoBehaviour
 {
@@ -64,7 +65,7 @@ public class StatusManager : MonoBehaviour
     private GameObject createIcon(Status status) 
     {
         GameObject iconObject = Instantiate(iconPrefab);
-        var statusIcon = iconObject.GetComponent<StatusIcon>();
+        var statusIcon = iconObject.GetComponentInChildren<StatusIcon>();
         statusIcon.Initialize();
         setStatusInfo(status, statusIcon);
         return iconObject;
@@ -75,7 +76,7 @@ public class StatusManager : MonoBehaviour
         STATUS stat = ToEnum(status.name);
         statusIcon.SetValue(status.counter);
         statusIcon.SetIcon(stat);
-        statusIcon.SetTooltip(status.description);
+        statusIcon.SetTooltip(status.name, status.description);
     }
 
     private void setStatusInfo(Status status, GameObject iconObject) 
@@ -154,7 +155,7 @@ public class StatusManager : MonoBehaviour
 
     private void OnSetStatus(StatusData status) 
     {
-        if ((status.targetEntity != entityType || status.id != entityID) && (status.targetEntity != "all" || status.targetEntity != "player")) return;
+        if ((status.targetEntity != entityType || status.id != entityID) && (status.targetEntity != "all")) return;
 
         statusList = status.statuses;
         DrawStatus(status.statuses);
