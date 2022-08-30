@@ -56,6 +56,8 @@ public class CardOnHandManager : MonoBehaviour
     public Color blueColor;
     public Color redColor;
 
+    [HideInInspector]
+    public List<Tooltip> tooltips;
     [HideInInspector] public Sequence mySequence;
 
     private Vector3 drawPileOrthoPosition;
@@ -76,6 +78,7 @@ public class CardOnHandManager : MonoBehaviour
     private bool awaitMouseUp;
 
     private bool inTransit;
+    new Collider2D collider;
 
 
     private bool overPlayer = false;
@@ -87,6 +90,8 @@ public class CardOnHandManager : MonoBehaviour
         //Screenspace is defined in pixels. The bottom-left of the screen is (0,0); the right-top is (pixelWidth,pixelHeight). The z position is in world units from the camera.
         //Viewport space is normalized and relative to the camera. The bottom-left of the camera is (0,0); the top-right is (1,1). The z position is in world units from the camera.
 
+        tooltips = new List<Tooltip>();
+
         drawPileOrthoPosition = TransformUIToOrtho("DrawCardPile");
         discardPileOrthoPosition = TransformUIToOrtho("DiscardCardPile");
         exhaustPileOrthoPosition = TransformUIToOrtho("ExhaustedPilePrefab");
@@ -97,6 +102,7 @@ public class CardOnHandManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        collider = GetComponent<Collider2D>();
         mySequence = DOTween.Sequence();
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
         GameManager.Instance.EVENT_MOVE_CARD.AddListener(OnCardToMove);
@@ -204,6 +210,24 @@ public class CardOnHandManager : MonoBehaviour
         thisCardValues = card;
 
         currentPlayerEnergy = energy;
+
+        foreach (var status in card.properties.statuses)
+        {
+            if (!string.IsNullOrEmpty(status.tooltip.title))
+            {
+                tooltips.Add(status.tooltip);
+            }
+            else
+            {
+                var description = status.args.description ?? "TODO // Send Tooltip Over Websocket with Cards on Status Line";
+                tooltips.Add(new Tooltip()
+                {
+                    title = Utils.PrettyText(status.name),
+                    description = description
+                });
+            }
+        }
+
 
         UpdateCardBasedOnEnergy(energy);
     }
@@ -475,9 +499,25 @@ public class CardOnHandManager : MonoBehaviour
 
             Vector3 showUpPosition = new Vector3(targetPosition.x, GameSettings.HAND_CARD_SHOW_UP_Y, GameSettings.HAND_CARD_SHOW_UP_Z);
             transform.DOMove(showUpPosition, GameSettings.HAND_CARD_SHOW_UP_TIME);
-            
 
-            transform.DORotate(Vector3.zero, GameSettings.HAND_CARD_SHOW_UP_TIME);
+
+            transform.DORotate(Vector3.zero, GameSettings.HAND_CARD_SHOW_UP_TIME).OnComplete(() =>
+            {
+                if (transform.position.x <= 0)
+                {
+                    Vector3 topRightOfCard = new Vector3(transform.position.x + (collider.bounds.size.x / 2) + 0.2f,
+                        transform.position.y + (collider.bounds.size.y / 2), 0);
+                    GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.TopLeft, topRightOfCard, null);
+                }
+                else 
+                {
+                    Vector3 topLeftOfCard = new Vector3(transform.position.x - ((collider.bounds.size.x / 2) + 0.2f),
+                            transform.position.y + (collider.bounds.size.y / 2), 0);
+                    GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.TopRight, topLeftOfCard, null);
+                }
+                
+            });
+
             GameManager.Instance.EVENT_CARD_SHOWING_UP.Invoke(thisCardValues.id, this.targetPosition);
         }
         else
@@ -505,6 +545,8 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnMouseExit()
     {
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
+
         if (pointerIsActive) return;
 
         if (cardActive && cardIsShowingUp)
