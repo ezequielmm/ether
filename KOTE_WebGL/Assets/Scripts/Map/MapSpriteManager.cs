@@ -65,6 +65,37 @@ namespace map
         private float halfScreenWidth;
 
         private List<int> MapSeeds;
+        private Dictionary<Vector3Int, MapTilePath> mapPaths;
+
+        private class MapTilePath 
+        {
+            public Vector3Int origin;
+            public Vector3Int? connectingOrigin = null;
+            public Vector3Int target;
+            public Vector3Int? connectingTarget = null;
+
+            public Vector3Int position;
+
+            public Vector3Int? previousNode = null;
+            public Vector3Int? nextNode = null;
+            public Vector3Int? connectingNode = null;
+            public SplineData path = null;
+            public SplineData connectingPath = null;
+        }
+
+        private class SplineData {
+            public Vector3Int tileLoc;
+            public Spline path;
+            public int index;
+            public Transform pathTransform;
+            public SplineData(Vector3Int TileAddress, Spline PathSpline, int Index, Transform transform)
+            {
+                tileLoc = TileAddress;
+                path = PathSpline;
+                index = Index;
+                pathTransform = transform;
+            }
+        }
 
         private class SplinePoint 
         {
@@ -658,75 +689,142 @@ namespace map
         }
 
         private void GeneratePathBackground()
-        {
-            Dictionary<Vector3Int, SplinePoint> SplineReference = new Dictionary<Vector3Int, SplinePoint>();
-            //Generate the grass around the path
+        {//Generate the grass around the path and set up the path in the process
+            // Clear out path dictionary for generation
+            if (mapPaths != null) { mapPaths.Clear(); }
+            else
+            {
+                mapPaths = new Dictionary<Vector3Int, MapTilePath>();
+            }
+
+            // Skip if no paths
             if (pathManagers.Count <= 0)
             {
                 return;
             }
-            int totalPoints = 0;
+
+            bool startSet = false;
+            bool endSet = false;
+
+            // Set the paths up first
             foreach (PathManager path in pathManagers)
             {
                 // get the references we need to generate the paths on the grid
                 SpriteShapeController pathSpriteController = path.pathController;
                 Spline pathSpline = pathSpriteController.spline;
-                Spline dashedSpline = path.lineController.spline;
 
                 // Remove interior spline points
                 for (int i = 1; i < pathSpline.GetPointCount() - 1;) 
                 {
                     pathSpline.RemovePointAt(i);
                 }
-                for (int i = 1; i < dashedSpline.GetPointCount() - 1;)
+
+                // removing so we don't have to do this later
+                for (int i = 1; i < path.lineController.spline.GetPointCount() - 1;)
                 {
-                    dashedSpline.RemovePointAt(i);
+                    path.lineController.spline.RemovePointAt(i);
                 }
 
                 Transform pathTransform = pathSpriteController.transform;
-                Transform dashTransform = pathSpriteController.transform;
-                bool placedStart = false;
-                HashSet<Vector3> tilesOnPath = new HashSet<Vector3>();
-                List<Vector3Int> tilesSkipped = new List<Vector3Int>();
+
+                // Last tile hit. Used to check for a path begining.
+                Vector3Int? lastTile = null;
+                // List of tiles this path will be on
+                List<MapTilePath> pathList = new List<MapTilePath>();
 
                 bool overriddenLastNode = false;
-                // for each of the points in the spline
-                for (int i = 0; i < dashedSpline.GetPointCount(); i++)
+
+                // position of begining
+                Vector3Int origin = MapGrid.WorldToCell(pathTransform.TransformPoint(pathSpline.GetPosition(0)));
+                // position of end
+                Vector3Int target = MapGrid.WorldToCell(pathTransform.TransformPoint(pathSpline.GetPosition(pathSpline.GetPointCount() - 1)));
+
+                // For each of the points in the spline
+                for (int i = 0; i < pathSpline.GetPointCount(); i++)
                 {
-                    // mark the grid tile underneath it as part of the path
-                    Vector3 pointPosition = dashedSpline.GetPosition(i);
+                    // Find the world pos of the spline point
+                    Vector3 pointPosition = pathSpline.GetPosition(i);
                     pointPosition = pathTransform.TransformPoint(pointPosition);
+
+                    // This becomes the ID for the path
+                    Vector3Int currentTile = MapGrid.WorldToCell(pointPosition);
+
+                    // Snap point's world position to cell
+                    pointPosition = MapGrid.CellToWorld(currentTile);
+
+                    // Move Spline Point
+                    pathSpline.SetPosition(i, pointPosition);
+
+                    // Apply first point to grid if possible;
+                    if (!mapPaths.ContainsKey(currentTile) && !startSet)
+                    {
+                        // Add new mapPath
+                        var tilePath = new MapTilePath()
+                        {
+                            origin = origin,
+                            target = target,
+                            previousNode = lastTile,
+                            nextNode = null,
+                            position = currentTile,
+                            path = new SplineData(currentTile, pathSpline, i, pathTransform)
+                        };
+                        // update last tile if applicable
+                        if (lastTile != null) 
+                        {
+                            if (mapPaths[lastTile.Value].nextNode == null)
+                            {
+                                mapPaths[lastTile.Value].nextNode = currentTile;
+                            }
+                            else 
+                            {
+                                // If a next node exists, then we're hyjacking and adding a connecting node
+                                mapPaths[lastTile.Value].connectingNode = currentTile;
+                                // As this is a begining node, must add our alt target
+                                mapPaths[lastTile.Value].connectingTarget = target;
+
+                                if (mapPaths[lastTile.Value].target == mapPaths[lastTile.Value].connectingTarget) 
+                                {
+                                    Debug.LogWarning($"[MapSpriteManager] Node {lastTile.Value} has the same target and connecting target! {mapPaths[lastTile.Value].target}");
+                                }
+                            }
+                            
+                        }
+                        mapPaths.Add(currentTile, tilePath);
+                        // Add existing path to path list
+                        pathList.Add(tilePath);
+                        startSet = true;
+                    }
+
+                    // Set last tile to this tile
+                    lastTile = currentTile;
 
                     // if it's not the last point on the spline, move towards the next point and mark the tiles as path
                     Vector3 nextPoint = pointPosition;
-                    if (i != dashedSpline.GetPointCount() - 1)
+                    if (i != pathSpline.GetPointCount() - 1)
                     {
-                        nextPoint = pathTransform.TransformPoint(dashedSpline.GetPosition(i + 1));
+                        nextPoint = pathTransform.TransformPoint(pathSpline.GetPosition(i + 1));
                     }
                     Vector3 nextTilePos = Vector3.MoveTowards(pointPosition, nextPoint, 0.1f);
 
-                    bool ignorePositions = false;
+                    
                     while (Vector3.Distance(nextTilePos, nextPoint) > 0.1f)
                     {
-                        Vector3Int nextTilePosition = MapGrid.layoutGrid.WorldToCell(nextTilePos);
+                        currentTile = MapGrid.layoutGrid.WorldToCell(nextTilePos);
 
                         // we have to set the z to a constant, as for some reason you can two tiles in the same spot with different z levels
-                        nextTilePosition.z = (int)GameSettings.MAP_SPRITE_ELEMENTS_Z;
-
+                        currentTile.z = (int)GameSettings.MAP_SPRITE_ELEMENTS_Z;
                         // set a random grass tile at that position
                         int randomTile = Random.Range(0, grassTiles.Length);
-                        MapGrid.SetTile(nextTilePosition, grassTiles[randomTile]);
+                        MapGrid.SetTile(currentTile, grassTiles[randomTile]);
 
-                        // Check if there is a path at this tile
-                        var hasPreviousPoint = SplineReference.TryGetValue(nextTilePosition, out SplinePoint spineOnTile);
-
-                        if (i != dashedSpline.GetPointCount() - 1 && !tilesOnPath.Contains(nextTilePosition))
+                        // If not the last tile and there is no path on the tile
+                        if (i != pathSpline.GetPointCount() - 1 && !mapPaths.ContainsKey(currentTile))
                         {
-                            Vector3 worldPosOfPoint = MapGrid.layoutGrid.CellToWorld(nextTilePosition);
+                            Vector3 worldPosOfPoint = MapGrid.layoutGrid.CellToWorld(currentTile);
                             Vector3 localPos = pathTransform.InverseTransformPoint(worldPosOfPoint);
                             if (hasPreviousPoint && !ignorePositions)
                             {
-                                if (placedStart)
+                                if (startSet)
                                 {
                                     // If there is a path, this is the new end of the tile
                                     int lastIndex = pathSpline.GetPointCount() - 1;
@@ -751,7 +849,7 @@ namespace map
                             else
                             {
                                 bool addNode = true;
-                                if (placedStart == false)
+                                if (startSet == false)
                                 {
                                     for (int y = 0; y < tilesSkipped.Count; y++)
                                     {
@@ -771,7 +869,7 @@ namespace map
                                         SplineReference.Add(nextTilePosition, new SplinePoint(nextTilePosition, pathSpline, dashedSpline, i, pathTransform));
                                     }
 
-                                    placedStart = true;
+                                    startSet = true;
                                 }
                                 // move spline to center of tile
                                 if (addNode)
