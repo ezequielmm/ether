@@ -9,6 +9,7 @@ public class SWSM_Parser
         SWSM_Base swsm = JsonUtility.FromJson<SWSM_Base>(data);
 
         Debug.Log("[MessageType]" + swsm.data.message_type + " , [Action]" + swsm.data.action);
+        Debug.Log(data);
 
         switch (swsm.data.message_type)
         {
@@ -185,8 +186,8 @@ public class SWSM_Parser
             case nameof(WS_DATA_REQUEST_TYPES.CardsPiles):
 
                 SWSM_CardsPiles deck = JsonUtility.FromJson<SWSM_CardsPiles>(data);
-                Debug.Log(
-                    $"Cards Pile Counts: [Draw] {deck.data.data.draw.Count} | [Hand] {deck.data.data.hand.Count} " +
+                Debug.Log($"[SWSM Parser] CardPiles data => {data}");
+                Debug.Log($"Cards Pile Counts: [Draw] {deck.data.data.draw.Count} | [Hand] {deck.data.data.hand.Count} " +
                     $"| [Discard] {deck.data.data.discard.Count} | [Exhaust] {deck.data.data.exhaust.Count}");
 
                 GameManager.Instance.EVENT_CARDS_PILES_UPDATED.Invoke(deck.data);
@@ -215,7 +216,7 @@ public class SWSM_Parser
         }
     }
 
-    private static void ProcessEnemyAffected(string action, string data)
+   private static void ProcessEnemyAffected(string action, string data)
     {
         switch (action)
         {
@@ -230,7 +231,7 @@ public class SWSM_Parser
                 ProcessUpdateEnemy(data);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.update_player):
-                ProcessUpdatePlayer(data);
+                ProcessUpdatePlayer(data); 
                 break;
         }
     }
@@ -253,7 +254,7 @@ public class SWSM_Parser
                 break;
             case nameof(WS_MESSAGE_ACTIONS.create_card):
                 ProcessCreateCard(data);
-                // ProcessMoveCard(data);
+               // ProcessMoveCard(data);
                 break;
         }
     }
@@ -362,21 +363,19 @@ public class SWSM_Parser
 
     private static void ProcessUpdateEnemy(string rawData)
     {
+
         SWSM_Enemies enemiesData = JsonUtility.FromJson<SWSM_Enemies>(rawData);
-        foreach (EnemyData enemyData in enemiesData.data.data)
-        {
-            GameManager.Instance.EVENT_UPDATE_ENEMY.Invoke(enemyData);
-            break; //TODO: process all enemis , not only one
-        }
+
+        GameManager.Instance.EVENT_UPDATE_ENEMIES.Invoke(enemiesData.data);
     }
 
     private static void ProcessUpdatePlayer(string data)
     {
         SWSM_Players playersData = JsonUtility.FromJson<SWSM_Players>(data);
-        // foreach (PlayerData playerData in playersData.data)
-        //  {
-        GameManager.Instance.EVENT_UPDATE_PLAYER.Invoke(playersData.data.data);
-        // }//TODO: plyersdta will be a list
+       // foreach (PlayerData playerData in playersData.data)
+      //  {
+            GameManager.Instance.EVENT_UPDATE_PLAYER.Invoke(playersData.data.data);
+       // }//TODO: plyersdta will be a list
     }
 
     private static void ProcessEnemyIntents(string action, string data)
@@ -407,7 +406,7 @@ public class SWSM_Parser
         GameManager.Instance.EVENT_CARD_PILE_SHOW_DECK.Invoke(deck);
     }
 
-    private static void ProcessMoveCard(string rawData)
+     private static void ProcessMoveCard(string rawData)
     {
         SWSM_CardMove cardMoveData = JsonUtility.FromJson<SWSM_CardMove>(rawData);
         Debug.Log($"[SWSM Parser] ProcessMoveCard [{cardMoveData.data.data.Length}]");
@@ -428,12 +427,12 @@ public class SWSM_Parser
         GameManager.Instance.EVENT_CARD_DRAW_CARDS.Invoke();
     }
 
-    private static void ProcessCreateCard(string data)
+     private static void ProcessCreateCard(string data)
     {
-        Debug.Log("[ProcessCreateCard] data:" + data);
+        Debug.Log("[ProcessCreateCard] data:"+data);
         SWSM_CardMove cardMoveData = JsonUtility.FromJson<SWSM_CardMove>(data);
         // GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-
+       
         foreach (CardToMoveData cardData in cardMoveData.data.data)
         {
             GameManager.Instance.EVENT_CARD_CREATE.Invoke(cardData.id);

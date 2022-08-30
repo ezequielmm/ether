@@ -44,6 +44,13 @@ public class Step
     public List<NodeDataHelper> nodesData = new List<NodeDataHelper>();
 }
 
+[Serializable]
+public class Tooltip
+{ 
+    public string title;
+    public string description;
+}
+
 
 [Serializable]
 public class ExpeditionStatusData
@@ -176,8 +183,10 @@ public class PlayerData
     /// <summary>
     /// Index of Player
     /// </summary>
-    public int playerId = 1; // This will be static for now. We'll need this when we have multiple players
+    [Obsolete("Int IDs will be phased out")]
+    public int playerId { get; set; } = 1; // This will be static for now. We'll need this when we have multiple players
 
+    public string id;
     public int hpCurrent;
     public int hpMax; //current
     public int gold;
@@ -210,6 +219,23 @@ public class Card
 public class Effects
 {
     public List<Effect> effects;
+    public List<Statuses> statuses;
+}
+
+[Serializable]
+public class Statuses 
+{
+    public string name;
+    public Args args;
+    public Tooltip tooltip;
+
+    [Serializable]
+    public class Args 
+    {
+        public int value;
+        public string attachTo;
+        public string description;
+    }
 }
 
 [Serializable]
@@ -293,7 +319,7 @@ public class Cards
 public class CardPlayedData //outgoing data
 {
     public string cardId;
-    public int targetId;
+    public string targetId;
 }
 
 [Serializable]
@@ -409,7 +435,7 @@ public class SWSM_CombatAction
 public class StatusData
 {
     public string targetEntity;
-    public int id;
+    public string id;
     public List<Status> statuses;
 
     [Serializable]
@@ -446,6 +472,29 @@ public class SWSM_EnergyArray
 }
 
 [Serializable]
+public class SWSM_CurrentStep
+{
+    public StepData data;
+
+    [Serializable]
+    public class StepData
+    {
+        public string message_type;
+        public string action;
+
+        //public string data;
+        public CurrentStep data;
+        
+        
+    }
+}
+[Serializable]
+public class CurrentStep{
+    public int act;
+    public int step;
+}
+
+[Serializable]
 public class SWSM_CardsPiles
 {
     public CardPiles data;
@@ -476,6 +525,7 @@ public class EnemyData
     /// <summary>
     /// Index of enemy
     /// </summary>
+    [Obsolete("Int IDs will be phased out")]
     public int enemyId;
 
     public int defense;

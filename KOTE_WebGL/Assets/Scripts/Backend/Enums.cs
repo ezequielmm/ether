@@ -28,6 +28,17 @@ public enum GameStatuses
     GameOver
 }
 
+[Serializable]
+public enum Size 
+{
+    medium = 0,
+    tiny,
+    small,
+    mediumWide,
+    large,
+    giant
+}
+
 public enum WS_QUERY_TYPE
 {
     MAP_NODE_SELECTED,
@@ -183,7 +194,8 @@ public enum WS_DATA_REQUEST_TYPES
     Potions,
     Trinkets,
     Statuses,
-    PlayerDeck
+    PlayerDeck,
+    CurrentNode
 }
 
 [Serializable]
