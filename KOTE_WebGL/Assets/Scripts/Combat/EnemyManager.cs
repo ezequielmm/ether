@@ -30,6 +30,7 @@ public class EnemyManager : MonoBehaviour
     private Action RunWithEvent;
     private bool CalledEvent;
 
+    new private Collider2D collider;
     private StatusManager statusManager;
 
 
@@ -95,8 +96,15 @@ public class EnemyManager : MonoBehaviour
             bottom.y = Mathf.Max(transform.position.y, bottom.y);
             BottomBar.position = bottom;
 
+            collider = activeEnemy.GetComponent<Collider2D>();
+
+            // Set tooltip events
+            enemyPlacementData.onCursorEnter.AddListener(setTooltip);
+            enemyPlacementData.onCursorExit.AddListener(removeTooltip);
+
+
             this.enemyType = Utils.ParseEnum<EnemyTypes>(enemyType);
-            gameObject.name = Enum.GetName(typeof(EnemyTypes), enemyType);
+            gameObject.name = Enum.GetName(typeof(EnemyTypes), this.enemyType);
 
             Instantiate();
         }
@@ -270,6 +278,16 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    private void OnDrawGizmos()
+    {
+        if (!string.IsNullOrEmpty(enemyData.size))
+        {
+            float size = Utils.GetSceneSize(Utils.ParseEnum<Size>(enemyData.size));
+            Gizmos.color = Color.cyan;
+            Utils.GizmoDrawBox(size, size * 2, (Vector3.up * size) + transform.position);
+        }
+    }
+
     public void SetHealth(int? current = null, int? max = null)
     {
         if (current == null)
@@ -366,6 +384,35 @@ public class EnemyManager : MonoBehaviour
         if (enemy != null) return enemy;
         Debug.LogError($"[EnemyManager] Missing {enemyName} prefab.");
         return null;
+    }
+
+    private List<Tooltip> GetTooltipInfo()
+    {
+        List<Tooltip> list = new List<Tooltip>();
+
+        foreach (IntentIcon icon in GetComponentsInChildren<IntentIcon>())
+        {
+            list.Add(icon.GetTooltip());
+        }
+
+        foreach (StatusIcon icon in GetComponentsInChildren<StatusIcon>())
+        {
+            list.Add(icon.GetTooltip());
+        }
+
+        return list;
+    }
+    private void setTooltip()
+    {
+        Vector3 anchorPoint = new Vector3(collider.bounds.center.x - collider.bounds.extents.x,
+            collider.bounds.center.y, 0);
+        // Tooltip On
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(GetTooltipInfo(), TooltipController.Anchor.MiddleRight, anchorPoint, null);
+    }
+    private void removeTooltip()
+    {
+        // Tooltip Off
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
     }
 
     private GameObject findPrefab(string enemyName)

@@ -14,7 +14,7 @@ public class EnemyIntentManager : MonoBehaviour
     static bool askedForIntent;
     bool intentSet;
 
-    string enemyId => enemyManager.EnemyData.id;
+    string enemyId => enemyManager?.EnemyData?.id ?? "";
 
     void Start()
     {
