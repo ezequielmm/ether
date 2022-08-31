@@ -97,9 +97,11 @@ public class PlayerManager : MonoBehaviour
             }
         }
         if (!endCalled)
-        {
-            // If no conditions are met, close the event
-            GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId);
+        { // If no conditions met, pass onto the target and play cast
+            var f = PlayAnimation("Cast");
+            if (f > afterEvent) afterEvent = f;
+            endCalled = true;
+            RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
         }
         else if (afterEvent > 0)
         {

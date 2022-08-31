@@ -17,7 +17,7 @@ public class SWSM_Parser
     {
         SWSM_Base swsm = JsonUtility.FromJson<SWSM_Base>(data);
 
-        Debug.Log("[MessageType]" + swsm.data.message_type + " , [Action]" + swsm.data.action);
+        Debug.Log("[SWSM Parser][MessageType]" + swsm.data.message_type + " , [Action]" + swsm.data.action);
         Debug.Log(data);
 
         switch (swsm.data.message_type)
