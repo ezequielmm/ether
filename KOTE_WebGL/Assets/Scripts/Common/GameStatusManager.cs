@@ -50,8 +50,15 @@ public class GameStatusManager : MonoBehaviour
             case GameStatuses.Treasure:
                 InitializeTreasureMode();
                 break;
-            case GameStatuses.Encounter: break;
-            case GameStatuses.Merchant: break;
+            case GameStatuses.Encounter:
+                InitializeEncounterNode();
+                break;
+            case GameStatuses.Merchant:
+                InitializeMerchantNode();
+                break;
+            case GameStatuses.Camp:
+                InitializeCampNode();
+                break;
             case GameStatuses.RoyalHouse: break;
         }
     }
