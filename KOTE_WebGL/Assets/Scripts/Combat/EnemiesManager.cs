@@ -98,7 +98,10 @@ public class EnemiesManager : MonoBehaviour
             if (!newEnemyList.Contains(enemy)) 
             {
                 enemies.RemoveAt(i);
-                enemy.transform.DOMove(transform.position + Vector3.right * spawnX, 1).OnComplete( ()=>{ Destroy(enemy); });
+                if (enemy != null)
+                {
+                    enemy.transform.DOMove(transform.position + Vector3.right * spawnX, 1).OnComplete(() => { Destroy(enemy); });
+                }
                 i--;
                 continue;
             }

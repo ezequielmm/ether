@@ -334,7 +334,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
-        if (playerData.hpCurrent <= 0 && canDie) 
+        if (playerData != null && playerData.hpCurrent <= 0 && canDie) 
         {
             CheckDeath(playerData.hpCurrent);
         }
