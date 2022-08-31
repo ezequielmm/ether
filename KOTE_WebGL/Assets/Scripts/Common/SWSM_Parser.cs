@@ -93,7 +93,7 @@ public class SWSM_Parser
         switch (action)
         {
             case "begin_encounter":
-                GameManager.Instance.EVENT_SHOW_ENCOUNTER_PANEL.Invoke();
+                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Encounter);
                 break;
         }
     }
@@ -103,7 +103,7 @@ public class SWSM_Parser
         switch (action)
         {
             case "begin_merchant":
-                GameManager.Instance.EVENT_SHOW_MERCHANT_PANEL.Invoke();
+                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Merchant);
                 break;
         }
     }
@@ -113,7 +113,7 @@ public class SWSM_Parser
         switch (action)
         {
             case "begin_camp":
-                GameManager.Instance.EVENT_SHOW_CAMP_PANEL.Invoke();
+                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Camp);
                 break;
         }
     }

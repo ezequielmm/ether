@@ -11,20 +11,20 @@ public class GameStatusManager : MonoBehaviour
     private PlayerStateData playerStateData;
 
 
-
     void Start()
     {
         //TODO: for the moment we always start as map but this could change
         OnChangeGameStatus(GameStatuses.Map);
 
-        GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeDataUpdate);//a node has been selected an we got an update node data
+        GameManager.Instance.EVENT_NODE_DATA_UPDATE
+            .AddListener(OnNodeDataUpdate); //a node has been selected an we got an update node data
 
         // GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusUpdate);
         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(OnChangeGameStatus);
     }
 
     private void OnPlayerStatusUpdate(PlayerStateData playerState)
-    {        
+    {
         Debug.Log(playerState);
     }
 
@@ -32,7 +32,7 @@ public class GameStatusManager : MonoBehaviour
     {
         lastNodeStatusData = nodeState;
         //TODO: for the moment is only combat but as long as we create more node types that logic will be decided here
-        if(wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED) OnChangeGameStatus(GameStatuses.Combat);
+        if (wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED) OnChangeGameStatus(GameStatuses.Combat);
     }
 
     public void OnChangeGameStatus(GameStatuses newGameStatus)
@@ -50,9 +50,9 @@ public class GameStatusManager : MonoBehaviour
             case GameStatuses.Treasure:
                 InitializeTreasureMode();
                 break;
-            case GameStatuses.Encounter:break;
-            case GameStatuses.Merchant:break;
-            case GameStatuses.RoyalHouse:break;
+            case GameStatuses.Encounter: break;
+            case GameStatuses.Merchant: break;
+            case GameStatuses.RoyalHouse: break;
         }
     }
 
@@ -77,8 +77,8 @@ public class GameStatusManager : MonoBehaviour
         //GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
         GameManager.Instance.EVENT_CARD_DRAW_CARDS.Invoke();
         //Invoke("InvokeDrawCards", 0.2f);
-
     }
+
     private void InitializeTreasureMode()
     {
         //tell top bar to show the map icon
@@ -86,7 +86,37 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
         GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
         GameManager.Instance.EVENT_TOOGLE_TREASURE_ELEMENTS.Invoke(true);
+    }
 
+    private void InitializeEncounterNode()
+    {
+        GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
+        GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
+        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
+        GameManager.Instance.EVENT_SHOW_ENCOUNTER_PANEL.Invoke();
+    }
+
+    private void InitializeMerchantNode()
+    {
+        GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
+        GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
+        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
+        GameManager.Instance.EVENT_SHOW_MERCHANT_PANEL.Invoke();
+    }
+
+    private void InitializeCampNode()
+    {
+        GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
+        GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
+        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
+        GameManager.Instance.EVENT_SHOW_CAMP_PANEL.Invoke();
+    }
+
+    private void InitializeRoyaHouseNode()
+    {
+        GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
+        GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
+        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
     }
 
     private void InvokeDrawCards()

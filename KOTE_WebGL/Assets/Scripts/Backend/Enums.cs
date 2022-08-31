@@ -23,6 +23,7 @@ public enum GameStatuses
     Map,
     Encounter,
     Merchant,
+    Camp,
     RoyalHouse,
     RewardsPanel,
     GameOver
