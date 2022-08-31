@@ -324,11 +324,11 @@ public class PlayerManager : MonoBehaviour
             // Throw up click blocker
             GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(true);
 
-            Debug.LogWarning($"Client Induced Game Over");
-            GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
-
             // Play animation
             OnDeath();
+
+            // Run game over
+            GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
         }
     }
 
