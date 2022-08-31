@@ -32,6 +32,14 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_GET_DATA = "GetData";
     private const string WS_MESSAGE_CONTINUE_EXPEDITION = "ContinueExpedition";
 
+    private void Awake()
+    {
+        // Turns off non-exception logging when outside of development enviroment
+        // Also seen in SWSM_Parser.cs
+        #if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
+            Debug.unityLogger.filterLogType = LogType.Exception;
+        #endif
+    }
 
     void Start()
     {
