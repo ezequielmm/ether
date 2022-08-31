@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static StatusData;
 
 public class StatusManager : MonoBehaviour
 {
@@ -15,7 +16,8 @@ public class StatusManager : MonoBehaviour
     [SerializeField]
     PlayerManager playerManager;
 
-    List<StatusData.Status> statusList = new List<StatusData.Status>();
+    List<Status> statusList = new List<Status>();
+    Dictionary<string, GameObject> statusIconList = new Dictionary<string, GameObject>();
 
     string entityType => (enemyManager == null ? "player" : "enemy");
     string entityID => enemyManager?.EnemyData.id ?? playerManager?.PlayerData.id ?? "-1";
@@ -42,7 +44,7 @@ public class StatusManager : MonoBehaviour
             Debug.LogError($"[StatusManager] Manager does not belong either an enemy or a player.");
         }
         GameManager.Instance.EVENT_UPDATE_STATUS_EFFECTS.AddListener(OnSetStatus);
-        //GameManager.Instance.EVENT_CHANGE_TURN.AddListener(onTurnChange);
+        GameManager.Instance.EVENT_CHANGE_TURN.AddListener(onTurnChange);
         iconContainer.SetFadeSpeed(GameSettings.STATUS_FADE_SPEED);
         iconContainer.fadeOnCreate = true;
     }
@@ -60,34 +62,63 @@ public class StatusManager : MonoBehaviour
         Utils.GizmoDrawBox(new Bounds(rt.position + transform.position, size2 * 1.05f), new Vector3(size.x * 2, 0, transform.position.z - 0.1f));
     }
 
-    //private void onTurnChange(string next) 
-    //{
-    //    if (!askedForStatus)
-    //    {
-    //        askForStatus();
-    //    }
-    //}
-
-    private void DrawStatus() 
+    private GameObject createIcon(Status status) 
     {
-        iconContainer.ClearIcons();
-        foreach (var status in statusList) 
+        GameObject iconObject = Instantiate(iconPrefab);
+        var statusIcon = iconObject.GetComponentInChildren<StatusIcon>();
+        statusIcon.Initialize();
+        setStatusInfo(status, statusIcon);
+        return iconObject;
+    }
+
+    private void setStatusInfo(Status status, StatusIcon statusIcon)
+    {
+        STATUS stat = ToEnum(status.name);
+        statusIcon.SetValue(status.counter);
+        statusIcon.SetIcon(stat);
+        statusIcon.SetTooltip(status.name, status.description);
+    }
+
+    private void setStatusInfo(Status status, GameObject iconObject) 
+    {
+        var statusIcon = iconObject.GetComponentInChildren<StatusIcon>();
+        setStatusInfo(status, statusIcon);
+    }
+
+    private void DrawStatus(List<Status> newStatus) 
+    {
+        foreach (var status in newStatus) 
         {
-            GameObject iconObject = Instantiate(iconPrefab);
-            var statusIcon = iconObject.GetComponent<StatusIcon>();
-            statusIcon.Initialize();
-
-            STATUS stat = ToEnum(status.name);
-            statusIcon.SetValue(status.counter);
-            statusIcon.SetIcon(stat);
-            statusIcon.SetTooltip(status.name, status.description);
-
-            iconContainer.AddIcon(iconObject);
+            var hasKey = statusIconList.ContainsKey(status.name);
+            if (!hasKey) // New not in known
+            {
+                var newIcon = createIcon(status);
+                statusIconList.Add(status.name, newIcon);
+                iconContainer.AddIcon(newIcon);
+            }
+            else // New and Known Match
+            {
+                var icon = statusIconList[status.name];
+                setStatusInfo(status, icon);
+            }
         }
+        List<string> keysToDelete = new List<string>();
+        foreach (string key in statusIconList.Keys) 
+        {
+            if (newStatus.Find(status => status.name == key) == null) // Known not in New
+            {
+                iconContainer.DeleteIcon(statusIconList[key]);
+                keysToDelete.Add(key);
+            }
+        }
+        foreach (string key in keysToDelete) { statusIconList.Remove(key); }
         iconContainer.ReorganizeSprites();
+    }
 
+    private void onTurnChange(string who) 
+    {
         askedForStatus = false;
-        statusSet = true;
+        statusSet = false;
     }
 
     private void Update()
@@ -108,32 +139,32 @@ public class StatusManager : MonoBehaviour
 
     public void UpdateStatus(List<StatusData.Status> newStatuses) 
     {
-        foreach (var newStatus in newStatuses)
+        foreach (var status in newStatuses)
         {
             bool set = false;
             for (int i = 0; i < statusList.Count; i++)
             {
-                if (statusList[i].name == newStatus.name)
+                if (statusList[i].name == status.name)
                 {
-                    statusList[i] = newStatus;
+                    statusList[i] = status;
                     set = true;
                     break;
                 }
             }
             if (!set)
             {
-                statusList.Add(newStatus);
+                statusList.Add(status);
             }
         }
-        DrawStatus();
+        DrawStatus(statusList);
     }
 
     private void OnSetStatus(StatusData status) 
     {
-        if ((status.targetEntity != entityType || status.id != entityID) && (status.targetEntity != "all" || status.targetEntity != "player")) return;
+        if ((status.targetEntity != entityType || status.id != entityID) && (status.targetEntity != "all")) return;
 
         statusList = status.statuses;
-        DrawStatus();
+        DrawStatus(status.statuses);
     }
 
     private STATUS ToEnum(string str) 
