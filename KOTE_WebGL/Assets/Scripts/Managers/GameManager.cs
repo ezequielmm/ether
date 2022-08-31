@@ -160,6 +160,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_CARD_CREATE = new UnityEvent<string>();
 
     //Gameplay events
+    [HideInInspector] public UnityEvent<GameStatuses> EVENT_PREPARE_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
     [HideInInspector] public UnityEvent<GameStatuses> EVENT_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
     [HideInInspector] public UnityEvent<string, string> EVENT_CARD_PLAYED = new UnityEvent<string, string>(); // cardID, targetID
     [HideInInspector] public UnityEvent EVENT_END_TURN_CLICKED = new UnityEvent();

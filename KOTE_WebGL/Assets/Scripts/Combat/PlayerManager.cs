@@ -20,6 +20,7 @@ public class PlayerManager : MonoBehaviour
     private bool CalledEvent;
 
     private PlayerData playerData;
+    bool canDie;
     public PlayerData PlayerData
     {
         set
@@ -39,6 +40,9 @@ public class PlayerManager : MonoBehaviour
         GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener(OnUpdatePlayer);
         GameManager.Instance.EVENT_WS_CONNECTED.AddListener(OnWSConnected);
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.AddListener(AboutToDie);
+
+        canDie = false;
 
         collider = GetComponent<Collider2D>();
 
@@ -304,18 +308,35 @@ public class PlayerManager : MonoBehaviour
         return length;
     }
 
+    private void AboutToDie(GameStatuses newStatus) 
+    {
+        if (newStatus == GameStatuses.GameOver)
+        {
+            canDie = true;
+        }
+    }
+
     private void CheckDeath(int current)
     {
-        if (current <= 0)
+        if (current <= 0 && canDie)
         {
+            canDie = false;
             // Throw up click blocker
             GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(true);
+
+            Debug.LogWarning($"Client Induced Game Over");
+            GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
+
             // Play animation
-            RunAfterTime(OnDeath(), ()=>{
-                Debug.Log("GAME OVER");
-                // Run end of game
-                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
-            });
+            OnDeath();
+        }
+    }
+
+    private void Update()
+    {
+        if (playerData.hpCurrent <= 0 && canDie) 
+        {
+            CheckDeath(playerData.hpCurrent);
         }
     }
 

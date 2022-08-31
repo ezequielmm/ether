@@ -73,8 +73,10 @@ public class SWSM_Parser
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
                 GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(rewardsData);
                 break;
+            case nameof(WS_MESSAGE_ACTIONS.player_defeated):
             case nameof(WS_MESSAGE_ACTIONS.players_defeated):
-                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
+                Debug.Log("GAME OVER");
+                GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.select_another_reward):
                 SWSM_RewardsData updatedRewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
