@@ -6,11 +6,12 @@ public class CombatTurnQueue : MonoBehaviour
 {
     Queue<CombatTurnData> queue;
     [SerializeField]
-    [ReadOnly]
+    //[ReadOnly]
     bool awaitToContinue;
     float skipAwaitCounter;
 
-    [SerializeField] [ReadOnly]
+    [SerializeField] 
+    //[ReadOnly]
     QueueState queueState;
 
     enum QueueState {
