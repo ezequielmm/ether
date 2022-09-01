@@ -99,8 +99,8 @@ public class EnemyManager : MonoBehaviour
             collider = activeEnemy.GetComponent<Collider2D>();
 
             // Set tooltip events
-            enemyPlacementData.onCursorEnter.AddListener(setTooltip);
-            enemyPlacementData.onCursorExit.AddListener(removeTooltip);
+            enemyPlacementData.onCursorEnter.AddListener(SetTooltip);
+            enemyPlacementData.onCursorExit.AddListener(SemoveTooltip);
 
 
             this.enemyType = Utils.ParseEnum<EnemyTypes>(enemyType);
@@ -366,11 +366,11 @@ public class EnemyManager : MonoBehaviour
         {
             enemyName = enemyType.ToString();
         }
-        var enemy = findPrefab(enemyName);
+        var enemy = FindPrefab(enemyName);
         if(enemy != null) return enemy;
         Debug.LogError($"[EnemyManager] Missing {enemyName} prefab. Using SporeMonger as a backup");
         enemyName = "SporeMonger";
-        enemy = findPrefab(enemyName);
+        enemy = FindPrefab(enemyName);
         if (enemy != null) return enemy;
         Debug.LogError($"[EnemyManager] Missing {enemyName} prefab.");
         return null;
@@ -392,20 +392,20 @@ public class EnemyManager : MonoBehaviour
 
         return list;
     }
-    private void setTooltip()
+    private void SetTooltip()
     {
         Vector3 anchorPoint = new Vector3(collider.bounds.center.x - collider.bounds.extents.x,
             collider.bounds.center.y, 0);
         // Tooltip On
         GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(GetTooltipInfo(), TooltipController.Anchor.MiddleRight, anchorPoint, null);
     }
-    private void removeTooltip()
+    private void SemoveTooltip()
     {
         // Tooltip Off
         GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
     }
 
-    private GameObject findPrefab(string enemyName)
+    private GameObject FindPrefab(string enemyName)
     {
         foreach (var enemy in enemyMap)
         {
