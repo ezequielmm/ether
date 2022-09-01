@@ -320,8 +320,7 @@ MonoBehaviour:
   LeftButton: {fileID: 5758494260838671926}
   RightScrollButton: {fileID: 5758494260742172184}
   mapCamera: {fileID: 0}
-  mapRenderTexture: {fileID: 0}
-  mapImages: []
+  mapRenderTexture: {fileID: 8400000, guid: 9b4d838c9cc0f034f8df591b8044dcf4, type: 2}
   mapBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
