@@ -8,10 +8,10 @@ public class EncounterManager : MonoBehaviour
 
     private void Start()
     {
-        EncounterContainer.SetActive(false);
+        GameManager.Instance.EVENT_SHOW_ENCOUNTER_PANEL.AddListener(ShowEncounterPanel);
     }
     
-    public void OnEncounterEntered()
+    public void ShowEncounterPanel()
     {
         EncounterContainer.SetActive(true);
     }
@@ -19,11 +19,13 @@ public class EncounterManager : MonoBehaviour
     {
         //TODO add logic to display options
         EncounterContainer.SetActive(false);
+        GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
     }
 
     public void OnOptionTwo()
     {
         //TODO add logic to display options
         EncounterContainer.SetActive(false);
+        GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
     }
 }
