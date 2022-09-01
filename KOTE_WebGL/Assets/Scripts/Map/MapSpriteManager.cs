@@ -976,7 +976,6 @@ namespace map
                                     // Skip tile
                                 }
                             }
-                            var LastMapTile = mapPaths[lastTile.Value];
                         }
                         else if(mapPaths.ContainsKey(currentTile) && startSet) 
                         {
