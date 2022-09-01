@@ -4253,6 +4253,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Map Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 4784377731097920828, guid: 764bf5e498a69b64fa011bf18593161c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 764bf5e498a69b64fa011bf18593161c, type: 3}
 --- !u!4 &5215664067151052177 stripped

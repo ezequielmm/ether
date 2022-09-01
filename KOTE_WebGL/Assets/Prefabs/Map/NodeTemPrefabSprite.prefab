@@ -592,6 +592,7 @@ GameObject:
   - component: {fileID: 365726023910264303}
   - component: {fileID: 4296749518308982002}
   - component: {fileID: 7539280582271187376}
+  - component: {fileID: 4224079623877127732}
   m_Layer: 0
   m_Name: PortalActivateParticleSystem
   m_TagString: Untagged
@@ -5385,6 +5386,17 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 1
+--- !u!210 &4224079623877127732
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2140719797574491014}
+  m_Enabled: 1
+  m_SortingLayerID: 1449054989
+  m_SortingLayer: 2
+  m_SortingOrder: 10
 --- !u!1 &2172254499105225716
 GameObject:
   m_ObjectHideFlags: 0
@@ -5970,6 +5982,7 @@ GameObject:
   - component: {fileID: 4529167887205724350}
   - component: {fileID: 4278458617687280834}
   - component: {fileID: 670735619424540061}
+  - component: {fileID: 3945012001363438485}
   m_Layer: 0
   m_Name: AvailableParticleSystem
   m_TagString: Untagged
@@ -10763,6 +10776,17 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 1
+--- !u!210 &3945012001363438485
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6431365163442248902}
+  m_Enabled: 1
+  m_SortingLayerID: 1449054989
+  m_SortingLayer: 2
+  m_SortingOrder: 10
 --- !u!1 &6966435326268907109
 GameObject:
   m_ObjectHideFlags: 0
