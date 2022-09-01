@@ -11,8 +11,6 @@ public class EndOfCombatUIManager : MonoBehaviour
 
     public TextMeshProUGUI victoryLabel;
 
-    GameStatuses lastState;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +20,6 @@ public class EndOfCombatUIManager : MonoBehaviour
 
     private void OnGameStatusChange(GameStatuses data)
     {
-        lastState = data;
         switch (data)
         {
             case GameStatuses.GameOver:
@@ -46,7 +43,7 @@ public class EndOfCombatUIManager : MonoBehaviour
     void OnGameOverComplete()
     {
         DeactivateLabels();
-        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Continue", ReloadScene);
+        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke("Defeat", LoadMainMenu, LoadMainMenu, new string[] { "Continue", "" });
     }
 
     void OnVictoryComplete()
@@ -57,12 +54,12 @@ public class EndOfCombatUIManager : MonoBehaviour
 
     void ReloadScene()
     {
-        if (lastState == GameStatuses.GameOver) 
-        {
-            GameManager.Instance.LoadScene(inGameScenes.MainMenu);
-            return;
-        }
         GameManager.Instance.LoadScene(inGameScenes.Expedition);
+    }
+
+    void LoadMainMenu() 
+    {
+        GameManager.Instance.LoadScene(inGameScenes.MainMenu);
     }
 
 

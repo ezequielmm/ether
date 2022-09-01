@@ -28,6 +28,13 @@ public enum GameStatuses
 }
 
 [Serializable]
+public enum PlayerState 
+{
+    dying,
+    dead
+}
+
+[Serializable]
 public enum Size 
 {
     medium = 0,

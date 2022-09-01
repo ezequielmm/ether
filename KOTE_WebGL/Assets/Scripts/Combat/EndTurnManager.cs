@@ -20,6 +20,7 @@ public class EndTurnManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         rectTransform = transform as RectTransform;
         GameManager.Instance.EVENT_CHANGE_TURN.AddListener(onTurnChange);
         GameManager.Instance.EVENT_COMBAT_QUEUE_EMPTY.AddListener(onQueueEmpty);
+        GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.AddListener(onQueueActionEnqueue);
     }
 
     void onQueueEmpty() {
@@ -37,12 +38,17 @@ public class EndTurnManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             timeLimit -= Time.deltaTime;
             if (timeLimit < 0) 
             {
-                Debug.LogWarning($"[EndTurnManager] Enemy Turn Hit Timelimit (10s). Maybe an attack didn't go through?");
+                Debug.LogWarning($"[EndTurnManager] Enemy Turn Empty Queue Timelimit (3s). No attack present?");
                 GameManager.Instance.EVENT_END_TURN_CLICKED.Invoke();
                 GameManager.Instance.EVENT_CLEAR_COMBAT_QUEUE.Invoke();
                 timeLimit = 0;
             }
         }
+    }
+
+    void onQueueActionEnqueue(CombatTurnData data) 
+    {
+        timeLimit = 0;
     }
 
     void onTurnChange(string who) 
@@ -57,7 +63,7 @@ public class EndTurnManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         {
             transform.DOMoveX(originalPos + Screen.width * 0.15f, 0.5f);
             listenForEmptyQueue = true;
-            timeLimit += 10; // This is only because sometimes the enemy does nothing
+            timeLimit += 3; // This is only because sometimes the enemy does nothing
             isPlayersTurn = false;
         }
     }
