@@ -111,7 +111,7 @@ public static class Utils
             default:
             case Size.medium:
                 return PixelToSceneSize(233, 1080);
-            case Size.mediumWide:
+            case Size.medium_wide:
                 return PixelToSceneSize(312, 1080);
             case Size.large:
                 return PixelToSceneSize(470, 1080);
@@ -131,7 +131,7 @@ public static class Utils
             default:
             case Size.medium:
                 return (int)((233 / 1080f) * 1080);
-            case Size.mediumWide:
+            case Size.medium_wide:
                 return (int)((312 / 1080f) * 1080);
             case Size.large:
                 return (int)((470 / 1080f) * 1080);

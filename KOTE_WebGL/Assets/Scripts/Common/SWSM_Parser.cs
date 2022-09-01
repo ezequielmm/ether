@@ -87,10 +87,6 @@ public class SWSM_Parser
             case "show_map":
                 GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.Invoke(mapData);
                 break;
-            case "activate_portal":
-                GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.Invoke(mapData);
-                GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.Invoke(mapData);
-                break;
             case "extend_map":
                 GameManager.Instance.EVENT_MAP_REVEAL.Invoke(mapData);
                 break;
@@ -320,6 +316,11 @@ public class SWSM_Parser
                 break;
             case nameof(WS_MESSAGE_ACTIONS.show_map):
                 GameManager.Instance.LoadScene(inGameScenes.Expedition);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.player_defeated):
+            case nameof(WS_MESSAGE_ACTIONS.players_defeated):
+                Debug.Log("GAME OVER");
+                GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
                 break;
         }
     }

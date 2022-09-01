@@ -17,6 +17,10 @@ public class ConfirmationPanelManager : MonoBehaviour
     public TMP_Text confirmText;
     [Tooltip("The text for the cancel button")]
     public TMP_Text cancelText;
+    [Tooltip("The confirm button gameobject")]
+    public GameObject confirmButton;
+    [Tooltip("The cancel button gameobject")]
+    public GameObject cancelButton;
 
     // store the action so we can delete it after the player makes a selection
     private Action currentOnConfirmAction;
@@ -32,6 +36,9 @@ public class ConfirmationPanelManager : MonoBehaviour
 
     private void ShowConfirmationPanel(string displayText, Action onConfirmFunction)
     {
+        confirmButton.SetActive(true);
+        cancelButton.SetActive(true);
+
         titleText.text = displayText;
         // store and add the onClickFunction for the button to listen to.
         currentOnConfirmAction = onConfirmFunction;
@@ -40,10 +47,13 @@ public class ConfirmationPanelManager : MonoBehaviour
        
         confirmationPanelContainer.SetActive(true);
     }
-    
+
     //override to allow the back button to do more than hide the confirmation window
     private void ShowConfirmationPanelWithBackAction(string displayText, Action onConfirmFunction, Action onCancelFunction)
     {
+        confirmButton.SetActive(true);
+        cancelButton.SetActive(true);
+
         titleText.text = displayText;
         // store and add the onClickFunction for the button to listen to.
         currentOnConfirmAction = onConfirmFunction;
@@ -57,6 +67,9 @@ public class ConfirmationPanelManager : MonoBehaviour
     private void ShowConfirmationPanelWIthFullControl(string displayText, Action onConfirmFunction,
         Action onCancelFunction, string[] buttonTexts)
     {
+        confirmButton.SetActive(true);
+        cancelButton.SetActive(true);
+
         titleText.text = displayText;
         // store and add the onClickFunction for the button to listen to.
         currentOnConfirmAction = onConfirmFunction;
@@ -64,7 +77,16 @@ public class ConfirmationPanelManager : MonoBehaviour
 
         confirmText.text = buttonTexts[0];
         cancelText.text = buttonTexts[1];
-        
+
+        if (string.IsNullOrEmpty(buttonTexts[0])) 
+        {
+            confirmButton.SetActive(false);
+        }
+        if (string.IsNullOrEmpty(buttonTexts[1]))
+        {
+            cancelButton.SetActive(false);
+        }
+
         confirmationPanelContainer.SetActive(true);
     }
 

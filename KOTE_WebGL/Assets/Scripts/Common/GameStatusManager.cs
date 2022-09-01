@@ -10,9 +10,12 @@ public class GameStatusManager : MonoBehaviour
 
     private PlayerStateData playerStateData;
 
+    bool gameAboutToEnd;
+
 
     void Start()
     {
+        gameAboutToEnd = false;
         //TODO: for the moment we always start as map but this could change
         OnChangeGameStatus(GameStatuses.Map);
 
@@ -21,6 +24,8 @@ public class GameStatusManager : MonoBehaviour
 
         // GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusUpdate);
         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(OnChangeGameStatus);
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.AddListener(OnPrepareStatusChange);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.AddListener(OnEventConfirmation);
     }
 
     private void OnPlayerStatusUpdate(PlayerStateData playerState)
@@ -33,6 +38,42 @@ public class GameStatusManager : MonoBehaviour
         lastNodeStatusData = nodeState;
         //TODO: for the moment is only combat but as long as we create more node types that logic will be decided here
         if (wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED) OnChangeGameStatus(GameStatuses.Combat);
+    }
+
+    public void OnPrepareStatusChange(GameStatuses newGameStatus)
+    {
+        switch (newGameStatus)
+        {
+            case GameStatuses.Combat: break;
+            case GameStatuses.Map: break;
+            case GameStatuses.Encounter: break;
+            case GameStatuses.Merchant: break;
+            case GameStatuses.RoyalHouse: break;
+            case GameStatuses.GameOver:
+                gameAboutToEnd = true;
+                break;
+        }
+    }
+
+    public void OnEventConfirmation(string eventName) 
+    {
+        switch (eventName) 
+        {
+            case nameof(PlayerState.dying):
+                if (gameAboutToEnd)
+                {
+                    // Prevent Game-Level Interaction (UI Only)
+                    GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(true);
+                }
+                break;
+            case nameof(PlayerState.dead):
+                if (gameAboutToEnd)
+                {
+                    // End game when last player dies
+                    GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
+                }
+                break;
+        }
     }
 
     public void OnChangeGameStatus(GameStatuses newGameStatus)
@@ -60,6 +101,9 @@ public class GameStatusManager : MonoBehaviour
                 InitializeCampNode();
                 break;
             case GameStatuses.RoyalHouse: break;
+            case GameStatuses.GameOver:
+                gameAboutToEnd = false;
+                break;
         }
     }
 
