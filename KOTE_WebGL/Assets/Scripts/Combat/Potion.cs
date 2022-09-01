@@ -10,17 +10,29 @@ public class Potion : MonoBehaviour
     private Image potionImage;
     private Button potionButton;
 
+    private TooltipAtCursor tooltipController;
+
+    private Tooltip unknown;
+
     private void Start()
     {
+        tooltipController = GetComponent<TooltipAtCursor>();
+        unknown = new Tooltip()
+        {
+            title = "Mysterious Elixir",
+            description = "Cause an unknown effect to an enemy."
+        };
         potionImage = GetComponent<Image>();
         potionButton = GetComponent<Button>();
 
         potionImage.sprite = unusedPotionSprite;
+        tooltipController.SetTooltips(new List<Tooltip>() { unknown });
     }
 
     public void OnPotion()
     {
-        
+        potionImage.sprite = usedPotionSprite;
+        tooltipController.SetTooltips(null);
     }
 
     public void OnPotionUsed(GameObject invoker)

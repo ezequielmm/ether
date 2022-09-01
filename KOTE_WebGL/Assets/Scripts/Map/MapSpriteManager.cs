@@ -449,6 +449,7 @@ namespace map
                         {
                             playerIcon.SetActive(true);
                             playerIcon.transform.localPosition = newNode.transform.localPosition;
+                            GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(nodeData.act, nodeData.step);
                         }
 
                         // if the node is an available royal house, turn royal house mode on

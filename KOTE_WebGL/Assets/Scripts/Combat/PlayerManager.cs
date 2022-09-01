@@ -6,6 +6,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(Collider2D))]
 public class PlayerManager : MonoBehaviour
 {
     public SpineAnimationsManagement spineAnimationsManagement;
@@ -13,6 +14,7 @@ public class PlayerManager : MonoBehaviour
     public TMP_Text healthTF;
     public Slider healthBar;
 
+    new private Collider2D collider;
     private StatusManager statusManager;
     private Action RunWithEvent;
     private bool CalledEvent;
@@ -29,6 +31,34 @@ public class PlayerManager : MonoBehaviour
             return playerData;
         }
     }
+
+    private void Start()
+    {
+        GameManager.Instance.EVENT_ATTACK_REQUEST.AddListener(OnAttackRequest);
+        GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnAttackResponse);
+        GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener(OnUpdatePlayer);
+        GameManager.Instance.EVENT_WS_CONNECTED.AddListener(OnWSConnected);
+        GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
+
+        collider = GetComponent<Collider2D>();
+
+        if (statusManager == null)
+            statusManager = GetComponentInChildren<StatusManager>();
+
+        if (spineAnimationsManagement == null)
+            spineAnimationsManagement = GetComponent<SpineAnimationsManagement>();
+        spineAnimationsManagement.ANIMATION_EVENT.AddListener(OnAnimationEvent);
+
+        //spineAnimationsManagement.SetSkin("weapon/sword");
+        spineAnimationsManagement.PlayAnimationSequence("Idle");
+
+    }
+
+    private void OnEnable()
+    {
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
+    }
+
 
     private void OnAttackRequest(CombatTurnData attack) 
     {
@@ -67,9 +97,11 @@ public class PlayerManager : MonoBehaviour
             }
         }
         if (!endCalled)
-        {
-            // If no conditions are met, close the event
-            GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId);
+        { // If no conditions met, pass onto the target and play cast
+            var f = PlayAnimation("Cast");
+            if (f > afterEvent) afterEvent = f;
+            endCalled = true;
+            RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
         }
         else if (afterEvent > 0)
         {
@@ -206,31 +238,6 @@ public class PlayerManager : MonoBehaviour
             healthBar.DOValue(current.Value, 1).OnComplete(CheckDeath);
         }
     }
-
-    private void Start()
-    {
-        GameManager.Instance.EVENT_ATTACK_REQUEST.AddListener(OnAttackRequest);
-        GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnAttackResponse);
-        GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener(OnUpdatePlayer);
-        GameManager.Instance.EVENT_WS_CONNECTED.AddListener(OnWSConnected);
-        GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
-
-        statusManager = GetComponentInChildren<StatusManager>();
-
-        if(spineAnimationsManagement == null)
-            spineAnimationsManagement = GetComponent<SpineAnimationsManagement>();
-        spineAnimationsManagement.ANIMATION_EVENT.AddListener(OnAnimationEvent);
-
-        //spineAnimationsManagement.SetSkin("weapon/sword");
-        spineAnimationsManagement.PlayAnimationSequence("Idle");
-
-    }
-
-    private void OnEnable()
-    {
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
-    }
-
     private void OnUpdateEnergy(int currentEnergy, int maxEnergy) 
     {
         if (currentEnergy == 0) 
@@ -303,5 +310,35 @@ public class PlayerManager : MonoBehaviour
             OnDeath();
             Debug.Log("GAME OVER");
         }
+    }
+
+    private List<Tooltip> GetTooltipInfo()
+    {
+        List<Tooltip> list = new List<Tooltip>();
+
+        foreach (IntentIcon icon in GetComponentsInChildren<IntentIcon>())
+        {
+            list.Add(icon.GetTooltip());
+        }
+
+        foreach (StatusIcon icon in GetComponentsInChildren<StatusIcon>())
+        {
+            list.Add(icon.GetTooltip());
+        }
+
+        return list;
+    }
+
+    private void OnMouseEnter()
+    {
+        Vector3 anchorPoint = new Vector3(collider.bounds.center.x + collider.bounds.extents.x,
+            collider.bounds.center.y, 0);
+        // Tooltip On
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(GetTooltipInfo(), TooltipController.Anchor.MiddleLeft, anchorPoint, null);
+    }
+    private void OnMouseExit()
+    {
+        // Tooltip Off
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
     }
 }

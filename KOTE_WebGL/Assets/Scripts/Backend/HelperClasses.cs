@@ -44,6 +44,13 @@ public class Step
     public List<NodeDataHelper> nodesData = new List<NodeDataHelper>();
 }
 
+[Serializable]
+public class Tooltip
+{ 
+    public string title;
+    public string description;
+}
+
 
 [Serializable]
 public class ExpeditionStatusData
@@ -212,6 +219,23 @@ public class Card
 public class Effects
 {
     public List<Effect> effects;
+    public List<Statuses> statuses;
+}
+
+[Serializable]
+public class Statuses 
+{
+    public string name;
+    public Args args;
+    public Tooltip tooltip;
+
+    [Serializable]
+    public class Args 
+    {
+        public int value;
+        public string attachTo;
+        public string description;
+    }
 }
 
 [Serializable]
@@ -445,6 +469,29 @@ public class SWSM_EnergyArray
     {
         public int[] data;
     }
+}
+
+[Serializable]
+public class SWSM_CurrentStep
+{
+    public StepData data;
+
+    [Serializable]
+    public class StepData
+    {
+        public string message_type;
+        public string action;
+
+        //public string data;
+        public CurrentStep data;
+        
+        
+    }
+}
+[Serializable]
+public class CurrentStep{
+    public int act;
+    public int step;
 }
 
 [Serializable]

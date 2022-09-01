@@ -54,6 +54,8 @@ public class EnemyManager : MonoBehaviour
                 activeEnemy.transform.localPosition = Vector3.zero;
                 enemyPlacementData = activeEnemy.GetComponent<EnemyPrefab>();
                 // Add the cursorEnter and Exit for tooltips
+                enemyPlacementData.onCursorEnter.AddListener(setTooltip);
+                enemyPlacementData.onCursorExit.AddListener(removeTooltip);
                 // Set mounting points
                 TopBar.position = enemyPlacementData.intentMountingPoint.position;
                 BottomBar.position = enemyPlacementData.healthMountingPoint.position;
@@ -95,37 +97,27 @@ public class EnemyManager : MonoBehaviour
                 endCalled = true;
                 RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
-            else if (target.defenseDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
-            {
-                var f = PlayAnimation("Cast");
-                if (f > afterEvent) afterEvent = f;
-                endCalled = true;
-                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
-            }
-            else if (target.healthDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.heal)) // Health Up
-            {
-                var f = PlayAnimation("Cast");
-                if (f > afterEvent) afterEvent = f;
-                endCalled = true;
-                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
-            }
             else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
             {
+                var f = PlayAnimation("Cast");
+                if (f > afterEvent) afterEvent = f;
                 endCalled = true;
-                RunAfterTime(0.45f, // hard coded player animation attack point
-                   () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
             else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.heal)) // Health Up
             {
+                var f = PlayAnimation("Cast");
+                if (f > afterEvent) afterEvent = f;
                 endCalled = true;
-                RunAfterTime(0.45f, // hard coded player animation attack point
-                   () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
         }
         if (!endCalled)
-        {
-            // If no conditions are met, close the event
-            GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId);
+        { // If no conditions met, pass onto the target and play cast
+            var f = PlayAnimation("Cast");
+            if (f > afterEvent) afterEvent = f;
+            endCalled = true;
+            RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
         }
         else if (afterEvent > 0) 
         {
@@ -354,5 +346,34 @@ public class EnemyManager : MonoBehaviour
         }
         Debug.LogError($"[EnemyManager] Missing {enemyName} prefab.");
         return null;
+    }
+    private List<Tooltip> GetTooltipInfo()
+    {
+        List<Tooltip> list = new List<Tooltip>();
+
+        foreach (IntentIcon icon in GetComponentsInChildren<IntentIcon>())
+        {
+            list.Add(icon.GetTooltip());
+        }
+
+        foreach (StatusIcon icon in GetComponentsInChildren<StatusIcon>())
+        {
+            list.Add(icon.GetTooltip());
+        }
+
+        return list;
+    }
+
+    private void setTooltip()
+    {
+        Vector3 anchorPoint = new Vector3(collider.bounds.center.x - collider.bounds.extents.x,
+            collider.bounds.center.y, 0);
+        // Tooltip On
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(GetTooltipInfo(), TooltipController.Anchor.MiddleRight, anchorPoint, null);
+    }
+    private void removeTooltip() 
+    {
+        // Tooltip Off
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
     }
 }

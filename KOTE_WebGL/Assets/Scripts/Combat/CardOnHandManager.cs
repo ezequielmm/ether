@@ -56,6 +56,8 @@ public class CardOnHandManager : MonoBehaviour
     public Color blueColor;
     public Color redColor;
 
+    [HideInInspector]
+    public List<Tooltip> tooltips;
     [HideInInspector] public Sequence mySequence;
 
     private Vector3 drawPileOrthoPosition;
@@ -76,11 +78,19 @@ public class CardOnHandManager : MonoBehaviour
     private bool awaitMouseUp;
 
     private bool inTransit;
+    new Collider2D collider;
+
+
+    private bool overPlayer = false;
+    private PlayerData playerData = null;
+    private GameObject lastOver;
 
     private void Awake()
     {
         //Screenspace is defined in pixels. The bottom-left of the screen is (0,0); the right-top is (pixelWidth,pixelHeight). The z position is in world units from the camera.
         //Viewport space is normalized and relative to the camera. The bottom-left of the camera is (0,0); the top-right is (1,1). The z position is in world units from the camera.
+
+        tooltips = new List<Tooltip>();
 
         drawPileOrthoPosition = TransformUIToOrtho("DrawCardPile");
         discardPileOrthoPosition = TransformUIToOrtho("DiscardCardPile");
@@ -92,6 +102,7 @@ public class CardOnHandManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        collider = GetComponent<Collider2D>();
         mySequence = DOTween.Sequence();
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
         GameManager.Instance.EVENT_MOVE_CARD.AddListener(OnCardToMove);
@@ -180,7 +191,7 @@ public class CardOnHandManager : MonoBehaviour
 
     internal void Populate(Card card, int energy)
     {
-        Debug.Log(card);
+        //Debug.Log(card);
         //cardidTF.SetText(card.id);
         energyTF.SetText(card.energy.ToString());
         nameTF.SetText(card.name);
@@ -199,6 +210,24 @@ public class CardOnHandManager : MonoBehaviour
         thisCardValues = card;
 
         currentPlayerEnergy = energy;
+
+        foreach (var status in card.properties.statuses)
+        {
+            if (!string.IsNullOrEmpty(status.tooltip.title))
+            {
+                tooltips.Add(status.tooltip);
+            }
+            else
+            {
+                var description = status.args.description ?? "TODO // Add Description";
+                tooltips.Add(new Tooltip()
+                {
+                    title = Utils.PrettyText(status.name),
+                    description = description
+                });
+            }
+        }
+
 
         UpdateCardBasedOnEnergy(energy);
     }
@@ -470,9 +499,25 @@ public class CardOnHandManager : MonoBehaviour
 
             Vector3 showUpPosition = new Vector3(targetPosition.x, GameSettings.HAND_CARD_SHOW_UP_Y, GameSettings.HAND_CARD_SHOW_UP_Z);
             transform.DOMove(showUpPosition, GameSettings.HAND_CARD_SHOW_UP_TIME);
-            
 
-            transform.DORotate(Vector3.zero, GameSettings.HAND_CARD_SHOW_UP_TIME);
+
+            transform.DORotate(Vector3.zero, GameSettings.HAND_CARD_SHOW_UP_TIME).OnComplete(() =>
+            {
+                if (transform.position.x <= 0)
+                {
+                    Vector3 topRightOfCard = new Vector3(transform.position.x + (collider.bounds.size.x / 2) + 0.2f,
+                        transform.position.y + (collider.bounds.size.y / 2), 0);
+                    GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.TopLeft, topRightOfCard, null);
+                }
+                else 
+                {
+                    Vector3 topLeftOfCard = new Vector3(transform.position.x - ((collider.bounds.size.x / 2) + 0.2f),
+                            transform.position.y + (collider.bounds.size.y / 2), 0);
+                    GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.TopRight, topLeftOfCard, null);
+                }
+                
+            });
+
             GameManager.Instance.EVENT_CARD_SHOWING_UP.Invoke(thisCardValues.id, this.targetPosition);
         }
         else
@@ -500,6 +545,8 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnMouseExit()
     {
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
+
         if (pointerIsActive) return;
 
         if (cardActive && cardIsShowingUp)
@@ -606,9 +653,10 @@ public class CardOnHandManager : MonoBehaviour
 
         if (cardActive)
         {
-            if (Vector2.Distance(this.transform.position, Vector2.zero) < 1.5f)
+            if(transform.position.y > GameSettings.HAND_CARD_SHOW_UP_Y && card_can_be_played)//if (overPlayer)
             {
                 Debug.Log("card is on center");
+                // Get Player ID
                 GameManager.Instance.EVENT_CARD_PLAYED.Invoke(thisCardValues.id, "-1");
                 cardActive = false;
             }
@@ -619,6 +667,64 @@ public class CardOnHandManager : MonoBehaviour
                 //MoveCardBackToOriginalHandPosition();
             }
         }
+    }
+
+    private void PlayerEnter(GameObject obj) 
+    {
+        lastOver = obj;
+        if (obj.CompareTag("Player") && card_can_be_played && transform.position.y > GameSettings.HAND_CARD_SHOW_UP_Y)
+        {
+            overPlayer = true;
+            playerData = obj.GetComponentInChildren<PlayerManager>().PlayerData;
+        }
+    }
+
+    private void PlayerExit(GameObject obj) 
+    {
+        if (obj.CompareTag("Player"))
+        {
+            overPlayer = false;
+            playerData = null;
+        }
+        lastOver = null;
+    }
+    
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        bool isOver = false;
+        if (collision != null && collision.gameObject.CompareTag("Player"))
+        {
+            var other = collision.gameObject.GetComponentInParent<PlayerManager>();
+            if (other != null)
+                isOver = true;
+        }
+        if (overPlayer != isOver)
+        {
+            if (isOver)
+            {
+                PlayerEnter(collision.gameObject);
+            }
+            else
+            {
+                if (lastOver != null)
+                {
+                    PlayerExit(lastOver);
+                }
+            }
+        }
+        else if (isOver && collision.gameObject != lastOver)
+        {
+            if (lastOver != null)
+            {
+                PlayerExit(lastOver);
+            }
+            PlayerEnter(collision.gameObject);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        OnTriggerStay2D(null);
     }
 
 

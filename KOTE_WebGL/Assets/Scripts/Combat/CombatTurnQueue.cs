@@ -6,7 +6,20 @@ public class CombatTurnQueue : MonoBehaviour
 {
     Queue<CombatTurnData> queue;
     [SerializeField]
+    //[ReadOnly]
     bool awaitToContinue;
+    float skipAwaitCounter;
+
+    [SerializeField] 
+    //[ReadOnly]
+    QueueState queueState;
+
+    enum QueueState {
+        idle = 0,
+        awaitingRun,
+        requst,
+        response
+    }
 
     bool AwaitToContinue { 
         get => awaitToContinue; 
@@ -19,6 +32,8 @@ public class CombatTurnQueue : MonoBehaviour
         queue = new Queue<CombatTurnData>();
         GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.AddListener(QueueAttack);
         GameManager.Instance.EVENT_COMBAT_TURN_END.AddListener(OnTurnUnblock);
+        GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnResponseCall);
+        queueState = QueueState.idle;
     }
 
     private void QueueAttack(CombatTurnData data) 
@@ -69,12 +84,17 @@ public class CombatTurnQueue : MonoBehaviour
         }
 
         queue.Enqueue(data);
+        if (queueState == QueueState.idle) 
+        {
+            queueState = QueueState.awaitingRun;
+        }
     }
 
     private void ClearCombatQueue() 
     {
         awaitToContinue = false;
         queue.Clear();
+        queueState = QueueState.idle;
     }
 
     private void OnTurnUnblock(System.Guid attackId) 
@@ -82,6 +102,7 @@ public class CombatTurnQueue : MonoBehaviour
         if (queue.Count == 0) 
         {
             Debug.LogWarning($"[CombatQueue] Unblock called when queue was empty!");
+            queueState = QueueState.idle;
             AwaitToContinue = false;
             return;
         }
@@ -90,33 +111,50 @@ public class CombatTurnQueue : MonoBehaviour
             Debug.LogWarning($"[CombatQueue] Unblock called for {attackId} when {queue.Peek().attackId} was in queue!");
             //return;
         };
+        if (queueState == QueueState.requst) 
+        {
+            Debug.Log($"[CombatQueue] Combat Response was not run for {queue.Peek()}");
+        }
         Debug.Log($"[CombatQueue] Action Completed!");
         var last = queue.Peek();
         queue.Dequeue();
         AwaitToContinue = false;
         if (queue.Count == 0) 
         {
-            GameManager.Instance.EVENT_COMBAT_QUEUE_EMPTY.Invoke();
             Debug.Log($"[CombatQueue] End of Combat Queue!");
             queue.Clear();
+            queueState = QueueState.idle;
+
+            GameManager.Instance.EVENT_COMBAT_QUEUE_EMPTY.Invoke();
         }
         else if (queue.Peek().originId != last.originId) // On Origin Change
         {
-            GameManager.Instance.EVENT_COMBAT_ORIGIN_CHANGE.Invoke();
             Debug.Log($"[CombatQueue] New Origin for Events!");
+            queueState = QueueState.awaitingRun;
+
+            GameManager.Instance.EVENT_COMBAT_ORIGIN_CHANGE.Invoke();
         }
     }
 
     private void ProcessTurn(CombatTurnData data) 
     {
         Debug.Log($"[CombatQueue] [{queue.Count}] Action Being Run --==| {data.ToString()} |==--");
-        GameManager.Instance.EVENT_ATTACK_REQUEST.Invoke(data);
         AwaitToContinue = true;
+        queueState = QueueState.requst;
+        skipAwaitCounter = 3;
+
+        GameManager.Instance.EVENT_ATTACK_REQUEST.Invoke(data);
+    }
+
+    private void OnResponseCall(CombatTurnData data) 
+    {
+        skipAwaitCounter += 3;
+        queueState = QueueState.response;
     }
 
     private void Update()
     {
-        if (queue.Count > 0 && !AwaitToContinue) 
+        if (queue.Count > 0 && !AwaitToContinue)
         {
             if (queue.Peek().delay > 0)
             {
@@ -125,6 +163,28 @@ public class CombatTurnQueue : MonoBehaviour
             else
             {
                 ProcessTurn(queue.Peek());
+            }
+        }
+        else if(AwaitToContinue)
+        {
+            skipAwaitCounter = Mathf.Max(skipAwaitCounter - Time.deltaTime, 0);
+            if (skipAwaitCounter == 0) 
+            {
+                if (queue.Count > 0)
+                {
+                    var turnData = queue.Peek();
+                    OnTurnUnblock(turnData.attackId);
+                    Debug.LogWarning($"[CombatQueue] Combat Queue was not properly closed before the animation timed out. {turnData.ToString()}");
+                }
+                else 
+                {
+                    Debug.LogError($"[CombatQueue] Combat Queue timed out but the queue was empty.");
+                }
+            }
+            if (queue.Count == 0) 
+            {
+                ClearCombatQueue();
+                Debug.LogWarning($"[CombatQueue] Combat Queue was not properly closed before clearing part of queue.");
             }
         }
     }

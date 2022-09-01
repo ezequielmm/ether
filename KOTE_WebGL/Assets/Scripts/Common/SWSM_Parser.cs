@@ -4,11 +4,20 @@ using UnityEngine;
 
 public class SWSM_Parser
 {
+    static SWSM_Parser() 
+    {
+        // Turns off non-exception logging when outside of development enviroment
+        // Also seen in WebSocketManager.cs
+        #if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
+            Debug.unityLogger.filterLogType = LogType.Exception;
+        #endif
+    }
+
     public static void ParseJSON(string data)
     {
         SWSM_Base swsm = JsonUtility.FromJson<SWSM_Base>(data);
 
-        Debug.Log("[MessageType]" + swsm.data.message_type + " , [Action]" + swsm.data.action);
+        Debug.Log("[SWSM Parser][MessageType]" + swsm.data.message_type + " , [Action]" + swsm.data.action);
         Debug.Log(data);
 
         switch (swsm.data.message_type)
@@ -241,6 +250,7 @@ public class SWSM_Parser
             case nameof(WS_DATA_REQUEST_TYPES.CardsPiles):
                 
                 SWSM_CardsPiles deck = JsonUtility.FromJson<SWSM_CardsPiles>(data);
+                Debug.Log($"[SWSM Parser] CardPiles data => {data}");
                 Debug.Log($"Cards Pile Counts: [Draw] {deck.data.data.draw.Count} | [Hand] {deck.data.data.hand.Count} " +
                     $"| [Discard] {deck.data.data.discard.Count} | [Exhaust] {deck.data.data.exhaust.Count}");
                 
@@ -295,7 +305,6 @@ public class SWSM_Parser
         switch (action)
         {
             case "begin_combat":
-
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Combat);
                 break;
             case "update_statuses":
