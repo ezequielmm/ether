@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using UnityEngine.U2D;
 
 public class MapTilePath : HexTile
@@ -44,29 +43,27 @@ public class AStarTile : HexTile
     public float cost => g + h;
 
     private Vector3Int _start, _end;
-    Tilemap _mapGrid;
-    public AStarTile(Vector3Int position, AStarTile previous, Vector3Int start, Vector3Int end, Tilemap mapGrid) 
+    public AStarTile(Vector3Int position, AStarTile previous, Vector3Int start, Vector3Int end) 
     {
         Position = position;
-        g = Vector3.Distance(mapGrid.CellToWorld(position), mapGrid.CellToWorld(start));
-        h = Vector3.Distance(mapGrid.CellToWorld(position), mapGrid.CellToWorld(end));
+        if (previous != null)
+        {
+            g = Vector3.Distance(position,previous.Position) + previous.g;
+        }
+        h = Vector3.Distance(position, end);
         Previous = previous;
         _start = start;
         _end = end;
-        _mapGrid = mapGrid;
     }
     public List<AStarTile> CalculateNeighbors(List<Vector3Int> ignoredTiles, List<Vector3Int> knownTiles) 
     {
         List<AStarTile> result = new List<AStarTile>();
         foreach (Vector3Int neighbor in Neighbors) 
         {
-            if (ignoredTiles.Contains(neighbor))
+            if ((ignoredTiles.Contains(neighbor) || knownTiles.Contains(neighbor) || Previous?.Position == neighbor)
+                && (_end != neighbor))
                 continue;
-            if(knownTiles.Contains(neighbor))
-                continue;
-            if (Previous?.Position == neighbor)
-                continue;
-            result.Add(new AStarTile(neighbor, this, _start, _end, _mapGrid));
+            result.Add(new AStarTile(neighbor, this, _start, _end));
         }
         return result;
     }

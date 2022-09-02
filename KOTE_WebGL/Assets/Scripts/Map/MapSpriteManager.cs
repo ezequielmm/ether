@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 using UnityEngine.U2D;
@@ -686,7 +687,6 @@ namespace map
                 Vector3Int start = MapGrid.WorldToCell(path.transform.TransformPoint(spline.GetPosition(0)));
                 Vector3Int end = MapGrid.WorldToCell(path.transform.TransformPoint(spline.GetPosition(spline.GetPointCount() - 1)));
                 SnapPath(start, end, path);
-                break;
             }
         }
 
@@ -702,34 +702,30 @@ namespace map
         private void SnapPath(Vector3Int start, Vector3Int end, PathManager path) 
         {
             Spline spline = path.pathController.spline;
-            StartCoroutine(FindPath(start, end));
-            //var tilePath = FindPath(start, end);
-            //for (int i = 0; i < tilePath.Count(); i++) 
-            //{
-            //    var tile = tilePath[i];
+            var tilePath = FindPath(start, end);
+            for (int i = 0; i < tilePath.Count(); i++)
+            {
+                var tile = tilePath[i];
 
-            //    // Set tile grass
-            //    SetNodeGrass(tile);
+                // Set tile grass
+                SetNodeGrass(tile);
 
-            //    // Set Spline to Path
-            //    Vector3 localTileCenter = path.transform.InverseTransformPoint(MapGrid.CellToWorld(tile));
+                // Set Spline to Path
+                Vector3 localTileCenter = path.transform.InverseTransformPoint(MapGrid.CellToWorld(tile));
 
-            //    bool addNode = i != tilePath.Count() - 1 && i == spline.GetPointCount() - 1;
-            //    if (addNode)
-            //    {
-            //        spline.InsertPointAt(i, localTileCenter);
-            //    } 
-            //    else 
-            //    {
-            //        spline.SetPosition(i, localTileCenter);
-            //    }
+                bool addNode = i != tilePath.Count() - 1 && i == spline.GetPointCount() - 1;
+                if (addNode)
+                {
+                    spline.InsertPointAt(i, localTileCenter);
+                }
+                else
+                {
+                    spline.SetPosition(i, localTileCenter);
+                }
 
-            //    // Add path to blocked tiles (except first and last)
-            //    if (i != 0 && i != tilePath.Count() - 1) 
-            //    {
-            //        blockedTiles.Add(tile);
-            //    }
-            //}
+                // Add path to blocked tiles
+                blockedTiles.Add(tile);
+            }
         }
 
         private void GenerateNodeBackground()
@@ -815,26 +811,52 @@ namespace map
         }
 
         List<Vector3Int> blockedTiles = new List<Vector3Int>();
-        private IEnumerator /*List<Vector3Int>*/ FindPath(Vector3Int start, Vector3Int end) 
+
+        public bool isInOrder(List<AStarTile> list) 
         {
+            float last = float.NegativeInfinity;
+            foreach (AStarTile tile in list) 
+            {
+                if (last >= tile.cost)
+                {
+                    return false;
+                }
+                else 
+                {
+                    last = tile.cost;
+                }
+            }
+            return true;
+        }
+
+        private List<Vector3Int> FindPath(Vector3Int start, Vector3Int end) 
+        {
+            start.z = 0;
+            end.z = 0;
             List<AStarTile> knownTiles = new List<AStarTile>();
             List<Vector3Int> knownTilesRaw = new List<Vector3Int>();
             bool found = false;
-            knownTiles.Add(new AStarTile(start, null, start, end, MapGrid));
+            knownTiles.Add(new AStarTile(start, null, start, end));
             knownTilesRaw.Add(start);
 
+            AStarTile currentTile = null;
             // Run AStar
             while (!found) 
             {
-                knownTiles.OrderBy(t => t.cost);
-                SetNodeGrass(knownTiles.First().Position);
-                if (knownTiles.First().Position == end)
+                var orderedList = knownTiles.OrderBy(t => t.cost);
+                if (orderedList.Count() == 0) 
+                {
+                    return new List<Vector3Int>();
+                }
+                currentTile = orderedList.First();
+
+                if (currentTile.Position == end)
                 {
                     found = true;
                 }
                 else 
                 {
-                    var addedTiles = knownTiles.First().CalculateNeighbors(blockedTiles, knownTilesRaw);
+                    var addedTiles = currentTile.CalculateNeighbors(blockedTiles, knownTilesRaw);
                     foreach (var tile in addedTiles) 
                     {
                         knownTiles.Add(tile);
@@ -842,11 +864,8 @@ namespace map
                     }
                     knownTiles.RemoveAt(0);
                 }
-                //if (knownTiles.Count > 10000)
-                //    return new List<Vector3Int>();
-                yield return new WaitForSeconds(1);
             }
-            var lastTile = knownTiles.First();
+            var lastTile = currentTile;
             
             // Construct Path From Last Tile
             List<Vector3Int> path = new List<Vector3Int>();
@@ -858,7 +877,7 @@ namespace map
 
             path.Reverse();
 
-            //return path;
+            return path;
         }
 
         #endregion
