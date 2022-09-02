@@ -130,6 +130,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<bool> EVENT_MAP_PANEL_TOGGLE = new UnityEvent<bool>();
 
     // UI Events
+    /// <summary>
+    /// Toggles the game click blocker.
+    /// </summary>
     [HideInInspector] public UnityEvent<bool?> EVENT_TOGGLE_GAME_CLICK = new UnityEvent<bool?>();
 
     //PLAYER DATA EVENTS

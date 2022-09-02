@@ -239,6 +239,12 @@ namespace map
         private void OnMapNodesDataUpdated(SWSM_MapData mapData)
         {
             GenerateMap(mapData);
+            StartCoroutine(Scroll());
+        }
+
+        IEnumerator Scroll() 
+        {
+            yield return new WaitForSeconds(0.5f);
             bool doBossScroll = true;
             foreach (NodeData node in nodes.FindAll(
                          x => x.type == NODE_TYPES.royal_house || x.type == NODE_TYPES.portal))
@@ -252,10 +258,11 @@ namespace map
             if (doBossScroll && GetBossNode() != null)
             {
                 ScrollFromBoss();
-                return;
             }
-
-            ScrollBackToPlayerIcon();
+            else
+            {
+                ScrollBackToPlayerIcon();
+            }
         }
 
         //we will get to this point once the backend give us the node data
@@ -289,7 +296,7 @@ namespace map
 
         private IEnumerator GenerateMapImages() 
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForEndOfFrame();
 
             float height = 2f * mapCamera.orthographicSize;
             float width = height * mapCamera.aspect;
@@ -297,7 +304,9 @@ namespace map
             //mapRenderTexture.width = mapCamera.pixelWidth;
             //mapRenderTexture.height = mapCamera.pixelHeight;
 
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForEndOfFrame();
+
+            GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(true);
 
             Quaternion currentRotation = nodesHolder.transform.rotation;
             Vector3 currentPosition = nodesHolder.transform.position;
@@ -318,7 +327,7 @@ namespace map
             for (int i = 0; i < imageCount; i++) 
             {
                 mapCamera.transform.position = new Vector3(nodesHolder.transform.position.x + (i * width), nodesHolder.transform.position.y, mapCamera.transform.position.z);
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForEndOfFrame();
                 var img = toTexture2D(mapRenderTexture);
                 GameObject imgObj = new GameObject();
                 imgObj.transform.position = new Vector3(nodesHolder.transform.position.x + (i * width), nodesHolder.transform.position.y, nodesHolder.transform.position.z - 15);
@@ -338,6 +347,8 @@ namespace map
 
                 sprite.transform.localScale = new Vector3(widthScale, heightScale, 1);
             }
+
+            GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(false);
 
             foreach (var gameObj in GameObject.FindGameObjectsWithTag("MapPath")) 
             {
