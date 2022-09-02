@@ -67,6 +67,9 @@ namespace map
 
         private List<int> MapSeeds;
         private Dictionary<Vector3Int, MapTilePath> mapPaths;
+        List<Vector3Int> blockedTiles = new List<Vector3Int>();
+        Dictionary<Vector3Int, MapTilePath> allTiles = new Dictionary<Vector3Int, MapTilePath>();
+        Dictionary<Vector3Int, TileSplineRef> tileSplineRef = new Dictionary<Vector3Int, TileSplineRef>();
 
 
         private class SplinePoint 
@@ -471,159 +474,101 @@ namespace map
             GeneratePathBackground();
 
             Random.InitState(MapSeeds[1]);
-            //CurvePath();
+            CurvePath();
 
             Random.InitState(MapSeeds[2]);
             GenerateMapBackground();
         }
 
-        private class SpineRandom 
-        {
-            public Vector3Int tilePosition;
-            public Vector2 localPosition;
-            public Vector3 leftTangent;
-            public Vector3 rightTangent;
-            public Vector2 tangentStrength;
-            public SpineRandom(Vector3Int tilePos, Vector2 locPos, Vector3 leftTan, Vector3 rightTan, Vector2 strength) 
-            {
-                tilePosition = tilePos;
-                localPosition = locPos;
-                leftTangent = leftTan;
-                rightTangent = rightTan;
-                tangentStrength = strength;
-            }
-        }
-
         private void CurvePath() 
         {
-            Dictionary<Vector3Int, SpineRandom> previousSpots = new Dictionary<Vector3Int, SpineRandom>();
-            int count = 0;
-            foreach (PathManager path in pathManagers) 
+            foreach (var splineRef in tileSplineRef.Values)
             {
-                SpriteShapeController pathSpriteController = path.pathController;
-                Spline pathSpline = pathSpriteController.spline;
-                Spline dashedSpline = path.lineController.spline;
-
-                Transform pathTransform = pathSpriteController.transform;
-
-                for (int i = 0; i < pathSpline.GetPointCount(); i++) 
-                {
-                    previousSpots = RunRandomCurve(pathSpline, pathTransform, i, previousSpots);
-                    count++;
-                }
-
-                for (int i = 0; i < dashedSpline.GetPointCount(); i++)
-                {
-                    previousSpots = RunRandomCurve(dashedSpline, pathTransform, i, previousSpots);
-                    count++;
-                }
+                RunRandomCurve(splineRef);
+                splineRef.EnforceSplineMatch();
             }
-            Debug.Log($"[Map Sprite Manager] Total nodes motified: {count}");
         }
 
-        private Dictionary<Vector3Int, SpineRandom> RunRandomCurve(Spline spline, Transform pathTransform, int i, Dictionary<Vector3Int, SpineRandom> previousSpots)
+        private void RunRandomCurve(TileSplineRef splineRef) //SplineData splineData)
         {
-            if (i == 0 || i == spline.GetPointCount() - 1) 
+            // Middle of Path can be main
+            SplineData masterNode = splineRef.MasterSpline;
+
+            if (splineRef.MasterRandomized) return;
+            splineRef.MasterRandomized = true;
+
+            // Set position
+            Vector3 currentPos = masterNode.Position;
+            Vector3 randomPos = new Vector3(Random.Range(-pathPositionFuzziness, pathPositionFuzziness),
+                Random.Range(-pathPositionFuzziness, pathPositionFuzziness), 0);
+            masterNode.Position = currentPos + randomPos;
+
+            //splineRef.AddChildSpline(splineData);
+            if (!masterNode.IsEndPiece)
             {
-                bool first = i == 0;
-                Vector3Int tileLoc = MapGrid.layoutGrid.WorldToCell(pathTransform.TransformPoint(spline.GetPosition(i)));
-
-                Vector3 currentPoint = pathTransform.TransformPoint(spline.GetPosition(i));
-                Vector3 leftTangent = Vector3.zero;
-                Vector3 rightTangent = Vector3.zero;
-                float posX = 0;
-                float posY = 0;
-
-                if (previousSpots.TryGetValue(tileLoc, out SpineRandom referenceSpine))
-                {
-                    posX = referenceSpine.localPosition.x;
-                    posY = referenceSpine.localPosition.y;
-                }
-
-                if (!first)
-                {
-                    float angleRangeL = Random.Range(angleFuzziness.x, angleFuzziness.y);
-                    Vector3 leftPoint = pathTransform.TransformPoint(spline.GetPosition(i - 1));
-                    float spineStrengthL = Random.Range(pathCurveStrengthRange.x, pathCurveStrengthRange.y);
-                    leftTangent = Quaternion.Euler(0, 0, angleRangeL) * (leftPoint - currentPoint).normalized * spineStrengthL;
-                }
-                if (first)
-                {
-                    float angleRangeR = Random.Range(angleFuzziness.x, angleFuzziness.y);
-                    Vector3 rightPoint = pathTransform.TransformPoint(spline.GetPosition(i + 1));
-                    float spineStrengthR = Random.Range(pathCurveStrengthRange.x, pathCurveStrengthRange.y);
-                    rightTangent = Quaternion.Euler(0, 0, angleRangeR) * (rightPoint - currentPoint).normalized * spineStrengthR;
-                }
-
-                
-                spline.SetPosition(i, spline.GetPosition(i) + new Vector3(posX, posY, 0));
-                if (!first)
-                    spline.SetLeftTangent(i, leftTangent);
-                if (first)
-                    spline.SetRightTangent(i, rightTangent);
-            }
-            else if (i <= 0 || i >= spline.GetPointCount() - 1) // out of range
-            {
-                return previousSpots;
-            }
-            else
-            {
-                Vector3Int tileLoc = MapGrid.layoutGrid.WorldToCell(pathTransform.TransformPoint(spline.GetPosition(i)));
-
-                Vector3 leftPoint = pathTransform.TransformPoint(spline.GetPosition(i - 1));
-                Vector3 currentPoint = pathTransform.TransformPoint(spline.GetPosition(i));
-                Vector3 rightPoint = pathTransform.TransformPoint(spline.GetPosition(i + 1));
-
-                Vector3 leftTangent = (leftPoint - currentPoint).normalized;
-                Vector3 rightTangent = (rightPoint - currentPoint).normalized;
-
-                Vector3 averageDir = (leftTangent + rightTangent).normalized;
-
+                // Set angles
                 float spineStrengthL = Random.Range(pathCurveStrengthRange.x, pathCurveStrengthRange.y);
                 float spineStrengthR = Random.Range(pathCurveStrengthRange.x, pathCurveStrengthRange.y);
 
                 float angleRangeL = Random.Range(angleFuzziness.x, angleFuzziness.y);
                 float angleRangeR = Random.Range(angleFuzziness.x, angleFuzziness.y);
 
-                float posX = Random.Range(-pathPositionFuzziness, pathPositionFuzziness);
-                float posY = Random.Range(-pathPositionFuzziness, pathPositionFuzziness);
+                Vector3 rightPoint = masterNode.Transform.TransformPoint(masterNode.Spline.GetPosition(masterNode.Index + 1));
+                Vector3 leftPoint = masterNode.Transform.TransformPoint(masterNode.Spline.GetPosition(masterNode.Index - 1));
 
-                if (previousSpots.TryGetValue(tileLoc, out SpineRandom referenceSpine))
+                Vector3 leftTangent = (leftPoint - masterNode.Position).normalized;
+                Vector3 rightTangent = (rightPoint - masterNode.Position).normalized;
+
+                Vector3 averageDir = (leftTangent + rightTangent).normalized;
+
+                if (averageDir.magnitude > 0)
                 {
-                    leftTangent = referenceSpine.leftTangent;
-                    rightTangent = referenceSpine.rightTangent;
-                    spineStrengthL = referenceSpine.tangentStrength.x;
-                    spineStrengthR = referenceSpine.tangentStrength.y;
-                    posX = referenceSpine.localPosition.x;
-                    posY = referenceSpine.localPosition.y;
+                    float rotationAmount = 90;
+                    float value = Vector3.Dot(Vector3.right, Quaternion.Euler(0, 0, rotationAmount) * averageDir);
+                    if (value > 0)
+                    {
+                        rotationAmount = -rotationAmount;
+                    }
+                    leftTangent = Quaternion.Euler(0, 0, rotationAmount + angleRangeL) * averageDir;
+                    rightTangent = Quaternion.Euler(0, 0, -rotationAmount + angleRangeR) * averageDir;
                 }
                 else
                 {
-                    if (averageDir.magnitude > 0)
+                    leftTangent = Quaternion.Euler(0, 0, angleRangeL) * leftTangent;
+                    rightTangent = Quaternion.Euler(0, 0, angleRangeR) * rightTangent;
+                }
+
+                masterNode.Spline.SetTangentMode(masterNode.Index, ShapeTangentMode.Continuous);
+                masterNode.LeftTangent = leftTangent * spineStrengthL;
+                masterNode.RightTangent = rightTangent * spineStrengthR;
+            }
+
+            foreach (var splineData in splineRef.ChildrenSplines)
+            {
+                if (splineData.IsEndPiece)
+                {
+                    // Set angles on end points
+                    Vector3 leftTangent = Vector3.zero;
+                    Vector3 rightTangent = Vector3.zero;
+                    bool first = splineData.Index == 0;
+                    if (first)
                     {
-                        float rotationAmount = 90;
-                        float value = Vector3.Dot(Vector3.right, Quaternion.Euler(0, 0, rotationAmount) * averageDir);
-                        if (value > 0)
-                        {
-                            rotationAmount = -rotationAmount;
-                        }
-                        leftTangent = Quaternion.Euler(0, 0, rotationAmount + angleRangeL) * averageDir;
-                        rightTangent = Quaternion.Euler(0, 0, -rotationAmount + angleRangeR) * averageDir;
+                        float angleRangeR = Random.Range(angleFuzziness.x, angleFuzziness.y);
+                        Vector3 rightPoint = splineData.Transform.TransformPoint(splineData.Spline.GetPosition(splineData.Index + 1));
+                        float spineStrengthR = Random.Range(pathCurveStrengthRange.x, pathCurveStrengthRange.y);
+                        rightTangent = Quaternion.Euler(0, 0, angleRangeR) * (rightPoint - splineData.Position).normalized * spineStrengthR;
                     }
                     else
                     {
-                        leftTangent = Quaternion.Euler(0, 0, angleRangeL) * leftTangent;
-                        rightTangent = Quaternion.Euler(0, 0, angleRangeR) * rightTangent;
+                        float angleRangeL = Random.Range(angleFuzziness.x, angleFuzziness.y);
+                        Vector3 leftPoint = splineData.Transform.TransformPoint(splineData.Spline.GetPosition(splineData.Index - 1));
+                        float spineStrengthL = Random.Range(pathCurveStrengthRange.x, pathCurveStrengthRange.y);
+                        leftTangent = Quaternion.Euler(0, 0, angleRangeL) * (leftPoint - splineData.Position).normalized * spineStrengthL;
                     }
-                    var spineRan = new SpineRandom(tileLoc, new Vector2(posX, posY), leftTangent, rightTangent, new Vector2(spineStrengthL, spineStrengthR));
-                    previousSpots.Add(tileLoc, spineRan);
+                    splineData.LeftTangent = leftTangent;
+                    splineData.RightTangent = rightTangent;
                 }
-
-                spline.SetPosition(i, spline.GetPosition(i) + new Vector3(posX, posY, 0));
-                spline.SetLeftTangent(i, leftTangent * spineStrengthL);
-                spline.SetRightTangent(i, rightTangent * spineStrengthR);
             }
-            return previousSpots;
         }
 
         private void GenerateMapBackground()
@@ -701,31 +646,157 @@ namespace map
 
         private void SnapPath(Vector3Int start, Vector3Int end, PathManager path) 
         {
+            start.z = 0;
+            end.z = 0;
             Spline spline = path.pathController.spline;
+
             var tilePath = FindPath(start, end);
+            bool startSet = false;
+            bool endSet = false;
+            int splineIndex = 0;
+
+            // Run for path spline
             for (int i = 0; i < tilePath.Count(); i++)
             {
+                if (endSet) break;
                 var tile = tilePath[i];
 
                 // Set tile grass
                 SetNodeGrass(tile);
 
-                // Set Spline to Path
-                Vector3 localTileCenter = path.transform.InverseTransformPoint(MapGrid.CellToWorld(tile));
-
-                bool addNode = i != tilePath.Count() - 1 && i == spline.GetPointCount() - 1;
-                if (addNode)
+                // Check if spline should be set here
+                bool lastNode = i == tilePath.Count() - 1;
+                bool setPath = true;
+                
+                if (tileSplineRef.ContainsKey(tile))
                 {
-                    spline.InsertPointAt(i, localTileCenter);
+                    setPath = false;
+                    // Check if this is the end of our path
+                    if (startSet) 
+                    {
+                        // This is end of the path
+                        tileSplineRef[tile].AddChildSpline(new SplineData(spline, splineIndex, path.transform));
+                        setPath = true;
+                        lastNode = true;
+                        endSet = true;
+                    }
                 }
-                else
+                else 
                 {
-                    spline.SetPosition(i, localTileCenter);
+                    // If start isn't set yet
+                    if (!startSet && i > 0) 
+                    {
+                        Vector3 localTileCenter = path.transform.InverseTransformPoint(MapGrid.CellToWorld(tilePath[i-1]));
+                        bool lastSplineKnot = splineIndex == spline.GetPointCount() - 1;
+                        bool addNode = lastSplineKnot;
+                        if (!tileSplineRef.ContainsKey(tilePath[i - 1]))
+                        {
+                            tileSplineRef.Add(tilePath[i - 1], new TileSplineRef(tilePath[i - 1], new SplineData(spline, splineIndex, path.transform)));
+                        }
+                        else if (!tileSplineRef[tilePath[i - 1]].ContainsChild(new SplineData(spline, splineIndex, path.transform)))
+                        {
+                            tileSplineRef[tilePath[i - 1]].AddChildSpline(new SplineData(spline, splineIndex, path.transform));
+                        }
+                        if (addNode)
+                        {
+                            spline.InsertPointAt(splineIndex, localTileCenter);
+                        }
+                        else
+                        {
+                            spline.SetPosition(splineIndex, localTileCenter);
+                        }
+                        splineIndex++;
+                        startSet = true;
+                    }
+                }
+
+                // Set the node on the path
+                if (setPath)
+                {
+                    startSet = true;
+                    Vector3 localTileCenter = path.transform.InverseTransformPoint(MapGrid.CellToWorld(tile));
+                    bool lastSplineKnot = splineIndex == spline.GetPointCount() - 1;
+                    bool addNode = lastSplineKnot && !lastNode;
+                    if (!tileSplineRef.ContainsKey(tile))
+                    {
+                        tileSplineRef.Add(tile, new TileSplineRef(tile, new SplineData(spline, splineIndex, path.transform)));
+                    }
+                    else if (!tileSplineRef[tile].ContainsChild(new SplineData(spline, splineIndex, path.transform))) 
+                    {
+                        tileSplineRef[tile].AddChildSpline(new SplineData(spline, splineIndex, path.transform));
+                    }
+                    if (addNode)
+                    {
+                        spline.InsertPointAt(splineIndex, localTileCenter);
+                    }
+                    else
+                    {
+                        spline.SetPosition(splineIndex, localTileCenter);
+                    }
+                    splineIndex++;
                 }
 
                 // Add path to blocked tiles
                 blockedTiles.Add(tile);
+
+                // Add tile map
+                var tileMap = new MapTilePath(tile);
+                if (!allTiles.ContainsKey(tile))
+                {
+                    allTiles.Add(tile, tileMap);
+                }
+                else 
+                {
+                    tileMap = allTiles[tile];
+                }
+
+                if (i > 0)
+                {
+                    tileMap.CreateConnection(tilePath[i - 1], start);
+                }
+                if (i < tilePath.Count() - 1)
+                {
+                    tileMap.CreateConnection(tilePath[i + 1], end);
+                }
             }
+
+
+            splineIndex = 0;
+            spline = path.lineController.spline;
+
+            // Run for dashed spline
+            for (int i = 0; i < tilePath.Count(); i++)
+            {
+                var tile = tilePath[i];
+
+                // Check if spline should be set here
+                bool lastNode = i == tilePath.Count() - 1;
+
+                if (tileSplineRef.ContainsKey(tile))
+                {
+                    tileSplineRef[tile].AddChildSpline(new SplineData(spline, splineIndex, path.transform));
+                }
+                else 
+                {
+                    tileSplineRef.Add(tile, new TileSplineRef(tile, new SplineData(spline, splineIndex, path.transform)));
+                }
+
+                // Set spline to path
+                Vector3 localTileCenter = path.transform.InverseTransformPoint(MapGrid.CellToWorld(tile));
+                bool lastSplineKnot = splineIndex == spline.GetPointCount() - 1;
+                bool addNode = lastSplineKnot && !lastNode;
+                    
+                if (addNode)
+                {
+                    spline.InsertPointAt(splineIndex, localTileCenter);
+                }
+                else
+                {
+                    spline.SetPosition(splineIndex, localTileCenter);
+                }
+                splineIndex++;
+            }
+
         }
 
         private void GenerateNodeBackground()
@@ -810,23 +881,17 @@ namespace map
             }
         }
 
-        List<Vector3Int> blockedTiles = new List<Vector3Int>();
-
-        public bool isInOrder(List<AStarTile> list) 
+        private bool isException(Vector3Int tile, Vector3Int start, Vector3Int end) 
         {
-            float last = float.NegativeInfinity;
-            foreach (AStarTile tile in list) 
+            if (allTiles.ContainsKey(tile))
             {
-                if (last >= tile.cost)
+                var con = allTiles[tile].Connections.FirstOrDefault(x => x.TargetNode == end || x.TargetNode == start);
+                if (con != null) 
                 {
-                    return false;
-                }
-                else 
-                {
-                    last = tile.cost;
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
 
         private List<Vector3Int> FindPath(Vector3Int start, Vector3Int end) 
@@ -856,7 +921,20 @@ namespace map
                 }
                 else 
                 {
-                    var addedTiles = currentTile.CalculateNeighbors(blockedTiles, knownTilesRaw);
+                    List<Vector3Int> ignore = new List<Vector3Int>();
+                    List<Vector3Int> exception = new List<Vector3Int>();
+
+                    foreach(var neigh in currentTile.Neighbors)
+                    {
+                        if (isException(neigh, start, end)) 
+                        {
+                            exception.Add(neigh);
+                        }
+                    }
+
+                    ignore.AddRange(blockedTiles);
+                    ignore.AddRange(knownTilesRaw);
+                    var addedTiles = currentTile.CalculateNeighbors(ignore, exception);
                     foreach (var tile in addedTiles) 
                     {
                         knownTiles.Add(tile);

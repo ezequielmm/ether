@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
+using System.Linq;
+using UnityEngine.Tilemaps;
 
 public class MapTilePath : HexTile
 {
@@ -25,6 +27,11 @@ public class MapTilePath : HexTile
     /// The position of this node.
     /// </summary>
     public Vector3Int Position;
+
+    public void CreateConnection(Vector3Int otherTile, Vector3Int targetTile) 
+    {
+        Connections.Add(new Connection(otherTile, targetTile));
+    }
 
     public MapTilePath(Vector3Int currentPosition) 
     {
@@ -55,17 +62,18 @@ public class AStarTile : HexTile
         _start = start;
         _end = end;
     }
-    public List<AStarTile> CalculateNeighbors(List<Vector3Int> ignoredTiles, List<Vector3Int> knownTiles) 
+    public List<AStarTile> CalculateNeighbors(List<Vector3Int> ignoredTiles, List<Vector3Int> allowedTiles) 
     {
         List<AStarTile> result = new List<AStarTile>();
         foreach (Vector3Int neighbor in Neighbors) 
         {
-            if ((ignoredTiles.Contains(neighbor) || knownTiles.Contains(neighbor) || Previous?.Position == neighbor)
-                && (_end != neighbor))
+            bool isIgnored = ignoredTiles.Contains(neighbor) && !allowedTiles.Contains(neighbor);
+            bool lastNode = Previous?.Position == neighbor;
+            if ((isIgnored || lastNode) && (_end != neighbor))
                 continue;
             result.Add(new AStarTile(neighbor, this, _start, _end));
         }
-        return result;
+        return result.OrderBy(a => Random.Range(0f, 1f)).ToList();
     }
 }
 
@@ -101,17 +109,119 @@ public class HexTile
     }
 }
 
+public class TileSplineRef 
+{
+    public Vector3Int Position;
+    public SplineData MasterSpline;
+    public List<SplineData> ChildrenSplines;
+    public bool MasterRandomized = false;
+
+    public TileSplineRef(Vector3Int position, SplineData mainData) 
+    {
+        Position = position;
+        MasterSpline = mainData;
+        ChildrenSplines = new List<SplineData>();
+    }
+
+    public bool ContainsChild(SplineData other) 
+    {
+        foreach (var child in ChildrenSplines) 
+        {
+            if(other.Transform.Equals(child.Transform))
+                return true;
+        }
+        return false;
+    }
+
+    public void AddChildSpline(SplineData childData) 
+    {
+        if (childData == MasterSpline || ChildrenSplines.Contains(childData))
+        {
+            return;
+        }
+        if (MasterSpline.IsEndPiece && !childData.IsEndPiece)
+        {
+            ChildrenSplines.Add(MasterSpline);
+            MasterSpline = childData;
+        }
+        else
+        {
+            ChildrenSplines.Add(childData);
+        }
+    }
+
+    public void EnforceSplineMatch() 
+    {
+        foreach (var child in ChildrenSplines) 
+        {
+            child.Position = MasterSpline.Position;
+            if (!child.IsEndPiece) 
+            {
+                child.Spline.SetTangentMode(child.Index, ShapeTangentMode.Continuous);
+                child.LeftTangent = MasterSpline.LeftTangent;
+                child.RightTangent = MasterSpline.RightTangent;
+            }
+        }
+    }
+}
 public class SplineData
 {
-    public Vector3Int tileLoc;
-    public Spline path;
-    public int index;
-    public Transform pathTransform;
-    public SplineData(Vector3Int TileAddress, Spline PathSpline, int Index, Transform transform)
+    public Spline Spline;
+    public int Index;
+    public Transform Transform;
+
+
+    public Vector3 LeftTangent {
+        get 
+        {
+            return Spline.GetLeftTangent(Index);
+        }
+        set 
+        {
+            Spline.SetLeftTangent(Index, value);
+        }
+    }
+    public Vector3 RightTangent
     {
-        tileLoc = TileAddress;
-        path = PathSpline;
-        index = Index;
-        pathTransform = transform;
+        get
+        {
+            return Spline.GetRightTangent(Index);
+        }
+        set
+        {
+            Spline.SetRightTangent(Index, value);
+        }
+    }
+    public Vector3 Position {
+        get {
+            return Transform.TransformPoint(Spline.GetPosition(Index));
+        }
+        set 
+        {
+            try
+            {
+                Spline.SetPosition(Index, Transform.InverseTransformPoint(value));
+            }
+            catch 
+            {
+                Debug.LogError($"[SplineData] Could not set point at index {Index} | {value}");
+            }
+        }
+    }
+    public bool IsEndPiece { get {
+            return Index == 0 || Index == Spline.GetPointCount() - 1;
+        }
+    }
+
+    public SplineData(Spline spline, int index, Transform tranform)
+    {
+        Spline = spline;
+        Index = index;
+        Transform = tranform;
+    }
+
+    public Vector3Int GetTilePosition(Tilemap map) 
+    {
+        return map.WorldToCell(Position);
     }
 }
