@@ -342,6 +342,10 @@ namespace map
             
             // clear the references to the map paths
             pathManagers.Clear();
+
+            blockedTiles.Clear();
+            allTiles.Clear();
+            tileSplineRef.Clear();
         }
 
         MapStructure GenerateMapStructure(SWSM_MapData expeditionMapData)
