@@ -59,7 +59,7 @@ public class HandManager : MonoBehaviour
 
     private void OnCardDraw()
     {
-        Debug.Log($"[Hand Pile] Card Drawn.");
+        //Debug.Log($"[Hand Pile] Card Drawn.");
         cardsDrawn++;
         StartCoroutine(DrawCardSFX());
     }

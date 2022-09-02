@@ -59,9 +59,9 @@ GameObject:
   - component: {fileID: 3650832521303193249}
   - component: {fileID: 1732859673047892804}
   - component: {fileID: 7163704449398746698}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PathSpriteShape
-  m_TagString: Untagged
+  m_TagString: MapPath
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,7 +99,7 @@ SpriteShapeRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1d347a9978ca6014893068810f22cbc4, type: 2}
+  - {fileID: 0}
   - {fileID: 2100000, guid: 1d347a9978ca6014893068810f22cbc4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -119,24 +119,16 @@ SpriteShapeRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1449054989
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 10
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_MaskInteraction: 1
-  m_ShapeTexture: {fileID: 2800000, guid: 121cf6a84a8073b428afc637f7ff2397, type: 3}
+  m_ShapeTexture: {fileID: 0}
   m_Sprites:
-  - {fileID: 21300000, guid: 121cf6a84a8073b428afc637f7ff2397, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
+  - {fileID: 21300000, guid: ff49f582f88898648be5db82565473e3, type: 3}
   m_LocalAABB:
-    m_Center: {x: 4.0351357, y: 0.5270784, z: 0}
-    m_Extent: {x: 4.04834, y: 1.7443435, z: 0}
+    m_Center: {x: 4.03809, y: 0.5270596, z: 0}
+    m_Extent: {x: 4.0440135, y: 1.3443645, z: 0}
 --- !u!114 &7163704449398746698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,7 +261,7 @@ SpriteShapeRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0e88e43d1c70b124db64ab8d22baf075, type: 2}
+  - {fileID: 0}
   - {fileID: 2100000, guid: 0e88e43d1c70b124db64ab8d22baf075, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -289,21 +281,13 @@ SpriteShapeRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1449054989
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 11
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_MaskInteraction: 1
-  m_ShapeTexture: {fileID: 2800000, guid: 2c79c52372e1ee142bd94c8662e3163f, type: 3}
+  m_ShapeTexture: {fileID: 0}
   m_Sprites:
   - {fileID: 21300000, guid: 2c79c52372e1ee142bd94c8662e3163f, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
-  - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   m_LocalAABB:
     m_Center: {x: 3.9654956, y: 0.5383581, z: 0}
     m_Extent: {x: 4.6655273, y: 1.5564712, z: 0}

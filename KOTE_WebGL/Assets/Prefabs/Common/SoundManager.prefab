@@ -59,7 +59,7 @@ MonoBehaviour:
   - name: Deck Shuffle
     clips:
     - {fileID: 8300000, guid: debf95c098654bb478250d0fd224a54c, type: 3}
-  - name: Defence Block
+  - name: Defense Block
     clips:
     - {fileID: 8300000, guid: 6aeb74c2c061eab4498be91fff87ecba, type: 3}
   - name: Status Burn

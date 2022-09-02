@@ -86,10 +86,14 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector]
     public UnityEvent<BlessingItem, bool> EVENT_SELECTBLESSING_ITEM = new UnityEvent<BlessingItem, bool>();
 
+    //ENCOUNTER EVENTS
+    [HideInInspector] public UnityEvent EVENT_SHOW_ENCOUNTER_PANEL = new UnityEvent();
 
-    //SHOP LOCATION EVENTS
-    [HideInInspector] public UnityEvent<bool> EVENT_SHOPLOCATION_ACTIVATION_REQUEST = new UnityEvent<bool>();
+    //MERCHANT PANEL EVENTS
+    [HideInInspector] public UnityEvent EVENT_SHOW_MERCHANT_PANEL = new UnityEvent();
 
+    //CAMP EVENTS
+    [HideInInspector] public UnityEvent EVENT_SHOW_CAMP_PANEL = new UnityEvent();
 
     //EXPEDITION EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_EXPEDITION_STATUS_UPDATE = new UnityEvent<bool>();
@@ -126,6 +130,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<bool> EVENT_MAP_PANEL_TOGGLE = new UnityEvent<bool>();
 
     // UI Events
+    /// <summary>
+    /// Toggles the game click blocker.
+    /// </summary>
     [HideInInspector] public UnityEvent<bool?> EVENT_TOGGLE_GAME_CLICK = new UnityEvent<bool?>();
 
     //PLAYER DATA EVENTS
@@ -150,7 +157,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<CardToMoveData, float> EVENT_MOVE_CARD = new UnityEvent<CardToMoveData, float>();
 
     [HideInInspector]
-    public UnityEvent<string> EVENT_CARD_DISABLED { get; } = new UnityEvent<string>(); //id fo the cards being destroyed
+    public UnityEvent<string> EVENT_CARD_DISABLED = new UnityEvent<string>(); //id fo the cards being destroyed
 
     [HideInInspector] public UnityEvent EVENT_CARD_NO_ENERGY = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CARD_DRAW = new UnityEvent();
@@ -160,12 +167,16 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_CARD_CREATE = new UnityEvent<string>();
 
     //Gameplay events
+    [HideInInspector] public UnityEvent<GameStatuses> EVENT_PREPARE_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
     [HideInInspector] public UnityEvent<GameStatuses> EVENT_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
     [HideInInspector] public UnityEvent<string, string> EVENT_CARD_PLAYED = new UnityEvent<string, string>(); // cardID, targetID
     [HideInInspector] public UnityEvent EVENT_END_TURN_CLICKED = new UnityEvent();
+    [HideInInspector] public UnityEvent<string> EVENT_CONFIRM_EVENT = new UnityEvent<string>();
+
 
     //Combat events
     [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();   
+    [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_TREASURE_ELEMENTS = new UnityEvent<bool>();   
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_ENERGY = new UnityEvent<int, int>();//current energy, max energy 
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_PLAYER_HEALTH = new UnityEvent<int, int>();//current health, max health
     [HideInInspector] public UnityEvent<CombatTurnData> EVENT_ATTACK_REQUEST = new UnityEvent<CombatTurnData>();

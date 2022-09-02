@@ -41,6 +41,10 @@ namespace map
         public GameObject LeftButton;
         public GameObject RightScrollButton;
 
+        public Camera mapCamera;
+        public RenderTexture mapRenderTexture;
+        private List<GameObject> hiddenMapItems;
+
         private float scrollTime;
 
         public Bounds mapBounds;
@@ -54,6 +58,10 @@ namespace map
         // keep track of this so the map doesn't move if it's not bigger than the visible area
         private float halfScreenWidth;
 
+        private void Awake()
+        {
+            hiddenMapItems = new List<GameObject>();
+        }
 
         void Start()
         {
@@ -65,13 +73,14 @@ namespace map
             GameManager.Instance.EVENT_MAP_MASK_DOUBLECLICK.AddListener(OnMaskDoubleClick);
             GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.AddListener(OnPortalActivated);
             GameManager.Instance.EVENT_MAP_REVEAL.AddListener(OnRevealMap);
+            GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnNodeSelected);
 
             playerIcon.SetActive(false);
 
             // we need half the width of the screen for various checks
             halfScreenWidth = Camera.main.orthographicSize * Camera.main.aspect;
             maskBounds = GetComponentInChildren<SpriteMask>().GetComponent<BoxCollider2D>().bounds;
-            
+
             // the particleSystem's sorting layer has to be set manually, because the the settings in the component don't work
             portalAnimation.GetComponent<Renderer>().sortingLayerName = GameSettings.MAP_ELEMENTS_SORTING_LAYER_NAME;
         }
@@ -218,9 +227,24 @@ namespace map
             }
         }
 
+        private void OnNodeSelected(int id)
+        {
+            if (nodes.Exists(node => node.id == id))
+            {
+                NodeData curNode = nodes.Find(node => node.id == id);
+                playerIcon.transform.localPosition = curNode.transform.localPosition;
+            }
+        }
+
         private void OnMapNodesDataUpdated(SWSM_MapData mapData)
         {
             GenerateMap(mapData);
+            StartCoroutine(Scroll());
+        }
+
+        IEnumerator Scroll() 
+        {
+            yield return new WaitForSeconds(0.5f);
             bool doBossScroll = true;
             foreach (NodeData node in nodes.FindAll(
                          x => x.type == NODE_TYPES.royal_house || x.type == NODE_TYPES.portal))
@@ -234,10 +258,11 @@ namespace map
             if (doBossScroll && GetBossNode() != null)
             {
                 ScrollFromBoss();
-                return;
             }
-
-            ScrollBackToPlayerIcon();
+            else
+            {
+                ScrollBackToPlayerIcon();
+            }
         }
 
         //we will get to this point once the backend give us the node data
@@ -246,6 +271,7 @@ namespace map
             Debug.Log("[OnMapNodesDataUpdated] " + expeditionMapData);
 
             ClearMap();
+
 
             MapStructure mapStructure = GenerateMapStructure(expeditionMapData);
 
@@ -261,19 +287,107 @@ namespace map
                       nodes[nodes.Count - 1].transform.localPosition);
 
             GenerateMapGrid();
+
+            // Generate Map Images
+            StartCoroutine(GenerateMapImages());
         }
 
         #region generateMap
 
+        private IEnumerator GenerateMapImages() 
+        {
+            yield return new WaitForEndOfFrame();
+
+            float height = 2f * mapCamera.orthographicSize;
+            float width = height * mapCamera.aspect;
+
+            //mapRenderTexture.width = mapCamera.pixelWidth;
+            //mapRenderTexture.height = mapCamera.pixelHeight;
+
+            yield return new WaitForEndOfFrame();
+
+            GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(true);
+
+            Quaternion currentRotation = nodesHolder.transform.rotation;
+            Vector3 currentPosition = nodesHolder.transform.position;
+            nodesHolder.transform.position = Vector3.zero;
+            nodesHolder.transform.rotation = Quaternion.identity;
+
+            Bounds bounds = new Bounds(nodesHolder.transform.position, Vector3.zero);
+
+            foreach (Renderer renderer in nodesHolder.GetComponentsInChildren<Renderer>())
+            {
+                bounds.Encapsulate(renderer.bounds);
+            }
+
+            nodesHolder.transform.rotation = currentRotation;
+            nodesHolder.transform.position = currentPosition;
+
+            int imageCount = (int)Mathf.Ceil(bounds.size.x / width);
+            for (int i = 0; i < imageCount; i++) 
+            {
+                mapCamera.transform.position = new Vector3(nodesHolder.transform.position.x + (i * width), nodesHolder.transform.position.y, mapCamera.transform.position.z);
+                yield return new WaitForEndOfFrame();
+                var img = toTexture2D(mapRenderTexture);
+                GameObject imgObj = new GameObject();
+                imgObj.transform.position = new Vector3(nodesHolder.transform.position.x + (i * width), nodesHolder.transform.position.y, nodesHolder.transform.position.z - 15);
+                imgObj.transform.SetParent(nodesHolder.transform);
+                imgObj.name = $"MapPathImage({i})";
+                imgObj.tag = "MapImage";
+                var sprite = imgObj.AddComponent<SpriteRenderer>();
+                
+                sprite.sortingLayerName = "MapElements";
+                sprite.sortingOrder = 1;
+                sprite.sprite = Sprite.Create(img, new Rect(0,0, mapRenderTexture.width, mapRenderTexture.height), Vector2.one * 0.5f);
+                sprite.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+
+                // Scaling
+                float widthScale = width / sprite.bounds.size.x;
+                float heightScale = height / sprite.bounds.size.y;
+
+                sprite.transform.localScale = new Vector3(widthScale, heightScale, 1);
+            }
+
+            GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(false);
+
+            foreach (var gameObj in GameObject.FindGameObjectsWithTag("MapPath")) 
+            {
+                gameObj.SetActive(false);
+                hiddenMapItems.Add(gameObj);
+            }
+        }
+
+        Texture2D toTexture2D(RenderTexture rTex)
+        {
+            RenderTexture.active = rTex;
+            Texture2D tex = new Texture2D(rTex.width, rTex.height, TextureFormat.RGBA32, false);
+            // ReadPixels looks at the active RenderTexture.
+            tex.ReadPixels(new Rect(0, 0, rTex.width, rTex.height), 0, 0);
+            tex.Apply();
+            RenderTexture.active = null;
+            return tex;
+        }
+
         private void ClearMap()
         {
+            foreach (var gameObj in hiddenMapItems)
+            {
+                gameObj.SetActive(true);
+            }
+            hiddenMapItems.Clear();
+
             while (nodes.Count > 0)
             {
                 NodeData node = nodes[0];
                 nodes.Remove(node);
                 Destroy(node.gameObject);
             }
-            
+
+            foreach (var gameObj in GameObject.FindGameObjectsWithTag("MapImage"))
+            {
+                Destroy(gameObj);
+            }
+
             // clear the references to the map paths
             pathManagers.Clear();
         }
@@ -457,32 +571,32 @@ namespace map
                         Vector3 pointPosition = pathSpline.GetPosition(i);
                         pointPosition = pathTransform.TransformPoint(pointPosition);
                         Vector3Int cellPosition = MapGrid.layoutGrid.WorldToCell(pointPosition);
-                        
+
                         // we have to set the z to a constant, as for some reason you can two tiles in the same spot with different z levels
                         cellPosition = new Vector3Int(cellPosition.x, cellPosition.y,
                             (int)GameSettings.MAP_SPRITE_ELEMENTS_Z);
 
                         int randomTile = Random.Range(0, grassTiles.Length);
                         MapGrid.SetTile(cellPosition, grassTiles[randomTile]);
-                        
+
                         // if it's not the last point on the spline, move towards the next point and mark the tiles as path
                         if (i != splinePoints - 1)
                         {
                             Vector3 nextPoint = pathTransform.TransformPoint(pathSpline.GetPosition(i + 1));
                             Vector3 nextTilePos = Vector3.MoveTowards(pointPosition, nextPoint, 0.1f);
-                            
+
                             while (Vector3.Distance(nextTilePos, nextPoint) > 0.1f)
                             {
                                 Vector3Int nextTilePosition = MapGrid.layoutGrid.WorldToCell(nextTilePos);
-                                
+
                                 // we have to set the z to a constant, as for some reason you can two tiles in the same spot with different z levels
                                 nextTilePosition = new Vector3Int(nextTilePosition.x, nextTilePosition.y,
                                     (int)GameSettings.MAP_SPRITE_ELEMENTS_Z);
-                                
+
                                 // set a random grass tile at that position
                                 randomTile = Random.Range(0, grassTiles.Length);
                                 MapGrid.SetTile(nextTilePosition, grassTiles[randomTile]);
-                                
+
                                 nextTilePos = Vector3.MoveTowards(nextTilePos, nextPoint, 0.1f);
                             }
                         }

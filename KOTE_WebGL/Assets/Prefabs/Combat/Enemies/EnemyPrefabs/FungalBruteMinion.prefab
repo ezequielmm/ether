@@ -92,7 +92,7 @@ Transform:
   m_GameObject: {fileID: 9145094296802414103}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 7523703582371950273}
   - {fileID: 3375694356588228209}
@@ -126,7 +126,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4ed53b0322d62d940a66bc0715769a1f, type: 2}
+  - {fileID: 2100000, guid: 4ea58f1d4517f3443a61af96c88e8ef1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -201,46 +201,59 @@ MonoBehaviour:
   ANIMATION_EVENT:
     m_PersistentCalls:
       m_Calls: []
-  animationJson: {fileID: 4900000, guid: 2b03164fed03dce439175bc8793ef0c2, type: 3}
-  atlasAssetBase: {fileID: 11400000, guid: 1f71d1cd06609ab45b577b103e995c4f, type: 2}
+  animationJson: {fileID: 4900000, guid: 0f00ac3819f0a404c91ebb13c4ef30b4, type: 3}
+  atlasAssetBase: {fileID: 11400000, guid: a909b627384766549a4b98fac0ea7fb9, type: 2}
   animations:
-  - sequenceName: Attack
+  - sequenceName: attack
     sequence:
     - track: 1
-      name: Attack1
+      name: attack1
       loop: 0
       delay: 0
       animationEvent: 1
-  - sequenceName: Idle
+  - sequenceName: idle
     sequence:
     - track: 1
-      name: Idle
+      name: idle
       loop: 1
       delay: 0
       animationEvent: 0
-  - sequenceName: Hit
+  - sequenceName: hit
     sequence:
     - track: 1
-      name: Hit
+      name: hit
       loop: 0
       delay: 0.5
       animationEvent: 1
-  - sequenceName: Death
+  - sequenceName: death
     sequence:
     - track: 1
-      name: Death
+      name: death
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: cast
+    sequence:
+    - track: 1
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: spawn
+    sequence:
+    - track: 1
+      name: spawn
       loop: 0
       delay: 0
       animationEvent: 1
   availableAnimations:
-  - Attack1
-  - Cast1
-  - Death
-  - Hit
-  - Idle
-  - Idle_pose
-  - Spawn
-  - Walk
+  - attack1
+  - cast1
+  - death
+  - hit
+  - idle
+  - spawn
+  - walk
 --- !u!61 &7485147921497129424
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -287,6 +300,10 @@ MonoBehaviour:
   onCursorExit:
     m_PersistentCalls:
       m_Calls: []
+  spineAnimationsManagement: {fileID: 0}
+  setBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!50 &7479970072895353741
 Rigidbody2D:
   serializedVersion: 4

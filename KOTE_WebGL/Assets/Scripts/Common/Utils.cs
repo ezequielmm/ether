@@ -20,10 +20,19 @@ public static class Utils
     public static TEnum ParseEnum<TEnum>(string dataString) where TEnum : struct, Enum
     {
         TEnum parsedEnum;
+        
         bool parseSuccess = Enum.TryParse(dataString, out parsedEnum);
         if (parseSuccess) return parsedEnum;
-        Debug.LogError("Warning: Enum not parsed. No value '" + dataString +"' in enum type " + typeof(TEnum));
-        return default(TEnum);
+        try
+        {
+            parsedEnum = (TEnum)Enum.Parse(typeof(TEnum), dataString, true);
+            return parsedEnum;
+        }
+        catch
+        {
+            Debug.LogError("Warning: Enum not parsed. No value '" + dataString + "' in enum type " + typeof(TEnum));
+            return default(TEnum);
+        }
     }
     
     // utility function to clean up an enum when we're going to display it to the player
@@ -111,7 +120,7 @@ public static class Utils
             default:
             case Size.medium:
                 return PixelToSceneSize(233, 1080);
-            case Size.mediumWide:
+            case Size.medium_wide:
                 return PixelToSceneSize(312, 1080);
             case Size.large:
                 return PixelToSceneSize(470, 1080);
@@ -131,7 +140,7 @@ public static class Utils
             default:
             case Size.medium:
                 return (int)((233 / 1080f) * 1080);
-            case Size.mediumWide:
+            case Size.medium_wide:
                 return (int)((312 / 1080f) * 1080);
             case Size.large:
                 return (int)((470 / 1080f) * 1080);

@@ -92,7 +92,7 @@ Transform:
   m_GameObject: {fileID: 9145094296802414103}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.56, y: 0.56, z: 0.56}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 2008666325652794148}
   - {fileID: 8855561072198671968}
@@ -204,42 +204,69 @@ MonoBehaviour:
   animationJson: {fileID: 4900000, guid: 3b7deadbfdea07e4389d46d499b035a3, type: 3}
   atlasAssetBase: {fileID: 11400000, guid: d7c41b6c256c31a4fa889f3f74222744, type: 2}
   animations:
-  - sequenceName: Attack
+  - sequenceName: attack
     sequence:
     - track: 1
-      name: Attack
+      name: attack
       loop: 0
       delay: 0
       animationEvent: 1
-  - sequenceName: Idle
+  - sequenceName: cast
     sequence:
     - track: 1
-      name: Idle
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: idle
+    sequence:
+    - track: 1
+      name: idle
       loop: 1
       delay: 0
       animationEvent: 0
-  - sequenceName: Hit
+  - sequenceName: hit
     sequence:
     - track: 1
-      name: Hit
+      name: hit
       loop: 0
-      delay: 0.5
+      delay: 0
       animationEvent: 1
-  - sequenceName: Death
+  - sequenceName: death
     sequence:
     - track: 1
-      name: Death
+      name: death
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: club
+    sequence:
+    - track: 1
+      name: attack
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: gatherShadow
+    sequence:
+    - track: 1
+      name: casta
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: sporeCloud
+    sequence:
+    - track: 1
+      name: cast2
       loop: 0
       delay: 0
       animationEvent: 1
   availableAnimations:
-  - Attack
-  - Cast1
-  - Cast2
-  - Death
-  - Death-Alt
-  - Hit
-  - Idle
+  - attack
+  - cast1
+  - cast2
+  - death
+  - hit
+  - idle
 --- !u!61 &8703712778393250611
 BoxCollider2D:
   m_ObjectHideFlags: 0

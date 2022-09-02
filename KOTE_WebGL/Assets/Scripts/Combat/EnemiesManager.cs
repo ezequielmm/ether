@@ -36,7 +36,7 @@ public class EnemiesManager : MonoBehaviour
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Enemies);
     }
 
-    private bool enemyExists(EnemyData data) 
+    private bool EnemyExists(EnemyData data) 
     {
         for (int i = 0; i < enemies.Count; i++) 
         {
@@ -56,7 +56,7 @@ public class EnemiesManager : MonoBehaviour
         return false;
     }
 
-    private EnemyManager getEnemy(string id) 
+    private EnemyManager GetEnemy(string id) 
     {
         foreach (var enemy in enemies) 
         {
@@ -69,7 +69,7 @@ public class EnemiesManager : MonoBehaviour
         return null;
     }
 
-    private float getSize(string size) 
+    private float GetSize(string size) 
     {
         return Utils.GetSceneSize(Utils.ParseEnum<Size>(size));
     }
@@ -79,15 +79,25 @@ public class EnemiesManager : MonoBehaviour
         List<GameObject> newEnemyList = new List<GameObject>();
         foreach (EnemyData data in enemiesData.data)
         {
-            if (enemyExists(data))
+            bool enemyExists = EnemyExists(data);
+            EnemyManager enemyManager = null;
+            if (enemyExists) 
             {
-                var enemyManager = getEnemy(data.id);
+                enemyManager = GetEnemy(data.id);
+                if (enemyManager.gameObject == null) 
+                {
+                    enemyExists = false;
+                }
+            }
+            if (enemyExists)
+            {
+                
                 enemyManager.EnemyData = data;
                 newEnemyList.Add(enemyManager.gameObject);
             }
             else 
             {
-                var enemyManager = SpawnEnemy(data);
+                enemyManager = SpawnEnemy(data);
                 enemies.Add(enemyManager.gameObject);
                 newEnemyList.Add(enemyManager.gameObject);
             }
@@ -98,7 +108,10 @@ public class EnemiesManager : MonoBehaviour
             if (!newEnemyList.Contains(enemy)) 
             {
                 enemies.RemoveAt(i);
-                enemy.transform.DOMove(transform.position + Vector3.right * spawnX, 1).OnComplete( ()=>{ Destroy(enemy); });
+                if (enemy != null)
+                {
+                    enemy.transform.DOMove(transform.position + Vector3.right * spawnX, 1).OnComplete(() => { Destroy(enemy); });
+                }
                 i--;
                 continue;
             }
@@ -115,7 +128,7 @@ public class EnemiesManager : MonoBehaviour
         foreach (var enemyObj in enemies) 
         {
             var enemy = enemyObj.GetComponent<EnemyManager>();
-            width += getSize(enemy.EnemyData.size); // enemy.collider.bounds.size.x;
+            width += GetSize(enemy.EnemyData.size); // enemy.collider.bounds.size.x;
         }
         float spillOver = Mathf.Max(0, width - (extent * 2));
         float spacing = Mathf.Max(0, (extent * 2) - width) / (enemies.Count);
@@ -126,7 +139,7 @@ public class EnemiesManager : MonoBehaviour
         {
             var enemy = enemyObj.GetComponent<EnemyManager>();
             sb.Append($"[{enemy.EnemyData.enemyId} | {enemy.EnemyData.id}], ");
-            float size = getSize(enemy.EnemyData.size); //enemy.collider.bounds.size.x;
+            float size = GetSize(enemy.EnemyData.size); //enemy.collider.bounds.size.x;
             float xPos = leftEdge + size / 2;
             if (enemies.Count <= 1)
             {

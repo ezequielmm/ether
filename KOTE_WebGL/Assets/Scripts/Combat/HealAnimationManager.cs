@@ -26,7 +26,7 @@ public class HealAnimationManager : MonoBehaviour
 
     void Start()
     {
-        entityId = transform.parent.gameObject.GetComponentInChildren<EnemyManager>()?.EnemyData.id ?? "player"; // transform.parent.gameObject.GetComponentInChildren<PlayerManager>()?.PlayerData.id;
+        entityId = transform.parent.gameObject.GetComponentInChildren<EnemyManager>()?.EnemyData?.id ?? "player"; // transform.parent.gameObject.GetComponentInChildren<PlayerManager>()?.PlayerData.id;
         
         GameManager.Instance.EVENT_HEAL.AddListener(onHeal);
     }

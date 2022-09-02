@@ -44,7 +44,7 @@ public class StatusManager : MonoBehaviour
             Debug.LogError($"[StatusManager] Manager does not belong either an enemy or a player.");
         }
         GameManager.Instance.EVENT_UPDATE_STATUS_EFFECTS.AddListener(OnSetStatus);
-        //GameManager.Instance.EVENT_CHANGE_TURN.AddListener(onTurnChange);
+        GameManager.Instance.EVENT_CHANGE_TURN.AddListener(onTurnChange);
         iconContainer.SetFadeSpeed(GameSettings.STATUS_FADE_SPEED);
         iconContainer.fadeOnCreate = true;
     }
@@ -81,7 +81,7 @@ public class StatusManager : MonoBehaviour
 
     private void setStatusInfo(Status status, GameObject iconObject) 
     {
-        var statusIcon = iconObject.GetComponent<StatusIcon>();
+        var statusIcon = iconObject.GetComponentInChildren<StatusIcon>();
         setStatusInfo(status, statusIcon);
     }
 
@@ -113,6 +113,12 @@ public class StatusManager : MonoBehaviour
         }
         foreach (string key in keysToDelete) { statusIconList.Remove(key); }
         iconContainer.ReorganizeSprites();
+    }
+
+    private void onTurnChange(string who) 
+    {
+        askedForStatus = false;
+        statusSet = false;
     }
 
     private void Update()

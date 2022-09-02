@@ -19,12 +19,21 @@ public enum PileTypes
 public enum GameStatuses
 {
     Combat,
+    Treasure,
     Map,
     Encounter,
     Merchant,
+    Camp,
     RoyalHouse,
     RewardsPanel,
     GameOver
+}
+
+[Serializable]
+public enum PlayerState 
+{
+    dying,
+    dead
 }
 
 [Serializable]
@@ -33,7 +42,7 @@ public enum Size
     medium = 0,
     tiny,
     small,
-    mediumWide,
+    medium_wide,
     large,
     giant
 }
@@ -209,7 +218,11 @@ public enum WS_ERROR_TYPES
 public enum WS_MESSAGE_TYPES
 {
     map_update,
+    encounter_update,
+    merchant_update,
+    camp_update,
     combat_update,
+    treasure_update,
     enemy_intents,
     player_state_update,
     error,
@@ -218,7 +231,21 @@ public enum WS_MESSAGE_TYPES
     player_affected,
     end_turn,
     begin_turn,
-    end_combat
+    end_combat,
+}
+
+[Serializable]
+public enum WS_COMBAT_ACTIONS 
+{
+    begin_combat,
+    update_statuses,
+    combat_queue
+}
+
+[Serializable]
+public enum WS_TREASURE_ACTIONS
+{
+    begin_treasure
 }
 
 [Serializable]
@@ -232,6 +259,7 @@ public enum WS_MESSAGE_ACTIONS
     create_card,
     enemies_defeated,
     players_defeated,
+    player_defeated,
     select_another_reward,
     show_map
 }

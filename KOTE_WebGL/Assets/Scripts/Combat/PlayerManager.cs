@@ -14,7 +14,7 @@ public class PlayerManager : MonoBehaviour
     public TMP_Text healthTF;
     public Slider healthBar;
 
-    private Collider2D collider;
+    new private Collider2D collider;
     private StatusManager statusManager;
     private Action RunWithEvent;
     private bool CalledEvent;
@@ -31,6 +31,34 @@ public class PlayerManager : MonoBehaviour
             return playerData;
         }
     }
+
+    private void Start()
+    {
+        GameManager.Instance.EVENT_ATTACK_REQUEST.AddListener(OnAttackRequest);
+        GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnAttackResponse);
+        GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener(OnUpdatePlayer);
+        GameManager.Instance.EVENT_WS_CONNECTED.AddListener(OnWSConnected);
+        GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
+
+        collider = GetComponent<Collider2D>();
+
+        if (statusManager == null)
+            statusManager = GetComponentInChildren<StatusManager>();
+
+        if (spineAnimationsManagement == null)
+            spineAnimationsManagement = GetComponent<SpineAnimationsManagement>();
+        spineAnimationsManagement.ANIMATION_EVENT.AddListener(OnAnimationEvent);
+
+        //spineAnimationsManagement.SetSkin("weapon/sword");
+        spineAnimationsManagement.PlayAnimationSequence("Idle");
+
+    }
+
+    private void OnEnable()
+    {
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
+    }
+
 
     private void OnAttackRequest(CombatTurnData attack) 
     {
@@ -69,9 +97,11 @@ public class PlayerManager : MonoBehaviour
             }
         }
         if (!endCalled)
-        {
-            // If no conditions are met, close the event
-            GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId);
+        { // If no conditions met, pass onto the target and play cast
+            var f = PlayAnimation("Cast");
+            if (f > afterEvent) afterEvent = f;
+            endCalled = true;
+            RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
         }
         else if (afterEvent > 0)
         {
@@ -137,7 +167,10 @@ public class PlayerManager : MonoBehaviour
             statusManager.UpdateStatus(target.statuses);
         }
 
-        RunAfterTime(waitDuration, () => GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId));
+        RunAfterTime(waitDuration, () => {
+            GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId); 
+            //CheckDeath(target.finalHealth); 
+        });
     }
     private void RunAfterEvent(Action toRun) 
     {
@@ -205,37 +238,9 @@ public class PlayerManager : MonoBehaviour
 
         if (healthBar.value != current)
         {
-            healthBar.DOValue(current.Value, 1).OnComplete(CheckDeath);
+            healthBar.DOValue(current.Value, 1).OnComplete( () => { CheckDeath(current.Value); });
         }
     }
-
-    private void Start()
-    {
-        GameManager.Instance.EVENT_ATTACK_REQUEST.AddListener(OnAttackRequest);
-        GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnAttackResponse);
-        GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener(OnUpdatePlayer);
-        GameManager.Instance.EVENT_WS_CONNECTED.AddListener(OnWSConnected);
-        GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
-
-        collider = GetComponent<Collider2D>();
-
-        if (spineAnimationsManagement == null)
-        statusManager = GetComponentInChildren<StatusManager>();
-
-        if(spineAnimationsManagement == null)
-            spineAnimationsManagement = GetComponent<SpineAnimationsManagement>();
-        spineAnimationsManagement.ANIMATION_EVENT.AddListener(OnAnimationEvent);
-
-        //spineAnimationsManagement.SetSkin("weapon/sword");
-        spineAnimationsManagement.PlayAnimationSequence("Idle");
-
-    }
-
-    private void OnEnable()
-    {
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
-    }
-
     private void OnUpdateEnergy(int currentEnergy, int maxEnergy) 
     {
         if (currentEnergy == 0) 
@@ -264,11 +269,12 @@ public class PlayerManager : MonoBehaviour
         defenseTF.SetText(value.ToString());
     }
 
-
+#if UNITY_EDITOR
     private void OnMouseDown()
     {
-        Attack();
+        OnDeath();
     }
+#endif
 
     public float PlayAnimation(string animationSequence) 
     {
@@ -292,21 +298,25 @@ public class PlayerManager : MonoBehaviour
         return length;
     }
 
-    private void OnDeath() 
+    private float OnDeath() 
     {
-        // TODO: Add Death Animation
+        float length = spineAnimationsManagement.PlayAnimationSequence("Death");
+        return length;
     }
 
-    private void CheckDeath()
+
+    private void CheckDeath(int current)
     {
-        if (playerData.hpCurrent < 1)
+        if (current <= 0)
         {
-            /*explodePS.transform.parent = null;
-            explodePS.Play();
-            Destroy(explodePS.gameObject, 2);
-            Destroy(this.gameObject);*/
-            OnDeath();
-            Debug.Log("GAME OVER");
+            // Tell game that a player is dying
+            GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(nameof(PlayerState.dying));
+
+            // Play animation
+            RunAfterTime(OnDeath(), () => {
+                // Tell game that a player is dead
+                GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(nameof(PlayerState.dead));
+            });
         }
     }
 

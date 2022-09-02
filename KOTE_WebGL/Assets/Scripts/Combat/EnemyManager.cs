@@ -19,6 +19,7 @@ public class EnemyManager : MonoBehaviour
 
     public bool overrideEnemy = false;
     public EnemyTypes enemyType;
+    public bool setEnemy = false;
 
     [SerializeField]
     private List<GameObject> enemyMap;
@@ -29,8 +30,9 @@ public class EnemyManager : MonoBehaviour
     private Action RunWithEvent;
     private bool CalledEvent;
 
-    new public Collider2D collider;
+    new private Collider2D collider;
     private StatusManager statusManager;
+
 
     public EnemyData EnemyData { 
         set
@@ -43,24 +45,12 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+
     private EnemyData ProcessNewData(EnemyData old, EnemyData current)
     {
         if (activeEnemy == null)
         {
-            var prefab = GetEnemyPrefab(current.name);
-            if (prefab != null)
-            {
-                activeEnemy = Instantiate(prefab, transform);
-                activeEnemy.transform.localPosition = Vector3.zero;
-                enemyPlacementData = activeEnemy.GetComponent<EnemyPrefab>();
-                // Add the cursorEnter and Exit for tooltips
-                enemyPlacementData.onCursorEnter.AddListener(setTooltip);
-                enemyPlacementData.onCursorExit.AddListener(removeTooltip);
-                // Set mounting points
-                TopBar.position = enemyPlacementData.intentMountingPoint.position;
-                BottomBar.position = enemyPlacementData.healthMountingPoint.position;
-                Instantiate();
-            }
+            SetEnemyPrefab(current.name);
         }
 
         if (old == null)
@@ -74,6 +64,50 @@ public class EnemyManager : MonoBehaviour
         SetHealth(current.hpCurrent, current.hpMax);
 
         return current;
+    }
+
+    private void Update()
+    {
+        if (setEnemy) 
+        {
+            setEnemy = false;
+            SetEnemyPrefab(Enum.GetName(typeof(EnemyTypes), enemyType));
+        }
+    }
+
+    private void SetEnemyPrefab(string enemyType)
+    {
+        var currentPrefab = GetComponentInChildren<EnemyPrefab>();
+        if (currentPrefab != null)
+            Destroy(currentPrefab.gameObject);
+        var prefab = GetEnemyPrefab(enemyType);
+        if (prefab != null)
+        {
+            activeEnemy = Instantiate(prefab, transform);
+            activeEnemy.transform.localPosition = Vector3.zero;
+            enemyPlacementData = activeEnemy.GetComponent<EnemyPrefab>();
+            enemyPlacementData.FitColliderToArt();
+            // Add the cursorEnter and Exit for tooltips
+            // Set mounting points
+            Vector3 top = enemyPlacementData.intentMountingPoint.position;
+            top.y = Mathf.Min(GameSettings.INTENT_MAX_HEIGHT, top.y);
+            TopBar.position = top;
+            Vector3 bottom = enemyPlacementData.healthMountingPoint.position;
+            bottom.y = Mathf.Max(transform.position.y, bottom.y);
+            BottomBar.position = bottom;
+
+            collider = activeEnemy.GetComponent<Collider2D>();
+
+            // Set tooltip events
+            enemyPlacementData.onCursorEnter.AddListener(SetTooltip);
+            enemyPlacementData.onCursorExit.AddListener(SemoveTooltip);
+
+
+            this.enemyType = Utils.ParseEnum<EnemyTypes>(enemyType);
+            gameObject.name = Enum.GetName(typeof(EnemyTypes), this.enemyType);
+
+            Instantiate();
+        }
     }
 
     private void OnAttackRequest(CombatTurnData attack)
@@ -97,37 +131,27 @@ public class EnemyManager : MonoBehaviour
                 endCalled = true;
                 RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
-            else if (target.defenseDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
-            {
-                var f = PlayAnimation("Cast");
-                if (f > afterEvent) afterEvent = f;
-                endCalled = true;
-                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
-            }
-            else if (target.healthDelta > 0 && target.effectType == nameof(ATTACK_EFFECT_TYPES.heal)) // Health Up
-            {
-                var f = PlayAnimation("Cast");
-                if (f > afterEvent) afterEvent = f;
-                endCalled = true;
-                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
-            }
             else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
             {
+                var f = PlayAnimation("Cast");
+                if (f > afterEvent) afterEvent = f;
                 endCalled = true;
-                RunAfterTime(0.45f, // hard coded player animation attack point
-                   () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
             else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.heal)) // Health Up
             {
+                var f = PlayAnimation("Cast");
+                if (f > afterEvent) afterEvent = f;
                 endCalled = true;
-                RunAfterTime(0.45f, // hard coded player animation attack point
-                   () => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
         }
         if (!endCalled)
-        {
-            // If no conditions are met, close the event
-            GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId);
+        { // If no conditions met, pass onto the target and play cast
+            var f = PlayAnimation("Cast");
+            if (f > afterEvent) afterEvent = f;
+            endCalled = true;
+            RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
         }
         else if (afterEvent > 0) 
         {
@@ -135,7 +159,7 @@ public class EnemyManager : MonoBehaviour
             {
                 if (RunWithEvent != null && !CalledEvent) 
                 {
-                    Debug.LogWarning($"[{gameObject.name}] Animation is missing a 'attack' or 'release' event!");
+                    Debug.LogWarning($"[EnemyManager | {enemyData.name}] Animation is missing a 'attack' or 'release' event!");
                     RunWithEvent.Invoke();
                 }
             });
@@ -231,24 +255,19 @@ public class EnemyManager : MonoBehaviour
             spine = activeEnemy.GetComponent<SpineAnimationsManagement>();
             spine.ANIMATION_EVENT.AddListener(OnAnimationEvent);
             spine.PlayAnimationSequence("Idle");
-            collider = GetComponentInChildren<Collider2D>();
-            var lowerBar = GetComponent<LowerBarConrtroller>();
-            if (lowerBar != null) 
-            {
-                lowerBar.SetSize(Utils.ParseEnum<Size>(EnemyData.size));
-            }
         }
         
     }
 
     private void OnUpdateEnemy(EnemyData newEnemyData)
     {
-        if (newEnemyData.id == enemyData.id)
+        if (newEnemyData.enemyId == enemyData.enemyId)
         {
             // healthBar.DOValue(newEnemyData.hpMin, 1);
             EnemyData = newEnemyData;
         }
     }
+
     private void OnDrawGizmos()
     {
         if (!string.IsNullOrEmpty(enemyData.size))
@@ -347,16 +366,16 @@ public class EnemyManager : MonoBehaviour
         {
             enemyName = enemyType.ToString();
         }
-        foreach (var enemy in enemyMap) 
-        {
-            if (enemy.name.ToLower().Equals(enemyName.ToLower()))
-            {
-                return enemy;
-            }
-        }
+        var enemy = FindPrefab(enemyName);
+        if(enemy != null) return enemy;
+        Debug.LogError($"[EnemyManager] Missing {enemyName} prefab. Using SporeMonger as a backup");
+        enemyName = "SporeMonger";
+        enemy = FindPrefab(enemyName);
+        if (enemy != null) return enemy;
         Debug.LogError($"[EnemyManager] Missing {enemyName} prefab.");
         return null;
     }
+
     private List<Tooltip> GetTooltipInfo()
     {
         List<Tooltip> list = new List<Tooltip>();
@@ -373,17 +392,28 @@ public class EnemyManager : MonoBehaviour
 
         return list;
     }
-
-    private void setTooltip()
+    private void SetTooltip()
     {
         Vector3 anchorPoint = new Vector3(collider.bounds.center.x - collider.bounds.extents.x,
             collider.bounds.center.y, 0);
         // Tooltip On
         GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(GetTooltipInfo(), TooltipController.Anchor.MiddleRight, anchorPoint, null);
     }
-    private void removeTooltip() 
+    private void SemoveTooltip()
     {
         // Tooltip Off
         GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
+    }
+
+    private GameObject FindPrefab(string enemyName)
+    {
+        foreach (var enemy in enemyMap)
+        {
+            if (enemy.name.ToLower().Equals(enemyName.ToLower()))
+            {
+                return enemy;
+            }
+        }
+        return null;
     }
 }

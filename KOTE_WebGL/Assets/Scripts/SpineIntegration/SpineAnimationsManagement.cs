@@ -87,9 +87,10 @@ public class SpineAnimationsManagement : MonoBehaviour
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public float PlayAnimationSequence(string animationSequenceName)
     {
+        animationSequenceName = animationSequenceName.ToLower();
         foreach (AnimationSequence animationSequence in animations)
         {
-            if (animationSequence.sequenceName == animationSequenceName)
+            if (animationSequence.sequenceName.ToLower() == animationSequenceName)
             {
                 float duration = 0;
                 foreach (AnimationSequence.Animation animation in animationSequence.sequence)
