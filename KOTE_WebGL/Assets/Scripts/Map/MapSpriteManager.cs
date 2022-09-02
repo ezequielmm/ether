@@ -67,50 +67,6 @@ namespace map
         private List<int> MapSeeds;
         private Dictionary<Vector3Int, MapTilePath> mapPaths;
 
-        private class MapTilePath 
-        {
-            /// <summary>
-            /// Main origin of this tile (related to main path)
-            /// </summary>
-            public Vector3Int origin;
-            /// <summary>
-            /// Main target of this tile (related to main path)
-            /// </summary>
-            public Vector3Int target;
-
-            /// <summary>
-            /// The position of this node.
-            /// </summary>
-            public Vector3Int position;
-
-            /// <summary>
-            /// Previous node of the connected path. Should also add this to converging nodes
-            /// </summary>
-            public Vector3Int? previousNode = null;
-            /// <summary>
-            /// Next node of the connected path. Should also add this to diverging nodes.
-            /// </summary>
-            public Vector3Int? nextNode = null;
-
-            /// <summary>
-            /// The node's primary path.
-            /// </summary>
-            public SplineData path = null;
-        }
-
-        private class SplineData {
-            public Vector3Int tileLoc;
-            public Spline path;
-            public int index;
-            public Transform pathTransform;
-            public SplineData(Vector3Int TileAddress, Spline PathSpline, int Index, Transform transform)
-            {
-                tileLoc = TileAddress;
-                path = PathSpline;
-                index = Index;
-                pathTransform = transform;
-            }
-        }
 
         private class SplinePoint 
         {
@@ -514,7 +470,7 @@ namespace map
             GeneratePathBackground();
 
             Random.InitState(MapSeeds[1]);
-            CurvePath();
+            //CurvePath();
 
             Random.InitState(MapSeeds[2]);
             GenerateMapBackground();
@@ -730,6 +686,7 @@ namespace map
                 Vector3Int start = MapGrid.WorldToCell(path.transform.TransformPoint(spline.GetPosition(0)));
                 Vector3Int end = MapGrid.WorldToCell(path.transform.TransformPoint(spline.GetPosition(spline.GetPointCount() - 1)));
                 SnapPath(start, end, path);
+                break;
             }
         }
 
@@ -745,95 +702,34 @@ namespace map
         private void SnapPath(Vector3Int start, Vector3Int end, PathManager path) 
         {
             Spline spline = path.pathController.spline;
-            Vector3 currentWorld = MapGrid.CellToWorld(start);
-            Vector3 endGoal = MapGrid.CellToWorld(end);
-            int currentSplinePoint = 0;
-            Vector3Int? previousNode = null;
-            Vector3Int? previousUnMarkedNode = null;
-            while (Vector3.Distance(currentWorld, endGoal) > 0.1f) 
-            {
-                // Get current position
-                Vector3Int currentPosition = MapGrid.WorldToCell(currentWorld);
-                Vector3 tileCenter = MapGrid.CellToWorld(currentPosition);
+            StartCoroutine(FindPath(start, end));
+            //var tilePath = FindPath(start, end);
+            //for (int i = 0; i < tilePath.Count(); i++) 
+            //{
+            //    var tile = tilePath[i];
 
-                // Check if cell is registered
-                if (!mapPaths.ContainsKey(currentPosition)) //()
-                { // No Path In Cell
+            //    // Set tile grass
+            //    SetNodeGrass(tile);
 
-                    // Set node begining if missing
-                    if (previousUnMarkedNode != null) 
-                    {
-                        Vector3 lastNodeCenter = path.transform.InverseTransformPoint(MapGrid.CellToWorld(previousUnMarkedNode.Value));
-                        spline.SetPosition(currentSplinePoint, lastNodeCenter);
-                        previousUnMarkedNode = null;
-                        currentSplinePoint++;
-                    }
+            //    // Set Spline to Path
+            //    Vector3 localTileCenter = path.transform.InverseTransformPoint(MapGrid.CellToWorld(tile));
 
-                    // Check if we need to add anoter point on the spline
-                    bool addPoint = currentSplinePoint == spline.GetPointCount() - 1;
+            //    bool addNode = i != tilePath.Count() - 1 && i == spline.GetPointCount() - 1;
+            //    if (addNode)
+            //    {
+            //        spline.InsertPointAt(i, localTileCenter);
+            //    } 
+            //    else 
+            //    {
+            //        spline.SetPosition(i, localTileCenter);
+            //    }
 
-                    // We don't add a point if we're at our goal
-                    if (currentPosition == end)
-                    {
-                        addPoint = false;
-                    }
-
-                    // Translate tile center into local position of the spline
-                    Vector3 localTileCenter = path.transform.InverseTransformPoint(tileCenter);
-
-                    // Set path's current knot to this position
-                    if (addPoint)
-                    {
-                        // If so, lets add another point on
-                        spline.InsertPointAt(currentSplinePoint, localTileCenter);
-                    }
-                    else
-                    {
-                        spline.SetPosition(currentSplinePoint, localTileCenter);
-                    }
-
-                    // Register cell
-                    mapPaths.Add(currentPosition, new MapTilePath()
-                    {
-                        origin = start,
-                        target = end,
-                        position = currentPosition,
-                        previousNode = previousNode,
-                        nextNode = null
-                    });
-
-                    SetNodeGrass(currentPosition);
-
-                    // If previous node, set next node value
-                    if (previousNode != null && mapPaths.ContainsKey(previousNode.Value))
-                    {
-                        mapPaths[previousNode.Value].nextNode = currentPosition;
-                    }
-
-                    // Update previous node
-                    previousNode = currentPosition;
-                    // Update Spline Point Index
-                    currentSplinePoint++;
-                }
-                else if (previousNode != null && previousNode != currentPosition) // If the node is claimed and not us
-                {
-                    // Translate tile center into local position of the spline
-                    Vector3 localTileCenter = path.transform.InverseTransformPoint(tileCenter);
-
-                    // Set final point to this position
-                    spline.SetPosition(currentSplinePoint, localTileCenter);
-
-                    // don't continue path
-                    break;
-                }
-                else if(previousNode == null)
-                {
-                    previousUnMarkedNode = currentPosition;
-                }
-
-                // Step to end of path.
-                currentWorld = Vector3.MoveTowards(currentWorld, endGoal, 0.1f);
-            }
+            //    // Add path to blocked tiles (except first and last)
+            //    if (i != 0 && i != tilePath.Count() - 1) 
+            //    {
+            //        blockedTiles.Add(tile);
+            //    }
+            //}
         }
 
         private void GenerateNodeBackground()
@@ -916,6 +812,53 @@ namespace map
                     }
                 }
             }
+        }
+
+        List<Vector3Int> blockedTiles = new List<Vector3Int>();
+        private IEnumerator /*List<Vector3Int>*/ FindPath(Vector3Int start, Vector3Int end) 
+        {
+            List<AStarTile> knownTiles = new List<AStarTile>();
+            List<Vector3Int> knownTilesRaw = new List<Vector3Int>();
+            bool found = false;
+            knownTiles.Add(new AStarTile(start, null, start, end, MapGrid));
+            knownTilesRaw.Add(start);
+
+            // Run AStar
+            while (!found) 
+            {
+                knownTiles.OrderBy(t => t.cost);
+                SetNodeGrass(knownTiles.First().Position);
+                if (knownTiles.First().Position == end)
+                {
+                    found = true;
+                }
+                else 
+                {
+                    var addedTiles = knownTiles.First().CalculateNeighbors(blockedTiles, knownTilesRaw);
+                    foreach (var tile in addedTiles) 
+                    {
+                        knownTiles.Add(tile);
+                        knownTilesRaw.Add(tile.Position);
+                    }
+                    knownTiles.RemoveAt(0);
+                }
+                //if (knownTiles.Count > 10000)
+                //    return new List<Vector3Int>();
+                yield return new WaitForSeconds(1);
+            }
+            var lastTile = knownTiles.First();
+            
+            // Construct Path From Last Tile
+            List<Vector3Int> path = new List<Vector3Int>();
+            while (lastTile != null) 
+            {
+                path.Add(lastTile.Position);
+                lastTile = lastTile.Previous;
+            }
+
+            path.Reverse();
+
+            //return path;
         }
 
         #endregion
