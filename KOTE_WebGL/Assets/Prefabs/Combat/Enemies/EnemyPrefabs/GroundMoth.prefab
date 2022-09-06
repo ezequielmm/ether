@@ -92,7 +92,7 @@ Transform:
   m_GameObject: {fileID: 9145094296802414103}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 2754151753288315120}
   - {fileID: 3387255231221487313}
@@ -126,13 +126,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b8aadcca930fbaa47abc604dd1260028, type: 2}
-  - {fileID: 2100000, guid: d8c1b58f1094f604583561a7840fda51, type: 2}
-  - {fileID: 2100000, guid: b8aadcca930fbaa47abc604dd1260028, type: 2}
-  - {fileID: 2100000, guid: d8c1b58f1094f604583561a7840fda51, type: 2}
-  - {fileID: 2100000, guid: b8aadcca930fbaa47abc604dd1260028, type: 2}
-  - {fileID: 2100000, guid: d8c1b58f1094f604583561a7840fda51, type: 2}
-  - {fileID: 2100000, guid: b8aadcca930fbaa47abc604dd1260028, type: 2}
+  - {fileID: 2100000, guid: b39ae184f6f39644ab7caa690a008e08, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -210,31 +204,59 @@ MonoBehaviour:
   animationJson: {fileID: 4900000, guid: 15c6220e7b38e3a4cb6a0aea6eb33fc0, type: 3}
   atlasAssetBase: {fileID: 11400000, guid: fd38bd64cd3148d47bcee1fd1430e743, type: 2}
   animations:
-  - sequenceName: Attack
+  - sequenceName: attack
     sequence:
     - track: 1
       name: attack1
       loop: 0
       delay: 0
       animationEvent: 1
-  - sequenceName: Idle
+  - sequenceName: cast
+    sequence:
+    - track: 1
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: idle
     sequence:
     - track: 1
       name: idle
       loop: 1
       delay: 0
       animationEvent: 0
-  - sequenceName: Hit
+  - sequenceName: hit
     sequence:
     - track: 1
       name: hit
       loop: 0
       delay: 0.5
       animationEvent: 1
-  - sequenceName: Death
+  - sequenceName: death
     sequence:
     - track: 1
       name: death
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: claw
+    sequence:
+    - track: 1
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: rumble
+    sequence:
+    - track: 1
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: proboscis
+    sequence:
+    - track: 1
+      name: attack2
       loop: 0
       delay: 0
       animationEvent: 1
@@ -291,6 +313,10 @@ MonoBehaviour:
   onCursorExit:
     m_PersistentCalls:
       m_Calls: []
+  spineAnimationsManagement: {fileID: 0}
+  setBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!50 &7186915270908431044
 Rigidbody2D:
   serializedVersion: 4

@@ -167,7 +167,10 @@ public class PlayerManager : MonoBehaviour
             statusManager.UpdateStatus(target.statuses);
         }
 
-        RunAfterTime(waitDuration, () => GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId));
+        RunAfterTime(waitDuration, () => {
+            GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId); 
+            //CheckDeath(target.finalHealth); 
+        });
     }
     private void RunAfterEvent(Action toRun) 
     {
@@ -235,7 +238,7 @@ public class PlayerManager : MonoBehaviour
 
         if (healthBar.value != current)
         {
-            healthBar.DOValue(current.Value, 1).OnComplete(CheckDeath);
+            healthBar.DOValue(current.Value, 1).OnComplete( () => { CheckDeath(current.Value); });
         }
     }
     private void OnUpdateEnergy(int currentEnergy, int maxEnergy) 
@@ -266,11 +269,12 @@ public class PlayerManager : MonoBehaviour
         defenseTF.SetText(value.ToString());
     }
 
-
+#if UNITY_EDITOR
     private void OnMouseDown()
     {
-        Attack();
+        OnDeath();
     }
+#endif
 
     public float PlayAnimation(string animationSequence) 
     {
@@ -294,21 +298,25 @@ public class PlayerManager : MonoBehaviour
         return length;
     }
 
-    private void OnDeath() 
+    private float OnDeath() 
     {
-        // TODO: Add Death Animation
+        float length = spineAnimationsManagement.PlayAnimationSequence("Death");
+        return length;
     }
 
-    private void CheckDeath()
+
+    private void CheckDeath(int current)
     {
-        if (playerData.hpCurrent < 1)
+        if (current <= 0)
         {
-            /*explodePS.transform.parent = null;
-            explodePS.Play();
-            Destroy(explodePS.gameObject, 2);
-            Destroy(this.gameObject);*/
-            OnDeath();
-            Debug.Log("GAME OVER");
+            // Tell game that a player is dying
+            GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(nameof(PlayerState.dying));
+
+            // Play animation
+            RunAfterTime(OnDeath(), () => {
+                // Tell game that a player is dead
+                GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(nameof(PlayerState.dead));
+            });
         }
     }
 

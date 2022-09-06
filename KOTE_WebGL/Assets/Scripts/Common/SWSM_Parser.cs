@@ -25,15 +25,27 @@ public class SWSM_Parser
             case nameof(WS_MESSAGE_TYPES.map_update):
                 UpdateMapActionPicker(swsm.data.action, data);
                 break;
-            case nameof(WS_MESSAGE_TYPES.combat_update):               
+            case nameof(WS_MESSAGE_TYPES.encounter_update):
+                ProcessEncounterUpdate(swsm.data.action, data);
+                break;
+            case nameof(WS_MESSAGE_TYPES.merchant_update):
+                ProcessMerchantUpdate(swsm.data.action, data);
+                break;
+            case nameof(WS_MESSAGE_TYPES.camp_update):
+                ProcessCampUpdate(swsm.data.action, data);
+                break;
+            case nameof(WS_MESSAGE_TYPES.combat_update):
                 ProcessCombatUpdate(swsm.data.action, data);
+                break;
+            case nameof(WS_MESSAGE_TYPES.treasure_update):
+                ProcessTreasureUpdate(swsm.data.action, data);
                 break;
             case nameof(WS_MESSAGE_TYPES.enemy_intents):
                 //ProcessEnemyIntents(swsm.data.action, data);
                 Debug.LogWarning($"[SWSM Parser] Enemy Intents are no longer listened for.");
                 break;
             case nameof(WS_MESSAGE_TYPES.player_state_update):
-                ProcessPlayerStateUpdate( data);
+                ProcessPlayerStateUpdate(data);
                 break;
             case nameof(WS_MESSAGE_TYPES.error):
                 ProcessErrorAction(swsm.data.action, data);
@@ -53,38 +65,90 @@ public class SWSM_Parser
                 break;
             case nameof(WS_MESSAGE_TYPES.begin_turn):
                 ProcessBeginTurn(swsm.data.action, data);
-                break; 
+                break;
             case nameof(WS_MESSAGE_TYPES.end_combat):
                 ProcessEndCombat(swsm.data.action, data);
                 break;
             default:
                 Debug.LogError("[SWSM Parser] No message_type processed. Data Received: " + data);
                 break;
-        } ;
+        }
+
+        ;
     }
 
-    private static void ProcessEndCombat(string action, string data)
+    #region WS_MESSAGE_TYPES_processors
+
+    private static void UpdateMapActionPicker(string action, string data)
     {
+        SWSM_MapData mapData = JsonUtility.FromJson<SWSM_MapData>(data);
         switch (action)
         {
-            case nameof(WS_MESSAGE_ACTIONS.enemies_defeated):
-                Debug.Log("Should move cards from draw to hand");
-                SWSM_RewardsData rewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
-                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
-                GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(rewardsData);
+            case "show_map":
+                GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.Invoke(mapData);
                 break;
-            case nameof(WS_MESSAGE_ACTIONS.players_defeated):
-                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
+            case "activate_portal":
+                GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.Invoke(mapData);
+                GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.Invoke(mapData);
                 break;
-            case nameof(WS_MESSAGE_ACTIONS.select_another_reward):
-                SWSM_RewardsData updatedRewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
-                GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(updatedRewardsData);
-                break;
-            case nameof(WS_MESSAGE_ACTIONS.show_map):
-                GameManager.Instance.LoadScene(inGameScenes.Expedition);
+            case "extend_map":
+                GameManager.Instance.EVENT_MAP_REVEAL.Invoke(mapData);
                 break;
         }
     }
+
+    private static void ProcessEncounterUpdate(string action, string data)
+    {
+        switch (action)
+        {
+            case "begin_encounter":
+                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Encounter);
+                break;
+        }
+    }
+
+    private static void ProcessMerchantUpdate(string action, string data)
+    {
+        switch (action)
+        {
+            case "begin_merchant":
+                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Merchant);
+                break;
+        }
+    }
+
+    private static void ProcessCampUpdate(string action, string data)
+    {
+        switch (action)
+        {
+            case "begin_camp":
+                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Camp);
+                break;
+        }
+    }
+
+    private static void ProcessCombatUpdate(string action, string data)
+    {
+        SWSM_NodeData nodeBase = JsonUtility.FromJson<SWSM_NodeData>(data);
+        NodeStateData nodeState = nodeBase.data;
+        switch (action)
+        {
+            case "begin_combat":
+
+                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Combat);
+                break;
+            case "update_statuses":
+                ProcessStatusUpdate(data);
+                break;
+            case "combat_queue":
+                ProcessCombatQueue(data);
+                break;
+            default:
+                Debug.Log($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
+                break;
+        }
+    }
+
 
     private static void ProcessPlayerStateUpdate(string data)
     {
@@ -94,144 +158,26 @@ public class SWSM_Parser
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.Invoke(playerState);
     }
 
-    private static void ProcessBeginTurn(string action, string data)
+
+    private static void ProcessErrorAction(string action, string data)
     {
+        SWSM_ErrorData errorData;
+        //TODO this will need to get passed on to where it needs to go once we determine what the error data will be
         switch (action)
         {
-            case nameof(WS_MESSAGE_ACTIONS.move_card):
-                Debug.Log("Should move cards from draw to hand");
-                ProcessDrawCards(data);              
+            case nameof(WS_ERROR_TYPES.card_unplayable):
+                errorData = JsonUtility.FromJson<SWSM_ErrorData>(data);
+                Debug.Log(action + ": " + errorData.data);
                 break;
-            case nameof(WS_MESSAGE_ACTIONS.change_turn):               
-                ProcessChangeTurn(data);
+            case nameof(WS_ERROR_TYPES.invalid_card):
+                errorData = JsonUtility.FromJson<SWSM_ErrorData>(data);
+                Debug.Log(action + ": " + errorData.data);
                 break;
-        }
-    }
-
-    private static void ProcessEndOfTurn(string action, string data)
-    {
-        switch (action)
-        {
-            case nameof(WS_MESSAGE_ACTIONS.update_energy):
-                UpdateEnergy(data);
-                break;
-            case nameof(WS_MESSAGE_ACTIONS.move_card):
-                ProcessMoveCard(data);
-                break;
-            case nameof(WS_MESSAGE_ACTIONS.update_enemy):
-                ProcessUpdateEnemy(data);
-                break;
-            case nameof(WS_MESSAGE_ACTIONS.update_player):
-                ProcessUpdatePlayer(data);
+            case nameof(WS_ERROR_TYPES.insufficient_energy):
+                errorData = JsonUtility.FromJson<SWSM_ErrorData>(data);
+                Debug.Log(action + ": " + errorData.data);
                 break;
         }
-    }
-
-    private static void ProcessDrawCards(string data)
-    {
-        //GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-        GameManager.Instance.EVENT_CARD_DRAW_CARDS.Invoke();
-    }  
-    
-    private static void ProcessChangeTurn(string data)
-    {       
-
-        SWSM_ChangeTurn who = JsonUtility.FromJson<SWSM_ChangeTurn>(data);
-
-        Debug.Log("[ProcessChangeTurn]data= "+data);
-        Debug.Log("[ProcessChangeTurn]who.data= " + who.data);
-        GameManager.Instance.EVENT_CHANGE_TURN.Invoke(who.data.data);
-    }
-
-
-
-    private static void ProcessEnemyAffected(string action, string data)
-    {
-        switch (action)
-        {
-            case nameof(WS_MESSAGE_ACTIONS.update_energy):
-                UpdateEnergy(data);
-                break;
-            case nameof(WS_MESSAGE_ACTIONS.move_card):
-                ProcessMoveCard(data);
-                break;
-
-            case nameof(WS_MESSAGE_ACTIONS.update_enemy):
-                ProcessUpdateEnemy(data);
-                break;
-            case nameof(WS_MESSAGE_ACTIONS.update_player):
-                ProcessUpdatePlayer(data); 
-                break;
-        }
-    }
-
-
-
-    private static void ProcessPlayerAffected(string action, string data)
-    {
-        switch (action)
-        {
-            case nameof(WS_MESSAGE_ACTIONS.update_energy):
-                UpdateEnergy(data);
-                break;
-            case nameof(WS_MESSAGE_ACTIONS.move_card):
-                ProcessMoveCard(data);
-                break;
-            case nameof(WS_MESSAGE_ACTIONS.update_enemy):
-                ProcessUpdateEnemy(data);
-                break;
-            case nameof(WS_MESSAGE_ACTIONS.update_player):
-                ProcessUpdatePlayer(data);
-                break;
-            case nameof(WS_MESSAGE_ACTIONS.create_card):
-                ProcessCreateCard(data);
-               // ProcessMoveCard(data);
-                break;
-        }
-    }
-
-    private static void ProcessUpdateEnemy(string rawData)
-    {
-
-        SWSM_Enemies enemiesData = JsonUtility.FromJson<SWSM_Enemies>(rawData);
-
-        GameManager.Instance.EVENT_UPDATE_ENEMIES.Invoke(enemiesData.data);
-    }
-
-    private static void ProcessMoveCard(string rawData)
-    {
-        SWSM_CardMove cardMoveData = JsonUtility.FromJson<SWSM_CardMove>(rawData);
-        Debug.Log($"[SWSM Parser] ProcessMoveCard [{cardMoveData.data.data.Length}]");
-        int i = 0;
-        foreach (CardToMoveData data in cardMoveData.data.data)
-        {
-            GameManager.Instance.EVENT_MOVE_CARD.Invoke(data, i);
-            i++;
-            //GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-        }
-
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-    }
-
-    private static void ProcessCreateCard(string data)
-    {
-        Debug.Log("[ProcessCreateCard] data:"+data);
-        SWSM_CardMove cardMoveData = JsonUtility.FromJson<SWSM_CardMove>(data);
-        // GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-       
-        foreach (CardToMoveData cardData in cardMoveData.data.data)
-        {
-            GameManager.Instance.EVENT_CARD_CREATE.Invoke(cardData.id);
-        }
-    }
-
-    private static void ProcessUpdatePlayer(string data)
-    {
-        SWSM_Players playersData = JsonUtility.FromJson<SWSM_Players>(data);
-       // foreach (PlayerData playerData in playersData.data)
-      //  {
-            GameManager.Instance.EVENT_UPDATE_PLAYER.Invoke(playersData.data.data);
-       // }//TODO: plyersdta will be a list
     }
 
     /// <summary>
@@ -241,19 +187,18 @@ public class SWSM_Parser
     /// <param name="data"></param>
     private static void ProcessGenericData(string action, string data)
     {
-        
         switch (action)
         {
             case nameof(WS_DATA_REQUEST_TYPES.Energy):
                 UpdateEnergy(data);
                 break;
             case nameof(WS_DATA_REQUEST_TYPES.CardsPiles):
-                
+
                 SWSM_CardsPiles deck = JsonUtility.FromJson<SWSM_CardsPiles>(data);
                 Debug.Log($"[SWSM Parser] CardPiles data => {data}");
                 Debug.Log($"Cards Pile Counts: [Draw] {deck.data.data.draw.Count} | [Hand] {deck.data.data.hand.Count} " +
                     $"| [Discard] {deck.data.data.discard.Count} | [Exhaust] {deck.data.data.exhaust.Count}");
-                
+
                 GameManager.Instance.EVENT_CARDS_PILES_UPDATED.Invoke(deck.data);
                 break;
             case nameof(WS_DATA_REQUEST_TYPES.Enemies):
@@ -280,41 +225,132 @@ public class SWSM_Parser
         }
     }
 
-    private static void ProcessPlayerFullDeck(string data)
+   private static void ProcessEnemyAffected(string action, string data)
     {
-        SWSM_PlayerDeckData deckData = JsonUtility.FromJson<SWSM_PlayerDeckData>(data);
-        Deck deck = new Deck() { cards = deckData.data.data };
-        GameManager.Instance.EVENT_CARD_PILE_SHOW_DECK.Invoke(deck);
+        switch (action)
+        {
+            case nameof(WS_MESSAGE_ACTIONS.update_energy):
+                UpdateEnergy(data);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.move_card):
+                ProcessMoveCard(data);
+                break;
+
+            case nameof(WS_MESSAGE_ACTIONS.update_enemy):
+                ProcessUpdateEnemy(data);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.update_player):
+                ProcessUpdatePlayer(data); 
+                break;
+        }
     }
+
+    private static void ProcessPlayerAffected(string action, string data)
+    {
+        switch (action)
+        {
+            case nameof(WS_MESSAGE_ACTIONS.update_energy):
+                UpdateEnergy(data);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.move_card):
+                ProcessMoveCard(data);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.update_enemy):
+                ProcessUpdateEnemy(data);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.update_player):
+                ProcessUpdatePlayer(data);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.create_card):
+                ProcessCreateCard(data);
+               // ProcessMoveCard(data);
+                break;
+        }
+    }
+
+    private static void ProcessEndOfTurn(string action, string data)
+    {
+        switch (action)
+        {
+            case nameof(WS_MESSAGE_ACTIONS.update_energy):
+                UpdateEnergy(data);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.move_card):
+                ProcessMoveCard(data);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.update_enemy):
+                ProcessUpdateEnemy(data);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.update_player):
+                ProcessUpdatePlayer(data);
+                break;
+        }
+    }
+
+    private static void ProcessBeginTurn(string action, string data)
+    {
+        switch (action)
+        {
+            case nameof(WS_MESSAGE_ACTIONS.move_card):
+                Debug.Log("Should move cards from draw to hand");
+                ProcessDrawCards(data);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.change_turn):
+                ProcessChangeTurn(data);
+                break;
+        }
+    }
+
+    private static void ProcessEndCombat(string action, string data)
+    {
+        switch (action)
+        {
+            case nameof(WS_MESSAGE_ACTIONS.enemies_defeated):
+                Debug.Log("Should move cards from draw to hand");
+                SWSM_RewardsData rewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
+                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
+                GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(rewardsData);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.player_defeated):
+            case nameof(WS_MESSAGE_ACTIONS.players_defeated):
+                Debug.Log("GAME OVER");
+                GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.select_another_reward):
+                SWSM_RewardsData updatedRewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
+                GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(updatedRewardsData);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.show_map):
+                GameManager.Instance.LoadScene(inGameScenes.Expedition);
+                break;
+        }
+    }
+
+    #endregion
+
+    #region actionProcessors
 
     private static void ProcessStatusUpdate(string data)
     {
         SWSM_StatusData statusData = JsonUtility.FromJson<SWSM_StatusData>(data);
-        Debug.Log($"[SWSM_Parser][ProcessStatusUpdate] Source --> [ {statusData.data.message_type} | {statusData.data.action} ] {data}");
+        Debug.Log(
+            $"[SWSM_Parser][ProcessStatusUpdate] Source --> [ {statusData.data.message_type} | {statusData.data.action} ] {data}");
         List<StatusData> statuses = statusData.data.data;
-        foreach (StatusData status in statuses) 
+        foreach (StatusData status in statuses)
         {
             GameManager.Instance.EVENT_UPDATE_STATUS_EFFECTS.Invoke(status);
         }
     }
 
-    private static void ProcessCombatUpdate(string action, string data)
+    private static void ProcessTreasureUpdate(string action, string data) 
     {
-        SWSM_NodeData nodeBase = JsonUtility.FromJson<SWSM_NodeData>(data);
-        NodeStateData nodeState = nodeBase.data;
-        switch (action)
+        switch (action) 
         {
-            case "begin_combat":
-                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Combat);
-                break;
-            case "update_statuses":
-                ProcessStatusUpdate(data);
-                break;
-            case "combat_queue":
-                ProcessCombatQueue(data);
+            case nameof(WS_TREASURE_ACTIONS.begin_treasure):
+                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Treasure);
                 break;
             default:
-                Debug.Log($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
+                Debug.LogWarning($"[SWSM Parser][Treasure Update] Unknown Action \"{action}\". Data = {data}");
                 break;
         }
     }
@@ -328,64 +364,6 @@ public class SWSM_Parser
             GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(combatData);
         }
     }
-    private static void ProcessEnemyIntents(string action, string data)
-    {
-        //Debug.Log($"[SWSM_Parser][ProcessEnemyIntents] data = {data}");
-        SWSM_IntentData swsm_intentData = JsonUtility.FromJson<SWSM_IntentData>(data);
-        List<EnemyIntent> enemyIntents = swsm_intentData.data.data;
-        switch (action) 
-        {
-            case "update_enemy_intents":
-                foreach (EnemyIntent enemyIntent in enemyIntents) {
-                    if(enemyIntent != null)
-                        GameManager.Instance.EVENT_UPDATE_INTENT.Invoke(enemyIntent);
-                }
-                break;
-            default:
-                Debug.Log($"[SWSM_Parser] Enemy Intents - {action}: Action not found.");
-                break;
-        }
-    }
-
-    private static void ProcessErrorAction(string action, string data)
-    {
-        SWSM_ErrorData errorData;
-        //TODO this will need to get passed on to where it needs to go once we determine what the error data will be
-        switch (action)
-        {
-            case nameof(WS_ERROR_TYPES.card_unplayable):
-                errorData = JsonUtility.FromJson<SWSM_ErrorData>(data);
-                Debug.Log(action + ": " + errorData.data);
-                break;
-            case nameof(WS_ERROR_TYPES.invalid_card):
-                errorData = JsonUtility.FromJson<SWSM_ErrorData>(data);
-                Debug.Log(action + ": " + errorData.data);
-                break;
-            case nameof(WS_ERROR_TYPES.insufficient_energy):
-                errorData = JsonUtility.FromJson<SWSM_ErrorData>(data);
-                Debug.Log(action + ": " + errorData.data);
-                break;
-        }
-    }
-
-    private static void UpdateMapActionPicker(string action, string data)
-    {
-        
-        SWSM_MapData mapData = JsonUtility.FromJson<SWSM_MapData>(data);
-        switch (action)
-        {
-            case "show_map":
-                GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.Invoke(mapData);
-                break;
-            case "activate_portal":
-                GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.Invoke(mapData);
-                GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.Invoke(mapData);
-                break;
-            case "extend_map":
-               GameManager.Instance.EVENT_MAP_REVEAL.Invoke(mapData);
-                break;
-        }
-    }
 
     private static void UpdateEnergy(string data)
     {
@@ -394,4 +372,92 @@ public class SWSM_Parser
         GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(energyData.data.data[0], energyData.data.data[1]);
     }
 
+    private static void ProcessUpdateEnemy(string rawData)
+    {
+
+        SWSM_Enemies enemiesData = JsonUtility.FromJson<SWSM_Enemies>(rawData);
+
+        GameManager.Instance.EVENT_UPDATE_ENEMIES.Invoke(enemiesData.data);
+    }
+
+    private static void ProcessUpdatePlayer(string data)
+    {
+        SWSM_Players playersData = JsonUtility.FromJson<SWSM_Players>(data);
+       // foreach (PlayerData playerData in playersData.data)
+      //  {
+            GameManager.Instance.EVENT_UPDATE_PLAYER.Invoke(playersData.data.data);
+       // }//TODO: plyersdta will be a list
+    }
+
+    private static void ProcessEnemyIntents(string action, string data)
+    {
+        //Debug.Log($"[SWSM_Parser][ProcessEnemyIntents] data = {data}");
+        SWSM_IntentData swsm_intentData = JsonUtility.FromJson<SWSM_IntentData>(data);
+        List<EnemyIntent> enemyIntents = swsm_intentData.data.data;
+        switch (action)
+        {
+            case "update_enemy_intents":
+                foreach (EnemyIntent enemyIntent in enemyIntents)
+                {
+                    if (enemyIntent != null)
+                        GameManager.Instance.EVENT_UPDATE_INTENT.Invoke(enemyIntent);
+                }
+
+                break;
+            default:
+                Debug.Log($"[SWSM_Parser] Enemy Intents - {action}: Action not found.");
+                break;
+        }
+    }
+
+    private static void ProcessPlayerFullDeck(string data)
+    {
+        SWSM_PlayerDeckData deckData = JsonUtility.FromJson<SWSM_PlayerDeckData>(data);
+        Deck deck = new Deck() { cards = deckData.data.data };
+        GameManager.Instance.EVENT_CARD_PILE_SHOW_DECK.Invoke(deck);
+    }
+
+     private static void ProcessMoveCard(string rawData)
+    {
+        SWSM_CardMove cardMoveData = JsonUtility.FromJson<SWSM_CardMove>(rawData);
+        Debug.Log($"[SWSM Parser] ProcessMoveCard [{cardMoveData.data.data.Length}]");
+        int i = 0;
+        foreach (CardToMoveData data in cardMoveData.data.data)
+        {
+            GameManager.Instance.EVENT_MOVE_CARD.Invoke(data, i);
+            i++;
+            //GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+        }
+
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+    }
+
+    private static void ProcessDrawCards(string data)
+    {
+        //GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+        GameManager.Instance.EVENT_CARD_DRAW_CARDS.Invoke();
+    }
+
+     private static void ProcessCreateCard(string data)
+    {
+        Debug.Log("[ProcessCreateCard] data:"+data);
+        SWSM_CardMove cardMoveData = JsonUtility.FromJson<SWSM_CardMove>(data);
+        // GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+       
+        foreach (CardToMoveData cardData in cardMoveData.data.data)
+        {
+            GameManager.Instance.EVENT_CARD_CREATE.Invoke(cardData.id);
+        }
+    }
+
+    private static void ProcessChangeTurn(string data)
+    {
+        SWSM_ChangeTurn who = JsonUtility.FromJson<SWSM_ChangeTurn>(data);
+
+        Debug.Log("[ProcessChangeTurn]data= " + data);
+        Debug.Log("[ProcessChangeTurn]who.data= " + who.data);
+        GameManager.Instance.EVENT_CHANGE_TURN.Invoke(who.data.data);
+    }
+
+    #endregion
 }

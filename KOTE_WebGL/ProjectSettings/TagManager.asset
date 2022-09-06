@@ -7,15 +7,17 @@ TagManager:
   - Card
   - Pointer
   - Enemy
+  - MapPath
+  - MapImage
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - MapPath
   - Water
   - UI
   - Player
-  - 
+  - Full Screen Mask
   - 
   - 
   - 

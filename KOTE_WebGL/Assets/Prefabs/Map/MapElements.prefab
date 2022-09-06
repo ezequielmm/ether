@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5237346165803081541}
   - component: {fileID: 5237346165803081531}
   - component: {fileID: 5237346165803081540}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: MapGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,9 +178,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5237346165936166370}
   - component: {fileID: 5237346165936166369}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: MapTiles
-  m_TagString: Untagged
+  m_TagString: MapPath
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -323,6 +323,8 @@ MonoBehaviour:
   angleFuzziness: {x: -30, y: 30}
   pathPositionFuzziness: 0.25
   columnFuzziness: {x: 0, y: 2.25}
+  mapCamera: {fileID: 0}
+  mapRenderTexture: {fileID: 8400000, guid: 9b4d838c9cc0f034f8df591b8044dcf4, type: 2}
   mapBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
@@ -633,14 +635,14 @@ RectTransform:
   m_GameObject: {fileID: 5758494260882502596}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
+  m_LocalScale: {x: 0.927, y: 0.927, z: 0.927}
   m_Children: []
   m_Father: {fileID: 5758494260201197930}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.06}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!331 &5758494260882502598

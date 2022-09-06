@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1793463218884153947}
   - component: {fileID: 1793463218884153946}
   - component: {fileID: 527132830}
+  - component: {fileID: 8111427391619548158}
   m_Layer: 0
   m_Name: Hand
   m_TagString: Untagged
@@ -82,3 +83,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 20.004982, y: 3.3564138}
   m_EdgeRadius: 0
+--- !u!114 &8111427391619548158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1793463218884153944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5e3865f24ac0e140b45fde9a906f72f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShrinkToDie: 0
+  animationTime: 0

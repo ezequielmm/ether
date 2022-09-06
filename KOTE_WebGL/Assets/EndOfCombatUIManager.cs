@@ -23,11 +23,14 @@ public class EndOfCombatUIManager : MonoBehaviour
         switch (data)
         {
             case GameStatuses.GameOver:
+                // Throw up click blocker
+                GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(true);
                 gameoverLabel.gameObject.SetActive(true);
                 gameoverLabel.DOFade(1, 2).From(0).SetLoops(2, LoopType.Yoyo).OnComplete(OnGameOverComplete);
                 break;
             case GameStatuses.RewardsPanel:
-
+                // Throw up click blocker
+                GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(true);
                 victoryLabel.DOFade(1, 2).SetDelay(GameSettings.VICTORY_LABEL_ANIMATION_DELAY).From(0)
                     .SetLoops(2, LoopType.Yoyo).OnComplete(OnVictoryComplete).OnStart(() =>
                     {
@@ -40,7 +43,7 @@ public class EndOfCombatUIManager : MonoBehaviour
     void OnGameOverComplete()
     {
         DeactivateLabels();
-        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Continue", ReloadScene);
+        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke("Defeat", LoadMainMenu, LoadMainMenu, new string[] { "Continue", "" });
     }
 
     void OnVictoryComplete()
@@ -52,6 +55,11 @@ public class EndOfCombatUIManager : MonoBehaviour
     void ReloadScene()
     {
         GameManager.Instance.LoadScene(inGameScenes.Expedition);
+    }
+
+    void LoadMainMenu() 
+    {
+        GameManager.Instance.LoadScene(inGameScenes.MainMenu);
     }
 
 
