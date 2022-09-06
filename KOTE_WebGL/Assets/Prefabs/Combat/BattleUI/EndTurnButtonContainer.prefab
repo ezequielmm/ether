@@ -155,6 +155,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7988996470574398252}
+  - component: {fileID: 1294891281793263159}
   m_Layer: 5
   m_Name: EndTurnButtonContainer
   m_TagString: Untagged
@@ -182,3 +183,22 @@ RectTransform:
   m_AnchoredPosition: {x: 952, y: -436}
   m_SizeDelta: {x: 173, y: 71}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1294891281793263159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4939006037289632092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5e3865f24ac0e140b45fde9a906f72f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShrinkToDie: 1
+  MoveToDie: 1
+  MoveMultipleOfSelf: 1
+  MoveBy: {x: 1.5, y: 0, z: 0}
+  animationTime: 1
+  UnParent: 0
+  statusToListenTo: 7
