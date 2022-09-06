@@ -354,7 +354,7 @@ namespace map
             GenerateMapGrid();
 
             // Generate Map Images
-            StartCoroutine(GenerateMapImages());
+            //StartCoroutine(GenerateMapImages());
         }
 
         #region generateMap
