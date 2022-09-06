@@ -344,10 +344,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8065093879915780065}
     m_Modifications:
+    - target: {fileID: 4237696130636725184, guid: c747b9970cc128e4d9e7f5eb66ccb1f1,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4237696130636725184, guid: c747b9970cc128e4d9e7f5eb66ccb1f1,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 5124920239233080196, guid: c747b9970cc128e4d9e7f5eb66ccb1f1,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -29.400024
+      value: -11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5124920239233080196, guid: c747b9970cc128e4d9e7f5eb66ccb1f1,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 7644009079688517511, guid: c747b9970cc128e4d9e7f5eb66ccb1f1,
         type: 3}
