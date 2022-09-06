@@ -37,8 +37,12 @@ public class MainMenuManager : MonoBehaviour
         _hasExpedition = hasExpedition;
 
         textField?.SetText( hasExpedition? "RESUME" : "PLAY");
-        
+
+        playButton.gameObject.SetActive(true);
         newExpeditionButton.gameObject.SetActive(_hasExpedition);
+        treasuryButton.gameObject.SetActive(true);
+
+        
     }
 
     public void OnLoginSuccessful(string name, int fief)
@@ -46,7 +50,7 @@ public class MainMenuManager : MonoBehaviour
         nameText.text = name;
         moneyText.text = $"{fief} $fief";
 
-        TogglePreLoginStatus(false);
+        DeactivateMenuButtons();
     }
 
     public void OnLogoutSuccessful(string message)
@@ -68,6 +72,14 @@ public class MainMenuManager : MonoBehaviour
         nameButton.gameObject.SetActive(!preLoginStatus);
         fiefButton.gameObject.SetActive(!preLoginStatus);
         settingButton.gameObject.SetActive(!preLoginStatus);
+    }
+
+    private void DeactivateMenuButtons()
+    {
+        playButton.gameObject.SetActive(false);
+        newExpeditionButton.gameObject.SetActive(false);
+        registerButton.gameObject.SetActive(false);
+        loginButton.gameObject.SetActive(false);
     }
 
     public void OnRegisterButton()
