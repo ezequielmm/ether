@@ -144,9 +144,17 @@ namespace map
             // the particleSystem's sorting layer has to be set manually, because the the settings in the component don't work
             portalAnimation.GetComponent<Renderer>().sortingLayerName = GameSettings.MAP_ELEMENTS_SORTING_LAYER_NAME;
 
-            MapSeeds = new List<int>() {
-                10,20,30,40,50,60
-            };
+            GenerateMapSeeds(22);
+        }
+
+        private void GenerateMapSeeds(int seed) 
+        {
+            Random.InitState(seed);
+            MapSeeds = new List<int>();
+            for (int i = 0; i < 10; i++) 
+            {
+                MapSeeds.Add(Random.Range(0,100));
+            }
         }
 
         private void OnToggleMap(bool data)
@@ -336,6 +344,8 @@ namespace map
 
             ClearMap();
 
+            // Set Seed
+            GenerateMapSeeds(expeditionMapData.data.seed);
 
             MapStructure mapStructure = GenerateMapStructure(expeditionMapData);
 
