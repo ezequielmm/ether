@@ -912,12 +912,15 @@ namespace map
 
                 // Find next tile
                 Vector3Int nextNode = default(Vector3Int);
-                foreach (var connection in allTiles[current].Connections) 
+                if (allTiles.ContainsKey(current))
                 {
-                    if (connection.TargetNode == end) 
+                    foreach (var connection in allTiles[current].Connections)
                     {
-                        nextNode = connection.NextNode;
-                        break;
+                        if (connection.TargetNode == end)
+                        {
+                            nextNode = connection.NextNode;
+                            break;
+                        }
                     }
                 }
                 if (nextNode == current)
