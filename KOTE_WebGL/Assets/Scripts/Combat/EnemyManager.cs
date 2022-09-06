@@ -325,16 +325,30 @@ public class EnemyManager : MonoBehaviour
 
     }
 
+    private float OnDeath()
+    {
+        float length = spine.PlayAnimationSequence("Death");
+        return length;
+    }
+
     private void CheckDeath(int current)
     {
        // if (enemyData.hpCurrent < 1)//TODO: enemyData is not up to date
         if (current  < 1)
         {
+            // Tell game that a player is dying
+            GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), nameof(EnemyState.dying));
+
             explodePS.transform.parent = null;
             explodePS.Play();
-            Destroy(explodePS.gameObject, 2);
-            spine.PlayAnimationSequence("Death");
-            Destroy(this.gameObject,2);
+
+            // Play animation
+            RunAfterTime(OnDeath(), () => {
+                // Tell game that a player is dead
+                GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), nameof(EnemyState.dead));
+                Destroy(explodePS.gameObject);
+                Destroy(this.gameObject);
+            });
         }
     }
 

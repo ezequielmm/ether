@@ -310,12 +310,12 @@ public class PlayerManager : MonoBehaviour
         if (current <= 0)
         {
             // Tell game that a player is dying
-            GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(nameof(PlayerState.dying));
+            GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), nameof(PlayerState.dying));
 
             // Play animation
             RunAfterTime(OnDeath(), () => {
                 // Tell game that a player is dead
-                GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(nameof(PlayerState.dead));
+                GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), nameof(PlayerState.dead));
             });
         }
     }
