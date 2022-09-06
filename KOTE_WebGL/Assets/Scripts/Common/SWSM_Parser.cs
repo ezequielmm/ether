@@ -197,7 +197,7 @@ public class SWSM_Parser
                 SWSM_CardsPiles deck = JsonUtility.FromJson<SWSM_CardsPiles>(data);
                 Debug.Log($"[SWSM Parser] CardPiles data => {data}");
                 Debug.Log($"Cards Pile Counts: [Draw] {deck.data.data.draw.Count} | [Hand] {deck.data.data.hand.Count} " +
-                    $"| [Discard] {deck.data.data.discard.Count} | [Exhaust] {deck.data.data.exhaust.Count}");
+                    $"| [Discard] {deck.data.data.discard.Count} | [Exhaust] {deck.data.data.exhausted.Count}");
 
                 GameManager.Instance.EVENT_CARDS_PILES_UPDATED.Invoke(deck.data);
                 break;
