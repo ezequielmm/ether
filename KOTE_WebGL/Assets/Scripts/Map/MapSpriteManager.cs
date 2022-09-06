@@ -704,7 +704,7 @@ namespace map
                     // randomly pick a tile type
                     int randomType = Random.Range(0, 2);
                     // we have to set the z to a constant, as for some reason you can two tiles in the same spot with different z levels
-                    Vector3Int tilePos = new Vector3Int(width, height, (int)GameSettings.MAP_SPRITE_ELEMENTS_Z);
+                    Vector3Int tilePos = GetVectorWithZ(width, height); // new Vector3Int(width, height, (int)GameSettings.MAP_SPRITE_ELEMENTS_Z);
                     if (MapGrid.HasTile(tilePos) == false)
                     {
                         // pick a random tile of whatever type was selected
@@ -756,7 +756,7 @@ namespace map
         private void SetNodeGrass(Vector3Int node) 
         {
             // we have to set the z to a constant, as for some reason you can two tiles in the same spot with different z levels
-            node.z = (int)GameSettings.MAP_SPRITE_ELEMENTS_Z;
+            node = GetVectorWithZ(node.x, node.y);
 
             int randomTile = Random.Range(0, grassTiles.Length);
             MapGrid.SetTile(node, grassTiles[randomTile]);
@@ -1290,6 +1290,11 @@ namespace map
             {
                 activeTween.Kill();
             }
+        }
+
+        private Vector3Int GetVectorWithZ(int x, int y) 
+        {
+            return new Vector3Int(x, y, (int)GameSettings.MAP_SPRITE_ELEMENTS_Z - 7 + y);
         }
     }
 }
