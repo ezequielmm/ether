@@ -507,7 +507,7 @@ namespace map
                 Random.Range(-pathPositionFuzziness, pathPositionFuzziness), 0);
             masterNode.Position = currentPos + randomPos;
 
-            //splineRef.AddChildSpline(splineData);
+            // Path
             if (!masterNode.IsEndPiece)
             {
                 // Set angles
@@ -547,6 +547,7 @@ namespace map
                 masterNode.RightTangent = rightTangent * spineStrengthR;
             }
 
+            // Dashed line
             foreach (var splineData in splineRef.ChildrenSplines)
             {
                 if (splineData.IsEndPiece)
@@ -767,29 +768,25 @@ namespace map
 
             splineIndex = 0;
             spline = path.lineController.spline;
-
-            // Run for dashed spline
-            for (int i = 0; i < tilePath.Count(); i++)
+            Vector3Int current = start;
+            bool lastnode = false;
+            while (!lastnode) 
             {
-                var tile = tilePath[i];
-
-                // Check if spline should be set here
-                bool lastNode = i == tilePath.Count() - 1;
-
-                if (tileSplineRef.ContainsKey(tile))
+                lastnode = current == end;
+                if (tileSplineRef.ContainsKey(current))
                 {
-                    tileSplineRef[tile].AddChildSpline(new SplineData(spline, splineIndex, path.transform));
+                    tileSplineRef[current].AddChildSpline(new SplineData(spline, splineIndex, path.transform));
                 }
-                else 
+                else
                 {
-                    tileSplineRef.Add(tile, new TileSplineRef(tile, new SplineData(spline, splineIndex, path.transform)));
+                    tileSplineRef.Add(current, new TileSplineRef(current, new SplineData(spline, splineIndex, path.transform)));
                 }
 
                 // Set spline to path
-                Vector3 localTileCenter = path.transform.InverseTransformPoint(MapGrid.CellToWorld(tile));
+                Vector3 localTileCenter = path.transform.InverseTransformPoint(MapGrid.CellToWorld(current));
                 bool lastSplineKnot = splineIndex == spline.GetPointCount() - 1;
-                bool addNode = lastSplineKnot && !lastNode;
-                    
+                bool addNode = lastSplineKnot && !lastnode;
+
                 if (addNode)
                 {
                     spline.InsertPointAt(splineIndex, localTileCenter);
@@ -799,8 +796,26 @@ namespace map
                     spline.SetPosition(splineIndex, localTileCenter);
                 }
                 splineIndex++;
-            }
 
+                // Find next tile
+                Vector3Int nextNode = default(Vector3Int);
+                foreach (var connection in allTiles[current].Connections) 
+                {
+                    if (connection.TargetNode == end) 
+                    {
+                        nextNode = connection.NextNode;
+                        break;
+                    }
+                }
+                if (nextNode == current)
+                {
+                    lastnode = true;
+                }
+                else 
+                {
+                    current = nextNode;
+                }
+            }
         }
 
         private void GenerateNodeBackground()
