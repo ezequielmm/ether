@@ -87,6 +87,7 @@ public class WebSocketManager : MonoBehaviour
         uriStr = "https://api.dev.kote.robotseamonster.com";
 #endif
 
+        PlayerPrefs.SetString("ws_url", uriStr);
         Debug.Log("Connecting to "+uriStr);
 
         manager = new SocketManager(new Uri(uriStr), options);
