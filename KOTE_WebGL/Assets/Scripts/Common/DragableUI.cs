@@ -1,12 +1,16 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class DragableUI : MonoBehaviour
+public class DragableUI : MonoBehaviour, IDragHandler
 {
     public GameObject parentObject;
-    private void OnMouseDrag()
+
+    public void OnDrag(PointerEventData data)
     {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Debug.Log("console clicked");
+        Vector3 mousePos = Input.mousePosition;
         mousePos.z = 0;
-       parentObject.transform.position = mousePos;
+        parentObject.transform.position = mousePos;
+        Debug.Log(mousePos + " parent position: " + parentObject.transform.position);
     }
 }
