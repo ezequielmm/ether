@@ -29,8 +29,8 @@ public class WebRequesterManager : MonoBehaviour
         string hostName = Application.absoluteURL;
         Debug.Log("hostName:" + hostName);
 
-       // baseUrl = "https://gateway.dev.kote.robotseamonster.com";//make sure if anything fails we use DEV
-        baseUrl = "https://gateway.alpha.knightsoftheether.com";//make sure if anything fails we use DEV
+        baseUrl = "https://gateway.dev.kote.robotseamonster.com";//make sure if anything fails we use DEV
+       // baseUrl = "https://gateway.alpha.knightsoftheether.com";//make sure if anything fails we use DEV
 
         if (hostName.IndexOf("alpha") > -1) { baseUrl = "https://gateway.alpha.knightsoftheether.com"; }
         if (hostName.IndexOf("stage") > -1) { baseUrl = "https://gateway.stage.kote.robotseamonster.com"; }
@@ -38,9 +38,9 @@ public class WebRequesterManager : MonoBehaviour
 
 
         // default to the stage server if we're in the editor
-      /*  #if UNITY_EDITOR
+        #if UNITY_EDITOR
         baseUrl = "https://gateway.dev.kote.robotseamonster.com";
-        #endif*/
+        #endif
       
         Debug.Log("Base URL: " + baseUrl.ToString());
         PlayerPrefs.SetString("session_token", "");

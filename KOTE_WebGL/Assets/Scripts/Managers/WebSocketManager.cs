@@ -65,8 +65,8 @@ public class WebSocketManager : MonoBehaviour
 
         // determine the correct server the client is running on
         string hostName = Application.absoluteURL;
-        //string uriStr = "https://api.dev.kote.robotseamonster.com";
-        string uriStr = "https://api.alpha.knightsoftheether.com:443";
+        string uriStr = "https://api.dev.kote.robotseamonster.com";
+        //string uriStr = "https://api.alpha.knightsoftheether.com:443";
 
         if (hostName.IndexOf("alpha") > -1) { uriStr = "https://api.alpha.knightsoftheether.com:443"; }
         if (hostName.IndexOf("stage") > -1) { uriStr = "https://api.stage.kote.robotseamonster.com"; }
@@ -96,9 +96,9 @@ public class WebSocketManager : MonoBehaviour
         }*/
 
         // default to the stage server if running from the unity editor
-        /*#if UNITY_EDITOR
+        #if UNITY_EDITOR
         uriStr = "https://api.dev.kote.robotseamonster.com";
-        #endif*/
+        #endif
 
         Debug.Log("Connecting to "+uriStr);
 
