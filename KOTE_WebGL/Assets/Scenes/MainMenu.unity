@@ -999,9 +999,9 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 916216146}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &965986130 stripped
+--- !u!224 &941680771 stripped
 RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4430796132246071203, guid: 8fe35834863bae848b86f1f1f01cac6d,
+  m_CorrespondingSourceObject: {fileID: 1767577828574749683, guid: 8fe35834863bae848b86f1f1f01cac6d,
     type: 3}
   m_PrefabInstance: {fileID: 1324767371340214838}
   m_PrefabAsset: {fileID: 0}
@@ -1156,7 +1156,7 @@ Canvas:
   m_GameObject: {fileID: 1118166138}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 1041442470}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -1188,7 +1188,7 @@ RectTransform:
   - {fileID: 916216147}
   - {fileID: 2018061548}
   - {fileID: 1382033301}
-  - {fileID: 965986130}
+  - {fileID: 941680771}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1583,6 +1583,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1118166143}
     m_Modifications:
+    - target: {fileID: 1767577828574749683, guid: 8fe35834863bae848b86f1f1f01cac6d,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 4430796132246071203, guid: 8fe35834863bae848b86f1f1f01cac6d,
         type: 3}
       propertyPath: m_Pivot.x
