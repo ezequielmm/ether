@@ -20,7 +20,7 @@ public class ExhaustedCardPileManager : MonoBehaviour, IPointerEnterHandler, IPo
 
     private void OnPilesUpdate(CardPiles data)
     {
-        amountOfCardsTF.SetText(data.data.exhaust.Count!.ToString());
+        amountOfCardsTF.SetText(data.data.exhausted.Count!.ToString());
     }
 
     private void OnCardExhausted()
@@ -50,7 +50,7 @@ public class ExhaustedCardPileManager : MonoBehaviour, IPointerEnterHandler, IPo
 
     private void OnNodeStateDateUpdate(NodeStateData nodeState, WS_QUERY_TYPE wsType)
     {
-        if (nodeState.data != null && nodeState.data.data != null) amountOfCardsTF.SetText(nodeState.data.data.player.cards!.exhaust.Count!.ToString());
+        if (nodeState.data != null && nodeState.data.data != null) amountOfCardsTF.SetText(nodeState.data.data.player.cards!.exhausted.Count!.ToString());
     }
 
     public void OnPileClick()

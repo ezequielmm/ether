@@ -57,15 +57,24 @@ public class WebSocketManager : MonoBehaviour
 
         string token = PlayerPrefs.GetString("session_token");
 
-        Debug.Log("Connecting socket using token: " + token);
+       // Debug.Log("Connecting socket using token: " + token);
 
         SocketOptions options = new SocketOptions();
         //  options.AutoConnect = false;
         options.HTTPRequestCustomizationCallback = (manager, request) => { request.AddHeader("Authorization", token); };
 
         // determine the correct server the client is running on
-        string hostURL = Application.absoluteURL;
-        string[] splitURL = hostURL.Split('.');
+        string hostName = Application.absoluteURL;
+        string uriStr = "https://api.dev.kote.robotseamonster.com";
+        //string uriStr = "https://api.alpha.knightsoftheether.com:443";
+
+        if (hostName.IndexOf("alpha") > -1) { uriStr = "https://api.alpha.knightsoftheether.com:443"; }
+        if (hostName.IndexOf("stage") > -1) { uriStr = "https://api.stage.kote.robotseamonster.com"; }
+        if (hostName.IndexOf("dev") > -1) { uriStr = "https://api.dev.kote.robotseamonster.com"; }
+
+
+
+        /*string[] splitURL = hostURL.Split('.');
         string uriStr = "https://api.dev.kote.robotseamonster.com";
         if ( splitURL.Length > 1)//this will fail for localhost
         {
@@ -77,15 +86,19 @@ public class WebSocketManager : MonoBehaviour
                 case "stage":
                     uriStr = "https://api.stage.kote.robotseamonster.com";
                     break;
+                case "alpha":
+                    uriStr = "https://api.alpha.knightsoftheether.com:443";
+                    break;
                 default:
                     uriStr = "https://api.stage.kote.robotseamonster.com";
                     break;
             }
-        }
+        }*/
+
         // default to the stage server if running from the unity editor
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         uriStr = "https://api.dev.kote.robotseamonster.com";
-#endif
+        #endif
 
         Debug.Log("Connecting to "+uriStr);
 

@@ -232,6 +232,7 @@ public enum WS_MESSAGE_TYPES
     end_turn,
     begin_turn,
     end_combat,
+    end_node
 }
 
 [Serializable]
