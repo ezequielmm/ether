@@ -66,6 +66,7 @@ public class SWSM_Parser
             case nameof(WS_MESSAGE_TYPES.begin_turn):
                 ProcessBeginTurn(swsm.data.action, data);
                 break;
+            case nameof(WS_MESSAGE_TYPES.end_node):
             case nameof(WS_MESSAGE_TYPES.end_combat):
                 ProcessEndCombat(swsm.data.action, data);
                 break;
@@ -96,36 +97,7 @@ public class SWSM_Parser
                 break;
         }
     }
-
-    private static void ProcessEncounterUpdate(string action, string data)
-    {
-        switch (action)
-        {
-            case "begin_encounter":
-                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Encounter);
-                break;
-        }
-    }
-
-    private static void ProcessMerchantUpdate(string action, string data)
-    {
-        switch (action)
-        {
-            case "begin_merchant":
-                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Merchant);
-                break;
-        }
-    }
-
-    private static void ProcessCampUpdate(string action, string data)
-    {
-        switch (action)
-        {
-            case "begin_camp":
-                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Camp);
-                break;
-        }
-    }
+ 
 
     private static void ProcessCombatUpdate(string action, string data)
     {
@@ -342,18 +314,7 @@ public class SWSM_Parser
         }
     }
 
-    private static void ProcessTreasureUpdate(string action, string data) 
-    {
-        switch (action) 
-        {
-            case nameof(WS_TREASURE_ACTIONS.begin_treasure):
-                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Treasure);
-                break;
-            default:
-                Debug.LogWarning($"[SWSM Parser][Treasure Update] Unknown Action \"{action}\". Data = {data}");
-                break;
-        }
-    }
+
 
     private static void ProcessCombatQueue(string data) 
     {
@@ -460,4 +421,52 @@ public class SWSM_Parser
     }
 
     #endregion
+
+
+
+    //*****
+    // NON Combat updates
+    //********
+    private static void ProcessTreasureUpdate(string action, string data)
+    {
+        switch (action)
+        {
+            case nameof(WS_TREASURE_ACTIONS.begin_treasure):
+                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Treasure);
+                break;
+            default:
+                Debug.LogWarning($"[SWSM Parser][Treasure Update] Unknown Action \"{action}\". Data = {data}");
+                break;
+        }
+    }
+
+    private static void ProcessEncounterUpdate(string action, string data)
+    {
+        switch (action)
+        {
+            case "begin_encounter":
+                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Encounter);
+                break;
+        }
+    }
+
+    private static void ProcessMerchantUpdate(string action, string data)
+    {
+        switch (action)
+        {
+            case "begin_merchant":
+                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Merchant);
+                break;
+        }
+    }
+
+    private static void ProcessCampUpdate(string action, string data)
+    {
+        switch (action)
+        {
+            case "begin_camp":
+                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Camp);
+                break;
+        }
+    }
 }
