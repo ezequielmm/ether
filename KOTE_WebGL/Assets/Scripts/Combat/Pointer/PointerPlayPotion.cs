@@ -24,6 +24,6 @@ public class PointerPlayPotion : MonoBehaviour, IPointerRunable
     public void Run(string originId, string targetId)
     {
         // Potion --> Enemy/Player
-        Debug.Log($"[PointerPlayPotion] Play potion! target => {targetId}");
+        Debug.Log($"[PointerPlayPotion] Play potion! target => {targetId} | origin => {originId}");
     }
 }

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5980361009935522543}
   - component: {fileID: 890576201851106402}
   - component: {fileID: 3066282446738182827}
-  - component: {fileID: -3333353897222312257}
   m_Layer: 5
   m_Name: PotionsContainer
   m_TagString: Untagged
@@ -79,18 +78,3 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &-3333353897222312257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5980361009935522544}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10

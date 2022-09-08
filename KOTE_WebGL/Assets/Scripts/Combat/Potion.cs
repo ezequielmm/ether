@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Potion : MonoBehaviour
@@ -29,13 +30,13 @@ public class Potion : MonoBehaviour
         tooltipController.SetTooltips(new List<Tooltip>() { unknown });
     }
 
-    public void OnPotion()
+    private void OnPotion()
     {
         potionImage.sprite = usedPotionSprite;
         tooltipController.SetTooltips(null);
     }
 
-    public void OnPotionUsed(GameObject invoker)
+    private void OnPotionUsed(GameObject invoker)
     {
         if (invoker != gameObject) return;
 
@@ -45,5 +46,19 @@ public class Potion : MonoBehaviour
         potionButton.interactable = false;
 
         GameManager.Instance.EVENT_POTION_USED.Invoke(this);
+    }
+
+    public void OnDrag()
+    {
+        Vector3 position = Camera.main.ScreenToWorldPoint(transform.position);
+        position.z = 0;
+
+        GameManager.Instance.EVENT_POTION_ACTIVATE_POINTER.Invoke(position);
+    }
+
+    public void DragEnd() 
+    {
+        Debug.LogWarning($"[Postion] Potion needs potion ID to use the potion.");
+        GameManager.Instance.EVENT_POTION_DEACTIVATE_POINTER.Invoke("PostionID");
     }
 }

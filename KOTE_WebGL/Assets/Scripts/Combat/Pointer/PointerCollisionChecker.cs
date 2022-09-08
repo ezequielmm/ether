@@ -38,7 +38,7 @@ public class PointerCollisionChecker : MonoBehaviour
 
     private void Highlight(GameObject obj) 
     {
-        renderer = obj.GetComponent<Renderer>();
+        renderer = obj.GetComponentInChildren<Renderer>();
         foreach (var material in renderer.materials)
         {
             UpdateShader(material, outlineShader, OutlineWidth, OutlineColor);

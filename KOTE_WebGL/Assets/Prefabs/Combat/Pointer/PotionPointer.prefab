@@ -347,8 +347,8 @@ MonoBehaviour:
   pointerContainer: {fileID: 703777086451285735}
   pointerTarget: {fileID: 5525758798861686685}
   PointerLine: {fileID: 1148648418236968682}
-  targetPlayer: 0
-  targetEnemy: 0
+  targetPlayer: 1
+  targetEnemy: 1
   overTarget: 0
   targetID: 
 --- !u!114 &3039948052095960239
