@@ -24,7 +24,7 @@ public class TestJS : MonoBehaviour
     private static extern void BindWebGLTexture(int texture);
     void Start()
     {
-        HelloString("This is a string.");
+       // HelloString("This is a string.");
     }
 
     // Update is called once per frame
