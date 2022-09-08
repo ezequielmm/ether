@@ -38,7 +38,6 @@ public class PathManager : MonoBehaviour
         pathAct = exitNode.act;
         pathController.spline.SetPosition(4, this.transform.InverseTransformPoint(exitNode.transform.position));
         lineController.spline.SetPosition(4, this.transform.InverseTransformPoint(exitNode.transform.position));
-        //TODO: add noise to previous spline points. There are 5 so far
         DetermineIfPathIsShown();
         RelocateSplinePoints();
     }

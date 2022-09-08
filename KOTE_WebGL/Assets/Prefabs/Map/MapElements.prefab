@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5237346165803081542}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -20}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5237346165936166370}
@@ -271,7 +271,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5758494260307054456}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -299,19 +299,39 @@ MonoBehaviour:
   nodesHolder: {fileID: 5758494260706819151}
   MapGrid: {fileID: 5237346165803081531}
   grassTiles:
+  - {fileID: 11400000, guid: c41dd05b7a913f144abbac32dc6a532b, type: 2}
   - {fileID: 11400000, guid: d99e9c3d8b3ce4a498afd78ff5963fb2, type: 2}
   - {fileID: 11400000, guid: 8fa4e9263303f954f989f6877b77cafc, type: 2}
   - {fileID: 11400000, guid: ae9c0ede9c2cbe747a5026188cd0c638, type: 2}
+  - {fileID: 11400000, guid: 6c9940473af11674baa24027e7e52dcd, type: 2}
+  - {fileID: 11400000, guid: 871275cf27695cf4886902a35f7c4e35, type: 2}
+  - {fileID: 11400000, guid: 7e6db3b96efa1104ebee679d78eabaa0, type: 2}
   - {fileID: 11400000, guid: 2fae2873d6e9cfb41bc68767b31ad49f, type: 2}
   mountainTiles:
   - {fileID: 11400000, guid: ec5a524194e79924cb512a235f23bccf, type: 2}
+  - {fileID: 11400000, guid: 1437442bb7ee049478be8eeea2feb845, type: 2}
   - {fileID: 11400000, guid: c478a8cd31c889b458fcb6d74d6578ae, type: 2}
+  - {fileID: 11400000, guid: 6beeb34d856651743856cfd534641620, type: 2}
+  - {fileID: 11400000, guid: 8edb5cfbaa83f6a48955e880715ad928, type: 2}
+  - {fileID: 11400000, guid: ce95efb5590cd07488ba9553e2d5cba2, type: 2}
+  - {fileID: 11400000, guid: 81bc2f7578c6d3240bc11caaa3e5b67d, type: 2}
   - {fileID: 11400000, guid: f3fcde9e28e5bf8469569b0fd2ced711, type: 2}
+  - {fileID: 11400000, guid: 866a719690707e0489520eadcdcf2314, type: 2}
+  - {fileID: 11400000, guid: 03d26fc646f0b60458b8da48b0c27ca8, type: 2}
+  - {fileID: 11400000, guid: 7034880f05f25254db62e377d6462f52, type: 2}
   forestTiles:
   - {fileID: 11400000, guid: cc7a26987d3bfff4886180850ae46920, type: 2}
   - {fileID: 11400000, guid: ae7f335a100a1dd4eac45990d14393eb, type: 2}
   - {fileID: 11400000, guid: dcdb9ee3f8645df438392d0c0eae0ee8, type: 2}
+  - {fileID: 11400000, guid: 16cfc4d9c01e7bb45a13b4f81f287150, type: 2}
   - {fileID: 11400000, guid: ded2821fc58cb9c42962a7a76b1b899d, type: 2}
+  - {fileID: 11400000, guid: b0f5ea6c3dc30584a9de635c667a476d, type: 2}
+  - {fileID: 11400000, guid: b9113f4ee9308324b95a313060aab399, type: 2}
+  - {fileID: 11400000, guid: 2aa31b93db5d38d4ca6dcafb34e519db, type: 2}
+  - {fileID: 11400000, guid: 0a898705e6b29434c8053f6024019720, type: 2}
+  - {fileID: 11400000, guid: 00c6a0ef3e21b66489993e1c3302e7ac, type: 2}
+  - {fileID: 11400000, guid: c4afa09f52953d1448542c408b045039, type: 2}
+  - {fileID: 11400000, guid: 204a0984871556244b65ad661a30b7a0, type: 2}
   startPoint: {x: 0, y: -4, z: 0}
   startX: 0
   startY: 4
@@ -319,6 +339,10 @@ MonoBehaviour:
   endY: 4
   LeftButton: {fileID: 5758494260838671926}
   RightScrollButton: {fileID: 5758494260742172184}
+  pathCurveStrengthRange: {x: 0.3, y: 0.7}
+  angleFuzziness: {x: -30, y: 30}
+  pathPositionFuzziness: 0.25
+  columnFuzziness: {x: 0, y: 2.25}
   mapCamera: {fileID: 0}
   mapRenderTexture: {fileID: 8400000, guid: 9b4d838c9cc0f034f8df591b8044dcf4, type: 2}
   mapBounds:

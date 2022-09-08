@@ -31,7 +31,7 @@ public class CommonCardsPanel : MonoBehaviour
 
         drawDeck.cards = data.data.draw;
         discardDeck.cards = data.data.discard;
-        exhaustDeck.cards = data.data.exhaust;
+        exhaustDeck.cards = data.data.exhausted;
     }
 
     private void OnNodeStateDateUpdate(NodeStateData nodeState,WS_QUERY_TYPE wsType)
@@ -50,9 +50,9 @@ public class CommonCardsPanel : MonoBehaviour
             {
                 discardDeck.cards = nodeState.data.data.player.cards.discard;
             }
-            if (nodeState.data.data.player.cards.exhaust != null)
+            if (nodeState.data.data.player.cards.exhausted != null)
             {
-                exhaustDeck.cards = nodeState.data.data.player.cards.exhaust;
+                exhaustDeck.cards = nodeState.data.data.player.cards.exhausted;
             }
         }
         

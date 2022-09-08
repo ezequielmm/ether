@@ -515,6 +515,17 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3896035248900979076, guid: 48452b44ad11caa41867718d30e98678,
+        type: 3}
+      propertyPath: attachedEntity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5188256977924577147, guid: 48452b44ad11caa41867718d30e98678,
+        type: 3}
+      propertyPath: HealthBarFill
+      value: 
+      objectReference: {fileID: 21300000, guid: cdf1736bd9476764d913ef4a903f1cd8,
+        type: 3}
     - target: {fileID: 5188256977924577147, guid: 48452b44ad11caa41867718d30e98678,
         type: 3}
       propertyPath: healthBarFill.Array.data[0].icon
