@@ -204,6 +204,10 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<EnemyData> EVENT_UPDATE_ENEMY = new UnityEvent<EnemyData>();
     [HideInInspector] public UnityEvent<EnemyIntent> EVENT_UPDATE_INTENT = new UnityEvent<EnemyIntent>();
 
+    // Potion Events
+    [HideInInspector] public UnityEvent<Vector3> EVENT_POTION_ACTIVATE_POINTER = new UnityEvent<Vector3>();
+    [HideInInspector] public UnityEvent<string> EVENT_POTION_DEACTIVATE_POINTER = new UnityEvent<string>();
+
 
     // Audio Events
     [HideInInspector] public UnityEvent<string> EVENT_PLAY_SFX { get; } = new UnityEvent<string>();

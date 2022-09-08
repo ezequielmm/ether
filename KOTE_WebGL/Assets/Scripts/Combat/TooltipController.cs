@@ -37,7 +37,9 @@ public class TooltipController : MonoBehaviour
         GameManager.Instance.EVENT_CLEAR_TOOLTIPS.AddListener(ClearTooltips);
         GameManager.Instance.EVENT_SET_TOOLTIPS.AddListener(SetTooltips);
         GameManager.Instance.EVENT_CARD_ACTIVATE_POINTER.AddListener(OnPointerActivated);
+        GameManager.Instance.EVENT_POTION_ACTIVATE_POINTER.AddListener(OnPointerActivated);
         GameManager.Instance.EVENT_CARD_DEACTIVATE_POINTER.AddListener(OnPointerDeactivated);
+        GameManager.Instance.EVENT_POTION_DEACTIVATE_POINTER.AddListener(OnPointerDeactivated);
     }
 
     public void OnPointerActivated(Vector3 data) 
