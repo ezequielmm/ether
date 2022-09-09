@@ -42,17 +42,7 @@ public class GameStatusManager : MonoBehaviour
 
     public void OnPrepareStatusChange(GameStatuses newGameStatus)
     {
-        switch (newGameStatus)
-        {
-            case GameStatuses.Combat: break;
-            case GameStatuses.Map: break;
-            case GameStatuses.Encounter: break;
-            case GameStatuses.Merchant: break;
-            case GameStatuses.RoyalHouse: break;
-            case GameStatuses.GameOver:
-                preppingStatus = GameStatuses.GameOver;
-                break;
-        }
+        preppingStatus = newGameStatus;
     }
 
     public void OnEventConfirmation(Type enumType, string eventName)
@@ -124,13 +114,11 @@ public class GameStatusManager : MonoBehaviour
                 InitializeCampNode();
                 break;
             case GameStatuses.RoyalHouse: break;
-            case GameStatuses.GameOver:
-                preppingStatus = GameStatuses.None;
-                break;
-            case GameStatuses.RewardsPanel:
-                preppingStatus = GameStatuses.None;
-                break;
+            case GameStatuses.GameOver: break;
+            case GameStatuses.RewardsPanel: break;
         }
+
+        preppingStatus = GameStatuses.None;
     }
 
     private void InitializeMapMode()
