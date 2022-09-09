@@ -4,6 +4,7 @@ using UnityEngine;
 using Spine;
 using Spine.Unity;
 using Animation = Spine.Animation;
+using UnityEngine.Events;
 
 [Serializable, RequireComponent(typeof(SkeletonAnimation))]
 public class SpineAnimationsManagement : MonoBehaviour
@@ -34,6 +35,8 @@ public class SpineAnimationsManagement : MonoBehaviour
         }
     }
 
+    public UnityEvent<string> ANIMATION_EVENT = new UnityEvent<string>();
+
     private SkeletonData skeletonData;
 
     private SkeletonDataAsset skeletonDataAsset;
@@ -41,6 +44,8 @@ public class SpineAnimationsManagement : MonoBehaviour
 
     public TextAsset animationJson;
     public AtlasAssetBase atlasAssetBase;
+
+
 
     [SerializeField]
     public List<AnimationSequence> animations = new List<AnimationSequence>();
@@ -74,60 +79,58 @@ public class SpineAnimationsManagement : MonoBehaviour
         }
     }
 
-    public void PlayAnimationSequence(string animationSequenceName)
+    /// <summary>
+    /// Runs an animation by name
+    /// </summary>
+    /// <param name="animationSequenceName"></param>
+    /// <returns>Duration of the animation</returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public float PlayAnimationSequence(string animationSequenceName)
     {
+        animationSequenceName = animationSequenceName.ToLower();
         foreach (AnimationSequence animationSequence in animations)
         {
-            if (animationSequence.sequenceName == animationSequenceName)
+            if (animationSequence.sequenceName.ToLower() == animationSequenceName)
             {
+                float duration = 0;
                 foreach (AnimationSequence.Animation animation in animationSequence.sequence)
                 {
+                    TrackEntry te = null;
                     switch (animation.animationEvent)
                     {
                         case AnimationEvent.Add:
-                            skeletonAnimationScript.AnimationState.AddAnimation(animation.track, animation.name, animation.loop, animation.delay);
+                            te = skeletonAnimationScript.AnimationState.AddAnimation(animation.track, animation.name, animation.loop, animation.delay);
+                            duration += te.Animation.Duration + animation.delay;
                             break;
                         case AnimationEvent.Set:
-                            skeletonAnimationScript.AnimationState.SetAnimation(animation.track, animation.name, animation.loop);
+                            te = skeletonAnimationScript.AnimationState.SetAnimation(animation.track, animation.name, animation.loop);
+                            duration = te.Animation.Duration;
                             break;
                         case AnimationEvent.None:
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
+                    if (te != null) 
+                    {
+                        te.Event += HandleEvent;
+                    }
                 }
-
-                return;
+                return duration;
             }
         }
+        return 0;
     }
 
-    public void PlayAnimationSequence(AnimationSequence animationSequence)
+    private void HandleEvent(TrackEntry trackEntry, Spine.Event e) 
     {
-        foreach (AnimationSequence animationSequenceInList in animations)
-        {
-            if (animationSequenceInList.sequenceName == animationSequence.sequenceName)
-            {
-                foreach (AnimationSequence.Animation animation in animationSequenceInList.sequence)
-                {
-                    switch (animation.animationEvent)
-                    {
-                        case AnimationEvent.Add:
-                            skeletonAnimationScript.AnimationState.AddAnimation(animation.track, animation.name, animation.loop, animation.delay);
-                            break;
-                        case AnimationEvent.Set:
-                            skeletonAnimationScript.AnimationState.SetAnimation(animation.track, animation.name, animation.loop);
-                            break;
-                        case AnimationEvent.None:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
+        Debug.Log($"[Spine] Event Triggered: {e.Data.Name}");
+        ANIMATION_EVENT.Invoke(e.Data.Name);
+    }
 
-                return;
-            }
-        }
+    public float PlayAnimationSequence(AnimationSequence animationSequence)
+    {
+        return PlayAnimationSequence(animationSequence.sequenceName);
     }
 
     public void SetSkin(string skin)

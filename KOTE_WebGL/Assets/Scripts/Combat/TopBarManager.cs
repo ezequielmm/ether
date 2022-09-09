@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEditor;
 using Random = UnityEngine.Random;
 
 public class TopBarManager : MonoBehaviour
@@ -13,9 +14,12 @@ public class TopBarManager : MonoBehaviour
     public TMP_Text nameText;
     public TMP_Text healthText;
     public TMP_Text coinsText;
+    public TMP_Text stageText;
 
     public GameObject classIcon, className, showmapbutton;
 
+    // we need to keep track of this, as the attack response data doesn't relay this information
+    private int maxHealth;
     private void Start()
     {
         //TODO : Now, all this will be implemented after the websocket is connected
@@ -29,8 +33,13 @@ public class TopBarManager : MonoBehaviour
         //SetHealth(Random.Range(30, 81));
 
         GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
-        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(SetPlayerState);
+        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnCombatStart);
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.AddListener(OnToggleMapIcon);
+        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.AddListener(UpdateStageText);
+        GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnPlayerAttacked);
+
+        // this has to be set here, as it is not visible in the inspector
+        nameText.maxVisibleLines = 2;
     }
 
     private void OnToggleMapIcon(bool arg0)
@@ -39,6 +48,10 @@ public class TopBarManager : MonoBehaviour
         showmapbutton.SetActive(arg0);
     }
 
+    private void UpdateStageText(int act, int step)
+    {
+        stageText.SetText("STAGE " + act + "-" + (step + 1));
+    }
 
     public void SetTextValues(string nameText, string classText, int health, int coins)
    // public void SetTextValues(string nameText, string classText, string healthText, int coins)
@@ -55,9 +68,9 @@ public class TopBarManager : MonoBehaviour
     }
 
 
-    public void SetHealthText(int health, int maxHealth)
+    public void SetHealthText(int health)
     {
-        healthText.text = health.ToString() + "/" + maxHealth.ToString();
+        healthText.text = health + "/" + maxHealth;
     }
 
     public void SetCoinsText(int coins)
@@ -71,11 +84,23 @@ public class TopBarManager : MonoBehaviour
         SetCoinsText(profileData.data.coins);
     }
 
-    public void SetPlayerState(PlayerStateData playerState) 
+    public void OnPlayerAttacked(CombatTurnData combatTurnData) 
     {        
-        SetNameText(playerState.data.player_state.player_name);
-        SetHealthText(playerState.data.player_state.hp_current, playerState.data.player_state.hp_max);
-        SetCoinsText(playerState.data.player_state.gold);
+        var target = combatTurnData.GetTarget("player");
+        if (target == null) return;
+        // only update the text if the player's health has changed
+        if (target.healthDelta != 0)
+        {
+            SetHealthText(target.finalHealth);
+        }
+    }
+    
+    public void OnCombatStart(PlayerStateData playerState) 
+    {        
+        SetNameText(playerState.data.playerState.playerName);
+        maxHealth = playerState.data.playerState.hpMax;
+        SetHealthText(playerState.data.playerState.hpCurrent);
+        SetCoinsText(playerState.data.playerState.gold);
     }
 
     public void SetClassSelected(string classSelected)

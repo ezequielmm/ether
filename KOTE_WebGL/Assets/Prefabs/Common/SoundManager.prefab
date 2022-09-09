@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &436434705706889938
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 436434705706889936}
+  - component: {fileID: 436434705706889939}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &436434705706889936
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436434705706889938}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &436434705706889939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436434705706889938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63cab5eac8d20554f94bb2da14539f44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundClipList:
+  - name: Card Play
+    clips:
+    - {fileID: 8300000, guid: 3d672ba9ea4328149a0b3b2bbc7daa85, type: 3}
+  - name: Card Cancel
+    clips:
+    - {fileID: 8300000, guid: 52409cb3cd7d85e4bbcba30f7472b67e, type: 3}
+  - name: Card Draw
+    clips:
+    - {fileID: 8300000, guid: 9b4188879784843488c5eb42f5ab2a93, type: 3}
+  - name: Card Exhaust
+    clips:
+    - {fileID: 8300000, guid: 6a5125291594a60438b400fdd63a5c91, type: 3}
+  - name: Deck Shuffle
+    clips:
+    - {fileID: 8300000, guid: debf95c098654bb478250d0fd224a54c, type: 3}
+  - name: Defense Block
+    clips:
+    - {fileID: 8300000, guid: 6aeb74c2c061eab4498be91fff87ecba, type: 3}
+  - name: Status Burn
+    clips:
+    - {fileID: 8300000, guid: 6a5125291594a60438b400fdd63a5c91, type: 3}
+  - name: Attack Punch
+    clips:
+    - {fileID: 8300000, guid: 2915d1e296184da4da0f1031b3f18b2e, type: 3}
+    - {fileID: 8300000, guid: e60f4bcde85ae424a9d12687e0b1da22, type: 3}
+    - {fileID: 8300000, guid: f0391a992109c6344b4312a95e42ab5f, type: 3}
+  - name: Attack
+    clips:
+    - {fileID: 8300000, guid: f2996e869a3128c47b40ba7ccd11cbed, type: 3}
+  - name: Buff
+    clips:
+    - {fileID: 8300000, guid: afcffbe0a25548840bc261e593c4e484, type: 3}
+  - name: Card Discard
+    clips:
+    - {fileID: 8300000, guid: dc525b61ea1961443983ce690072ea6a, type: 3}
+  - name: Defense Up
+    clips:
+    - {fileID: 8300000, guid: 470ceafef64e1824c834d66368a41c23, type: 3}
+  - name: Out Of Energy
+    clips:
+    - {fileID: 8300000, guid: 6eaa37120c0547948a5ffd2a161bfea9, type: 3}
+  - name: Heal
+    clips:
+    - {fileID: 8300000, guid: 8470e8d94612377419e21c6f2e1ada42, type: 3}
+  - name: Dodge
+    clips:
+    - {fileID: 8300000, guid: 9484701aefd524946b18372f573b2d16, type: 3}

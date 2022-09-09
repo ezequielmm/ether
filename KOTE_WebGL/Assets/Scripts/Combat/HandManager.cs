@@ -5,138 +5,135 @@ using UnityEngine;
 using DG.Tweening;
 
 public class HandManager : MonoBehaviour
-{
-    
+{    
     public GameObject spriteCardPrefab;
-    public List<GameObject> listOfCardsOnHand;
+    //  public List<GameObject> listOfCardsOnHand;
+    public Dictionary<string, GameObject> listOfCardsOnHand = new Dictionary<string, GameObject>(); // CardID <--> Card Obj
+   // public Dictionary<string, GameObject> listOfCardsOnDraw = new Dictionary<string, GameObject>();
+
+
     public GameObject explosionEffectPrefab;
 
     private string currentCardID;
     private GameObject currentCard;
 
-    private Deck handDeck;
-    private float maxDepth;
+    public Deck handDeck;
+    public Deck drawDeck;
+    public Deck discardDeck;
+    public Deck exhaustDeck;
 
-    void Start()
+
+    CardPiles cardPilesData;
+
+    int cardsDrawn = 0;
+    bool audioRunning = false;
+
+    private void OnCardDestroyed(string cardId)
     {
-      
-        GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeUpdate);//this is called after a node is slected on the map and get an asnwer from server
-        GameManager.Instance.EVENT_CARD_MOUSE_ENTER.AddListener(OnCardMouseEnter);
-        GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);
-    }
+        Debug.Log("[HandManager] Removing card "+cardId+" from hand");
 
-    private void OnCardMouseExit(string cardId)
-    {
-        //Debug.Log("[-----OnCardMouseExit]cardid=" + cardId);
-
-        foreach (GameObject go in listOfCardsOnHand)
+        var cardMoved = handDeck.cards.Find(card => card.id == cardId);
+        if (cardMoved != null)
         {
-            CardOnHandManager cardData = go.GetComponent<CardOnHandManager>();
-
-           go.transform.DOMove(cardData.targetPosition, 0.1f);
-           go.transform.DORotate(cardData.targetRotation, 0.2f);
-           go.transform.DOScale(Vector3.one , 0.2f);
-
+            handDeck.cards.Remove(cardMoved);
+            discardDeck.cards.Add(cardMoved);
         }
+
+        StartCoroutine(RelocateCards());
+        
     }
 
-    private void OnCardMouseEnter(string cardId)
+    private void Awake()
     {
-       // Debug.Log("[++++++OnCardMouseEnter]cardid="+cardId);
-        GameObject selectedCard = listOfCardsOnHand.Find((x) => (x.GetComponent<CardOnHandManager>().id == cardId));
+        GameManager.Instance.EVENT_CARDS_PILES_UPDATED.AddListener(OnCardsPilesUpdated);
+        GameManager.Instance.EVENT_CARD_DRAW_CARDS.AddListener(OnDrawCards);
+        GameManager.Instance.EVENT_CARD_DRAW.AddListener(OnCardDraw); // SFX
+        GameManager.Instance.EVENT_CARD_CREATE.AddListener(CreateCard);
+        GameManager.Instance.EVENT_CARD_DISABLED.AddListener(OnCardDestroyed);
+    }
 
-        if (selectedCard == null) return;
+    private void Start()
+    {
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+    }
 
-        foreach (GameObject go in listOfCardsOnHand)
-        {            
-            CardOnHandManager cardData = go.GetComponent<CardOnHandManager>();
-           go.transform.DOMove(cardData.targetPosition, 0.1f);
-            //go.transform.position = cardData.targetPosition;
+    private void OnCardDraw()
+    {
+        //Debug.Log($"[Hand Pile] Card Drawn.");
+        cardsDrawn++;
+        StartCoroutine(DrawCardSFX());
+    }
 
-            if (cardData.id != cardId)
+    private IEnumerator DrawCardSFX()
+    {
+        if (!audioRunning)
+        {
+            audioRunning = true;
+            for (; cardsDrawn >= 0; cardsDrawn--)
             {
-                float xx = go.transform.position.x - selectedCard.transform.position.x;
-               // Debug.Log("---this card is the " + (xx > 0 ? "left" : "right"));
-                float movex = xx > 0 ? 0.5f : -0.5f;
-                Vector3 pos = cardData.targetPosition;
-                pos.x += movex;
-                
-                go.transform.DOMove(pos, 0.1f);
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Draw");
+                yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
             }
-            else
+            if (cardsDrawn < 0)
             {
-                go.transform.DOScale(Vector3.one*1.25f,0.2f);//TODO:magic number for scale,move to settings
-                Vector3 pos = cardData.targetPosition;
-                pos.y += 1.5f;
-                pos.z = maxDepth;
-                go.transform.DOMove(pos,0.2f);
-
-                go.transform.DORotate(Vector3.zero,0.2f);
+                cardsDrawn = 0;
             }
+            audioRunning = false;
         }
     }
 
-    private void OnParticleSystemStopped()
+    private void CreateCard(string cardID)
     {
-        Debug.Log("lalal");
+        Debug.Log($"[HandManager] Moving card [{cardID}] from Draw to Hand");
+        var cardMoved = drawDeck.cards.Find(card => card.id == cardID);
+        if (cardMoved == null) 
+        {
+            cardMoved = discardDeck.cards.Find(card => card.id == cardID);
+        }
+        if (cardMoved == null) 
+        {
+            Debug.LogWarning($"[HandManager] Card [{cardID}] could not be found. No card has been created.");
+            return;
+        }
+
+        drawDeck.cards.Remove(cardMoved);
+        discardDeck.cards.Remove(cardMoved);
+
+        handDeck.cards.Add(cardMoved);
     }
 
-    private void arrangeCards(GameObject cardSelected)
+    private void OnDrawCards()
     {
-       /* if (go)
+        if (cardPilesData == null)
         {
-
+            Debug.Log("[HandManager] No cards data at all. Retrieving");
+            GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+            Invoke("OnDrawCards",0.2f);
+            return;
         }
-        else
+        else if(cardPilesData.data.hand.Count < 1)
         {
-            foreach(GameObject go in listOfCardsOnHand)
-            {
-                vec
-            }
-        }*/
-    }
-
-    private void OnNodeUpdate(NodeStateData nodeState, WS_QUERY_TYPE wsType)
-    {
-        //do we had cards on the current hand?
-        if (listOfCardsOnHand.Count > 0)//this is insecure. The list could have null elements and the count still would be above 0 
-        {
-            //compare new hand cards with current hand cards
-            Deck newHandDeck = new Deck();
-            newHandDeck.cards = nodeState.data.data.player.cards.hand;
-            int counterOfDifferentCards = 0;
-            foreach (Card newCard in newHandDeck.cards)
-            {
-                foreach (GameObject go in listOfCardsOnHand)
-                {
-
-                }
-            }
+            Debug.Log("[HandManager] No hands cards data. Retrieving");
+            GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+            Invoke("OnDrawCards", 0.2f);
+            return;
         }
-        else
-        {
-            //
-        }      
-
-
-            //play effect on current cards. This must be isolated to only happen when it is the end of turn but not on card played
-        float effectDelay = 0.5f;
-        foreach (GameObject go in listOfCardsOnHand)
-        {
-            if (go == null) continue;//avoid working on a gameobject that has been destroyed but is still referenced on the list
-            GameObject fireball = Instantiate(explosionEffectPrefab,go.transform);
-            fireball.transform.position = go.transform.position;
-            fireball.transform.localScale = fireball.transform.localScale*0.5f;
-   
-            effectDelay += 0.3f;
-        }
-
-        listOfCardsOnHand = new List<GameObject>();
+        Debug.Log($"[HandManager] draw.count: {cardPilesData.data.draw.Count} | hand.count: {cardPilesData.data.hand.Count} | discard.count: {cardPilesData.data.discard.Count} | exhaust.count: {cardPilesData.data.exhausted.Count}");
+        
+        //Generate cards hand
         handDeck = new Deck();
-        handDeck.cards = nodeState.data.data.player.cards.hand;
+        handDeck.cards = cardPilesData.data.hand;
+
+        drawDeck = new Deck();
+        drawDeck.cards = cardPilesData.data.draw;
+
+        discardDeck = new Deck();
+        discardDeck.cards = cardPilesData.data.discard;
+
+        exhaustDeck = new Deck();
+        exhaustDeck.cards = cardPilesData.data.exhausted;
 
         Vector3 spawnPosition = GameSettings.HAND_CARDS_GENERATION_POINT;
-
 
         float counter = handDeck.cards.Count / -2;
         float depth = GameSettings.HAND_CARD_SPRITE_Z;
@@ -145,46 +142,168 @@ public class HandManager : MonoBehaviour
 
         foreach (Card card in handDeck.cards)
         {
-            var angle = (float)(counter * Mathf.PI * 2);
-            //Debug.Log(counter + "/" + angle);
-            GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
-            listOfCardsOnHand.Add(newCard);
-            newCard.GetComponent<CardOnHandManager>().populate(card,nodeState.data.data.player.energy);
-            Vector3 pos = newCard.transform.position;
-            pos.x = counter * 2.2f;//TODO:magic numbers and make it related to the number of cards to center
-            pos.y = (Mathf.Cos(angle * Mathf.Deg2Rad) * 5) - 9;//TODO:magic numbers
-            pos.z = depth;
-
-            newCard.GetComponent<CardOnHandManager>().targetPosition = pos;
-
-            if (wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED)
+            if (!listOfCardsOnHand.ContainsKey(card.id))
             {
-                newCard.transform.position = spawnPosition;
-
-                newCard.transform.DOMove(pos, .5f).SetDelay(delay, true).SetEase(Ease.OutBack).OnComplete(newCard.GetComponent<CardOnHandManager>().ActivateCard);
-                newCard.transform.DOPlay();
+               // Debug.Log("[HandManager | Hand Deck] Instantiating card " + card.id);
+                GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
+                listOfCardsOnHand.Add(card.id, newCard);
+                newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
             }
-            else
+                     
+        }
+        foreach (Card card in drawDeck.cards)
+        {
+            if (!listOfCardsOnHand.ContainsKey(card.id))
             {
-                newCard.transform.position = pos;
-                newCard.GetComponent<CardOnHandManager>().ActivateCard();
-            }      
-
-            //newCard.transform.position = pos;
-            Vector3 rot = newCard.transform.eulerAngles;
-            rot.z = angle / -2;
-            newCard.transform.eulerAngles = rot;
-            newCard.GetComponent<CardOnHandManager>().targetRotation = rot;
-
-            delay -= delayStep;
-
-            counter++;
-            depth--;
-
+               // Debug.Log("[HandManager | Draw Deck] Instantiating card " + card.id);
+                GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
+                listOfCardsOnHand.Add(card.id, newCard);
+                newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
+                newCard.GetComponent<CardOnHandManager>().DisableCardContent(false);//disable and not notify
+            }    
+        }
+        foreach (Card card in discardDeck.cards)
+        {
+            if (!listOfCardsOnHand.ContainsKey(card.id))
+            {
+                //Debug.Log("[HandManager | Discard Deck] Instantiating card " + card.id);
+                GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
+                listOfCardsOnHand.Add(card.id, newCard);
+                newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
+                newCard.GetComponent<CardOnHandManager>().DisableCardContent(false);//disable and not notify
+            }
+        }
+        foreach (Card card in exhaustDeck.cards)
+        {
+            if (!listOfCardsOnHand.ContainsKey(card.id))
+            {
+               // Debug.Log("[HandManager | Exhaust Deck] Instantiating card " + card.id);
+                GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
+                listOfCardsOnHand.Add(card.id, newCard);
+                newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
+                newCard.GetComponent<CardOnHandManager>().DisableCardContent(false);//disable and not notify
+            }
         }
 
-        maxDepth = --depth;
+       // Debug.Log("[HandManager] listOfCardsOnHand.Count:" + listOfCardsOnHand.Count);
 
+        StartCoroutine(RelocateCards(true));
     }
-   
+
+    /// <summary>
+    /// Relocates the cards in hands. If move is on, card movement is send to the cards themselves to be preformed.
+    /// </summary>
+    /// <param name="move">True to do a draw animation to hand.</param>
+    private IEnumerator RelocateCards(bool move = false)
+    {
+
+        float counter = 0;
+        float depth = GameSettings.HAND_CARD_SPRITE_Z;
+        float halfWidth = handDeck.cards.Count * GameSettings.HAND_CARD_GAP / 2;
+
+        string result = handDeck.cards.Count % 2 == 0 ? "even" : "odd";
+
+        //Debug.Log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++handDeck.cards.Count=" + handDeck.cards.Count+" is "+ result);
+
+        //float offset = handDeck.cards.Count % 2 == 0 ?  GameSettings.HAND_CARD_GAP / 2 : GameSettings.HAND_CARD_GAP/2;
+        float offset = GameSettings.HAND_CARD_GAP/2;
+        float delayStep = 0.1f;
+        float delay = delayStep * handDeck.cards.Count;
+
+        // Debug.Log("----------------------------Relocate cards offset=" + offset);
+        if (move)
+        {
+            bool pause = false;
+            foreach (Card cardData in drawDeck.cards)
+            {
+                GameObject card;
+                if (listOfCardsOnHand.TryGetValue(cardData.id, out card))
+                {
+                    var manager = card.GetComponent<CardOnHandManager>();
+                    if (manager.MoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw)) 
+                    {
+                        yield return new WaitForSeconds(0.1f);
+                        pause = true;
+                    }
+                }
+            }
+            foreach (Card cardData in handDeck.cards)
+            {
+                GameObject card;
+                if (listOfCardsOnHand.TryGetValue(cardData.id, out card))
+                {
+                    var manager = card.GetComponent<CardOnHandManager>();
+                    if (manager.MoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw))
+                    {
+                        yield return new WaitForSeconds(0.1f);
+                        pause = true;
+                    }
+                }
+            }
+            if (pause) {
+                yield return new WaitForSeconds(1f);
+            }
+        }
+        foreach (Card cardData in handDeck.cards)
+        {
+            //  foreach (GameObject card in listOfCardsOnHand.Values)
+            //  {
+            GameObject card;
+            if (listOfCardsOnHand.TryGetValue(cardData.id, out card))
+            {
+                Vector3 pos = Vector3.zero;
+                pos.x = counter * GameSettings.HAND_CARD_GAP - halfWidth + offset;
+                pos.y = GameSettings.HAND_CARD_REST_Y;
+               // pos.y = Camera.main.orthographicSize * Mathf.Cos(pos.x);
+                pos.z = depth;
+                //card.transform.position = pos;
+
+                //var angle = (float)(counter * Mathf.PI * 2);                   
+                var angle = (float)(pos.x * Mathf.PI * 2);
+                pos.y += Mathf.Cos(pos.x * GameSettings.HAND_CARD_Y_CURVE);
+
+
+                //newCard.transform.position = pos;
+                Vector3 rot = card.transform.eulerAngles;
+                rot.z = angle / -2;
+                card.transform.eulerAngles = rot;
+                card.GetComponent<CardOnHandManager>().targetRotation = rot;
+                card.GetComponent<CardOnHandManager>().targetPosition = pos;
+                card.transform.localScale = Vector3.one;
+
+                counter++;
+                depth -= GameSettings.HAND_CARD_SPRITE_Z_INTERVAL;
+
+                var manager = card.GetComponent<CardOnHandManager>();
+                if (move)
+                {
+                    manager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, true, pos, delay);
+                    delay -= delayStep;
+                }
+                else
+                {
+                    card.transform.DOMove(pos,0.3f);
+                }
+            }    
+        }
+    }
+
+
+    private void OnCardsPilesUpdated(CardPiles data)
+    {
+        Debug.Log("[HandManager] OnCardPilesUpdated");
+        cardPilesData = data;
+
+        handDeck = new Deck();
+        handDeck.cards = cardPilesData.data.hand;
+
+        drawDeck = new Deck();
+        drawDeck.cards = cardPilesData.data.draw;
+                
+        discardDeck = new Deck();
+        discardDeck.cards = cardPilesData.data.discard;
+
+        exhaustDeck = new Deck();
+        exhaustDeck.cards = cardPilesData.data.exhausted;
+    }   
 }

@@ -1,0 +1,52 @@
+﻿{
+  "data": {
+    "node_id": 5,
+    "completed": false,
+    "node_type": "combat",
+    "data": {
+      "round": 1,
+      "action": "idk",
+      "player": {
+        "energy": 3,
+        "energy_max": 4,
+        "hand_size": 5,
+        "cards": {
+          "hand": [
+            {
+              "name": "bored test card",
+              "id": "0xFFFF234523DKW",
+              "description": "this is a test",
+              "rarity": "ultra rare",
+              "energy": 1,
+              "type": "attack"
+            },
+            {
+              "name": "bored test card",
+              "id": "0xFFFF234526DKW",
+              "description": "this is a test",
+              "rarity": "ultra rare",
+              "energy": 1,
+              "type": "attack"
+            },
+            {
+              "name": "bored test card",
+              "id": "0xFFFF234423DKW",
+              "description": "this is a test",
+              "rarity": "ultra rare",
+              "energy": 1,
+              "type": "attack"
+            },
+            {
+              "name": "bored test card",
+              "id": "0xFFFF224523DKW",
+              "description": "this is a test",
+              "rarity": "ultra rare",
+              "energy": 1,
+              "type": "attack"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

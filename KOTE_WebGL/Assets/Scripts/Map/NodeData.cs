@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.U2D;
 
 [Serializable]
 public class NodeData : MonoBehaviour
@@ -15,9 +17,7 @@ public class NodeData : MonoBehaviour
         public GameObject imageGo;
     }
 
-    [Header("Background sprites")]
-    
-    public List<BackgroundImage> bgSprites = new List<BackgroundImage>();
+    [Header("Background sprites")] public List<BackgroundImage> bgSprites = new List<BackgroundImage>();
 
     public int act;
     public int step;
@@ -31,7 +31,8 @@ public class NodeData : MonoBehaviour
     public Material lineMat;
     public Material grayscaleMaterial;
     [FormerlySerializedAs("pSystem")] public ParticleSystem availableParticleSystem;
-   
+    public TextMeshPro idText;
+
 
     public bool nodeClickDisabled = false;
 
@@ -39,30 +40,19 @@ public class NodeData : MonoBehaviour
 
     public GameObject spriteShapePrefab;
     private GameObject spriteShape;
-
+    private GameObject activeIconImage;
+    private Vector3 originalScale;
+    
     #region UnityEventFunctions
 
     private void Awake()
     {
-        //Debug.Log("Node data awake");
-
-      
+        // the particleSystem's sorting layer has to be set manually, because the the settings in the component don't work
+        availableParticleSystem.GetComponent<Renderer>().sortingLayerName = GameSettings.MAP_ELEMENTS_SORTING_LAYER_NAME;
+        HideNode();
+        
     }
 
-    private void Start()
-    {
-        //GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.AddListener(ActivatePortal);
-               
-       
-    }
-
-    private void HideAllIcons()
-    {
-        foreach (BackgroundImage bgimg in bgSprites)
-        {
-            bgimg.imageGo.SetActive(false);
-        }
-    }
 
     private void OnMouseDown()
     {
@@ -72,36 +62,60 @@ public class NodeData : MonoBehaviour
             // if clicking on a royal house node, we want to ask the player for confirmation before activating the node
             if (type == NODE_TYPES.royal_house)
             {
-                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Do you want to enter" + Utils.CapitalizeEveryWordOfEnum(subType), OnConfirmRoyalHouse);
+                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
+                    "Do you want to enter" + Utils.CapitalizeEveryWordOfEnum(subType), OnConfirmRoyalHouse);
                 return;
             }
             else
             {
-                GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);
+                GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(id);
+                GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(act, step);
             }
-
-            
         }
     }
 
     private void OnMouseOver()
     {
+        if (status == NODE_STATUS.available || status == NODE_STATUS.active)
+        {
+            activeIconImage.transform.DOScale(new Vector3(originalScale.x * 1.2f, originalScale.y * 1.2f), 0.5f);
+        }
         GameManager.Instance.EVENT_MAP_NODE_MOUSE_OVER.Invoke(id);
     }
 
     private void OnMouseExit()
     {
+        activeIconImage.transform.DOScale(originalScale, 0.5f);
+
         GameManager.Instance.EVENT_MAP_NODE_MOUSE_OVER.Invoke(-1);
     }
 
     #endregion
+
+    public void HideNode()
+    {
+        foreach (BackgroundImage bgimg in bgSprites)
+        {
+            bgimg.imageGo.SetActive(false);
+        }
+
+        idText.gameObject.SetActive(false);
+    }
+
+    public void ShowNode()
+    {
+        SelectNodeImage();
+        UpdateNodeStatusVisuals();
+    }
+  
+
     public void Populate(NodeDataHelper nodeData)
     {
         PopulateNodeInformation(nodeData);
-        SelectNodeImage(nodeData);
-        UpdateNodeStatusVisuals(nodeData);
+        SelectNodeImage();
+        UpdateNodeStatusVisuals();
     }
-    
+
     private void PopulateNodeInformation(NodeDataHelper nodeData)
     {
         status = Utils.ParseEnum<NODE_STATUS>(nodeData.status);
@@ -110,16 +124,18 @@ public class NodeData : MonoBehaviour
         subType = Utils.ParseEnum<NODE_SUBTYPES>(nodeData.subType);
         exits = nodeData.exits;
         name = nodeData.type + "_" + nodeData.id;
+        act = nodeData.act;
+        step = nodeData.step;
     }
 
-    private void SelectNodeImage(NodeDataHelper nodeData)
+    private void SelectNodeImage()
     {
-        HideAllIcons();
-
         BackgroundImage bgi = bgSprites.Find(x => x.type == subType);
         if (bgi.imageGo != null)
         {
             bgi.imageGo.SetActive(true);
+            activeIconImage = bgi.imageGo;
+            originalScale = bgi.imageGo.transform.localScale;
             if (status == NODE_STATUS.disabled)
             {
                 bgi.imageGo.GetComponent<SpriteRenderer>().material = grayscaleMaterial;
@@ -127,25 +143,25 @@ public class NodeData : MonoBehaviour
         }
         else
         {
-            Debug.Log(" nodeData.type " + nodeData.type + " not found ");
+            Debug.Log(" nodeData.type " + type + " not found ");
         }
     }
 
-    private void UpdateNodeStatusVisuals(NodeDataHelper nodeData)
+    private void UpdateNodeStatusVisuals()
     {
-        Color indexColor = Color.grey;        
+        Color indexColor = Color.grey;
 
-        switch (Enum.Parse(typeof(NODE_STATUS), nodeData.status))
+        switch (status)
         {
             case NODE_STATUS.disabled:
-                this.nodeClickDisabled = true;
+                nodeClickDisabled = true;
                 break;
             case NODE_STATUS.completed:
                 indexColor = Color.red;
-                this.nodeClickDisabled = true;
+                nodeClickDisabled = true;
                 break;
             case NODE_STATUS.active:
-                if (nodeData.type == NODE_TYPES.portal.ToString()) this.nodeClickDisabled = true;
+                if (type == NODE_TYPES.portal) nodeClickDisabled = true;
                 indexColor = Color.cyan;
                 break;
             case NODE_STATUS.available:
@@ -154,26 +170,31 @@ public class NodeData : MonoBehaviour
                 break;
         }
 
-        GetComponentInChildren<TextMeshPro>().SetText(nodeData.id.ToString());
-        GetComponentInChildren<TextMeshPro>().color = indexColor;
+        idText.SetText(id.ToString());
+        idText.color = indexColor;
+        idText.gameObject.SetActive(true);
     }
 
 
     // when we update the sprite shape, we pass it the node data for the exit node directly, because it needs three things from it
-    public void UpdateSpriteShape(NodeData exitNode)
+    public PathManager CreateSpriteShape(NodeData exitNode)
     {
         if (exitNode != null)
         {
             spriteShape = Instantiate(spriteShapePrefab, this.transform);
             // spriteShape.GetComponent<SpriteShapeController>().spline.SetPosition(4, spriteShape.transform.InverseTransformPoint(targetOb.transform.position));
-            spriteShape.GetComponent<PathManager>().Populate(exitNode, status);
+            PathManager path = spriteShape.GetComponent<PathManager>();
+            path.Populate(exitNode, status);
+            return path;
         }
+
+        return null;
     }
 
     private void OnConfirmRoyalHouse()
     {
-        GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);        
-    }  
+        GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);
+    }
 
     #region oldFunctions
 

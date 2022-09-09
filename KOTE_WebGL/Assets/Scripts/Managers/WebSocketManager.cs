@@ -15,24 +15,38 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_EXPEDITION_MAP = "ExpeditionMap";
     private const string WS_MESSAGE_PLAYER_STATE = "PlayerState";
     private const string WS_MESSAGE_INIT_COMBAT = "InitCombat";
+    private const string WS_MESSAGE_ENEMY_INTENTS = "EnemiesIntents";   
+    private const string WS_MESSAGE_PUT_DATA = "PutData";   
+
 
     //Websockets outgoing messages with callback
     private const string WS_MESSAGE_NODE_SELECTED = "NodeSelected";
     private const string WS_MESSAGE_CARD_PLAYED = "CardPlayed";
     private const string WS_MESSAGE_END_TURN = "EndTurn";
+    private const string WS_MESSAGE_REWARD_SELECTED = "RewardSelected";
+    /*private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
+    private const string WS_MESSAGE_GET_CARD_PILES = "GetCardPiles";
+    private const string WS_MESSAGE_GET_PLAYER_HEALTH = "GetPlayerHealth";
+    private const string WS_MESSAGE_GET_PLAYERS = "GetPlayers";
+    private const string WS_MESSAGE_GET_ENEMIES = "GetEnemies";*/
+    private const string WS_MESSAGE_GET_DATA = "GetData";
+    private const string WS_MESSAGE_CONTINUE_EXPEDITION = "ContinueExpedition";
 
-    // Start is called before the first frame update
+    private void Awake()
+    {
+        // Turns off non-exception logging when outside of development enviroment
+        // Also seen in SWSM_Parser.cs
+        #if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
+            Debug.unityLogger.filterLogType = LogType.Exception;
+        #endif
+    }
+
     void Start()
     {
-        //events
-        GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnNodeClicked);
-        GameManager.Instance.EVENT_CARD_PLAYED.AddListener(OnCardPlayed);
-        GameManager.Instance.EVENT_END_TURN_CLICKED.AddListener(OnEndTurn);
-
         options = new SocketOptions();
         ConnectSocket(); //Disabled connection until actual implementation
-      
     }
+
 
     /// <summary>
     /// 
@@ -40,28 +54,55 @@ public class WebSocketManager : MonoBehaviour
     void ConnectSocket()
     {
         //BestHTTP.HTTPManager.UseAlternateSSLDefaultValue = true; 
-       
+
         string token = PlayerPrefs.GetString("session_token");
 
-        Debug.Log("Connecting socket using token: " + token);
+       // Debug.Log("Connecting socket using token: " + token);
 
         SocketOptions options = new SocketOptions();
-      //  options.AutoConnect = false;
-        options.HTTPRequestCustomizationCallback = (manager, request) =>
+        //  options.AutoConnect = false;
+        options.HTTPRequestCustomizationCallback = (manager, request) => { request.AddHeader("Authorization", token); };
+
+        // determine the correct server the client is running on
+        string hostName = Application.absoluteURL;
+        string uriStr = "https://api.dev.kote.robotseamonster.com";
+        //string uriStr = "https://api.alpha.knightsoftheether.com:443";
+
+        if (hostName.IndexOf("alpha") > -1) { uriStr = "https://api.alpha.knightsoftheether.com:443"; }
+        if (hostName.IndexOf("stage") > -1) { uriStr = "https://api.stage.kote.robotseamonster.com"; }
+        if (hostName.IndexOf("dev") > -1) { uriStr = "https://api.dev.kote.robotseamonster.com"; }
+
+
+
+        /*string[] splitURL = hostURL.Split('.');
+        string uriStr = "https://api.dev.kote.robotseamonster.com";
+        if ( splitURL.Length > 1)//this will fail for localhost
         {
-            request.AddHeader("Authorization",token);
-        };
+            switch (splitURL[1])
+            {
+                case "dev":
+                    uriStr = "https://api.dev.kote.robotseamonster.com";
+                    break;
+                case "stage":
+                    uriStr = "https://api.stage.kote.robotseamonster.com";
+                    break;
+                case "alpha":
+                    uriStr = "https://api.alpha.knightsoftheether.com:443";
+                    break;
+                default:
+                    uriStr = "https://api.stage.kote.robotseamonster.com";
+                    break;
+            }
+        }*/
 
-        //string uriStr = "https://45.33.0.125:8443";
-        //string uriStr = "https://delcasda.com:8443";
-        //string uriStr = "https://delcasda.com:8888";
+        // default to the stage server if running from the unity editor
+        #if UNITY_EDITOR
+        uriStr = "https://api.dev.kote.robotseamonster.com";
+        #endif
 
-         string uriStr = "https://api.dev.kote.robotseamonster.com:443";
-        /*
- #if UNITY_EDITOR
+        PlayerPrefs.SetString("ws_url", uriStr);
+        Debug.Log("Connecting to "+uriStr);
 
-         uriStr = "wss://api.game.kote.robotseamonster.com:7777";
- #endif*/
         manager = new SocketManager(new Uri(uriStr), options);
 
         rootSocket = manager.Socket;
@@ -75,11 +116,13 @@ public class WebSocketManager : MonoBehaviour
         rootSocket.On<string>(WS_MESSAGE_EXPEDITION_MAP, GenericParser);
         rootSocket.On<string>(WS_MESSAGE_PLAYER_STATE, GenericParser);
         rootSocket.On<string>(WS_MESSAGE_INIT_COMBAT, GenericParser);
-      
-        //  manager.Open();
-  
-    }
+        //rootSocket.On<string>(WS_MESSAGE_ENEMY_INTENTS, GenericParser);
+        rootSocket.On<string>(WS_MESSAGE_PUT_DATA, GenericParser);
 
+
+        //  manager.Open();
+    }
+    #region
     private void GenericParser(string data)
     {
         SWSM_Parser.ParseJSON(data);
@@ -92,8 +135,16 @@ public class WebSocketManager : MonoBehaviour
 
     void OnConnected(ConnectResponse resp)
     {
-        Debug.Log("Websocket Connected sucessfully!");
+        Debug.Log("Websocket Connected sucessfully! Setting listeners" );
+        //events
+        GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnNodeClicked);
+        GameManager.Instance.EVENT_CARD_PLAYED.AddListener(OnCardPlayed);
+        GameManager.Instance.EVENT_END_TURN_CLICKED.AddListener(OnEndTurn);
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener(OnGenericWSDataRequest);
+        GameManager.Instance.EVENT_REWARD_SELECTED.AddListener(OnRewardSelected);
+        GameManager.Instance.EVENT_CONTINUE_EXPEDITION.AddListener(OnContinueExpedition);
 
+        GameManager.Instance.EVENT_WS_CONNECTED.Invoke();
     }
 
     void OnError(Error resp)
@@ -110,7 +161,6 @@ public class WebSocketManager : MonoBehaviour
     /// </summary>
     /// <param name="data"></param>
     /// 
-
     private void OnNodeClicked(int nodeId)
     {
         Debug.Log("Sending message NodeSelected with node id " + nodeId);
@@ -129,6 +179,7 @@ public class WebSocketManager : MonoBehaviour
     {
         //NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
         //GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState,WS_QUERY_TYPE.MAP_NODE_SELECTED);
+        
         SWSM_Parser.ParseJSON(data);
 
         //Debug.Log("OnNodeClickedAnswer: " + nodeState);
@@ -149,46 +200,34 @@ public class WebSocketManager : MonoBehaviour
         Debug.Log("Data from OnExpeditionMap: " + data);
         // GameManager.Instance.EVENT_MAP_NODES_UPDATE.Invoke(data);
         SWSM_Parser.ParseJSON(data);
-
-      
     }
 
     void OnPlayerState(string data)
     {
-       
-        PlayerStateData playerState = JsonUtility.FromJson<PlayerStateData>(data);//TODO: move this to websocker manager
+        PlayerStateData playerState = JsonUtility.FromJson<PlayerStateData>(data); //TODO: move this to websocker manager
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.Invoke(playerState);
         Debug.Log("Data from OnPlayerState: " + playerState);
-
     }
 
-    private void OnCardPlayed(string cardId)
+    private void OnCardPlayed(string cardId, string id)//int enemyId)//TODO: enemyId will an array 
     {
+        CardPlayedData cardData = new CardPlayedData();
+        cardData.cardId = cardId;
+        cardData.targetId = id;
 
-        CardPlayedData obj = new CardPlayedData();
-      //  obj.card_id = "87d501f6-0583-484c-bf1d-d09d822c68fa";
-        obj.card_id = cardId;
+        string data = JsonUtility.ToJson(cardData).ToString();
+        Debug.Log("[WebSocket Manager] OnCardPlayed data: " + data);
 
-        string data = JsonUtility.ToJson(obj).ToString();
-        Debug.Log("sending WS playedcard test=" + data);
-
-        rootSocket.ExpectAcknowledgement<string>(OnCardPlayedAnswer).Emit(WS_MESSAGE_CARD_PLAYED, data);
+        //rootSocket.ExpectAcknowledgement<string>(OnCardPlayedAnswer).Emit(WS_MESSAGE_CARD_PLAYED, data);
+        rootSocket.Emit(WS_MESSAGE_CARD_PLAYED, data);
 
     }
 
-    private void OnCardPlayedAnswer(string nodeData)
+    void OnRewardSelected(string rewardId)
     {
-        Debug.Log("on card played answer:" + nodeData);
-        if (MessageErrorValidator.ValidateData(nodeData))
-        {
-            NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
-            GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, WS_QUERY_TYPE.CARD_PLAYED);
-        }       
-
+        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_REWARD_SELECTED, rewardId);
     }
-
-    //END of Turn
-
+    
     private void OnEndTurn()
     {
         rootSocket.ExpectAcknowledgement<string>(OnEndOfTurnAnswer).Emit(WS_MESSAGE_END_TURN);
@@ -204,5 +243,16 @@ public class WebSocketManager : MonoBehaviour
         }
     }
 
+    private void OnContinueExpedition()
+    {
+        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_CONTINUE_EXPEDITION);
+    }
 
+    #endregion 
+
+    private void OnGenericWSDataRequest(WS_DATA_REQUEST_TYPES dataType)
+    {
+       // Debug.Log("[OnGenericWSDataRequest]"+ dataType.ToString());
+        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_GET_DATA,dataType.ToString());
+    }
 }
