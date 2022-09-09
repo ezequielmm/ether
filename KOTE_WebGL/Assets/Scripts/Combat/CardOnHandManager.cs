@@ -477,7 +477,7 @@ public class CardOnHandManager : MonoBehaviour
             var main = auraPS.main;
             main.startColor = greenColor;
             outlineMaterial = greenOutlineMaterial; //TODO:apply blue if card has a special condition
-            energyTF.color = new Color(1,1,1);
+            energyTF.color = Color.black;
             card_can_be_played = true;
             //Debug.Log($"[CardOnHandManager] [{thisCardValues.name}] Card is now playable {energy}/{thisCardValues.energy}");
         }
