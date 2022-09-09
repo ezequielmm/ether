@@ -17,7 +17,8 @@ public class TextEffectManager: MonoBehaviour
     Vector2 riseSpeed = new Vector2(1.7f, 2.3f);
     [SerializeField]
     float fadeTime = 0.8f;
-
+    [SerializeField]
+    float xSpread = 1;
 
     [SerializeField]
     int maxPoolCount = 10;
@@ -84,7 +85,7 @@ public class TextEffectManager: MonoBehaviour
         // Apply Animations
         textObj.SetActive(true);
 
-        textObj.transform.localPosition = Vector3.zero;
+        textObj.transform.localPosition = new Vector3(Random.Range(-xSpread, xSpread), 0, 0);
 
         StartCoroutine(DoTweenAnimations(textObj.transform, tmp));
     }

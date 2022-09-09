@@ -174,6 +174,10 @@ public class EnemyManager : MonoBehaviour
 
         // Negitive Deltas
         float waitDuration = 0;
+        if (target.defenseDelta < 0 || target.healthDelta < 0) {
+            GameManager.Instance.EVENT_DAMAGE.Invoke(target);
+        }
+
         if (target.defenseDelta < 0 && target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
         {
             // Play Armored Clang
