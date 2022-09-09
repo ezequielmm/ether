@@ -465,7 +465,7 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (cardActive && card_can_be_played && !Input.GetMouseButton(0))
+        if (cardActive && !Input.GetMouseButton(0))
         {
             // DOTween.PlayForward(this.gameObject);
             // GameManager.Instance.EVENT_CARD_MOUSE_ENTER.Invoke(thisCardValues.cardId);
@@ -484,14 +484,14 @@ public class CardOnHandManager : MonoBehaviour
 
     private void ShowUpCard()
     {
-        if (cardIsShowingUp || !card_can_be_played) return;
+        if (cardIsShowingUp) return;
 
         if (cardActive)
         {
             ResetCardPosition();
             DOTween.Kill(this.transform);
 
-            auraPS.Play();
+            if(card_can_be_played)auraPS.Play();
 
             cardIsShowingUp = true;
 
