@@ -59,6 +59,7 @@ GameObject:
   - component: {fileID: 3650832521303193249}
   - component: {fileID: 1732859673047892804}
   - component: {fileID: 7163704449398746698}
+  - component: {fileID: 4472547795592998214}
   m_Layer: 3
   m_Name: PathSpriteShape
   m_TagString: MapPath
@@ -210,6 +211,17 @@ MonoBehaviour:
   m_EnableTangents: 0
   m_GeometryCached: 0
   m_UTess2D: 0
+--- !u!210 &4472547795592998214
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1992627362201197450}
+  m_Enabled: 1
+  m_SortingLayerID: 1449054989
+  m_SortingLayer: 2
+  m_SortingOrder: 3
 --- !u!1 &3650786407163045951
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,6 +233,7 @@ GameObject:
   - component: {fileID: 6541499297258777630}
   - component: {fileID: 3768827974119833973}
   - component: {fileID: 1347162407067957254}
+  - component: {fileID: 7190183016438143824}
   m_Layer: 0
   m_Name: DottedLineSpriteShape
   m_TagString: Untagged
@@ -236,7 +249,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3650786407163045951}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4982565462928977029}
@@ -372,3 +385,14 @@ MonoBehaviour:
   m_EnableTangents: 0
   m_GeometryCached: 0
   m_UTess2D: 0
+--- !u!210 &7190183016438143824
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3650786407163045951}
+  m_Enabled: 1
+  m_SortingLayerID: 1449054989
+  m_SortingLayer: 2
+  m_SortingOrder: 4

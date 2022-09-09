@@ -38,6 +38,8 @@ public class TopBarManager : MonoBehaviour
         GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.AddListener(UpdateStageText);
         GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnPlayerAttacked);
 
+        // this has to be set here, as it is not visible in the inspector
+        nameText.maxVisibleLines = 2;
     }
 
     private void OnToggleMapIcon(bool arg0)
@@ -48,7 +50,7 @@ public class TopBarManager : MonoBehaviour
 
     private void UpdateStageText(int act, int step)
     {
-        stageText.SetText("Stage " + act + "-" + (step + 1));
+        stageText.SetText("STAGE " + act + "-" + (step + 1));
     }
 
     public void SetTextValues(string nameText, string classText, int health, int coins)

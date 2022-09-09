@@ -37,8 +37,12 @@ public class MainMenuManager : MonoBehaviour
         _hasExpedition = hasExpedition;
 
         textField?.SetText( hasExpedition? "RESUME" : "PLAY");
-        
+
+        playButton.gameObject.SetActive(true);
         newExpeditionButton.gameObject.SetActive(_hasExpedition);
+        treasuryButton.gameObject.SetActive(true);
+
+        
     }
 
     public void OnLoginSuccessful(string name, int fief)
@@ -46,7 +50,7 @@ public class MainMenuManager : MonoBehaviour
         nameText.text = name;
         moneyText.text = $"{fief} $fief";
 
-        TogglePreLoginStatus(false);
+        DeactivateMenuButtons();
     }
 
     public void OnLogoutSuccessful(string message)
@@ -68,6 +72,14 @@ public class MainMenuManager : MonoBehaviour
         nameButton.gameObject.SetActive(!preLoginStatus);
         fiefButton.gameObject.SetActive(!preLoginStatus);
         settingButton.gameObject.SetActive(!preLoginStatus);
+    }
+
+    private void DeactivateMenuButtons()
+    {
+        playButton.gameObject.SetActive(false);
+        newExpeditionButton.gameObject.SetActive(false);
+        registerButton.gameObject.SetActive(false);
+        loginButton.gameObject.SetActive(false);
     }
 
     public void OnRegisterButton()
@@ -105,7 +117,8 @@ public class MainMenuManager : MonoBehaviour
             {
                 GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(
                     "No Wallet connected, would you like to add one?",
-                    () => { GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.Invoke(true); },
+                    //() => { GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.Invoke(true); },                    
+                    () => { GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true); },//TODO:this button was disabled for the client Demo Sept 3 2022
                     () => { GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true); },
                     new []{"Manage Wallet", "Play Without Wallet"});
                 return;

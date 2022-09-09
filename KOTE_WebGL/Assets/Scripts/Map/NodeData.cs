@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -39,7 +40,9 @@ public class NodeData : MonoBehaviour
 
     public GameObject spriteShapePrefab;
     private GameObject spriteShape;
-
+    private GameObject activeIconImage;
+    private Vector3 originalScale;
+    
     #region UnityEventFunctions
 
     private void Awake()
@@ -47,6 +50,7 @@ public class NodeData : MonoBehaviour
         // the particleSystem's sorting layer has to be set manually, because the the settings in the component don't work
         availableParticleSystem.GetComponent<Renderer>().sortingLayerName = GameSettings.MAP_ELEMENTS_SORTING_LAYER_NAME;
         HideNode();
+        
     }
 
 
@@ -72,11 +76,17 @@ public class NodeData : MonoBehaviour
 
     private void OnMouseOver()
     {
+        if (status == NODE_STATUS.available || status == NODE_STATUS.active)
+        {
+            activeIconImage.transform.DOScale(new Vector3(originalScale.x * 1.2f, originalScale.y * 1.2f), 0.5f);
+        }
         GameManager.Instance.EVENT_MAP_NODE_MOUSE_OVER.Invoke(id);
     }
 
     private void OnMouseExit()
     {
+        activeIconImage.transform.DOScale(originalScale, 0.5f);
+
         GameManager.Instance.EVENT_MAP_NODE_MOUSE_OVER.Invoke(-1);
     }
 
@@ -97,6 +107,7 @@ public class NodeData : MonoBehaviour
         SelectNodeImage();
         UpdateNodeStatusVisuals();
     }
+  
 
     public void Populate(NodeDataHelper nodeData)
     {
@@ -123,6 +134,8 @@ public class NodeData : MonoBehaviour
         if (bgi.imageGo != null)
         {
             bgi.imageGo.SetActive(true);
+            activeIconImage = bgi.imageGo;
+            originalScale = bgi.imageGo.transform.localScale;
             if (status == NODE_STATUS.disabled)
             {
                 bgi.imageGo.GetComponent<SpriteRenderer>().material = grayscaleMaterial;
