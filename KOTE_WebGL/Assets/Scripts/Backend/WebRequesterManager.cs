@@ -27,31 +27,23 @@ public class WebRequesterManager : MonoBehaviour
     {
         // determine the correct server the client is running on
         string hostName = Application.absoluteURL;
+        Debug.Log("hostName:" + hostName);
+
         baseUrl = "https://gateway.dev.kote.robotseamonster.com";//make sure if anything fails we use DEV
+       // baseUrl = "https://gateway.alpha.knightsoftheether.com";//make sure if anything fails we use DEV
 
-        string[] splitURL = hostName.Split('.');
+        if (hostName.IndexOf("alpha") > -1) { baseUrl = "https://gateway.alpha.knightsoftheether.com"; }
+        if (hostName.IndexOf("stage") > -1) { baseUrl = "https://gateway.stage.kote.robotseamonster.com"; }
+        if (hostName.IndexOf("dev") > -1) { baseUrl = "https://gateway.dev.kote.robotseamonster.com"; }
 
-        if ( splitURL.Length > 1) // localhost url will fail this check as ther are no dots on it
-        {
-            switch (splitURL[1])
-            {
-                case "dev":
-                    baseUrl = "https://gateway.dev.kote.robotseamonster.com";
-                    break;
-                case "stage":
-                    baseUrl = "https://gateway.stage.kote.robotseamonster.com";
-                    break;
-                default:
-                    baseUrl = "https://gateway.dev.kote.robotseamonster.com";
-                    break;
-            }
-        }
 
         // default to the stage server if we're in the editor
         #if UNITY_EDITOR
         baseUrl = "https://gateway.dev.kote.robotseamonster.com";
         #endif
       
+        PlayerPrefs.SetString("api_url", baseUrl);
+
         Debug.Log("Base URL: " + baseUrl.ToString());
         PlayerPrefs.SetString("session_token", "");
         PlayerPrefs.Save();
@@ -188,6 +180,9 @@ public class WebRequesterManager : MonoBehaviour
     IEnumerator GetLogin(string email, string password)
     {
         string loginUrl = $"{baseUrl}{urlLogin}";
+
+        Debug.Log("Loing url:" + loginUrl);
+
         WWWForm form = new WWWForm();
         form.AddField("email", email);
         form.AddField("password", password);
@@ -213,7 +208,7 @@ public class WebRequesterManager : MonoBehaviour
 
     IEnumerator GetProfile(string token)
     {
-        Debug.Log("Getting profile with token " + token);
+       // Debug.Log("Getting profile with token " + token);
 
         string profileUrl = $"{baseUrl}{urlProfile}";
 
@@ -277,7 +272,7 @@ public class WebRequesterManager : MonoBehaviour
     {
         string token = PlayerPrefs.GetString("session_token");
 
-        Debug.Log("[RequestExpeditionStattus] with token " + token);
+        //Debug.Log("[RequestExpeditionStattus] with token " + token);
 
         string fullUrl = $"{baseUrl}{urlExpeditionStatus}";
         WWWForm form = new WWWForm();
@@ -287,7 +282,7 @@ public class WebRequesterManager : MonoBehaviour
         request.SetRequestHeader("Accept", "*/*");
         request.SetRequestHeader("Authorization", $"Bearer {token}");
 
-        Debug.Log(request.GetRequestHeader("Authorization"));
+       // Debug.Log(request.GetRequestHeader("Authorization"));
 
         yield return request.SendWebRequest();
 

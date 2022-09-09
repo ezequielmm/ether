@@ -13,6 +13,8 @@ public class LowerBarConrtroller : MonoBehaviour
     [SerializeField]
     private Transform statusManager;
 
+    // we need to track the entity type because the bar is flipped depending on if it's a player or enemy
+    public EntityType attachedEntity;
     public Size size = Size.medium;
     public bool run;
 
@@ -35,14 +37,24 @@ public class LowerBarConrtroller : MonoBehaviour
         float center = transform.position.x;
         float fullWidth = healthWidth + defenseWidth;
         float leftEdge = center - (fullWidth / 2);
+        float rightEdge = center + (fullWidth / 2);
         healthText.transform.position = new Vector3(leftEdge + defenseWidth + (healthWidth / 2),
             healthText.transform.position.y, healthText.transform.position.z);
 
         healthBar.transform.position = new Vector3(leftEdge + defenseWidth + (healthWidth/2),
             healthBar.transform.position.y, healthBar.transform.position.z);
 
-        DefenseIcon.transform.position = new Vector3(leftEdge + (defenseWidth / 2),
-            DefenseIcon.transform.position.y, DefenseIcon.transform.position.z);
+        switch (attachedEntity)
+        {
+            case EntityType.Player:
+                DefenseIcon.transform.position = new Vector3(rightEdge + (defenseWidth / 2),
+                    DefenseIcon.transform.position.y, DefenseIcon.transform.position.z);
+                break;
+            case EntityType.Enemy:
+                DefenseIcon.transform.position = new Vector3(leftEdge + (defenseWidth / 2),
+                    DefenseIcon.transform.position.y, DefenseIcon.transform.position.z);
+                break;
+        }
 
         statusManager.position = new Vector3(leftEdge + defenseWidth,
             statusManager.position.y, statusManager.position.z);

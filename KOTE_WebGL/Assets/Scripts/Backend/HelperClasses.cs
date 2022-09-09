@@ -309,7 +309,7 @@ public class Cards
     public List<Card> draw;
     public List<Card> hand;
     public List<Card> discard;
-    public List<Card> exhaust;
+    public List<Card> exhausted;
     public int energy;
     public int energy_max;
 }

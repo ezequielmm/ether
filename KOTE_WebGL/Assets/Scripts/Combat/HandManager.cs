@@ -118,7 +118,7 @@ public class HandManager : MonoBehaviour
             Invoke("OnDrawCards", 0.2f);
             return;
         }
-        Debug.Log($"[HandManager] draw.count: {cardPilesData.data.draw.Count} | hand.count: {cardPilesData.data.hand.Count} | discard.count: {cardPilesData.data.discard.Count} | exhaust.count: {cardPilesData.data.exhaust.Count}");
+        Debug.Log($"[HandManager] draw.count: {cardPilesData.data.draw.Count} | hand.count: {cardPilesData.data.hand.Count} | discard.count: {cardPilesData.data.discard.Count} | exhaust.count: {cardPilesData.data.exhausted.Count}");
         
         //Generate cards hand
         handDeck = new Deck();
@@ -131,7 +131,7 @@ public class HandManager : MonoBehaviour
         discardDeck.cards = cardPilesData.data.discard;
 
         exhaustDeck = new Deck();
-        exhaustDeck.cards = cardPilesData.data.exhaust;
+        exhaustDeck.cards = cardPilesData.data.exhausted;
 
         Vector3 spawnPosition = GameSettings.HAND_CARDS_GENERATION_POINT;
 
@@ -304,6 +304,6 @@ public class HandManager : MonoBehaviour
         discardDeck.cards = cardPilesData.data.discard;
 
         exhaustDeck = new Deck();
-        exhaustDeck.cards = cardPilesData.data.exhaust;
+        exhaustDeck.cards = cardPilesData.data.exhausted;
     }   
 }
