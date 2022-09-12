@@ -159,14 +159,24 @@ public class CardOnHandManager : MonoBehaviour
                 delay += 0.1f;
             }
 
+            if (!(origin == CARDS_POSITIONS_TYPES.draw && destination == CARDS_POSITIONS_TYPES.hand))
+            {
+                delayIndex = 0;
+            }
+            float internalDelay = 0;
+            if (delayIndex > 0) 
+            {
+                internalDelay += 1;
+            }
+
             if (inTransit)
             {
                 delay += 1.1f;
             }
 
-            if (delay > 0)
+            if (delay > 0 || delayIndex > 0)
             {
-                StartCoroutine(MoveAfterTime(delay, origin, destination));
+                StartCoroutine(MoveAfterTime(delay + (delayIndex * GameSettings.CARD_DRAW_SHOW_TIME) + internalDelay, origin, destination));
             }
             else
             {
@@ -271,6 +281,8 @@ public class CardOnHandManager : MonoBehaviour
       //  Debug.Log("[CardOnHandManager] MoveCard = " + originType + " to " + destinationType + "........card id: " +                  thisCardValues.id);
         movePs.Play();
 
+        Debug.Log("[CardOnHandManager] Card Is Now Moving");
+
         Vector3 origin = new Vector3();
         Vector3 destination = new Vector3();
 
@@ -317,6 +329,7 @@ public class CardOnHandManager : MonoBehaviour
                     break;
                 case CARDS_POSITIONS_TYPES.hand:
                     destination = pos;
+                    destination.z = GameSettings.HAND_CARD_SHOW_UP_Z;
                     activateCardAfterMove = true;
                     break;
                 case CARDS_POSITIONS_TYPES.exhaust:
@@ -347,7 +360,6 @@ public class CardOnHandManager : MonoBehaviour
         //cardActive = (originType == CARDS_POSITIONS_TYPES.draw && destinationType == CARDS_POSITIONS_TYPES.hand);
         //cardActive = activateCardAfterMove;
         cardActive = false;
-
         cardcontent.SetActive(true);
 
         if (delay > 0)
@@ -372,17 +384,44 @@ public class CardOnHandManager : MonoBehaviour
             transform.DOMove(destination, 1f).From(origin).SetEase(Ease.OutCirc);
             if (originType == CARDS_POSITIONS_TYPES.draw && destinationType == CARDS_POSITIONS_TYPES.hand)
             {
+                Debug.Log("[CardOnHandManager] Draw new card to hand.");
                 transform.localScale = Vector3.zero;
-                transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutElastic).OnComplete(OnMoveCompleted);
+                transform.DORotate(Vector3.zero, 1f);
+                transform.DOScale(Vector3.one * 1.5f, 1f).SetEase(Ease.OutElastic).OnComplete(OnMoveCompleted);
             }
             else
             {
                 transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InElastic).OnComplete(HideAndDeactivateCard);
             }
         }
-
-        //transform.DOPlay();
     }
+
+    IEnumerator ResetAfterTime(float seconds) 
+    {
+        yield return new WaitForSeconds(seconds);
+        inTransit = false;
+        cardActive = true;
+        ResetCardPosition();
+    }
+
+    public void TryResetPosition() 
+    {
+        if (inTransit)
+        {
+            StartCoroutine(TryResetAfterTime(0.25f));
+        }
+        else 
+        {
+            ResetCardPosition();
+        }
+    }
+
+    IEnumerator TryResetAfterTime(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        TryResetPosition();
+    }
+
 
     private void OnMoveCompleted()
     {
@@ -395,9 +434,13 @@ public class CardOnHandManager : MonoBehaviour
             GameManager.Instance.EVENT_CARD_DISABLED.Invoke(thisCardValues.id);
         }
 
-        if (activateCardAfterMove && transform.position.magnitude < 0.2f)
+
+        if (cardActive && ((Vector2)transform.position).magnitude < 0.5f) 
+            // if in the center of the screen
         {
-            ResetCardPosition();
+            inTransit = true;
+            cardActive = false;
+            StartCoroutine(ResetAfterTime(GameSettings.CARD_DRAW_SHOW_TIME));
         }
         if (cardActive)
         {
