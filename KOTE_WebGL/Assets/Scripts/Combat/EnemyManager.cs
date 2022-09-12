@@ -13,7 +13,7 @@ public class EnemyManager : MonoBehaviour
     public ParticleSystem explodePS;
     public Slider healthBar;
     public TMP_Text healthTF;
-    public TMP_Text defenseTF;
+    public DefenseController defenseController;
     public Transform TopBar;
     public Transform BottomBar;
 
@@ -230,7 +230,7 @@ public class EnemyManager : MonoBehaviour
         {
             value = enemyData.defense;
         }
-        defenseTF.SetText(value.ToString());
+        defenseController.Defense = value.Value;
     }
 
     private void Start()
