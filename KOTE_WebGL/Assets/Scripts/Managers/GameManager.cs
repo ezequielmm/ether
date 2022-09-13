@@ -150,8 +150,6 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_CARD_MOUSE_ENTER = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<string, Vector3> EVENT_CARD_SHOWING_UP = new UnityEvent<string, Vector3>();
     [HideInInspector] public UnityEvent<string> EVENT_CARD_MOUSE_EXIT = new UnityEvent<string>();
-    [HideInInspector] public UnityEvent<Vector3> EVENT_CARD_ACTIVATE_POINTER = new UnityEvent<Vector3>();
-    [HideInInspector] public UnityEvent<string> EVENT_CARD_DEACTIVATE_POINTER = new UnityEvent<string>();
     [HideInInspector] public UnityEvent EVENT_CARD_DRAW_CARDS = new UnityEvent();
     [HideInInspector] public UnityEvent<CardPiles> EVENT_CARDS_PILES_UPDATED = new UnityEvent<CardPiles>();
     [HideInInspector] public UnityEvent<CardToMoveData, float> EVENT_MOVE_CARD = new UnityEvent<CardToMoveData, float>();
@@ -188,10 +186,15 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_COMBAT_ORIGIN_CHANGE = new UnityEvent();
     [HideInInspector] public UnityEvent<StatusData> EVENT_UPDATE_STATUS_EFFECTS = new UnityEvent<StatusData>();
     [HideInInspector] public UnityEvent EVENT_CLEAR_TOOLTIPS = new UnityEvent();
+    [HideInInspector] public UnityEvent<bool> EVENT_TOGGLE_TOOLTIPS = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>  EVENT_SET_TOOLTIPS { get; } = 
         new UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>();
     [HideInInspector] public UnityEvent<string, int> EVENT_HEAL = new UnityEvent<string, int>(); // id, healed amount
-    
+
+    // pointer events
+    [HideInInspector] public UnityEvent<Vector3> EVENT_ACTIVATE_POINTER = new UnityEvent<Vector3>();
+    [HideInInspector] public UnityEvent<string> EVENT_DEACTIVATE_POINTER = new UnityEvent<string>();
+
     //Common events
     [HideInInspector]
     public UnityEvent<WS_DATA_REQUEST_TYPES> EVENT_GENERIC_WS_DATA = new UnityEvent<WS_DATA_REQUEST_TYPES>();
@@ -203,10 +206,6 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<EnemiesData> EVENT_UPDATE_ENEMIES = new UnityEvent<EnemiesData>();
     [HideInInspector] public UnityEvent<EnemyData> EVENT_UPDATE_ENEMY = new UnityEvent<EnemyData>();
     [HideInInspector] public UnityEvent<EnemyIntent> EVENT_UPDATE_INTENT = new UnityEvent<EnemyIntent>();
-
-    // Potion Events
-    [HideInInspector] public UnityEvent<Vector3> EVENT_POTION_ACTIVATE_POINTER = new UnityEvent<Vector3>();
-    [HideInInspector] public UnityEvent<string> EVENT_POTION_DEACTIVATE_POINTER = new UnityEvent<string>();
 
 
     // Audio Events

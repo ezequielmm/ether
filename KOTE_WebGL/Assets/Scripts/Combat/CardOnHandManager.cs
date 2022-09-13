@@ -658,7 +658,8 @@ public class CardOnHandManager : MonoBehaviour
         if (thisCardValues != null && thisCardValues.showPointer)
         {
             //show the pointer instead of following the mouse
-            GameManager.Instance.EVENT_CARD_ACTIVATE_POINTER.Invoke(transform.position);
+            GameManager.Instance.EVENT_ACTIVATE_POINTER.Invoke(transform.position);
+            GameManager.Instance.EVENT_TOGGLE_TOOLTIPS.Invoke(false);
 
             Vector3 showUpPosition = new Vector3(0, GameSettings.HAND_CARD_SHOW_UP_Y, GameSettings.HAND_CARD_SHOW_UP_Z);
             transform.DOMove(showUpPosition, GameSettings.HAND_CARD_SHOW_UP_TIME);
@@ -684,8 +685,9 @@ public class CardOnHandManager : MonoBehaviour
 
         if (thisCardValues.showPointer)
         {
-            GameManager.Instance.EVENT_CARD_DEACTIVATE_POINTER.Invoke(thisCardValues.id);
+            GameManager.Instance.EVENT_DEACTIVATE_POINTER.Invoke(thisCardValues.id);
         }
+        GameManager.Instance.EVENT_TOGGLE_TOOLTIPS.Invoke(true);
     }
 
     private void OnMouseUpAsButton()

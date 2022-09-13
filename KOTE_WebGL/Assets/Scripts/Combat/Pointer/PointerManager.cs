@@ -46,6 +46,9 @@ public class PointerManager : MonoBehaviour
         spline = PointerLine.spline;
         splinePointCount = spline.GetPointCount();
 
+        GameManager.Instance.EVENT_ACTIVATE_POINTER.AddListener(OnPointerActivated);
+        GameManager.Instance.EVENT_DEACTIVATE_POINTER.AddListener(OnPointerDeactivated);
+
         // get the starting points for each point on the spline to use as offsets and constants
         originalLinePositions = new Vector3[splinePointCount];
         originalLeftTangents = new Vector3[splinePointCount];

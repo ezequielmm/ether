@@ -53,12 +53,14 @@ public class Potion : MonoBehaviour
         Vector3 position = Camera.main.ScreenToWorldPoint(transform.position);
         position.z = 0;
 
-        GameManager.Instance.EVENT_POTION_ACTIVATE_POINTER.Invoke(position);
+        GameManager.Instance.EVENT_ACTIVATE_POINTER.Invoke(position);
+        GameManager.Instance.EVENT_TOGGLE_TOOLTIPS.Invoke(false);
     }
 
     public void DragEnd() 
     {
         Debug.LogWarning($"[Postion] Potion needs potion ID to use the potion.");
-        GameManager.Instance.EVENT_POTION_DEACTIVATE_POINTER.Invoke("PostionID");
+        GameManager.Instance.EVENT_DEACTIVATE_POINTER.Invoke("PostionID");
+        GameManager.Instance.EVENT_TOGGLE_TOOLTIPS.Invoke(true);
     }
 }
