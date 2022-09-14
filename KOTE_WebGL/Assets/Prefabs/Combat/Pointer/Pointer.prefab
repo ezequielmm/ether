@@ -309,6 +309,8 @@ GameObject:
   - component: {fileID: 4655554554404595761}
   - component: {fileID: 1279394200218346247}
   - component: {fileID: 2730846435352125365}
+  - component: {fileID: -1826921861866514804}
+  - component: {fileID: 5009873614831340183}
   m_Layer: 0
   m_Name: Pointer
   m_TagString: Untagged
@@ -346,17 +348,8 @@ MonoBehaviour:
   pointerContainer: {fileID: 437319140137559549}
   pointerTarget: {fileID: 4862351172721167495}
   PointerLine: {fileID: 10462258665108976}
-  overEnemy: 0
-  enemyData:
-    id: 
-    name: 
-    enemyId: 0
-    defense: 0
-    hpCurrent: 0
-    hpMax: 0
-    type: 
-    category: 
-    size: 
+  overTarget: 0
+  targetID: 
 --- !u!114 &2730846435352125365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,3 +364,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShrinkToDie: 1
   animationTime: 1
+  UnParent: 0
+--- !u!114 &-1826921861866514804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8863384649534652710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49fd11f7b20eb0045a03f8532bd99b61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5009873614831340183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8863384649534652710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2922c6a3f05916e44b6e7893fd140142, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -39,6 +39,28 @@ public class Act
 }
 
 [Serializable]
+public class TargetProfile
+{
+    /// <summary>
+    /// If the Players can be targeted
+    /// </summary>
+    public bool player;
+    /// <summary>
+    /// If the Enemies can be targeted
+    /// </summary>
+    public bool enemy;
+    /// <summary>
+    /// This is true if the target can not be specified. If so, when player or enemy
+    /// is true, that means that who may get targeted at random or as a whole.
+    /// </summary>
+    public bool notSpecified;
+    /// <summary>
+    /// A List of specific entities that can be targeted.
+    /// </summary>
+    public List<string> specificEntities = new List<string>();
+}
+
+[Serializable]
 public class Step
 {
     public List<NodeDataHelper> nodesData = new List<NodeDataHelper>();
