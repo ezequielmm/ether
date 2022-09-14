@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Linq;
 
 public class PointerCollisionChecker : MonoBehaviour
 {
@@ -11,10 +12,9 @@ public class PointerCollisionChecker : MonoBehaviour
     private Shader outlineShader;
     private Shader defaultShader;
 
-    private bool targetPlayer => pointerManager.targetPlayer;
-    private bool targetEnemy => pointerManager.targetEnemy;
+    private TargetProfile targetProfile => pointerManager.TargetProfile;
 
-    private bool OverTarget 
+    private bool OverTarget
     {
         get => pointerManager.overTarget;
         set => pointerManager.overTarget = value;
@@ -36,7 +36,7 @@ public class PointerCollisionChecker : MonoBehaviour
         defaultShader = Shader.Find("Spine/Skeleton");
     }
 
-    private void Highlight(GameObject obj) 
+    private void Highlight(GameObject obj)
     {
         renderer = obj.GetComponentInChildren<Renderer>();
         foreach (var material in renderer.materials)
@@ -45,7 +45,7 @@ public class PointerCollisionChecker : MonoBehaviour
         }
     }
 
-    private void RemoveHighlight(GameObject obj) 
+    private void RemoveHighlight(GameObject obj)
     {
         foreach (var material in renderer.materials)
         {
@@ -55,23 +55,32 @@ public class PointerCollisionChecker : MonoBehaviour
         renderer = null;
     }
 
-    private void Enter(GameObject obj) 
+    private void Enter(GameObject obj)
     {
         //Debug.Log("[Pointer] Enemy Enter");
-        lastOver = obj;
+        
 
         targetID = GetID(obj);
 
         if (targetID == null)
+        {
             return;
+        }
 
+        if (!IsAllowedEntity(obj.tag, targetID)) 
+        {
+            targetID = null;
+            return;
+        }
+
+        lastOver = obj;
         OverTarget = true;
 
         // highlight
         Highlight(obj);
     }
 
-    private void Exit(GameObject obj) 
+    private void Exit(GameObject obj)
     {
         //Debug.Log("[Pointer] Enemy Exit");
         OverTarget = false;
@@ -81,10 +90,27 @@ public class PointerCollisionChecker : MonoBehaviour
         lastOver = null;
     }
 
+    private bool IsAllowedEntity(string tag, string id) 
+    {
+        if (targetProfile.specificEntities.Contains(id)) 
+        {
+            return true;
+        }
+        if (tag == "Player" && targetProfile.player)
+        {
+            return true;
+        }
+        if(tag == "Enemy" && targetProfile.enemy) 
+        {
+            return true;
+        }
+        return false;
+    }
+
     private string GetID(GameObject other) 
     {
         string id = null;
-        if (targetEnemy) 
+        if (other.tag == "Enemy") 
         {
             var enemy = other.GetComponentInParent<EnemyManager>();
             if (enemy != null) 
@@ -92,7 +118,7 @@ public class PointerCollisionChecker : MonoBehaviour
                 id = enemy.EnemyData.id;
             }
         }
-        if (targetPlayer) 
+        if (other.tag == "Player") 
         {
             var player = other.GetComponentInParent<PlayerManager>();
             if (player != null)
@@ -128,13 +154,13 @@ public class PointerCollisionChecker : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
         bool isOver = false;
-        if (collision != null && targetEnemy && collision.gameObject.CompareTag("Enemy"))
+        if (collision != null && collision.gameObject.CompareTag("Enemy"))
         {
             var other = collision.gameObject.GetComponentInParent<EnemyManager>();
             if (other != null)
                 isOver = true;
         } 
-        else if (collision != null && targetPlayer && collision.gameObject.CompareTag("Player"))
+        else if (collision != null && collision.gameObject.CompareTag("Player"))
         {
             var other = collision.gameObject.GetComponentInParent<PlayerManager>();
             if (other != null)

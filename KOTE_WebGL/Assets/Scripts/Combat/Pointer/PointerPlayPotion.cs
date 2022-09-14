@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class PointerPlayPotion : MonoBehaviour, IPointerRunable
 {
+    public PointerOrigin PointerType => PointerOrigin.potion;
+
     public void OnCancel()
     {
+        // Temp Audio
         GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Cancel");
     }
 
     public void OnSelect()
     {
+        // Temp Audio
         GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Play");
     }
 

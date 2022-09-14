@@ -11,8 +11,8 @@ public class PointerManager : MonoBehaviour
     public GameObject pointerTarget;
     public SpriteShapeController PointerLine;
 
-    public bool targetPlayer;
-    public bool targetEnemy;
+    [SerializeField]
+    public TargetProfile TargetProfile { get; private set; }
 
     private Spline spline;
     private Vector3[] originalLinePositions; // we need to store the original locations so we can use them as constants
@@ -25,6 +25,7 @@ public class PointerManager : MonoBehaviour
 
     bool pointerActive;
 
+    IPointerRunable activePointer;
     private List<IPointerRunable> runables;
 
     private void OnEnable()
@@ -62,8 +63,12 @@ public class PointerManager : MonoBehaviour
     }
 
 
-    public void OnPointerActivated(Vector3 pointerOrigin)
+    public void OnPointerActivated(PointerData data)
     {
+        Vector3 pointerOrigin = data.Origin;
+
+        TargetProfile = data.Targets;
+
         pointerContainer.SetActive(true);
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
@@ -84,13 +89,28 @@ public class PointerManager : MonoBehaviour
         pointerTarget.transform.position = arrowPosition;
         RotateArrowTowardsMouse(mousePosition, pointerOrigin);
 
+        // Find which runable to use
+        activePointer = null;
+        foreach (var pointer in runables) 
+        {
+            if (pointer.PointerType == data.Type) 
+            {
+                activePointer = pointer;
+                break;
+            }
+        }
+        if (activePointer == null) 
+        {
+            Debug.LogError($"[PointerManager] Can not find run data for pointer type '${data.Type}'.");
+            OnPointerDeactivated("");
+            return;
+        }
+
+
         // Play Card Play sound
         if (!pointerActive)
         {
-            foreach (var runable in runables)
-            {
-                runable.OnSelect();
-            }
+            activePointer.OnSelect();
             pointerActive = true;
         }
     }
@@ -100,18 +120,12 @@ public class PointerManager : MonoBehaviour
         //if the pointer is over an enemy, play the card
         if (overTarget)
         {
-            foreach (var runable in runables) 
-            {
-                runable.Run(originID, targetID);
-            }
+            activePointer.Run(originID, targetID);
         } 
         else if (pointerActive)
         {
             // Play Cancellation sound
-            foreach (var runable in runables)
-            {
-                runable.OnCancel();
-            }
+            activePointer.OnCancel();
         }
 
         if (pointerActive)

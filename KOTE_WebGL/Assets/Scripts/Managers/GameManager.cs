@@ -192,7 +192,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string, int> EVENT_HEAL = new UnityEvent<string, int>(); // id, healed amount
 
     // pointer events
-    [HideInInspector] public UnityEvent<Vector3> EVENT_ACTIVATE_POINTER = new UnityEvent<Vector3>();
+    [HideInInspector] public UnityEvent<PointerData> EVENT_ACTIVATE_POINTER { get; } = new UnityEvent<PointerData>();
     [HideInInspector] public UnityEvent<string> EVENT_DEACTIVATE_POINTER = new UnityEvent<string>();
 
     //Common events

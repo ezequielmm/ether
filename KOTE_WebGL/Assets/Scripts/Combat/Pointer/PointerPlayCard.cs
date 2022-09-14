@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PointerPlayCard : MonoBehaviour, IPointerRunable
 {
+    public PointerOrigin PointerType => PointerOrigin.card;
+
     public void OnCancel()
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Cancel");
