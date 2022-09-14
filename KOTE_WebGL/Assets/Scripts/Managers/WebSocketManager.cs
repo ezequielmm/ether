@@ -5,7 +5,7 @@ using UnityEngine;
 using BestHTTP.SocketIO3;
 using BestHTTP.SocketIO3.Events;
 
-public class WebSocketManager : MonoBehaviour
+public class WebSocketManager : SingleTon<WebSocketManager>
 {
     SocketManager manager;
     SocketOptions options;
@@ -32,8 +32,9 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_GET_DATA = "GetData";
     private const string WS_MESSAGE_CONTINUE_EXPEDITION = "ContinueExpedition";
 
-    private void Awake()
+    protected override void Awake()
     {
+        // this is overriden because we don't want this destroying itself on load
         // Turns off non-exception logging when outside of development enviroment
         // Also seen in SWSM_Parser.cs
         #if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
@@ -43,8 +44,19 @@ public class WebSocketManager : MonoBehaviour
 
     void Start()
     {
-        options = new SocketOptions();
-        ConnectSocket(); //Disabled connection until actual implementation
+        // only connect the socket if an instance of this script doesn't already exist 
+        if (!DoesInstanceExist())
+        {
+            DontDestroyOnLoad(Instance);
+            options = new SocketOptions();
+            ConnectSocket();
+        }
+        
+        // if this isn't the existing instance, have it destroy itself
+        if (DoesInstanceExist() && Instance != this)
+        {
+            Destroy(gameObject);
+        }
     }
 
 
@@ -57,7 +69,7 @@ public class WebSocketManager : MonoBehaviour
 
         string token = PlayerPrefs.GetString("session_token");
 
-       // Debug.Log("Connecting socket using token: " + token);
+        // Debug.Log("Connecting socket using token: " + token);
 
         SocketOptions options = new SocketOptions();
         //  options.AutoConnect = false;
