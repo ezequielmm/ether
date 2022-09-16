@@ -72,7 +72,7 @@ public class NodeData : MonoBehaviour
             {
                 GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(id);
                 GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(act, step);
-                StopActiveAnimation();
+                StopActiveNodeAnimation();
             }
         }
     }
@@ -142,6 +142,7 @@ public class NodeData : MonoBehaviour
         {
             bgi.imageGo.SetActive(true);
             activeIconImage = bgi.imageGo;
+
             // resize the node depending on the status
             if (status == NODE_STATUS.disabled || status == NODE_STATUS.completed)
             {
@@ -200,7 +201,7 @@ public class NodeData : MonoBehaviour
             .SetLoops(-1, LoopType.Yoyo);
     }
 
-    private void StopActiveAnimation()
+    private void StopActiveNodeAnimation()
     {
         activeAnimation.Kill();
     }
