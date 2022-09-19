@@ -42,6 +42,8 @@ public class WebRequesterManager : MonoBehaviour
         baseUrl = "https://gateway.dev.kote.robotseamonster.com";
         #endif
       
+        PlayerPrefs.SetString("api_url", baseUrl);
+
         Debug.Log("Base URL: " + baseUrl.ToString());
         PlayerPrefs.SetString("session_token", "");
         PlayerPrefs.Save();

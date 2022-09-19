@@ -77,7 +77,7 @@ GameObject:
   - component: {fileID: 3616239051376822206}
   - component: {fileID: 2850202032046800962}
   m_Layer: 0
-  m_Name: StingFae
+  m_Name: StingFae2
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
