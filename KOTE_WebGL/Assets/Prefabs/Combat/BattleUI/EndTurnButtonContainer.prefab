@@ -195,10 +195,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5e3865f24ac0e140b45fde9a906f72f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShrinkToDie: 1
-  MoveToDie: 1
-  MoveMultipleOfSelf: 1
-  MoveBy: {x: 1.5, y: 0, z: 0}
-  animationTime: 1
-  UnParent: 0
-  statusToListenTo: 7
+  causesOfDeath:
+  - StatusToListenTo: 8
+    AnimationTime: 1
+    ShrinkToDie: 0
+    MoveToDie: 1
+    MoveBy: {x: 1, y: 0, z: 0}
+    MoveMultipleOfSelf: 1
+    UnParent: 0
+  - StatusToListenTo: 7
+    AnimationTime: 1
+    ShrinkToDie: 0
+    MoveToDie: 1
+    MoveBy: {x: 1, y: 0, z: 0}
+    MoveMultipleOfSelf: 1
+    UnParent: 0

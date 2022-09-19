@@ -5,21 +5,40 @@ using DG.Tweening;
 
 public class DestroyOnGameStatus : MonoBehaviour
 {
-    [Tooltip("Upon message, this object will shrink before destroying itself.")]
-    public bool ShrinkToDie = true;
-    [Tooltip("Upon message, this object will move by the provided position.")]
-    public bool MoveToDie = false;
-    [Tooltip("When true, the move will move by the item's width")]
-    public bool MoveMultipleOfSelf = false;
-    public Vector3 MoveBy;
+    public List<CauseOfDeath> causesOfDeath = new List<CauseOfDeath>();
 
-    [Tooltip("The time it takes to run an animation before destroying itself.")]
-    public float animationTime = 1f;
+    [System.Serializable]
+    public class CauseOfDeath 
+    {
+        [Header("Status")]
+        public GameStatuses StatusToListenTo = GameStatuses.GameOver;
 
-    [Tooltip("Unparents itself upon message.")]
-    public bool UnParent = false;
+        [Header("Death Length")]
+        [Tooltip("The time it takes to run an animation before destroying itself.")]
+        public float AnimationTime = 1f;
 
-    public GameStatuses statusToListenTo = GameStatuses.GameOver;
+        [Header("Shrink On Death")]
+        [Tooltip("Upon message, this object will shrink before destroying itself.")]
+        public bool ShrinkToDie = true;
+
+        [Header("Move On Death")]
+        [Tooltip("Upon message, this object will move by the provided position.")]
+        public bool MoveToDie = false;
+        [Tooltip("The vector to move by")]
+        public Vector3 MoveBy;
+        [Tooltip("When true, MoveBy will be multiplied by the item's width")]
+        public bool MoveMultipleOfSelf = false;
+
+        [Header("Make Component Global")]
+        [Tooltip("Unparents itself upon message.")]
+        public bool UnParent = false;
+
+        [Header("Don't Destroy")]
+        [Tooltip("If true, the item will only be disabled and will not be destroyed.")]
+        public bool DisableNotDestroy = false;
+    }
+
+    bool destroyCalled = false;
     private void Awake()
     {
         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(onGameChange);
@@ -27,48 +46,58 @@ public class DestroyOnGameStatus : MonoBehaviour
 
     void onGameChange(GameStatuses newState) 
     {
-        if (newState == statusToListenTo) 
+        foreach (CauseOfDeath death in causesOfDeath) 
         {
-            if (UnParent) 
+            if (newState == death.StatusToListenTo)
             {
-                transform.parent = null;
+                if (death.UnParent)
+                {
+                    transform.parent = null;
+                }
+                StartCoroutine(DestroySelf(death));
             }
-            StartCoroutine(DestroySelf());
         }
     }
 
-    IEnumerator DestroySelf() 
+    IEnumerator DestroySelf(CauseOfDeath death) 
     {
-        if (ShrinkToDie) 
+        if (death.ShrinkToDie) 
         {
-            transform.DOScale(Vector3.zero, animationTime);
+            transform.DOScale(Vector3.zero, death.AnimationTime).OnComplete(() => { Destroy(death.DisableNotDestroy); });
         }
 
-        if (MoveToDie) 
+        if (death.MoveToDie) 
         {
-            Vector3 moveAmount = MoveBy;
-            if (MoveMultipleOfSelf) 
+            Vector3 moveAmount = death.MoveBy;
+            if (death.MoveMultipleOfSelf) 
             {
                 var rectTrans = GetComponent<RectTransform>();
                 if (rectTrans != null) 
                 {
-                    moveAmount = new Vector3(MoveBy.x * rectTrans.rect.width, MoveBy.y * rectTrans.rect.height, MoveBy.z * 0);
+                    moveAmount = new Vector3(death.MoveBy.x * rectTrans.rect.width, death.MoveBy.y * rectTrans.rect.height, death.MoveBy.z * 0);
                 }
             }
-            transform.DOMove(transform.position + moveAmount, animationTime);
+            transform.DOMove(transform.position + moveAmount, death.AnimationTime).OnComplete(() => { Destroy(death.DisableNotDestroy); });
         }
 
-        if (animationTime <= 0) 
-        {
-            Destroy(gameObject);
-        }
+        yield return new WaitForSeconds(death.AnimationTime);
+        Destroy(death.DisableNotDestroy);
+    }
 
-        yield return new WaitForSeconds(animationTime);
-
-        if (animationTime > 0f)
+    void Destroy(bool DisableNotDestroy) 
+    {
+        if (!destroyCalled) 
         {
-            DOTween.Kill(transform);
-            Destroy(gameObject);
+            destroyCalled = true;
+            DOTween.Kill(gameObject);
+            if (!DisableNotDestroy)
+            {
+                Destroy(gameObject);
+            }
+            else 
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 }

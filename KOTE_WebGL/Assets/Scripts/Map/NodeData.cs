@@ -74,6 +74,11 @@ public class NodeData : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        DOTween.Kill(activeIconImage.transform);
+    }
+
     private void OnMouseOver()
     {
         if (status == NODE_STATUS.available || status == NODE_STATUS.active)

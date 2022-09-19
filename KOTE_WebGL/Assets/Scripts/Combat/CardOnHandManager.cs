@@ -110,7 +110,13 @@ public class CardOnHandManager : MonoBehaviour
         GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);
         GameManager.Instance.EVENT_CARD_CREATE.AddListener(OnCreateCard);
         var death = gameObject.AddComponent<DestroyOnGameStatus>();
-        death.UnParent = true;
+        death.causesOfDeath.Add(new DestroyOnGameStatus.CauseOfDeath() 
+        {
+            UnParent = true,
+            StatusToListenTo = GameStatuses.GameOver,
+            AnimationTime = 1f,
+            ShrinkToDie = true
+        });
     }
 
     private void OnCreateCard(string cardID)

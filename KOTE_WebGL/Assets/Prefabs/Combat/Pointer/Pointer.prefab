@@ -369,5 +369,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5e3865f24ac0e140b45fde9a906f72f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShrinkToDie: 1
-  animationTime: 1
+  causesOfDeath:
+  - StatusToListenTo: 8
+    AnimationTime: 1
+    ShrinkToDie: 1
+    MoveToDie: 0
+    MoveBy: {x: 0, y: 0, z: 0}
+    MoveMultipleOfSelf: 0
+    UnParent: 0
