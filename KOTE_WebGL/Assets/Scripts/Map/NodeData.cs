@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Spine.Unity.Editor;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -42,15 +43,16 @@ public class NodeData : MonoBehaviour
     private GameObject spriteShape;
     private GameObject activeIconImage;
     private Vector3 originalScale;
-    
+    private Tween activeAnimation;
+
     #region UnityEventFunctions
 
     private void Awake()
     {
         // the particleSystem's sorting layer has to be set manually, because the the settings in the component don't work
-        availableParticleSystem.GetComponent<Renderer>().sortingLayerName = GameSettings.MAP_ELEMENTS_SORTING_LAYER_NAME;
+        availableParticleSystem.GetComponent<Renderer>().sortingLayerName =
+            GameSettings.MAP_ELEMENTS_SORTING_LAYER_NAME;
         HideNode();
-        
     }
 
 
@@ -70,6 +72,7 @@ public class NodeData : MonoBehaviour
             {
                 GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(id);
                 GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(act, step);
+                StopActiveNodeAnimation();
             }
         }
     }
@@ -80,12 +83,16 @@ public class NodeData : MonoBehaviour
         {
             activeIconImage.transform.DOScale(new Vector3(originalScale.x * 1.2f, originalScale.y * 1.2f), 0.5f);
         }
+
         GameManager.Instance.EVENT_MAP_NODE_MOUSE_OVER.Invoke(id);
     }
 
     private void OnMouseExit()
     {
-        activeIconImage.transform.DOScale(originalScale, 0.5f);
+        if (status == NODE_STATUS.available || status == NODE_STATUS.active)
+        {
+            activeIconImage.transform.DOScale(originalScale, 0.5f);
+        }
 
         GameManager.Instance.EVENT_MAP_NODE_MOUSE_OVER.Invoke(-1);
     }
@@ -107,7 +114,7 @@ public class NodeData : MonoBehaviour
         SelectNodeImage();
         UpdateNodeStatusVisuals();
     }
-  
+
 
     public void Populate(NodeDataHelper nodeData)
     {
@@ -135,11 +142,23 @@ public class NodeData : MonoBehaviour
         {
             bgi.imageGo.SetActive(true);
             activeIconImage = bgi.imageGo;
-            originalScale = bgi.imageGo.transform.localScale;
-            if (status == NODE_STATUS.disabled)
+
+            // resize the node depending on the status
+            if (status == NODE_STATUS.disabled || status == NODE_STATUS.completed)
             {
-                bgi.imageGo.GetComponent<SpriteRenderer>().material = grayscaleMaterial;
+                bgi.imageGo.transform.localScale *= 0.5f;
+                if (GameSettings.COLOR_UNAVAILABLE_MAP_NODES == false)
+                {
+                    bgi.imageGo.GetComponent<SpriteRenderer>().material = grayscaleMaterial;
+                }
             }
+            else if (status == NODE_STATUS.active || status == NODE_STATUS.available)
+            {
+                bgi.imageGo.transform.localScale *= 0.85f;
+                PlayActiveNodeAnimation(bgi.imageGo);
+            }
+
+            originalScale = bgi.imageGo.transform.localScale;
         }
         else
         {
@@ -173,6 +192,18 @@ public class NodeData : MonoBehaviour
         idText.SetText(id.ToString());
         idText.color = indexColor;
         idText.gameObject.SetActive(true);
+    }
+
+    private void PlayActiveNodeAnimation(GameObject backgroundImage)
+    {
+        activeAnimation = backgroundImage.transform.DOScale(backgroundImage.transform.localScale * 0.8f,
+                GameSettings.ACTIVE_NODE_PULSE_TIME)
+            .SetLoops(-1, LoopType.Yoyo);
+    }
+
+    private void StopActiveNodeAnimation()
+    {
+        activeAnimation.Kill();
     }
 
 

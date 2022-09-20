@@ -3,6 +3,7 @@ using UnityEngine;
 public static class GameSettings 
 {   
     //MAP
+    public const bool COLOR_UNAVAILABLE_MAP_NODES = true;
     public const float MAP_SPRITE_ELEMENTS_Z = -20f;
     public const float MAP_SPRITE_NODE_X_OFFSET = 4.5f;
     public const float MAP_SPRITE_NODE_X_OFFSET_RH = 8f;
@@ -20,6 +21,8 @@ public static class GameSettings
     public static float DOUBLE_CLICK_TIME_DELTA = 0.5f;
     public static float PORTAL_ACTIVATION_ANIMATION_TIME = 2;
     public static float MAP_STRETCH_LIMIT = 2f;
+    public const float ACTIVE_NODE_PULSE_TIME = 2f;
+    
     /// <summary>
     /// Negitive to go to the left, positive for the right. Between -1 and 1. -1 is left edge, 1 is right edge, and 0 is center.
     /// This affects where the knight is attepted to be put on the screen when focused.
