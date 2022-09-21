@@ -9,19 +9,19 @@ public class TextEffectManager: MonoBehaviour
     GameObject textPrefab;
 
     [SerializeField]
-    public Color textColor = Color.green;
+    public Color textColor = GameSettings.DEFAUT_TEXTEFFECT_COLOR;
 
     [SerializeField]
-    float riseHeight = 1f;
+    float riseHeight = GameSettings.DEFAUT_TEXTEFFECT_RISE_HEIGHT;
     [SerializeField]
-    Vector2 riseSpeed = new Vector2(1.7f, 2.3f);
+    Vector2 riseSpeed = GameSettings.DEFAUT_TEXTEFFECT_RISE_SPEED;
     [SerializeField]
-    float fadeTime = 0.8f;
+    float fadeTime = GameSettings.DEFAUT_TEXTEFFECT_FADE_TIME;
     [SerializeField]
-    float xSpread = 1;
+    float xSpread = GameSettings.DEFAUT_TEXTEFFECT_X_SPREAD;
 
     [SerializeField]
-    int maxPoolCount = 10;
+    int maxPoolCount = GameSettings.DEFAUT_TEXTEFFECT_POOL_SIZE;
     int poolIndex;
 
     [SerializeField]

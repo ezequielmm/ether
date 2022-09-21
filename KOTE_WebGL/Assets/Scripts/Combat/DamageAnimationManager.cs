@@ -24,7 +24,12 @@ public class DamageAnimationManager : MonoBehaviour
 
     void Start()
     {
-        entityId = transform.parent.gameObject.GetComponentInParent<EnemyManager>()?.EnemyData?.id ?? "player"; // transform.parent.gameObject.GetComponentInChildren<PlayerManager>()?.PlayerData.id;
+        entityId = Utils.FindEntityId(gameObject);
+
+        if (entityId == "unknown")
+        {
+            Debug.LogError($"[DamageAnimationManager] An enemy/player could not be found. This is on the [{gameObject.name}] object which is a child of [{transform.parent.name}].");
+        }
 
         GameManager.Instance.EVENT_DAMAGE.AddListener(onDamage);
     }
