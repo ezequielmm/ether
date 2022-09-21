@@ -91,3 +91,6 @@ MonoBehaviour:
   - name: Dodge
     clips:
     - {fileID: 8300000, guid: 9484701aefd524946b18372f573b2d16, type: 3}
+  - name: Coin Reward
+    clips:
+    - {fileID: 8300000, guid: c2aef986739a67946926c274ecd398fb, type: 3}

@@ -90,6 +90,7 @@ public class RewardsPanelManager : MonoBehaviour
         {
             case RewardItemType.gold:
                 goldEffect.Play();
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Coin Reward");
                 break;
         }
     }
