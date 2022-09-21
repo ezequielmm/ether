@@ -9,12 +9,14 @@ using Random = UnityEngine.Random;
 public class RewardsPanelManager : MonoBehaviour
 {
     public GameObject rewardsContainer, rewardsGivenContainer, chooseCardsContainer;
+    public ParticleSystem goldEffect;
 
     [Space(20)] public GameObject rewardItemPrefab;
 
     public GameObject rewardsContent;
     public TMP_Text buttonText;
     private List<RewardItem> _rewardItems;
+    private int previousRewardsLength;
     private void Start()
     {
         GameManager.Instance.EVENT_CARDS_REWARDPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerChooseCardsPanel);
@@ -35,7 +37,7 @@ public class RewardsPanelManager : MonoBehaviour
             // else add it to the list
             GameObject currentReward = Instantiate(rewardItemPrefab, rewardsContent.transform);
             RewardItem reward = currentReward.GetComponent<RewardItem>();
-            reward.PopulateRewardItem(rewardItem);
+            reward.PopulateRewardItem(rewardItem, PlayRewardsEffect);
             _rewardItems.Add(reward);
             rewardsRemaining = true;
         }
@@ -80,5 +82,15 @@ public class RewardsPanelManager : MonoBehaviour
     public void OnRewardsButtonClicked()
     {
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
+    }
+
+    private void PlayRewardsEffect(RewardItemType rewardType)
+    {
+        switch (rewardType)
+        {
+            case RewardItemType.gold:
+                goldEffect.Play();
+                break;
+        }
     }
 }

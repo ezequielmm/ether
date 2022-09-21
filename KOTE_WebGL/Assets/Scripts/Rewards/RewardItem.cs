@@ -10,10 +10,13 @@ public class RewardItem : MonoBehaviour
 {
     public TMP_Text rewardText;
     public RewardItemType rewardItemType;
-    private RewardItemData rewardData;    
+    private RewardItemData rewardData;
+    // the effect gets passed in from the panel so it persists
+    private Action<RewardItemType> onRewardSelected;
 
-    public void PopulateRewardItem(RewardItemData reward)
+    public void PopulateRewardItem(RewardItemData reward, Action<RewardItemType> onSelected)
     {
+        onRewardSelected = onSelected;
         rewardItemType = Utils.ParseEnum<RewardItemType>(reward.type);
         rewardData = reward;
         switch (rewardItemType)
@@ -38,6 +41,7 @@ public class RewardItem : MonoBehaviour
     public void OnRewardClaimed()
     {
         Debug.Log("onClickFired");
+        onRewardSelected.Invoke(rewardItemType);
         GameManager.Instance.EVENT_REWARD_SELECTED.Invoke(rewardData.id);
     }
 }

@@ -237,20 +237,23 @@ public class CardOnHandManager : MonoBehaviour
 
         currentPlayerEnergy = energy;
 
-        foreach (var status in card.properties.statuses)
+        if (card.properties.statuses != null)
         {
-            if (!string.IsNullOrEmpty(status.tooltip.title))
+            foreach (var status in card.properties.statuses)
             {
-                tooltips.Add(status.tooltip);
-            }
-            else
-            {
-                var description = status.args.description ?? "TODO // Add Description";
-                tooltips.Add(new Tooltip()
+                if (!string.IsNullOrEmpty(status.tooltip.title))
                 {
-                    title = Utils.PrettyText(status.name),
-                    description = description
-                });
+                    tooltips.Add(status.tooltip);
+                }
+                else
+                {
+                    var description = status.args.description ?? "TODO // Add Description";
+                    tooltips.Add(new Tooltip()
+                    {
+                        title = Utils.PrettyText(status.name),
+                        description = description
+                    });
+                }
             }
         }
 
