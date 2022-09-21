@@ -83,6 +83,8 @@ public class DebugManager : MonoBehaviour
                 break;
             case "quit":
             case "exit":
+            case "close":
+            case "close_console":
                 consoleContainer.SetActive(false);
                 break;
             case "enable_debug":
