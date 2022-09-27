@@ -155,4 +155,15 @@ public static class Utils
         action.Invoke();
         
     }
+
+    /// <summary>
+    /// Finds a Enemy/Player's UUID. Checks Parents then Checks Children. Unknown if not found.
+    /// </summary>
+    /// <param name="source">The gameobject to check</param>
+    /// <returns>A String UUID or "unknown"</returns>
+    public static string FindEntityId(GameObject source) 
+    {
+        return source.GetComponentInParent<EnemyManager>()?.EnemyData?.id ?? source.GetComponentInParent<PlayerManager>()?.PlayerData.id ??
+            source.GetComponentInChildren<EnemyManager>()?.EnemyData?.id ?? source.GetComponentInChildren<PlayerManager>()?.PlayerData.id ?? "unknown";
+    }
 }
