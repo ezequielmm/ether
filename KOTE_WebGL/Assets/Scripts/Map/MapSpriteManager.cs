@@ -596,7 +596,6 @@ namespace map
             Random.InitState(MapSeeds[0]);
             GeneratePathBackground();
 
-            Random.InitState(MapSeeds[1]);
             CurvePath();
 
             Random.InitState(MapSeeds[2]);
@@ -605,8 +604,10 @@ namespace map
 
         private void CurvePath()
         {
+            int i = 0;
             foreach (var splineRef in tileSplineRef.Values)
             {
+                Random.InitState(MapSeeds[1] + i++);
                 RunRandomCurve(splineRef);
                 splineRef.EnforceSplineMatch();
             }
@@ -735,6 +736,11 @@ namespace map
                             int randomTile = Random.Range(0, forestTiles.Length);
                             MapGrid.SetTile(tilePos, forestTiles[randomTile]);
                         }
+                    }
+                    else 
+                    {
+                        // Keep the ransomness consistant
+                        int randomNum = Random.Range(0, 2);
                     }
                 }
             }
