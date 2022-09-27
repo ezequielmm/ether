@@ -198,6 +198,12 @@ public enum EntityType
     Enemy
 }
 
+public enum PointerOrigin 
+{
+    potion,
+    card
+}
+
 [Serializable]
 public enum WS_DATA_REQUEST_TYPES
 {
