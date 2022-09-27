@@ -12,6 +12,11 @@ public class MetaMaskAdapter : MonoBehaviour
         mm = MetaMask.Instance;
     }
 
+    public bool HasMetamask() 
+    {
+        return mm.HasMetamask;
+    }
+
     public void RequestWallet() 
     {
         UnityEvent requestFail = new UnityEvent();
@@ -40,7 +45,7 @@ public class MetaMaskAdapter : MonoBehaviour
     }
     private void GetWalletSuccess(string wallet)
     {
-        Debug.LogError($"[MetaMaskAdapter] Got Wallet. [{wallet}]");
+        Debug.Log($"[MetaMaskAdapter] Got Wallet. [{wallet}]");
         GameManager.Instance.EVENT_NEW_WALLET.Invoke(wallet);
     }
 
@@ -50,7 +55,7 @@ public class MetaMaskAdapter : MonoBehaviour
     }
     private void SignSuccess(string result) 
     {
-        Debug.LogError($"[MetaMaskAdapter] Message Signed. [{result}]");
+        Debug.Log($"[MetaMaskAdapter] Message Signed. [{result}]");
         GameManager.Instance.EVENT_MESSAGE_SIGN.Invoke(result);
     }
 }

@@ -74,6 +74,12 @@ public class MetaMask : MonoBehaviour
         OnError?.Invoke();
         return;
 #endif
+        if (!HasMetamask)
+        {
+            Debug.LogError($"[MetaMask | {gameObject.name}] MetaMask is not found in the browser. Be sure to install it!");
+            OnError?.Invoke();
+            return;
+        }
         if (awaitingAccountDetails)
         {
             Debug.LogError($"[MetaMask | {gameObject.name}] Still waiting for user to give account info. Making multiple calls overrides the previous call.\n" +
@@ -100,6 +106,12 @@ public class MetaMask : MonoBehaviour
         OnError?.Invoke();
         return;
 #endif
+        if (!HasMetamask)
+        {
+            Debug.LogError($"[MetaMask | {gameObject.name}] MetaMask is not found in the browser. Be sure to install it!");
+            OnError?.Invoke();
+            return;
+        }
         if (SigningMessage)
         {
             Debug.LogError($"[MetaMask | {gameObject.name}] You need to wait for the previous message to be signed or to fail first. Check 'SingingMessage' to see if MetaMask is busy or not.");
@@ -145,7 +157,7 @@ public class MetaMask : MonoBehaviour
     {
         account = null;
         var error = GetRequestError(json);
-        Debug.LogError(error.ToString());
+        Debug.LogError($"[MetaMask] {error.ToString()}");
         accountSuccess = null;
         if (accountFail != null)
         {
@@ -172,7 +184,7 @@ public class MetaMask : MonoBehaviour
     private void MessageFail(string json)
     {
         var error = GetRequestError(json);
-        Debug.LogError(error.ToString());
+        Debug.LogError($"[MetaMask] {error.ToString()}");
         messageSuccess = null;
         if (messageFail != null)
         {
@@ -262,7 +274,7 @@ public class MetaMask : MonoBehaviour
 
         public override string ToString()
         {
-            return $"[{code}]: {message}";
+            return $"({code}): {message}";
         }
     }
 #endregion
