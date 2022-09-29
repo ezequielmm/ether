@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
-    public TMP_Text nameText, moneyText, koteLabel;
+    public TMP_Text nameText, moneyText;
     [Tooltip("the entire button panel's canvas group for controling them all")]
     public CanvasGroup buttonPanel;
     [Tooltip("Main menu buttons for individual control")]
@@ -53,9 +53,9 @@ public class MainMenuManager : MonoBehaviour
         DeactivateMenuButtons();
     }
 
+    // the main menu reloads whenever EVENT_REQUEST_LOGOUT_SUCCESSFUL is called, making this function unneeded?
     public void OnLogoutSuccessful(string message)
     {
-        //koteLabel.gameObject.SetActive(true);
         GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(false);
         TogglePreLoginStatus(true);
     }

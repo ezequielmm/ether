@@ -15,7 +15,7 @@ public class PracticeTests
     
     // A Test behaves as an ordinary method
     [Test]
-    public void PracticeTestsSimplePasses()
+    public void PracticeStandardTest()
     {
         // Use the Assert class to test conditions
         string result = Utils.FindEntityId(new GameObject());
@@ -25,7 +25,7 @@ public class PracticeTests
     // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
     // `yield return null;` to skip a frame.
     [UnityTest]
-    public IEnumerator PracticeTestsWithEnumeratorPasses()
+    public IEnumerator PracticeSceneLoadTest()
     {
         // Use the Assert class to test conditions.
         // Use yield to skip a frame.
