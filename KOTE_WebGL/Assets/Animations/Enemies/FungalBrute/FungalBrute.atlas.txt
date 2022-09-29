@@ -1,64 +1,69 @@
 FungalBrute.png
-size:4096,2048
+size:2048,2048
 filter:Linear,Linear
 pma:true
+scale:0.9
 Back-L antenna
-bounds:1878,883,369,102
+bounds:410,22,332,92
+rotate:180
 Back-R antenna
-bounds:1409,1467,534,194
-offsets:0,0,534,207
+bounds:1314,14,481,175
+offsets:0,0,481,186
 Base
-bounds:1825,82,498,303
+bounds:1304,168,448,273
 Front-L antenna
-bounds:2,21,228,615
-rotate:90
+bounds:1764,1182,205,553
 Front-R antenna
-bounds:1100,15,283,723
-rotate:90
+bounds:1619,1108,255,651
 Higher leg-R-B
-bounds:1428,987,478,449
-rotate:90
+bounds:1478,435,430,404
+rotate:180
 Higher leg-R-F
-bounds:881,1419,526,625
+bounds:2,805,473,562
+rotate:90
 Lower leg-L-B
-bounds:2286,665,320,308
-offsets:0,56,320,364
-rotate:90
+bounds:1025,84,288,278
+offsets:0,50,288,328
+rotate:180
 Lower leg-L-F
-bounds:1856,391,428,483
+bounds:713,297,385,435
 Lower leg-R-B
-bounds:1879,1096,364,369
+bounds:2,132,328,332
 Lower leg-R-F
-bounds:1390,387,464,470
+bounds:1061,440,418,423
+rotate:180
 MAIN BODY
-bounds:2,814,1230,877
-rotate:90
+bounds:2,1218,1107,789
 MS bottom left (low)
-bounds:2401,1022,170,131
+bounds:937,1292,153,118
 MS bottom-right
-bounds:2211,1512,386,241
+bounds:710,2,347,217
 MS middle-R
-bounds:1945,1543,264,118
+bounds:2,697,238,106
 MS top-left
-bounds:2198,1755,289,428
-rotate:90
+bounds:327,132,260,385
+rotate:270
 MS top-right
-bounds:915,300,473,557
-Mushroom bottom left (high)
-bounds:2245,987,154,166
-Neck
-bounds:1409,1663,787,381
-Tail
-bounds:619,2,479,247
-offsets:0,0,487,247
-Undercap
-bounds:1428,876,448,109
-offsets:1,1,451,111
-Upper leg-L-B
-bounds:2245,1155,355,301
+bounds:210,434,426,501
 rotate:90
+Mushroom bottom left (high)
+bounds:2,1858,139,149
+Neck
+bounds:1162,840,708,343
+rotate:180
+Tail
+bounds:1746,43,431,222
+offsets:0,0,438,222
+rotate:270
+Undercap
+bounds:2,30,406,100
+Upper leg-L-B
+bounds:1635,1736,319,271
 Upper leg-L-F
-bounds:881,859,545,558
+bounds:657,801,490,502
+rotate:90
 cap
-bounds:2,251,911,561
-offsets:1,1,913,563
+bounds:1110,1185,822,507
+rotate:90
+shadow
+bounds:2,1316,123,121
