@@ -2,68 +2,65 @@ FungalBrute.png
 size:2048,2048
 filter:Linear,Linear
 pma:true
-scale:0.9
+scale:0.8
 Back-L antenna
-bounds:410,22,332,92
-rotate:180
+bounds:1234,387,295,82
 Back-R antenna
-bounds:1314,14,481,175
-offsets:0,0,481,186
+bounds:429,2,427,155
+offsets:0,0,427,166
 Base
-bounds:1304,168,448,273
+bounds:877,296,398,242
 Front-L antenna
-bounds:1764,1182,205,553
+bounds:1862,1051,182,492
 Front-R antenna
-bounds:1619,1108,255,651
-Higher leg-R-B
-bounds:1478,435,430,404
-rotate:180
-Higher leg-R-F
-bounds:2,805,473,562
-rotate:90
-Lower leg-L-B
-bounds:1025,84,288,278
-offsets:0,50,288,328
-rotate:180
-Lower leg-L-F
-bounds:713,297,385,435
-Lower leg-R-B
-bounds:2,132,328,332
-Lower leg-R-F
-bounds:1061,440,418,423
-rotate:180
-MAIN BODY
-bounds:2,1218,1107,789
-MS bottom left (low)
-bounds:937,1292,153,118
-MS bottom-right
-bounds:710,2,347,217
-MS middle-R
-bounds:2,697,238,106
-MS top-left
-bounds:327,132,260,385
+bounds:947,164,226,578
 rotate:270
+Higher leg-R-B
+bounds:1566,262,382,359
+Higher leg-R-F
+bounds:1440,1043,421,500
+Lower leg-L-B
+bounds:1504,27,256,246
+offsets:0,45,256,291
+Lower leg-L-F
+bounds:386,216,342,386
+rotate:270
+Lower leg-R-B
+bounds:2,279,291,295
+Lower leg-R-F
+bounds:644,530,371,376
+MAIN BODY
+bounds:2,841,984,702
+MS bottom left (low)
+bounds:849,920,136,105
+MS bottom-right
+bounds:1049,19,309,193
+rotate:180
+MS middle-R
+bounds:2,885,211,94
+MS top-left
+bounds:2,60,231,342
+rotate:90
 MS top-right
-bounds:210,434,426,501
+bounds:1162,471,378,446
 rotate:90
 Mushroom bottom left (high)
-bounds:2,1858,139,149
+bounds:2,1410,123,133
 Neck
-bounds:1162,840,708,343
+bounds:2,557,630,305
 rotate:180
 Tail
-bounds:1746,43,431,222
-offsets:0,0,438,222
-rotate:270
+bounds:593,50,383,198
+offsets:0,0,390,198
 Undercap
-bounds:2,30,406,100
-Upper leg-L-B
-bounds:1635,1736,319,271
-Upper leg-L-F
-bounds:657,801,490,502
+bounds:1957,276,361,89
 rotate:90
+Upper leg-L-B
+bounds:1762,29,284,241
+Upper leg-L-F
+bounds:1610,624,436,446
 cap
-bounds:1110,1185,822,507
+bounds:987,813,730,450
 rotate:90
 shadow
-bounds:2,1316,123,121
+bounds:1439,954,110,107
