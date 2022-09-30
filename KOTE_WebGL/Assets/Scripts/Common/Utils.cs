@@ -12,7 +12,7 @@ public static class Utils
         string path = "Assets/Resources/" + fileName;
         //Read the text from directly from the test.txt file
         StreamReader reader = new StreamReader(path);
-        string result =reader.ReadToEnd();
+        string result = reader.ReadToEnd();
         reader.Close();
         return result;
     }
@@ -20,7 +20,7 @@ public static class Utils
     public static TEnum ParseEnum<TEnum>(string dataString) where TEnum : struct, Enum
     {
         TEnum parsedEnum;
-        
+
         bool parseSuccess = Enum.TryParse(dataString, out parsedEnum);
         if (parseSuccess) return parsedEnum;
         try
@@ -34,9 +34,10 @@ public static class Utils
             return default(TEnum);
         }
     }
-    
+
     // utility function to clean up an enum when we're going to display it to the player
-    public static string CapitalizeEveryWordOfEnum<T>(T inEnumValue){
+    public static string CapitalizeEveryWordOfEnum<T>(T inEnumValue)
+    {
         if (!inEnumValue.GetType().IsEnum)
         {
             throw new Exception("Input value is not an Enum");
@@ -51,6 +52,7 @@ public static class Utils
             string capitalizeWord = char.ToUpper(word[0]) + word.Substring(1);
             returnString += capitalizeWord + " ";
         }
+
         return returnString.Trim();
     }
 
@@ -81,27 +83,29 @@ public static class Utils
         Gizmos.DrawLine(BottomLeft, TopLeft);
     }
 
-    public static string PrettyText(string input) 
+    public static string PrettyText(string input)
     {
         StringBuilder sb = new StringBuilder();
         var charArr = input.ToCharArray();
-        for(int i = 0; i < charArr.Length; i++) 
+        for (int i = 0; i < charArr.Length; i++)
         {
             char c = charArr[i];
-            if (Char.IsUpper(c)) 
+            if (Char.IsUpper(c))
             {
                 sb.Append(" ");
             }
 
-            if (i == 0) 
+            if (i == 0)
             {
                 c = Char.ToUpper(c);
             }
+
             sb.Append(c);
         }
+
         return sb.ToString().Trim();
     }
-    
+
     public static float PixelToSceneSize(float pixelSize, int screenHeight = 1080)
     {
         float height = 2 * (Camera.main?.orthographicSize ?? 5f); // 10
@@ -109,7 +113,7 @@ public static class Utils
         return pixelSize * pixToScene;
     }
 
-    public static float GetSceneSize(Size size) 
+    public static float GetSceneSize(Size size)
     {
         switch (size)
         {
@@ -149,11 +153,10 @@ public static class Utils
         }
     }
 
-    public static IEnumerator RunAfterTime(Action action, float seconds) 
+    public static IEnumerator RunAfterTime(Action action, float seconds)
     {
         yield return new WaitForSeconds(seconds);
         action.Invoke();
-        
     }
 
     /// <summary>
@@ -161,9 +164,11 @@ public static class Utils
     /// </summary>
     /// <param name="source">The gameobject to check</param>
     /// <returns>A String UUID or "unknown"</returns>
-    public static string FindEntityId(GameObject source) 
+    public static string FindEntityId(GameObject source)
     {
-        return source.GetComponentInParent<EnemyManager>()?.EnemyData?.id ?? source.GetComponentInParent<PlayerManager>()?.PlayerData.id ??
-            source.GetComponentInChildren<EnemyManager>()?.EnemyData?.id ?? source.GetComponentInChildren<PlayerManager>()?.PlayerData.id ?? "unknown";
+        return source.GetComponentInParent<EnemyManager>()?.EnemyData?.id ??
+               source.GetComponentInParent<PlayerManager>()?.PlayerData?.id ??
+               source.GetComponentInChildren<EnemyManager>()?.EnemyData?.id ??
+               source.GetComponentInChildren<PlayerManager>()?.PlayerData?.id ?? "unknown";
     }
 }
