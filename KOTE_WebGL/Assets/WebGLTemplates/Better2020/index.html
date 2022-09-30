@@ -74,6 +74,9 @@
 #endif
      // loadingCover.style.display = "";
 
+      // The Unity Instance
+      var unity;
+      
       const script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
@@ -83,6 +86,7 @@
          // progressBarFull.style.width = `${100 * progress}%`;
         }).then((unityInstance) => {
          // loadingCover.style.display = "none";
+          unity = unityInstance;
           if (canFullscreen) {
             if (!hideFullScreenButton) {
               fullscreenButton.style.display = "";

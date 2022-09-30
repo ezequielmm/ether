@@ -42,15 +42,18 @@ namespace map
         public GameObject LeftButton;
         public GameObject RightScrollButton;
 
-        [Tooltip("The range of strength of the spine's knots")]
-        [Min(0f)]
+        [Tooltip("The range of strength of the spine's knots")] [Min(0f)]
         public Vector2 pathCurveStrengthRange;
+
         [Tooltip("The range of random angle fuzziness on each knot")]
         public Vector2 angleFuzziness;
+
         [Tooltip("The random position to add to a path")]
         public float pathPositionFuzziness;
+
         [Tooltip("The random distance between different column.")]
         public Vector2 columnFuzziness;
+
         public Camera mapCamera;
         public RenderTexture mapRenderTexture;
         private List<GameObject> hiddenMapItems;
@@ -75,14 +78,16 @@ namespace map
         Dictionary<Vector3Int, TileSplineRef> tileSplineRef = new Dictionary<Vector3Int, TileSplineRef>();
 
 
-        private class SplinePoint 
+        private class SplinePoint
         {
             public Vector3Int tileLoc;
             public Spline path;
             public Spline dash;
             public int index;
             public Transform pathTransform;
-            public SplinePoint(Vector3Int TileAddress, Spline PathSpline, Spline DashSpline, int Index, Transform transform)
+
+            public SplinePoint(Vector3Int TileAddress, Spline PathSpline, Spline DashSpline, int Index,
+                Transform transform)
             {
                 tileLoc = TileAddress;
                 path = PathSpline;
@@ -99,14 +104,14 @@ namespace map
             columnFuzziness = keepInRange(keepMinMax(columnFuzziness), 0, GameSettings.MAP_SPRITE_NODE_X_OFFSET);
         }
 
-        private Vector2 keepInRange(Vector2 value, float min, float max) 
+        private Vector2 keepInRange(Vector2 value, float min, float max)
         {
             value.x = Mathf.Clamp(value.x, min, max);
             value.y = Mathf.Clamp(value.y, min, max);
             return value;
         }
 
-        private Vector2 keepMinMax(Vector2 value) 
+        private Vector2 keepMinMax(Vector2 value)
         {
             if (value.x > value.y)
             {
@@ -116,8 +121,10 @@ namespace map
             {
                 value.x = value.y;
             }
+
             return value;
         }
+
         private void Awake()
         {
             hiddenMapItems = new List<GameObject>();
@@ -144,8 +151,9 @@ namespace map
             // the particleSystem's sorting layer has to be set manually, because the the settings in the component don't work
             portalAnimation.GetComponent<Renderer>().sortingLayerName = GameSettings.MAP_ELEMENTS_SORTING_LAYER_NAME;
 
-            MapSeeds = new List<int>() {
-                10,20,30,40,50,60
+            MapSeeds = new List<int>()
+            {
+                10, 20, 30, 40, 50, 60
             };
         }
 
@@ -306,27 +314,10 @@ namespace map
             StartCoroutine(Scroll());
         }
 
-        IEnumerator Scroll() 
+        IEnumerator Scroll()
         {
             yield return new WaitForSeconds(0.5f);
-            bool doBossScroll = true;
-            foreach (NodeData node in nodes.FindAll(
-                         x => x.type == NODE_TYPES.royal_house || x.type == NODE_TYPES.portal))
-            {
-                if (node.status == NODE_STATUS.active)
-                {
-                    doBossScroll = false;
-                }
-            }
-
-            if (doBossScroll && GetBossNode() != null)
-            {
-                ScrollFromBoss();
-            }
-            else
-            {
-                ScrollBackToPlayerIcon();
-            }
+            ScrollBackToPlayerIcon();
         }
 
         //we will get to this point once the backend give us the node data
@@ -359,7 +350,7 @@ namespace map
 
         #region generateMap
 
-        private IEnumerator GenerateMapImages() 
+        private IEnumerator GenerateMapImages()
         {
             yield return new WaitForEndOfFrame();
 
@@ -389,21 +380,24 @@ namespace map
             nodesHolder.transform.position = currentPosition;
 
             int imageCount = (int)Mathf.Ceil(bounds.size.x / width);
-            for (int i = 0; i < imageCount; i++) 
+            for (int i = 0; i < imageCount; i++)
             {
-                mapCamera.transform.position = new Vector3(nodesHolder.transform.position.x + (i * width), nodesHolder.transform.position.y, mapCamera.transform.position.z);
+                mapCamera.transform.position = new Vector3(nodesHolder.transform.position.x + (i * width),
+                    nodesHolder.transform.position.y, mapCamera.transform.position.z);
                 yield return new WaitForEndOfFrame();
                 var img = toTexture2D(mapRenderTexture);
                 GameObject imgObj = new GameObject();
-                imgObj.transform.position = new Vector3(nodesHolder.transform.position.x + (i * width), nodesHolder.transform.position.y, nodesHolder.transform.position.z - 15);
+                imgObj.transform.position = new Vector3(nodesHolder.transform.position.x + (i * width),
+                    nodesHolder.transform.position.y, nodesHolder.transform.position.z - 15);
                 imgObj.transform.SetParent(nodesHolder.transform);
                 imgObj.name = $"MapPathImage({i})";
                 imgObj.tag = "MapImage";
                 var sprite = imgObj.AddComponent<SpriteRenderer>();
-                
+
                 sprite.sortingLayerName = "MapElements";
                 sprite.sortingOrder = 1;
-                sprite.sprite = Sprite.Create(img, new Rect(0,0, mapRenderTexture.width, mapRenderTexture.height), Vector2.one * 0.5f);
+                sprite.sprite = Sprite.Create(img, new Rect(0, 0, mapRenderTexture.width, mapRenderTexture.height),
+                    Vector2.one * 0.5f);
                 sprite.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
 
                 // Scaling
@@ -415,7 +409,7 @@ namespace map
 
             GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(false);
 
-            foreach (var gameObj in GameObject.FindGameObjectsWithTag("MapPath")) 
+            foreach (var gameObj in GameObject.FindGameObjectsWithTag("MapPath"))
             {
                 gameObj.SetActive(false);
                 hiddenMapItems.Add(gameObj);
@@ -439,6 +433,7 @@ namespace map
             {
                 gameObj.SetActive(true);
             }
+
             hiddenMapItems.Clear();
 
             while (nodes.Count > 0)
@@ -527,10 +522,12 @@ namespace map
                         float columnRan = Random.Range(columnFuzziness.x, columnFuzziness.y);
 
                         // Set Cell's Position
-                        newNode.transform.localPosition = new Vector3(columnOffsetCounter + columnRan, yy, GameSettings.MAP_SPRITE_ELEMENTS_Z);
+                        newNode.transform.localPosition = new Vector3(columnOffsetCounter + columnRan, yy,
+                            GameSettings.MAP_SPRITE_ELEMENTS_Z);
 
                         // Snap cell to grid
-                        newNode.transform.position = MapGrid.layoutGrid.CellToWorld(MapGrid.layoutGrid.WorldToCell(newNode.transform.position));
+                        newNode.transform.position =
+                            MapGrid.layoutGrid.CellToWorld(MapGrid.layoutGrid.WorldToCell(newNode.transform.position));
 
 
                         newNode.GetComponent<NodeData>().Populate(nodeData);
@@ -597,7 +594,7 @@ namespace map
             GenerateMapBackground();
         }
 
-        private void CurvePath() 
+        private void CurvePath()
         {
             foreach (var splineRef in tileSplineRef.Values)
             {
@@ -630,8 +627,10 @@ namespace map
                 float angleRangeL = Random.Range(angleFuzziness.x, angleFuzziness.y);
                 float angleRangeR = Random.Range(angleFuzziness.x, angleFuzziness.y);
 
-                Vector3 rightPoint = masterNode.Transform.TransformPoint(masterNode.Spline.GetPosition(masterNode.Index + 1));
-                Vector3 leftPoint = masterNode.Transform.TransformPoint(masterNode.Spline.GetPosition(masterNode.Index - 1));
+                Vector3 rightPoint =
+                    masterNode.Transform.TransformPoint(masterNode.Spline.GetPosition(masterNode.Index + 1));
+                Vector3 leftPoint =
+                    masterNode.Transform.TransformPoint(masterNode.Spline.GetPosition(masterNode.Index - 1));
 
                 Vector3 leftTangent = (leftPoint - masterNode.Position).normalized;
                 Vector3 rightTangent = (rightPoint - masterNode.Position).normalized;
@@ -646,6 +645,7 @@ namespace map
                     {
                         rotationAmount = -rotationAmount;
                     }
+
                     leftTangent = Quaternion.Euler(0, 0, rotationAmount + angleRangeL) * averageDir;
                     rightTangent = Quaternion.Euler(0, 0, -rotationAmount + angleRangeR) * averageDir;
                 }
@@ -672,17 +672,22 @@ namespace map
                     if (first)
                     {
                         float angleRangeR = Random.Range(angleFuzziness.x, angleFuzziness.y);
-                        Vector3 rightPoint = splineData.Transform.TransformPoint(splineData.Spline.GetPosition(splineData.Index + 1));
+                        Vector3 rightPoint =
+                            splineData.Transform.TransformPoint(splineData.Spline.GetPosition(splineData.Index + 1));
                         float spineStrengthR = Random.Range(pathCurveStrengthRange.x, pathCurveStrengthRange.y);
-                        rightTangent = Quaternion.Euler(0, 0, angleRangeR) * (rightPoint - splineData.Position).normalized * spineStrengthR;
+                        rightTangent = Quaternion.Euler(0, 0, angleRangeR) *
+                                       (rightPoint - splineData.Position).normalized * spineStrengthR;
                     }
                     else
                     {
                         float angleRangeL = Random.Range(angleFuzziness.x, angleFuzziness.y);
-                        Vector3 leftPoint = splineData.Transform.TransformPoint(splineData.Spline.GetPosition(splineData.Index - 1));
+                        Vector3 leftPoint =
+                            splineData.Transform.TransformPoint(splineData.Spline.GetPosition(splineData.Index - 1));
                         float spineStrengthL = Random.Range(pathCurveStrengthRange.x, pathCurveStrengthRange.y);
-                        leftTangent = Quaternion.Euler(0, 0, angleRangeL) * (leftPoint - splineData.Position).normalized * spineStrengthL;
+                        leftTangent = Quaternion.Euler(0, 0, angleRangeL) *
+                                      (leftPoint - splineData.Position).normalized * spineStrengthL;
                     }
+
                     splineData.LeftTangent = leftTangent;
                     splineData.RightTangent = rightTangent;
                 }
@@ -704,7 +709,9 @@ namespace map
                     // randomly pick a tile type
                     int randomType = Random.Range(0, 2);
                     // we have to set the z to a constant, as for some reason you can two tiles in the same spot with different z levels
-                    Vector3Int tilePos = GetVectorWithZ(width, height); // new Vector3Int(width, height, (int)GameSettings.MAP_SPRITE_ELEMENTS_Z);
+                    Vector3Int
+                        tilePos = GetVectorWithZ(width,
+                            height); // new Vector3Int(width, height, (int)GameSettings.MAP_SPRITE_ELEMENTS_Z);
                     if (MapGrid.HasTile(tilePos) == false)
                     {
                         // pick a random tile of whatever type was selected
@@ -725,9 +732,13 @@ namespace map
         }
 
         private void GeneratePathBackground()
-        {//Generate the grass around the path and set up the path in the process
+        {
+            //Generate the grass around the path and set up the path in the process
             // Clear out path dictionary for generation
-            if (mapPaths != null) { mapPaths.Clear(); }
+            if (mapPaths != null)
+            {
+                mapPaths.Clear();
+            }
             else
             {
                 mapPaths = new Dictionary<Vector3Int, MapTilePath>();
@@ -743,17 +754,19 @@ namespace map
             foreach (PathManager path in pathManagers)
             {
                 Spline spline = path.pathController.spline;
-                for (int i = 1; i < spline.GetPointCount() - 1; i++) 
+                for (int i = 1; i < spline.GetPointCount() - 1; i++)
                 {
                     spline.RemovePointAt(i);
                 }
+
                 Vector3Int start = MapGrid.WorldToCell(path.transform.TransformPoint(spline.GetPosition(0)));
-                Vector3Int end = MapGrid.WorldToCell(path.transform.TransformPoint(spline.GetPosition(spline.GetPointCount() - 1)));
+                Vector3Int end =
+                    MapGrid.WorldToCell(path.transform.TransformPoint(spline.GetPosition(spline.GetPointCount() - 1)));
                 SnapPath(start, end, path);
             }
         }
 
-        private void SetNodeGrass(Vector3Int node) 
+        private void SetNodeGrass(Vector3Int node)
         {
             // we have to set the z to a constant, as for some reason you can two tiles in the same spot with different z levels
             node = GetVectorWithZ(node.x, node.y);
@@ -762,7 +775,7 @@ namespace map
             MapGrid.SetTile(node, grassTiles[randomTile]);
         }
 
-        private void SnapPath(Vector3Int start, Vector3Int end, PathManager path) 
+        private void SnapPath(Vector3Int start, Vector3Int end, PathManager path)
         {
             start.z = 0;
             end.z = 0;
@@ -785,12 +798,12 @@ namespace map
                 // Check if spline should be set here
                 bool lastNode = i == tilePath.Count() - 1;
                 bool setPath = true;
-                
+
                 if (tileSplineRef.ContainsKey(tile))
                 {
                     setPath = false;
                     // Check if this is the end of our path
-                    if (startSet) 
+                    if (startSet)
                     {
                         // This is end of the path
                         tileSplineRef[tile].AddChildSpline(new SplineData(spline, splineIndex, path.transform));
@@ -799,22 +812,28 @@ namespace map
                         endSet = true;
                     }
                 }
-                else 
+                else
                 {
                     // If start isn't set yet
-                    if (!startSet && i > 0) 
+                    if (!startSet && i > 0)
                     {
-                        Vector3 localTileCenter = path.transform.InverseTransformPoint(MapGrid.CellToWorld(tilePath[i-1]));
+                        Vector3 localTileCenter =
+                            path.transform.InverseTransformPoint(MapGrid.CellToWorld(tilePath[i - 1]));
                         bool lastSplineKnot = splineIndex == spline.GetPointCount() - 1;
                         bool addNode = lastSplineKnot;
                         if (!tileSplineRef.ContainsKey(tilePath[i - 1]))
                         {
-                            tileSplineRef.Add(tilePath[i - 1], new TileSplineRef(tilePath[i - 1], new SplineData(spline, splineIndex, path.transform)));
+                            tileSplineRef.Add(tilePath[i - 1],
+                                new TileSplineRef(tilePath[i - 1],
+                                    new SplineData(spline, splineIndex, path.transform)));
                         }
-                        else if (!tileSplineRef[tilePath[i - 1]].ContainsChild(new SplineData(spline, splineIndex, path.transform)))
+                        else if (!tileSplineRef[tilePath[i - 1]]
+                                     .ContainsChild(new SplineData(spline, splineIndex, path.transform)))
                         {
-                            tileSplineRef[tilePath[i - 1]].AddChildSpline(new SplineData(spline, splineIndex, path.transform));
+                            tileSplineRef[tilePath[i - 1]]
+                                .AddChildSpline(new SplineData(spline, splineIndex, path.transform));
                         }
+
                         if (addNode)
                         {
                             spline.InsertPointAt(splineIndex, localTileCenter);
@@ -823,6 +842,7 @@ namespace map
                         {
                             spline.SetPosition(splineIndex, localTileCenter);
                         }
+
                         splineIndex++;
                         startSet = true;
                     }
@@ -837,12 +857,14 @@ namespace map
                     bool addNode = lastSplineKnot && !lastNode;
                     if (!tileSplineRef.ContainsKey(tile))
                     {
-                        tileSplineRef.Add(tile, new TileSplineRef(tile, new SplineData(spline, splineIndex, path.transform)));
+                        tileSplineRef.Add(tile,
+                            new TileSplineRef(tile, new SplineData(spline, splineIndex, path.transform)));
                     }
-                    else if (!tileSplineRef[tile].ContainsChild(new SplineData(spline, splineIndex, path.transform))) 
+                    else if (!tileSplineRef[tile].ContainsChild(new SplineData(spline, splineIndex, path.transform)))
                     {
                         tileSplineRef[tile].AddChildSpline(new SplineData(spline, splineIndex, path.transform));
                     }
+
                     if (addNode)
                     {
                         spline.InsertPointAt(splineIndex, localTileCenter);
@@ -851,6 +873,7 @@ namespace map
                     {
                         spline.SetPosition(splineIndex, localTileCenter);
                     }
+
                     splineIndex++;
                 }
 
@@ -863,7 +886,7 @@ namespace map
                 {
                     allTiles.Add(tile, tileMap);
                 }
-                else 
+                else
                 {
                     tileMap = allTiles[tile];
                 }
@@ -872,6 +895,7 @@ namespace map
                 {
                     tileMap.CreateConnection(tilePath[i - 1], start);
                 }
+
                 if (i < tilePath.Count() - 1)
                 {
                     tileMap.CreateConnection(tilePath[i + 1], end);
@@ -883,7 +907,7 @@ namespace map
             spline = path.lineController.spline;
             Vector3Int current = start;
             bool lastnode = false;
-            while (!lastnode) 
+            while (!lastnode)
             {
                 lastnode = current == end;
                 if (tileSplineRef.ContainsKey(current))
@@ -892,7 +916,8 @@ namespace map
                 }
                 else
                 {
-                    tileSplineRef.Add(current, new TileSplineRef(current, new SplineData(spline, splineIndex, path.transform)));
+                    tileSplineRef.Add(current,
+                        new TileSplineRef(current, new SplineData(spline, splineIndex, path.transform)));
                 }
 
                 // Set spline to path
@@ -908,6 +933,7 @@ namespace map
                 {
                     spline.SetPosition(splineIndex, localTileCenter);
                 }
+
                 splineIndex++;
 
                 // Find next tile
@@ -923,11 +949,12 @@ namespace map
                         }
                     }
                 }
+
                 if (nextNode == current)
                 {
                     lastnode = true;
                 }
-                else 
+                else
                 {
                     current = nextNode;
                 }
@@ -1016,20 +1043,21 @@ namespace map
             }
         }
 
-        private bool isException(Vector3Int tile, Vector3Int start, Vector3Int end) 
+        private bool isException(Vector3Int tile, Vector3Int start, Vector3Int end)
         {
             if (allTiles.ContainsKey(tile))
             {
                 var con = allTiles[tile].Connections.FirstOrDefault(x => x.TargetNode == end || x.TargetNode == start);
-                if (con != null) 
+                if (con != null)
                 {
                     return true;
                 }
             }
+
             return false;
         }
 
-        private List<Vector3Int> FindPath(Vector3Int start, Vector3Int end) 
+        private List<Vector3Int> FindPath(Vector3Int start, Vector3Int end)
         {
             start.z = 0;
             end.z = 0;
@@ -1041,27 +1069,28 @@ namespace map
 
             AStarTile currentTile = null;
             // Run AStar
-            while (!found) 
+            while (!found)
             {
                 var orderedList = knownTiles.OrderBy(t => t.cost);
-                if (orderedList.Count() == 0) 
+                if (orderedList.Count() == 0)
                 {
                     return new List<Vector3Int>();
                 }
+
                 currentTile = orderedList.First();
 
                 if (currentTile.Position == end)
                 {
                     found = true;
                 }
-                else 
+                else
                 {
                     List<Vector3Int> ignore = new List<Vector3Int>();
                     List<Vector3Int> exception = new List<Vector3Int>();
 
-                    foreach(var neigh in currentTile.Neighbors)
+                    foreach (var neigh in currentTile.Neighbors)
                     {
-                        if (isException(neigh, start, end)) 
+                        if (isException(neigh, start, end))
                         {
                             exception.Add(neigh);
                         }
@@ -1070,19 +1099,21 @@ namespace map
                     ignore.AddRange(blockedTiles);
                     ignore.AddRange(knownTilesRaw);
                     var addedTiles = currentTile.CalculateNeighbors(ignore, exception);
-                    foreach (var tile in addedTiles) 
+                    foreach (var tile in addedTiles)
                     {
                         knownTiles.Add(tile);
                         knownTilesRaw.Add(tile.Position);
                     }
+
                     knownTiles.RemoveAt(0);
                 }
             }
+
             var lastTile = currentTile;
-            
+
             // Construct Path From Last Tile
             List<Vector3Int> path = new List<Vector3Int>();
-            while (lastTile != null) 
+            while (lastTile != null)
             {
                 path.Add(lastTile.Position);
                 lastTile = lastTile.Previous;
@@ -1292,7 +1323,7 @@ namespace map
             }
         }
 
-        private Vector3Int GetVectorWithZ(int x, int y) 
+        private Vector3Int GetVectorWithZ(int x, int y)
         {
             return new Vector3Int(x, y, (int)GameSettings.MAP_SPRITE_ELEMENTS_Z - 7 + y);
         }
