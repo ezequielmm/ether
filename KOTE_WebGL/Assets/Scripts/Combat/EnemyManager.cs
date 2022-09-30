@@ -13,7 +13,7 @@ public class EnemyManager : MonoBehaviour
     public ParticleSystem explodePS;
     public Slider healthBar;
     public TMP_Text healthTF;
-    public TMP_Text defenseTF;
+    public DefenseController defenseController;
     public Transform TopBar;
     public Transform BottomBar;
 
@@ -174,6 +174,10 @@ public class EnemyManager : MonoBehaviour
 
         // Negitive Deltas
         float waitDuration = 0;
+        if (target.defenseDelta < 0 || target.healthDelta < 0) {
+            GameManager.Instance.EVENT_DAMAGE.Invoke(target);
+        }
+
         if (target.defenseDelta < 0 && target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
         {
             // Play Armored Clang
@@ -226,7 +230,7 @@ public class EnemyManager : MonoBehaviour
         {
             value = enemyData.defense;
         }
-        defenseTF.SetText(value.ToString());
+        defenseController.Defense = value.Value;
     }
 
     private void Start()

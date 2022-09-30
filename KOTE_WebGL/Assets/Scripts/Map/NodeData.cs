@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
-using Spine.Unity.Editor;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
