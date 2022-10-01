@@ -138,6 +138,32 @@ public static class TestUtils
         return JsonUtility.ToJson(baseJson);
     }
 
+    public static string BuildTestCombatQueueData(string messageType, string action, int numberOfActions)
+    {
+        SWSM_CombatAction actionData = new SWSM_CombatAction
+        {
+            data = new SWSM_CombatAction.Data
+            {
+                action = action,
+                data = new List<CombatTurnData>(),
+                message_type = messageType
+            }
+        };
+        for (int i = 0; i < numberOfActions; i++)
+        {
+            actionData.data.data.Add(new CombatTurnData
+            {
+                attackId = new Guid(),
+                delay = 1,
+                originId = "",
+                originType = "",
+                targets = new List<CombatTurnData.Target>()
+            });
+        }
+
+        return JsonUtility.ToJson(actionData);
+    }
+
     [Serializable]
     public class SWSM_TestBase
     {

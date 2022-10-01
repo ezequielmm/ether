@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
@@ -138,6 +139,37 @@ public class SWSM_ParserTests
     }
 
     [Test]
+    public void DoesProcessCombatUpdateInvokeProcessCombatQueueEvents()
+    {
+        bool eventFired = false;
+        int firedCount = 0;
+        GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.AddListener((data) =>
+        {
+            eventFired = true;
+            firedCount++;
+        });
+        SWSM_Parser.ParseJSON(TestUtils.BuildTestCombatQueueData("combat_update", "combat_queue", 1));
+
+        Assert.AreEqual(true, eventFired);
+        Assert.AreEqual(1, firedCount);
+
+        // test for multple statuses
+        firedCount = 0;
+        eventFired = false;
+        SWSM_Parser.ParseJSON(TestUtils.BuildTestCombatQueueData("combat_update", "combat_queue", 15));
+        Assert.AreEqual(true, eventFired);
+        Assert.AreEqual(15, firedCount);
+    }
+    
+    [Test]
+    public void DoesProcessCombatUpdateLogErrorIfBadAction()
+    {
+        string data = TestUtils.BuildTestSwsmData("combat_update", "test");
+        SWSM_Parser.ParseJSON(data);
+        LogAssert.Expect(LogType.Log ,$"[SWSM Parser][Combat Update] Unknown Action \"test\". Data = {data}");
+    }
+
+    [Test]
     public void DoesProcessTreasureUpdateInvokeBeginTreasureEvents()
     {
         bool eventFired = false;
@@ -255,6 +287,15 @@ public class SWSM_ParserTests
         SWSM_Parser.ParseJSON(TestUtils.BuildTestEnemyIntentData("generic_data", "EnemyIntents", 3));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(3, eventCount);
+    }
+    
+    [Test]
+    public void DoesProcessGenericDataInvokeEnemyIntentsErrors()
+    {
+        //TODO discuss this, as this cannot happen with the code the way it is.
+        string data = TestUtils.BuildTestEnemyIntentData("generic_data", "EnemyIntents", 1);
+        SWSM_Parser.ParseJSON(data);
+        LogAssert.Expect(LogType.Log ,$"[SWSM Parser][Combat Update] Unknown Action \"test\". Data = {data}");
     }
 
     [Test]
@@ -625,4 +666,13 @@ public class SWSM_ParserTests
         Assert.AreEqual("Loader", sceneName);
         //TODO Figure out how to check that the exepdition gets loaded
     }
+
+    [Test]
+    public void DoesParserThrowErrorWhenGivenBadMessageType()
+    {
+        string data = TestUtils.BuildTestSwsmData("failure", "nope");
+        SWSM_Parser.ParseJSON(data);
+        LogAssert.Expect(LogType.Error ,"[SWSM Parser] No message_type processed. Data Received: " + data);
+    }
+    
 }
