@@ -117,11 +117,7 @@ namespace map
             {
                 value.y = value.x;
             }
-            else if (value.y < value.x)
-            {
-                value.x = value.y;
-            }
-
+            
             return value;
         }
 
@@ -132,6 +128,7 @@ namespace map
 
         void Start()
         {
+            Debug.Log("Start ran");
             GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.AddListener(OnMapNodesDataUpdated);
             GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.AddListener(OnToggleMap);
             GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnMapIconClicked);

@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
+using UnityEditor;
 using UnityEngine;
 
 public static class TestUtils
@@ -162,6 +164,82 @@ public static class TestUtils
         }
 
         return JsonUtility.ToJson(actionData);
+    }
+
+    public static SWSM_MapData GenerateTestMap(int numberOfNodes, int activeNodeNumber)
+    {
+        if (activeNodeNumber >= numberOfNodes) activeNodeNumber = 0;
+        SWSM_MapData mapData = new SWSM_MapData
+        {
+            data = new ExpeditionMapData
+            {
+                data = new NodeDataHelper[numberOfNodes]
+            }
+        };
+
+        for (int i = 0; i < numberOfNodes; i++)
+        {
+            NodeDataHelper nodeData = new NodeDataHelper
+            {
+                act = i,
+                id = i,
+                status = "completed",
+                step = 0,
+                type = "combat",
+                subType = "combat_standard"
+
+            };
+            if (i != 0) nodeData.enter = new[] { i - 1 };
+            else nodeData.enter = Array.Empty<int>();
+            if (i != numberOfNodes - 1) nodeData.exits = new[] { i + 1 };
+            else nodeData.exits = Array.Empty<int>();
+            if (i == activeNodeNumber) nodeData.status = "active";
+            else if (i > activeNodeNumber) nodeData.status = "disabled";
+            mapData.data.data[i] = nodeData;
+        }
+
+        return mapData;
+    }
+
+    public static SWSM_MapData GenerateTestPortalMap()
+    {
+        
+        SWSM_MapData mapData = new SWSM_MapData
+        {
+            data = new ExpeditionMapData
+            {
+                data = new []
+                {
+                   new NodeDataHelper
+                   {
+                       act = 0,
+                       enter = Array.Empty<int>(),
+                       exits = new []{1},
+                       id = 0,
+                       status = "completed",
+                       step = 0,
+                       subType = "royal_house_a",
+                       type = "royal_house"
+                   },
+                   new NodeDataHelper
+                   {
+                       act = 0,
+                       enter = new []{0},
+                       exits = Array.Empty<int>(),
+                       id = 1,
+                       status = "available",
+                       step = 1,
+                       subType = "portal",
+                       type = "portal"
+                   }
+                   
+                }
+            }
+        };
+
+       
+
+        return mapData;
     }
 
     [Serializable]
