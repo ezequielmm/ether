@@ -74,8 +74,6 @@ public class SWSM_Parser
                 Debug.LogError("[SWSM Parser] No message_type processed. Data Received: " + data);
                 break;
         }
-
-        ;
     }
 
     #region WS_MESSAGE_TYPES_processors
