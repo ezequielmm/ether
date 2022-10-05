@@ -1,14 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using map;
 using NUnit.Framework;
-using Unity.Collections.LowLevel.Unsafe;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
