@@ -25,6 +25,7 @@ public class MapSpriteManagerTests
         _mapSpriteManager = mapPrefab.GetComponent<MapSpriteManager>();
         yield return null;
         */
+        PlayerPrefs.DeleteKey("session_token");
         AsyncOperation sceneLoad = SceneManager.LoadSceneAsync("Scenes/Expedition");
         while (!sceneLoad.isDone)
         {
@@ -46,7 +47,7 @@ public class MapSpriteManagerTests
         Assert.False(_mapSpriteManager.playerIcon.activeInHierarchy);
         Assert.AreNotEqual(true, _mapSpriteManager.playerIcon.activeSelf);
     }
-
+   
     [Test]
     public void PortalAnimationHasCorrectSortingLayer()
     {
@@ -103,6 +104,20 @@ public class MapSpriteManagerTests
             activeNode.transform.localPosition.y);
     }
 
+    [Test]
+    public void PlayerIconPlacedAtCorrectPointWhenNodeSelected()
+    {
+        SWSM_MapData testMap = TestUtils.GenerateTestMap(3, 2);
+        GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.Invoke(testMap);
+        GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(2);
+        List<NodeData> createdNodes = _mapSpriteManager.nodesHolder.GetComponentsInChildren<NodeData>().ToList();
+        NodeData correctNode = createdNodes.Find(node => node.id == 2);
+        UnityEngine.Assertions.Assert.AreApproximatelyEqual(_mapSpriteManager.playerIcon.transform.localPosition.x,
+            correctNode.transform.localPosition.x);
+        UnityEngine.Assertions.Assert.AreApproximatelyEqual(_mapSpriteManager.playerIcon.transform.localPosition.y,
+            correctNode.transform.localPosition.y);
+    }
+
     [UnityTest]
     public IEnumerator MapPanelMovesTowardsPlayerOnDoubleClick()
     {
@@ -141,6 +156,23 @@ public class MapSpriteManagerTests
         _mapSpriteManager.mapContainer.SetActive(false);
         GameManager.Instance.EVENT_MAP_ICON_CLICKED.Invoke();
         Assert.True(eventFired);
+    }
+
+    [UnityTest]
+    public IEnumerator DoesClickingMapIconDeactivateNodeInteractions()
+    {
+        SWSM_MapData testMap = TestUtils.GenerateTestMap(20, 15);
+        GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.Invoke(testMap);
+        _mapSpriteManager.mapContainer.SetActive(false);
+        GameManager.Instance.EVENT_MAP_ICON_CLICKED.Invoke();
+        yield return null;
+        NodeData[] createdNodes = _mapSpriteManager.nodesHolder.GetComponentsInChildren<NodeData>();
+        int nodesInteractionsDisabled = 0;
+        foreach (NodeData node in createdNodes)
+        {
+            if (node.nodeClickDisabled) nodesInteractionsDisabled++;
+        }
+        Assert.AreEqual(20, nodesInteractionsDisabled);
     }
 
     [Test]
@@ -203,8 +235,15 @@ public class MapSpriteManagerTests
         yield return new WaitForSeconds(1);
         yield return new WaitForSeconds(GameSettings.MAP_SCROLL_ANIMATION_DURATION);
         yield return new WaitForSeconds(2);
+        float disToKnight = _mapSpriteManager.playerIcon.transform.position.x -
+                            _mapSpriteManager.nodesHolder.transform.position.x;
+        // Subtract desired knight position by distance to get node position.
+        float targetx = ((Camera.main.orthographicSize * Camera.main.aspect)
+                         * GameSettings.KNIGHT_SCREEN_POSITION_ON_CENTER) - disToKnight;
         yield return new WaitForSeconds(GameSettings.MAP_SCROLL_ANIMATION_DURATION);
-        UnityEngine.Assertions.Assert.AreApproximatelyEqual(_mapSpriteManager.playerIcon.transform.position.x,
+        _mapSpriteManager.playerIcon.transform.TransformPoint(_mapSpriteManager.playerIcon.transform.position);
+        UnityEngine.Assertions.Assert.AreApproximatelyEqual(
+            targetx,
             _mapSpriteManager.nodesHolder.transform.position.x);
     }
 }
