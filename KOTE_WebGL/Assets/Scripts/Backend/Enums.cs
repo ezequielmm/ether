@@ -210,7 +210,6 @@ public enum WS_DATA_REQUEST_TYPES
     Statuses,
     PlayerDeck,
     CurrentNode,
-    CampRecoverHealth,
     UpgradeableCards,
     UpgradeablePair,
     UpgradeCard

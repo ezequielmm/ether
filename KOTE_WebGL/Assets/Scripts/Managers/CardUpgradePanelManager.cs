@@ -55,6 +55,11 @@ public class CardUpgradePanelManager : MonoBehaviour
         cardPairPanel.SetActive(true);
     }
 
+    public void OnPairBackButton()
+    {
+        cardPairPanel.SetActive(false);
+    }
+
     public void OnPairUpgradeConfirm()
     {
         GameManager.Instance.EVENT_CAMP_UPGRADE_CARD.Invoke(uiCardPair[0].id);

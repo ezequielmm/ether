@@ -16,7 +16,7 @@ public class CampPanelManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.EVENT_SHOW_CAMP_PANEL.AddListener(ShowCampPanel);
+        GameManager.Instance.EVENT_CAMP_SHOW_PANEL.AddListener(ShowCampPanel);
         GameManager.Instance.EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS.AddListener(OnShowCardUpgradePanel);
         upgradePanel.HidePanel();
         campContainer.SetActive(false);
@@ -29,7 +29,7 @@ public class CampPanelManager : MonoBehaviour
 
     public void OnRestSelected()
     {
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CampRecoverHealth);
+        GameManager.Instance.EVENT_CAMP_HEAL.Invoke();
         DeactivateButtons();
         SwitchToContinueButton();
     }

@@ -188,9 +188,7 @@ MonoBehaviour:
   restButton: {fileID: 46996356461575558}
   smithButton: {fileID: 4852070642647462873}
   skipButtonText: {fileID: 2630515921189649617}
-  cardUpgradePanel: {fileID: 6821812938428336527}
-  uiCard: {fileID: 7797539488213526578, guid: a87c99eb745359a41a0c6a2304341a8c, type: 3}
-  upgradePanelLayout: {fileID: 6884742043892700831}
+  upgradePanel: {fileID: 4229985011969085611}
 --- !u!1 &3165098468716282930
 GameObject:
   m_ObjectHideFlags: 0
@@ -1159,6 +1157,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 319887914922948091}
+    - target: {fileID: 3207163738577595847, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_Size
+      value: 0.9893394
+      objectReference: {fileID: 0}
     - target: {fileID: 4828612417897948811, guid: 188d28c762989cd4a960f56a29297723,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1268,24 +1271,44 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 319887914922948091}
+      objectReference: {fileID: 4229985011969085611}
+    - target: {fileID: 5288354788266617391, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HidePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7049900863838083735, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7049900863838083735, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7055266592173820083, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.0006241119
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 188d28c762989cd4a960f56a29297723, type: 3}
---- !u!1 &6821812938428336527 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 802287556566923271, guid: 188d28c762989cd4a960f56a29297723,
-    type: 3}
-  m_PrefabInstance: {fileID: 6163667509071081864}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1624413635513456387 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4828612417897948811, guid: 188d28c762989cd4a960f56a29297723,
     type: 3}
   m_PrefabInstance: {fileID: 6163667509071081864}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6884742043892700831 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 721203315373221655, guid: 188d28c762989cd4a960f56a29297723,
+--- !u!114 &4229985011969085611 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8014808670911635747, guid: 188d28c762989cd4a960f56a29297723,
     type: 3}
   m_PrefabInstance: {fileID: 6163667509071081864}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06acf1cb7701f4742ae5071bec232e86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

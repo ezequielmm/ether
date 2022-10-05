@@ -26,6 +26,7 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_REWARD_SELECTED = "RewardSelected";
     private const string WS_MESSAGE_GET_CARD_UPGRADE_PAIR = "UpgradablePair";
     private const string WS_MESSAGE_UPGRADE_CARD = "UpgradeCard";
+    private const string WS_MESSAGE_CAMP_HEAL = "CampRecoverHealth";
     
     /*private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
     private const string WS_MESSAGE_GET_CARD_PILES = "GetCardPiles";
@@ -144,6 +145,8 @@ public class WebSocketManager : MonoBehaviour
         GameManager.Instance.EVENT_REWARD_SELECTED.AddListener(OnRewardSelected);
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.AddListener(OnContinueExpedition);
         GameManager.Instance.EVENT_CAMP_GET_UPGRADE_PAIR.AddListener(OnShowUpgradePair);
+        GameManager.Instance.EVENT_CAMP_UPGRADE_CARD.AddListener(OnCardUpgradeConfirmed);
+        GameManager.Instance.EVENT_CAMP_HEAL.AddListener(OnCampHealSelected);
 
         GameManager.Instance.EVENT_WS_CONNECTED.Invoke();
     }
@@ -229,12 +232,22 @@ public class WebSocketManager : MonoBehaviour
         rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_REWARD_SELECTED, rewardId);
     }
 
+    private void OnCampHealSelected()
+    {
+        rootSocket.Emit(WS_MESSAGE_CAMP_HEAL);
+    }
+
     private void OnShowUpgradePair(string cardId)
     {
         Debug.Log("Sending message Card Upgrade Selected with card id " + cardId);
         //customNamespace.Emit("NodeSelected",nodeId);
 
         rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_GET_CARD_UPGRADE_PAIR, cardId);
+    }
+
+    private void OnCardUpgradeConfirmed(string cardId)
+    {
+        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_UPGRADE_CARD, cardId);
     }
     
     private void OnEndTurn()
