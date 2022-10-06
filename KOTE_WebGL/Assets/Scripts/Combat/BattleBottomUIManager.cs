@@ -12,13 +12,13 @@ public class BattleBottomUIManager : MonoBehaviour
     {
         container.SetActive(false);
         GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeDataUpdated);//TODO: this will change as not all nodes will be combat
-        GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.AddListener(OnMapPanelToogle);
+        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.AddListener(OnCombatElementsToggle);
 }
 
-    private void OnMapPanelToogle(bool arg0)
+    private void OnCombatElementsToggle(bool arg0)
     {
         //we need to hide or content when the map panel is on
-        container.SetActive(!arg0);
+        container.SetActive(arg0);
     }
 
     private void OnNodeDataUpdated(NodeStateData nodeData, WS_QUERY_TYPE wsType)
