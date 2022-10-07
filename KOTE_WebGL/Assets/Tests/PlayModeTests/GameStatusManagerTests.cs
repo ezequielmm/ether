@@ -36,87 +36,221 @@ public class GameStatusManagerTests
     }
 
     [Test]
-    public void DoesPrepareStatusChangeActivateGameAboutToEnd()
+    public void DoesEventConfirmationWithPlayerStateActivateToggleGameClick()
     {
         // this is very similar to testing event confirmation, as we need to test the status of a private variable
         bool eventFired = false;
         GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.AddListener((data) => { eventFired = true; });
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.Camp);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke("dying");
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState),"dying");
         Assert.False(eventFired);
 
         eventFired = false;
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke("dying");
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");
         Assert.True(eventFired);
     }
     
     [Test]
-    public void DoesPrepareStatusChangeActivateGameAboutToEndOnlyOnGameOverStatus()
+    public void DoesEventConfirmationWithEnemyStateActivateToggleGameClick()
+    {
+        // this is very similar to testing event confirmation, as we need to test the status of a private variable
+        bool eventFired = false;
+        GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.AddListener((data) => { eventFired = true; });
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState),"dying");
+        Assert.False(eventFired);
+
+        eventFired = false;
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");
+        Assert.True(eventFired);
+    }
+    
+    [Test]
+    public void DoesEventConfirmationWithPlayerStateActivateGameAboutToEndOnlyOnGameOverStatus()
     {
         // this is very similar to testing event confirmation, as we need to test the status of a private variable
         bool eventFired = false;
         GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.AddListener((data) => { eventFired = true; });
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.Camp);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke("dying");
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");        
         Assert.False(eventFired);
         
         eventFired = false;
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.Combat);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke("dying");
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");
         Assert.False(eventFired);
         
         eventFired = false;
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.Encounter);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke("dying");
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");
         Assert.False(eventFired);
         
         eventFired = false;
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.Merchant);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke("dying");
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");
         Assert.False(eventFired);
         
         eventFired = false;
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RoyalHouse);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke("dying");
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");
+        Assert.False(eventFired);
+        
+        eventFired = false;
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");
         Assert.False(eventFired);
 
         eventFired = false;
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke("dying");
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");
+        Assert.True(eventFired);
+    }
+    
+    [Test]
+    public void DoesEventConfirmationWithEnemyStateActivateGameAboutToEndOnlyOnGameOverStatus()
+    {
+        // this is very similar to testing event confirmation, as we need to test the status of a private variable
+        bool eventFired = false;
+        GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.AddListener((data) => { eventFired = true; });
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.Camp);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");        
+        Assert.False(eventFired);
+        
+        eventFired = false;
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.Combat);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");
+        Assert.False(eventFired);
+        
+        eventFired = false;
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.Encounter);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");
+        Assert.False(eventFired);
+        
+        eventFired = false;
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.Merchant);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");
+        Assert.False(eventFired);
+        
+        eventFired = false;
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RoyalHouse);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");
+        Assert.False(eventFired);
+
+        eventFired = false;
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");
+        Assert.False(eventFired);
+        
+        eventFired = false;
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");
         Assert.True(eventFired);
     }
 
     [Test]
-    public void DoesConfirmEventFireConfirmEvent()
+    public void DoesConfirmEventWithPlayerStatusFireConfirmEvent()
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.AddListener((data) => { eventFired = true; });
 
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke("dying");
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");   
         Assert.True(eventFired);
 
         eventFired = false;
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke("dead");
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dead");
+        Assert.False(eventFired);
+    }
+    
+    [Test]
+    public void DoesConfirmEventWithEnemyStatusFireConfirmEvent()
+    {
+        bool eventFired = false;
+        GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.AddListener((data) => { eventFired = true; });
+
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");   
+        Assert.True(eventFired);
+
+        eventFired = false;
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dead");
         Assert.False(eventFired);
     }
 
     [Test]
-    public void DoesConfirmEventFireGameStatusChange()
+    public void DoesConfirmEventWithPlayerStateFireGameStatusChange()
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener((data) => { eventFired = true; });
 
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke("dying");
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState),"dying");
         Assert.False(eventFired);
 
         eventFired = false;
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke("dead");
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState),"dead");
         Assert.True(eventFired);
+    }
+    
+    [Test]
+    public void DoesConfirmEventWithEnemyStateFireGameStatusChange()
+    {
+        bool eventFired = false;
+        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener((data) => { eventFired = true; });
+
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState),"dying");
+        Assert.False(eventFired);
+
+        eventFired = false;
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState),"dead");
+        Assert.True(eventFired);
+    }
+
+    [Test]
+    public void DoesConfirmEventWithPlayerStateSwitchToGameOver()
+    {
+        bool eventFired = false;
+        GameStatuses newStatus = GameStatuses.None;
+        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener((data) => { eventFired = true;
+            newStatus = data;
+        });
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState),"dead");
+        Assert.False(eventFired);
+        Assert.AreNotEqual(GameStatuses.GameOver, newStatus);
+
+        eventFired = false;
+        newStatus = GameStatuses.None;
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState),"dead");
+        Assert.AreEqual(GameStatuses.GameOver, newStatus);
+    }
+    
+    [Test]
+    public void DoesConfirmEventWithEnemyStateSwitchToRewardsPanel()
+    {
+        bool eventFired = false;
+        GameStatuses newStatus = GameStatuses.None;
+        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener((data) => { eventFired = true;
+            newStatus = data;
+        });
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState),"dead");
+        Assert.False(eventFired);
+        Assert.AreNotEqual(GameStatuses.RewardsPanel, newStatus);
+
+        eventFired = false;
+        newStatus = GameStatuses.None;
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState),"dead");
+        Assert.AreEqual(GameStatuses.RewardsPanel, newStatus);
     }
 
     [Test]
