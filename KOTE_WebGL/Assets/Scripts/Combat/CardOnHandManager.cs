@@ -85,6 +85,8 @@ public class CardOnHandManager : MonoBehaviour
     private PlayerData playerData = null;
     private GameObject lastOver;
 
+    private TargetProfile targetProfile;
+
     private void Awake()
     {
         //Screenspace is defined in pixels. The bottom-left of the screen is (0,0); the right-top is (pixelWidth,pixelHeight). The z position is in world units from the camera.
@@ -109,8 +111,20 @@ public class CardOnHandManager : MonoBehaviour
         GameManager.Instance.EVENT_CARD_SHOWING_UP.AddListener(OnCardMouseShowingUp);
         GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);
         GameManager.Instance.EVENT_CARD_CREATE.AddListener(OnCreateCard);
-        var death = gameObject.AddComponent<DisableOnDeath>();
-        death.UnParent = true;
+        var death = gameObject.AddComponent<DestroyOnGameStatus>();
+        death.causesOfDeath.Add(new DestroyOnGameStatus.CauseOfDeath() 
+        {
+            UnParent = true,
+            StatusToListenTo = GameStatuses.GameOver,
+            AnimationTime = 1f,
+            ShrinkToDie = true
+        });
+        
+        targetProfile = new TargetProfile()
+        {
+            player = false,
+            enemy = true
+        };
     }
 
     private void OnCreateCard(string cardID)
@@ -159,14 +173,24 @@ public class CardOnHandManager : MonoBehaviour
                 delay += 0.1f;
             }
 
+            if (!(origin == CARDS_POSITIONS_TYPES.draw && destination == CARDS_POSITIONS_TYPES.hand))
+            {
+                delayIndex = 0;
+            }
+            float internalDelay = 0;
+            if (delayIndex > 0) 
+            {
+                internalDelay += 1;
+            }
+
             if (inTransit)
             {
                 delay += 1.1f;
             }
 
-            if (delay > 0)
+            if (delay > 0 || delayIndex > 0)
             {
-                StartCoroutine(MoveAfterTime(delay, origin, destination));
+                StartCoroutine(MoveAfterTime(delay + (delayIndex * GameSettings.CARD_DRAW_SHOW_TIME) + internalDelay, origin, destination));
             }
             else
             {
@@ -271,6 +295,8 @@ public class CardOnHandManager : MonoBehaviour
       //  Debug.Log("[CardOnHandManager] MoveCard = " + originType + " to " + destinationType + "........card id: " +                  thisCardValues.id);
         movePs.Play();
 
+        Debug.Log("[CardOnHandManager] Card Is Now Moving");
+
         Vector3 origin = new Vector3();
         Vector3 destination = new Vector3();
 
@@ -317,6 +343,7 @@ public class CardOnHandManager : MonoBehaviour
                     break;
                 case CARDS_POSITIONS_TYPES.hand:
                     destination = pos;
+                    destination.z = GameSettings.HAND_CARD_SHOW_UP_Z;
                     activateCardAfterMove = true;
                     break;
                 case CARDS_POSITIONS_TYPES.exhaust:
@@ -347,7 +374,6 @@ public class CardOnHandManager : MonoBehaviour
         //cardActive = (originType == CARDS_POSITIONS_TYPES.draw && destinationType == CARDS_POSITIONS_TYPES.hand);
         //cardActive = activateCardAfterMove;
         cardActive = false;
-
         cardcontent.SetActive(true);
 
         if (delay > 0)
@@ -372,17 +398,44 @@ public class CardOnHandManager : MonoBehaviour
             transform.DOMove(destination, 1f).From(origin).SetEase(Ease.OutCirc);
             if (originType == CARDS_POSITIONS_TYPES.draw && destinationType == CARDS_POSITIONS_TYPES.hand)
             {
+                Debug.Log("[CardOnHandManager] Draw new card to hand.");
                 transform.localScale = Vector3.zero;
-                transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutElastic).OnComplete(OnMoveCompleted);
+                transform.DORotate(Vector3.zero, 1f);
+                transform.DOScale(Vector3.one * 1.5f, 1f).SetEase(Ease.OutElastic).OnComplete(OnMoveCompleted);
             }
             else
             {
                 transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InElastic).OnComplete(HideAndDeactivateCard);
             }
         }
-
-        //transform.DOPlay();
     }
+
+    IEnumerator ResetAfterTime(float seconds) 
+    {
+        yield return new WaitForSeconds(seconds);
+        inTransit = false;
+        cardActive = true;
+        ResetCardPosition();
+    }
+
+    public void TryResetPosition() 
+    {
+        if (inTransit)
+        {
+            StartCoroutine(TryResetAfterTime(0.25f));
+        }
+        else 
+        {
+            ResetCardPosition();
+        }
+    }
+
+    IEnumerator TryResetAfterTime(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        TryResetPosition();
+    }
+
 
     private void OnMoveCompleted()
     {
@@ -395,9 +448,13 @@ public class CardOnHandManager : MonoBehaviour
             GameManager.Instance.EVENT_CARD_DISABLED.Invoke(thisCardValues.id);
         }
 
-        if (activateCardAfterMove && transform.position.magnitude < 0.2f)
+
+        if (cardActive && ((Vector2)transform.position).magnitude < 0.5f) 
+            // if in the center of the screen
         {
-            ResetCardPosition();
+            inTransit = true;
+            cardActive = false;
+            StartCoroutine(ResetAfterTime(GameSettings.CARD_DRAW_SHOW_TIME));
         }
         if (cardActive)
         {
@@ -434,7 +491,7 @@ public class CardOnHandManager : MonoBehaviour
             var main = auraPS.main;
             main.startColor = greenColor;
             outlineMaterial = greenOutlineMaterial; //TODO:apply blue if card has a special condition
-            energyTF.color = new Color(1,1,1);
+            energyTF.color = Color.black;
             card_can_be_played = true;
             //Debug.Log($"[CardOnHandManager] [{thisCardValues.name}] Card is now playable {energy}/{thisCardValues.energy}");
         }
@@ -465,7 +522,7 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (cardActive && card_can_be_played && !Input.GetMouseButton(0))
+        if (cardActive && !Input.GetMouseButton(0))
         {
             // DOTween.PlayForward(this.gameObject);
             // GameManager.Instance.EVENT_CARD_MOUSE_ENTER.Invoke(thisCardValues.cardId);
@@ -484,14 +541,14 @@ public class CardOnHandManager : MonoBehaviour
 
     private void ShowUpCard()
     {
-        if (cardIsShowingUp || !card_can_be_played) return;
+        if (cardIsShowingUp) return;
 
         if (cardActive)
         {
             ResetCardPosition();
             DOTween.Kill(this.transform);
 
-            auraPS.Play();
+            if(card_can_be_played)auraPS.Play();
 
             cardIsShowingUp = true;
 
@@ -615,7 +672,10 @@ public class CardOnHandManager : MonoBehaviour
         if (thisCardValues != null && thisCardValues.showPointer)
         {
             //show the pointer instead of following the mouse
-            GameManager.Instance.EVENT_CARD_ACTIVATE_POINTER.Invoke(transform.position);
+            PointerData pd = new PointerData(transform.position, PointerOrigin.card, targetProfile);
+
+            GameManager.Instance.EVENT_ACTIVATE_POINTER.Invoke(pd);
+            GameManager.Instance.EVENT_TOGGLE_TOOLTIPS.Invoke(false);
 
             Vector3 showUpPosition = new Vector3(0, GameSettings.HAND_CARD_SHOW_UP_Y, GameSettings.HAND_CARD_SHOW_UP_Z);
             transform.DOMove(showUpPosition, GameSettings.HAND_CARD_SHOW_UP_TIME);
@@ -641,8 +701,9 @@ public class CardOnHandManager : MonoBehaviour
 
         if (thisCardValues.showPointer)
         {
-            GameManager.Instance.EVENT_CARD_DEACTIVATE_POINTER.Invoke(thisCardValues.id);
+            GameManager.Instance.EVENT_DEACTIVATE_POINTER.Invoke(thisCardValues.id);
         }
+        GameManager.Instance.EVENT_TOGGLE_TOOLTIPS.Invoke(true);
     }
 
     private void OnMouseUpAsButton()

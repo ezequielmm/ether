@@ -65,9 +65,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5e3865f24ac0e140b45fde9a906f72f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShrinkToDie: 0
-  animationTime: 0
-  UnParent: 0
+  causesOfDeath:
+  - StatusToListenTo: 8
+    AnimationTime: 0
+    ShrinkToDie: 0
+    MoveToDie: 0
+    MoveBy: {x: 0, y: 0, z: 0}
+    MoveMultipleOfSelf: 0
+    UnParent: 0
 --- !u!1 &3136595066918700932
 GameObject:
   m_ObjectHideFlags: 0

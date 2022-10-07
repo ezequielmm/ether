@@ -9,6 +9,8 @@
     <canvas id="unity-canvas" width={{{ WIDTH }}} height={{{ HEIGHT }}} style="width: {{{ WIDTH }}}px; height: {{{ HEIGHT }}}px; background: {{{ BACKGROUND_FILENAME ? 'url(\'Build/' + BACKGROUND_FILENAME.replace(/'/g, '%27') + '\') center / cover' : BACKGROUND_COLOR }}}"></canvas>
     <script src="Build/{{{ LOADER_FILENAME }}}"></script>
     <script>
+      // The Unity Instance
+      var unity;
       createUnityInstance(document.querySelector("#unity-canvas"), {
         dataUrl: "Build/{{{ DATA_FILENAME }}}",
         frameworkUrl: "Build/{{{ FRAMEWORK_FILENAME }}}",
@@ -25,6 +27,10 @@
         productVersion: "{{{ PRODUCT_VERSION }}}",
         // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
         // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
+      }).then((unityInstance) => {
+        unity = unityInstance;
+      }).catch((message) => {
+        alert(message);
       });
     </script>
   </body>

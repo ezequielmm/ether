@@ -18,6 +18,7 @@ public enum PileTypes
 [Serializable]
 public enum GameStatuses
 {
+    None = 0,
     Combat,
     Treasure,
     Map,
@@ -31,6 +32,13 @@ public enum GameStatuses
 
 [Serializable]
 public enum PlayerState 
+{
+    dying,
+    dead
+}
+
+[Serializable]
+public enum EnemyState
 {
     dying,
     dead
@@ -188,6 +196,12 @@ public enum EntityType
 {
     Player,
     Enemy
+}
+
+public enum PointerOrigin 
+{
+    potion,
+    card
 }
 
 [Serializable]

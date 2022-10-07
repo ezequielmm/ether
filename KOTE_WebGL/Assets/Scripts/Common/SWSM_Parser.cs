@@ -7,18 +7,14 @@ public class SWSM_Parser
     static SWSM_Parser() 
     {
         // Turns off non-exception logging when outside of development enviroment
-        // Also seen in WebSocketManager.cs
-        #if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
-            Debug.unityLogger.filterLogType = LogType.Exception;
-        #endif
+        DebugManager.DisableOnBuild();
     }
 
     public static void ParseJSON(string data)
     {
         SWSM_Base swsm = JsonUtility.FromJson<SWSM_Base>(data);
 
-        Debug.Log("[SWSM Parser][MessageType]" + swsm.data.message_type + " , [Action]" + swsm.data.action);
-        Debug.Log(data);
+        Debug.Log($"[SWSM Parser][MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}\n{data}");
 
         switch (swsm.data.message_type)
         {
@@ -280,7 +276,7 @@ public class SWSM_Parser
             case nameof(WS_MESSAGE_ACTIONS.enemies_defeated):
                 Debug.Log("Should move cards from draw to hand");
                 SWSM_RewardsData rewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
-                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
+                GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
                 GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(rewardsData);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.player_defeated):
@@ -383,11 +379,10 @@ public class SWSM_Parser
         SWSM_CardMove cardMoveData = JsonUtility.FromJson<SWSM_CardMove>(rawData);
         Debug.Log($"[SWSM Parser] ProcessMoveCard [{cardMoveData.data.data.Length}]");
         int i = 0;
-        foreach (CardToMoveData data in cardMoveData.data.data)
+        for (int y = cardMoveData.data.data.Length - 1; y >= 0; y--) 
         {
-            GameManager.Instance.EVENT_MOVE_CARD.Invoke(data, i);
+            GameManager.Instance.EVENT_MOVE_CARD.Invoke(cardMoveData.data.data[y], i);
             i++;
-            //GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
         }
 
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
