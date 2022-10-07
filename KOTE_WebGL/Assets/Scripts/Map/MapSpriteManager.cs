@@ -151,10 +151,17 @@ namespace map
             // the particleSystem's sorting layer has to be set manually, because the the settings in the component don't work
             portalAnimation.GetComponent<Renderer>().sortingLayerName = GameSettings.MAP_ELEMENTS_SORTING_LAYER_NAME;
 
-            MapSeeds = new List<int>()
+            GenerateMapSeeds(22);
+        }
+
+        private void GenerateMapSeeds(int seed) 
+        {
+            Random.InitState(seed);
+            MapSeeds = new List<int>();
+            for (int i = 0; i < 10; i++) 
             {
-                10, 20, 30, 40, 50, 60
-            };
+                MapSeeds.Add(Random.Range(0,100));
+            }
         }
 
         private void OnToggleMap(bool data)
@@ -215,7 +222,7 @@ namespace map
             {
                 limitPos.x = -GameSettings.MAP_STRETCH_LIMIT - (mapBounds.extents.x + mapBounds.center.x);
                 overHardLimit = true;
-                //Debug.Log($"[Map] Right Pass Bounds [{rightEdge} -/- {newPos.x}]");
+                //Debug.Log($"[MapSpriteManager] Right Pass Bounds [{rightEdge} -/- {newPos.x}]");
             }
 
             // limit the map move on the Left (House Side)
@@ -224,7 +231,7 @@ namespace map
             {
                 newPos.x = 0 - (-mapBounds.extents.x + mapBounds.center.x);
                 overEdge = true;
-                //Debug.Log($"[Map] Left Pass Bounds [{leftEdge} -/- {newPos.x}]");
+                //Debug.Log($"[MapSpriteManager] Left Pass Bounds [{leftEdge} -/- {newPos.x}]");
             }
 
             if (leftEdge > GameSettings.MAP_STRETCH_LIMIT + 0.01f)
@@ -323,10 +330,13 @@ namespace map
         //we will get to this point once the backend give us the node data
         void GenerateMap(SWSM_MapData expeditionMapData)
         {
-            Debug.Log("[OnMapNodesDataUpdated] " + expeditionMapData);
+            Debug.Log("[MapSpriteManager | OnMapNodesDataUpdated] " + expeditionMapData);
 
             ClearMap();
 
+            // Set Seed
+            GenerateMapSeeds(expeditionMapData.data.seed);
+            Debug.Log($"[MapSpriteManager] Map Seed: {expeditionMapData.data.seed}");
 
             MapStructure mapStructure = GenerateMapStructure(expeditionMapData);
 
@@ -339,7 +349,7 @@ namespace map
             //we get the maps bounds to help later with scroll limits and animations
             CalculateLocalBounds();
 
-            Debug.Log("last node position: " + nodes[nodes.Count - 1].transform.position + " last node localPosition" +
+            Debug.Log("[MapSpriteManager] last node position: " + nodes[nodes.Count - 1].transform.position + " last node localPosition" +
                       nodes[nodes.Count - 1].transform.localPosition);
 
             GenerateMapGrid();
@@ -501,7 +511,7 @@ namespace map
                     //columns
                     float rows = step.nodesData.Count;
                     float rowsMaxSpace = 8 / rows;
-                    //Debug.Log("rowsMaxSpace:" + rowsMaxSpace);                
+                    //Debug.Log("[MapSpriteManager] rowsMaxSpace:" + rowsMaxSpace);                
 
                     foreach (NodeDataHelper nodeData in step.nodesData)
                     {
@@ -556,7 +566,7 @@ namespace map
         {
             foreach (NodeData curNode in nodes)
             {
-                //Debug.Log("Searching :" + go.GetComponent<NodeData>().id);
+                //Debug.Log("[MapSpriteManager] Searching :" + go.GetComponent<NodeData>().id);
 
                 foreach (int exitId in curNode.GetComponent<NodeData>().exits)
                 {
@@ -587,7 +597,6 @@ namespace map
             Random.InitState(MapSeeds[0]);
             GeneratePathBackground();
 
-            Random.InitState(MapSeeds[1]);
             CurvePath();
 
             Random.InitState(MapSeeds[2]);
@@ -596,8 +605,10 @@ namespace map
 
         private void CurvePath()
         {
+            int i = 0;
             foreach (var splineRef in tileSplineRef.Values)
             {
+                Random.InitState(MapSeeds[1] + i++);
                 RunRandomCurve(splineRef);
                 splineRef.EnforceSplineMatch();
             }
@@ -726,6 +737,11 @@ namespace map
                             int randomTile = Random.Range(0, forestTiles.Length);
                             MapGrid.SetTile(tilePos, forestTiles[randomTile]);
                         }
+                    }
+                    else 
+                    {
+                        // Keep the ransomness consistant
+                        int randomNum = Random.Range(0, 2);
                     }
                 }
             }
@@ -968,7 +984,7 @@ namespace map
                 Vector3 nodePos = nodesHolder.transform.TransformPoint(node.transform.position);
                 Vector3Int nodeCelPos = MapGrid.layoutGrid.WorldToCell(nodePos);
                 MapGrid.SetTile(nodeCelPos, grassTiles[0]);
-                Debug.Log("nodePos: " + nodePos + " nodeCelPos: " + MapGrid.CellToWorld(nodeCelPos));
+                Debug.Log("[MapSpriteManager] nodePos: " + nodePos + " nodeCelPos: " + MapGrid.CellToWorld(nodeCelPos));
                 // now we need to know where the node is in relation to the cell
                 Vector3 cellPosition = MapGrid.CellToWorld(nodeCelPos);
                 // we need to determine if it's in the center of the cell
@@ -1276,7 +1292,7 @@ namespace map
             nodesHolder.transform.rotation = currentRotation;
             nodesHolder.transform.position = currentPosition;
             mapBounds = bounds;
-            Debug.Log("[Map] Map Bounds Recalculated.");
+            Debug.Log("[MapSpriteManager] Map Bounds Recalculated.");
         }
 
         private void OnDrawGizmosSelected()
