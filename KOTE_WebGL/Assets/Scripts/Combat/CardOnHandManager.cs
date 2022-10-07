@@ -85,6 +85,8 @@ public class CardOnHandManager : MonoBehaviour
     private PlayerData playerData = null;
     private GameObject lastOver;
 
+    private TargetProfile targetProfile;
+
     private void Awake()
     {
         //Screenspace is defined in pixels. The bottom-left of the screen is (0,0); the right-top is (pixelWidth,pixelHeight). The z position is in world units from the camera.
@@ -109,8 +111,20 @@ public class CardOnHandManager : MonoBehaviour
         GameManager.Instance.EVENT_CARD_SHOWING_UP.AddListener(OnCardMouseShowingUp);
         GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);
         GameManager.Instance.EVENT_CARD_CREATE.AddListener(OnCreateCard);
-        var death = gameObject.AddComponent<DisableOnDeath>();
-        death.UnParent = true;
+        var death = gameObject.AddComponent<DestroyOnGameStatus>();
+        death.causesOfDeath.Add(new DestroyOnGameStatus.CauseOfDeath() 
+        {
+            UnParent = true,
+            StatusToListenTo = GameStatuses.GameOver,
+            AnimationTime = 1f,
+            ShrinkToDie = true
+        });
+        
+        targetProfile = new TargetProfile()
+        {
+            player = false,
+            enemy = true
+        };
     }
 
     private void OnCreateCard(string cardID)
@@ -658,7 +672,10 @@ public class CardOnHandManager : MonoBehaviour
         if (thisCardValues != null && thisCardValues.showPointer)
         {
             //show the pointer instead of following the mouse
-            GameManager.Instance.EVENT_CARD_ACTIVATE_POINTER.Invoke(transform.position);
+            PointerData pd = new PointerData(transform.position, PointerOrigin.card, targetProfile);
+
+            GameManager.Instance.EVENT_ACTIVATE_POINTER.Invoke(pd);
+            GameManager.Instance.EVENT_TOGGLE_TOOLTIPS.Invoke(false);
 
             Vector3 showUpPosition = new Vector3(0, GameSettings.HAND_CARD_SHOW_UP_Y, GameSettings.HAND_CARD_SHOW_UP_Z);
             transform.DOMove(showUpPosition, GameSettings.HAND_CARD_SHOW_UP_TIME);
@@ -684,8 +701,9 @@ public class CardOnHandManager : MonoBehaviour
 
         if (thisCardValues.showPointer)
         {
-            GameManager.Instance.EVENT_CARD_DEACTIVATE_POINTER.Invoke(thisCardValues.id);
+            GameManager.Instance.EVENT_DEACTIVATE_POINTER.Invoke(thisCardValues.id);
         }
+        GameManager.Instance.EVENT_TOGGLE_TOOLTIPS.Invoke(true);
     }
 
     private void OnMouseUpAsButton()

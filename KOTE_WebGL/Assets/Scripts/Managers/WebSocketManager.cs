@@ -38,10 +38,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     {
         base.Awake();
         // Turns off non-exception logging when outside of development enviroment
-        // Also seen in SWSM_Parser.cs
-#if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
-            Debug.unityLogger.filterLogType = LogType.Exception;
-#endif
+        DebugManager.DisableOnBuild();
     }
 
     void Start()
