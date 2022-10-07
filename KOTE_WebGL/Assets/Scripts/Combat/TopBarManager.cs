@@ -33,7 +33,7 @@ public class TopBarManager : MonoBehaviour
         //SetHealth(Random.Range(30, 81));
 
         GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
-        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnCombatStart);
+        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStateUpdate);
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.AddListener(OnToggleMapIcon);
         GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.AddListener(UpdateStageText);
         GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnPlayerAttacked);
@@ -51,15 +51,6 @@ public class TopBarManager : MonoBehaviour
     private void UpdateStageText(int act, int step)
     {
         stageText.SetText("STAGE " + act + "-" + (step + 1));
-    }
-
-    public void SetTextValues(string nameText, string classText, int health, int coins)
-   // public void SetTextValues(string nameText, string classText, string healthText, int coins)
-    {
-        this.nameText.text = nameText;
-     
-        healthText.text = $"{health} health";
-        coinsText.text = $"{coins} coins";
     }
 
     public void SetNameText(string nameText)
@@ -95,7 +86,7 @@ public class TopBarManager : MonoBehaviour
         }
     }
     
-    public void OnCombatStart(PlayerStateData playerState) 
+    public void OnPlayerStateUpdate(PlayerStateData playerState) 
     {        
         SetNameText(playerState.data.playerState.playerName);
         maxHealth = playerState.data.playerState.hpMax;
@@ -108,12 +99,6 @@ public class TopBarManager : MonoBehaviour
         currentClass = classSelected;
     }
 
-    public void SetHealth(int health)
-    {
-        currentHealth = health;
-        //SetHealthText(currentHealth);
-    }
-    
     public void OnMapButtonClicked()
     {
         GameManager.Instance.EVENT_MAP_ICON_CLICKED.Invoke();
@@ -124,7 +109,7 @@ public class TopBarManager : MonoBehaviour
         GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
-    public void OnDeskButtonClicked()
+    public void OnDeckButtonClicked()
     {
         GameManager.Instance.EVENT_CARD_PILE_CLICKED.Invoke(PileTypes.Deck);
     }

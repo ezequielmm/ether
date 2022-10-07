@@ -160,7 +160,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7612459578312946480}
         m_TargetAssemblyTypeName: TopBarManager, Assembly-CSharp
-        m_MethodName: OnDeskButtonClicked
+        m_MethodName: OnDeckButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
