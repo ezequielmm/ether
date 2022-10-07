@@ -51,7 +51,7 @@ MonoBehaviour:
   riseHeight: 1
   riseSpeed: {x: 1.2, y: 1.6}
   fadeTime: 0.4
-  maxPoolCount: 5
+  maxPoolCount: 3
   sampleText: 
   playSampleAnimation: 0
 --- !u!114 &7426510867128737918

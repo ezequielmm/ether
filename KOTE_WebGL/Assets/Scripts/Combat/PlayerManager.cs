@@ -10,7 +10,7 @@ using System.Collections.Generic;
 public class PlayerManager : MonoBehaviour
 {
     public SpineAnimationsManagement spineAnimationsManagement;
-    public TMP_Text defenseTF;
+    public DefenseController defenseController;
     public TMP_Text healthTF;
     public Slider healthBar;
 
@@ -39,6 +39,8 @@ public class PlayerManager : MonoBehaviour
         GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener(OnUpdatePlayer);
         GameManager.Instance.EVENT_WS_CONNECTED.AddListener(OnWSConnected);
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
+
 
         collider = GetComponent<Collider2D>();
 
@@ -53,12 +55,6 @@ public class PlayerManager : MonoBehaviour
         spineAnimationsManagement.PlayAnimationSequence("Idle");
 
     }
-
-    private void OnEnable()
-    {
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
-    }
-
 
     private void OnAttackRequest(CombatTurnData attack) 
     {
@@ -124,6 +120,11 @@ public class PlayerManager : MonoBehaviour
 
         // Negitive Deltas
         float waitDuration = 0;
+        if (target.defenseDelta < 0 || target.healthDelta < 0)
+        {
+            GameManager.Instance.EVENT_DAMAGE.Invoke(target);
+        }
+
         if (target.defenseDelta < 0 && target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
         {
             // Play Armored Clang
@@ -266,7 +267,7 @@ public class PlayerManager : MonoBehaviour
         {
             value = playerData.defense;
         }
-        defenseTF.SetText(value.ToString());
+        defenseController.Defense = value.Value;
     }
 
 #if UNITY_EDITOR
@@ -310,12 +311,12 @@ public class PlayerManager : MonoBehaviour
         if (current <= 0)
         {
             // Tell game that a player is dying
-            GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(nameof(PlayerState.dying));
+            GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), nameof(PlayerState.dying));
 
             // Play animation
             RunAfterTime(OnDeath(), () => {
                 // Tell game that a player is dead
-                GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(nameof(PlayerState.dead));
+                GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), nameof(PlayerState.dead));
             });
         }
     }

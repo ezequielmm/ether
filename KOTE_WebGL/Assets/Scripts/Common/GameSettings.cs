@@ -56,6 +56,15 @@ public static class GameSettings
     public static float INTENT_HEIGHT = 1.1f;
     public static float HEALTH_HEIGHT = 0.9f;
 
+    // Text Effects
+    public static Color DEFAUT_TEXTEFFECT_COLOR = Color.green;
+    public const float DEFAUT_TEXTEFFECT_RISE_HEIGHT = 1f;
+    public static Vector2 DEFAUT_TEXTEFFECT_RISE_SPEED = new Vector2(1.7f, 2.3f);
+    public const float DEFAUT_TEXTEFFECT_FADE_TIME = 0.8f;
+    public const float DEFAUT_TEXTEFFECT_X_SPREAD = 1f;
+    public const int DEFAUT_TEXTEFFECT_POOL_SIZE = 10;
+
+
 
     /*//////////////  
     ///Debug

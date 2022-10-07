@@ -169,7 +169,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<GameStatuses> EVENT_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
     [HideInInspector] public UnityEvent<string, string> EVENT_CARD_PLAYED = new UnityEvent<string, string>(); // cardID, targetID
     [HideInInspector] public UnityEvent EVENT_END_TURN_CLICKED = new UnityEvent();
-    [HideInInspector] public UnityEvent<string> EVENT_CONFIRM_EVENT = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<Type, string> EVENT_CONFIRM_EVENT = new UnityEvent<Type, string>();
 
 
     //Combat events
@@ -190,6 +190,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>  EVENT_SET_TOOLTIPS { get; } = 
         new UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>();
     [HideInInspector] public UnityEvent<string, int> EVENT_HEAL = new UnityEvent<string, int>(); // id, healed amount
+    [HideInInspector] public UnityEvent<CombatTurnData.Target> EVENT_DAMAGE = new UnityEvent<CombatTurnData.Target>(); // id, damage amount, break shield
 
     // pointer events
     [HideInInspector] public UnityEvent<PointerData> EVENT_ACTIVATE_POINTER { get; } = new UnityEvent<PointerData>();
@@ -213,6 +214,11 @@ public class GameManager : SingleTon<GameManager>
     
     //Console Events
     [HideInInspector] public UnityEvent EVENT_SHOW_CONSOLE = new UnityEvent();
+
+    // Wallet Events
+    [HideInInspector] public UnityEvent<string> EVENT_NEW_WALLET = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<string> EVENT_MESSAGE_SIGN = new UnityEvent<string>();
+
 
     public inGameScenes
         nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
