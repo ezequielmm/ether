@@ -10,6 +10,7 @@ using UnityEngine;
 [Serializable]
 public class ExpeditionMapData
 {
+    public int seed;
     public NodeDataHelper[] data;
 }
 

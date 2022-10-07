@@ -7,18 +7,14 @@ public class SWSM_Parser
     static SWSM_Parser() 
     {
         // Turns off non-exception logging when outside of development enviroment
-        // Also seen in WebSocketManager.cs
-        #if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
-            Debug.unityLogger.filterLogType = LogType.Exception;
-        #endif
+        DebugManager.DisableOnBuild();
     }
 
     public static void ParseJSON(string data)
     {
         SWSM_Base swsm = JsonUtility.FromJson<SWSM_Base>(data);
 
-        Debug.Log("[SWSM Parser][MessageType]" + swsm.data.message_type + " , [Action]" + swsm.data.action);
-        Debug.Log(data);
+        Debug.Log($"[SWSM Parser][MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}\n{data}");
 
         switch (swsm.data.message_type)
         {
