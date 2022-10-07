@@ -35,10 +35,7 @@ public class WebSocketManager : MonoBehaviour
     private void Awake()
     {
         // Turns off non-exception logging when outside of development enviroment
-        // Also seen in SWSM_Parser.cs
-        #if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
-            Debug.unityLogger.filterLogType = LogType.Exception;
-        #endif
+        DebugManager.DisableOnBuild();
     }
 
     void Start()
@@ -200,13 +197,6 @@ public class WebSocketManager : MonoBehaviour
         Debug.Log("Data from OnExpeditionMap: " + data);
         // GameManager.Instance.EVENT_MAP_NODES_UPDATE.Invoke(data);
         SWSM_Parser.ParseJSON(data);
-    }
-
-    void OnPlayerState(string data)
-    {
-        PlayerStateData playerState = JsonUtility.FromJson<PlayerStateData>(data); //TODO: move this to websocker manager
-        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.Invoke(playerState);
-        Debug.Log("Data from OnPlayerState: " + playerState);
     }
 
     private void OnCardPlayed(string cardId, string id)//int enemyId)//TODO: enemyId will an array 

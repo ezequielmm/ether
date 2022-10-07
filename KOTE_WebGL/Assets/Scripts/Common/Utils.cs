@@ -166,9 +166,7 @@ public static class Utils
     /// <returns>A String UUID or "unknown"</returns>
     public static string FindEntityId(GameObject source)
     {
-        return source.GetComponentInParent<EnemyManager>()?.EnemyData?.id ??
-               source.GetComponentInParent<PlayerManager>()?.PlayerData?.id ??
-               source.GetComponentInChildren<EnemyManager>()?.EnemyData?.id ??
-               source.GetComponentInChildren<PlayerManager>()?.PlayerData?.id ?? "unknown";
+        return source.GetComponentInParent<EnemyManager>()?.EnemyData?.id ?? source.GetComponentInParent<PlayerManager>()?.PlayerData?.id ??
+            source.GetComponentInChildren<EnemyManager>()?.EnemyData?.id ?? source.GetComponentInChildren<PlayerManager>()?.PlayerData?.id ?? "unknown";
     }
 }

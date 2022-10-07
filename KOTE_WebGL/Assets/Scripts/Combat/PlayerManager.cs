@@ -39,6 +39,8 @@ public class PlayerManager : MonoBehaviour
         GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener(OnUpdatePlayer);
         GameManager.Instance.EVENT_WS_CONNECTED.AddListener(OnWSConnected);
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
+
 
         collider = GetComponent<Collider2D>();
 
@@ -53,12 +55,6 @@ public class PlayerManager : MonoBehaviour
         spineAnimationsManagement.PlayAnimationSequence("Idle");
 
     }
-
-    private void OnEnable()
-    {
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
-    }
-
 
     private void OnAttackRequest(CombatTurnData attack) 
     {
@@ -315,12 +311,12 @@ public class PlayerManager : MonoBehaviour
         if (current <= 0)
         {
             // Tell game that a player is dying
-            GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(nameof(PlayerState.dying));
+            GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), nameof(PlayerState.dying));
 
             // Play animation
             RunAfterTime(OnDeath(), () => {
                 // Tell game that a player is dead
-                GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(nameof(PlayerState.dead));
+                GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), nameof(PlayerState.dead));
             });
         }
     }
