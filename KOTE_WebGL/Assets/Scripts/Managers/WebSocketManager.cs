@@ -206,13 +206,6 @@ public class WebSocketManager : MonoBehaviour
         SWSM_Parser.ParseJSON(data);
     }
 
-    void OnPlayerState(string data)
-    {
-        PlayerStateData playerState = JsonUtility.FromJson<PlayerStateData>(data); //TODO: move this to websocker manager
-        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.Invoke(playerState);
-        Debug.Log("Data from OnPlayerState: " + playerState);
-    }
-
     private void OnCardPlayed(string cardId, string id)//int enemyId)//TODO: enemyId will an array 
     {
         CardPlayedData cardData = new CardPlayedData();
