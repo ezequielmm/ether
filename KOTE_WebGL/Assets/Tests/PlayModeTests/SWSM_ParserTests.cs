@@ -541,7 +541,7 @@ public class SWSM_ParserTests
         bool statusChangeEventFired = false;
         bool rewardPanelEventFired = false;
         GameStatuses returnStatus = GameStatuses.Camp;
-        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener((data) =>
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.AddListener((data) =>
         {
             statusChangeEventFired = true;
             returnStatus = data;
@@ -606,11 +606,9 @@ public class SWSM_ParserTests
     {
         bool statusChangeEventFired = false;
         bool rewardPanelEventFired = false;
-        GameStatuses returnStatus = GameStatuses.Camp;
-        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener((data) =>
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.AddListener((data) =>
         {
             statusChangeEventFired = true;
-            returnStatus = data;
         });
         GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.AddListener((data) => { rewardPanelEventFired = true; });
         SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("end_combat", "enemies_defeated"));

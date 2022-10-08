@@ -9,14 +9,23 @@ using UnityEngine.TestTools;
 
 public class CombatTurnQueueTests : MonoBehaviour
 {
+    private GameObject go;
     private CombatTurnQueue _combatTurnQueue;
 
     [UnitySetUp]
     public IEnumerator Setup()
     {
-        GameObject go = new GameObject();
+        go = new GameObject();
         _combatTurnQueue = go.AddComponent<CombatTurnQueue>();
         go.SetActive(true);
+        yield return null;
+    }
+
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        Destroy(_combatTurnQueue);
+        Destroy(go);
         yield return null;
     }
 
@@ -307,11 +316,13 @@ public class CombatTurnQueueTests : MonoBehaviour
             delay = 0,
             originId = "test",
             originType = "test",
-            targets = new List<CombatTurnData.Target> { new CombatTurnData.Target { targetId = "" } }
+            targets = new List<CombatTurnData.Target> { new CombatTurnData.Target { targetId = "test" } }
         };
         GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(data);
+        GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(data);
         
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(5);
+
         LogAssert.Expect(LogType.Warning,
             $"[CombatQueue] Combat Queue was not properly closed before the animation timed out. {data.ToString()}");
     }
