@@ -37,7 +37,12 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
     public void populate(Card card)
     {
         id = card.id;
-        energyTF.SetText(card.energy.ToString());
+        string cardEnergy = Mathf.Max(card.energy, 0).ToString();
+        if (card.energy < 0)
+        {
+            cardEnergy = "X";
+        }
+        energyTF.SetText(cardEnergy);
         nameTF.SetText(card.name);
         rarityTF.SetText(card.rarity);
         descriptionTF.SetText(card.description);

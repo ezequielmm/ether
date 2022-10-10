@@ -217,7 +217,10 @@ public enum WS_DATA_REQUEST_TYPES
     Trinkets,
     Statuses,
     PlayerDeck,
-    CurrentNode
+    CurrentNode,
+    UpgradeableCards,
+    UpgradeablePair,
+    UpgradeCard
 }
 
 [Serializable]
@@ -246,7 +249,8 @@ public enum WS_MESSAGE_TYPES
     end_turn,
     begin_turn,
     end_combat,
-    end_node
+    end_node,
+    card_upgrade
 }
 
 [Serializable]

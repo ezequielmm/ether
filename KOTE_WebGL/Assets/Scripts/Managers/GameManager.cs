@@ -93,7 +93,14 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_SHOW_MERCHANT_PANEL = new UnityEvent();
 
     //CAMP EVENTS
-    [HideInInspector] public UnityEvent EVENT_SHOW_CAMP_PANEL = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_CAMP_SHOW_PANEL = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_CAMP_HEAL = new UnityEvent();
+    [HideInInspector] public UnityEvent<Deck> EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS = new UnityEvent<Deck>();
+    [HideInInspector] public UnityEvent<string> EVENT_CAMP_GET_UPGRADE_PAIR = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<Deck> EVENT_CAMP_SHOW_UPGRADE_PAIR = new UnityEvent<Deck>();
+    [HideInInspector] public UnityEvent<string> EVENT_CAMP_UPGRADE_CARD = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent EVENT_CAMP_FINISH = new UnityEvent();
+    
 
     //EXPEDITION EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_EXPEDITION_STATUS_UPDATE = new UnityEvent<bool>();
