@@ -220,7 +220,7 @@ public class CardOnHandManager : MonoBehaviour
         //Debug.Log(card);
         //cardidTF.SetText(card.id);
         string cardEnergy = Mathf.Max(card.energy, 0).ToString();
-        if (card.energy == -1) 
+        if (card.energy < 0) 
         {
             cardEnergy = "X";
         }

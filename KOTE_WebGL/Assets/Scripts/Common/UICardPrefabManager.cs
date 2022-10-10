@@ -38,7 +38,7 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
     {
         id = card.id;
         string cardEnergy = Mathf.Max(card.energy, 0).ToString();
-        if (card.energy == -1)
+        if (card.energy < 0)
         {
             cardEnergy = "X";
         }
