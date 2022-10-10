@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3968802887354735061}
   - component: {fileID: 8123202173711684050}
+  - component: {fileID: 3299591649399607022}
   m_Layer: 0
-  m_Name: CardManager
+  m_Name: SpriteManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,3 +50,21 @@ MonoBehaviour:
   gems: {fileID: 11400000, guid: fd61f9889f67b7a43aab950b324b0fa0, type: 2}
   cardImageLists:
   - {fileID: 11400000, guid: 98f006735d78e1d4abc0e73d410b27fb, type: 2}
+--- !u!114 &3299591649399607022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3382859683205716808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd444cfbff722b741885f6aceffb72c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultImage: {fileID: 21300000, guid: c14fb330c6215ff4aa0378fdf06c3adc, type: 3}
+  potionImageList:
+  - {fileID: 11400000, guid: 3859afef1b536bd48959fe947e392495, type: 2}
+  - {fileID: 11400000, guid: 1341f10191ae905489b15615418cba68, type: 2}
+  - {fileID: 11400000, guid: c8a01ccf25469014a9072563e7d96557, type: 2}
+  miscImages: {fileID: 11400000, guid: d387e2d0bffaf704293b5cda2dd4d12b, type: 2}
