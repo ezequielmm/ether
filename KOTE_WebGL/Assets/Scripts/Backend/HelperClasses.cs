@@ -626,4 +626,13 @@ public class RewardItemData
     public string type;
     public int amount;
     public bool taken;
+    public RewardPotion potion;
+}
+
+[Serializable]
+public class RewardPotion
+{
+    public int potionId;
+    public string name;
+    public string description;
 }

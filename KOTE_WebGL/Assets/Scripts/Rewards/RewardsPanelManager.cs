@@ -15,6 +15,8 @@ public class RewardsPanelManager : MonoBehaviour
 
     public GameObject rewardsContent;
     public TMP_Text buttonText;
+    public GameObject tooltipPanel;
+    public TMP_Text tooltipText;
     private List<RewardItem> _rewardItems;
     private int previousRewardsLength;
     private void Start()
@@ -23,6 +25,8 @@ public class RewardsPanelManager : MonoBehaviour
         GameManager.Instance.EVENT_SHOW_REWARDS_PANEL.AddListener(ActivateInnerRewardsPanel);
         GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.AddListener(SetRewards);
         _rewardItems = new List<RewardItem>();
+        tooltipPanel.SetActive(false);
+        tooltipText.text = "";
     }
 
     public void SetRewards(SWSM_RewardsData rewards)
@@ -40,6 +44,7 @@ public class RewardsPanelManager : MonoBehaviour
             reward.PopulateRewardItem(rewardItem, PlayRewardsEffect);
             _rewardItems.Add(reward);
             rewardsRemaining = true;
+            reward.SetupToolTip(tooltipPanel, tooltipText);
         }
 
         if (rewardsRemaining)
