@@ -623,7 +623,7 @@ public class GameStatusManagerTests
     {
         bool eventFired = false;
 
-        GameManager.Instance.EVENT_SHOW_CAMP_PANEL.AddListener(() =>
+        GameManager.Instance.EVENT_CAMP_SHOW_PANEL.AddListener(() =>
         {
             eventFired = true;
         });
