@@ -25,6 +25,7 @@ public class CampPanelManager : MonoBehaviour
     private void ShowCampPanel()
     {
         campContainer.SetActive(true);
+        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
     }
 
     public void OnRestSelected()
