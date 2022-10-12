@@ -6,11 +6,16 @@ using UnityEngine.UI;
 
 public class SelectableUiCardManager : MonoBehaviour
 {
-    public Button cardSelectorButton;
+    public Toggle cardSelectorToggle;
     [SerializeField]private UICardPrefabManager uiCardManager;
 
     public void Populate(Card card)
     {
         uiCardManager.populate(card);
+    }
+
+    public string GetId()
+    {
+        return uiCardManager.id;
     }
 }
