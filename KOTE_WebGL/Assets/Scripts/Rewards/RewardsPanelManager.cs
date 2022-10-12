@@ -1,51 +1,55 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using Random = UnityEngine.Random;
+using UnityEngine.Serialization;
 
 public class RewardsPanelManager : MonoBehaviour
 {
-    public GameObject rewardsContainer, rewardsGivenContainer, chooseCardsContainer;
+    public GameObject rewardsContainer, chooseCardsContainer;
     public ParticleSystem goldEffect;
 
     [Space(20)] public GameObject rewardItemPrefab;
 
-    public GameObject rewardsContent;
+    [FormerlySerializedAs("rewardsContent")]
+    public GameObject rewardsPanel;
+
     public TMP_Text buttonText;
-    public GameObject tooltipPanel;
-    public TMP_Text tooltipText;
     private List<RewardItem> _rewardItems;
     private int previousRewardsLength;
+
     private void Start()
     {
-        GameManager.Instance.EVENT_CARDS_REWARDPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerChooseCardsPanel);
-        GameManager.Instance.EVENT_SHOW_REWARDS_PANEL.AddListener(ActivateInnerRewardsPanel);
+        GameManager.Instance.EVENT_CARDS_REWARDPANEL_ACTIVATION_REQUEST.AddListener(ActivateCardSelectPanel);
+        GameManager.Instance.EVENT_SHOW_REWARDS_PANEL.AddListener(ActivateRewardsContainer);
         GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.AddListener(SetRewards);
         _rewardItems = new List<RewardItem>();
-        tooltipPanel.SetActive(false);
-        tooltipText.text = "";
+        rewardsContainer.SetActive(false);
+        chooseCardsContainer.SetActive(false);
     }
 
     public void SetRewards(SWSM_RewardsData rewards)
     {
         bool rewardsRemaining = false;
-        
+
         ClearRewardItems();
         foreach (RewardItemData rewardItem in rewards.data.data.rewards)
         {
             // if the reward item has been taken, don't show it
             if (rewardItem.taken) continue;
             // else add it to the list
-            GameObject currentReward = Instantiate(rewardItemPrefab, rewardsContent.transform);
+            GameObject currentReward = Instantiate(rewardItemPrefab, rewardsPanel.transform);
             RewardItem reward = currentReward.GetComponent<RewardItem>();
-            reward.PopulateRewardItem(rewardItem, PlayRewardsEffect);
+            reward.PopulateRewardItem(rewardItem, PlayRewardsEffect, () => { ActivateCardSelectPanel(true); });
             _rewardItems.Add(reward);
             rewardsRemaining = true;
-            reward.SetupToolTip(tooltipPanel, tooltipText);
         }
+
+        //TODO set up card rewards once we have messages set up
+        GameObject rewardGo = Instantiate(rewardItemPrefab, rewardsPanel.transform);
+        RewardItem cardReward = rewardGo.GetComponent<RewardItem>();
+        cardReward.PopulateRewardItem(new RewardItemData { type = "cards" }, PlayRewardsEffect,
+            () => { ActivateCardSelectPanel(true); });
+
 
         if (rewardsRemaining)
         {
@@ -68,20 +72,17 @@ public class RewardsPanelManager : MonoBehaviour
         _rewardItems.Clear();
     }
 
-    public void ActivateInnerRewardsGivenPanel(bool activate)
-    {
-        rewardsGivenContainer.SetActive(activate);
-    }
-
-    public void ActivateInnerChooseCardsPanel(bool activate)
-    {
-        ActivateInnerRewardsGivenPanel(!activate);
-        chooseCardsContainer.SetActive(activate);
-    }
-
-    private void ActivateInnerRewardsPanel(bool activate)
+    private void ActivateRewardsContainer(bool activate)
     {
         rewardsContainer.SetActive(activate);
+        // deactivate the combat ui
+        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
+    }
+
+    public void ActivateCardSelectPanel(bool activate)
+    {
+        rewardsPanel.SetActive(!activate);
+        chooseCardsContainer.SetActive(activate);
     }
 
     public void OnRewardsButtonClicked()
