@@ -10,7 +10,6 @@ public class CampPanelManager : MonoBehaviour
     public Button restButton;
     public Button smithButton;
     public TextMeshProUGUI skipButtonText;
-    public CardUpgradePanelManager upgradePanel;
 
     private bool continueActivated;
 
@@ -18,7 +17,6 @@ public class CampPanelManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_CAMP_SHOW_PANEL.AddListener(ShowCampPanel);
         GameManager.Instance.EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS.AddListener(OnShowCardUpgradePanel);
-        upgradePanel.HidePanel();
         campContainer.SetActive(false);
     }
 
@@ -36,7 +34,6 @@ public class CampPanelManager : MonoBehaviour
 
     public void OnSmithSelected()
     {
-        //TODO add smithing functionality
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.UpgradeableCards);
     }
 
@@ -65,7 +62,10 @@ public class CampPanelManager : MonoBehaviour
 
     private void OnShowCardUpgradePanel(Deck deck)
     {
-        upgradePanel.ShowPanel(deck);
+        GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(deck.cards, 1, (idList) =>
+        {
+            GameManager.Instance.EVENT_CAMP_GET_UPGRADE_PAIR.Invoke(idList[0]);
+        });
     }
 
     private void OnCampFinish()

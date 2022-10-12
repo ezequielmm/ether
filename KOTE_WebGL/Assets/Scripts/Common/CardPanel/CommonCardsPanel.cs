@@ -3,11 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CommonCardsPanel : MonoBehaviour
+public class CommonCardsPanel : CardPanelBase
 {
-    public GameObject CommonCardsContainer;
-    public GameObject gridCardsContainer;
-    public GameObject cardPrefab;
+    public GameObject uiCardPrefab;
 
     private Deck playerDeck;
     private Deck drawDeck;
@@ -15,9 +13,9 @@ public class CommonCardsPanel : MonoBehaviour
     private Deck exhaustDeck;
 
 
-    void Start()
+    protected override void Start()
     {
-        CommonCardsContainer.SetActive(false);
+        base.Start();
         GameManager.Instance.EVENT_CARD_PILE_CLICKED.AddListener(DisplayCards);
         GameManager.Instance.EVENT_CARDS_PILES_UPDATED.AddListener(OnPilesUpdate);
         GameManager.Instance.EVENT_CARD_PILE_SHOW_DECK.AddListener(onFullDeckShow);
@@ -60,13 +58,13 @@ public class CommonCardsPanel : MonoBehaviour
 
     private void DisplayCards(PileTypes pileType)
     {
-        if (CommonCardsContainer.activeSelf)
+        if (commonCardsContainer.activeSelf)
         {
-            CommonCardsContainer.SetActive(false);
+            commonCardsContainer.SetActive(false);
         }
         else
         {
-            CommonCardsContainer.SetActive(true);
+            commonCardsContainer.SetActive(true);
             ShowCards(pileType);
         }
         
@@ -76,22 +74,14 @@ public class CommonCardsPanel : MonoBehaviour
     private void onFullDeckShow(Deck deck) 
     {
         playerDeck = deck;
-        CommonCardsContainer.SetActive(true);
-        DestoryCards();
+        commonCardsContainer.SetActive(true);
+        DestroyCards();
         GenerateCards(playerDeck);
     }
-
-    private void DestoryCards() 
-    {
-        for (int i = 0; i < gridCardsContainer.transform.childCount; i++)
-        {
-            Destroy(gridCardsContainer.transform.GetChild(i).gameObject);
-        }
-    }
-
+    
     private void ShowCards(PileTypes pileType)
     {
-        DestoryCards();
+        DestroyCards();
         switch (pileType)
         {
             case PileTypes.Deck: GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.PlayerDeck); break;
@@ -107,7 +97,7 @@ public class CommonCardsPanel : MonoBehaviour
         {
             foreach (Card card in deck.cards)
             {
-                GameObject newCard = Instantiate(cardPrefab, gridCardsContainer.transform);
+                GameObject newCard = Instantiate(uiCardPrefab, gridCardsContainer.transform);
                 newCard.GetComponent<UICardPrefabManager>().populate(card);
             }
         }
