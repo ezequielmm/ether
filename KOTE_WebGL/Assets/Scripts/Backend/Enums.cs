@@ -218,7 +218,7 @@ public enum WS_DATA_REQUEST_TYPES
     Statuses,
     PlayerDeck,
     CurrentNode,
-    UpgradeableCards,
+    UpgradableCards,
     UpgradeablePair,
     UpgradeCard
 }
