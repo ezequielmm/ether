@@ -191,7 +191,7 @@ public class SWSM_Parser
             case nameof(WS_DATA_REQUEST_TYPES.PlayerDeck):
                 ProcessPlayerFullDeck(data);
                 break;
-            case nameof(WS_DATA_REQUEST_TYPES.UpgradeableCards):
+            case nameof(WS_DATA_REQUEST_TYPES.UpgradableCards):
                 ProcessUpgradeableCards(data);
                 break;
             case nameof(WS_DATA_REQUEST_TYPES.UpgradeablePair):
