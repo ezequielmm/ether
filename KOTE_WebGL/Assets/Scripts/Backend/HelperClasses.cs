@@ -386,6 +386,44 @@ public class SWSM_PlayerDeckData
 }
 
 [Serializable]
+public class SWSM_DeckData
+{
+    public SWSM_Deck data;
+}
+
+[Serializable]
+public class SWSM_Deck
+{
+    public DeckData data;
+   
+}
+
+[Serializable]
+public class DeckData
+{
+    public List<Card> deck;
+}
+
+[Serializable]
+public class SWSM_ConfirmUpgrade
+{
+    public SWSM_UpgradeData data;
+
+    [Serializable]
+    public class SWSM_UpgradeData
+    {
+        public UpgradeData data;
+
+        [Serializable]
+        public class UpgradeData
+        {
+            public string cardIdToDelete;
+            public Card newCard;
+        }
+    }
+}
+
+[Serializable]
 public class SWSM_MapData
 {
     public ExpeditionMapData data;

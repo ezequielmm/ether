@@ -59,4 +59,6 @@ public class SelectCardsPanel : CardPanelBase
         selectButton.gameObject.SetActive(false);
         commonCardsContainer.SetActive(true);
     }
+
+    
 }

@@ -24,7 +24,7 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_CARD_PLAYED = "CardPlayed";
     private const string WS_MESSAGE_END_TURN = "EndTurn";
     private const string WS_MESSAGE_REWARD_SELECTED = "RewardSelected";
-    private const string WS_MESSAGE_GET_CARD_UPGRADE_PAIR = "UpgradablePair";
+    private const string WS_MESSAGE_GET_CARD_UPGRADE_PAIR = "CardUpgradeSelected";
     private const string WS_MESSAGE_UPGRADE_CARD = "UpgradeCard";
     private const string WS_MESSAGE_CAMP_HEAL = "CampRecoverHealth";
     
@@ -232,7 +232,7 @@ public class WebSocketManager : MonoBehaviour
 
     private void OnShowUpgradePair(string cardId)
     {
-        Debug.Log("Sending message Card Upgrade Selected with card id " + cardId);
+        Debug.Log($"Sending message {WS_MESSAGE_GET_CARD_UPGRADE_PAIR} with card id {cardId}");
         //customNamespace.Emit("NodeSelected",nodeId);
 
         rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_GET_CARD_UPGRADE_PAIR, cardId);

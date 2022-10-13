@@ -191,9 +191,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06acf1cb7701f4742ae5071bec232e86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upgradePanel: {fileID: 0}
-  uiCard: {fileID: 4040004165665311213, guid: 9bbabae692a5c0b4b9d0e665e9598abd, type: 3}
-  upgradePanelLayout: {fileID: 0}
   cardPairPanel: {fileID: 1840513253062404622}
   uiCardPair:
   - {fileID: 5771012661478009304}
@@ -215,7 +212,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7268589350228402934
 RectTransform:
   m_ObjectHideFlags: 0

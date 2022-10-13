@@ -9,6 +9,7 @@ public class CardPanelBase : MonoBehaviour
     // Start is called before the first frame update
     protected virtual void Start()
     {
+        GameManager.Instance.EVENT_HIDE_COMMON_CARD_PANEL.AddListener(OnHideSelectCardPanel);
         commonCardsContainer.SetActive(false);
     }
 
@@ -18,6 +19,12 @@ public class CardPanelBase : MonoBehaviour
         {
             Destroy(gridCardsContainer.transform.GetChild(i).gameObject);
         }
+    }
+    
+    private void OnHideSelectCardPanel()
+    {
+        commonCardsContainer.SetActive(false);
+        DestroyCards();
     }
 
 }
