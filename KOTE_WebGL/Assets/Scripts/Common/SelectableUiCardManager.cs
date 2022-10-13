@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class SelectableUiCardManager : MonoBehaviour
 {
     public Toggle cardSelectorToggle;
+    // keep track of this manually so we can have multiple cards selected 
+    public bool isSelected;
     [SerializeField]private UICardPrefabManager uiCardManager;
 
     public void Populate(Card card)
@@ -17,5 +19,11 @@ public class SelectableUiCardManager : MonoBehaviour
     public string GetId()
     {
         return uiCardManager.id;
+    }
+
+    public void DetermineToggleColor()
+    {
+        if(isSelected) cardSelectorToggle.targetGraphic.color = Color.green;
+        if(!isSelected) cardSelectorToggle.targetGraphic.color = Color.clear;
     }
 }
