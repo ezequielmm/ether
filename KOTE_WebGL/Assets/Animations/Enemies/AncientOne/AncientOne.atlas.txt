@@ -1,0 +1,100 @@
+AncientOne.png
+size:2048,2048
+filter:Linear,Linear
+pma:true
+scale:0.8
+Back_Horn 1
+bounds:1169,578,675,877
+rotate:270
+Back_Horn 2
+bounds:380,782,1162,936
+rotate:90
+Bell
+bounds:537,435,197,98
+Bell 1
+bounds:1025,1857,90,87
+Bell 2
+bounds:1404,399,163,192
+Bell 3
+bounds:1318,1859,134,85
+Bell 4
+bounds:1113,1370,178,89
+Eye 4
+bounds:139,1910,21,34
+FX_bite01
+bounds:1318,1279,455,576
+FX_bite02
+bounds:2,28,412,123
+Front Horn 1
+bounds:2,213,887,924
+rotate:180
+Front Horn 2
+bounds:546,651,626,954
+rotate:270
+Head
+bounds:2,153,490,401
+Hoof_Back leg 1
+bounds:413,1130,95,154
+Hoof_Back leg 2
+bounds:825,1000,54,139
+Hoof_Front leg 1
+bounds:1501,1163,114,242
+rotate:90
+Hoof_Front leg 2
+bounds:272,1065,160,154
+Lower leg_Back leg 1
+bounds:1267,355,174,260
+Lower leg_Back leg 2
+bounds:440,5,82,188
+Lower leg_Front leg 1
+bounds:1864,3,182,362
+Lower leg_Front leg 2
+bounds:1145,177,133,334
+Lower teeth
+bounds:1775,1367,197,142
+Lower teeth 2
+bounds:426,681,78,99
+Lower1
+bounds:2,1686,18,37
+Lower2
+bounds:107,1895,30,49
+Lower3
+bounds:2,1898,34,46
+Mainbody
+bounds:2,1138,1048,806
+Mid leg_Back leg 1
+bounds:1026,663,162,141
+offsets:0,0,162,155
+Mid leg_Back leg 2
+bounds:202,1689,111,142
+Mid leg_Front leg 1
+bounds:1773,1510,209,434
+Mid leg_Front leg 2
+bounds:920,1099,269,350
+rotate:90
+Mouth interior
+bounds:493,2,301,303
+rotate:90
+Tail
+bounds:1236,60,913,810
+rotate:270
+Tongue
+bounds:2,1667,198,212
+Upper leg_Back leg 1
+bounds:931,96,227,481
+Upper leg_Back leg 2
+bounds:2,508,190,398
+Upper leg_Front leg 1
+bounds:737,304,287,440
+Upper teeth 1
+bounds:518,535,214,115
+Upper teeth 2
+bounds:185,1797,30,45
+Upper1
+bounds:162,1907,16,37
+Upper2
+bounds:38,1895,31,49
+Upper3
+bounds:71,1900,34,44
+shadow
+bounds:266,934,110,107
