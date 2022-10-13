@@ -201,8 +201,8 @@ MonoBehaviour:
   ANIMATION_EVENT:
     m_PersistentCalls:
       m_Calls: []
-  animationJson: {fileID: 4900000, guid: 0f00ac3819f0a404c91ebb13c4ef30b4, type: 3}
-  atlasAssetBase: {fileID: 11400000, guid: a909b627384766549a4b98fac0ea7fb9, type: 2}
+  animationJson: {fileID: 4900000, guid: 9f897ef57a8509a40b3410ff6db929cb, type: 3}
+  atlasAssetBase: {fileID: 11400000, guid: 4c8f1f38f9026554a9d8de9fda606ef4, type: 2}
   animations:
   - sequenceName: attack
     sequence:

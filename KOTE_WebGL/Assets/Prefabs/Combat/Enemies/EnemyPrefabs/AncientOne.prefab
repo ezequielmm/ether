@@ -126,7 +126,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f8223987a998ff24092d0ed5bb1de6cc, type: 2}
+  - {fileID: 2100000, guid: 21eae771fb18b654b9b4209be6c72ae9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -201,7 +201,7 @@ MonoBehaviour:
   ANIMATION_EVENT:
     m_PersistentCalls:
       m_Calls: []
-  animationJson: {fileID: 4900000, guid: 28ea4ca4b8922c54e9b9690870a7002f, type: 3}
+  animationJson: {fileID: 4900000, guid: c9859df4dba0fa4469219213f2bab42d, type: 3}
   atlasAssetBase: {fileID: 11400000, guid: d78b9d6bdd882ba41a8aa21928442f29, type: 2}
   animations:
   - sequenceName: attack
