@@ -35,7 +35,7 @@ public class CampPanelManager : MonoBehaviour
 
     public void OnSmithSelected()
     {
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.UpgradeableCards);
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.UpgradableCards);
     }
 
     private void DeactivateButtons()
