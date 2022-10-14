@@ -17,6 +17,7 @@ public class CampPanelManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_CAMP_SHOW_PANEL.AddListener(ShowCampPanel);
         GameManager.Instance.EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS.AddListener(OnShowCardUpgradePanel);
+        GameManager.Instance.EVENT_CAMP_FINISH.AddListener(OnCampFinish);
         campContainer.SetActive(false);
     }
 
@@ -29,8 +30,7 @@ public class CampPanelManager : MonoBehaviour
     public void OnRestSelected()
     {
         GameManager.Instance.EVENT_CAMP_HEAL.Invoke();
-        DeactivateButtons();
-        SwitchToContinueButton();
+        OnCampFinish();
     }
 
     public void OnSmithSelected()
@@ -54,18 +54,13 @@ public class CampPanelManager : MonoBehaviour
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
         campContainer.SetActive(false);
     }
-
-    private void OnHealthRestored()
-    {
-        DeactivateButtons();
-        SwitchToContinueButton();
-    }
-
+    
     private void OnShowCardUpgradePanel(Deck deck)
     {
         GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(deck.cards, 1, (idList) =>
         {
             GameManager.Instance.EVENT_CAMP_GET_UPGRADE_PAIR.Invoke(idList[0]);
+            GameManager.Instance.EVENT_HIDE_COMMON_CARD_PANEL.Invoke();
         });
     }
 
