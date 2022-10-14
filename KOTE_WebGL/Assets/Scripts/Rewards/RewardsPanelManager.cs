@@ -43,14 +43,7 @@ public class RewardsPanelManager : MonoBehaviour
             _rewardItems.Add(reward);
             rewardsRemaining = true;
         }
-
-        //TODO set up card rewards once we have messages set up
-        GameObject rewardGo = Instantiate(rewardItemPrefab, rewardsPanel.transform);
-        RewardItem cardReward = rewardGo.GetComponent<RewardItem>();
-        cardReward.PopulateRewardItem(new RewardItemData { type = "cards" }, PlayRewardsEffect,
-            () => { ActivateCardSelectPanel(true); });
-
-
+        
         if (rewardsRemaining)
         {
             buttonText.text = "Abandon Loot";

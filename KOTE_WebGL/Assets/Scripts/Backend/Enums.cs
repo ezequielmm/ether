@@ -304,7 +304,7 @@ public enum ATTACK_EFFECT_TYPES
 [Serializable]
 public enum RewardItemType
 {
-    cards,
+    card,
     gold,
     potion,
     trinket,

@@ -38,10 +38,14 @@ public class RewardItem : MonoBehaviour//, IPointerClickHandler
         rewardData = reward;
         switch (rewardItemType)
         {
-            case RewardItemType.cards:
-                tooltipController.enabled = false;
+            case RewardItemType.card:
                 rewardText.text = "Add a card to your deck";
                 onRewardSelected = onAddACard;
+                
+                // setup description tooltip
+                List<Tooltip> cardtooltips = new List<Tooltip>
+                    { new Tooltip { description = rewardData.card.description, title = rewardData.card.name } };
+                tooltipController.SetTooltips(cardtooltips);
                 break;
             case RewardItemType.gold:
                 tooltipController.enabled = false;
