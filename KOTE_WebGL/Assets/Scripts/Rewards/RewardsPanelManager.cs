@@ -12,12 +12,13 @@ public class RewardsPanelManager : MonoBehaviour
 
     [FormerlySerializedAs("rewardsContent")]
     public GameObject rewardsPanel;
+
     public GameObject cardRewardLayout;
-    public UICardPrefabManager cardPrefab;
-    
+    public SelectableUiCardManager cardPrefab;
+
     public TMP_Text buttonText;
     private List<RewardItem> _rewardItems;
-    private List<UICardPrefabManager> _cardRewards;
+    private List<SelectableUiCardManager> _cardRewards;
     private int previousRewardsLength;
 
     private void Start()
@@ -26,7 +27,7 @@ public class RewardsPanelManager : MonoBehaviour
         GameManager.Instance.EVENT_SHOW_REWARDS_PANEL.AddListener(ActivateRewardsContainer);
         GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.AddListener(SetRewards);
         _rewardItems = new List<RewardItem>();
-        _cardRewards = new List<UICardPrefabManager>();
+        _cardRewards = new List<SelectableUiCardManager>();
         rewardsContainer.SetActive(false);
         chooseCardsContainer.SetActive(false);
     }
@@ -41,39 +42,26 @@ public class RewardsPanelManager : MonoBehaviour
         {
             // if the reward item has been taken, don't show it
             if (rewardItem.taken) continue;
-            
+
             //if it's a card, create it on the card display instead
             if (rewardItem.type == "card")
             {
-                AddCardToRewards(rewardItem.card);
+                AddCardToRewards(rewardItem);
+                rewardsRemaining = true;
                 continue;
             }
 
-            // else add it to the list
-            GameObject currentReward = Instantiate(rewardItemPrefab, rewardsPanel.transform);
-            RewardItem reward = currentReward.GetComponent<RewardItem>();
-            reward.PopulateRewardItem(rewardItem, PlayRewardsEffect);
-            _rewardItems.Add(reward);
+            AddReward(rewardItem);
             rewardsRemaining = true;
         }
-        
-        // handle the game reward ourselves, so that it opens the card select window
-        GameObject cardRewardObject = Instantiate(rewardItemPrefab, rewardsPanel.transform);
-        RewardItem cardReward = cardRewardObject.GetComponent<RewardItem>();
-        cardReward.PopulateRewardItem(new RewardItemData
-        {
-            type = "card"
-        }, PlayRewardsEffect, () => { ActivateCardSelectPanel(true); });
-        _rewardItems.Add(cardReward);
 
-        if (rewardsRemaining)
+        // handle the game reward ourselves, so that it opens the card select window
+        if (_cardRewards.Count > 0)
         {
-            buttonText.text = "Abandon Loot";
+            ShowCardRewardItem();
         }
-        else
-        {
-            buttonText.text = "Continue";
-        }
+
+        SetRewardButtonText(rewardsRemaining);
     }
 
     private void ClearRewardItems()
@@ -87,22 +75,59 @@ public class RewardsPanelManager : MonoBehaviour
         _rewardItems.Clear();
     }
 
-    private void AddCardToRewards(Card card)
+    private void AddReward(RewardItemData rewardItem)
     {
-        UICardPrefabManager newCard = Instantiate(cardPrefab, cardRewardLayout.transform);
-        newCard.populate(card);
+        // else add it to the list
+        GameObject currentReward = Instantiate(rewardItemPrefab, rewardsPanel.transform);
+        RewardItem reward = currentReward.GetComponent<RewardItem>();
+        reward.PopulateRewardItem(rewardItem, PlayRewardsEffect);
+        _rewardItems.Add(reward);
+    }
+
+    private void AddCardToRewards(RewardItemData reward)
+    {
+        SelectableUiCardManager newCard = Instantiate(cardPrefab, cardRewardLayout.transform);
+        newCard.Populate(reward.card);
+        newCard.cardSelectorToggle.onValueChanged.AddListener((isOn) =>
+        {
+            GameManager.Instance.EVENT_REWARD_SELECTED.Invoke(reward.id);
+            ActivateCardSelectPanel(false);
+        });
         _cardRewards.Add(newCard);
+    }
+
+    private void ShowCardRewardItem()
+    {
+        GameObject cardRewardObject = Instantiate(rewardItemPrefab, rewardsPanel.transform);
+        RewardItem cardReward = cardRewardObject.GetComponent<RewardItem>();
+        cardReward.PopulateRewardItem(new RewardItemData
+        {
+            type = "card"
+        }, PlayRewardsEffect, () => { ActivateCardSelectPanel(true); });
+        _rewardItems.Add(cardReward);
     }
 
     private void ClearRewardCards()
     {
         if (_cardRewards.Count == 0) return;
-        foreach (UICardPrefabManager card in _cardRewards)
+        foreach (SelectableUiCardManager card in _cardRewards)
         {
             Destroy(card.gameObject);
         }
 
         _cardRewards.Clear();
+    }
+
+    private void SetRewardButtonText(bool rewardsRemaining)
+    {
+        if (rewardsRemaining)
+        {
+            buttonText.text = "Abandon Loot";
+        }
+        else
+        {
+            buttonText.text = "Continue";
+        }
     }
 
     private void ActivateRewardsContainer(bool activate)

@@ -1069,7 +1069,7 @@ MonoBehaviour:
     type: 3}
   rewardsPanel: {fileID: 2568664644027254891}
   cardRewardLayout: {fileID: 3139238989409431903}
-  cardPrefab: {fileID: 8653138555521536643, guid: a87c99eb745359a41a0c6a2304341a8c,
+  cardPrefab: {fileID: 4185661909768271464, guid: 9bbabae692a5c0b4b9d0e665e9598abd,
     type: 3}
   buttonText: {fileID: 2407466455062707566}
 --- !u!1 &7553073755893179922
