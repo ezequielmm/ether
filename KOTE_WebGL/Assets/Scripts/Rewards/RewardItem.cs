@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
 
-public class RewardItem : MonoBehaviour//, IPointerClickHandler
+public class RewardItem : MonoBehaviour //, IPointerClickHandler
 {
     public TMP_Text rewardText;
     [ReadOnly] public RewardItemType rewardItemType;
@@ -22,10 +22,10 @@ public class RewardItem : MonoBehaviour//, IPointerClickHandler
     //and then we pass in the action we want to take when the reward is selected
     private Action onRewardSelected;
 
-    public void PopulateRewardItem(RewardItemData reward, Action<RewardItemType> EffectsAction, Action onAddACard)
+    public void PopulateRewardItem(RewardItemData reward, Action<RewardItemType> EffectsAction, Action onAddACard = null)
     {
         rewardEffectsAction = EffectsAction;
-        if (onAddACard == null)
+        if (onAddACard == null || reward.type != "card")
         {
             onRewardSelected = onRewardClicked;
         }
@@ -39,36 +39,33 @@ public class RewardItem : MonoBehaviour//, IPointerClickHandler
         switch (rewardItemType)
         {
             case RewardItemType.card:
+                tooltipController.enabled = false;
                 rewardText.text = "Add a card to your deck";
-                onRewardSelected = onAddACard;
-                
-                // setup description tooltip
-                List<Tooltip> cardtooltips = new List<Tooltip>
-                    { new Tooltip { description = rewardData.card.description, title = rewardData.card.name } };
-                tooltipController.SetTooltips(cardtooltips);
                 break;
+
             case RewardItemType.gold:
                 tooltipController.enabled = false;
                 rewardText.text = reward.amount + " gold";
                 rewardImage.sprite = SpriteAssetManager.Instance.GetMiscImage("coin");
-                onRewardSelected = onRewardClicked;
                 break;
+
             case RewardItemType.potion:
                 RewardPotion potion = reward.potion;
                 rewardText.text = potion.name;
                 rewardImage.sprite = SpriteAssetManager.Instance.GetPotionImage(potion.potionId);
-                onRewardSelected = onRewardClicked;
-
 
                 // setup description tooltip
                 List<Tooltip> tooltips = new List<Tooltip>
                     { new Tooltip { description = rewardData.potion.description, title = rewardData.potion.name } };
                 tooltipController.SetTooltips(tooltips);
                 break;
+
             case RewardItemType.trinket:
                 break;
+
             case RewardItemType.fief:
                 break;
+
             default:
                 throw new ArgumentOutOfRangeException();
         }
@@ -90,6 +87,7 @@ public class RewardItem : MonoBehaviour//, IPointerClickHandler
     public void OnRewardClaimed()
     {
         Debug.Log("onClickFired");
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
         rewardEffectsAction.Invoke(rewardItemType);
         onRewardSelected.Invoke();
     }
