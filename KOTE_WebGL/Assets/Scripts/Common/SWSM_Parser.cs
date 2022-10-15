@@ -33,6 +33,9 @@ public class SWSM_Parser
             case nameof(WS_MESSAGE_TYPES.card_upgrade):
                 ProcessCardUpgrade(swsm.data.action, data);
                 break;
+            case nameof(WS_MESSAGE_TYPES.add_potion):
+                ProcessAddPotion(swsm.data.action, data);
+                break;
             case nameof(WS_MESSAGE_TYPES.combat_update):
                 ProcessCombatUpdate(swsm.data.action, data);
                 break;
@@ -495,6 +498,18 @@ public class SWSM_Parser
         switch (action)
         {
             case "confirm_upgrade":
+                break;
+        }
+    }
+
+    private static void ProcessAddPotion(string action, string data)
+    {
+        switch (action)
+        {
+            case "potion_not_found_in_database":
+                break;
+            case"potion_max_count_reached":
+                GameManager.Instance.EVENT_POTION_POTIONS_FULL.Invoke();
                 break;
         }
     }

@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class Potion : MonoBehaviour
+public class PotionManager : MonoBehaviour, IPointerClickHandler
 {
     public Sprite unusedPotionSprite, usedPotionSprite;
     private Image potionImage;
@@ -14,33 +14,74 @@ public class Potion : MonoBehaviour
 
     private TooltipAtCursor tooltipController;
 
+    private HeldPotion potion;
+
     private Tooltip unknown;
+    private Tooltip _tooltip;
 
     private TargetProfile targetProfile;
 
     private float SizeOnHover = 1.3f;
     private float originalY;
 
-
-    private void Start()
+    private void Awake()
     {
         tooltipController = GetComponent<TooltipAtCursor>();
-        unknown = new Tooltip()
-        {
-            title = "Mysterious Elixir",
-            description = "Cause an unknown effect to an enemy."
-        };
         potionImage = GetComponent<Image>();
         potionButton = GetComponent<Button>();
 
+        
+    }
+
+    public void Populate(HeldPotion inPotion)
+    {
+        if (inPotion == null)
+        {
+            PopulateAsEmpty();
+            return;
+        }
+        potion = inPotion;
+        PopulatePotion();
+    }
+
+    private void PopulateAsEmpty()
+    {
+        tooltipController.enabled = false;
         potionImage.sprite = unusedPotionSprite;
-        tooltipController.SetTooltips(new List<Tooltip>() { unknown });
         targetProfile = new TargetProfile()
         {
             player = true,
             enemy = true
         };
         originalY = 0;
+
+    }
+
+    private void PopulatePotion()
+    {
+        tooltipController.enabled = true;
+        _tooltip = new Tooltip()
+        {
+            title = potion.potion.name,
+            description = potion.potion.description
+        };
+
+        potionImage.sprite = SpriteAssetManager.Instance.GetPotionImage(potion.potion.potionId);
+        tooltipController.SetTooltips(new List<Tooltip> { _tooltip });
+        targetProfile = new TargetProfile
+        {
+            player = true,
+            enemy = true
+        };
+        originalY = 0;
+    }
+
+    public void OnPointerClick(PointerEventData data)
+    {
+        if (potion != null)
+        {
+            GameManager.Instance.EVENT_POTION_SHOW_POTION_MENU.Invoke(this);
+        }
     }
 
     private void OnPotion()
@@ -49,21 +90,8 @@ public class Potion : MonoBehaviour
         tooltipController.SetTooltips(null);
     }
 
-    private void OnPotionUsed(GameObject invoker)
-    {
-        if (invoker != gameObject) return;
-
-        Debug.Log($"Potion used");
-
-        potionImage.sprite = usedPotionSprite;
-        potionButton.interactable = false;
-
-        GameManager.Instance.EVENT_POTION_USED.Invoke(this);
-    }
-
-
     // These are controlled via the event system
-    public void DragStart() 
+    public void DragStart()
     {
         originalY = transform.position.y;
         transform.DOScale(SizeOnHover, 0.2f);
@@ -81,7 +109,7 @@ public class Potion : MonoBehaviour
         GameManager.Instance.EVENT_TOGGLE_TOOLTIPS.Invoke(false);
     }
 
-    public void DragEnd() 
+    public void DragEnd()
     {
         Debug.LogWarning($"[Postion] Potion needs potion ID to use the potion.");
         GameManager.Instance.EVENT_DEACTIVATE_POINTER.Invoke("PostionID");

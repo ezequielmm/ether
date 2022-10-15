@@ -250,7 +250,8 @@ public enum WS_MESSAGE_TYPES
     begin_turn,
     end_combat,
     end_node,
-    card_upgrade
+    card_upgrade,
+    add_potion
 }
 
 [Serializable]

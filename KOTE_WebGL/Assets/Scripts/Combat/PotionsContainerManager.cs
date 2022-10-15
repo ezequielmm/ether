@@ -1,31 +1,92 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PotionsContainerManager : MonoBehaviour
 {
-    public List<Potion> potions;
+    public List<PotionManager> potions;
     public GameObject potionPrefab;
+    public GameObject potionLayout;
+    public Image warningBackground;
+
+    public GameObject potionOptionPanel;
+    public Button drinkButton;
+    public Button discardButton;
+
+    private int potionMax = 3;
+    private float potionWidth = 0;
 
     private void Start()
     {
-        GameManager.Instance.EVENT_POTION_USED.AddListener(OnPotionUsed);
-
-        CreatePotions();
+        potionOptionPanel.SetActive(false);
+        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStateUpdate);
+        GameManager.Instance.EVENT_POTION_SHOW_POTION_MENU.AddListener(OnShowPotionOptions);
+        GameManager.Instance.EVENT_POTION_POTIONS_FULL.AddListener(OnPotionsFull);
     }
 
-    public void CreatePotions()
+    private void OnPlayerStateUpdate(PlayerStateData playerState)
     {
-        for (int i = 0; i < 3; i++)
+        float potionWidth = 0;
+        
+        CreateHeldPotions(playerState.data.playerState.potions);
+        CreateEmptyPotions();
+        
+        ResizeWarningBackground(potionWidth);
+    }
+
+    private void CreateHeldPotions(List<HeldPotion> heldPotions)
+    {
+        foreach (HeldPotion potion in heldPotions)
         {
-            Potion potion = Instantiate(potionPrefab, transform).GetComponent<Potion>();
+            PotionManager potionManager =
+                Instantiate(potionPrefab, potionLayout.transform).GetComponent<PotionManager>();
+            potionManager.Populate(potion);
+            potions.Add(potionManager);
+            potionWidth = potionManager.GetComponent<RectTransform>().rect.width;
+        }
+    }
+    
+    public void CreateEmptyPotions()
+    {
+        for (int i = potions.Count; i < potionMax; i++)
+        {
+            PotionManager potion = Instantiate(potionPrefab, potionLayout.transform).GetComponent<PotionManager>();
             potions.Add(potion);
+            potion.Populate(null);
         }
     }
 
-    public void OnPotionUsed(Potion potionUsed)
+    private void OnShowPotionOptions(PotionManager potion)
     {
-        //validate potion in the server
+        potionOptionPanel.SetActive(true);
+        drinkButton.onClick.AddListener(() =>
+        {
+            GameManager.Instance.EVENT_POTION_USED.Invoke(potion);
+            potionOptionPanel.SetActive(false);
+        });
+        discardButton.onClick.AddListener(() =>
+        {
+            GameManager.Instance.EVENT_POTION_DISCARDED.Invoke(potion);
+            potionOptionPanel.SetActive(false);
+        });
+    }
+
+    private void ResizeWarningBackground(float potionWidth)
+    {
+        for (int i = 0; i < potions.Count; i++)
+        {
+            Vector2 width = warningBackground.rectTransform.offsetMax;
+            width.x += potionWidth;
+            warningBackground.rectTransform.offsetMax = width;
+        }
+    }
+
+    private void OnPotionsFull()
+    {
+        Sequence sequence = DOTween.Sequence();
+        sequence.Join(warningBackground.DOFade(0.5f, 1).SetLoops(4, LoopType.Yoyo));
+        sequence.Play();
     }
 }
