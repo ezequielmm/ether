@@ -17,8 +17,6 @@ public class PotionsContainerManager : MonoBehaviour
 
     private int potionMax = 3;
     private float potionWidth = 0;
-    private bool pointerIsActive;
-    private string activePotionId = "";
 
     private void Start()
     {
@@ -77,14 +75,12 @@ public class PotionsContainerManager : MonoBehaviour
         {
             if (potion.GetPotionTarget() == "enemy")
             {
-                PointerData pointerData = new PointerData(potion.gameObject.transform.position, PointerOrigin.potion,
-                    potion.targetProfile);
-                activePotionId = potion.GetPotionId();
-                GameManager.Instance.EVENT_ACTIVATE_POINTER.Invoke(pointerData);
+                // this turns on the pointer from the potion
+                potion.pointerActive = true;
                 potionOptionPanel.SetActive(false);
                 return;
             }
-
+            
             GameManager.Instance.EVENT_POTION_USED.Invoke(potion.GetPotionId(), null);
             potionOptionPanel.SetActive(false);
         });
@@ -95,15 +91,6 @@ public class PotionsContainerManager : MonoBehaviour
         });
     }
     
-    private void OnMouseUp()
-    {
-        if (pointerIsActive)
-        {
-            GameManager.Instance.EVENT_DEACTIVATE_POINTER.Invoke(activePotionId);
-            activePotionId = "";
-        }
-    }
-
     private void ResizeWarningBackground(float potionWidth)
     {
         for (int i = 0; i < potions.Count; i++)

@@ -9,6 +9,7 @@ using DG.Tweening;
 public class PotionManager : MonoBehaviour, IPointerClickHandler
 {
     public Sprite unusedPotionSprite, usedPotionSprite;
+    public bool pointerActive;
     private Image potionImage;
     private Button potionButton;
 
@@ -29,6 +30,23 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
         tooltipController = GetComponent<TooltipAtCursor>();
         potionImage = GetComponent<Image>();
         potionButton = GetComponent<Button>();
+    }
+
+    private void Update()
+    {
+        if (pointerActive)
+        {
+            PointerData pointerData = new PointerData(gameObject.transform.position, PointerOrigin.potion,
+                targetProfile);
+            GameManager.Instance.EVENT_ACTIVATE_POINTER.Invoke(pointerData);
+            GameManager.Instance.EVENT_TOGGLE_TOOLTIPS.Invoke(false);
+            if (Input.GetMouseButtonDown(0))
+            {
+                GameManager.Instance.EVENT_DEACTIVATE_POINTER.Invoke(potion.id);
+                GameManager.Instance.EVENT_TOGGLE_TOOLTIPS.Invoke(true);
+                pointerActive = false;
+            }
+        }
     }
 
     public void Populate(HeldPotion inPotion)
@@ -99,12 +117,6 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
     public string GetPotionId()
     {
         return potion.id;
-    }
-
-    private void OnPotion()
-    {
-        potionImage.sprite = usedPotionSprite;
-        tooltipController.SetTooltips(null);
     }
 
 // These are controlled via the event system
