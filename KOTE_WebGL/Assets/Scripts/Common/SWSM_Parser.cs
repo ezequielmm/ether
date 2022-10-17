@@ -36,6 +36,9 @@ public class SWSM_Parser
             case nameof(WS_MESSAGE_TYPES.add_potion):
                 ProcessAddPotion(swsm.data.action, data);
                 break;
+            case nameof(WS_MESSAGE_TYPES.use_potion):
+                ProcessUsePotion(swsm.data.action, data);
+                break;
             case nameof(WS_MESSAGE_TYPES.combat_update):
                 ProcessCombatUpdate(swsm.data.action, data);
                 break;
@@ -504,12 +507,27 @@ public class SWSM_Parser
 
     private static void ProcessAddPotion(string action, string data)
     {
+        //TODO possibly switch effects for different warnings
         switch (action)
         {
             case "potion_not_found_in_database":
+                GameManager.Instance.EVENT_POTION_WARNING.Invoke();
+                break;
+            case "potion_not_in_inventory":
+                GameManager.Instance.EVENT_POTION_WARNING.Invoke();
                 break;
             case"potion_max_count_reached":
-                GameManager.Instance.EVENT_POTION_POTIONS_FULL.Invoke();
+                GameManager.Instance.EVENT_POTION_WARNING.Invoke();
+                break;
+        }
+    }
+
+    private static void ProcessUsePotion(string action, string data)
+    {
+        switch (action)
+        {
+            case "potion_not_usable_outside_combat":
+                GameManager.Instance.EVENT_POTION_WARNING.Invoke();
                 break;
         }
     }

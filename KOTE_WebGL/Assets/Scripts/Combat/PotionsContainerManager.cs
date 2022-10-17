@@ -23,7 +23,7 @@ public class PotionsContainerManager : MonoBehaviour
         potionOptionPanel.SetActive(false);
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStateUpdate);
         GameManager.Instance.EVENT_POTION_SHOW_POTION_MENU.AddListener(OnShowPotionOptions);
-        GameManager.Instance.EVENT_POTION_POTIONS_FULL.AddListener(OnPotionsFull);
+        GameManager.Instance.EVENT_POTION_WARNING.AddListener(OnPotionsFull);
     }
 
     private void OnPlayerStateUpdate(PlayerStateData playerState)
