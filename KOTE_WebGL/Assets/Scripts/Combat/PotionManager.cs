@@ -24,9 +24,11 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
 
     private float SizeOnHover = 1.3f;
     private float originalY;
+    private Camera mainCamera;
 
     private void Awake()
     {
+        mainCamera = Camera.main;
         tooltipController = GetComponent<TooltipAtCursor>();
         potionImage = GetComponent<Image>();
         potionButton = GetComponent<Button>();
@@ -36,7 +38,8 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
     {
         if (pointerActive)
         {
-            PointerData pointerData = new PointerData(gameObject.transform.position, PointerOrigin.potion,
+            Vector3 position = mainCamera.ScreenToWorldPoint(gameObject.transform.position);
+            PointerData pointerData = new PointerData(position, PointerOrigin.potion,
                 targetProfile);
             GameManager.Instance.EVENT_ACTIVATE_POINTER.Invoke(pointerData);
             GameManager.Instance.EVENT_TOGGLE_TOOLTIPS.Invoke(false);
