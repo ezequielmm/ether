@@ -118,33 +118,4 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
     {
         return potion.id;
     }
-
-// These are controlled via the event system
-    public void DragStart()
-    {
-        originalY = transform.position.y;
-        transform.DOScale(SizeOnHover, 0.2f);
-        transform.DOMoveY(originalY + 5f, 0.4f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
-    }
-
-    public void OnDrag()
-    {
-        Vector3 position = Camera.main.ScreenToWorldPoint(transform.position);
-        position.z = 0;
-
-        PointerData pd = new PointerData(position, PointerOrigin.potion, targetProfile);
-
-        GameManager.Instance.EVENT_ACTIVATE_POINTER.Invoke(pd);
-        GameManager.Instance.EVENT_TOGGLE_TOOLTIPS.Invoke(false);
-    }
-
-    public void DragEnd()
-    {
-        Debug.LogWarning($"[Postion] Potion needs potion ID to use the potion.");
-        GameManager.Instance.EVENT_DEACTIVATE_POINTER.Invoke("PostionID");
-        GameManager.Instance.EVENT_TOGGLE_TOOLTIPS.Invoke(true);
-        DOTween.Kill(transform);
-        transform.DOScale(1f, 0.2f);
-        transform.DOMoveY(originalY, 0.2f).SetEase(Ease.InOutSine);
-    }
 }

@@ -28,13 +28,11 @@ public class PotionsContainerManager : MonoBehaviour
 
     private void OnPlayerStateUpdate(PlayerStateData playerState)
     {
-        float potionWidth = 0;
-
         ClearPotions();
         CreateHeldPotions(playerState.data.playerState.potions);
         CreateEmptyPotions();
 
-        ResizeWarningBackground(potionWidth);
+        //ResizeWarningBackground(potionWidth);
     }
 
     private void ClearPotions()
