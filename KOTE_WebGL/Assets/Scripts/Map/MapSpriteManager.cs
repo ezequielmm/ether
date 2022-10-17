@@ -55,7 +55,6 @@ namespace map
         public Vector2 columnFuzziness;
 
         public Camera mapCamera;
-        public RenderTexture mapRenderTexture;
         private List<GameObject> hiddenMapItems;
 
         private float scrollTime;
@@ -355,7 +354,7 @@ namespace map
             GenerateMapGrid();
 
             // Generate Map Images
-            //StartCoroutine(GenerateMapImages());
+            StartCoroutine(GenerateMapImages());
         }
 
         #region generateMap
@@ -365,7 +364,8 @@ namespace map
             yield return new WaitForEndOfFrame();
 
             float height = 2f * mapCamera.orthographicSize;
-            float width = height * mapCamera.aspect;
+            float originalWidth = height * mapCamera.aspect;
+            int pixHeight = Mathf.Max(Screen.height, 1080);
 
             //mapRenderTexture.width = mapCamera.pixelWidth;
             //mapRenderTexture.height = mapCamera.pixelHeight;
@@ -389,33 +389,38 @@ namespace map
             nodesHolder.transform.rotation = currentRotation;
             nodesHolder.transform.position = currentPosition;
 
-            int imageCount = (int)Mathf.Ceil(bounds.size.x / width);
-            for (int i = 0; i < imageCount; i++)
-            {
-                mapCamera.transform.position = new Vector3(nodesHolder.transform.position.x + (i * width),
-                    nodesHolder.transform.position.y, mapCamera.transform.position.z);
-                yield return new WaitForEndOfFrame();
-                var img = toTexture2D(mapRenderTexture);
-                GameObject imgObj = new GameObject();
-                imgObj.transform.position = new Vector3(nodesHolder.transform.position.x + (i * width),
-                    nodesHolder.transform.position.y, nodesHolder.transform.position.z - 15);
-                imgObj.transform.SetParent(nodesHolder.transform);
-                imgObj.name = $"MapPathImage({i})";
-                imgObj.tag = "MapImage";
-                var sprite = imgObj.AddComponent<SpriteRenderer>();
+            float width = bounds.size.x;
+            mapCamera.aspect = (width + originalWidth) / height;
 
-                sprite.sortingLayerName = "MapElements";
-                sprite.sortingOrder = 1;
-                sprite.sprite = Sprite.Create(img, new Rect(0, 0, mapRenderTexture.width, mapRenderTexture.height),
-                    Vector2.one * 0.5f);
-                sprite.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+            mapCamera.transform.position = new Vector3(nodesHolder.transform.position.x + (width * 0.5f) - (originalWidth * 0.5f),
+                nodesHolder.transform.position.y, mapCamera.transform.position.z);
 
-                // Scaling
-                float widthScale = width / sprite.bounds.size.x;
-                float heightScale = height / sprite.bounds.size.y;
+            RenderTexture mapRenderTexture = new RenderTexture((int)((width + originalWidth) / height * pixHeight), pixHeight, 24);
+            mapCamera.targetTexture = mapRenderTexture;
 
-                sprite.transform.localScale = new Vector3(widthScale, heightScale, 1);
-            }
+            yield return new WaitForEndOfFrame();
+            // Create Map Texture
+
+            var img = toTexture2D(mapRenderTexture);
+            GameObject imgObj = new GameObject();
+            imgObj.transform.position = new Vector3(nodesHolder.transform.position.x + (width * 0.5f) - (originalWidth * 0.5f),
+                nodesHolder.transform.position.y, nodesHolder.transform.position.z - 15);
+            imgObj.transform.SetParent(nodesHolder.transform);
+            imgObj.name = $"MapPathImage";
+            imgObj.tag = "MapImage";
+            var sprite = imgObj.AddComponent<SpriteRenderer>();
+
+            sprite.sortingLayerName = "MapElements";
+            sprite.sortingOrder = 1;
+            sprite.sprite = Sprite.Create(img, new Rect(0, 0, mapRenderTexture.width, mapRenderTexture.height),
+                Vector2.one * 0.5f);
+            sprite.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+
+            // Scaling
+            float widthScale = (width + originalWidth) / sprite.bounds.size.x;
+            float heightScale = height / sprite.bounds.size.y;
+
+            sprite.transform.localScale = new Vector3(widthScale, heightScale, 1);
 
             GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(false);
 
