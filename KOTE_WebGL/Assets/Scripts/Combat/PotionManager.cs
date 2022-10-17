@@ -19,7 +19,7 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
     private Tooltip unknown;
     private Tooltip _tooltip;
 
-    private TargetProfile targetProfile;
+    public TargetProfile targetProfile { get; private set; }
 
     private float SizeOnHover = 1.3f;
     private float originalY;
@@ -29,8 +29,6 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
         tooltipController = GetComponent<TooltipAtCursor>();
         potionImage = GetComponent<Image>();
         potionButton = GetComponent<Button>();
-
-        
     }
 
     public void Populate(HeldPotion inPotion)
@@ -40,6 +38,7 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
             PopulateAsEmpty();
             return;
         }
+
         potion = inPotion;
         PopulatePotion();
     }
@@ -54,7 +53,6 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
             enemy = true
         };
         originalY = 0;
-
     }
 
     private void PopulatePotion()
@@ -68,11 +66,20 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
 
         potionImage.sprite = SpriteAssetManager.Instance.GetPotionImage(potion.potion.potionId);
         tooltipController.SetTooltips(new List<Tooltip> { _tooltip });
-        targetProfile = new TargetProfile
+        targetProfile = new TargetProfile();
+        foreach (Effect effect in potion.potion.effects)
         {
-            player = true,
-            enemy = true
-        };
+            if (effect.target == "enemy")
+            {
+                targetProfile.enemy = true;
+            }
+
+            if (effect.target == "player")
+            {
+                targetProfile.player = true;
+            }
+        }
+
         originalY = 0;
     }
 
@@ -84,13 +91,23 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    public string GetPotionTarget()
+    {
+        return potion.potion.effects[0].target;
+    }
+
+    public string GetPotionId()
+    {
+        return potion.id;
+    }
+
     private void OnPotion()
     {
         potionImage.sprite = usedPotionSprite;
         tooltipController.SetTooltips(null);
     }
 
-    // These are controlled via the event system
+// These are controlled via the event system
     public void DragStart()
     {
         originalY = transform.position.y;

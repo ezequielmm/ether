@@ -77,8 +77,8 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_CONTINUE_EXPEDITION = new UnityEvent();
 
     //POTIONS EVENTS
-    [HideInInspector] public UnityEvent<PotionManager> EVENT_POTION_USED = new UnityEvent<PotionManager>();
-    [HideInInspector] public UnityEvent<PotionManager> EVENT_POTION_DISCARDED = new UnityEvent<PotionManager>();
+    [HideInInspector] public UnityEvent<string, string> EVENT_POTION_USED = new UnityEvent<string, string>();
+    [HideInInspector] public UnityEvent<string> EVENT_POTION_DISCARDED = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<PotionManager> EVENT_POTION_SHOW_POTION_MENU = new UnityEvent<PotionManager>();
     [HideInInspector] public UnityEvent EVENT_POTION_POTIONS_FULL = new UnityEvent();
 

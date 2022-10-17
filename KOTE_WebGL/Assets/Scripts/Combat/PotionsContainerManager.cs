@@ -17,6 +17,8 @@ public class PotionsContainerManager : MonoBehaviour
 
     private int potionMax = 3;
     private float potionWidth = 0;
+    private bool pointerIsActive;
+    private string activePotionId = "";
 
     private void Start()
     {
@@ -29,11 +31,21 @@ public class PotionsContainerManager : MonoBehaviour
     private void OnPlayerStateUpdate(PlayerStateData playerState)
     {
         float potionWidth = 0;
-        
+
+        ClearPotions();
         CreateHeldPotions(playerState.data.playerState.potions);
         CreateEmptyPotions();
-        
+
         ResizeWarningBackground(potionWidth);
+    }
+
+    private void ClearPotions()
+    {
+        foreach (PotionManager potion in potions)
+        {
+            Destroy(potion.gameObject);
+        }
+        potions.Clear();
     }
 
     private void CreateHeldPotions(List<HeldPotion> heldPotions)
@@ -47,7 +59,7 @@ public class PotionsContainerManager : MonoBehaviour
             potionWidth = potionManager.GetComponent<RectTransform>().rect.width;
         }
     }
-    
+
     public void CreateEmptyPotions()
     {
         for (int i = potions.Count; i < potionMax; i++)
@@ -63,14 +75,33 @@ public class PotionsContainerManager : MonoBehaviour
         potionOptionPanel.SetActive(true);
         drinkButton.onClick.AddListener(() =>
         {
-            GameManager.Instance.EVENT_POTION_USED.Invoke(potion);
+            if (potion.GetPotionTarget() == "enemy")
+            {
+                PointerData pointerData = new PointerData(potion.gameObject.transform.position, PointerOrigin.potion,
+                    potion.targetProfile);
+                activePotionId = potion.GetPotionId();
+                GameManager.Instance.EVENT_ACTIVATE_POINTER.Invoke(pointerData);
+                potionOptionPanel.SetActive(false);
+                return;
+            }
+
+            GameManager.Instance.EVENT_POTION_USED.Invoke(potion.GetPotionId(), null);
             potionOptionPanel.SetActive(false);
         });
         discardButton.onClick.AddListener(() =>
         {
-            GameManager.Instance.EVENT_POTION_DISCARDED.Invoke(potion);
+            GameManager.Instance.EVENT_POTION_DISCARDED.Invoke(potion.GetPotionId());
             potionOptionPanel.SetActive(false);
         });
+    }
+    
+    private void OnMouseUp()
+    {
+        if (pointerIsActive)
+        {
+            GameManager.Instance.EVENT_DEACTIVATE_POINTER.Invoke(activePotionId);
+            activePotionId = "";
+        }
     }
 
     private void ResizeWarningBackground(float potionWidth)
