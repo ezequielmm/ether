@@ -5,17 +5,17 @@ using UnityEngine;
 
 public class MerchantNodeManager : MonoBehaviour
 {
-    public GameObject shopLocationContainer;
+    public GameObject shopContainer;
 
-    [Header("Shop Layouts")] 
-    public GameObject cardLayout;
-    public GameObject trinketLayout;
-    public GameObject potionLayout;
-    public GameObject gearLayout;
-    
+    [Header("Shop Panels")] 
+    public Transform cardPanel;
+    public Transform potionPanel;
+    public Transform trinketPanel;
+
     [Header("Item Prefabs")]
-    public GameObject merchantCardPrefab;
-    public GameObject merchantItemPrefab;
+    public GameObject uiCardPrefab;
+    public GameObject uiPotionPrefab;
+    public GameObject uiTrinketPrefab;
 
     private void Start()
     {
@@ -24,12 +24,12 @@ public class MerchantNodeManager : MonoBehaviour
 
     private void ActivateInnerMerchantPanel()
     {
-        shopLocationContainer.SetActive(true);
+        shopContainer.SetActive(true);
     }
-
+    
     public void CloseMerchantPanel()
     {
-        shopLocationContainer.SetActive(false);
+        shopContainer.SetActive(false);
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
     }
 }
