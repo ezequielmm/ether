@@ -18,7 +18,9 @@ public class PotionsContainerManager : MonoBehaviour
     public TextMeshProUGUI warningText;
 
     private int potionMax = 3;
-    private float potionWidth = 0;
+
+    // get notified of the current game status so the potions know if the player is in combat
+    private GameStatuses currentGameStatus;
 
     private void Start()
     {
@@ -26,6 +28,7 @@ public class PotionsContainerManager : MonoBehaviour
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStateUpdate);
         GameManager.Instance.EVENT_POTION_SHOW_POTION_MENU.AddListener(OnShowPotionOptions);
         GameManager.Instance.EVENT_POTION_WARNING.AddListener(OnPotionWarning);
+        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(OnGameStatusChange);
     }
 
     private void OnPlayerStateUpdate(PlayerStateData playerState)
@@ -33,8 +36,6 @@ public class PotionsContainerManager : MonoBehaviour
         ClearPotions();
         CreateHeldPotions(playerState.data.playerState.potions);
         CreateEmptyPotions();
-
-        //ResizeWarningBackground(potionWidth);
     }
 
     private void ClearPotions()
@@ -43,18 +44,18 @@ public class PotionsContainerManager : MonoBehaviour
         {
             Destroy(potion.gameObject);
         }
+
         potions.Clear();
     }
 
-    private void CreateHeldPotions(List<HeldPotion> heldPotions)
+    private void CreateHeldPotions(List<Potion> heldPotions)
     {
-        foreach (HeldPotion potion in heldPotions)
+        foreach (Potion potion in heldPotions)
         {
             PotionManager potionManager =
                 Instantiate(potionPrefab, potionLayout.transform).GetComponent<PotionManager>();
             potionManager.Populate(potion);
             potions.Add(potionManager);
-            potionWidth = potionManager.GetComponent<RectTransform>().rect.width;
         }
     }
 
@@ -71,16 +72,25 @@ public class PotionsContainerManager : MonoBehaviour
     private void OnShowPotionOptions(PotionManager potion)
     {
         potionOptionPanel.SetActive(true);
+        if (potion.IsUsableOutsideCombat() == false && currentGameStatus != GameStatuses.Combat)
+        {
+            drinkButton.interactable = false;
+        }
+        else
+        {
+            drinkButton.interactable = true;
+        }
+
         drinkButton.onClick.AddListener(() =>
         {
-            if (potion.GetPotionTarget() == "enemy")
+            if (potion.ShowsPointer() == true)
             {
                 // this turns on the pointer from the potion
                 potion.pointerActive = true;
                 potionOptionPanel.SetActive(false);
                 return;
             }
-            
+
             GameManager.Instance.EVENT_POTION_USED.Invoke(potion.GetPotionId(), null);
             potionOptionPanel.SetActive(false);
         });
@@ -89,16 +99,6 @@ public class PotionsContainerManager : MonoBehaviour
             GameManager.Instance.EVENT_POTION_DISCARDED.Invoke(potion.GetPotionId());
             potionOptionPanel.SetActive(false);
         });
-    }
-    
-    private void ResizeWarningBackground(float potionWidth)
-    {
-        for (int i = 0; i < potions.Count; i++)
-        {
-            Vector2 width = warningBackground.rectTransform.offsetMax;
-            width.x += potionWidth;
-            warningBackground.rectTransform.offsetMax = width;
-        }
     }
 
     private void OnPotionWarning(string action)
@@ -115,13 +115,14 @@ public class PotionsContainerManager : MonoBehaviour
             case "potion_not_in_inventory":
                 warningText.text = "Potion No Longer In Inventory";
                 break;
-            case"potion_max_count_reached":
+            case "potion_max_count_reached":
                 warningText.text = "Maximum potions in inventory. Use or discard a potion to make room.";
                 break;
             case "potion_not_usable_outside_combat":
                 warningText.text = "This Potion Cannot Be Used Outside of Combat";
                 break;
         }
+
         potionOptionPanel.SetActive(true);
 
 
@@ -134,5 +135,10 @@ public class PotionsContainerManager : MonoBehaviour
             warningText.gameObject.SetActive(false);
         });
         sequence.Play();
+    }
+
+    private void OnGameStatusChange(GameStatuses newStatus)
+    {
+        currentGameStatus = newStatus;
     }
 }

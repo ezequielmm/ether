@@ -15,7 +15,7 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
 
     private TooltipAtCursor tooltipController;
 
-    private HeldPotion potion;
+    private Potion potion;
 
     private Tooltip unknown;
     private Tooltip _tooltip;
@@ -52,7 +52,7 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void Populate(HeldPotion inPotion)
+    public void Populate(Potion inPotion)
     {
         if (inPotion == null)
         {
@@ -81,14 +81,14 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
         tooltipController.enabled = true;
         _tooltip = new Tooltip()
         {
-            title = potion.potion.name,
-            description = potion.potion.description
+            title = potion.name,
+            description = potion.description
         };
 
-        potionImage.sprite = SpriteAssetManager.Instance.GetPotionImage(potion.potion.potionId);
+        potionImage.sprite = SpriteAssetManager.Instance.GetPotionImage(potion.potionId);
         tooltipController.SetTooltips(new List<Tooltip> { _tooltip });
         targetProfile = new TargetProfile();
-        foreach (Effect effect in potion.potion.effects)
+        foreach (Effect effect in potion.effects)
         {
             if (effect.target == "enemy")
             {
@@ -112,9 +112,14 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public string GetPotionTarget()
+    public bool ShowsPointer()
     {
-        return potion.potion.effects[0].target;
+        return potion.showPointer;
+    }
+
+    public bool IsUsableOutsideCombat()
+    {
+        return potion.usableOutsideCombat;
     }
 
     public string GetPotionId()

@@ -217,7 +217,7 @@ public class PlayerData
     public int energyMax;
     public int defense;
     public List<Card> cards;
-    public List<HeldPotion> potions;
+    public List<Potion> potions;
 }
 
 [Serializable]
@@ -240,21 +240,17 @@ public class Card
 }
 
 [Serializable]
-public class HeldPotion
-{
-    public string id;
-    public Potion potion;
-}
-
-[Serializable]
 public class Potion
 {
+    public string id;
+    public int potionId;
     public string name;
     public string rarity;
-    public int potionId;
-    public int cost;
     public string description;
+    public int cost;
     public List<Effect> effects;
+    public bool usableOutsideCombat;
+    public bool showPointer;
 }
 
 [Serializable]
