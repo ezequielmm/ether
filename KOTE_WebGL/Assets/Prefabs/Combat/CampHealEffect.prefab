@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3166004168185184880}
   - component: {fileID: 3797503584485193173}
-  - component: {fileID: 7426510867128737918}
+  - component: {fileID: 2438835123462638474}
   m_Layer: 0
-  m_Name: HealEffect
+  m_Name: CampHealEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f9042e49e8c67245be5c6c594d45c05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textPrefab: {fileID: 2251678494645689083, guid: 4535a53d3b2a6c34995a7de778161130,
+  textPrefab: {fileID: 2251678494645689083, guid: d227c537c2c4bf444b9e7779e8df9930,
     type: 3}
   textColor: {r: 0.27058825, g: 0.93333334, b: 0.27058825, a: 1}
   riseHeight: 1
@@ -55,7 +55,7 @@ MonoBehaviour:
   maxPoolCount: 3
   sampleText: 
   playSampleAnimation: 0
---- !u!114 &7426510867128737918
+--- !u!114 &2438835123462638474
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -64,7 +64,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 422991987810191701}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 973def05ade9bfe4eb1f39bbcf234d3a, type: 3}
+  m_Script: {fileID: 11500000, guid: edf12a755a011ae4aa9f8313c23793a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   textEffectManager: {fileID: 3797503584485193173}

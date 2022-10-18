@@ -474,6 +474,10 @@ public class SWSM_Parser
             case "begin_camp":
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Camp);
                 break;
+            case"heal_amount":
+                SWSM_HealData healData = JsonUtility.FromJson<SWSM_HealData>(data);
+                GameManager.Instance.EVENT_HEAL.Invoke("camp", healData.data.data.HpRecover);
+                break;
             case "finish_camp":
                 GameManager.Instance.EVENT_CAMP_FINISH.Invoke();
                 break;
