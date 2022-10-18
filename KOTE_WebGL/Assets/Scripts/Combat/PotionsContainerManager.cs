@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,7 @@ public class PotionsContainerManager : MonoBehaviour
     public GameObject potionOptionPanel;
     public Button drinkButton;
     public Button discardButton;
+    public TextMeshProUGUI warningText;
 
     private int potionMax = 3;
     private float potionWidth = 0;
@@ -23,7 +25,7 @@ public class PotionsContainerManager : MonoBehaviour
         potionOptionPanel.SetActive(false);
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStateUpdate);
         GameManager.Instance.EVENT_POTION_SHOW_POTION_MENU.AddListener(OnShowPotionOptions);
-        GameManager.Instance.EVENT_POTION_WARNING.AddListener(OnPotionsFull);
+        GameManager.Instance.EVENT_POTION_WARNING.AddListener(OnPotionWarning);
     }
 
     private void OnPlayerStateUpdate(PlayerStateData playerState)
@@ -99,10 +101,38 @@ public class PotionsContainerManager : MonoBehaviour
         }
     }
 
-    private void OnPotionsFull()
+    private void OnPotionWarning(string action)
     {
+        // show the warning in the option box
+        drinkButton.gameObject.SetActive(false);
+        discardButton.gameObject.SetActive(false);
+        warningText.gameObject.SetActive(true);
+        switch (action)
+        {
+            case "potion_not_found_in_database":
+                warningText.text = "Potion Does Not Exist In database";
+                break;
+            case "potion_not_in_inventory":
+                warningText.text = "Potion No Longer In Inventory";
+                break;
+            case"potion_max_count_reached":
+                warningText.text = "Maximum potions in inventory. Use or discard a potion to make room.";
+                break;
+            case "potion_not_usable_outside_combat":
+                warningText.text = "This Potion Cannot Be Used Outside of Combat";
+                break;
+        }
+        potionOptionPanel.SetActive(true);
+
+
         Sequence sequence = DOTween.Sequence();
-        sequence.Join(warningBackground.DOFade(0.5f, 1).SetLoops(4, LoopType.Yoyo));
+        sequence.Join(warningBackground.DOFade(0.5f, 1).SetLoops(4, LoopType.Yoyo)).OnComplete(() =>
+        {
+            potionOptionPanel.SetActive(false);
+            drinkButton.gameObject.SetActive(true);
+            discardButton.gameObject.SetActive(true);
+            warningText.gameObject.SetActive(false);
+        });
         sequence.Play();
     }
 }

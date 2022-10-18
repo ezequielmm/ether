@@ -80,7 +80,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string, string> EVENT_POTION_USED = new UnityEvent<string, string>();
     [HideInInspector] public UnityEvent<string> EVENT_POTION_DISCARDED = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<PotionManager> EVENT_POTION_SHOW_POTION_MENU = new UnityEvent<PotionManager>();
-    [HideInInspector] public UnityEvent EVENT_POTION_WARNING = new UnityEvent();
+    [HideInInspector] public UnityEvent<string> EVENT_POTION_WARNING = new UnityEvent<string>();
 
     //ROYAL HOUSE EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_ROYALHOUSES_ACTIVATION_REQUEST = new UnityEvent<bool>();

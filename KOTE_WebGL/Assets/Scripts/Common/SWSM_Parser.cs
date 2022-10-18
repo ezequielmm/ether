@@ -511,13 +511,9 @@ public class SWSM_Parser
         switch (action)
         {
             case "potion_not_found_in_database":
-                GameManager.Instance.EVENT_POTION_WARNING.Invoke();
-                break;
             case "potion_not_in_inventory":
-                GameManager.Instance.EVENT_POTION_WARNING.Invoke();
-                break;
             case"potion_max_count_reached":
-                GameManager.Instance.EVENT_POTION_WARNING.Invoke();
+                GameManager.Instance.EVENT_POTION_WARNING.Invoke(action);
                 break;
         }
     }
@@ -527,7 +523,7 @@ public class SWSM_Parser
         switch (action)
         {
             case "potion_not_usable_outside_combat":
-                GameManager.Instance.EVENT_POTION_WARNING.Invoke();
+                GameManager.Instance.EVENT_POTION_WARNING.Invoke(action);
                 break;
         }
     }
