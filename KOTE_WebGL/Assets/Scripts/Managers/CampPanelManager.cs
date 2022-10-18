@@ -62,7 +62,13 @@ public class CampPanelManager : MonoBehaviour
 
     private void OnShowCardUpgradePanel(Deck deck)
     {
-        GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(deck.cards, 1, (idList) =>
+        SelectPanelOptions selectOptions = new SelectPanelOptions
+        {
+            HideBackButton = false,
+            MustSelectAllCards = true,
+            NumberOfCardsToSelect = 1
+        };
+        GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(deck.cards, selectOptions, (idList) =>
         {
             GameManager.Instance.EVENT_CAMP_GET_UPGRADE_PAIR.Invoke(idList[0]);
         });

@@ -27,7 +27,7 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_GET_CARD_UPGRADE_PAIR = "UpgradablePair";
     private const string WS_MESSAGE_UPGRADE_CARD = "UpgradeCard";
     private const string WS_MESSAGE_CAMP_HEAL = "CampRecoverHealth";
-    private const string WS_MESSAGE_MOVE_SELECTED_CARDS = "MoveCards";
+    private const string WS_MESSAGE_MOVE_SELECTED_CARDS = "MoveCard";
 
     /*private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
     private const string WS_MESSAGE_GET_CARD_PILES = "GetCardPiles";

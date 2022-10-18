@@ -9,6 +9,7 @@ public class SelectCardsPanel : CardPanelBase
 {
     public GameObject selectCardPrefab;
     public Button selectButton;
+    public Button backButton;
     private int cardsToSelect;
     [SerializeField] [ReadOnly] private int selectedCards;
     [SerializeField] [ReadOnly] private List<string> selectedCardIds = new List<string>();
@@ -20,7 +21,7 @@ public class SelectCardsPanel : CardPanelBase
         GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.AddListener(OnShowSelectCardPanel);
     }
 
-    private void OnShowSelectCardPanel(List<Card> selectableCards, int numberToSelect,
+    private void OnShowSelectCardPanel(List<Card> selectableCards, SelectPanelOptions selectOptions,
         Action<List<string>> onFinishedSelection)
     {
         selectedCardIds.Clear();
@@ -47,16 +48,25 @@ public class SelectCardsPanel : CardPanelBase
                     cardManager.isSelected = false;
                 }
 
-                if (selectedCards == cardsToSelect) selectButton.gameObject.SetActive(true);
+                if (selectedCards == cardsToSelect|| !selectOptions.MustSelectAllCards) selectButton.gameObject.SetActive(true);
                 else selectButton.gameObject.SetActive(false);
 
                 cardManager.DetermineToggleColor();
             });
         }
 
-        cardsToSelect = numberToSelect;
+        cardsToSelect = selectOptions.NumberOfCardsToSelect;
         selectButton.onClick.AddListener(() => { onFinishedSelection(selectedCardIds); });
-        selectButton.gameObject.SetActive(false);
+        selectButton.gameObject.SetActive(!selectOptions.MustSelectAllCards);
+        backButton.gameObject.SetActive(!selectOptions.HideBackButton);
         commonCardsContainer.SetActive(true);
     }
+}
+
+// class to package different settings for the select menu
+public class SelectPanelOptions
+{
+    public bool MustSelectAllCards;
+    public bool HideBackButton;
+    public int NumberOfCardsToSelect;
 }

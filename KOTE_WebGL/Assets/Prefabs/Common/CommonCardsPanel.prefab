@@ -1280,6 +1280,9 @@ MonoBehaviour:
   selectCardPrefab: {fileID: 4040004165665311213, guid: 9bbabae692a5c0b4b9d0e665e9598abd,
     type: 3}
   selectButton: {fileID: 1403233065471541595}
+  backButton: {fileID: 902047207651061467}
+  selectedCards: 0
+  selectedCardIds: []
 --- !u!1 &902047207143918403
 GameObject:
   m_ObjectHideFlags: 0
@@ -1937,7 +1940,7 @@ GameObject:
   - component: {fileID: 3312220831439084833}
   - component: {fileID: 8830208620707931546}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: ButtonLayout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

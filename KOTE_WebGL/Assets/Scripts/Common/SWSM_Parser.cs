@@ -338,8 +338,14 @@ public class SWSM_Parser
     {
         SWSM_ShowCardDialog showCards = JsonUtility.FromJson<SWSM_ShowCardDialog>(data);
         Debug.Log($"[SWSM Parser] [Show Card Dialog] data: {data}");
+        SelectPanelOptions panelOptions = new SelectPanelOptions
+        {
+            HideBackButton = true,
+            MustSelectAllCards = false,
+            NumberOfCardsToSelect = showCards.data.data.cardsToTake
+        };
         GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCards.data.data.cards,
-            showCards.data.data.cardsToTake,
+           panelOptions,
             (selectedCards) =>
             {
                 GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards);
