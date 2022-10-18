@@ -69,7 +69,7 @@ public class MetaMask : MonoBehaviour
     /// <param name="OnFail">Will be called if we can't get the user's account.</param>
     public void GetAccount(UnityEvent<string> OnSuccess = null, UnityEvent OnError = null)
     {
-#if !UNITY_WEBGL
+#if !UNITY_WEBGL || UNITY_EDITOR
         Debug.LogError($"[MetaMask | {gameObject.name}] Enviroment not in WebGL. Can not access MetaMask.");
         OnError?.Invoke();
         return;
@@ -101,7 +101,7 @@ public class MetaMask : MonoBehaviour
     /// <param name="OnError">Gets called if the message could not be signed.</param>
     public void SignMessage(string message, UnityEvent<string> OnSuccess, UnityEvent OnError = null)
     {
-#if !UNITY_WEBGL
+#if !UNITY_WEBGL || UNITY_EDITOR
         Debug.LogError($"[MetaMask | {gameObject.name}] Enviroment not in WebGL. Can not access MetaMask.");
         OnError?.Invoke();
         return;
@@ -197,7 +197,7 @@ public class MetaMask : MonoBehaviour
     private bool hasMetaMask() 
     {
         bool metaMask = false;
-#if UNITY_WEBGL
+#if UNITY_WEBGL && !UNITY_EDITOR
         metaMask = IsMetamaskInstalled();
 #endif
         return metaMask;

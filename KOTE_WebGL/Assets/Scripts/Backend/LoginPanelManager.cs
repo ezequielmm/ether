@@ -28,6 +28,10 @@ public class LoginPanelManager : MonoBehaviour
     [Space(20)]
     public GameObject loginContainer;
 
+    [Space(20)]
+    [SerializeField]
+    private MetaMask metaMask;
+
     private bool validEmail;
     private bool validLogin;
 
@@ -77,6 +81,11 @@ public class LoginPanelManager : MonoBehaviour
         }
 
         ActivateInnerLoginPanel(false);
+
+        if (metaMask.HasMetamask)
+        {
+            metaMask.GetAccount();
+        }
     }
 
     private void OnLoginError(string errorMessage)
@@ -98,6 +107,11 @@ public class LoginPanelManager : MonoBehaviour
         validLoginPassword.gameObject.SetActive(false);
 
         loginButton.interactable = false;
+
+        if (metaMask == null) 
+        {
+            metaMask = FindObjectOfType<MetaMask>();
+        }
     }
 
     private void Update()
