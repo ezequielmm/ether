@@ -114,6 +114,9 @@ public class SWSM_Parser
             case "combat_queue":
                 ProcessCombatQueue(data);
                 break;
+            case "show_card_dialog":
+                ProcessShowCardDialog(data);
+                break;
             default:
                 Debug.Log($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
                 break;
@@ -331,6 +334,19 @@ public class SWSM_Parser
         }
     }
 
+    private static void ProcessShowCardDialog(string data)
+    {
+        SWSM_ShowCardDialog showCards = JsonUtility.FromJson<SWSM_ShowCardDialog>(data);
+        Debug.Log($"[SWSM Parser] [Show Card Dialog] data: {data}");
+        GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCards.data.data.cards,
+            showCards.data.data.cardsToTake,
+            (selectedCards) =>
+            {
+                GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards);
+                GameManager.Instance.EVENT_HIDE_COMMON_CARD_PANEL.Invoke();
+            });
+    }
+
     private static void UpdateEnergy(string data)
     {
         SWSM_EnergyArray energyData = JsonUtility.FromJson<SWSM_EnergyArray>(data);
@@ -391,12 +407,11 @@ public class SWSM_Parser
 
     private static void ProcessUpgradeablePair(string data)
     {
-        
         SWSM_PlayerDeckData deckData = JsonUtility.FromJson<SWSM_PlayerDeckData>(data);
         Deck deck = new Deck() { cards = deckData.data.data };
         GameManager.Instance.EVENT_CAMP_SHOW_UPGRADE_PAIR.Invoke(deck);
     }
-    
+
     private static void ProcessMoveCard(string rawData)
     {
         SWSM_CardMove cardMoveData = JsonUtility.FromJson<SWSM_CardMove>(rawData);
