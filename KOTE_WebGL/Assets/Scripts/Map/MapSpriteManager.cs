@@ -76,6 +76,7 @@ namespace map
         List<Vector3Int> blockedTiles = new List<Vector3Int>();
         Dictionary<Vector3Int, MapTilePath> allTiles = new Dictionary<Vector3Int, MapTilePath>();
         Dictionary<Vector3Int, TileSplineRef> tileSplineRef = new Dictionary<Vector3Int, TileSplineRef>();
+        Dictionary<Vector3Int, GameObject> nodeMapRef = new Dictionary<Vector3Int, GameObject>();
 
 
         private class SplinePoint
@@ -536,8 +537,13 @@ namespace map
                             GameSettings.MAP_SPRITE_ELEMENTS_Z);
 
                         // Snap cell to grid
+                        Vector3Int mapPos = MapGrid.layoutGrid.WorldToCell(newNode.transform.position);
+                        mapPos.z = 0;
                         newNode.transform.position =
-                            MapGrid.layoutGrid.CellToWorld(MapGrid.layoutGrid.WorldToCell(newNode.transform.position));
+                            MapGrid.layoutGrid.CellToWorld(mapPos);
+
+                        // Record node
+                        nodeMapRef.Add(mapPos, newNode.NodeArt);
 
 
                         newNode.GetComponent<NodeData>().Populate(nodeData);
@@ -611,6 +617,10 @@ namespace map
                 Random.InitState(MapSeeds[1] + i++);
                 RunRandomCurve(splineRef);
                 splineRef.EnforceSplineMatch();
+                if (nodeMapRef.ContainsKey(splineRef.Position)) 
+                {
+                    nodeMapRef[splineRef.Position].transform.position = splineRef.MasterSpline.Position;
+                }
             }
         }
 
@@ -1337,6 +1347,11 @@ namespace map
         private Vector3Int GetVectorWithZ(int x, int y)
         {
             return new Vector3Int(x, y, (int)GameSettings.MAP_SPRITE_ELEMENTS_Z - 7 + y);
+        }
+
+        private Vector3Int GetVectorWithZ(Vector3Int vector)
+        {
+            return new Vector3Int(vector.x, vector.y, (int)GameSettings.MAP_SPRITE_ELEMENTS_Z - 7 + vector.y);
         }
     }
 }
