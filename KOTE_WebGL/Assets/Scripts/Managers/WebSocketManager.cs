@@ -227,7 +227,7 @@ public class WebSocketManager : MonoBehaviour
 
     private void OnCampHealSelected()
     {
-        rootSocket.Emit(WS_MESSAGE_CAMP_HEAL);
+        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_CAMP_HEAL);
     }
 
     private void OnShowUpgradePair(string cardId)
