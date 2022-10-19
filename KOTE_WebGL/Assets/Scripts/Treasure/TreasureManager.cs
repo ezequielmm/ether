@@ -30,6 +30,11 @@ public class TreasureManager : MonoBehaviour
         ContainerToggle(false);
     }
 
+    public void OpenChest()
+    {
+        GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
+    }
+
     public void OnTreasureDone()
     {
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
