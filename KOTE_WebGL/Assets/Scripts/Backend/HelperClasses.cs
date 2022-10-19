@@ -46,15 +46,18 @@ public class TargetProfile
     /// If the Players can be targeted
     /// </summary>
     public bool player;
+
     /// <summary>
     /// If the Enemies can be targeted
     /// </summary>
     public bool enemy;
+
     /// <summary>
     /// This is true if the target can not be specified. If so, when player or enemy
     /// is true, that means that who may get targeted at random or as a whole.
     /// </summary>
     public bool notSpecified;
+
     /// <summary>
     /// A List of specific entities that can be targeted.
     /// </summary>
@@ -69,7 +72,7 @@ public class Step
 
 [Serializable]
 public class Tooltip
-{ 
+{
     public string title;
     public string description;
 }
@@ -261,14 +264,14 @@ public class Effects
 }
 
 [Serializable]
-public class Statuses 
+public class Statuses
 {
     public string name;
     public Args args;
     public Tooltip tooltip;
 
     [Serializable]
-    public class Args 
+    public class Args
     {
         public int value;
         public string attachTo;
@@ -408,6 +411,43 @@ public class SWSM_PlayerDeckData
 }
 
 [Serializable]
+public class SWSM_DeckData
+{
+    public SWSM_Deck data;
+}
+
+[Serializable]
+public class SWSM_Deck
+{
+    public DeckData data;
+}
+
+[Serializable]
+public class DeckData
+{
+    public List<Card> deck;
+}
+
+[Serializable]
+public class SWSM_ConfirmUpgrade
+{
+    public SWSM_UpgradeData data;
+
+    [Serializable]
+    public class SWSM_UpgradeData
+    {
+        public UpgradeData data;
+
+        [Serializable]
+        public class UpgradeData
+        {
+            public string cardIdToDelete;
+            public Card newCard;
+        }
+    }
+}
+
+[Serializable]
 public class SWSM_MapData
 {
     public ExpeditionMapData data;
@@ -529,12 +569,12 @@ public class SWSM_CurrentStep
 
         //public string data;
         public CurrentStep data;
-        
-        
     }
 }
+
 [Serializable]
-public class CurrentStep{
+public class CurrentStep
+{
     public int act;
     public int step;
 }
@@ -631,12 +671,11 @@ public class SWSM_RewardsData
     public class Data
     {
         public RewardsData data;
-        
+
         [Serializable]
         public class RewardsData
         {
             public List<RewardItemData> rewards;
-    
         }
     }
 }
@@ -658,4 +697,22 @@ public class RewardPotion
     public int potionId;
     public string name;
     public string description;
+}
+
+[Serializable]
+public class SWSM_HealData
+{
+    public HealData data;
+
+    [Serializable]
+    public class HealData
+    {
+        public HealAmount data;
+
+        [Serializable]
+        public class HealAmount
+        {
+            public int HpRecover;
+        }
+    }
 }

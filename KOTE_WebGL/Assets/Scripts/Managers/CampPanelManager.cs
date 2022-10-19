@@ -17,19 +17,20 @@ public class CampPanelManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_CAMP_SHOW_PANEL.AddListener(ShowCampPanel);
         GameManager.Instance.EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS.AddListener(OnShowCardUpgradePanel);
+        GameManager.Instance.EVENT_CAMP_FINISH.AddListener(OnCampFinish);
         campContainer.SetActive(false);
     }
 
     private void ShowCampPanel()
     {
         campContainer.SetActive(true);
+        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
     }
 
     public void OnRestSelected()
     {
         GameManager.Instance.EVENT_CAMP_HEAL.Invoke();
-        DeactivateButtons();
-        SwitchToContinueButton();
+        OnCampFinish();
     }
 
     public void OnSmithSelected()
@@ -54,18 +55,17 @@ public class CampPanelManager : MonoBehaviour
         campContainer.SetActive(false);
     }
 
-    private void OnHealthRestored()
-    {
-        DeactivateButtons();
-        SwitchToContinueButton();
-    }
-
     private void OnShowCardUpgradePanel(Deck deck)
     {
-        GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(deck.cards, 1, (idList) =>
+        SelectPanelOptions selectOptions = new SelectPanelOptions
         {
-            GameManager.Instance.EVENT_CAMP_GET_UPGRADE_PAIR.Invoke(idList[0]);
-        });
+            HideBackButton = false,
+            MustSelectAllCards = true,
+            NumberOfCardsToSelect = 1,
+            FireSelectWhenCardClicked = true
+        };
+        GameManager.Instance.EVENT_SHOW_DIRECT_SELECT_CARD_PANEL.Invoke(deck.cards, selectOptions,
+            (cardId) => { GameManager.Instance.EVENT_CAMP_GET_UPGRADE_PAIR.Invoke(cardId); });
     }
 
     private void OnCampFinish()

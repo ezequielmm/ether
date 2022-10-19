@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -200,9 +199,6 @@ public class SWSM_Parser
             case nameof(WS_DATA_REQUEST_TYPES.UpgradableCards):
                 ProcessUpgradeableCards(data);
                 break;
-            case nameof(WS_DATA_REQUEST_TYPES.UpgradeablePair):
-                ProcessUpgradeablePair(data);
-                break;
             default:
                 Debug.Log($"[SWSM Parser] [Generic Data] Uncaught Action \"{action}\". Data = {data}");
                 break;
@@ -395,13 +391,7 @@ public class SWSM_Parser
         GameManager.Instance.EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS.Invoke(deck);
     }
 
-    private static void ProcessUpgradeablePair(string data)
-    {
-        
-        SWSM_PlayerDeckData deckData = JsonUtility.FromJson<SWSM_PlayerDeckData>(data);
-        Deck deck = new Deck() { cards = deckData.data.data };
-        GameManager.Instance.EVENT_CAMP_SHOW_UPGRADE_PAIR.Invoke(deck);
-    }
+ 
     
     private static void ProcessMoveCard(string rawData)
     {
@@ -490,6 +480,10 @@ public class SWSM_Parser
             case "begin_camp":
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Camp);
                 break;
+            case"heal_amount":
+                SWSM_HealData healData = JsonUtility.FromJson<SWSM_HealData>(data);
+                GameManager.Instance.EVENT_HEAL.Invoke("camp", healData.data.data.HpRecover);
+                break;
             case "finish_camp":
                 GameManager.Instance.EVENT_CAMP_FINISH.Invoke();
                 break;
@@ -500,7 +494,11 @@ public class SWSM_Parser
     {
         switch (action)
         {
+            case "upgradable_pair":
+                ProcessUpgradeablePair(data);
+                break;
             case "confirm_upgrade":
+                ProcessConfirmUpgrade(data);
                 break;
         }
     }
@@ -527,4 +525,17 @@ public class SWSM_Parser
                 break;
         }
     }
+    
+    private static void ProcessUpgradeablePair(string data)
+    {
+        
+        SWSM_DeckData deckData = JsonUtility.FromJson<SWSM_DeckData>(data);
+        Deck deck = new Deck() { cards = deckData.data.data.deck };
+       GameManager.Instance.EVENT_UPGRADE_SHOW_UPGRADE_PAIR.Invoke(deck);
+    }
+
+    private static void ProcessConfirmUpgrade(string data)
+    {
+        SWSM_ConfirmUpgrade confirmUpgradeData = JsonUtility.FromJson<SWSM_ConfirmUpgrade>(data);
+GameManager.Instance.EVENT_UPGRADE_CONFIRMED.Invoke(confirmUpgradeData);    }
 }
