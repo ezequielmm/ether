@@ -680,7 +680,7 @@ public class SWSM_HealData
         [Serializable]
         public class HealAmount
         {
-            public int HpRecover;
+            public int healed;
         }
     }
 }
