@@ -1280,6 +1280,9 @@ MonoBehaviour:
   selectCardPrefab: {fileID: 4040004165665311213, guid: 9bbabae692a5c0b4b9d0e665e9598abd,
     type: 3}
   selectButton: {fileID: 1403233065471541595}
+  backButton: {fileID: 902047207651061467}
+  selectedCards: 0
+  selectedCardIds: []
 --- !u!1 &902047207143918403
 GameObject:
   m_ObjectHideFlags: 0

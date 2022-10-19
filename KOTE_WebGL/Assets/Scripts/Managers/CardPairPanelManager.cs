@@ -36,6 +36,7 @@ public class CardPairPanelManager : MonoBehaviour
             .OnComplete(() =>
             {
                 cardPairPanel.SetActive(false);
+                GameManager.Instance.EVENT_HIDE_COMMON_CARD_PANEL.Invoke();
             });
     }
 }

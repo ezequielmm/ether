@@ -154,7 +154,8 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_CURRENT_STEP_TEXT = new UnityEvent<int, int>();
 
     //CARD PANEL EVENTS
-    [HideInInspector] public UnityEvent<List<Card>, int, Action<List<string>>> EVENT_SHOW_SELECT_CARD_PANEL = new UnityEvent<List<Card>, int, Action<List<string>>>();
+    [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>> EVENT_SHOW_SELECT_CARD_PANEL = new UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>>();
+    [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<string>> EVENT_SHOW_DIRECT_SELECT_CARD_PANEL = new UnityEvent<List<Card>, SelectPanelOptions, Action<string>>();
     [HideInInspector] public UnityEvent<Deck> EVENT_CARD_PILE_SHOW_DECK = new UnityEvent<Deck>();
     [HideInInspector] public UnityEvent EVENT_HIDE_COMMON_CARD_PANEL = new UnityEvent();
 
