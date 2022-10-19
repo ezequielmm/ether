@@ -15,3 +15,5 @@ MonoBehaviour:
   SpriteList:
   - name: Coin
     image: {fileID: 21300000, guid: a7980a5cec4578b4a9014d22bf9d1aa7, type: 3}
+  - name: Card
+    image: {fileID: 21300000, guid: c14fb330c6215ff4aa0378fdf06c3adc, type: 3}

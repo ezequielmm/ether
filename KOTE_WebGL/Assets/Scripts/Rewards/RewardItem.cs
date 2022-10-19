@@ -41,6 +41,7 @@ public class RewardItem : MonoBehaviour //, IPointerClickHandler
             case RewardItemType.card:
                 tooltipController.enabled = false;
                 rewardText.text = "Add a card to your deck";
+                rewardImage.sprite = SpriteAssetManager.Instance.GetMiscImage("card");
                 break;
 
             case RewardItemType.gold:
