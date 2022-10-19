@@ -16,6 +16,18 @@ public class TreasureManager : MonoBehaviour
     private void ContainerToggle(bool value) 
     {
         treasureContainer.SetActive(value);
+        if (value == true)
+        {
+            GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
+        }
+    }
+
+    private void StartCombat() 
+    {
+        // Enable combat UI
+        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(true);
+        // Disable treasure container
+        ContainerToggle(false);
     }
 
     public void OnTreasureDone()
