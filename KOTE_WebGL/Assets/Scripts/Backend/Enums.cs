@@ -220,7 +220,8 @@ public enum WS_DATA_REQUEST_TYPES
     CurrentNode,
     UpgradableCards,
     UpgradablePair,
-    UpgradeCard
+    UpgradeCard,
+    MerchantData
 }
 
 [Serializable]

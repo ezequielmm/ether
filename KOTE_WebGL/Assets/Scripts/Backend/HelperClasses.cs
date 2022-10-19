@@ -242,6 +242,28 @@ public class Card
 }
 
 [Serializable]
+public class Trinket 
+{
+    public string id;
+    public string name;
+    public string rarity;
+    public string description;
+    public int coinCost;
+}
+
+[Serializable]
+public class PotionData
+{
+    public string id;
+    public int potionId;
+    public string name;
+    public string rarity;
+    public string description;
+    public bool useableOutsideCombat;
+    public bool showPointer;
+}
+
+[Serializable]
 public class Effects
 {
     public List<Effect> effects;
@@ -371,6 +393,49 @@ public class SWSM_Base
     {
         public string message_type;
         public string action;
+    }
+}
+
+[Serializable]
+public class MerchantData 
+{
+    public List<Merchant<Card>> cards;
+    public List<Merchant<Card>> neutral_cards; // TODO
+    public List<Merchant<Trinket>> trinkets;
+    public List<Merchant<PotionData>> potions;
+
+    [Serializable]
+    public class Merchant<T> : IMerchant
+    {
+        public int itemId { get; set; }
+        public int coin { get; set; }
+        public bool is_sale { get; set; }
+        public string type { get; set; }
+        public string id { get; set; }
+        public T item;
+    }
+
+    public interface IMerchant 
+    {
+        public int itemId { get; set; }
+        public int coin { get; set; }
+        public bool is_sale { get; set; }
+        public string type { get; set; }
+        public string id { get; set; }
+    }
+}
+
+[Serializable]
+public class SWSM_MerchantData
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public string message_type;
+        public string action;
+        public MerchantData data;
     }
 }
 
