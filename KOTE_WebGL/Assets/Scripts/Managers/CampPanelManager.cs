@@ -10,7 +10,6 @@ public class CampPanelManager : MonoBehaviour
     public Button restButton;
     public Button smithButton;
     public TextMeshProUGUI skipButtonText;
-    public CardUpgradePanelManager upgradePanel;
 
     private bool continueActivated;
 
@@ -18,26 +17,25 @@ public class CampPanelManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_CAMP_SHOW_PANEL.AddListener(ShowCampPanel);
         GameManager.Instance.EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS.AddListener(OnShowCardUpgradePanel);
-        upgradePanel.HidePanel();
+        GameManager.Instance.EVENT_CAMP_FINISH.AddListener(OnCampFinish);
         campContainer.SetActive(false);
     }
 
     private void ShowCampPanel()
     {
         campContainer.SetActive(true);
+        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
     }
 
     public void OnRestSelected()
     {
         GameManager.Instance.EVENT_CAMP_HEAL.Invoke();
-        DeactivateButtons();
-        SwitchToContinueButton();
+        OnCampFinish();
     }
 
     public void OnSmithSelected()
     {
-        //TODO add smithing functionality
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.UpgradeableCards);
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.UpgradableCards);
     }
 
     private void DeactivateButtons()
@@ -56,16 +54,14 @@ public class CampPanelManager : MonoBehaviour
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
         campContainer.SetActive(false);
     }
-
-    private void OnHealthRestored()
-    {
-        DeactivateButtons();
-        SwitchToContinueButton();
-    }
-
+    
     private void OnShowCardUpgradePanel(Deck deck)
     {
-        upgradePanel.ShowPanel(deck);
+        GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(deck.cards, 1, (idList) =>
+        {
+            GameManager.Instance.EVENT_CAMP_GET_UPGRADE_PAIR.Invoke(idList[0]);
+            GameManager.Instance.EVENT_HIDE_COMMON_CARD_PANEL.Invoke();
+        });
     }
 
     private void OnCampFinish()
