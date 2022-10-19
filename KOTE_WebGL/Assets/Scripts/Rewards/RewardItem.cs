@@ -11,7 +11,7 @@ using Debug = UnityEngine.Debug;
 public class RewardItem : MonoBehaviour //, IPointerClickHandler
 {
     public TMP_Text rewardText;
-    [ReadOnly] public RewardItemType rewardItemType;
+    public RewardItemType rewardItemType;
     public Image rewardImage;
     public TooltipAtCursor tooltipController;
     private RewardItemData rewardData;

@@ -11,8 +11,8 @@ public class SelectCardsPanel : CardPanelBase
     public Button selectButton;
     public Button backButton;
     private int cardsToSelect;
-    [SerializeField] [ReadOnly] private int selectedCards;
-    [SerializeField] [ReadOnly] private List<string> selectedCardIds = new List<string>();
+    [SerializeField]  private int selectedCards;
+    [SerializeField]  private List<string> selectedCardIds = new List<string>();
 
     // Start is called before the first frame update
     protected override void Start()
