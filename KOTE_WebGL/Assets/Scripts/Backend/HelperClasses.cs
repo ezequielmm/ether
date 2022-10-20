@@ -740,7 +740,7 @@ public class RewardItemData
     public string type;
     public int amount;
     public bool taken;
-    public RewardPotion potion;
+    public PotionData potion;
     public Card card;
 }
 
