@@ -4,23 +4,20 @@ using UnityEngine;
 
 public class HealAnimationManager : MonoBehaviour
 {
-    [SerializeField]
-    TextEffectManager textEffectManager;
-    [SerializeField]
-    ParticleSystem healEffect;
+    [SerializeField] TextEffectManager textEffectManager;
+    [SerializeField] ParticleSystem healEffect;
 
-    [SerializeField]
-    bool testRun;
+    [SerializeField] bool testRun;
 
     string entityId;
 
 
     private void Update()
     {
-        if (testRun) 
+        if (testRun)
         {
             testRun = false;
-            onHeal(entityId, 20);
+            OnHeal(entityId, 20);
         }
     }
 
@@ -28,12 +25,14 @@ public class HealAnimationManager : MonoBehaviour
     {
         entityId = Utils.FindEntityId(gameObject);
 
-        if (entityId == "unknown") 
+        if (entityId == "unknown")
         {
             StartCoroutine(GetEntity());
+            Debug.LogError(
+                $"[HealAnimationManager] An enemy/player could not be found. This is on the [{gameObject.name}] object which is a child of [{transform.parent.name}].");
         }
-        
-        GameManager.Instance.EVENT_HEAL.AddListener(onHeal);
+
+        GameManager.Instance.EVENT_HEAL.AddListener(OnHeal);
     }
 
     IEnumerator GetEntity() 
@@ -57,17 +56,17 @@ public class HealAnimationManager : MonoBehaviour
             Debug.LogError($"[HealAnimationManager] An enemy/player could not be found. This is on the [{gameObject.name}] object which is a child of [{transform.parent.name}].");
         }
     }
-
-    void onHeal(string who, int healAmount) 
+    
+    protected virtual void OnHeal(string who, int healAmount)
     {
         // Check if me
         if (entityId != who) return;
 
         // Run Animation
-        StartCoroutine(healthAnimation(healAmount));
+        StartCoroutine(HealthAnimation(healAmount));
     }
 
-    IEnumerator healthAnimation(int hp) 
+    protected IEnumerator HealthAnimation(int hp)
     {
         healEffect.Play();
         yield return new WaitForSeconds(0.5f);
