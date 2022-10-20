@@ -323,11 +323,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: RewardsPanel
       objectReference: {fileID: 0}
-    - target: {fileID: 6892604104087434357, guid: 414286073fd8d7148adf5731b3f89a44,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 414286073fd8d7148adf5731b3f89a44, type: 3}
 --- !u!224 &7323805340623237498 stripped

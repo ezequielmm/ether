@@ -220,6 +220,7 @@ public class PlayerData
     public int energyMax;
     public int defense;
     public List<Card> cards;
+    public List<Potion> potions;
 }
 
 [Serializable]
@@ -239,6 +240,20 @@ public class Card
     public bool showPointer;
     public Effects properties;
     public List<string> keywords;
+}
+
+[Serializable]
+public class Potion
+{
+    public string id;
+    public int potionId;
+    public string name;
+    public string rarity;
+    public string description;
+    public int cost;
+    public List<Effect> effects;
+    public bool usableOutsideCombat;
+    public bool showPointer;
 }
 
 [Serializable]
@@ -267,16 +282,16 @@ public class Statuses
 [Serializable]
 public class Effect
 {
-    public string name;
+    public string effect;
+    public string target;
     public EffectArgs args;
 }
+
 
 [Serializable]
 public class EffectArgs
 {
-    public int base_value; //TODO change name on backend
-    public int calculated_value; //TODO change name on backend
-    public string targeted;
+    public int value;
 }
 
 [Serializable]
@@ -355,6 +370,13 @@ public class CardsSelectedList
 }
 
 [Serializable]
+public class PotionUsedData
+{
+    public string potionId;
+    public string targetId;
+}
+
+[Serializable]
 public class Errordata
 {
     public Data data;
@@ -391,6 +413,43 @@ public class SWSM_PlayerDeckData
         public string message_type;
         public string action;
         public List<Card> data;
+    }
+}
+
+[Serializable]
+public class SWSM_DeckData
+{
+    public SWSM_Deck data;
+}
+
+[Serializable]
+public class SWSM_Deck
+{
+    public DeckData data;
+}
+
+[Serializable]
+public class DeckData
+{
+    public List<Card> deck;
+}
+
+[Serializable]
+public class SWSM_ConfirmUpgrade
+{
+    public SWSM_UpgradeData data;
+
+    [Serializable]
+    public class SWSM_UpgradeData
+    {
+        public UpgradeData data;
+
+        [Serializable]
+        public class UpgradeData
+        {
+            public string cardIdToDelete;
+            public Card newCard;
+        }
     }
 }
 
@@ -653,4 +712,32 @@ public class RewardItemData
     public string type;
     public int amount;
     public bool taken;
+    public RewardPotion potion;
+    public Card card;
+}
+
+[Serializable]
+public class RewardPotion
+{
+    public int potionId;
+    public string name;
+    public string description;
+}
+
+[Serializable]
+public class SWSM_HealData
+{
+    public HealData data;
+
+    [Serializable]
+    public class HealData
+    {
+        public HealAmount data;
+
+        [Serializable]
+        public class HealAmount
+        {
+            public int healed;
+        }
+    }
 }

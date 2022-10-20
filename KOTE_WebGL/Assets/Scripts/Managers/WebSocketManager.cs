@@ -24,11 +24,14 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_CARD_PLAYED = "CardPlayed";
     private const string WS_MESSAGE_END_TURN = "EndTurn";
     private const string WS_MESSAGE_REWARD_SELECTED = "RewardSelected";
-    private const string WS_MESSAGE_GET_CARD_UPGRADE_PAIR = "UpgradablePair";
+    private const string WS_MESSAGE_GET_CARD_UPGRADE_PAIR = "CardUpgradeSelected";
     private const string WS_MESSAGE_UPGRADE_CARD = "UpgradeCard";
     private const string WS_MESSAGE_CAMP_HEAL = "CampRecoverHealth";
     private const string WS_MESSAGE_MOVE_SELECTED_CARDS = "MoveCard";
 
+    private const string WS_MESSAGE_USE_POTION = "UsePotion";
+    private const string WS_MESSAGE_REMOVE_POTION = "RemovePotion";
+    
     /*private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
     private const string WS_MESSAGE_GET_CARD_PILES = "GetCardPiles";
     private const string WS_MESSAGE_GET_PLAYER_HEALTH = "GetPlayerHealth";
@@ -161,6 +164,8 @@ public class WebSocketManager : MonoBehaviour
         GameManager.Instance.EVENT_CAMP_UPGRADE_CARD.AddListener(OnCardUpgradeConfirmed);
         GameManager.Instance.EVENT_CAMP_HEAL.AddListener(OnCampHealSelected);
         GameManager.Instance.EVENT_CARDS_SELECTED.AddListener(OnCardsSelected);
+        GameManager.Instance.EVENT_POTION_USED.AddListener(OnPotionUsed);
+        GameManager.Instance.EVENT_POTION_DISCARDED.AddListener(OnPotionDiscarded);
 
         GameManager.Instance.EVENT_WS_CONNECTED.Invoke();
     }
@@ -240,6 +245,25 @@ public class WebSocketManager : MonoBehaviour
         rootSocket.Emit(WS_MESSAGE_MOVE_SELECTED_CARDS, data);
     }
 
+    private void OnPotionUsed(string potionId, string targetId)
+    {
+        PotionUsedData potionData = new PotionUsedData
+        {
+            potionId = potionId,
+            targetId = targetId
+        };
+        string data = JsonUtility.ToJson(potionData);
+        Debug.Log("[WebSocket Manager] OnPotionUsed data: " + data);
+
+        rootSocket.Emit(WS_MESSAGE_USE_POTION, data);
+    }
+
+    private void OnPotionDiscarded(string potionId)
+    {
+        Debug.Log("[WebSocket Manager] OnDiscardPotion id: " + potionId);
+        rootSocket.Emit(WS_MESSAGE_REMOVE_POTION, potionId);
+    }
+
     void OnRewardSelected(string rewardId)
     {
         rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_REWARD_SELECTED, rewardId);
@@ -247,12 +271,12 @@ public class WebSocketManager : MonoBehaviour
 
     private void OnCampHealSelected()
     {
-        rootSocket.Emit(WS_MESSAGE_CAMP_HEAL);
+        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_CAMP_HEAL);
     }
 
     private void OnShowUpgradePair(string cardId)
     {
-        Debug.Log("Sending message Card Upgrade Selected with card id " + cardId);
+        Debug.Log($"Sending message {WS_MESSAGE_GET_CARD_UPGRADE_PAIR} with card id {cardId}");
         //customNamespace.Emit("NodeSelected",nodeId);
 
         rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_GET_CARD_UPGRADE_PAIR, cardId);
