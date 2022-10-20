@@ -220,7 +220,7 @@ public class PlayerData
     public int energyMax;
     public int defense;
     public List<Card> cards;
-    public List<Potion> potions;
+    public List<PotionData> potions;
 }
 
 [Serializable]
@@ -243,7 +243,7 @@ public class Card
 }
 
 [Serializable]
-public class Potion
+public class PotionData
 {
     public string id;
     public int potionId;
@@ -687,17 +687,10 @@ public class RewardItemData
     public string type;
     public int amount;
     public bool taken;
-    public RewardPotion potion;
+    public PotionData potion;
     public Card card;
 }
 
-[Serializable]
-public class RewardPotion
-{
-    public int potionId;
-    public string name;
-    public string description;
-}
 
 [Serializable]
 public class SWSM_HealData

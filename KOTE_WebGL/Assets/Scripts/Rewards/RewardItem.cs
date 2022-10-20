@@ -51,7 +51,7 @@ public class RewardItem : MonoBehaviour //, IPointerClickHandler
                 break;
 
             case RewardItemType.potion:
-                RewardPotion potion = reward.potion;
+                PotionData potion = reward.potion;
                 rewardText.text = potion.name;
                 rewardImage.sprite = SpriteAssetManager.Instance.GetPotionImage(potion.potionId);
 
