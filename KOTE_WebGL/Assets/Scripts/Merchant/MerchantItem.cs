@@ -10,7 +10,15 @@ public abstract class MerchantItem<T> : MonoBehaviour where T : MerchantData.IMe
     protected T data;
     [SerializeField]
     private TextMeshProUGUI priceText;
+    [SerializeField]
     private GameObject soldContainer;
+
+    [SerializeField]
+    private Sprite selectedBgSprite;
+    [SerializeField]
+    private Sprite unSelectedBgSprite;
+    [SerializeField]
+    private Image backgroundPanel;
 
     private Button button;
 
@@ -24,29 +32,27 @@ public abstract class MerchantItem<T> : MonoBehaviour where T : MerchantData.IMe
 
     protected void SetPrice()
     {
-        priceText.text = $"{data.coin}";
+        priceText.text = $"{data.Coin}";
     }
 
     private void OnSelect()
     {
-        PrepareBuy.Invoke(data.coin, data);
+        PrepareBuy.Invoke(data.Coin, data);
+        backgroundPanel.sprite = selectedBgSprite;
     }
 
     public void OnDeselect()
     {
-        if (data.is_sale)
-        {
-            // Remove selection data
-
-        }
+        // Remove selection data
+        backgroundPanel.sprite = unSelectedBgSprite;
     }
 
     public void CheckAffordability(int coinsInPocket) 
     {
-        // if not forsale
-        if (!data.is_sale) { return; }
+        // if sold
+        if (data.IsSold) { return; }
 
-        if (data.coin <= coinsInPocket)
+        if (data.Coin <= coinsInPocket)
         {
             // can afford button
             button.interactable = true;
@@ -66,13 +72,18 @@ public abstract class MerchantItem<T> : MonoBehaviour where T : MerchantData.IMe
     {
         this.data = data;
         SetPrice();
-        if (!data.is_sale)
+        if (!data.IsSold)
         {
-            soldContainer.SetActive(true);
+            // Is not sold
+            soldContainer.SetActive(false);
+            button.enabled = true;
         }
         else 
         {
-            soldContainer.SetActive(false);
+            // Is Sold
+            soldContainer.SetActive(true);
+            button.enabled = false;
         }
+        backgroundPanel.sprite = unSelectedBgSprite;
     }
 }

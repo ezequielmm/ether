@@ -434,7 +434,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.013188072, y: 0.18286}
   m_AnchorMax: {x: 0.35368955, y: 0.31}
-  m_AnchoredPosition: {x: 1.0321655, y: 0.19848633}
+  m_AnchoredPosition: {x: 1.0322266, y: 0.19848633}
   m_SizeDelta: {x: 1.7157979, y: 2.3168964}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &626478480943277976
@@ -1896,6 +1896,10 @@ MonoBehaviour:
     type: 3}
   uiTrinketPrefab: {fileID: 3587645341134520131, guid: 36d17dc35fae8f24bb4c0fb68c3a711f,
     type: 3}
+  SpeachBubbleContainer: {fileID: 775310981461161461}
+  SpeachBubbleText: {fileID: 548467716023032539}
+  ShopKeepImage: {fileID: 7178956834778653290}
+  totalText: {fileID: 8047827205367564267}
 --- !u!1 &6084532224094271566
 GameObject:
   m_ObjectHideFlags: 0
@@ -1932,7 +1936,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.09900001, y: 0.066}
   m_AnchorMax: {x: 0.3224577, y: 0.13919695}
-  m_AnchoredPosition: {x: -1.3984375, y: 2.449943}
+  m_AnchoredPosition: {x: -1.3984375, y: 2.4499512}
   m_SizeDelta: {x: -87.365234, y: -11.115658}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5151743446747248631
@@ -2019,7 +2023,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4179388299481887058}
         m_TargetAssemblyTypeName: MerchantNodeManager, Assembly-CSharp
-        m_MethodName: CloseMerchantPanel
+        m_MethodName: UpgradeCard
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2553,7 +2557,7 @@ GameObject:
   - component: {fileID: 2412731026726025381}
   - component: {fileID: 6953822594447292803}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Buy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2660,7 +2664,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2412731026726025381}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4179388299481887058}
+        m_TargetAssemblyTypeName: MerchantNodeManager, Assembly-CSharp
+        m_MethodName: BuyItem
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8508269496467480138
 GameObject:
   m_ObjectHideFlags: 0
@@ -3010,7 +3026,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4179388299481887058}
         m_TargetAssemblyTypeName: MerchantNodeManager, Assembly-CSharp
-        m_MethodName: CloseMerchantPanel
+        m_MethodName: RemoveCard
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
