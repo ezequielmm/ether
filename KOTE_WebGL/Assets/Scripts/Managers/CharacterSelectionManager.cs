@@ -23,6 +23,10 @@ public class CharacterSelectionManager : MonoBehaviour
         GameManager.Instance.EVENT_EXPEDITION_CONFIRMED.AddListener(OnExpeditionConfirmed);
 
         startExpeditionButton.interactable = false;
+        
+        //--------------------------AUTOMATICALLY SELECT KNIGHT ON START----------------------
+        OnCharacterSelected(characterBorders[0]);
+        //--------------------------DELETE ONCE OTHER CHARACTERS ARE ADDED--------------------
     }
 
     private void OnExpeditionConfirmed()

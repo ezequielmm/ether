@@ -22,5 +22,6 @@ public class PointerPlayPotion : MonoBehaviour, IPointerRunable
     {
         // Potion --> Enemy/Player
         Debug.Log($"[PointerPlayPotion] Play potion! target => {targetId} | origin => {originId}");
+        GameManager.Instance.EVENT_POTION_USED.Invoke(originId, targetId);
     }
 }

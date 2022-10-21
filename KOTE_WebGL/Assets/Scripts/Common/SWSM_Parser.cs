@@ -32,6 +32,12 @@ public class SWSM_Parser
             case nameof(WS_MESSAGE_TYPES.card_upgrade):
                 ProcessCardUpgrade(swsm.data.action, data);
                 break;
+            case nameof(WS_MESSAGE_TYPES.add_potion):
+                ProcessAddPotion(swsm.data.action, data);
+                break;
+            case nameof(WS_MESSAGE_TYPES.use_potion):
+                ProcessUsePotion(swsm.data.action, data);
+                break;
             case nameof(WS_MESSAGE_TYPES.combat_update):
                 ProcessCombatUpdate(swsm.data.action, data);
                 break;
@@ -488,7 +494,7 @@ public class SWSM_Parser
                 break;
             case"heal_amount":
                 SWSM_HealData healData = JsonUtility.FromJson<SWSM_HealData>(data);
-                GameManager.Instance.EVENT_HEAL.Invoke("camp", healData.data.data.HpRecover);
+                GameManager.Instance.EVENT_HEAL.Invoke("camp", healData.data.data.healed);
                 break;
             case "finish_camp":
                 GameManager.Instance.EVENT_CAMP_FINISH.Invoke();
@@ -505,6 +511,29 @@ public class SWSM_Parser
                 break;
             case "confirm_upgrade":
                 ProcessConfirmUpgrade(data);
+                break;
+        }
+    }
+
+    private static void ProcessAddPotion(string action, string data)
+    {
+        //TODO possibly switch effects for different warnings
+        switch (action)
+        {
+            case "potion_not_found_in_database":
+            case "potion_not_in_inventory":
+            case"potion_max_count_reached":
+                GameManager.Instance.EVENT_POTION_WARNING.Invoke(action);
+                break;
+        }
+    }
+
+    private static void ProcessUsePotion(string action, string data)
+    {
+        switch (action)
+        {
+            case "potion_not_usable_outside_combat":
+                GameManager.Instance.EVENT_POTION_WARNING.Invoke(action);
                 break;
         }
     }

@@ -270,13 +270,6 @@ public class PlayerManager : MonoBehaviour
         defenseController.Defense = value.Value;
     }
 
-#if UNITY_EDITOR
-    private void OnMouseDown()
-    {
-        OnDeath();
-    }
-#endif
-
     public float PlayAnimation(string animationSequence) 
     {
         float length = spineAnimationsManagement.PlayAnimationSequence(animationSequence);

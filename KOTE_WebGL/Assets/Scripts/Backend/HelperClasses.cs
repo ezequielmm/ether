@@ -220,6 +220,7 @@ public class PlayerData
     public int energyMax;
     public int defense;
     public List<Card> cards;
+    public List<PotionData> potions;
 }
 
 [Serializable]
@@ -259,7 +260,9 @@ public class PotionData
     public string name;
     public string rarity;
     public string description;
-    public bool useableOutsideCombat;
+    public int cost;
+    public List<Effect> effects;
+    public bool usableOutsideCombat;
     public bool showPointer;
 }
 
@@ -289,16 +292,16 @@ public class Statuses
 [Serializable]
 public class Effect
 {
-    public string name;
+    public string effect;
+    public string target;
     public EffectArgs args;
 }
+
 
 [Serializable]
 public class EffectArgs
 {
-    public int base_value; //TODO change name on backend
-    public int calculated_value; //TODO change name on backend
-    public string targeted;
+    public int value;
 }
 
 [Serializable]
@@ -367,6 +370,13 @@ public class Cards
 public class CardPlayedData //outgoing data
 {
     public string cardId;
+    public string targetId;
+}
+
+[Serializable]
+public class PotionUsedData
+{
+    public string potionId;
     public string targetId;
 }
 
@@ -742,6 +752,16 @@ public class RewardItemData
     public string type;
     public int amount;
     public bool taken;
+    public PotionData potion;
+    public Card card;
+}
+
+[Serializable]
+public class RewardPotion
+{
+    public int potionId;
+    public string name;
+    public string description;
 }
 
 [Serializable]
@@ -757,7 +777,7 @@ public class SWSM_HealData
         [Serializable]
         public class HealAmount
         {
-            public int HpRecover;
+            public int healed;
         }
     }
 }
