@@ -465,6 +465,7 @@ namespace map
             blockedTiles.Clear();
             allTiles.Clear();
             tileSplineRef.Clear();
+            nodeMapRef.Clear();
         }
 
         MapStructure GenerateMapStructure(SWSM_MapData expeditionMapData)
@@ -539,8 +540,9 @@ namespace map
                         // Snap cell to grid
                         Vector3Int mapPos = MapGrid.layoutGrid.WorldToCell(newNode.transform.position);
                         mapPos.z = 0;
-                        newNode.transform.position =
-                            MapGrid.layoutGrid.CellToWorld(mapPos);
+                        Vector3 finalPos = MapGrid.layoutGrid.CellToWorld(mapPos);
+                        finalPos.z = GameSettings.MAP_SPRITE_ELEMENTS_Z;
+                        newNode.transform.position = finalPos;
 
                         // Record node
                         nodeMapRef.Add(mapPos, newNode.NodeArt);
