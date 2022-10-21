@@ -410,6 +410,8 @@ public class SWSM_Base
 public class MerchantData 
 {
     public int coins;
+    public int shopkeeper;
+    public string speech_bubble;
     public List<Merchant<Card>> cards;
     public List<Merchant<Card>> neutral_cards; // TODO
     public List<Merchant<Trinket>> trinkets;

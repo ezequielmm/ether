@@ -56,10 +56,12 @@ public abstract class MerchantItem<T> : MonoBehaviour where T : MerchantData.IMe
         {
             // can afford button
             button.interactable = true;
+            priceText.color = Color.white;
         } 
         else 
         {
-            button.interactable = false; 
+            button.interactable = false;
+            priceText.color = Color.red;
         }
     }
 
@@ -72,6 +74,7 @@ public abstract class MerchantItem<T> : MonoBehaviour where T : MerchantData.IMe
     {
         this.data = data;
         SetPrice();
+        priceText.color = Color.white;
         if (!data.IsSold)
         {
             // Is not sold
@@ -83,6 +86,8 @@ public abstract class MerchantItem<T> : MonoBehaviour where T : MerchantData.IMe
             // Is Sold
             soldContainer.SetActive(true);
             button.enabled = false;
+            priceText.text = "SOLD";
+            priceText.color = Color.red;
         }
         backgroundPanel.sprite = unSelectedBgSprite;
     }

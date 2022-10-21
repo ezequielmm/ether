@@ -23,12 +23,15 @@ public class MerchantNodeManager : MonoBehaviour
     public TMPro.TextMeshProUGUI SpeachBubbleText;
 
     public Image ShopKeepImage;
+    public List<Sprite> ShopKeepSprites = new List<Sprite>();
 
     MerchantData merchantData;
 
     [Header("Checkout")]
     [SerializeField]
     private TMPro.TextMeshProUGUI totalText;
+    [SerializeField]
+    private Button buyButton;
 
     private List<MerchantItem<MerchantData.Merchant<Card>>> cardItems = new List<MerchantItem<MerchantData.Merchant<Card>>>();
     private List<MerchantItem<MerchantData.Merchant<PotionData>>> potionItems = new List<MerchantItem<MerchantData.Merchant<PotionData>>>();
@@ -61,7 +64,7 @@ public class MerchantNodeManager : MonoBehaviour
     private void PopulateMerchantNode(MerchantData data) 
     {
         merchantData = data;
-        RenderData();
+        ClearMerchandise();
 
         // Populate cards
         PopulateCards();
@@ -69,6 +72,11 @@ public class MerchantNodeManager : MonoBehaviour
         PopulatePotions();
         // Populate Trinkets
         PopulateTrinkets();
+
+        // Populate Shopkeeper
+        ShopKeepImage.sprite = ShopKeepSprites[(int)Mathf.Clamp(data.shopkeeper, 0, ShopKeepSprites.Count - 1)];
+        // Populate Speach Bubble
+        SetSpeachBubble(data.speech_bubble);
 
         ResetItems();
     }
@@ -131,6 +139,10 @@ public class MerchantNodeManager : MonoBehaviour
         cardItems.Clear();
         trinketItems.Clear();
         potionItems.Clear();
+        SetSpeachBubble(string.Empty);
+
+        selectedItem = null;
+        buyButton.interactable = false;
     }
 
     private void ResetItems() 
@@ -151,7 +163,9 @@ public class MerchantNodeManager : MonoBehaviour
             i.CheckAffordability(gold);
         }
         totalText.text = "0";
+
         selectedItem = null;
+        buyButton.interactable = false;
     }
 
     private void PrepareBuy(int cost, MerchantData.IMerchant item) 
@@ -161,6 +175,7 @@ public class MerchantNodeManager : MonoBehaviour
         totalText.text = $"{cost}";
         // Set given merch
         selectedItem = item;
+        buyButton.interactable = true;
     }
 
     /// <summary>
@@ -189,10 +204,10 @@ public class MerchantNodeManager : MonoBehaviour
         // Run remove card pannel
     }
 
-    public void RenderData() 
+    public void SetSpeachBubble(string text) 
     {
-        ClearMerchandise();
-        ResetItems();
+        SpeachBubbleContainer.SetActive(!string.IsNullOrEmpty(text));
+        SpeachBubbleText.text = text;
     }
 
 
