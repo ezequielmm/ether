@@ -54,14 +54,18 @@ public class CampPanelManager : MonoBehaviour
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
         campContainer.SetActive(false);
     }
-    
+
     private void OnShowCardUpgradePanel(Deck deck)
     {
-        GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(deck.cards, 1, (idList) =>
+        SelectPanelOptions selectOptions = new SelectPanelOptions
         {
-            GameManager.Instance.EVENT_CAMP_GET_UPGRADE_PAIR.Invoke(idList[0]);
-            GameManager.Instance.EVENT_HIDE_COMMON_CARD_PANEL.Invoke();
-        });
+            HideBackButton = false,
+            MustSelectAllCards = true,
+            NumberOfCardsToSelect = 1,
+            FireSelectWhenCardClicked = true
+        };
+        GameManager.Instance.EVENT_SHOW_DIRECT_SELECT_CARD_PANEL.Invoke(deck.cards, selectOptions,
+            (cardId) => { GameManager.Instance.EVENT_CAMP_GET_UPGRADE_PAIR.Invoke(cardId); });
     }
 
     private void OnCampFinish()

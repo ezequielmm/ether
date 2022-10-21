@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2786be413087d984db896b2c5302fe51, type: 3}
+  m_Name: Act1Potions
+  m_EditorClassIdentifier: 
+  entityImages:
+  - {fileID: 21300000, guid: c4b8fde1242a20447b53e6e713a86b97, type: 3}
+  - {fileID: 21300000, guid: e9d6dc805c42bf845b7ceddfdc32ff86, type: 3}
+  - {fileID: 21300000, guid: 82748755f9509f244aa336a8b0944dad, type: 3}
+  - {fileID: 21300000, guid: 0abe18cb1651af6408f882f621b3e891, type: 3}
+  - {fileID: 21300000, guid: 07efefeb281485a428a067484f5b148d, type: 3}
+  - {fileID: 21300000, guid: d42d62727f137c84c8099cebb7efc3c2, type: 3}
+  - {fileID: 21300000, guid: 12a65af761536ae428f3488db80737cd, type: 3}
+  - {fileID: 21300000, guid: 63102251e3a96044f9c04a83a1a10e53, type: 3}
+  - {fileID: 21300000, guid: cba9d5f8f9b4b8b4e975b7c9d5a6e9d8, type: 3}
+  - {fileID: 21300000, guid: 4807c1308c5deed42a969bb17e74ed71, type: 3}

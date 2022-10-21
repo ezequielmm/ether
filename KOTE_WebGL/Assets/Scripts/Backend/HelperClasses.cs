@@ -220,6 +220,7 @@ public class PlayerData
     public int energyMax;
     public int defense;
     public List<Card> cards;
+    public List<PotionData> potions;
 }
 
 [Serializable]
@@ -239,6 +240,30 @@ public class Card
     public bool showPointer;
     public Effects properties;
     public List<string> keywords;
+}
+
+[Serializable]
+public class Trinket 
+{
+    public string id;
+    public string name;
+    public string rarity;
+    public string description;
+    public int coinCost;
+}
+
+[Serializable]
+public class PotionData
+{
+    public string id;
+    public int potionId;
+    public string name;
+    public string rarity;
+    public string description;
+    public int cost;
+    public List<Effect> effects;
+    public bool usableOutsideCombat;
+    public bool showPointer;
 }
 
 [Serializable]
@@ -267,16 +292,16 @@ public class Statuses
 [Serializable]
 public class Effect
 {
-    public string name;
+    public string effect;
+    public string target;
     public EffectArgs args;
 }
+
 
 [Serializable]
 public class EffectArgs
 {
-    public int base_value; //TODO change name on backend
-    public int calculated_value; //TODO change name on backend
-    public string targeted;
+    public int value;
 }
 
 [Serializable]
@@ -349,6 +374,13 @@ public class CardPlayedData //outgoing data
 }
 
 [Serializable]
+public class PotionUsedData
+{
+    public string potionId;
+    public string targetId;
+}
+
+[Serializable]
 public class Errordata
 {
     public Data data;
@@ -371,6 +403,49 @@ public class SWSM_Base
     {
         public string message_type;
         public string action;
+    }
+}
+
+[Serializable]
+public class MerchantData 
+{
+    public List<Merchant<Card>> cards;
+    public List<Merchant<Card>> neutral_cards; // TODO
+    public List<Merchant<Trinket>> trinkets;
+    public List<Merchant<PotionData>> potions;
+
+    [Serializable]
+    public class Merchant<T> : IMerchant
+    {
+        public int itemId { get; set; }
+        public int coin { get; set; }
+        public bool is_sale { get; set; }
+        public string type { get; set; }
+        public string id { get; set; }
+        public T item;
+    }
+
+    public interface IMerchant 
+    {
+        public int itemId { get; set; }
+        public int coin { get; set; }
+        public bool is_sale { get; set; }
+        public string type { get; set; }
+        public string id { get; set; }
+    }
+}
+
+[Serializable]
+public class SWSM_MerchantData
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public string message_type;
+        public string action;
+        public MerchantData data;
     }
 }
 
@@ -665,6 +740,16 @@ public class RewardItemData
     public string type;
     public int amount;
     public bool taken;
+    public PotionData potion;
+    public Card card;
+}
+
+[Serializable]
+public class RewardPotion
+{
+    public int potionId;
+    public string name;
+    public string description;
 }
 
 [Serializable]
@@ -680,7 +765,7 @@ public class SWSM_HealData
         [Serializable]
         public class HealAmount
         {
-            public int HpRecover;
+            public int healed;
         }
     }
 }
