@@ -126,7 +126,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 06a96e6d5bc72bb45946b54462f5f6dc, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -292,6 +292,10 @@ MonoBehaviour:
   onCursorExit:
     m_PersistentCalls:
       m_Calls: []
+  spineAnimationsManagement: {fileID: 0}
+  setBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!50 &9042282606503098450
 Rigidbody2D:
   serializedVersion: 4
