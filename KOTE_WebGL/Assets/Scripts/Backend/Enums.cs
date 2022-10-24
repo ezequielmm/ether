@@ -218,9 +218,10 @@ public enum WS_DATA_REQUEST_TYPES
     Statuses,
     PlayerDeck,
     CurrentNode,
-    UpgradeableCards,
-    UpgradeablePair,
-    UpgradeCard
+    UpgradableCards,
+    UpgradablePair,
+    UpgradeCard,
+    MerchantData
 }
 
 [Serializable]
@@ -250,7 +251,9 @@ public enum WS_MESSAGE_TYPES
     begin_turn,
     end_combat,
     end_node,
-    card_upgrade
+    card_upgrade,
+    add_potion,
+    use_potion
 }
 
 [Serializable]
@@ -304,7 +307,7 @@ public enum ATTACK_EFFECT_TYPES
 [Serializable]
 public enum RewardItemType
 {
-    cards,
+    card,
     gold,
     potion,
     trinket,

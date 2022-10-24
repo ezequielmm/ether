@@ -46,15 +46,18 @@ public class TargetProfile
     /// If the Players can be targeted
     /// </summary>
     public bool player;
+
     /// <summary>
     /// If the Enemies can be targeted
     /// </summary>
     public bool enemy;
+
     /// <summary>
     /// This is true if the target can not be specified. If so, when player or enemy
     /// is true, that means that who may get targeted at random or as a whole.
     /// </summary>
     public bool notSpecified;
+
     /// <summary>
     /// A List of specific entities that can be targeted.
     /// </summary>
@@ -69,7 +72,7 @@ public class Step
 
 [Serializable]
 public class Tooltip
-{ 
+{
     public string title;
     public string description;
 }
@@ -217,6 +220,7 @@ public class PlayerData
     public int energyMax;
     public int defense;
     public List<Card> cards;
+    public List<PotionData> potions;
 }
 
 [Serializable]
@@ -239,6 +243,30 @@ public class Card
 }
 
 [Serializable]
+public class Trinket 
+{
+    public string id;
+    public string name;
+    public string rarity;
+    public string description;
+    public int coinCost;
+}
+
+[Serializable]
+public class PotionData
+{
+    public string id;
+    public int potionId;
+    public string name;
+    public string rarity;
+    public string description;
+    public int cost;
+    public List<Effect> effects;
+    public bool usableOutsideCombat;
+    public bool showPointer;
+}
+
+[Serializable]
 public class Effects
 {
     public List<Effect> effects;
@@ -246,14 +274,14 @@ public class Effects
 }
 
 [Serializable]
-public class Statuses 
+public class Statuses
 {
     public string name;
     public Args args;
     public Tooltip tooltip;
 
     [Serializable]
-    public class Args 
+    public class Args
     {
         public int value;
         public string attachTo;
@@ -264,16 +292,16 @@ public class Statuses
 [Serializable]
 public class Effect
 {
-    public string name;
+    public string effect;
+    public string target;
     public EffectArgs args;
 }
+
 
 [Serializable]
 public class EffectArgs
 {
-    public int base_value; //TODO change name on backend
-    public int calculated_value; //TODO change name on backend
-    public string targeted;
+    public int value;
 }
 
 [Serializable]
@@ -346,6 +374,13 @@ public class CardPlayedData //outgoing data
 }
 
 [Serializable]
+public class PotionUsedData
+{
+    public string potionId;
+    public string targetId;
+}
+
+[Serializable]
 public class Errordata
 {
     public Data data;
@@ -372,6 +407,49 @@ public class SWSM_Base
 }
 
 [Serializable]
+public class MerchantData 
+{
+    public List<Merchant<Card>> cards;
+    public List<Merchant<Card>> neutral_cards; // TODO
+    public List<Merchant<Trinket>> trinkets;
+    public List<Merchant<PotionData>> potions;
+
+    [Serializable]
+    public class Merchant<T> : IMerchant
+    {
+        public int itemId { get; set; }
+        public int coin { get; set; }
+        public bool is_sale { get; set; }
+        public string type { get; set; }
+        public string id { get; set; }
+        public T item;
+    }
+
+    public interface IMerchant 
+    {
+        public int itemId { get; set; }
+        public int coin { get; set; }
+        public bool is_sale { get; set; }
+        public string type { get; set; }
+        public string id { get; set; }
+    }
+}
+
+[Serializable]
+public class SWSM_MerchantData
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public string message_type;
+        public string action;
+        public MerchantData data;
+    }
+}
+
+[Serializable]
 public class SWSM_PlayerDeckData
 {
     public Data data;
@@ -382,6 +460,43 @@ public class SWSM_PlayerDeckData
         public string message_type;
         public string action;
         public List<Card> data;
+    }
+}
+
+[Serializable]
+public class SWSM_DeckData
+{
+    public SWSM_Deck data;
+}
+
+[Serializable]
+public class SWSM_Deck
+{
+    public DeckData data;
+}
+
+[Serializable]
+public class DeckData
+{
+    public List<Card> deck;
+}
+
+[Serializable]
+public class SWSM_ConfirmUpgrade
+{
+    public SWSM_UpgradeData data;
+
+    [Serializable]
+    public class SWSM_UpgradeData
+    {
+        public UpgradeData data;
+
+        [Serializable]
+        public class UpgradeData
+        {
+            public string cardIdToDelete;
+            public Card newCard;
+        }
     }
 }
 
@@ -507,12 +622,12 @@ public class SWSM_CurrentStep
 
         //public string data;
         public CurrentStep data;
-        
-        
     }
 }
+
 [Serializable]
-public class CurrentStep{
+public class CurrentStep
+{
     public int act;
     public int step;
 }
@@ -609,12 +724,11 @@ public class SWSM_RewardsData
     public class Data
     {
         public RewardsData data;
-        
+
         [Serializable]
         public class RewardsData
         {
             public List<RewardItemData> rewards;
-    
         }
     }
 }
@@ -626,4 +740,32 @@ public class RewardItemData
     public string type;
     public int amount;
     public bool taken;
+    public PotionData potion;
+    public Card card;
+}
+
+[Serializable]
+public class RewardPotion
+{
+    public int potionId;
+    public string name;
+    public string description;
+}
+
+[Serializable]
+public class SWSM_HealData
+{
+    public HealData data;
+
+    [Serializable]
+    public class HealData
+    {
+        public HealAmount data;
+
+        [Serializable]
+        public class HealAmount
+        {
+            public int healed;
+        }
+    }
 }
