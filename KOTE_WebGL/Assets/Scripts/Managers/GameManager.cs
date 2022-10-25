@@ -71,7 +71,6 @@ public class GameManager : SingleTon<GameManager>
 
     //REWARDS EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_SHOW_REWARDS_PANEL = new UnityEvent<bool>();
-    [HideInInspector] public UnityEvent<bool> EVENT_CARDS_REWARDPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<SWSM_RewardsData> EVENT_POPULATE_REWARDS_PANEL = new UnityEvent<SWSM_RewardsData>();
     [HideInInspector] public UnityEvent<string> EVENT_REWARD_SELECTED = new UnityEvent<string>();
     [HideInInspector] public UnityEvent EVENT_CONTINUE_EXPEDITION = new UnityEvent();

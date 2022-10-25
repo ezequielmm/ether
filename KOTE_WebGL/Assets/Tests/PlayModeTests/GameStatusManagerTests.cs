@@ -563,7 +563,7 @@ public class GameStatusManagerTests
     {
         bool eventFired = false;
 
-        GameManager.Instance.EVENT_SHOW_MERCHANT_PANEL.AddListener(() =>
+        GameManager.Instance.EVENT_TOGGLE_MERCHANT_PANEL.AddListener((data) =>
         {
             eventFired = true;
         });

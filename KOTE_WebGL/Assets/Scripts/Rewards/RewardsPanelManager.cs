@@ -23,7 +23,6 @@ public class RewardsPanelManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.EVENT_CARDS_REWARDPANEL_ACTIVATION_REQUEST.AddListener(ActivateCardSelectPanel);
         GameManager.Instance.EVENT_SHOW_REWARDS_PANEL.AddListener(ActivateRewardsContainer);
         GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.AddListener(SetRewards);
         _rewardItems = new List<RewardItem>();
