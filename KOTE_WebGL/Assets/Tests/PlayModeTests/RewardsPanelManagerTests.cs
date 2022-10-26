@@ -66,8 +66,8 @@ public class RewardsPanelManagerTests : MonoBehaviour
     }
 
 
-    [Test]
-    public void DoesSettingRewardsClearRewardItems()
+    [UnityTest]
+    public IEnumerator DoesSettingRewardsClearRewardItems()
     {
         GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(new SWSM_RewardsData
         {
@@ -97,8 +97,87 @@ public class RewardsPanelManagerTests : MonoBehaviour
                 }
             }
         });
+        yield return null;
         Assert.AreEqual(0, _rewardsPanelManager.rewardsPanel.GetComponentsInChildren<RewardItem>().Length);
-
     }
-    
+
+    [Test]
+    public void DoesPopulatingRewardsWithACardShowCardRewardItem()
+    {
+        GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(new SWSM_RewardsData
+        {
+            data = new SWSM_RewardsData.Data
+            {
+                data = new SWSM_RewardsData.Data.RewardsData
+                {
+                    rewards = new List<RewardItemData>
+                    {
+                        new RewardItemData
+                        {
+                            amount = 1,
+                            taken = false,
+                            type = "card",
+                            card = new Card
+                            {
+                                cardId = 5,
+                                cardType = "attack",
+                                description = "test",
+                                energy = 3,
+                                id = "test",
+                                isUpgraded = false,
+                                keywords = new List<string>(),
+                                name = "test",
+                                pool = "knight",
+                                properties = new Effects(),
+                                rarity = "legendary"
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        Assert.AreEqual(1, _rewardsPanelManager.rewardsPanel.GetComponentsInChildren<RewardItem>().Length);
+        Assert.AreEqual(RewardItemType.card,
+            _rewardsPanelManager.rewardsPanel.GetComponentsInChildren<RewardItem>()[0].rewardItemType);
+    }
+
+    [UnityTest]
+    public IEnumerator DoesPopulatingRewardsWithCardsCreateCardRewards()
+    {
+        GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(new SWSM_RewardsData
+        {
+            data = new SWSM_RewardsData.Data
+            {
+                data = new SWSM_RewardsData.Data.RewardsData
+                {
+                    rewards = new List<RewardItemData>
+                    {
+                        new RewardItemData
+                        {
+                            amount = 1,
+                            taken = false,
+                            type = "card",
+                            card = new Card
+                            {
+                                cardId = 5,
+                                cardType = "attack",
+                                description = "test",
+                                energy = 3,
+                                id = "test",
+                                isUpgraded = false,
+                                keywords = new List<string>(),
+                                name = "test",
+                                pool = "knight",
+                                properties = new Effects(),
+                                rarity = "legendary"
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        yield return null;
+        Assert.AreEqual(1,
+            _rewardsPanelManager.cardRewardLayout.GetComponentsInChildren<SelectableUiCardManager>().Length);
+    }
 }
