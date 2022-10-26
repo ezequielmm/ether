@@ -55,6 +55,7 @@ public class MerchantNodeManager : MonoBehaviour
         GameManager.Instance.EVENT_POPULATE_MERCHANT_PANEL.AddListener(PopulateMerchantNode);
         GameManager.Instance.EVENT_TOGGLE_MERCHANT_PANEL.AddListener(ToggleVisibility);
         ClearMerchandise();
+        serviceCardPanel.OnCardClick.AddListener(OnCardSelection);
     }
 
     public void ToggleVisibility(bool toggle)
@@ -231,9 +232,14 @@ public class MerchantNodeManager : MonoBehaviour
         buyButton.interactable = true;
         DeselectCard();
         selectedCard = card;
-        if (upgradeCard) 
+        if (upgradeCard)
         {
+            totalText.text = $"{merchantData.upgradeCost}";
             ShowCardComparison(cardId);
+        }
+        else 
+        {
+            totalText.text = $"{merchantData.destroyCost}";
         }
     }
 
@@ -249,6 +255,8 @@ public class MerchantNodeManager : MonoBehaviour
     {
         cardPairPanel.HidePairPannel();
         DeselectCard();
+        totalText.text = "0";
+        buyButton.interactable = false;
     }
 
     private void DeselectCard() 

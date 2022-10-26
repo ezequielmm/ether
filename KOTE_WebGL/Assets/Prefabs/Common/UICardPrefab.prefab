@@ -245,7 +245,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -266,7 +266,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 4407243871212581008}
+  m_TargetGraphic: {fileID: 9139466233118832734}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -362,7 +362,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8753184078202255336
 RectTransform:
   m_ObjectHideFlags: 0
@@ -648,7 +648,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36.25
+  m_fontSize: 53.8
   m_fontSizeBase: 48.45
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1015,7 +1015,7 @@ MonoBehaviour:
     type: 3}
   id: 
   scaleCardOnHover: 1
-  scaleOnHover: 0.35
+  scaleOnHover: 1.2
   cardBackground: {fileID: 21300000, guid: e945465d32e5596409aded32149449a1, type: 3}
   cardSelectedBackground: {fileID: 21300000, guid: df29b28aa7a518a45badcf293f32a65b,
     type: 3}

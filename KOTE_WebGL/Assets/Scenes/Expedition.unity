@@ -201,6 +201,11 @@ PrefabInstance:
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
       objectReference: {fileID: 0}
+    - target: {fileID: 7394594126355924675, guid: fd9aeb50c8fc5fe468f95867b44a9fff,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd9aeb50c8fc5fe468f95867b44a9fff, type: 3}
 --- !u!1001 &148982865
@@ -492,12 +497,12 @@ PrefabInstance:
     - target: {fileID: 5615298483800157825, guid: ee5e9e7152999294fb2f20a8107966a9,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -222.89996
+      value: -222.8999
       objectReference: {fileID: 0}
     - target: {fileID: 5615298483800157825, guid: ee5e9e7152999294fb2f20a8107966a9,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 112.399994
+      value: 112.3999
       objectReference: {fileID: 0}
     - target: {fileID: 5983924779970246627, guid: ee5e9e7152999294fb2f20a8107966a9,
         type: 3}
@@ -1389,6 +1394,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080756018669087049, guid: 85fcd610dfa64284c8f96c821210c654,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.21557617
       objectReference: {fileID: 0}
     - target: {fileID: 5602023722562463942, guid: 85fcd610dfa64284c8f96c821210c654,
         type: 3}
@@ -2903,6 +2913,46 @@ PrefabInstance:
       propertyPath: m_Name
       value: UpgradePairPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 2286848312190184179, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1.7724572
+      objectReference: {fileID: 0}
+    - target: {fileID: 2286848312190184179, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1.7155187
+      objectReference: {fileID: 0}
+    - target: {fileID: 2286848312190184179, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: -0.7711324
+      objectReference: {fileID: 0}
+    - target: {fileID: 2286848312190184179, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: -0.7155188
+      objectReference: {fileID: 0}
+    - target: {fileID: 2286848312190184179, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2286848312190184179, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2286848312190184179, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2286848312190184179, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4828612417897948811, guid: 188d28c762989cd4a960f56a29297723,
         type: 3}
       propertyPath: m_Pivot.x
@@ -3006,6 +3056,56 @@ PrefabInstance:
     - target: {fileID: 4828612417897948811, guid: 188d28c762989cd4a960f56a29297723,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4915311769120461674, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.50242424
+      objectReference: {fileID: 0}
+    - target: {fileID: 4915311769120461674, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.3376667
+      objectReference: {fileID: 0}
+    - target: {fileID: 4915311769120461674, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.3376667
+      objectReference: {fileID: 0}
+    - target: {fileID: 4915311769120461674, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4915311769120461674, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 398
+      objectReference: {fileID: 0}
+    - target: {fileID: 4915311769120461674, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4915311769120461674, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 149
+      objectReference: {fileID: 0}
+    - target: {fileID: 7268589350228402934, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.7516242
+      objectReference: {fileID: 0}
+    - target: {fileID: 7268589350228402934, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.2865735
+      objectReference: {fileID: 0}
+    - target: {fileID: 7268589350228402934, guid: 188d28c762989cd4a960f56a29297723,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -3896,6 +3996,15 @@ MonoBehaviour:
   EVENT_POTION_USED:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_POTION_DISCARDED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_POTION_SHOW_POTION_MENU:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_POTION_WARNING:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_ROYALHOUSES_ACTIVATION_REQUEST:
     m_PersistentCalls:
       m_Calls: []
@@ -3908,7 +4017,10 @@ MonoBehaviour:
   EVENT_SHOW_ENCOUNTER_PANEL:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_SHOW_MERCHANT_PANEL:
+  EVENT_TOGGLE_MERCHANT_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_POPULATE_MERCHANT_PANEL:
     m_PersistentCalls:
       m_Calls: []
   EVENT_CAMP_SHOW_PANEL:
@@ -3999,6 +4111,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   EVENT_SHOW_SELECT_CARD_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SHOW_DIRECT_SELECT_CARD_PANEL:
     m_PersistentCalls:
       m_Calls: []
   EVENT_CARD_PILE_SHOW_DECK:
@@ -4394,10 +4509,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d670978ffee4edb46ad19aafbe3a5833, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PacketJson: '{"data":{"message_type":"enemy_intents","action":"update_enemy_intents","data":[{"id":"62da997631135fc7ffd08886","intents":[{"value":11,"description":"This
-    Enemy will attack for 11 Damage","type":"attack"},{"value":11,"description":"This
-    Enemy will attack for 11 Damage","type":"attack"},{"value":0,"description":"This
-    Enemy will Buff","type":"buff"}]}]}}'
+  PacketJson:
+  - '{"data":{"message_type":"merchant_update","action":"begin_merchant","data":null}}'
+  - "{\"data\":{\"message_type\":\"generic_data\",\"action\":\"MerchantData\",\"data\":{\"coins\":55,\"shopkeeper\":0,\"speechBubble\":\"Lamp
+    oil, rope, bombs \u2013 you want it? It's yours, my friend, as long as you have
+    enough rupees.\",\"upgradeableCards\":[{\"id\":\"b47e5840-f644-4d74-9c8a-fbabbb85ba33\",\"cardId\":1,\"name\":\"Attack\",\"cardType\":\"attack\",\"energy\":1,\"description\":\"Deal
+    5 Damage\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"damage\",\"target\":\"enemy\",\"args\":{\"value\":5}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":true,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":2},{\"id\":\"788d3d41-ab15-4be2-9679-3581b65a6ff3\",\"cardId\":1,\"name\":\"Attack\",\"cardType\":\"attack\",\"energy\":1,\"description\":\"Deal
+    5 Damage\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"damage\",\"target\":\"enemy\",\"args\":{\"value\":5}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":true,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":2},{\"id\":\"d174148e-6304-400f-bb52-afde389cae21\",\"cardId\":1,\"name\":\"Attack\",\"cardType\":\"attack\",\"energy\":1,\"description\":\"Deal
+    5 Damage\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"damage\",\"target\":\"enemy\",\"args\":{\"value\":5}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":true,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":2},{\"id\":\"e0b8aee6-44f2-471a-9d52-c367613a9af9\",\"cardId\":1,\"name\":\"Attack\",\"cardType\":\"attack\",\"energy\":1,\"description\":\"Deal
+    5 Damage\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"damage\",\"target\":\"enemy\",\"args\":{\"value\":5}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":true,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":2},{\"id\":\"759e7822-4c2e-48bb-8f0e-5b3dde1fd361\",\"cardId\":3,\"name\":\"Defend\",\"cardType\":\"defend\",\"energy\":1,\"description\":\"Gain
+    5 Defense\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"defense\",\"target\":\"player\",\"args\":{\"value\":5}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":false,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":4},{\"id\":\"c99ca9b8-9649-4b9a-a602-48758d376687\",\"cardId\":3,\"name\":\"Defend\",\"cardType\":\"defend\",\"energy\":1,\"description\":\"Gain
+    5 Defense\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"defense\",\"target\":\"player\",\"args\":{\"value\":5}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":false,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":4},{\"id\":\"e89ddc1c-7e4a-4c27-a8d9-512fdab45ce6\",\"cardId\":3,\"name\":\"Defend\",\"cardType\":\"defend\",\"energy\":1,\"description\":\"Gain
+    5 Defense\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"defense\",\"target\":\"player\",\"args\":{\"value\":5}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":false,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":4},{\"id\":\"fd9d8a9b-81e2-4128-891e-b896b5b2bac7\",\"cardId\":3,\"name\":\"Defend\",\"cardType\":\"defend\",\"energy\":1,\"description\":\"Gain
+    5 Defense\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"defense\",\"target\":\"player\",\"args\":{\"value\":5}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":false,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":4},{\"id\":\"9291f030-4adb-4726-aaf1-f0e6f6d65d2c\",\"cardId\":5,\"name\":\"Brace\",\"cardType\":\"defend\",\"energy\":2,\"description\":\"Gain
+    8 Defense and 1 Resolve\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"defense\",\"target\":\"player\",\"args\":{\"value\":8}}],\"statuses\":[{\"name\":\"resolve\",\"attachTo\":\"self\",\"args\":{\"counter\":1}}]},\"keywords\":[],\"showPointer\":false,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":6},{\"id\":\"3fc3c14e-4182-4a0a-b437-4ea72b23789b\",\"cardId\":7,\"name\":\"Counter\",\"cardType\":\"attack\",\"energy\":1,\"description\":\"Deal
+    4 Damage, Gain 4 Defense\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"damage\",\"target\":\"enemy\",\"args\":{\"value\":4}},{\"effect\":\"defense\",\"target\":\"player\",\"args\":{\"value\":4}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":true,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":8},{\"id\":\"97ee505e-44e8-483b-8f0b-7699fb4d40b6\",\"cardId\":11,\"name\":\"Find
+    Weakness\",\"cardType\":\"attack\",\"energy\":1,\"description\":\"Deal 1 damage
+    1 time. Double these values this combat.\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"damage\",\"target\":\"enemy\",\"times\":1,\"args\":{\"value\":1,\"doubleValuesWhenPlayed\":true}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":true,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":12}],\"upgradedCards\":[{\"id\":\"b47e5840-f644-4d74-9c8a-fbabbb85ba33\",\"cardId\":1,\"name\":\"Attack+\",\"cardType\":\"attack\",\"energy\":1,\"description\":\"Deal
+    10 Damage\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"damage\",\"target\":\"enemy\",\"args\":{\"value\":10}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":true,\"pool\":\"knight\",\"isUpgraded\":true,\"upgradedCardId\":2},{\"id\":\"788d3d41-ab15-4be2-9679-3581b65a6ff3\",\"cardId\":1,\"name\":\"Attack+\",\"cardType\":\"attack\",\"energy\":1,\"description\":\"Deal
+    10 Damage\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"damage\",\"target\":\"enemy\",\"args\":{\"value\":10}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":true,\"pool\":\"knight\",\"isUpgraded\":true,\"upgradedCardId\":2},{\"id\":\"d174148e-6304-400f-bb52-afde389cae21\",\"cardId\":1,\"name\":\"Attack+\",\"cardType\":\"attack\",\"energy\":1,\"description\":\"Deal
+    10 Damage\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"damage\",\"target\":\"enemy\",\"args\":{\"value\":10}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":true,\"pool\":\"knight\",\"isUpgraded\":true,\"upgradedCardId\":2},{\"id\":\"e0b8aee6-44f2-471a-9d52-c367613a9af9\",\"cardId\":1,\"name\":\"Attack+\",\"cardType\":\"attack\",\"energy\":1,\"description\":\"Deal
+    10 Damage\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"damage\",\"target\":\"enemy\",\"args\":{\"value\":10}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":true,\"pool\":\"knight\",\"isUpgraded\":true,\"upgradedCardId\":2},{\"id\":\"759e7822-4c2e-48bb-8f0e-5b3dde1fd361\",\"cardId\":3,\"name\":\"Defend+\",\"cardType\":\"defend\",\"energy\":1,\"description\":\"Gain
+    10 Defense\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"defense\",\"target\":\"player\",\"args\":{\"value\":10}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":false,\"pool\":\"knight\",\"isUpgraded\":true,\"upgradedCardId\":4},{\"id\":\"c99ca9b8-9649-4b9a-a602-48758d376687\",\"cardId\":3,\"name\":\"Defend+\",\"cardType\":\"defend\",\"energy\":1,\"description\":\"Gain
+    10 Defense\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"defense\",\"target\":\"player\",\"args\":{\"value\":10}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":false,\"pool\":\"knight\",\"isUpgraded\":true,\"upgradedCardId\":4},{\"id\":\"e89ddc1c-7e4a-4c27-a8d9-512fdab45ce6\",\"cardId\":3,\"name\":\"Defend+\",\"cardType\":\"defend\",\"energy\":1,\"description\":\"Gain
+    10 Defense\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"defense\",\"target\":\"player\",\"args\":{\"value\":10}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":false,\"pool\":\"knight\",\"isUpgraded\":true,\"upgradedCardId\":4},{\"id\":\"fd9d8a9b-81e2-4128-891e-b896b5b2bac7\",\"cardId\":3,\"name\":\"Defend+\",\"cardType\":\"defend\",\"energy\":1,\"description\":\"Gain
+    10 Defense\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"defense\",\"target\":\"player\",\"args\":{\"value\":10}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":false,\"pool\":\"knight\",\"isUpgraded\":true,\"upgradedCardId\":4},{\"id\":\"9291f030-4adb-4726-aaf1-f0e6f6d65d2c\",\"cardId\":5,\"name\":\"Brace+\",\"cardType\":\"defend\",\"energy\":2,\"description\":\"Gain
+    10 Defense and 2 Resolve\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"defense\",\"target\":\"player\",\"args\":{\"value\":10}}],\"statuses\":[{\"name\":\"resolve\",\"attachTo\":\"self\",\"args\":{\"counter\":2}}]},\"keywords\":[],\"showPointer\":false,\"pool\":\"knight\",\"isUpgraded\":true,\"upgradedCardId\":6},{\"id\":\"3fc3c14e-4182-4a0a-b437-4ea72b23789b\",\"cardId\":7,\"name\":\"Counter+\",\"cardType\":\"attack\",\"energy\":1,\"description\":\"Deal
+    6 Damage, Gain 6 Defense\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"damage\",\"target\":\"enemy\",\"args\":{\"value\":6}},{\"effect\":\"defense\",\"target\":\"player\",\"args\":{\"value\":6}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":true,\"pool\":\"knight\",\"isUpgraded\":true,\"upgradedCardId\":8},{\"id\":\"97ee505e-44e8-483b-8f0b-7699fb4d40b6\",\"cardId\":11,\"name\":\"Find
+    Weakness+\",\"cardType\":\"attack\",\"energy\":1,\"description\":\"Deal 1 damage
+    2 time. Double these values this combat.\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"damage\",\"target\":\"enemy\",\"times\":2,\"args\":{\"value\":1,\"doubleValuesWhenPlayed\":true}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":true,\"pool\":\"knight\",\"isUpgraded\":true,\"upgradedCardId\":12}],\"playerCards\":[{\"id\":\"b47e5840-f644-4d74-9c8a-fbabbb85ba33\",\"cardId\":1,\"name\":\"Attack\",\"cardType\":\"attack\",\"energy\":1,\"description\":\"Deal
+    5 Damage\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"damage\",\"target\":\"enemy\",\"args\":{\"value\":5}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":true,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":2},{\"id\":\"788d3d41-ab15-4be2-9679-3581b65a6ff3\",\"cardId\":1,\"name\":\"Attack\",\"cardType\":\"attack\",\"energy\":1,\"description\":\"Deal
+    5 Damage\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"damage\",\"target\":\"enemy\",\"args\":{\"value\":5}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":true,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":2},{\"id\":\"d174148e-6304-400f-bb52-afde389cae21\",\"cardId\":1,\"name\":\"Attack\",\"cardType\":\"attack\",\"energy\":1,\"description\":\"Deal
+    5 Damage\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"damage\",\"target\":\"enemy\",\"args\":{\"value\":5}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":true,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":2},{\"id\":\"e0b8aee6-44f2-471a-9d52-c367613a9af9\",\"cardId\":1,\"name\":\"Attack\",\"cardType\":\"attack\",\"energy\":1,\"description\":\"Deal
+    5 Damage\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"damage\",\"target\":\"enemy\",\"args\":{\"value\":5}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":true,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":2},{\"id\":\"759e7822-4c2e-48bb-8f0e-5b3dde1fd361\",\"cardId\":3,\"name\":\"Defend\",\"cardType\":\"defend\",\"energy\":1,\"description\":\"Gain
+    5 Defense\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"defense\",\"target\":\"player\",\"args\":{\"value\":5}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":false,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":4},{\"id\":\"c99ca9b8-9649-4b9a-a602-48758d376687\",\"cardId\":3,\"name\":\"Defend\",\"cardType\":\"defend\",\"energy\":1,\"description\":\"Gain
+    5 Defense\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"defense\",\"target\":\"player\",\"args\":{\"value\":5}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":false,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":4},{\"id\":\"e89ddc1c-7e4a-4c27-a8d9-512fdab45ce6\",\"cardId\":3,\"name\":\"Defend\",\"cardType\":\"defend\",\"energy\":1,\"description\":\"Gain
+    5 Defense\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"defense\",\"target\":\"player\",\"args\":{\"value\":5}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":false,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":4},{\"id\":\"fd9d8a9b-81e2-4128-891e-b896b5b2bac7\",\"cardId\":3,\"name\":\"Defend\",\"cardType\":\"defend\",\"energy\":1,\"description\":\"Gain
+    5 Defense\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"defense\",\"target\":\"player\",\"args\":{\"value\":5}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":false,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":4},{\"id\":\"9291f030-4adb-4726-aaf1-f0e6f6d65d2c\",\"cardId\":5,\"name\":\"Brace\",\"cardType\":\"defend\",\"energy\":2,\"description\":\"Gain
+    8 Defense and 1 Resolve\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"defense\",\"target\":\"player\",\"args\":{\"value\":8}}],\"statuses\":[{\"name\":\"resolve\",\"attachTo\":\"self\",\"args\":{\"counter\":1}}]},\"keywords\":[],\"showPointer\":false,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":6},{\"id\":\"3fc3c14e-4182-4a0a-b437-4ea72b23789b\",\"cardId\":7,\"name\":\"Counter\",\"cardType\":\"attack\",\"energy\":1,\"description\":\"Deal
+    4 Damage, Gain 4 Defense\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"damage\",\"target\":\"enemy\",\"args\":{\"value\":4}},{\"effect\":\"defense\",\"target\":\"player\",\"args\":{\"value\":4}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":true,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":8},{\"id\":\"97ee505e-44e8-483b-8f0b-7699fb4d40b6\",\"cardId\":11,\"name\":\"Find
+    Weakness\",\"cardType\":\"attack\",\"energy\":1,\"description\":\"Deal 1 damage
+    1 time. Double these values this combat.\",\"isTemporary\":false,\"rarity\":\"starter\",\"properties\":{\"effects\":[{\"effect\":\"damage\",\"target\":\"enemy\",\"times\":1,\"args\":{\"value\":1,\"doubleValuesWhenPlayed\":true}}],\"statuses\":[]},\"keywords\":[],\"showPointer\":true,\"pool\":\"knight\",\"isUpgraded\":false,\"upgradedCardId\":12}],\"upgradeCost\":22,\"destroyCost\":77,\"cards\":[{\"itemId\":0,\"cost\":50,\"isSold\":true,\"type\":\"cards\",\"id\":\"63481f8fa2526a0bbc314252\",\"item\":{\"id\":\"63481f8fa2526a0bbc314259\",\"cardId\":107,\"name\":\"Knock
+    Down\",\"rarity\":\"rare\",\"cardType\":\"attack\",\"pool\":\"knight\",\"energy\":2,\"description\":\"Deal
+    {damage} damage. If your last 2 cards played were attacks, Stun your enemy\"}},{\"itemId\":1,\"cost\":55,\"isSold\":false,\"type\":\"cards\",\"id\":\"63481f8fa2526a0bbc314252\",\"item\":{\"id\":\"63481f8fa2526a0bbc314259\",\"cardId\":107,\"name\":\"Knock
+    Down\",\"rarity\":\"rare\",\"cardType\":\"attack\",\"pool\":\"knight\",\"energy\":2,\"description\":\"Deal
+    {damage} damage. If your last 2 cards played were attacks, Stun your enemy\"}},{\"itemId\":2,\"cost\":60,\"isSold\":true,\"type\":\"cards\",\"id\":\"63481f8fa2526a0bbc314252\",\"item\":{\"id\":\"63481f8fa2526a0bbc314259\",\"cardId\":107,\"name\":\"Knock
+    Down\",\"rarity\":\"rare\",\"cardType\":\"attack\",\"pool\":\"knight\",\"energy\":2,\"description\":\"Deal
+    {damage} damage. If your last 2 cards played were attacks, Stun your enemy\"}},{\"itemId\":3,\"cost\":77,\"isSold\":false,\"type\":\"cards\",\"id\":\"63481f8fa2526a0bbc314252\",\"item\":{\"id\":\"63481f8fa2526a0bbc314259\",\"cardId\":107,\"name\":\"Knock
+    Down\",\"rarity\":\"rare\",\"cardType\":\"attack\",\"pool\":\"knight\",\"energy\":2,\"description\":\"Deal
+    {damage} damage. If your last 2 cards played were attacks, Stun your enemy\"}},{\"itemId\":4,\"cost\":6,\"isSold\":false,\"type\":\"cards\",\"id\":\"63481f8fa2526a0bbc314252\",\"item\":{\"id\":\"63481f8fa2526a0bbc314259\",\"cardId\":107,\"name\":\"Knock
+    Down\",\"rarity\":\"rare\",\"cardType\":\"attack\",\"pool\":\"knight\",\"energy\":2,\"description\":\"Deal
+    {damage} damage. If your last 2 cards played were attacks, Stun your enemy\"}}],\"neutral_cards\":[],\"trinkets\":[{\"itemId\":0,\"cost\":293,\"isSold\":false,\"type\":\"trinkets\",\"id\":\"63481f8fa2526a0bbc31428b\",\"item\":{\"id\":\"63481f8fa2526a0bbc31428b\",\"name\":\"Trinket1\",\"rarity\":\"rare\",\"coinCost\":60}},{\"itemId\":1,\"cost\":282,\"isSold\":true,\"type\":\"trinkets\",\"id\":\"63481f8fa2526a0bbc31428b\",\"item\":{\"id\":\"63481f8fa2526a0bbc31428b\",\"name\":\"Trinket2\",\"rarity\":\"rare\",\"coinCost\":60}},{\"itemId\":2,\"cost\":382,\"isSold\":false,\"type\":\"trinkets\",\"id\":\"63481f8fa2526a0bbc31428b\",\"item\":{\"id\":\"63481f8fa2526a0bbc31428b\",\"name\":\"Trinket3\",\"rarity\":\"rare\",\"coinCost\":60}},{\"itemId\":3,\"cost\":15,\"isSold\":false,\"type\":\"trinkets\",\"id\":\"63481f8fa2526a0bbc31428b\",\"item\":{\"id\":\"63481f8fa2526a0bbc31428b\",\"name\":\"Trinket4\",\"rarity\":\"rare\",\"coinCost\":60}},{\"itemId\":4,\"cost\":6969,\"isSold\":false,\"type\":\"trinkets\",\"id\":\"63481f8fa2526a0bbc31428b\",\"item\":{\"id\":\"63481f8fa2526a0bbc31428b\",\"name\":\"Trinket1\",\"rarity\":\"rare\",\"coinCost\":60}}],\"potions\":[{\"itemId\":0,\"cost\":51,\"isSold\":false,\"type\":\"potions\",\"id\":\"63481f8fa2526a0bbc314298\",\"item\":{\"id\":\"63481f8fa2526a0bbc314298\",\"potionId\":6,\"name\":\"Brain
+    Tonic\",\"rarity\":\"common\",\"description\":\"Draw 3 cards\",\"usableOutsideCombat\":false,\"showPointer\":false}},{\"itemId\":1,\"cost\":55,\"isSold\":false,\"type\":\"potions\",\"id\":\"63481f8fa2526a0bbc314298\",\"item\":{\"id\":\"63481f8fa2526a0bbc314298\",\"potionId\":6,\"name\":\"Brain
+    Tonic\",\"rarity\":\"common\",\"description\":\"Draw 3 cards\",\"usableOutsideCombat\":false,\"showPointer\":false}},{\"itemId\":2,\"cost\":41,\"isSold\":false,\"type\":\"potions\",\"id\":\"63481f8fa2526a0bbc314298\",\"item\":{\"id\":\"63481f8fa2526a0bbc314298\",\"potionId\":6,\"name\":\"Brain
+    Tonic\",\"rarity\":\"common\",\"description\":\"Draw 3 cards\",\"usableOutsideCombat\":false,\"showPointer\":false}},{\"itemId\":3,\"cost\":231,\"isSold\":false,\"type\":\"potions\",\"id\":\"63481f8fa2526a0bbc314298\",\"item\":{\"id\":\"63481f8fa2526a0bbc314298\",\"potionId\":6,\"name\":\"Brain
+    Tonic\",\"rarity\":\"common\",\"description\":\"Draw 3 cards\",\"usableOutsideCombat\":false,\"showPointer\":false}},{\"itemId\":4,\"cost\":89,\"isSold\":true,\"type\":\"potions\",\"id\":\"63481f8fa2526a0bbc314298\",\"item\":{\"id\":\"63481f8fa2526a0bbc314298\",\"potionId\":6,\"name\":\"Brain
+    Tonic\",\"rarity\":\"common\",\"description\":\"Draw 3 cards\",\"usableOutsideCombat\":false,\"showPointer\":false}}]}}}"
+  delayInSeconds: 0.5
   Run: 0
 --- !u!4 &1931311285
 Transform:
@@ -5576,7 +5744,7 @@ PrefabInstance:
     - target: {fileID: 7612459576650126796, guid: cfde224b6c58c614eadd85e7c967e1a0,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -42.224365
+      value: -42.224487
       objectReference: {fileID: 0}
     - target: {fileID: 7612459577923966461, guid: cfde224b6c58c614eadd85e7c967e1a0,
         type: 3}

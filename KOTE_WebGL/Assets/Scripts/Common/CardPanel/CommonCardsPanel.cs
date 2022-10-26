@@ -114,9 +114,11 @@ public class CommonCardsPanel : CardPanelBase
                 var uiCard = newCard.GetComponent<UICardPrefabManager>();
                 uiCard.useBackgroundImage = useBackgroundImage;
                 uiCard.scaleCardOnHover = scaleOnHover;
-                var button = uiCard.GetComponentInChildren<Button>();
+                var button = uiCard.GetComponentInChildren<Button>(true);
                 if (button != null) 
                 {
+                    button.enabled = true;
+                    button.gameObject.SetActive(true);
                     button.onClick.AddListener(() => {
                         OnCardClick.Invoke(uiCard.id, uiCard);
                     });
