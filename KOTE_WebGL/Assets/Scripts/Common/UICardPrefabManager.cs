@@ -26,7 +26,16 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
     private Vector3 originalScale;
     public bool scaleCardOnHover = true;
     public float scaleOnHover = 2;
-    
+
+    [SerializeField]
+    private Sprite cardBackground;
+    [SerializeField]
+    private Sprite cardSelectedBackground;
+
+    [SerializeField]
+    Image cardBackgroundImage;
+
+    public bool useBackgroundImage = false;
 
     private Card card;
 
@@ -56,6 +65,31 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
         cardImage.sprite = cardAssetManager.GetCardImage(card.cardId);
       
         this.card = card;
+
+        Deselect();
+    }
+
+    public void Select() 
+    {
+        if (useBackgroundImage)
+        {
+            cardBackgroundImage.enabled = true;
+            cardBackgroundImage.sprite = cardSelectedBackground;
+        }
+    }
+
+    public void Deselect()
+    {
+        if (useBackgroundImage)
+        {
+            cardBackgroundImage.enabled = true;
+            cardBackgroundImage.sprite = cardBackground;
+        }
+        else 
+        {
+            cardBackgroundImage.sprite = null;
+            cardBackgroundImage.enabled = false;
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)

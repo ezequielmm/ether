@@ -28,7 +28,6 @@ public class Send_Fake_Packet : MonoBehaviour
         var wait = new WaitForSeconds(delayInSeconds);
         foreach (var packet in PacketJson) 
         {
-            SWSM_Parser.ParseJSON(packet);
             if (delayInSeconds == 0)
             {
                 yield return null;
@@ -37,6 +36,7 @@ public class Send_Fake_Packet : MonoBehaviour
             {
                 yield return wait;
             }
+            SWSM_Parser.ParseJSON(packet);
         }
         yield return null;
     }

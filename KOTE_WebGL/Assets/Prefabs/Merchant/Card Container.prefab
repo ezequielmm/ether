@@ -758,6 +758,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2940244009694069695}
     m_Modifications:
+    - target: {fileID: 4441027689207267015, guid: a87c99eb745359a41a0c6a2304341a8c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4963939283311373779, guid: a87c99eb745359a41a0c6a2304341a8c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7797539488213526577, guid: a87c99eb745359a41a0c6a2304341a8c,
         type: 3}
       propertyPath: m_Pivot.x
@@ -883,12 +893,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: UICardPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 7797539488213526578, guid: a87c99eb745359a41a0c6a2304341a8c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8653138555521536643, guid: a87c99eb745359a41a0c6a2304341a8c,
         type: 3}
       propertyPath: scaleOnHover
       value: 0.18
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8653138555521536643, guid: a87c99eb745359a41a0c6a2304341a8c,
+        type: 3}
+      propertyPath: scaleCardOnHover
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 4963939283311373779, guid: a87c99eb745359a41a0c6a2304341a8c, type: 3}
+    - {fileID: 1300479738579995634, guid: a87c99eb745359a41a0c6a2304341a8c, type: 3}
+    - {fileID: 4407243871212581008, guid: a87c99eb745359a41a0c6a2304341a8c, type: 3}
+    - {fileID: 1356588837498646407, guid: a87c99eb745359a41a0c6a2304341a8c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a87c99eb745359a41a0c6a2304341a8c, type: 3}
 --- !u!114 &4146202653900457587 stripped
 MonoBehaviour:

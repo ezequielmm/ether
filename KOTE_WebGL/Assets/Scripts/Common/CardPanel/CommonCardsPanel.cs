@@ -2,15 +2,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class CommonCardsPanel : CardPanelBase
 {
     public GameObject uiCardPrefab;
+    public UnityEvent<string, UICardPrefabManager> OnCardClick = new UnityEvent<string, UICardPrefabManager>();
 
     private Deck playerDeck;
     private Deck drawDeck;
     private Deck discardDeck;
     private Deck exhaustDeck;
+
+    public bool scaleOnHover = true;
+    public bool useBackgroundImage = false;
 
 
     protected override void Start()
@@ -91,6 +97,13 @@ public class CommonCardsPanel : CardPanelBase
         }       
     }
 
+    public void ShowCards(List<Card> cards) 
+    {
+        DestroyCards();
+        commonCardsContainer.SetActive(true);
+        GenerateCards(new Deck(){ cards = cards });
+    }
+
     private void GenerateCards(Deck deck)
     {
         if (deck != null && deck.cards !=null)
@@ -98,9 +111,25 @@ public class CommonCardsPanel : CardPanelBase
             foreach (Card card in deck.cards)
             {
                 GameObject newCard = Instantiate(uiCardPrefab, gridCardsContainer.transform);
-                newCard.GetComponent<UICardPrefabManager>().populate(card);
+                var uiCard = newCard.GetComponent<UICardPrefabManager>();
+                uiCard.useBackgroundImage = useBackgroundImage;
+                uiCard.scaleCardOnHover = scaleOnHover;
+                var button = uiCard.GetComponentInChildren<Button>();
+                if (button != null) 
+                {
+                    button.onClick.AddListener(() => {
+                        OnCardClick.Invoke(uiCard.id, uiCard);
+                    });
+                }
+                uiCard.populate(card);
             }
         }
+    }
+
+    public void HideCards() 
+    {
+        commonCardsContainer.SetActive(false);
+        DestroyCards();
     }
 
 }
