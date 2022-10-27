@@ -87,6 +87,8 @@ public class CardOnHandManager : MonoBehaviour
 
     private TargetProfile targetProfile;
 
+    private CARDS_POSITIONS_TYPES currentPosition;
+
     private void Awake()
     {
         //Screenspace is defined in pixels. The bottom-left of the screen is (0,0); the right-top is (pixelWidth,pixelHeight). The z position is in world units from the camera.
@@ -328,6 +330,8 @@ public class CardOnHandManager : MonoBehaviour
         }
 
         activateCardAfterMove = false;
+        
+        currentPosition = destinationType;
 
         if (pos.magnitude > 0)
         {
@@ -355,7 +359,7 @@ public class CardOnHandManager : MonoBehaviour
                     activateCardAfterMove = true;
                     break;
                 case CARDS_POSITIONS_TYPES.exhaust:
-                    destination = exhaustPileOrthoPosition;
+                    destination = Vector2.zero;
                     break;
             }
         }
@@ -413,7 +417,15 @@ public class CardOnHandManager : MonoBehaviour
             }
             else
             {
-                transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InElastic).OnComplete(HideAndDeactivateCard);
+                if (destinationType == CARDS_POSITIONS_TYPES.exhaust)
+                {
+                    transform.DOScale(Vector3.one * 1.5f, 1f).SetEase(Ease.InOutQuad).OnComplete(HideAndDeactivateCard);
+                    transform.DORotate(Vector3.zero, 1f).SetEase(Ease.InOutQuad);
+                }
+                else
+                {
+                    transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InElastic).OnComplete(HideAndDeactivateCard);
+                }
             }
         }
     }
@@ -476,6 +488,12 @@ public class CardOnHandManager : MonoBehaviour
 
         inTransit = false;
 
+        if (currentPosition == CARDS_POSITIONS_TYPES.exhaust) 
+        {
+            StartCoroutine(ExhaustEffect());
+            return;
+        }
+
         if (discardAfterMove)
         {
             discardAfterMove = false;
@@ -490,6 +508,24 @@ public class CardOnHandManager : MonoBehaviour
         {
             cardActive = true;
         }
+    }
+
+    private IEnumerator ExhaustEffect() 
+    {
+        yield return null;
+
+        // Temp fade animation
+        foreach (var renderer in GetComponentsInChildren<SpriteRenderer>()) 
+        {
+            renderer.DOFade(0, 2);
+        }
+
+        yield return new WaitForSeconds(2);
+
+        // Hide and deactivate card
+        discardAfterMove = false;
+        GameManager.Instance.EVENT_CARD_DISABLED.Invoke(thisCardValues.id);
+        DisableCardContent(false);
     }
 
     private void UpdateCardBasedOnEnergy(int energy)

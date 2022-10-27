@@ -178,7 +178,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_CARD_NO_ENERGY = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CARD_DRAW = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CARD_DISCARD = new UnityEvent();
-    [HideInInspector] public UnityEvent EVENT_CARD_EXHAUST = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_CARD_EXHAUST { get; } = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CARD_SHUFFLE = new UnityEvent();
     [HideInInspector] public UnityEvent<string> EVENT_CARD_CREATE = new UnityEvent<string>();
 
