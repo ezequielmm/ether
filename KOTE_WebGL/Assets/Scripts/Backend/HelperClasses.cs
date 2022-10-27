@@ -247,10 +247,11 @@ public class Card
 public class Trinket 
 {
     public string id;
+    public int trinketId;
     public string name;
     public string rarity;
     public string description;
-    public int coinCost;
+    public Effects effects;
 }
 
 [Serializable]

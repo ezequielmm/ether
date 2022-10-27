@@ -18,7 +18,6 @@ public class TrinketsHolderManager : MonoBehaviour
         // we might need to change this once we get trinkets properly implemented, idk
         trinketsContainer.SetActive(false);
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(UpdateTrinketHolder);
-        DisplayRandomTrinkets();
     }
 
     // when we get a player status update, that tells us to update the trinkets
@@ -31,23 +30,11 @@ public class TrinketsHolderManager : MonoBehaviour
             for (int i = 0; i < activeTrinkets.Count; i++)
             {
                 TrinketItemManager trinket = Instantiate(trinketItem, GridLayout.transform);
-                trinket.Populate("Trinket" + Random.Range(1, 5), "Common");
+                trinket.Populate(activeTrinkets[i]);
             }
             trinketsContainer.SetActive(true);
         }
    
     }
-     
-    // --------- TEMP CODE TO BE DELETED WHEN WE RECEIVE TRINKET DATA -------------------------
-    private void DisplayRandomTrinkets()
-    {
-        for (int i = 0; i < Random.Range(3, 10); i++)
-        {
-            TrinketItemManager trinket = Instantiate(trinketItem, GridLayout.transform);
-            trinket.Populate("Trinket" + Random.Range(1, 5), "Common");
-        }
-        trinketsContainer.SetActive(true);
-    }
-    // ---------- END TEMP CODE ----------------------------------------------------------------
     
 }
