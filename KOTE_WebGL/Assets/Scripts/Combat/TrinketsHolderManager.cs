@@ -8,6 +8,7 @@ public class TrinketsHolderManager : MonoBehaviour
     public GameObject trinketsContainer;
 
     public TrinketItemManager trinketItem;
+    private List<TrinketItemManager> spawnedTrinketList;
 
     // we need this to set the parent of the created trinkets
     [FormerlySerializedAs("HorizontalGroup")] public GameObject GridLayout;
@@ -17,6 +18,7 @@ public class TrinketsHolderManager : MonoBehaviour
     {
         // we might need to change this once we get trinkets properly implemented, idk
         trinketsContainer.SetActive(false);
+        spawnedTrinketList = new List<TrinketItemManager>();
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(UpdateTrinketHolder);
     }
 
@@ -29,8 +31,13 @@ public class TrinketsHolderManager : MonoBehaviour
         {
             for (int i = 0; i < activeTrinkets.Count; i++)
             {
+                if (spawnedTrinketList.Exists(trinket => trinket.Id == activeTrinkets[i].id))
+                {
+                    continue;
+                }
                 TrinketItemManager trinket = Instantiate(trinketItem, GridLayout.transform);
                 trinket.Populate(activeTrinkets[i]);
+                spawnedTrinketList.Add(trinket);
             }
             trinketsContainer.SetActive(true);
         }

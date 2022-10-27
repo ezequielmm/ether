@@ -7,25 +7,21 @@ public class TrinketItemManager : MonoBehaviour
 {
     public Image trinketImage;
     public TooltipAtCursor tooltipController;
-    private string name;
-    private string rarity;
-    private string description;
+
+    public string Id => _trinket.id;
+    private Trinket _trinket;
     private Tooltip _tooltip;
 
     // uses string values for right now, will probably need to change once we parse trinket data
     public void Populate(Trinket trinket)
     {
-        //TODO determine how to populate the trinket data
-        name = trinket.name;
-        rarity = trinket.rarity;
-        description = trinket.description;
+        _trinket = trinket;
         trinketImage.sprite = SpriteAssetManager.Instance.GetTrinketImage(trinket.trinketId);
         _tooltip = new Tooltip()
         {
-            title = name,
-            description = description
+            title = _trinket.name,
+            description = _trinket.description
         };
         tooltipController.SetTooltips(new List<Tooltip> { _tooltip });
-
     }
 }
