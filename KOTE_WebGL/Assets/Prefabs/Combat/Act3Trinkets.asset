@@ -12,4 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2786be413087d984db896b2c5302fe51, type: 3}
   m_Name: Act3Trinkets
   m_EditorClassIdentifier: 
-  entityImages: []
+  entityImages:
+  - {fileID: 21300000, guid: 2178a27ce90e4de408b1a4e92a8e3319, type: 3}
+  - {fileID: 21300000, guid: 37fe4c8202de3244b8df4996feff3223, type: 3}
+  - {fileID: 21300000, guid: 12ef4dab97a7a2d4b906b494f72e60ad, type: 3}
+  - {fileID: 21300000, guid: 876299da05c17fb4f94c1e753e4ee032, type: 3}
+  - {fileID: 21300000, guid: 856aabe8dd258e842a33fe1d287ddb11, type: 3}
+  - {fileID: 21300000, guid: 69136e9bd65c2624c9b333858160eace, type: 3}
+  - {fileID: 21300000, guid: b2bdc1efa0920304b8b2d49a51bbd874, type: 3}
+  - {fileID: 21300000, guid: 6b25c811c4eb7814ea43f43819b437be, type: 3}
+  - {fileID: 21300000, guid: e30260ad1bd6b3b4d8204f509934d5b2, type: 3}

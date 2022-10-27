@@ -12,4 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2786be413087d984db896b2c5302fe51, type: 3}
   m_Name: Act2Trinkets
   m_EditorClassIdentifier: 
-  entityImages: []
+  entityImages:
+  - {fileID: 21300000, guid: 68e19f81d8192384ea28a8f8d459c366, type: 3}
+  - {fileID: 21300000, guid: ee0aa25e3c7fee148b38ac8dc7c09209, type: 3}
+  - {fileID: 21300000, guid: 997b08242ab322045aee235995634151, type: 3}
+  - {fileID: 21300000, guid: ebdcf90464cc8224b94de100aa2e9d6c, type: 3}
+  - {fileID: 21300000, guid: d0180e4063ff8cd4f853483046b7930f, type: 3}
+  - {fileID: 21300000, guid: 6c4ea5d1c2aae9b4686a177bda3fd609, type: 3}
+  - {fileID: 21300000, guid: 2904f399fab5a1d4f9b51afd93d32eeb, type: 3}
+  - {fileID: 21300000, guid: 1379bf1c0b3cbc244976ff49a689c44b, type: 3}
+  - {fileID: 21300000, guid: 8a755817d0aa6d441960465d40346695, type: 3}
+  - {fileID: 21300000, guid: 63363facd1a808e4c8ce569c1ef5fce0, type: 3}
+  - {fileID: 21300000, guid: ce7c7af30d78b9346ac2610cf0e1f8af, type: 3}
+  - {fileID: 21300000, guid: 77a5f1762c74ad84eb97c4bb09d64b30, type: 3}

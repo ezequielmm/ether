@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2786be413087d984db896b2c5302fe51, type: 3}
   m_Name: Act5Trinkets
   m_EditorClassIdentifier: 
-  entityImages: []
+  entityImages:
+  - {fileID: 21300000, guid: 4d552ca2f1cdf3f488dad1dc5e5fac5e, type: 3}
+  - {fileID: 21300000, guid: 1939fdbdd4b69c24cbcf6545a7d19a8f, type: 3}
+  - {fileID: 21300000, guid: 2ea6e147c7414fc44a81df8c4401248a, type: 3}
+  - {fileID: 21300000, guid: 6b926c46fc39eaa42b49955e50cda270, type: 3}
