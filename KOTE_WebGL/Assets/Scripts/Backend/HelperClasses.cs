@@ -221,6 +221,7 @@ public class PlayerData
     public int defense;
     public List<Card> cards;
     public List<PotionData> potions;
+    public List<Trinket> trinkets;
 }
 
 [Serializable]
