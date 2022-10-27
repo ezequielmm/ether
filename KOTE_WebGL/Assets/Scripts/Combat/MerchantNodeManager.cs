@@ -54,6 +54,7 @@ public class MerchantNodeManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_POPULATE_MERCHANT_PANEL.AddListener(PopulateMerchantNode);
         GameManager.Instance.EVENT_TOGGLE_MERCHANT_PANEL.AddListener(ToggleVisibility);
+        GameManager.Instance.EVENT_MERCHANT_PURCHASE_SUCCESS.AddListener(OnPurchaseResponse);
         ClearMerchandise();
         serviceCardPanel.OnCardClick.AddListener(OnCardSelection);
     }
@@ -69,6 +70,16 @@ public class MerchantNodeManager : MonoBehaviour
             // Get merchant data
             GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.MerchantData);
         }
+    }
+
+    private void OnPurchaseResponse(bool success) 
+    {
+        if (success) 
+        {
+            // Run Effects
+        }
+        // Update the merch node
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.MerchantData);
     }
 
     private void PopulateMerchantNode(MerchantData data) 
@@ -199,13 +210,16 @@ public class MerchantNodeManager : MonoBehaviour
     /// </summary>
     public void BuyItem() 
     {
-        // If no item is selected, no purchase is made
-        if (selectedItem == null) 
+        // Item Purchase
+        if (selectedItem != null)
         {
-            return;
+            GameManager.Instance.EVENT_MERCHANT_BUY.Invoke(selectedItem.Type.ToLower(), selectedItem.Id);
         }
-        // Else use selectedItem and send message to backend for a purchase
-        // TODO
+        // Service Purchase
+        else if (selectedCard != null) 
+        {
+            GameManager.Instance.EVENT_MERCHANT_BUY.Invoke(upgradeCard ? "upgrade" : "remove", selectedCard.id);
+        }
     }
 
     bool upgradeCard = false;

@@ -374,6 +374,13 @@ public class CardPlayedData //outgoing data
 }
 
 [Serializable]
+public class PurchaseData //outgoing data
+{
+    public string type;
+    public string targetId;
+}
+
+[Serializable]
 public class PotionUsedData
 {
     public string potionId;

@@ -21,7 +21,7 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
     public Image cardImage;
 
     public CardOnHandManager managerReference;
-    public string id;
+    public string id => card?.id;
 
     private Vector3 originalScale;
     public bool scaleCardOnHover = true;
@@ -46,7 +46,6 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public void populate(Card card)
     {
-        id = card.id;
         string cardEnergy = Mathf.Max(card.energy, 0).ToString();
         if (card.energy < 0)
         {

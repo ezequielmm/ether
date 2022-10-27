@@ -29,6 +29,7 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_CAMP_HEAL = "CampRecoverHealth";
     private const string WS_MESSAGE_USE_POTION = "UsePotion";
     private const string WS_MESSAGE_REMOVE_POTION = "RemovePotion";
+    private const string WS_MESSAGE_MERCHANT_BUY = "MerchantBuy";
     
     /*private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
     private const string WS_MESSAGE_GET_CARD_PILES = "GetCardPiles";
@@ -151,6 +152,7 @@ public class WebSocketManager : MonoBehaviour
         GameManager.Instance.EVENT_CAMP_HEAL.AddListener(OnCampHealSelected);
         GameManager.Instance.EVENT_POTION_USED.AddListener(OnPotionUsed);
         GameManager.Instance.EVENT_POTION_DISCARDED.AddListener(OnPotionDiscarded);
+        GameManager.Instance.EVENT_MERCHANT_BUY.AddListener(OnBuyItem);
 
         GameManager.Instance.EVENT_WS_CONNECTED.Invoke();
     }
@@ -223,6 +225,20 @@ public class WebSocketManager : MonoBehaviour
         rootSocket.Emit(WS_MESSAGE_CARD_PLAYED, data);
 
     }
+    private void OnBuyItem(string type, string id)
+    {
+        PurchaseData purchase = new PurchaseData() 
+        {
+            type = type,
+            targetId = id
+        };
+
+        string data = JsonUtility.ToJson(purchase).ToString();
+        Debug.Log($"[WebSocket Manager] OnBuyItem data: {data}");
+
+        rootSocket.Emit(WS_MESSAGE_MERCHANT_BUY, data);
+    }
+
 
     private void OnPotionUsed(string potionId, string targetId)
     {
