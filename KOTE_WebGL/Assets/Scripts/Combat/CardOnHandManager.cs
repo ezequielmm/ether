@@ -360,6 +360,8 @@ public class CardOnHandManager : MonoBehaviour
                     break;
                 case CARDS_POSITIONS_TYPES.exhaust:
                     destination = Vector2.zero;
+                    destination.z = GameSettings.HAND_CARD_SHOW_UP_Z;
+                    discardAfterMove = true;
                     break;
             }
         }
@@ -419,6 +421,8 @@ public class CardOnHandManager : MonoBehaviour
             {
                 if (destinationType == CARDS_POSITIONS_TYPES.exhaust)
                 {
+                    movePs.Stop();
+                    cardActive = false;
                     transform.DOScale(Vector3.one * 1.5f, 1f).SetEase(Ease.InOutQuad).OnComplete(HideAndDeactivateCard);
                     transform.DORotate(Vector3.zero, 1f).SetEase(Ease.InOutQuad);
                 }
@@ -514,18 +518,30 @@ public class CardOnHandManager : MonoBehaviour
     {
         yield return null;
 
+        // SFX
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Exhaust");
+        float effectLength = GameSettings.EXHAUST_EFFECT_DURATION;
+
         // Temp fade animation
         foreach (var renderer in GetComponentsInChildren<SpriteRenderer>()) 
         {
-            renderer.DOFade(0, 2);
+            renderer.DOFade(0, effectLength);
         }
 
-        yield return new WaitForSeconds(2);
+        foreach (var tmp in GetComponentsInChildren<TextMeshPro>())
+        {
+            tmp.DOFade(0, effectLength);
+        }
+
+        yield return new WaitForSeconds(effectLength);
 
         // Hide and deactivate card
         discardAfterMove = false;
         GameManager.Instance.EVENT_CARD_DISABLED.Invoke(thisCardValues.id);
         DisableCardContent(false);
+
+        // move cart to end position
+        transform.position = discardPileOrthoPosition;
     }
 
     private void UpdateCardBasedOnEnergy(int energy)
