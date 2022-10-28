@@ -242,6 +242,27 @@ public static class TestUtils
         return mapData;
     }
 
+    public static string BuildTestUpgradeableCardData()
+    {
+        SWSM_PlayerDeckData deckData = new SWSM_PlayerDeckData
+        {
+            data = new SWSM_PlayerDeckData.Data
+            {
+                data = new List<Card>()
+            }
+        };
+        SWSM_TestBase testData = new SWSM_TestBase
+        {
+            data = new SWSM_TestBase.SWSM_DataPayload
+            {
+                message_type = "generic_data",
+                action = "UpgradableCards",
+                data = JsonUtility.ToJson(deckData)
+            }
+        };
+        return JsonUtility.ToJson(testData);
+    }
+
     [Serializable]
     public class SWSM_TestBase
     {

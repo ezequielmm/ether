@@ -328,6 +328,15 @@ public class SWSM_ParserTests
         SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("generic_data", "PlayerDeck"));
         Assert.AreEqual(true, eventFired);
     }
+    
+    [Test]
+    public void DoesProcessGenericDataInvokeCampShowUpgradeableCardEvent()
+    {
+        bool eventFired = false;
+        GameManager.Instance.EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS.AddListener((data) => { eventFired = true;});
+        SWSM_Parser.ParseJSON(TestUtils.BuildTestUpgradeableCardData());
+        Assert.AreEqual(true, eventFired);
+    }
 
     [Test]
     public void DoesProcessGenericDataLogInvalidData()
@@ -672,5 +681,7 @@ public class SWSM_ParserTests
         SWSM_Parser.ParseJSON(data);
         LogAssert.Expect(LogType.Error ,"[SWSM Parser] No message_type processed. Data Received: " + data);
     }
+
+    
     
 }
