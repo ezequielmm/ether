@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TrinketItemManager : MonoBehaviour
 {
     public Image trinketImage;
+    public GameObject counter;
+    public TMP_Text counterText;
     public TooltipAtCursor tooltipController;
 
     public string Id => _trinket.id;

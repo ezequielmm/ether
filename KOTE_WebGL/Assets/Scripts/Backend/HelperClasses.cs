@@ -744,6 +744,7 @@ public class RewardItemData
     public bool taken;
     public PotionData potion;
     public Card card;
+    public Trinket trinket;
 }
 
 [Serializable]
