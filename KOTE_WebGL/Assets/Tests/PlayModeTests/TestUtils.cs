@@ -187,7 +187,6 @@ public static class TestUtils
                 step = 0,
                 type = "combat",
                 subType = "combat_standard"
-
             };
             if (i != 0) nodeData.enter = new[] { i - 1 };
             else nodeData.enter = Array.Empty<int>();
@@ -203,41 +202,38 @@ public static class TestUtils
 
     public static SWSM_MapData GenerateTestPortalMap()
     {
-        
         SWSM_MapData mapData = new SWSM_MapData
         {
             data = new ExpeditionMapData
             {
-                data = new []
+                data = new[]
                 {
-                   new NodeDataHelper
-                   {
-                       act = 0,
-                       enter = Array.Empty<int>(),
-                       exits = new []{1},
-                       id = 0,
-                       status = "completed",
-                       step = 0,
-                       subType = "royal_house_a",
-                       type = "royal_house"
-                   },
-                   new NodeDataHelper
-                   {
-                       act = 0,
-                       enter = new []{0},
-                       exits = Array.Empty<int>(),
-                       id = 1,
-                       status = "available",
-                       step = 1,
-                       subType = "portal",
-                       type = "portal"
-                   }
-                   
+                    new NodeDataHelper
+                    {
+                        act = 0,
+                        enter = Array.Empty<int>(),
+                        exits = new[] { 1 },
+                        id = 0,
+                        status = "completed",
+                        step = 0,
+                        subType = "royal_house_a",
+                        type = "royal_house"
+                    },
+                    new NodeDataHelper
+                    {
+                        act = 0,
+                        enter = new[] { 0 },
+                        exits = Array.Empty<int>(),
+                        id = 1,
+                        status = "available",
+                        step = 1,
+                        subType = "portal",
+                        type = "portal"
+                    }
                 }
             }
         };
 
-       
 
         return mapData;
     }
@@ -265,28 +261,9 @@ public static class TestUtils
 
     public static string BuildTestHealData(string messageType, string action, int healAmount)
     {
-        SWSM_HealData healData = new SWSM_HealData
-        {
-            data = new SWSM_HealData.HealData
-            {
-                data = new SWSM_HealData.HealData.HealAmount
-                {
-                    healed = healAmount
-                }
-            }
-        };
-        string healString = JsonUtility.ToJson(healData.data);
-        SWSM_TestBase returnData = new SWSM_TestBase
-        {
-            data = new SWSM_TestBase.SWSM_DataPayload
-            {
-                action = action,
-                data = healString,
-                message_type = messageType
-            }
-        };
-        string returnString = JsonUtility.ToJson(returnData);
-        returnString = returnString.Replace("\\", "");
+        string returnString =
+            "{\"data\":{\"message_type\":\"" + messageType + "\",\"action\":\"" + action + "\",\"data\":{\"healed\":" +
+            healAmount + "}}}";
         return returnString;
     }
 

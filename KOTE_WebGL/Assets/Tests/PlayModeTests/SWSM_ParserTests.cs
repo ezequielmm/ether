@@ -122,6 +122,15 @@ public class SWSM_ParserTests
     }
 
     [Test]
+    public void DoesProcessCampUpdateSendFireCampFinished()
+    {
+        bool eventFired = false;
+        GameManager.Instance.EVENT_CAMP_FINISH.AddListener(() => { eventFired = true;});
+        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("camp_update", "finish_camp"));
+        Assert.True(eventFired);
+    }
+
+    [Test]
     public void DoesProcessCombatUpdateInvokeBeginCombatEvents()
     {
         bool eventFired = false;
