@@ -263,6 +263,33 @@ public static class TestUtils
         return JsonUtility.ToJson(testData);
     }
 
+    public static string BuildTestHealData(string messageType, string action, int healAmount)
+    {
+        SWSM_HealData healData = new SWSM_HealData
+        {
+            data = new SWSM_HealData.HealData
+            {
+                data = new SWSM_HealData.HealData.HealAmount
+                {
+                    healed = healAmount
+                }
+            }
+        };
+        string healString = JsonUtility.ToJson(healData.data);
+        SWSM_TestBase returnData = new SWSM_TestBase
+        {
+            data = new SWSM_TestBase.SWSM_DataPayload
+            {
+                action = action,
+                data = healString,
+                message_type = messageType
+            }
+        };
+        string returnString = JsonUtility.ToJson(returnData);
+        returnString = returnString.Replace("\\", "");
+        return returnString;
+    }
+
     [Serializable]
     public class SWSM_TestBase
     {

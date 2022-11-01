@@ -100,6 +100,28 @@ public class SWSM_ParserTests
     }
 
     [Test]
+    public void DoesProcessCampUpdateInvokeHealEvent()
+    {
+        bool eventFired = false;
+        GameManager.Instance.EVENT_HEAL.AddListener((location, amount) => { eventFired = true;});
+        SWSM_Parser.ParseJSON(TestUtils.BuildTestHealData("camp_update", "heal_amount", 1));
+        Assert.True(eventFired);
+    }
+    
+    [Test]
+    public void DoesProcessCampUpdateSendCorrectHeal()
+    {
+        int healamount = -1;
+        GameManager.Instance.EVENT_HEAL.AddListener((location, amount) => { healamount = amount;});
+        SWSM_Parser.ParseJSON(TestUtils.BuildTestHealData("camp_update", "heal_amount", 1));
+        Assert.AreEqual(1, healamount);
+        SWSM_Parser.ParseJSON(TestUtils.BuildTestHealData("camp_update", "heal_amount", 0));
+        Assert.AreEqual(0, healamount);
+        SWSM_Parser.ParseJSON(TestUtils.BuildTestHealData("camp_update", "heal_amount", 6969));
+        Assert.AreEqual(6969, healamount);
+    }
+
+    [Test]
     public void DoesProcessCombatUpdateInvokeBeginCombatEvents()
     {
         bool eventFired = false;
