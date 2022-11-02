@@ -233,7 +233,7 @@ public class PotionsContainerManagerTests : MonoBehaviour
         GameManager.Instance.EVENT_POTION_SHOW_POTION_MENU.Invoke(dummyPotion);
         bool eventFired = false;
         GameManager.Instance.EVENT_POTION_DISCARDED.AddListener((data) => { eventFired = true; });
-        _potionsContainerManager.drinkButton.onClick.Invoke();
+        _potionsContainerManager.discardButton.onClick.Invoke();
         Assert.True(eventFired);
     }
 
