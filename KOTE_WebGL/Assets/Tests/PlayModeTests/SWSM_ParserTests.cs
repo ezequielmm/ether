@@ -103,16 +103,16 @@ public class SWSM_ParserTests
     public void DoesProcessCampUpdateInvokeHealEvent()
     {
         bool eventFired = false;
-        GameManager.Instance.EVENT_HEAL.AddListener((location, amount) => { eventFired = true;});
+        GameManager.Instance.EVENT_HEAL.AddListener((location, amount) => { eventFired = true; });
         SWSM_Parser.ParseJSON(TestUtils.BuildTestHealData("camp_update", "heal_amount", 1));
         Assert.True(eventFired);
     }
-    
+
     [Test]
     public void DoesProcessCampUpdateSendCorrectHeal()
     {
         int healamount = -1;
-        GameManager.Instance.EVENT_HEAL.AddListener((location, amount) => { healamount = amount;});
+        GameManager.Instance.EVENT_HEAL.AddListener((location, amount) => { healamount = amount; });
         SWSM_Parser.ParseJSON(TestUtils.BuildTestHealData("camp_update", "heal_amount", 1));
         Assert.AreEqual(1, healamount);
         SWSM_Parser.ParseJSON(TestUtils.BuildTestHealData("camp_update", "heal_amount", 0));
@@ -125,7 +125,7 @@ public class SWSM_ParserTests
     public void DoesProcessCampUpdateSendFireCampFinished()
     {
         bool eventFired = false;
-        GameManager.Instance.EVENT_CAMP_FINISH.AddListener(() => { eventFired = true;});
+        GameManager.Instance.EVENT_CAMP_FINISH.AddListener(() => { eventFired = true; });
         SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("camp_update", "finish_camp"));
         Assert.True(eventFired);
     }
@@ -191,13 +191,13 @@ public class SWSM_ParserTests
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(15, firedCount);
     }
-    
+
     [Test]
     public void DoesProcessCombatUpdateLogErrorIfBadAction()
     {
         string data = TestUtils.BuildTestSwsmData("combat_update", "test");
         SWSM_Parser.ParseJSON(data);
-        LogAssert.Expect(LogType.Log ,$"[SWSM Parser][Combat Update] Unknown Action \"test\". Data = {data}");
+        LogAssert.Expect(LogType.Log, $"[SWSM Parser][Combat Update] Unknown Action \"test\". Data = {data}");
     }
 
     [Test]
@@ -319,14 +319,14 @@ public class SWSM_ParserTests
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(3, eventCount);
     }
-    
+
     [Test]
     public void DoesProcessGenericDataInvokeEnemyIntentsErrors()
     {
         //TODO discuss this, as this cannot happen with the code the way it is.
         string data = TestUtils.BuildTestEnemyIntentData("generic_data", "EnemyIntents", 1);
         SWSM_Parser.ParseJSON(data);
-        LogAssert.Expect(LogType.Log ,$"[SWSM Parser][Combat Update] Unknown Action \"test\". Data = {data}");
+        LogAssert.Expect(LogType.Log, $"[SWSM Parser][Combat Update] Unknown Action \"test\". Data = {data}");
     }
 
     [Test]
@@ -359,12 +359,12 @@ public class SWSM_ParserTests
         SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("generic_data", "PlayerDeck"));
         Assert.AreEqual(true, eventFired);
     }
-    
+
     [Test]
     public void DoesProcessGenericDataInvokeCampShowUpgradeableCardEvent()
     {
         bool eventFired = false;
-        GameManager.Instance.EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS.AddListener((data) => { eventFired = true;});
+        GameManager.Instance.EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS.AddListener((data) => { eventFired = true; });
         SWSM_Parser.ParseJSON(TestUtils.BuildTestUpgradeableCardData());
         Assert.AreEqual(true, eventFired);
     }
@@ -640,16 +640,13 @@ public class SWSM_ParserTests
         Assert.AreEqual("Loader", sceneName);
         //TODO Figure out how to check that the exepdition gets loaded
     }
-    
+
     [Test]
     public void DoesEndCombatMessageInvokeProcessEndCombatEnemiesDefeatedEvents()
     {
         bool statusChangeEventFired = false;
         bool rewardPanelEventFired = false;
-        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.AddListener((data) =>
-        {
-            statusChangeEventFired = true;
-        });
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.AddListener((data) => { statusChangeEventFired = true; });
         GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.AddListener((data) => { rewardPanelEventFired = true; });
         SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("end_combat", "enemies_defeated"));
         Assert.AreEqual(true, statusChangeEventFired);
@@ -710,9 +707,57 @@ public class SWSM_ParserTests
     {
         string data = TestUtils.BuildTestSwsmData("failure", "nope");
         SWSM_Parser.ParseJSON(data);
-        LogAssert.Expect(LogType.Error ,"[SWSM Parser] No message_type processed. Data Received: " + data);
+        LogAssert.Expect(LogType.Error, "[SWSM Parser] No message_type processed. Data Received: " + data);
     }
 
-    
-    
+    [Test]
+    public void DoesProcessMerchantDataFirePopulateMerchantPanel()
+    {
+        bool eventFired = false;
+        GameManager.Instance.EVENT_POPULATE_MERCHANT_PANEL.AddListener((data) => { eventFired = true; });
+        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("generic_data", "MerchantData"));
+        Assert.True(eventFired);
+    }
+
+    [Test]
+    public void DoesProcessCardUpgradeFireUpgradeablePairEvent()
+    {
+        bool eventFired = false;
+        GameManager.Instance.EVENT_UPGRADE_SHOW_UPGRADE_PAIR.AddListener((data) => { eventFired = true; });
+        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("card_upgrade", "upgradeable_pair"));
+        Assert.True(eventFired);
+    }
+
+    [Test]
+    public void DoesProcessCardUpgradeFireConfirmUpgradeEvent()
+    {
+        bool eventFired = false;
+        GameManager.Instance.EVENT_UPGRADE_CONFIRMED.AddListener((data) => { eventFired = true; });
+        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("card_upgrade", "confirm_upgrade"));
+        Assert.True(eventFired);
+    }
+
+    [Test]
+    public void DoesProcessAddPotionFirePotionWarningEvent()
+    {
+        bool eventFired = false;
+        GameManager.Instance.EVENT_POTION_WARNING.AddListener((arg0 => { eventFired = true; }));
+        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("add_potion", "potion_not_found_in_database"));
+        Assert.True(eventFired);
+        eventFired = false;
+        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("add_potion", "potion_not_in_inventory"));
+        Assert.True(eventFired);
+        eventFired = false;
+        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("add_potion", "potion_max_count_reached"));
+        Assert.True(eventFired);
+    }
+
+    [Test]
+    public void DoesProcessUsePotionFirePotionWarningEvent()
+    {
+        bool eventFired = false;
+        GameManager.Instance.EVENT_POTION_WARNING.AddListener((arg0 => { eventFired = true; }));
+        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("use_potion", "potion_not_usable_outside_combat"));
+        Assert.True(eventFired);
+    }
 }
