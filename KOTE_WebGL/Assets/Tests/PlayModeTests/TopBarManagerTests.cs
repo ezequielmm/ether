@@ -247,7 +247,8 @@ public class TopBarManagerTests
                     playerName = "Boyo",
                     hpMax = 80,
                     hpCurrent = 12,
-                    gold = 75
+                    gold = 75,
+                    potions = new List<PotionData>()
                 }
             }
         });

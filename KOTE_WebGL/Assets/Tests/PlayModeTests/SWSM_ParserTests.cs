@@ -720,11 +720,11 @@ public class SWSM_ParserTests
     }
 
     [Test]
-    public void DoesProcessCardUpgradeFireUpgradeablePairEvent()
+    public void DoesProcessCardUpgradeFireUpgradablePairEvent()
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_UPGRADE_SHOW_UPGRADE_PAIR.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("card_upgrade", "upgradeable_pair"));
+        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("card_upgrade", "upgradable_pair"));
         Assert.True(eventFired);
     }
 
