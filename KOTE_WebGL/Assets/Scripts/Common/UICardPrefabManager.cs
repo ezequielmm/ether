@@ -49,7 +49,7 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
         descriptionTF.SetText(card.description);
 
         CardAssetManager cardAssetManager = CardAssetManager.Instance;
-        gemSprite.sprite = cardAssetManager.GetGem(card.cardType);
+        gemSprite.sprite = cardAssetManager.GetGem(card.cardType, card.isUpgraded);
         // check to see if it's a curse or status card, because they have unique frames within the neutral pool
         if (card.cardType == "curse" || card.cardType == "status")
         {
