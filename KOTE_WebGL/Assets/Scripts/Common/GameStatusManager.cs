@@ -10,12 +10,12 @@ public class GameStatusManager : MonoBehaviour
 
     private PlayerStateData playerStateData;
 
-    bool gameAboutToEnd;
+    GameStatuses preppingStatus;
 
 
     void Start()
     {
-        gameAboutToEnd = false;
+        preppingStatus = GameStatuses.None;
         //TODO: for the moment we always start as map but this could change
         OnChangeGameStatus(GameStatuses.Map);
 
@@ -42,37 +42,50 @@ public class GameStatusManager : MonoBehaviour
 
     public void OnPrepareStatusChange(GameStatuses newGameStatus)
     {
-        switch (newGameStatus)
-        {
-            case GameStatuses.Combat: break;
-            case GameStatuses.Map: break;
-            case GameStatuses.Encounter: break;
-            case GameStatuses.Merchant: break;
-            case GameStatuses.RoyalHouse: break;
-            case GameStatuses.GameOver:
-                gameAboutToEnd = true;
-                break;
-        }
+        preppingStatus = newGameStatus;
     }
 
-    public void OnEventConfirmation(string eventName) 
+    public void OnEventConfirmation(Type enumType, string eventName)
     {
-        switch (eventName) 
+        if (enumType == typeof(PlayerState))
         {
-            case nameof(PlayerState.dying):
-                if (gameAboutToEnd)
-                {
-                    // Prevent Game-Level Interaction (UI Only)
-                    GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(true);
-                }
-                break;
-            case nameof(PlayerState.dead):
-                if (gameAboutToEnd)
-                {
-                    // End game when last player dies
-                    GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
-                }
-                break;
+            switch (eventName)
+            {
+                case nameof(PlayerState.dying):
+                    if (preppingStatus == GameStatuses.GameOver)
+                    {
+                        // Prevent Game-Level Interaction (UI Only)
+                        GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(true);
+                    }
+                    break;
+                case nameof(PlayerState.dead):
+                    if (preppingStatus == GameStatuses.GameOver)
+                    {
+                        // End game when last player dies
+                        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
+                    }
+                    break;
+            }
+        }
+        else if (enumType == typeof(EnemyState))
+        {
+            switch (eventName)
+            {
+                case nameof(EnemyState.dying):
+                    if (preppingStatus == GameStatuses.RewardsPanel)
+                    {
+                        // Prevent Game-Level Interaction (UI Only)
+                        GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(true);
+                    }
+                    break;
+                case nameof(EnemyState.dead):
+                    if (preppingStatus == GameStatuses.RewardsPanel)
+                    {
+                        // Reward panel when enemy dies
+                        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
+                    }
+                    break;
+            }
         }
     }
 
@@ -101,10 +114,11 @@ public class GameStatusManager : MonoBehaviour
                 InitializeCampNode();
                 break;
             case GameStatuses.RoyalHouse: break;
-            case GameStatuses.GameOver:
-                gameAboutToEnd = false;
-                break;
+            case GameStatuses.GameOver: break;
+            case GameStatuses.RewardsPanel: break;
         }
+
+        preppingStatus = GameStatuses.None;
     }
 
     private void InitializeMapMode()
@@ -152,7 +166,7 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
         GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
-        GameManager.Instance.EVENT_SHOW_MERCHANT_PANEL.Invoke();
+        GameManager.Instance.EVENT_TOGGLE_MERCHANT_PANEL.Invoke(true);
     }
 
     private void InitializeCampNode()
@@ -160,7 +174,7 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
         GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
-        GameManager.Instance.EVENT_SHOW_CAMP_PANEL.Invoke();
+        GameManager.Instance.EVENT_CAMP_SHOW_PANEL.Invoke();
     }
 
     private void InitializeRoyaHouseNode()

@@ -24,6 +24,7 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
     public string id;
 
     private Vector3 originalScale;
+    public bool scaleCardOnHover = true;
     public float scaleOnHover = 2;
     
 
@@ -37,7 +38,12 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
     public void populate(Card card)
     {
         id = card.id;
-        energyTF.SetText(card.energy.ToString());
+        string cardEnergy = Mathf.Max(card.energy, 0).ToString();
+        if (card.energy < 0)
+        {
+            cardEnergy = "X";
+        }
+        energyTF.SetText(cardEnergy);
         nameTF.SetText(card.name);
         rarityTF.SetText(card.rarity);
         descriptionTF.SetText(card.description);
@@ -54,12 +60,14 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (scaleCardOnHover == false) return;
         DOTween.Kill(this.transform);
         transform.DOScale(scaleOnHover, 0.3f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (scaleCardOnHover == false) return;
         DOTween.Kill(this.transform);
         transform.DOScale(originalScale, 0.3f);
     }

@@ -5,10 +5,8 @@ using UnityEngine.UI;
 
 public class HealthBarController : MonoBehaviour
 {
-    [SerializeField]
-    private List<IconMap> healthBarBg;
-    [SerializeField]
-    private List<IconMap> healthBarFill;
+    [SerializeField] private Sprite HealthBarFill;
+    [SerializeField] private Sprite HealthBarBg;
     [SerializeField]
     private List<TransformMap> transformMap;
 
@@ -42,10 +40,10 @@ public class HealthBarController : MonoBehaviour
         SetSize(Size.medium);
     }
 
-    public void SetSize(Size newSize) 
+    public void SetSize(Size newSize)
     {
-        background.sprite = getImageForSize(healthBarBg, newSize);
-        fill.sprite = getImageForSize(healthBarFill, newSize);
+        background.sprite = HealthBarBg;
+        fill.sprite = HealthBarFill;
         healthBar.sizeDelta = new Vector2(Utils.GetSceneSize(newSize) + widthAdjustment, healthBar.sizeDelta.y);
 
         var otherTransform = getTransformForSize(transformMap, newSize);

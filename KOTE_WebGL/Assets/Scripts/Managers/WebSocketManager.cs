@@ -24,6 +24,12 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_CARD_PLAYED = "CardPlayed";
     private const string WS_MESSAGE_END_TURN = "EndTurn";
     private const string WS_MESSAGE_REWARD_SELECTED = "RewardSelected";
+    private const string WS_MESSAGE_GET_CARD_UPGRADE_PAIR = "CardUpgradeSelected";
+    private const string WS_MESSAGE_UPGRADE_CARD = "UpgradeCard";
+    private const string WS_MESSAGE_CAMP_HEAL = "CampRecoverHealth";
+    private const string WS_MESSAGE_USE_POTION = "UsePotion";
+    private const string WS_MESSAGE_REMOVE_POTION = "RemovePotion";
+    
     /*private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
     private const string WS_MESSAGE_GET_CARD_PILES = "GetCardPiles";
     private const string WS_MESSAGE_GET_PLAYER_HEALTH = "GetPlayerHealth";
@@ -35,10 +41,7 @@ public class WebSocketManager : MonoBehaviour
     private void Awake()
     {
         // Turns off non-exception logging when outside of development enviroment
-        // Also seen in SWSM_Parser.cs
-        #if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
-            Debug.unityLogger.filterLogType = LogType.Exception;
-        #endif
+        DebugManager.DisableOnBuild();
     }
 
     void Start()
@@ -143,6 +146,11 @@ public class WebSocketManager : MonoBehaviour
         GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener(OnGenericWSDataRequest);
         GameManager.Instance.EVENT_REWARD_SELECTED.AddListener(OnRewardSelected);
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.AddListener(OnContinueExpedition);
+        GameManager.Instance.EVENT_CAMP_GET_UPGRADE_PAIR.AddListener(OnShowUpgradePair);
+        GameManager.Instance.EVENT_CAMP_UPGRADE_CARD.AddListener(OnCardUpgradeConfirmed);
+        GameManager.Instance.EVENT_CAMP_HEAL.AddListener(OnCampHealSelected);
+        GameManager.Instance.EVENT_POTION_USED.AddListener(OnPotionUsed);
+        GameManager.Instance.EVENT_POTION_DISCARDED.AddListener(OnPotionDiscarded);
 
         GameManager.Instance.EVENT_WS_CONNECTED.Invoke();
     }
@@ -202,13 +210,6 @@ public class WebSocketManager : MonoBehaviour
         SWSM_Parser.ParseJSON(data);
     }
 
-    void OnPlayerState(string data)
-    {
-        PlayerStateData playerState = JsonUtility.FromJson<PlayerStateData>(data); //TODO: move this to websocker manager
-        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.Invoke(playerState);
-        Debug.Log("Data from OnPlayerState: " + playerState);
-    }
-
     private void OnCardPlayed(string cardId, string id)//int enemyId)//TODO: enemyId will an array 
     {
         CardPlayedData cardData = new CardPlayedData();
@@ -223,9 +224,46 @@ public class WebSocketManager : MonoBehaviour
 
     }
 
+    private void OnPotionUsed(string potionId, string targetId)
+    {
+        PotionUsedData potionData = new PotionUsedData
+        {
+            potionId = potionId,
+            targetId = targetId
+        };
+        string data = JsonUtility.ToJson(potionData);
+        Debug.Log("[WebSocket Manager] OnPotionUsed data: " + data);
+
+        rootSocket.Emit(WS_MESSAGE_USE_POTION, data);
+    }
+
+    private void OnPotionDiscarded(string potionId)
+    {
+        Debug.Log("[WebSocket Manager] OnDiscardPotion id: " + potionId);
+        rootSocket.Emit(WS_MESSAGE_REMOVE_POTION, potionId);
+    }
+
     void OnRewardSelected(string rewardId)
     {
         rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_REWARD_SELECTED, rewardId);
+    }
+
+    private void OnCampHealSelected()
+    {
+        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_CAMP_HEAL);
+    }
+
+    private void OnShowUpgradePair(string cardId)
+    {
+        Debug.Log($"Sending message {WS_MESSAGE_GET_CARD_UPGRADE_PAIR} with card id {cardId}");
+        //customNamespace.Emit("NodeSelected",nodeId);
+
+        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_GET_CARD_UPGRADE_PAIR, cardId);
+    }
+
+    private void OnCardUpgradeConfirmed(string cardId)
+    {
+        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_UPGRADE_CARD, cardId);
     }
     
     private void OnEndTurn()

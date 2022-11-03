@@ -118,7 +118,7 @@ public class HandManager : MonoBehaviour
             Invoke("OnDrawCards", 0.2f);
             return;
         }
-        Debug.Log($"[HandManager] draw.count: {cardPilesData.data.draw.Count} | hand.count: {cardPilesData.data.hand.Count} | discard.count: {cardPilesData.data.discard.Count} | exhaust.count: {cardPilesData.data.exhaust.Count}");
+        Debug.Log($"[HandManager] draw.count: {cardPilesData.data.draw.Count} | hand.count: {cardPilesData.data.hand.Count} | discard.count: {cardPilesData.data.discard.Count} | exhaust.count: {cardPilesData.data.exhausted.Count}");
         
         //Generate cards hand
         handDeck = new Deck();
@@ -131,7 +131,7 @@ public class HandManager : MonoBehaviour
         discardDeck.cards = cardPilesData.data.discard;
 
         exhaustDeck = new Deck();
-        exhaustDeck.cards = cardPilesData.data.exhaust;
+        exhaustDeck.cards = cardPilesData.data.exhausted;
 
         Vector3 spawnPosition = GameSettings.HAND_CARDS_GENERATION_POINT;
 
@@ -196,7 +196,6 @@ public class HandManager : MonoBehaviour
     /// <param name="move">True to do a draw animation to hand.</param>
     private IEnumerator RelocateCards(bool move = false)
     {
-
         float counter = 0;
         float depth = GameSettings.HAND_CARD_SPRITE_Z;
         float halfWidth = handDeck.cards.Count * GameSettings.HAND_CARD_GAP / 2;
@@ -267,14 +266,15 @@ public class HandManager : MonoBehaviour
                 Vector3 rot = card.transform.eulerAngles;
                 rot.z = angle / -2;
                 card.transform.eulerAngles = rot;
-                card.GetComponent<CardOnHandManager>().targetRotation = rot;
-                card.GetComponent<CardOnHandManager>().targetPosition = pos;
+                var cardManager = card.GetComponent<CardOnHandManager>();
+                cardManager.targetRotation = rot;
+                cardManager.targetPosition = pos;
                 card.transform.localScale = Vector3.one;
 
                 counter++;
                 depth -= GameSettings.HAND_CARD_SPRITE_Z_INTERVAL;
 
-                var manager = card.GetComponent<CardOnHandManager>();
+                var manager = cardManager;
                 if (move)
                 {
                     manager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, true, pos, delay);
@@ -282,7 +282,7 @@ public class HandManager : MonoBehaviour
                 }
                 else
                 {
-                    card.transform.DOMove(pos,0.3f);
+                    cardManager.TryResetPosition();
                 }
             }    
         }
@@ -304,6 +304,6 @@ public class HandManager : MonoBehaviour
         discardDeck.cards = cardPilesData.data.discard;
 
         exhaustDeck = new Deck();
-        exhaustDeck.cards = cardPilesData.data.exhaust;
+        exhaustDeck.cards = cardPilesData.data.exhausted;
     }   
 }

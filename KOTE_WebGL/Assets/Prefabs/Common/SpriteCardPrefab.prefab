@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2382930963786774372}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.82, z: 0}
+  m_LocalPosition: {x: 0.068, y: 1.82, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_Children: []
   m_Father: {fileID: 3961196674496151750}
@@ -116,7 +116,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1.4}
+  m_AnchoredPosition: {x: 0.076, y: 1.4}
   m_SizeDelta: {x: 1.5, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &4969058278952348574
@@ -190,8 +190,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4279047202
+  m_fontColor: {r: 0.13207549, g: 0.0769669, b: 0.0517088, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -244,7 +244,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0.21187747, z: 0, w: 0.23904097}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -278,7 +278,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3104004772718087294}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.056, y: 1.337, z: -0.041}
+  m_LocalPosition: {x: 0.109, y: 1.297, z: -0.041}
   m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_Children: []
   m_Father: {fileID: 3961196674496151750}
@@ -369,7 +369,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.151, y: 1.633}
+  m_AnchoredPosition: {x: -1.097, y: 1.587}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &3851506172003437835
@@ -443,8 +443,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5369,102 +5369,7 @@ MonoBehaviour:
   card_can_be_played: 1
   targetPosition: {x: 0, y: 0, z: 0}
   targetRotation: {x: 0, y: 0, z: 0}
-  cardActive: 0
-  Gems:
-  - type: attack
-    gem: {fileID: 21300000, guid: 8e28d90fcfe29c440b2b5cc0e693c1ea, type: 3}
-  - type: attackUpgraded
-    gem: {fileID: 21300000, guid: 17b160ae112abbc4bafbdea643792c79, type: 3}
-  - type: curse
-    gem: {fileID: 21300000, guid: a91f4a01e80994f48a2557aaed77a5e1, type: 3}
-  - type: curseUpgraded
-    gem: {fileID: 21300000, guid: 046c009d0a376ca4aa267aef43e38d55, type: 3}
-  - type: defend
-    gem: {fileID: 21300000, guid: d8df9f0894829bb4091a36e0096f01f5, type: 3}
-  - type: defenseUpgraded
-    gem: {fileID: 21300000, guid: e53bc005833ea31479ee9810e1788066, type: 3}
-  - type: power
-    gem: {fileID: 21300000, guid: 38f885db2055644489d47841d6d19d42, type: 3}
-  - type: powerUpgraded
-    gem: {fileID: 21300000, guid: 6a1b1d8a52ca18c459b9fe6a93798f1d, type: 3}
-  - type: skill
-    gem: {fileID: 21300000, guid: 36037feff0900d44cb879c4d877523e8, type: 3}
-  - type: skillUpgraded
-    gem: {fileID: 21300000, guid: 21974add9c6582743b346de7dca6351a, type: 3}
-  - type: status
-    gem: {fileID: 21300000, guid: b33ff4b61c05ab0409323cbebfe68d84, type: 3}
-  - type: statusUpgraded
-    gem: {fileID: 21300000, guid: 6f964a85ba65f1d459ff72f3fe64ab19, type: 3}
-  banners:
-  - rarity: starter
-    banner: {fileID: 21300000, guid: 3569de8c378700941aa0308eef558264, type: 3}
-  - rarity: common
-    banner: {fileID: 21300000, guid: bce8ad9b5aad89f46816da35e1e65bbb, type: 3}
-  - rarity: uncommon
-    banner: {fileID: 21300000, guid: 100a1dc41d5ba0c448760ef5d0b78d25, type: 3}
-  - rarity: rare
-    banner: {fileID: 21300000, guid: 628ab8e150abdc1449a86d09dd6352a5, type: 3}
-  - rarity: legend
-    banner: {fileID: 21300000, guid: b62425a39eff23948b434dcb48c580de, type: 3}
-  - rarity: special
-    banner: {fileID: 21300000, guid: 2623ba0d744ff3f47b624b536cbe36d6, type: 3}
-  frames:
-  - pool: curse
-    frame: {fileID: 21300000, guid: f383a8671927f53499fad44c44896ac0, type: 3}
-  - pool: knight
-    frame: {fileID: 21300000, guid: 3422201207651b44499a7081e06e99ca, type: 3}
-  - pool: knightNFT
-    frame: {fileID: 21300000, guid: a197703513c209146aca89bd1c27dbb7, type: 3}
-  - pool: neutral
-    frame: {fileID: 21300000, guid: 95635fcc514685b49b9dbc9df8c2dc3b, type: 3}
-  - pool: status
-    frame: {fileID: 21300000, guid: 2468302d43541e94c92dc37508a5ba26, type: 3}
-  cardImages:
-  - {fileID: 21300000, guid: c14fb330c6215ff4aa0378fdf06c3adc, type: 3}
-  - {fileID: 21300000, guid: f7e02324243fdd948826097af695638e, type: 3}
-  - {fileID: 21300000, guid: 65373ac347505224aabb3fb641c49979, type: 3}
-  - {fileID: 21300000, guid: 7da2523b26da948499542031fcb6b4db, type: 3}
-  - {fileID: 21300000, guid: 128c5ebcd471ee44c8a2ff8a34dc461d, type: 3}
-  - {fileID: 21300000, guid: d34478b68abb5c6459f53c1cc0c3b8c5, type: 3}
-  - {fileID: 21300000, guid: 16af5fd581d6b364dac4925ca31abce2, type: 3}
-  - {fileID: 21300000, guid: 312f1682a41642e4e899540c00a094a4, type: 3}
-  - {fileID: 21300000, guid: abcadf033d49fc7419d341943672528d, type: 3}
-  - {fileID: 21300000, guid: f9446ea623ff9904b9ced583b0c09f1b, type: 3}
-  - {fileID: 21300000, guid: d33d79493c14b9c4abde970347ed280b, type: 3}
-  - {fileID: 21300000, guid: 144486b59e705004cbbd1d8b5ba6d0c7, type: 3}
-  - {fileID: 21300000, guid: d76c6c5c334447c40b2a23ea7c96fb5b, type: 3}
-  - {fileID: 21300000, guid: dc3d4b0a3def9ad418007a8894e7aae8, type: 3}
-  - {fileID: 21300000, guid: e8cd096ca42ad2c4aaccdfa63d173ae1, type: 3}
-  - {fileID: 21300000, guid: 8f0be8fb1800dfd4294b358b08e30b64, type: 3}
-  - {fileID: 21300000, guid: b1478c7d6a8064b4bbd15dc080a4dfb7, type: 3}
-  - {fileID: 21300000, guid: 155a2108c367a7f4d8630612c15f2c20, type: 3}
-  - {fileID: 21300000, guid: cee48c2357125924eaf20e921fe5089c, type: 3}
-  - {fileID: 21300000, guid: 13096ffa27094ed49853aa52f0852ee1, type: 3}
-  - {fileID: 21300000, guid: 62653d67c7b11b148b9d3ad4cdccbe24, type: 3}
-  - {fileID: 21300000, guid: 42ec895ca768d9947804c9d6b8ea8095, type: 3}
-  - {fileID: 21300000, guid: 0b24c167a8d995347bc047f90feb918b, type: 3}
-  - {fileID: 21300000, guid: 727d0ba33f0601248a9ad1b8448cdb48, type: 3}
-  - {fileID: 21300000, guid: 9920d57f06c875b4f9e59f207ec47506, type: 3}
-  - {fileID: 21300000, guid: 418c3a4870d635242a7e7a32366bbf29, type: 3}
-  - {fileID: 21300000, guid: 428c8acdfdc095d4c9edd9c418c7c1ff, type: 3}
-  - {fileID: 21300000, guid: 02ee4f2f87cdd9844adad0ceaa0ee903, type: 3}
-  - {fileID: 21300000, guid: 1efa33064d3d7624f83fb2a20524a3f5, type: 3}
-  - {fileID: 21300000, guid: 6b7fc93dc88bb7a4eafb6b30418c57c8, type: 3}
-  - {fileID: 21300000, guid: 9151f0d5deacc0744bac818fb4d098ed, type: 3}
-  - {fileID: 21300000, guid: a56aab9d71c1ac84dbc6aeac96e4004f, type: 3}
-  - {fileID: 21300000, guid: 8c0f67f04a61b3f47988e64d224518ce, type: 3}
-  - {fileID: 21300000, guid: 8388228ca6c809c45852ac7013a21e0a, type: 3}
-  - {fileID: 21300000, guid: c7883e914b90cea4fad576164be62052, type: 3}
-  - {fileID: 21300000, guid: 0484fa796ad27b547b4db56717988dc0, type: 3}
-  - {fileID: 21300000, guid: e58af6555c892f847ae0c9a0bdbb141e, type: 3}
-  - {fileID: 21300000, guid: 2e4c49aafbdbd5d42b9cd1b50ccad581, type: 3}
-  - {fileID: 21300000, guid: b5b57261114778244a0172d364efbc7e, type: 3}
-  - {fileID: 21300000, guid: aa53a50192d05c540a213c0aca79e217, type: 3}
-  - {fileID: 21300000, guid: 0f68feb61b8a7bc43b25a91c8d21b305, type: 3}
-  - {fileID: 21300000, guid: 6468ea8144a0c6c498d186d8bb37cf8c, type: 3}
-  - {fileID: 21300000, guid: 48f78182fc7109c4d94e1fe15f05659d, type: 3}
-  - {fileID: 21300000, guid: c0ada8da4f8823a448ef0489a338efc1, type: 3}
-  - {fileID: 21300000, guid: d799a935ed6aad948bd7b26cc2d80792, type: 3}
+  _cardActive: 0
   auraPS: {fileID: 2455367811583604567}
   greenOutlineMaterial: {fileID: 2100000, guid: 2336fb1f44d8f764980e28d82722fd08,
     type: 2}
@@ -5472,6 +5377,7 @@ MonoBehaviour:
   greenColor: {r: 0, g: 0.9150943, b: 0.04538705, a: 1}
   blueColor: {r: 0.28773582, g: 0.44477275, b: 1, a: 1}
   redColor: {r: 1, g: 0, b: 0, a: 1}
+  tooltips: []
   movePs: {fileID: 8438878561791075559}
   thisCardValues:
     name: 
@@ -5486,6 +5392,7 @@ MonoBehaviour:
     showPointer: 0
     properties:
       effects: []
+      statuses: []
     keywords: []
 --- !u!61 &1590421481447034592
 BoxCollider2D:
@@ -5573,7 +5480,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8562534667755127784
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6040,7 +5947,7 @@ SpriteRenderer:
   m_SortingLayerID: 499267637
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 95635fcc514685b49b9dbc9df8c2dc3b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3422201207651b44499a7081e06e99ca, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -6076,7 +5983,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8722318022027289965}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.364, z: 0.045}
+  m_LocalPosition: {x: 0.06, y: 0.364, z: 0.045}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 3961196674496151750}
@@ -6167,8 +6074,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0071, y: -1.2}
-  m_SizeDelta: {x: 2.3518, y: 0.8112}
+  m_AnchoredPosition: {x: 0.10500963, y: -1.1944}
+  m_SizeDelta: {x: 2.3518, y: 0.8262}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &4700769906471511520
 MeshRenderer:
@@ -6231,7 +6138,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Name '
+  m_text: Description
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 52a8a1070269d3b469361883cb5bf002, type: 2}
   m_sharedMaterial: {fileID: -4261350923238123514, guid: 52a8a1070269d3b469361883cb5bf002,
@@ -6262,9 +6169,9 @@ MonoBehaviour:
   m_fontSize: 2
   m_fontSizeBase: 2
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 1
+  m_fontSizeMax: 2
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
@@ -6295,7 +6202,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -0.056893587, y: -0.113787115, z: -0.028447032, w: -0.10667539}
+  m_margin: {x: -0.056893587, y: -0.124652386, z: 0.047618866, w: 0.018277884}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

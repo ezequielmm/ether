@@ -33,11 +33,13 @@ public class TopBarManager : MonoBehaviour
         //SetHealth(Random.Range(30, 81));
 
         GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
-        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnCombatStart);
+        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusupdate);
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.AddListener(OnToggleMapIcon);
         GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.AddListener(UpdateStageText);
         GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnPlayerAttacked);
 
+        // this has to be set here, as it is not visible in the inspector
+        nameText.maxVisibleLines = 2;
     }
 
     private void OnToggleMapIcon(bool arg0)
@@ -48,7 +50,7 @@ public class TopBarManager : MonoBehaviour
 
     private void UpdateStageText(int act, int step)
     {
-        stageText.SetText("Stage " + act + "-" + (step + 1));
+        stageText.SetText("STAGE " + act + "-" + (step + 1));
     }
 
     public void SetTextValues(string nameText, string classText, int health, int coins)
@@ -93,7 +95,7 @@ public class TopBarManager : MonoBehaviour
         }
     }
     
-    public void OnCombatStart(PlayerStateData playerState) 
+    public void OnPlayerStatusupdate(PlayerStateData playerState) 
     {        
         SetNameText(playerState.data.playerState.playerName);
         maxHealth = playerState.data.playerState.hpMax;

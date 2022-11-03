@@ -77,7 +77,10 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_CONTINUE_EXPEDITION = new UnityEvent();
 
     //POTIONS EVENTS
-    [HideInInspector] public UnityEvent<Potion> EVENT_POTION_USED = new UnityEvent<Potion>();
+    [HideInInspector] public UnityEvent<string, string> EVENT_POTION_USED = new UnityEvent<string, string>();
+    [HideInInspector] public UnityEvent<string> EVENT_POTION_DISCARDED = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<PotionManager> EVENT_POTION_SHOW_POTION_MENU = new UnityEvent<PotionManager>();
+    [HideInInspector] public UnityEvent<string> EVENT_POTION_WARNING = new UnityEvent<string>();
 
     //ROYAL HOUSE EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_ROYALHOUSES_ACTIVATION_REQUEST = new UnityEvent<bool>();
@@ -90,10 +93,20 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_SHOW_ENCOUNTER_PANEL = new UnityEvent();
 
     //MERCHANT PANEL EVENTS
-    [HideInInspector] public UnityEvent EVENT_SHOW_MERCHANT_PANEL = new UnityEvent();
+    [HideInInspector] public UnityEvent<bool> EVENT_TOGGLE_MERCHANT_PANEL = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<MerchantData> EVENT_POPULATE_MERCHANT_PANEL = new UnityEvent<MerchantData>();
 
     //CAMP EVENTS
-    [HideInInspector] public UnityEvent EVENT_SHOW_CAMP_PANEL = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_CAMP_SHOW_PANEL = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_CAMP_HEAL = new UnityEvent();
+    [HideInInspector] public UnityEvent<Deck> EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS = new UnityEvent<Deck>();
+    [HideInInspector] public UnityEvent<string> EVENT_CAMP_GET_UPGRADE_PAIR = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<string> EVENT_CAMP_UPGRADE_CARD = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent EVENT_CAMP_FINISH = new UnityEvent();
+    
+    //UPGRADE EVENTS
+    [HideInInspector] public UnityEvent<Deck> EVENT_UPGRADE_SHOW_UPGRADE_PAIR = new UnityEvent<Deck>();
+    [HideInInspector] public UnityEvent<SWSM_ConfirmUpgrade> EVENT_UPGRADE_CONFIRMED = new UnityEvent<SWSM_ConfirmUpgrade>();
 
     //EXPEDITION EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_EXPEDITION_STATUS_UPDATE = new UnityEvent<bool>();
@@ -144,14 +157,17 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_TOPBAR_MAP_ICON = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_CURRENT_STEP_TEXT = new UnityEvent<int, int>();
 
+    //CARD PANEL EVENTS
+    [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>> EVENT_SHOW_SELECT_CARD_PANEL = new UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>>();
+    [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<string>> EVENT_SHOW_DIRECT_SELECT_CARD_PANEL = new UnityEvent<List<Card>, SelectPanelOptions, Action<string>>();
+    [HideInInspector] public UnityEvent<Deck> EVENT_CARD_PILE_SHOW_DECK = new UnityEvent<Deck>();
+    [HideInInspector] public UnityEvent EVENT_HIDE_COMMON_CARD_PANEL = new UnityEvent();
+
     //CARDS EVENTS
     [HideInInspector] public UnityEvent<PileTypes> EVENT_CARD_PILE_CLICKED = new UnityEvent<PileTypes>();
-    [HideInInspector] public UnityEvent<Deck> EVENT_CARD_PILE_SHOW_DECK = new UnityEvent<Deck>();
     [HideInInspector] public UnityEvent<string> EVENT_CARD_MOUSE_ENTER = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<string, Vector3> EVENT_CARD_SHOWING_UP = new UnityEvent<string, Vector3>();
     [HideInInspector] public UnityEvent<string> EVENT_CARD_MOUSE_EXIT = new UnityEvent<string>();
-    [HideInInspector] public UnityEvent<Vector3> EVENT_CARD_ACTIVATE_POINTER = new UnityEvent<Vector3>();
-    [HideInInspector] public UnityEvent<string> EVENT_CARD_DEACTIVATE_POINTER = new UnityEvent<string>();
     [HideInInspector] public UnityEvent EVENT_CARD_DRAW_CARDS = new UnityEvent();
     [HideInInspector] public UnityEvent<CardPiles> EVENT_CARDS_PILES_UPDATED = new UnityEvent<CardPiles>();
     [HideInInspector] public UnityEvent<CardToMoveData, float> EVENT_MOVE_CARD = new UnityEvent<CardToMoveData, float>();
@@ -171,7 +187,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<GameStatuses> EVENT_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
     [HideInInspector] public UnityEvent<string, string> EVENT_CARD_PLAYED = new UnityEvent<string, string>(); // cardID, targetID
     [HideInInspector] public UnityEvent EVENT_END_TURN_CLICKED = new UnityEvent();
-    [HideInInspector] public UnityEvent<string> EVENT_CONFIRM_EVENT = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<Type, string> EVENT_CONFIRM_EVENT = new UnityEvent<Type, string>();
 
 
     //Combat events
@@ -188,10 +204,16 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_COMBAT_ORIGIN_CHANGE = new UnityEvent();
     [HideInInspector] public UnityEvent<StatusData> EVENT_UPDATE_STATUS_EFFECTS = new UnityEvent<StatusData>();
     [HideInInspector] public UnityEvent EVENT_CLEAR_TOOLTIPS = new UnityEvent();
+    [HideInInspector] public UnityEvent<bool> EVENT_TOGGLE_TOOLTIPS = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>  EVENT_SET_TOOLTIPS { get; } = 
         new UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>();
     [HideInInspector] public UnityEvent<string, int> EVENT_HEAL = new UnityEvent<string, int>(); // id, healed amount
-    
+    [HideInInspector] public UnityEvent<CombatTurnData.Target> EVENT_DAMAGE = new UnityEvent<CombatTurnData.Target>(); // id, damage amount, break shield
+
+    // pointer events
+    [HideInInspector] public UnityEvent<PointerData> EVENT_ACTIVATE_POINTER { get; } = new UnityEvent<PointerData>();
+    [HideInInspector] public UnityEvent<string> EVENT_DEACTIVATE_POINTER = new UnityEvent<string>();
+
     //Common events
     [HideInInspector]
     public UnityEvent<WS_DATA_REQUEST_TYPES> EVENT_GENERIC_WS_DATA = new UnityEvent<WS_DATA_REQUEST_TYPES>();
@@ -206,10 +228,15 @@ public class GameManager : SingleTon<GameManager>
 
 
     // Audio Events
-    [HideInInspector] public UnityEvent<string> EVENT_PLAY_SFX { get; } = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<string> EVENT_PLAY_SFX = new UnityEvent<string>();
     
     //Console Events
     [HideInInspector] public UnityEvent EVENT_SHOW_CONSOLE = new UnityEvent();
+
+    // Wallet Events
+    [HideInInspector] public UnityEvent<string> EVENT_NEW_WALLET = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<string> EVENT_MESSAGE_SIGN = new UnityEvent<string>();
+
 
     public inGameScenes
         nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat

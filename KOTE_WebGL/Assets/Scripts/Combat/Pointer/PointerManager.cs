@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Spine;
 using Spine.Unity;
 using UnityEngine;
@@ -9,22 +10,45 @@ public class PointerManager : MonoBehaviour
     public GameObject pointerContainer;
     public GameObject pointerTarget;
     public SpriteShapeController PointerLine;
+
+    [SerializeField]
+    public TargetProfile TargetProfile { get; private set; }
+
     private Spline spline;
     private Vector3[] originalLinePositions; // we need to store the original locations so we can use them as constants
     private Vector3[] originalLeftTangents;
     private Vector3[] originalRightTangents;
     private int splinePointCount; // store this so we don't have to keep grabbing it, since we use it a lot
-    [HideInInspector] public bool overEnemy;
 
-    public EnemyData enemyData;
+    public bool overTarget;
+    public string targetID;
+
     bool pointerActive;
+
+    IPointerRunable activePointer;
+    private List<IPointerRunable> runables;
+
+    private void OnEnable()
+    {
+        if (runables == null) 
+        {
+            runables = new List<IPointerRunable>();
+        }
+        runables.Clear();
+        var foundRunables = gameObject.GetComponentsInChildren<IPointerRunable>();
+        foreach (var runable in foundRunables) 
+        {
+            runables.Add(runable);
+        }
+    }
 
     private void Start()
     {
-        GameManager.Instance.EVENT_CARD_ACTIVATE_POINTER.AddListener(OnPointerActivated);
-        GameManager.Instance.EVENT_CARD_DEACTIVATE_POINTER.AddListener(OnPointerDeactivated);
         spline = PointerLine.spline;
         splinePointCount = spline.GetPointCount();
+
+        GameManager.Instance.EVENT_ACTIVATE_POINTER.AddListener(OnPointerActivated);
+        GameManager.Instance.EVENT_DEACTIVATE_POINTER.AddListener(OnPointerDeactivated);
 
         // get the starting points for each point on the spline to use as offsets and constants
         originalLinePositions = new Vector3[splinePointCount];
@@ -39,48 +63,69 @@ public class PointerManager : MonoBehaviour
     }
 
 
-    private void OnPointerActivated(Vector3 cardPosition)
+    public void OnPointerActivated(PointerData data)
     {
+        Vector3 pointerOrigin = data.Origin;
+
+        TargetProfile = data.Targets;
+
         pointerContainer.SetActive(true);
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
 
-        MoveLine(mousePosition, cardPosition);
+        MoveLine(mousePosition, pointerOrigin);
 
-        float distance = 0.2f;
         Vector3 arrowPosition = mousePosition;
-        if (mousePosition.x > cardPosition.x)
+        if (mousePosition.x > pointerOrigin.x)
         {
             arrowPosition.x -= 0.2f;
         }
 
-        if (mousePosition.x < cardPosition.x)
+        if (mousePosition.x < pointerOrigin.x)
         {
             arrowPosition.x += 0.2f;
         }
 
         pointerTarget.transform.position = arrowPosition;
-        RotateArrowTowardsMouse(mousePosition, cardPosition);
+        RotateArrowTowardsMouse(mousePosition, pointerOrigin);
+
+        // Find which runable to use
+        activePointer = null;
+        foreach (var pointer in runables) 
+        {
+            if (pointer.PointerType == data.Type) 
+            {
+                activePointer = pointer;
+                break;
+            }
+        }
+        if (activePointer == null) 
+        {
+            Debug.LogError($"[PointerManager] Can not find run data for pointer type '${data.Type}'.");
+            OnPointerDeactivated("");
+            return;
+        }
+
 
         // Play Card Play sound
         if (!pointerActive)
         {
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Play");
+            activePointer.OnSelect();
             pointerActive = true;
         }
     }
 
-    private void OnPointerDeactivated(string id)
+    public void OnPointerDeactivated(string originID)
     {
         //if the pointer is over an enemy, play the card
-        if (overEnemy)
+        if (overTarget)
         {
-            GameManager.Instance.EVENT_CARD_PLAYED.Invoke(id,enemyData.id);
+            activePointer.Run(originID, targetID);
         } 
         else if (pointerActive)
         {
             // Play Cancellation sound
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Cancel");
+            activePointer.OnCancel();
         }
 
         if (pointerActive)
@@ -91,7 +136,6 @@ public class PointerManager : MonoBehaviour
         // else return it to the deck
         //GameManager.Instance.EVENT_CARD_MOUSE_EXIT.Invoke(id);
         pointerContainer.SetActive(false);
-        
     }
 
     private void RotateArrowTowardsMouse(Vector3 mousePosition, Vector3 cardPosition)

@@ -13,7 +13,7 @@ public class EnemyManager : MonoBehaviour
     public ParticleSystem explodePS;
     public Slider healthBar;
     public TMP_Text healthTF;
-    public TMP_Text defenseTF;
+    public DefenseController defenseController;
     public Transform TopBar;
     public Transform BottomBar;
 
@@ -174,6 +174,10 @@ public class EnemyManager : MonoBehaviour
 
         // Negitive Deltas
         float waitDuration = 0;
+        if (target.defenseDelta < 0 || target.healthDelta < 0) {
+            GameManager.Instance.EVENT_DAMAGE.Invoke(target);
+        }
+
         if (target.defenseDelta < 0 && target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
         {
             // Play Armored Clang
@@ -226,7 +230,7 @@ public class EnemyManager : MonoBehaviour
         {
             value = enemyData.defense;
         }
-        defenseTF.SetText(value.ToString());
+        defenseController.Defense = value.Value;
     }
 
     private void Start()
@@ -325,16 +329,30 @@ public class EnemyManager : MonoBehaviour
 
     }
 
+    private float OnDeath()
+    {
+        float length = spine.PlayAnimationSequence("Death");
+        return length;
+    }
+
     private void CheckDeath(int current)
     {
        // if (enemyData.hpCurrent < 1)//TODO: enemyData is not up to date
         if (current  < 1)
         {
+            // Tell game that a player is dying
+            GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), nameof(EnemyState.dying));
+
             explodePS.transform.parent = null;
             explodePS.Play();
-            Destroy(explodePS.gameObject, 2);
-            spine.PlayAnimationSequence("Death");
-            Destroy(this.gameObject,2);
+
+            // Play animation
+            RunAfterTime(OnDeath(), () => {
+                // Tell game that a player is dead
+                GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), nameof(EnemyState.dead));
+                Destroy(explodePS.gameObject);
+                Destroy(this.gameObject);
+            });
         }
     }
 

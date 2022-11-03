@@ -18,6 +18,7 @@ public enum PileTypes
 [Serializable]
 public enum GameStatuses
 {
+    None = 0,
     Combat,
     Treasure,
     Map,
@@ -31,6 +32,13 @@ public enum GameStatuses
 
 [Serializable]
 public enum PlayerState 
+{
+    dying,
+    dead
+}
+
+[Serializable]
+public enum EnemyState
 {
     dying,
     dead
@@ -190,6 +198,12 @@ public enum EntityType
     Enemy
 }
 
+public enum PointerOrigin 
+{
+    potion,
+    card
+}
+
 [Serializable]
 public enum WS_DATA_REQUEST_TYPES
 {
@@ -203,7 +217,11 @@ public enum WS_DATA_REQUEST_TYPES
     Trinkets,
     Statuses,
     PlayerDeck,
-    CurrentNode
+    CurrentNode,
+    UpgradableCards,
+    UpgradablePair,
+    UpgradeCard,
+    MerchantData
 }
 
 [Serializable]
@@ -232,6 +250,10 @@ public enum WS_MESSAGE_TYPES
     end_turn,
     begin_turn,
     end_combat,
+    end_node,
+    card_upgrade,
+    add_potion,
+    use_potion
 }
 
 [Serializable]
@@ -285,7 +307,7 @@ public enum ATTACK_EFFECT_TYPES
 [Serializable]
 public enum RewardItemType
 {
-    cards,
+    card,
     gold,
     potion,
     trinket,
