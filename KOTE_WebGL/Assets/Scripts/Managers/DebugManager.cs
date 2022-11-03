@@ -124,6 +124,10 @@ public class DebugManager : MonoBehaviour
                 PlayerPrefs.SetInt("enable_royal_house", 1);  
                 PublicLog("Royal House panel enabled.");
                 break;
+            case ConsoleCommands.enable_node_numbers:
+                PlayerPrefs.SetInt("enable_node_numbers", 1);
+                PublicLog("Node numbers enabled");
+                break;
             case ConsoleCommands.enable_all_functionality:
                 PlayerPrefs.SetInt("enable_registration", 1);
                 PlayerPrefs.SetInt("enable_armory", 1);
@@ -141,6 +145,10 @@ public class DebugManager : MonoBehaviour
             case ConsoleCommands.disable_royal_houses_panel:
                 PlayerPrefs.SetInt("enable_royal_house", 0);
                 PublicLog("Royal House panel disabled.");
+                break;
+            case ConsoleCommands.disable_node_numbers:
+                PlayerPrefs.SetInt("enable_node_numbers", 0);
+                PublicLog("Node numbers disabled");
                 break;
             case ConsoleCommands.disable_all_functionality:
                 PlayerPrefs.SetInt("enable_registration", 0);
