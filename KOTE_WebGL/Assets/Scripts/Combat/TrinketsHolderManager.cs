@@ -44,7 +44,12 @@ public class TrinketsHolderManager : MonoBehaviour
         for (int i = 0; i < Random.Range(3, 10); i++)
         {
             TrinketItemManager trinket = Instantiate(trinketItem, GridLayout.transform);
-            trinket.Populate("Trinket" + Random.Range(1, 5), "Common");
+            Trinket trinketData = new Trinket()
+            {
+                name = "Trinket" + Random.Range(1, 5),
+                rarity = "Common"
+            };
+            trinket.Populate(trinketData);
         }
         trinketsContainer.SetActive(true);
     }

@@ -36,7 +36,7 @@ public class MapManager : MonoBehaviour
 
     public void OnShopButton()
     {
-        GameManager.Instance.EVENT_SHOW_MERCHANT_PANEL.Invoke();
+        GameManager.Instance.EVENT_TOGGLE_MERCHANT_PANEL.Invoke(true);
     }
 
     public void LoadCombat()
