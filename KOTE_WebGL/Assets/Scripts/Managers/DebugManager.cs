@@ -65,7 +65,6 @@ public class DebugManager : MonoBehaviour
     {
         input = input.Trim().ToLower();
         consoleInput.text = "";
-        Utils.ParseEnum<ConsoleCommands>(input);
         bool isCommand = Enum.TryParse(input, out ConsoleCommands command);
         if (!isCommand)
         {
@@ -112,6 +111,42 @@ public class DebugManager : MonoBehaviour
             case ConsoleCommands.show_commands:
             case ConsoleCommands.help:
                 ListCommands();
+                break;
+            case ConsoleCommands.enable_register_panel:
+                PlayerPrefs.SetInt("enable_registration", 1);
+                PublicLog("Register panel enabled.");
+                break;
+            case ConsoleCommands.enable_armory_panel:
+                PlayerPrefs.SetInt("enable_armory", 1);
+                PublicLog("Armory panel enabled.");
+                break;
+            case ConsoleCommands.enable_royal_houses_panel:
+                PlayerPrefs.SetInt("enable_royal_house", 1);  
+                PublicLog("Royal House panel enabled.");
+                break;
+            case ConsoleCommands.enable_all_functionality:
+                PlayerPrefs.SetInt("enable_registration", 1);
+                PlayerPrefs.SetInt("enable_armory", 1);
+                PlayerPrefs.SetInt("enable_royal_house", 1);
+                PublicLog("Register, armory, and royal house panels enabled");
+                break;
+            case ConsoleCommands.disable_register_panel:
+                PlayerPrefs.SetInt("enable_registration", 0);
+                PublicLog("Register panel disabled.");
+                break;
+            case ConsoleCommands.disable_armory_panel:
+                PlayerPrefs.SetInt("enable_armory", 0);
+                PublicLog("Armory panel disabled.");
+                break;
+            case ConsoleCommands.disable_royal_houses_panel:
+                PlayerPrefs.SetInt("enable_royal_house", 0);
+                PublicLog("Royal House panel disabled.");
+                break;
+            case ConsoleCommands.disable_all_functionality:
+                PlayerPrefs.SetInt("enable_registration", 0);
+                PlayerPrefs.SetInt("enable_armory", 0);
+                PlayerPrefs.SetInt("enable_royal_house", 0);
+                PublicLog("Register, armory, and royal house panels disabled");
                 break;
             default:
                 PublicLog("Unknown Command.");
