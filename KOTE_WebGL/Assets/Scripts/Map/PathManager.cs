@@ -36,8 +36,8 @@ public class PathManager : MonoBehaviour
         this.exitNodeId = exitNode.id;
         pathStep = exitNode.step;
         pathAct = exitNode.act;
-        pathController.spline.SetPosition(4, this.transform.InverseTransformPoint(exitNode.transform.position));
-        lineController.spline.SetPosition(4, this.transform.InverseTransformPoint(exitNode.transform.position));
+        pathController.spline.SetPosition(pathController.spline.GetPointCount() - 1, this.transform.InverseTransformPoint(exitNode.transform.position));
+        lineController.spline.SetPosition(lineController.spline.GetPointCount() - 1, this.transform.InverseTransformPoint(exitNode.transform.position));
         DetermineIfPathIsShown();
         RelocateSplinePoints();
     }

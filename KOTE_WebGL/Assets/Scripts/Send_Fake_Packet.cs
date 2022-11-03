@@ -6,7 +6,10 @@ public class Send_Fake_Packet : MonoBehaviour
 {
     [Tooltip("The Json To Send.")]
     [SerializeField]
-    string PacketJson;
+    List<string> PacketJson;
+
+    [SerializeField]
+    float delayInSeconds = 0;
 
     [SerializeField]
     bool Run;
@@ -16,7 +19,25 @@ public class Send_Fake_Packet : MonoBehaviour
         if (Run) 
         {
             Run = false;
-            SWSM_Parser.ParseJSON(PacketJson);
+            StartCoroutine(RunPacket());
         }
+    }
+
+    IEnumerator RunPacket() 
+    {
+        var wait = new WaitForSeconds(delayInSeconds);
+        foreach (var packet in PacketJson) 
+        {
+            SWSM_Parser.ParseJSON(packet);
+            if (delayInSeconds == 0)
+            {
+                yield return null;
+            }
+            else 
+            {
+                yield return wait;
+            }
+        }
+        yield return null;
     }
 }
