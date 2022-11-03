@@ -39,6 +39,7 @@ public class NodeData : MonoBehaviour
     LineRenderer lineRenderer;
 
     public GameObject spriteShapePrefab;
+    public GameObject NodeArt;
     private GameObject spriteShape;
     private GameObject activeIconImage;
     private Vector3 originalScale;

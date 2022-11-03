@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class TrinketItemManager : MonoBehaviour
 {
+    private Trinket trinket;
+
     [Serializable]
     public struct TrinketImage
     {
@@ -14,16 +16,14 @@ public class TrinketItemManager : MonoBehaviour
 
     public List<TrinketImage> imageList;
     public Image trinketImage;
-    private string name;
-    private string rarity;
 
     // uses string values for right now, will probably need to change once we parse trinket data
-    public void Populate(string trinketName, string trinketRarity)
+    public void Populate(Trinket data)
     {
+        trinket = data;
+
         //TODO determine how to populate the trinket data
-        name = trinketName;
-        rarity = trinketRarity;
-        TrinketImage correctImg = imageList.Find(image => image.trinketName == name);
+        TrinketImage correctImg = imageList.Find(image => image.trinketName == trinket.name);
         trinketImage.sprite = correctImg.trinketSprite;
     }
 }
