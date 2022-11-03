@@ -314,4 +314,21 @@ public enum RewardItemType
     fief
 }
 
+[Serializable]
+public enum ConsoleCommands
+{
+    ws_url,
+    apis_url,
+    api_url,
+    player_token,
+    quit,
+    exit,
+    close,
+    close_console,
+    enable_debug,
+    disable_debug,
+    version,
+    show_commands,
+    help
+}
 
