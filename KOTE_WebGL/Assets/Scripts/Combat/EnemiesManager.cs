@@ -156,7 +156,7 @@ public class EnemiesManager : MonoBehaviour
     {
         Bounds b = new Bounds(transform.position, new Vector3(extent * 2, 5, 0));
         Gizmos.color = Color.green;
-        Utils.GizmoDrawBox(b);
+        GizmoExtensions.DrawBox(b);
         Gizmos.color = Color.magenta;
         Gizmos.DrawLine(new Vector3(transform.position.x - 4, transform.position.y + floor, 0), new Vector3(transform.position.x + 4, transform.position.y + floor, 0));
     }
