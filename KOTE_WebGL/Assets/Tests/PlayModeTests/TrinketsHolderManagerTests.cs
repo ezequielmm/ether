@@ -1,18 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
+using NUnit.Framework;
+using UnityEditor;
 using UnityEngine;
-
+using UnityEngine.EventSystems;
+using UnityEngine.TestTools;
 public class TrinketsHolderManagerTests : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private TrinketsHolderManager trinketManager;
+    [UnitySetUp]
+    public IEnumerator Setup()
     {
-        
+        GameObject trinketHolderPrefab =
+            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/BattleUI/TrinketsHolder.prefab");
+        GameObject trinketHolderInstance = Instantiate(trinketHolderPrefab);
+        trinketManager = trinketHolderInstance.GetComponent<TrinketsHolderManager>();
+        trinketHolderInstance.SetActive(true);
+        yield return null;
     }
 
-    // Update is called once per frame
-    void Update()
+    [Test]
+    public void DoesStartDisableTrinketContainer()
     {
-        
+        Assert.False(trinketManager.trinketsContainer.activeSelf);
     }
 }
