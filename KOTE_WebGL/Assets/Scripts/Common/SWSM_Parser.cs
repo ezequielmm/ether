@@ -202,11 +202,15 @@ public class SWSM_Parser
             case nameof(WS_DATA_REQUEST_TYPES.UpgradableCards):
                 ProcessUpgradeableCards(data);
                 break;
+            case nameof(WS_DATA_REQUEST_TYPES.MerchantData):
+                ProcessMerchantData(data);
+                break;
             default:
                 Debug.Log($"[SWSM Parser] [Generic Data] Uncaught Action \"{action}\". Data = {data}");
                 break;
         }
     }
+
 
     private static void ProcessEnemyAffected(string action, string data)
     {
@@ -413,8 +417,16 @@ public class SWSM_Parser
         GameManager.Instance.EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS.Invoke(deck);
     }
 
- 
-    
+
+    private static void ProcessMerchantData(string data)
+    {
+        SWSM_MerchantData merchant = JsonUtility.FromJson<SWSM_MerchantData>(data);
+        Debug.Log(data);
+        GameManager.Instance.EVENT_POPULATE_MERCHANT_PANEL.Invoke(merchant.data.data);
+    }
+
+
+
     private static void ProcessMoveCard(string rawData)
     {
         SWSM_CardMove cardMoveData = JsonUtility.FromJson<SWSM_CardMove>(rawData);

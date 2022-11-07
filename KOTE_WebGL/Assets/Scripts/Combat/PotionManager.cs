@@ -15,7 +15,7 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
 
     private TooltipAtCursor tooltipController;
 
-    private Potion potion;
+    private PotionData potion;
 
     private Tooltip unknown;
     private Tooltip _tooltip;
@@ -52,7 +52,7 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void Populate(Potion inPotion)
+    public void Populate(PotionData inPotion)
     {
         if (inPotion == null)
         {

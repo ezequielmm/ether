@@ -20,19 +20,21 @@ public class DebugManager : MonoBehaviour
     /// <summary>
     /// Disables the logging if this is not a dev build
     /// </summary>
-    public static void DisableOnBuild() 
+    public static void DisableOnBuild()
     {
-        #if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
+#if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
             DisableDebug();
-        #endif
+#endif
     }
+
     /// <summary>
     /// Enables Logging
     /// </summary>
-    public static void EnableDebug() 
+    public static void EnableDebug()
     {
         Debug.unityLogger.filterLogType = LogType.Log;
     }
+
     /// <summary>
     /// Disables logging
     /// </summary>
@@ -40,11 +42,12 @@ public class DebugManager : MonoBehaviour
     {
         Debug.unityLogger.filterLogType = LogType.Exception;
     }
+
     /// <summary>
     /// Allows one message to come through
     /// </summary>
     /// <param name="message">Message to log</param>
-    public static void PublicLog(object message) 
+    public static void PublicLog(object message)
     {
         var originalFilter = Debug.unityLogger.filterLogType;
         Debug.unityLogger.filterLogType = LogType.Log;
@@ -62,45 +65,73 @@ public class DebugManager : MonoBehaviour
     {
         input = input.Trim().ToLower();
         consoleInput.text = "";
-        switch (input)
+        Utils.ParseEnum<ConsoleCommands>(input);
+        bool isCommand = Enum.TryParse(input, out ConsoleCommands command);
+        if (!isCommand)
         {
-            case "ws_url":
+            PublicLog("Unknown Command.");
+            return;
+        }
+
+        switch (command)
+        {
+            case ConsoleCommands.ws_url:
                 string url = PlayerPrefs.GetString("ws_url");
                 if (url == "") url = "Websocket not yet connected.";
                 PublicLog(url);
                 break;
-            case "apis_url":
-            case "api_url":
+            case ConsoleCommands.api_url:
+            case ConsoleCommands.apis_url:
                 string
                     apiUrl = PlayerPrefs.GetString("api_url");
                 if (apiUrl == "") url = "No API URL found.";
                 PublicLog(apiUrl);
                 break;
-            case "player_token":
+            case ConsoleCommands.player_token:
                 string token = PlayerPrefs.GetString("session_token");
                 if (token == "") token = "No token has been generated yet.";
                 PublicLog(token);
                 break;
-            case "quit":
-            case "exit":
-            case "close":
-            case "close_console":
+            case ConsoleCommands.quit:
+            case ConsoleCommands.exit:
+            case ConsoleCommands.close:
+            case ConsoleCommands.close_console:
                 consoleContainer.SetActive(false);
                 break;
-            case "enable_debug":
+            case ConsoleCommands.enable_debug:
                 EnableDebug();
                 PublicLog("Console Enabled.");
                 break;
-            case "disable_debug":
+            case ConsoleCommands.disable_debug:
                 DisableDebug();
                 PublicLog("Console Disabled.");
                 break;
-            case "version":
+            case ConsoleCommands.version:
                 PublicLog(Application.version);
+                break;
+            case ConsoleCommands.show_commands:
+            case ConsoleCommands.help:
+                ListCommands();
                 break;
             default:
                 PublicLog("Unknown Command.");
                 break;
         }
+    }
+
+    private void ListCommands()
+    {
+        string commandString = "Available commands: ";
+        string[] commands = Enum.GetNames(typeof(ConsoleCommands));
+        for (int i = 0; i < commands.Length; i++)
+        {
+            commandString += commands[i];
+            if (i != commands.Length - 1)
+            {
+                commandString += ", ";
+            }
+        }
+
+        PublicLog(commandString);
     }
 }
