@@ -30,6 +30,7 @@ namespace map
         // tilemap references
         public Tilemap MapGrid;
         public Tile[] grassTiles;
+        public Tile[] lakeTiles;
         public Tile[] mountainTiles;
         public Tile[] forestTiles;
 
@@ -76,7 +77,7 @@ namespace map
         Dictionary<Vector3Int, MapTilePath> allTiles = new Dictionary<Vector3Int, MapTilePath>();
         Dictionary<Vector3Int, TileSplineRef> tileSplineRef = new Dictionary<Vector3Int, TileSplineRef>();
         Dictionary<Vector3Int, GameObject> nodeMapRef = new Dictionary<Vector3Int, GameObject>();
-        private Vector3 playerIconOffset = new Vector3(0.15f, -0.15f, 0);
+        private Vector3 playerIconOffset = new Vector3(-0.25f, -0.25f, 0);
 
 
         private class SplinePoint
@@ -557,7 +558,7 @@ namespace map
                         newNode.transform.position = finalPos;
 
                         // Record node
-                        nodeMapRef.Add(mapPos, newNode.NodeArt);
+                        nodeMapRef.Add(mapPos, newNode.gameObject);
 
 
                         newNode.GetComponent<NodeData>().Populate(nodeData);
@@ -635,7 +636,9 @@ namespace map
                 splineRef.EnforceSplineMatch();
                 if (nodeMapRef.ContainsKey(splineRef.Position))
                 {
-                    nodeMapRef[splineRef.Position].transform.position = splineRef.MasterSpline.Position;
+                    Vector3 newPos = splineRef.MasterSpline.Position;
+                    newPos.z =  GameSettings.MAP_SPRITE_ELEMENTS_Z;
+                    nodeMapRef[splineRef.Position].transform.position = newPos;
                 }
             }
         }
@@ -812,7 +815,14 @@ namespace map
         {
             // we have to set the z to a constant, as for some reason you can two tiles in the same spot with different z levels
             node = GetVectorWithZ(node.x, node.y);
-
+            // lower the rate of lake tiles to 1 in 10
+            int lakeCheck = Random.Range(0, 10);
+            if (lakeCheck == 9)
+            {
+                int randomLakeTile = Random.Range(0, lakeTiles.Length);
+                MapGrid.SetTile(node, lakeTiles[randomLakeTile]);
+                return;
+            }
             int randomTile = Random.Range(0, grassTiles.Length);
             MapGrid.SetTile(node, grassTiles[randomTile]);
         }

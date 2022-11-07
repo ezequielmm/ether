@@ -308,15 +308,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c80589c72f92d924ea07fe0e344f94e5, type: 2}
   - {fileID: 11400000, guid: f4ee64a0fa1969948a8220bcfec91656, type: 2}
   - {fileID: 11400000, guid: 8cb4268d615e0b7428dcd315ddd0e9a5, type: 2}
+  - {fileID: 11400000, guid: d009ce0cace00764387eb8870c187d17, type: 2}
+  - {fileID: 11400000, guid: 97107f64d75e94c498d9d54a9606abd1, type: 2}
+  - {fileID: 11400000, guid: 1c9cf543ffde5f94eb8065d1aff19032, type: 2}
+  lakeTiles:
   - {fileID: 11400000, guid: 64f098f93d9e08341b95936e59ac1c7a, type: 2}
   - {fileID: 11400000, guid: d28e95efe4b474a4688479c0ee2b352f, type: 2}
   - {fileID: 11400000, guid: 4f785e97efdea47408448bdc9bdab87f, type: 2}
   - {fileID: 11400000, guid: 8de0b825e33c0a846a4183a19f557c8d, type: 2}
   - {fileID: 11400000, guid: 74f0b6b4fa2aca04297c1e905f04cc80, type: 2}
   - {fileID: 11400000, guid: 54943c864c000a845ba542c7db2074e0, type: 2}
-  - {fileID: 11400000, guid: d009ce0cace00764387eb8870c187d17, type: 2}
-  - {fileID: 11400000, guid: 97107f64d75e94c498d9d54a9606abd1, type: 2}
-  - {fileID: 11400000, guid: 1c9cf543ffde5f94eb8065d1aff19032, type: 2}
   mountainTiles:
   - {fileID: 11400000, guid: b0dd8cd644c1cfc4d80f282a0d8bd1c4, type: 2}
   - {fileID: 11400000, guid: 8da42fe50ecaa6442b4852d3b15929ca, type: 2}
