@@ -569,7 +569,16 @@ namespace map
                         {
                             playerIcon.SetActive(true);
                             Vector3 knightPos = newNode.transform.localPosition;
-                            knightPos += playerIconOffset;
+                            if (nodeData.status == NODE_STATUS.active.ToString())
+                            {
+                                knightPos += playerIconOffset;
+                            }
+                            else if (nodeData.status == NODE_STATUS.completed.ToString())
+                            {
+                                knightPos.x -= playerIconOffset.x;
+                                knightPos.y += playerIconOffset.y;
+                            }
+
                             playerIcon.transform.localPosition = knightPos;
                             GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(nodeData.act, nodeData.step);
                         }
