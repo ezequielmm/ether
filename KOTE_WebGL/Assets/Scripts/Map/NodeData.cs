@@ -39,6 +39,7 @@ public class NodeData : MonoBehaviour
     LineRenderer lineRenderer;
 
     public GameObject spriteShapePrefab;
+    public GameObject NodeArt;
     private GameObject spriteShape;
     private GameObject activeIconImage;
     private Vector3 originalScale;
@@ -64,7 +65,7 @@ public class NodeData : MonoBehaviour
             if (type == NODE_TYPES.royal_house)
             {
                 GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
-                    "Do you want to enter" + Utils.CapitalizeEveryWordOfEnum(subType), OnConfirmRoyalHouse);
+                    "Do you want to enter " + Utils.CapitalizeEveryWordOfEnum(subType), OnConfirmRoyalHouse);
                 return;
             }
             else
@@ -150,7 +151,7 @@ public class NodeData : MonoBehaviour
             // resize the node depending on the status
             if (status == NODE_STATUS.disabled || status == NODE_STATUS.completed)
             {
-                bgi.imageGo.transform.localScale *= 0.5f;
+                bgi.imageGo.transform.localScale *= GameSettings.COMPLETED_NODE_SCALE;
                 if (GameSettings.COLOR_UNAVAILABLE_MAP_NODES == false)
                 {
                     bgi.imageGo.GetComponent<SpriteRenderer>().material = grayscaleMaterial;
@@ -158,7 +159,7 @@ public class NodeData : MonoBehaviour
             }
             else if (status == NODE_STATUS.active || status == NODE_STATUS.available)
             {
-                bgi.imageGo.transform.localScale *= 0.85f;
+                bgi.imageGo.transform.localScale *= 1.2f;
                 PlayActiveNodeAnimation(bgi.imageGo);
             }
 
@@ -189,7 +190,11 @@ public class NodeData : MonoBehaviour
                 break;
             case NODE_STATUS.available:
                 indexColor = Color.green;
-                availableParticleSystem.Play();
+                if (type == NODE_TYPES.portal)
+                {
+                    availableParticleSystem.Play();
+                }
+
                 break;
         }
 
@@ -200,7 +205,7 @@ public class NodeData : MonoBehaviour
 
     private void PlayActiveNodeAnimation(GameObject backgroundImage)
     {
-        activeAnimation = backgroundImage.transform.DOScale(backgroundImage.transform.localScale * 0.8f,
+        activeAnimation = backgroundImage.transform.DOScale(backgroundImage.transform.localScale * 0.7f,
                 GameSettings.ACTIVE_NODE_PULSE_TIME)
             .SetLoops(-1, LoopType.Yoyo);
     }
@@ -262,4 +267,10 @@ public class NodeData : MonoBehaviour
     }
 
     #endregion
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.position, 0.1f);
+    }
 }
