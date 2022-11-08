@@ -2,9 +2,11 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using static StatusData;
 
-public class StatusManager : MonoBehaviour
+public class StatusManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
     GameObject iconPrefab;
@@ -15,6 +17,9 @@ public class StatusManager : MonoBehaviour
     EnemyManager enemyManager;
     [SerializeField]
     PlayerManager playerManager;
+
+    [SerializeField]
+    BoxCollider2D statusCollider;
 
     List<Status> statusList = new List<Status>();
     Dictionary<string, GameObject> statusIconList = new Dictionary<string, GameObject>();
@@ -44,9 +49,40 @@ public class StatusManager : MonoBehaviour
             Debug.LogError($"[StatusManager] Manager does not belong either an enemy or a player.");
         }
         GameManager.Instance.EVENT_UPDATE_STATUS_EFFECTS.AddListener(OnSetStatus);
-        GameManager.Instance.EVENT_CHANGE_TURN.AddListener(onTurnChange);
+        GameManager.Instance.EVENT_CHANGE_TURN.AddListener(OnTurnChange);
+
+        GameManager.Instance.EVENT_ACTIVATE_POINTER.AddListener(DeactivateCollider);
+        GameManager.Instance.EVENT_DEACTIVATE_POINTER.AddListener(ActivateCollider);
+
         iconContainer.SetFadeSpeed(GameSettings.STATUS_FADE_SPEED);
         iconContainer.fadeOnCreate = true;
+    }
+
+    private void ActivateCollider(string _)
+    {
+        if (statusCollider != null)
+            statusCollider.enabled = true;
+    }
+    private void DeactivateCollider(PointerData _)
+    {
+        if (statusCollider != null)
+            statusCollider.enabled = false;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        List<Tooltip> list = new List<Tooltip>();
+        foreach (StatusIcon icon in GetComponentsInChildren<StatusIcon>())
+        {
+            list.Add(icon.GetTooltip());
+        }
+
+        gameObject.GetComponentInParent<ITooltipSetter>().SetTooltip(list);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
     }
 
     private void OnDrawGizmos()
@@ -57,21 +93,21 @@ public class StatusManager : MonoBehaviour
         size2.x *= 5;
 
         Gizmos.color = Color.cyan;
-        Utils.GizmoDrawBox(new Bounds(rt.position + transform.position, size), new Vector3(0, 0, transform.position.z));
+        GizmoExtensions.DrawBox(new Bounds(rt.position + transform.position, size), new Vector3(0, 0, transform.position.z));
         Gizmos.color = Color.red;
-        Utils.GizmoDrawBox(new Bounds(rt.position + transform.position, size2 * 1.05f), new Vector3(size.x * 2, 0, transform.position.z - 0.1f));
+        GizmoExtensions.DrawBox(new Bounds(rt.position + transform.position, size2 * 1.05f), new Vector3(size.x * 2, 0, transform.position.z - 0.1f));
     }
 
-    private GameObject createIcon(Status status) 
+    private GameObject CreateIcon(Status status) 
     {
         GameObject iconObject = Instantiate(iconPrefab);
         var statusIcon = iconObject.GetComponentInChildren<StatusIcon>();
         statusIcon.Initialize();
-        setStatusInfo(status, statusIcon);
+        SetStatusInfo(status, statusIcon);
         return iconObject;
     }
 
-    private void setStatusInfo(Status status, StatusIcon statusIcon)
+    private void SetStatusInfo(Status status, StatusIcon statusIcon)
     {
         STATUS stat = ToEnum(status.name);
         statusIcon.SetValue(status.counter);
@@ -79,10 +115,10 @@ public class StatusManager : MonoBehaviour
         statusIcon.SetTooltip(status.name, status.description);
     }
 
-    private void setStatusInfo(Status status, GameObject iconObject) 
+    private void SetStatusInfo(Status status, GameObject iconObject) 
     {
         var statusIcon = iconObject.GetComponentInChildren<StatusIcon>();
-        setStatusInfo(status, statusIcon);
+        SetStatusInfo(status, statusIcon);
     }
 
     private void DrawStatus(List<Status> newStatus) 
@@ -92,14 +128,14 @@ public class StatusManager : MonoBehaviour
             var hasKey = statusIconList.ContainsKey(status.name);
             if (!hasKey) // New not in known
             {
-                var newIcon = createIcon(status);
+                var newIcon = CreateIcon(status);
                 statusIconList.Add(status.name, newIcon);
                 iconContainer.AddIcon(newIcon);
             }
             else // New and Known Match
             {
                 var icon = statusIconList[status.name];
-                setStatusInfo(status, icon);
+                SetStatusInfo(status, icon);
             }
         }
         List<string> keysToDelete = new List<string>();
@@ -113,9 +149,13 @@ public class StatusManager : MonoBehaviour
         }
         foreach (string key in keysToDelete) { statusIconList.Remove(key); }
         iconContainer.ReorganizeSprites();
+
+        statusCollider.enabled = true;
+        statusCollider.offset = iconContainer.Bounds.center + iconContainer.transform.localPosition;
+        statusCollider.size = iconContainer.Bounds.size;
     }
 
-    private void onTurnChange(string who) 
+    private void OnTurnChange(string who) 
     {
         askedForStatus = false;
         statusSet = false;
@@ -126,11 +166,26 @@ public class StatusManager : MonoBehaviour
         if (!statusSet && !askedForStatus)
         {
             statusSet = true;
-            askForStatus();
+            AskForStatus();
+        }
+        if (Input.GetKeyDown(KeyCode.Space)) 
+        {
+            bool hovered = false;
+            Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var hits = Physics2D.BoxCastAll(worldPoint, Vector2.one * 0.01f, 0, Vector2.zero);
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (hit.collider == statusCollider)
+                {
+                    hovered = true;
+                    break;
+                }
+            }
+            Debug.Log($"[StatusManager] Is Hovering? {hovered} | Total Colliders? {hits.Length}");
         }
     }
 
-    private void askForStatus()
+    private void AskForStatus()
     {
         Debug.Log("[Status Manager] Status Requested");
         askedForStatus = true;
