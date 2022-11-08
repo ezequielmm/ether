@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 
-public class EnemyManager : MonoBehaviour
+public class EnemyManager : MonoBehaviour, ITooltipSetter
 {
     private EnemyData enemyData;
     public ParticleSystem hitPS;
@@ -31,6 +31,7 @@ public class EnemyManager : MonoBehaviour
     private bool CalledEvent;
 
     new private Collider2D collider;
+    private Bounds enemyBounds;
     private StatusManager statusManager;
 
 
@@ -97,11 +98,8 @@ public class EnemyManager : MonoBehaviour
             BottomBar.position = bottom;
 
             collider = activeEnemy.GetComponent<Collider2D>();
-
-            // Set tooltip events
-            enemyPlacementData.onCursorEnter.AddListener(SetTooltip);
-            enemyPlacementData.onCursorExit.AddListener(SemoveTooltip);
-
+            enemyBounds = collider.bounds;
+            collider.enabled = false;
 
             this.enemyType = Utils.ParseEnum<EnemyTypes>(enemyType);
             gameObject.name = Enum.GetName(typeof(EnemyTypes), this.enemyType);
@@ -239,6 +237,9 @@ public class EnemyManager : MonoBehaviour
         GameManager.Instance.EVENT_ATTACK_REQUEST.AddListener(OnAttackRequest);
         GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnAttackResponse);
 
+        GameManager.Instance.EVENT_ACTIVATE_POINTER.AddListener(ActivateCollider);
+        GameManager.Instance.EVENT_DEACTIVATE_POINTER.AddListener(DeactivateCollider);
+
         statusManager = GetComponentInChildren<StatusManager>();
     }
 
@@ -278,7 +279,7 @@ public class EnemyManager : MonoBehaviour
         {
             float size = Utils.GetSceneSize(Utils.ParseEnum<Size>(enemyData.size));
             Gizmos.color = Color.cyan;
-            Utils.GizmoDrawBox(size, size * 2, (Vector3.up * size) + transform.position);
+            GizmoExtensions.DrawBox(size, size * 2, (Vector3.up * size) + transform.position);
         }
     }
 
@@ -333,6 +334,17 @@ public class EnemyManager : MonoBehaviour
     {
         float length = spine.PlayAnimationSequence("Death");
         return length;
+    }
+
+    private void ActivateCollider(PointerData _) 
+    {
+        if (collider != null)
+            collider.enabled = true;
+    }
+    private void DeactivateCollider(string _) 
+    {
+        if(collider != null)
+            collider.enabled = false;
     }
 
     private void CheckDeath(int current)
@@ -394,33 +406,15 @@ public class EnemyManager : MonoBehaviour
         return null;
     }
 
-    private List<Tooltip> GetTooltipInfo()
+    public void SetTooltip(List<Tooltip> tooltips)
     {
-        List<Tooltip> list = new List<Tooltip>();
-
-        foreach (IntentIcon icon in GetComponentsInChildren<IntentIcon>())
-        {
-            list.Add(icon.GetTooltip());
-        }
-
-        foreach (StatusIcon icon in GetComponentsInChildren<StatusIcon>())
-        {
-            list.Add(icon.GetTooltip());
-        }
-
-        return list;
-    }
-    private void SetTooltip()
-    {
-        Vector3 anchorPoint = new Vector3(collider.bounds.center.x - collider.bounds.extents.x,
-            collider.bounds.center.y, 0);
+        collider.enabled = true;
+        enemyBounds = collider.bounds;
+        Vector3 anchorPoint = new Vector3(enemyBounds.center.x - enemyBounds.extents.x,
+            enemyBounds.center.y, 0);
         // Tooltip On
-        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(GetTooltipInfo(), TooltipController.Anchor.MiddleRight, anchorPoint, null);
-    }
-    private void SemoveTooltip()
-    {
-        // Tooltip Off
-        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.MiddleRight, anchorPoint, null);
+        collider.enabled = false;
     }
 
     private GameObject FindPrefab(string enemyName)
