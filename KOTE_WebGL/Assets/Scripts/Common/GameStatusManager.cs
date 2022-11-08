@@ -166,7 +166,7 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
         GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
-        GameManager.Instance.EVENT_SHOW_MERCHANT_PANEL.Invoke();
+        GameManager.Instance.EVENT_TOGGLE_MERCHANT_PANEL.Invoke(true);
     }
 
     private void InitializeCampNode()

@@ -48,9 +48,9 @@ public class PotionsContainerManager : MonoBehaviour
         potions.Clear();
     }
 
-    private void CreateHeldPotions(List<Potion> heldPotions)
+    private void CreateHeldPotions(List<PotionData> heldPotions)
     {
-        foreach (Potion potion in heldPotions)
+        foreach (PotionData potion in heldPotions)
         {
             PotionManager potionManager =
                 Instantiate(potionPrefab, potionLayout.transform).GetComponent<PotionManager>();

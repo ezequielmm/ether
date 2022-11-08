@@ -220,7 +220,7 @@ public class PlayerData
     public int energyMax;
     public int defense;
     public List<Card> cards;
-    public List<Potion> potions;
+    public List<PotionData> potions;
 }
 
 [Serializable]
@@ -243,7 +243,17 @@ public class Card
 }
 
 [Serializable]
-public class Potion
+public class Trinket 
+{
+    public string id;
+    public string name;
+    public string rarity;
+    public string description;
+    public int coinCost;
+}
+
+[Serializable]
+public class PotionData
 {
     public string id;
     public int potionId;
@@ -399,6 +409,63 @@ public class SWSM_Base
     {
         public string message_type;
         public string action;
+    }
+}
+
+[Serializable]
+public class MerchantData 
+{
+    public int coins;
+    public int shopkeeper;
+    public string speech_bubble;
+    public List<Merchant<Card>> cards;
+    public List<Merchant<Card>> neutral_cards; // TODO
+    public List<Merchant<Trinket>> trinkets;
+    public List<Merchant<PotionData>> potions;
+
+    [Serializable]
+    public class Merchant<T> : IMerchant
+    {
+        [SerializeField]
+        protected int itemId;
+        [SerializeField]
+        protected int coin;
+        [SerializeField]
+        protected bool is_sale;
+        [SerializeField]
+        protected string type;
+        [SerializeField]
+        protected string id;
+
+        public int ItemId { get => itemId; set => itemId = value; }
+        public int Coin { get => coin; set => coin = value; }
+        public bool IsSold { get => is_sale; set => is_sale = value; }
+        public string Type { get => type; set => type = value; }
+        public string Id { get => id; set => id = value; }
+        public T item;
+    }
+
+    public interface IMerchant 
+    {
+        public int ItemId { get; set; }
+        public int Coin { get; set; }
+        public bool IsSold { get; set; }
+        public string Type { get; set; }
+        public string Id { get; set; }
+    }
+}
+
+[Serializable]
+public class SWSM_MerchantData
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public string message_type;
+        public string action;
+        public MerchantData data;
     }
 }
 
@@ -712,7 +779,7 @@ public class RewardItemData
     public string type;
     public int amount;
     public bool taken;
-    public RewardPotion potion;
+    public PotionData potion;
     public Card card;
 }
 
