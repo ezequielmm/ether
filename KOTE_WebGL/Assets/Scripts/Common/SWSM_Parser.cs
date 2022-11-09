@@ -344,18 +344,23 @@ public class SWSM_Parser
     {
         SWSM_ShowCardDialog showCards = JsonUtility.FromJson<SWSM_ShowCardDialog>(data);
         Debug.Log($"[SWSM Parser] [Show Card Dialog] data: {data}");
+        if (showCards.data.data.cards == null ||showCards.data.data.cards.Count == 0)
+        {
+            GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT.Invoke("Not enough cards on pile");
+            return;
+        }
         SelectPanelOptions panelOptions = new SelectPanelOptions
         {
             HideBackButton = true,
             MustSelectAllCards = false,
-            NumberOfCardsToSelect = showCards.data.data.cardsToTake
+            NumberOfCardsToSelect = showCards.data.data.cardsToTake,
+            ShowCardInCenter = true
         };
         GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCards.data.data.cards,
            panelOptions,
             (selectedCards) =>
             {
                 GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards);
-                GameManager.Instance.EVENT_HIDE_COMMON_CARD_PANEL.Invoke();
             });
     }
 

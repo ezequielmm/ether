@@ -207,6 +207,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<StatusData> EVENT_UPDATE_STATUS_EFFECTS = new UnityEvent<StatusData>();
     [HideInInspector] public UnityEvent EVENT_CLEAR_TOOLTIPS = new UnityEvent();
     [HideInInspector] public UnityEvent<bool> EVENT_TOGGLE_TOOLTIPS = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<string> EVENT_SHOW_COMBAT_OVERLAY_TEXT = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>  EVENT_SET_TOOLTIPS { get; } = 
         new UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>();
     [HideInInspector] public UnityEvent<string, int> EVENT_HEAL = new UnityEvent<string, int>(); // id, healed amount
