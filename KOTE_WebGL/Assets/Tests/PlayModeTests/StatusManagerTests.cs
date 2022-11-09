@@ -1,21 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using map;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-public class StatusManagerTests
+public class StatusManagerTests : MonoBehaviour
 {
     private StatusManager _statusManager;
+    private GameObject player;
 
     [UnitySetUp]
     public IEnumerator Setup()
     {
-        GameObject playerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/PlayerBaseNew.prefab");
-        GameObject player = GameObject.Instantiate(playerPrefab);
+        GameObject playerPrefab =
+            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/PlayerBaseNew.prefab");
+        player = Instantiate(playerPrefab);
         PlayerManager playerManager = player.GetComponent<PlayerManager>();
         playerManager.PlayerData = new PlayerData
         {
@@ -32,6 +32,13 @@ public class StatusManagerTests
         _statusManager = player.GetComponentInChildren<StatusManager>();
         player.SetActive(true);
 
+        yield return null;
+    }
+
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        Destroy(player);
         yield return null;
     }
 
@@ -69,7 +76,7 @@ public class StatusManagerTests
         {
             if (transform.gameObject.name.Contains("Status Icon")) count++;
         }
-        
+
         Assert.AreEqual(1, count);
     }
 
@@ -78,7 +85,9 @@ public class StatusManagerTests
     {
         bool eventFired = false;
         WS_DATA_REQUEST_TYPES resultType = WS_DATA_REQUEST_TYPES.Enemies;
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener((requestType) => { eventFired = true;
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener((requestType) =>
+        {
+            eventFired = true;
             resultType = requestType;
         });
         GameManager.Instance.EVENT_CHANGE_TURN.Invoke("");
@@ -90,10 +99,9 @@ public class StatusManagerTests
     [UnityTest]
     public IEnumerator DoesUpdateStatusCreateStatusIcon()
     {
-
         List<StatusData.Status> statuses = new List<StatusData.Status>
             { new StatusData.Status { counter = 1, description = "test", name = "resolve" } };
-            ;
+        ;
         _statusManager.UpdateStatus(statuses);
         yield return null;
         // all this insanity is just to count the number of status icons created
@@ -103,7 +111,7 @@ public class StatusManagerTests
         {
             if (transform.gameObject.name.Contains("Status Icon")) count++;
         }
-        
+
         Assert.AreEqual(1, count);
     }
 }

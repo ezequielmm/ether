@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
 
-public class WebRequesterManagerTests 
+public class WebRequesterManagerTests : MonoBehaviour
 {
     private WebRequesterManager requestManager;
 
@@ -25,6 +25,13 @@ public class WebRequesterManagerTests
         requestManager = GameObject.Find("WebRequesterManager").GetComponent<WebRequesterManager>();
     }
 
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        Destroy(requestManager.gameObject);
+        yield return null;
+    }
+
     [UnityTest]
     public IEnumerator DoesWebRequesterManagerObjectExist()
     {
@@ -36,7 +43,7 @@ public class WebRequesterManagerTests
     [UnityTest]
     public IEnumerator DoesWebRequesterManagerScriptExist()
     {
-        WebRequesterManager testManager =GameObject.Find("WebRequesterManager").GetComponent<WebRequesterManager>();
+        WebRequesterManager testManager = GameObject.Find("WebRequesterManager").GetComponent<WebRequesterManager>();
         yield return null;
         Assert.IsNotNull(testManager);
     }

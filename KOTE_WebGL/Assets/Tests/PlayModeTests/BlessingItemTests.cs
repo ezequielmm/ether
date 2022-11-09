@@ -47,4 +47,11 @@ public class BlessingItemTests : MonoBehaviour
         _blessingItem.OnBlessingItemSelected();
         Assert.True(eventFired);
     }
+    
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        Destroy(_blessingItem.gameObject);
+        yield return null;
+    }
 }

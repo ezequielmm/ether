@@ -19,6 +19,13 @@ public class RegisterPanelManagerTests : MonoBehaviour
         registerManager.SetActive(true);
         yield return null;
     }
+    
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        Destroy(registerPanel.gameObject);
+        yield return null;
+    }
 
     [Test]
     public void DoesOnShowPasswordChangeInputFieldContentType()

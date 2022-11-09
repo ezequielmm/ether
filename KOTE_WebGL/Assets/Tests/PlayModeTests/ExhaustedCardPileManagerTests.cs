@@ -9,6 +9,7 @@ using UnityEngine.TestTools;
 public class ExhaustedCardPileManagerTests : MonoBehaviour
 {
     private ExhaustedCardPileManager _exhaustManager;
+    private GameObject go;
 
     [UnitySetUp]
     public IEnumerator Setup()
@@ -17,15 +18,23 @@ public class ExhaustedCardPileManagerTests : MonoBehaviour
         GameObject go = new GameObject();
         Camera camera = go.AddComponent<Camera>();
         camera.tag = "MainCamera";
-        
+
         GameObject exhaustedCardPilePrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/BattleUI/ExhaustedPilePrefab.prefab");
         GameObject exhaustPileManager = Instantiate(exhaustedCardPilePrefab);
         _exhaustManager = exhaustPileManager.GetComponent<ExhaustedCardPileManager>();
         exhaustPileManager.SetActive(true);
         EventSystem eventSystem = exhaustPileManager.AddComponent<EventSystem>();
-        
 
+
+        yield return null;
+    }
+
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        Destroy(_exhaustManager.gameObject);
+        Destroy(go);
         yield return null;
     }
 
@@ -33,7 +42,7 @@ public class ExhaustedCardPileManagerTests : MonoBehaviour
     public void DoesExhaustingaCardFireSFXEvent()
     {
         bool eventFired = false;
-        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data) => { eventFired = true;});
+        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data) => { eventFired = true; });
         GameManager.Instance.EVENT_CARD_EXHAUST.Invoke();
         Assert.True(eventFired);
     }
@@ -42,7 +51,7 @@ public class ExhaustedCardPileManagerTests : MonoBehaviour
     public void DoesExhaustingaCardFireCorrectSFX()
     {
         string sfxType = "";
-        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data) => { sfxType = data;});
+        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data) => { sfxType = data; });
         GameManager.Instance.EVENT_CARD_EXHAUST.Invoke();
         Assert.AreEqual("Card Exhaust", sfxType);
     }
@@ -53,7 +62,7 @@ public class ExhaustedCardPileManagerTests : MonoBehaviour
         GameManager.Instance.EVENT_CARD_EXHAUST.Invoke();
         LogAssert.Expect(LogType.Log, "[Exhaust Pile] Card Exhausted.");
     }
-    
+
     [Test]
     public void DoesUpdatingPilesUpdatePileAmount()
     {
@@ -61,7 +70,7 @@ public class ExhaustedCardPileManagerTests : MonoBehaviour
         {
             data = new Cards
             {
-                exhausted = new List<Card>{ new Card()}
+                exhausted = new List<Card> { new Card() }
             }
         });
         Assert.AreEqual("1", _exhaustManager.amountOfCardsTF.text);
@@ -71,11 +80,11 @@ public class ExhaustedCardPileManagerTests : MonoBehaviour
     public void DoesClickingThePileFirePileClickedEvent()
     {
         bool eventFired = false;
-        GameManager.Instance.EVENT_CARD_PILE_CLICKED.AddListener((data) => { eventFired = true;});
+        GameManager.Instance.EVENT_CARD_PILE_CLICKED.AddListener((data) => { eventFired = true; });
         _exhaustManager.OnPileClick();
         Assert.True(eventFired);
     }
-    
+
     [Test]
     public void DoesOnPointerEnterFireSetToolTipEvent()
     {
@@ -84,7 +93,7 @@ public class ExhaustedCardPileManagerTests : MonoBehaviour
         _exhaustManager.OnPointerEnter(new PointerEventData(EventSystem.current));
         Assert.True(eventFired);
     }
-    
+
     [Test]
     public void DoesOnPointerExitFireClearToolTipEvent()
     {

@@ -21,6 +21,13 @@ public class DebugManagerTests : MonoBehaviour
         debugManagerInstance.SetActive(true);
         yield return null;
     }
+    
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        Destroy(debugManager.gameObject);
+        yield return null;
+    }
 
     [Test]
     public void DoesStartDeactivateConsole()

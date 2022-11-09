@@ -8,9 +8,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-public class TopBarManagerTests
+public class TopBarManagerTests : MonoBehaviour
 {
     private TopBarManager _topBarManager;
+    private GameObject go;
 
     [UnitySetUp]
     public IEnumerator Setup()
@@ -24,6 +25,14 @@ public class TopBarManagerTests
         _topBarManager = TopBar.GetComponent<TopBarManager>();
         TopBar.SetActive(true);
 
+        yield return null;
+    }
+    
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        Destroy(go);
+        Destroy(_topBarManager.gameObject);
         yield return null;
     }
 

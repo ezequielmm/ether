@@ -9,16 +9,6 @@ using UnityEngine.TestTools;
 
 public class SWSM_ParserTests
 {
-    [UnitySetUp]
-    public IEnumerator Setup()
-    {
-        AsyncOperation sceneLoad = SceneManager.LoadSceneAsync("Scenes/MainMenu");
-        while (!sceneLoad.isDone)
-        {
-            yield return null;
-        }
-    }
-
     [Test]
     public void DoesUpdateMapActionPickerInvokeShowMapEvents()
     {

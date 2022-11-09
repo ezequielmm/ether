@@ -10,13 +10,14 @@ using UnityEngine.TestTools;
 public class CampPanelManagerTests : MonoBehaviour
 {
     private CampPanelManager _campPanelManager;
+    private GameObject spriteManager;
 
     [UnitySetUp]
     public IEnumerator Setup()
     {
         GameObject spriteManagerPrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/SpriteManager.prefab");
-        GameObject spriteManager = Instantiate(spriteManagerPrefab);
+        spriteManager = Instantiate(spriteManagerPrefab);
         spriteManager.SetActive(true);
         yield return null;
 
@@ -25,6 +26,14 @@ public class CampPanelManagerTests : MonoBehaviour
         GameObject campPanelGo = Instantiate(CampPanelPrefab);
         _campPanelManager = campPanelGo.GetComponent<CampPanelManager>();
         campPanelGo.SetActive(true);
+        yield return null;
+    }
+    
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        Destroy(_campPanelManager.gameObject);
+        Destroy(spriteManager);
         yield return null;
     }
 
@@ -155,4 +164,6 @@ public class CampPanelManagerTests : MonoBehaviour
         GameManager.Instance.EVENT_CAMP_FINISH.Invoke();
         Assert.AreEqual("Continue", _campPanelManager.skipButtonText.text);
     }
+    
+    
 }

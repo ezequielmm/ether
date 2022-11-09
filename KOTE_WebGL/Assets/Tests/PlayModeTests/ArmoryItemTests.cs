@@ -47,4 +47,11 @@ public class ArmoryItemTests : MonoBehaviour
         _armoryItem.OnArmoryItemSelected();
         Assert.True(eventFired);
     }
+
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        Destroy(_armoryItem.gameObject);
+        yield return null;
+    }
 }

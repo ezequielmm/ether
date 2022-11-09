@@ -9,23 +9,32 @@ using UnityEngine.TestTools;
 public class DrawCardPileManagerTests : MonoBehaviour
 {
     private DrawCardPileManager _drawManager;
+    private GameObject go;
 
     [UnitySetUp]
     public IEnumerator Setup()
     {
         // add a camera so that things will run
-        GameObject go = new GameObject();
+        go = new GameObject();
         Camera camera = go.AddComponent<Camera>();
         camera.tag = "MainCamera";
-        
+
         GameObject drawPilePrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/BattleUI/DrawCardPile.prefab");
         GameObject drawPileManager = Instantiate(drawPilePrefab);
         _drawManager = drawPileManager.GetComponent<DrawCardPileManager>();
         drawPileManager.SetActive(true);
         EventSystem eventSystem = drawPileManager.AddComponent<EventSystem>();
-        
 
+
+        yield return null;
+    }
+
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        Destroy(_drawManager.gameObject);
+        Destroy(go);
         yield return null;
     }
 
@@ -33,7 +42,7 @@ public class DrawCardPileManagerTests : MonoBehaviour
     public void DoesShufflingCardsFireSFXEvent()
     {
         bool eventFired = false;
-        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data) => { eventFired = true;});
+        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data) => { eventFired = true; });
         GameManager.Instance.EVENT_CARD_SHUFFLE.Invoke();
         Assert.True(eventFired);
     }
@@ -42,7 +51,7 @@ public class DrawCardPileManagerTests : MonoBehaviour
     public void DoesShufflingCardsFireCorrectSFX()
     {
         string sfxType = "";
-        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data) => { sfxType = data;});
+        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data) => { sfxType = data; });
         GameManager.Instance.EVENT_CARD_SHUFFLE.Invoke();
         Assert.AreEqual("Deck Shuffle", sfxType);
     }
@@ -54,7 +63,7 @@ public class DrawCardPileManagerTests : MonoBehaviour
         {
             data = new Cards
             {
-                draw = new List<Card>{ new Card()}
+                draw = new List<Card> { new Card() }
             }
         });
         Assert.AreEqual("1", _drawManager.amountOfCardsTF.text);
@@ -64,11 +73,11 @@ public class DrawCardPileManagerTests : MonoBehaviour
     public void DoesClickingThePileFirePileClickedEvent()
     {
         bool eventFired = false;
-        GameManager.Instance.EVENT_CARD_PILE_CLICKED.AddListener((data) => { eventFired = true;});
+        GameManager.Instance.EVENT_CARD_PILE_CLICKED.AddListener((data) => { eventFired = true; });
         _drawManager.OnPileClick();
         Assert.True(eventFired);
     }
-    
+
     [Test]
     public void DoesOnPointerEnterFireSetToolTipEvent()
     {
@@ -77,7 +86,7 @@ public class DrawCardPileManagerTests : MonoBehaviour
         _drawManager.OnPointerEnter(new PointerEventData(EventSystem.current));
         Assert.True(eventFired);
     }
-    
+
     [Test]
     public void DoesOnPointerExitFireClearToolTipEvent()
     {

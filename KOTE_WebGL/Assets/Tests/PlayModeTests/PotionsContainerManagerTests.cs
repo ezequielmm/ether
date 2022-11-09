@@ -9,7 +9,10 @@ using UnityEngine.TestTools;
 public class PotionsContainerManagerTests : MonoBehaviour
 {
     private GameObject cursorObject;
+    private GameObject go;
+    private GameObject spriteManager;
     private PotionsContainerManager _potionsContainerManager;
+    private GameObject potionPrefab;
 
     private PlayerStateData emptyPlayerState = new PlayerStateData
     {
@@ -89,7 +92,7 @@ public class PotionsContainerManagerTests : MonoBehaviour
     [UnitySetUp]
     public IEnumerator Setup()
     {
-        GameObject go = new GameObject();
+        go = new GameObject();
         Camera camera = go.AddComponent<Camera>();
         camera.tag = "MainCamera";
 
@@ -100,7 +103,7 @@ public class PotionsContainerManagerTests : MonoBehaviour
 
         GameObject spriteManagerPrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/SpriteManager.prefab");
-        GameObject spriteManager = Instantiate(spriteManagerPrefab);
+        spriteManager = Instantiate(spriteManagerPrefab);
         spriteManager.SetActive(true);
         yield return null;
 
@@ -111,10 +114,21 @@ public class PotionsContainerManagerTests : MonoBehaviour
         potionsContainerGameObject.SetActive(true);
         yield return null;
 
-        GameObject potionPrefab =
+        potionPrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/BattleUI/PotionPrefab.prefab");
         dummyPotion = Instantiate(potionPrefab).GetComponent<PotionManager>();
         dummyPotion.Populate(_potionData);
+    }
+
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        Destroy(cursorObject);
+        Destroy(go);
+        Destroy(spriteManager);
+        Destroy(potionPrefab);
+        Destroy(_potionsContainerManager.gameObject);
+        yield return null;
     }
 
     [Test]
@@ -275,13 +289,5 @@ public class PotionsContainerManagerTests : MonoBehaviour
         Assert.True(_potionsContainerManager.drinkButton.gameObject.activeSelf);
         Assert.True(_potionsContainerManager.discardButton.gameObject.activeSelf);
         Assert.False(_potionsContainerManager.warningText.gameObject.activeSelf);
-    }
-    
-
-    [UnityTearDown]
-    public IEnumerator TearDown()
-    {
-        Destroy(cursorObject);
-        yield return null;
     }
 }

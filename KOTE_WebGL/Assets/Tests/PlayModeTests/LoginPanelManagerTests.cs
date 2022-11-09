@@ -12,6 +12,7 @@ using UnityEngine.TestTools;
 public class LoginPanelManagerTests : MonoBehaviour
 {
     private LoginPanelManager loginPanel;
+    private GameObject metaMask;
 
     [UnitySetUp]
     public IEnumerator Setup()
@@ -19,7 +20,7 @@ public class LoginPanelManagerTests : MonoBehaviour
         PlayerPrefs.DeleteAll();
         GameObject metaMaskPrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Common/MetaMask.prefab");
-        GameObject metaMask = Instantiate(metaMaskPrefab);
+        metaMask = Instantiate(metaMaskPrefab);
         metaMask.SetActive(true);
         yield return null;
 
@@ -29,6 +30,14 @@ public class LoginPanelManagerTests : MonoBehaviour
         GameObject loginManager = Instantiate(loginPanelPrefab);
         loginPanel = loginManager.GetComponent<LoginPanelManager>();
         loginManager.SetActive(true);
+        yield return null;
+    }
+    
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        Destroy(loginPanel.gameObject);
+        Destroy(metaMask);
         yield return null;
     }
 

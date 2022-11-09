@@ -28,4 +28,11 @@ public class CampHealAnimationManagerTests : MonoBehaviour
         GameManager.Instance.EVENT_HEAL.Invoke("camp", 1);
         Assert.True(healEffect.isPlaying);
     }
+    
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        Destroy(campHealManager.gameObject);
+        yield return null;
+    }
 }

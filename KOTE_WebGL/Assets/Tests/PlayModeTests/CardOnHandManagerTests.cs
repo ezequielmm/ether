@@ -10,6 +10,12 @@ using UnityEngine.TestTools;
 public class CardOnHandManagerTests : MonoBehaviour
 {
     private CardOnHandManager cardManager;
+    private GameObject drawPileManager;
+    private GameObject discardPile;
+    private GameObject exhaustPileManager;
+    private GameObject spriteManager;
+    private GameObject cameraGo;
+    private GameObject spriteCardInstance;
 
     private Transform drawPos;
     private Transform exhaustPos;
@@ -69,13 +75,13 @@ public class CardOnHandManagerTests : MonoBehaviour
         };
 
         // add a camera so that things will run
-        GameObject go = new GameObject();
-        Camera camera = go.AddComponent<Camera>();
-        camera.tag = "MainCamera";
+        cameraGo = new GameObject();
+        Camera newCamera = cameraGo.AddComponent<Camera>();
+        newCamera.tag = "MainCamera";
 
         GameObject drawPilePrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/BattleUI/DrawCardPile.prefab");
-        GameObject drawPileManager = Instantiate(drawPilePrefab);
+        drawPileManager = Instantiate(drawPilePrefab);
         drawPileManager.name = "DrawCardPile";
         drawPos = drawPileManager.transform;
         drawPileManager.SetActive(true);
@@ -83,7 +89,7 @@ public class CardOnHandManagerTests : MonoBehaviour
 
         GameObject DiscardPilePrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/BattleUI/DiscardCardPile.prefab");
-        GameObject discardPile = GameObject.Instantiate(DiscardPilePrefab);
+        discardPile = GameObject.Instantiate(DiscardPilePrefab);
         discardPos = discardPile.transform;
         discardPile.name = "DiscardCardPile";
         discardPile.SetActive(true);
@@ -91,22 +97,35 @@ public class CardOnHandManagerTests : MonoBehaviour
 
         GameObject exhaustedCardPilePrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/BattleUI/ExhaustedPilePrefab.prefab");
-        GameObject exhaustPileManager = Instantiate(exhaustedCardPilePrefab);
+        exhaustPileManager = Instantiate(exhaustedCardPilePrefab);
         exhaustPos = exhaustPileManager.transform;
         exhaustPileManager.name = "ExhaustedPilePrefab";
         exhaustPileManager.SetActive(true);
 
         GameObject spriteManagerPrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/SpriteManager.prefab");
-        GameObject spriteManager = Instantiate(spriteManagerPrefab);
+        spriteManager = Instantiate(spriteManagerPrefab);
         spriteManager.SetActive(true);
         yield return null;
 
         GameObject spriteCardPrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Common/SpriteCardPrefab.prefab");
-        GameObject spriteCardInstance = Instantiate(spriteCardPrefab);
+        spriteCardInstance = Instantiate(spriteCardPrefab);
         cardManager = spriteCardInstance.GetComponent<CardOnHandManager>();
         spriteCardInstance.SetActive(true);
+        yield return null;
+    }
+
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        Destroy(cardManager.gameObject);
+        Destroy(discardPile);
+        Destroy(exhaustPileManager);
+        Destroy(cameraGo);
+        Destroy(spriteManager);
+        Destroy(spriteCardInstance);
+        Destroy(drawPileManager);
         yield return null;
     }
 
@@ -484,20 +503,20 @@ public class CardOnHandManagerTests : MonoBehaviour
         cardManager.Populate(testCard, 1);
         Assert.AreEqual(cardManager.redColor, cardManager.energyTF.color);
         cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand);
-        GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(3,3);
+        GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(3, 3);
         yield return new WaitForSeconds(1.01f);
-        Assert.AreEqual(Color.black,cardManager.energyTF.color);
+        Assert.AreEqual(Color.black, cardManager.energyTF.color);
     }
-    
+
     [UnityTest]
     public IEnumerator DoesMovingCardWithDelayFromDrawToHandProcessOnMoveCompleted()
     {
         cardManager.Populate(testCard, 1);
         Assert.AreEqual(cardManager.redColor, cardManager.energyTF.color);
         cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, delay: 0.5f);
-        GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(3,3);
+        GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(3, 3);
         yield return new WaitForSeconds(1.6f);
-        Assert.AreEqual(Color.black,cardManager.energyTF.color);
+        Assert.AreEqual(Color.black, cardManager.energyTF.color);
     }
 
     [UnityTest]
@@ -506,9 +525,9 @@ public class CardOnHandManagerTests : MonoBehaviour
         cardManager.Populate(testCard, 1);
         Assert.AreEqual(cardManager.redColor, cardManager.energyTF.color);
         cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand);
-        GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(3,3);
+        GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(3, 3);
         yield return new WaitForSeconds(1.01f);
-        Assert.AreEqual(Color.black,cardManager.energyTF.color);
+        Assert.AreEqual(Color.black, cardManager.energyTF.color);
     }
 
     [UnityTest]

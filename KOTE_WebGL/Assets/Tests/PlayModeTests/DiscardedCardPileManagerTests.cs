@@ -9,16 +9,17 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-public class DiscardedCardPileManagerTests
+public class DiscardedCardPileManagerTests : MonoBehaviour
 {
     private DiscardedCardPileManager _discardManager;
+    private GameObject cameraObject;
 
     [UnitySetUp]
     public IEnumerator Setup()
     {
         // add a camera so that things will run
-        GameObject go = new GameObject();
-        Camera camera = go.AddComponent<Camera>();
+         cameraObject = new GameObject();
+        Camera camera = cameraObject.AddComponent<Camera>();
         camera.tag = "MainCamera";
         
         GameObject DiscardPilePrefab =
@@ -29,6 +30,14 @@ public class DiscardedCardPileManagerTests
         EventSystem eventSystem = discardPile.AddComponent<EventSystem>();
         
 
+        yield return null;
+    }
+    
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        Destroy(_discardManager.gameObject);
+        Destroy(cameraObject);
         yield return null;
     }
 

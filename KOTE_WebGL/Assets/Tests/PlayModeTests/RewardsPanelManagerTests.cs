@@ -9,6 +9,7 @@ using UnityEngine.TestTools;
 public class RewardsPanelManagerTests : MonoBehaviour
 {
     private RewardsPanelManager _rewardsPanelManager;
+    private GameObject spriteManager;
 
     private readonly SWSM_RewardsData _coinRewardData = new SWSM_RewardsData
     {
@@ -78,7 +79,7 @@ public class RewardsPanelManagerTests : MonoBehaviour
     {
         GameObject spriteManagerPrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/SpriteManager.prefab");
-        GameObject spriteManager = Instantiate(spriteManagerPrefab);
+        spriteManager = Instantiate(spriteManagerPrefab);
         spriteManager.SetActive(true);
         yield return null;
 
@@ -87,6 +88,14 @@ public class RewardsPanelManagerTests : MonoBehaviour
         GameObject rewardPanelManager = Instantiate(drawPilePrefab);
         _rewardsPanelManager = rewardPanelManager.GetComponent<RewardsPanelManager>();
         rewardPanelManager.SetActive(true);
+        yield return null;
+    }
+    
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        Destroy(_rewardsPanelManager.gameObject);
+        Destroy(spriteManager);
         yield return null;
     }
 

@@ -3,7 +3,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class GameStatusManagerTests
+public class GameStatusManagerTests : MonoBehaviour
 {
     private GameStatusManager _gameStatusManager;
 
@@ -16,6 +16,13 @@ public class GameStatusManagerTests
         mapPrefab.SetActive(true);
         _gameStatusManager = mapPrefab.GetComponent<GameStatusManager>();
         mapPrefab.SetActive(true);
+        yield return null;
+    }
+    
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        Destroy(_gameStatusManager.gameObject);
         yield return null;
     }
 
