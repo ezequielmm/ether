@@ -29,6 +29,7 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_CAMP_HEAL = "CampRecoverHealth";
     private const string WS_MESSAGE_USE_POTION = "UsePotion";
     private const string WS_MESSAGE_REMOVE_POTION = "RemovePotion";
+    private const string WS_MESSAGE_OPEN_CHEST = "OpenChest";
     
     /*private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
     private const string WS_MESSAGE_GET_CARD_PILES = "GetCardPiles";
@@ -151,6 +152,7 @@ public class WebSocketManager : MonoBehaviour
         GameManager.Instance.EVENT_CAMP_HEAL.AddListener(OnCampHealSelected);
         GameManager.Instance.EVENT_POTION_USED.AddListener(OnPotionUsed);
         GameManager.Instance.EVENT_POTION_DISCARDED.AddListener(OnPotionDiscarded);
+        GameManager.Instance.EVENT_TREASURE_OPEN_CHEST.AddListener(OnTreasureOpened);
 
         GameManager.Instance.EVENT_WS_CONNECTED.Invoke();
     }
@@ -251,6 +253,12 @@ public class WebSocketManager : MonoBehaviour
     private void OnCampHealSelected()
     {
         rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_CAMP_HEAL);
+    }
+
+    private void OnTreasureOpened()
+    {
+        Debug.Log($"[WebSocketManager] Sending message {WS_MESSAGE_OPEN_CHEST}");
+        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_OPEN_CHEST);
     }
 
     private void OnShowUpgradePair(string cardId)
