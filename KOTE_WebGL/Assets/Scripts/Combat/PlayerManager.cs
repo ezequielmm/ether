@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(Collider2D))]
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : MonoBehaviour, ITooltipSetter
 {
     public SpineAnimationsManagement spineAnimationsManagement;
     public DefenseController defenseController;
@@ -18,6 +18,8 @@ public class PlayerManager : MonoBehaviour
     private StatusManager statusManager;
     private Action RunWithEvent;
     private bool CalledEvent;
+
+    Bounds playerBounds;
 
     private PlayerData playerData;
     public PlayerData PlayerData
@@ -43,6 +45,11 @@ public class PlayerManager : MonoBehaviour
 
 
         collider = GetComponent<Collider2D>();
+        playerBounds = collider.bounds;
+        collider.enabled = false;
+
+        GameManager.Instance.EVENT_ACTIVATE_POINTER.AddListener(ActivateCollider);
+        GameManager.Instance.EVENT_DEACTIVATE_POINTER.AddListener(DeactivateCollider);
 
         if (statusManager == null)
             statusManager = GetComponentInChildren<StatusManager>();
@@ -56,9 +63,20 @@ public class PlayerManager : MonoBehaviour
 
     }
 
-    private void OnAttackRequest(CombatTurnData attack) 
+    private void ActivateCollider(PointerData _)
     {
-        if(attack.originType != "player") return;
+        if (collider != null)
+            collider.enabled = true;
+    }
+    private void DeactivateCollider(string _)
+    {
+        if (collider != null)
+            collider.enabled = false;
+    }
+
+    private void OnAttackRequest(CombatTurnData attack)
+    {
+        if (attack.originType != "player") return;
         RunAfterEvent(null);
 
         Debug.Log($"[PlayerManager] Combat Request GET!");
@@ -111,7 +129,7 @@ public class PlayerManager : MonoBehaviour
             });
         }
     }
-    private void OnAttackResponse(CombatTurnData attack) 
+    private void OnAttackResponse(CombatTurnData attack)
     {
         var target = attack.GetTarget("player");
         if (target == null) return;
@@ -129,7 +147,7 @@ public class PlayerManager : MonoBehaviour
         {
             // Play Armored Clang
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Block");
-        } 
+        }
         else if (target.healthDelta < 0) // Damage Taken no armor
         {
             // Play Attack audio
@@ -168,31 +186,32 @@ public class PlayerManager : MonoBehaviour
             statusManager.UpdateStatus(target.statuses);
         }
 
-        RunAfterTime(waitDuration, () => {
-            GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId); 
+        RunAfterTime(waitDuration, () =>
+        {
+            GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId);
             //CheckDeath(target.finalHealth); 
         });
     }
-    private void RunAfterEvent(Action toRun) 
+    private void RunAfterEvent(Action toRun)
     {
         RunWithEvent = toRun;
     }
 
-    private void OnAnimationEvent(string eventName) 
+    private void OnAnimationEvent(string eventName)
     {
-        if (eventName.Equals("attack") || eventName.Equals("release")) 
+        if (eventName.Equals("attack") || eventName.Equals("release"))
         {
             CalledEvent = true;
             RunWithEvent.Invoke();
         }
     }
 
-    private void RunAfterTime(float time, Action toRun) 
+    private void RunAfterTime(float time, Action toRun)
     {
         StartCoroutine(runCoroutine(time, toRun));
     }
 
-    private IEnumerator runCoroutine(float time, Action toRun) 
+    private IEnumerator runCoroutine(float time, Action toRun)
     {
         yield return new WaitForSeconds(time);
         toRun.Invoke();
@@ -200,7 +219,7 @@ public class PlayerManager : MonoBehaviour
 
     private PlayerData ProcessNewData(PlayerData old, PlayerData current)
     {
-        if (old == null) 
+        if (old == null)
         {
             SetDefense(current.defense);
             SetHealth(current.hpCurrent, current.hpMax);
@@ -210,7 +229,7 @@ public class PlayerManager : MonoBehaviour
         int hpDelta = current.hpCurrent - old.hpCurrent;
         int defenseDelta = current.defense - old.defense;
 
-        if (defenseDelta < 0) 
+        if (defenseDelta < 0)
         {
             // Natural Defense Fall (eg: New Turn)
         }
@@ -223,11 +242,11 @@ public class PlayerManager : MonoBehaviour
 
     private void SetHealth(int? current = null, int? max = null)
     {
-        if (current == null) 
+        if (current == null)
         {
             current = playerData.hpCurrent;
         }
-        if (max == null) 
+        if (max == null)
         {
             max = playerData.hpMax;
         }
@@ -239,12 +258,12 @@ public class PlayerManager : MonoBehaviour
 
         if (healthBar.value != current)
         {
-            healthBar.DOValue(current.Value, 1).OnComplete( () => { CheckDeath(current.Value); });
+            healthBar.DOValue(current.Value, 1).OnComplete(() => { CheckDeath(current.Value); });
         }
     }
-    private void OnUpdateEnergy(int currentEnergy, int maxEnergy) 
+    private void OnUpdateEnergy(int currentEnergy, int maxEnergy)
     {
-        if (currentEnergy == 0) 
+        if (currentEnergy == 0)
         {
             // Out of energy audio
             GameManager.Instance.EVENT_PLAY_SFX.Invoke("Out Of Energy");
@@ -263,14 +282,14 @@ public class PlayerManager : MonoBehaviour
 
     private void SetDefense(int? value = null)
     {
-        if (value == null) 
+        if (value == null)
         {
             value = playerData.defense;
         }
         defenseController.Defense = value.Value;
     }
 
-    public float PlayAnimation(string animationSequence) 
+    public float PlayAnimation(string animationSequence)
     {
         float length = spineAnimationsManagement.PlayAnimationSequence(animationSequence);
         spineAnimationsManagement.PlayAnimationSequence("Idle");
@@ -292,7 +311,7 @@ public class PlayerManager : MonoBehaviour
         return length;
     }
 
-    private float OnDeath() 
+    private float OnDeath()
     {
         float length = spineAnimationsManagement.PlayAnimationSequence("Death");
         return length;
@@ -307,40 +326,22 @@ public class PlayerManager : MonoBehaviour
             GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), nameof(PlayerState.dying));
 
             // Play animation
-            RunAfterTime(OnDeath(), () => {
+            RunAfterTime(OnDeath(), () =>
+            {
                 // Tell game that a player is dead
                 GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), nameof(PlayerState.dead));
             });
         }
     }
 
-    private List<Tooltip> GetTooltipInfo()
+    public void SetTooltip(List<Tooltip> tooltips)
     {
-        List<Tooltip> list = new List<Tooltip>();
-
-        foreach (IntentIcon icon in GetComponentsInChildren<IntentIcon>())
-        {
-            list.Add(icon.GetTooltip());
-        }
-
-        foreach (StatusIcon icon in GetComponentsInChildren<StatusIcon>())
-        {
-            list.Add(icon.GetTooltip());
-        }
-
-        return list;
-    }
-
-    private void OnMouseEnter()
-    {
-        Vector3 anchorPoint = new Vector3(collider.bounds.center.x + collider.bounds.extents.x,
-            collider.bounds.center.y, 0);
+        collider.enabled = true;
+        playerBounds = collider.bounds;
+        Vector3 anchorPoint = new Vector3(playerBounds.center.x + playerBounds.extents.x,
+            playerBounds.center.y, 0);
+        collider.enabled = false;
         // Tooltip On
-        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(GetTooltipInfo(), TooltipController.Anchor.MiddleLeft, anchorPoint, null);
-    }
-    private void OnMouseExit()
-    {
-        // Tooltip Off
-        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.MiddleLeft, anchorPoint, null);
     }
 }

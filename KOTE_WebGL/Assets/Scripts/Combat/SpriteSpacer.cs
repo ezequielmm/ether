@@ -17,6 +17,8 @@ public class SpriteSpacer : MonoBehaviour
     public Display display = Display.Horizontal;
     public bool fadeOnCreate = false;
 
+    public Bounds Bounds = new Bounds();
+
     public enum ContentAlign 
     {
         Left = -1,
@@ -53,10 +55,12 @@ public class SpriteSpacer : MonoBehaviour
         container.transform.rotation = Quaternion.identity;
         Vector3 lastPosition = container.transform.localPosition;
         container.transform.position = Vector3.zero;
+        Bounds = new Bounds();
 
 
         int spacersNeeded = 0;
         float length = 0;
+        float height = 0;
         for (int i = 0; i < icons.Count; i++)
         {
             GameObject item = icons[i];
@@ -65,11 +69,13 @@ public class SpriteSpacer : MonoBehaviour
 
             RectTransform rectTransform = item.transform as RectTransform;
             var width = rectTransform.rect.width;
+            height = rectTransform.rect.height > height ? rectTransform.rect.height : height; // height if larger
             var desiredlocalPosition = new Vector3(length + (width / 2), 0, 0);
 
             if (display == Display.Vertical)
             {
                 width = rectTransform.rect.height;
+                height = rectTransform.rect.width > height ? rectTransform.rect.width : height; // height if larger
                 desiredlocalPosition = new Vector3(0, length + (width / 2), 0);
             }
 
@@ -107,11 +113,14 @@ public class SpriteSpacer : MonoBehaviour
             }
         }
 
+        Bounds.size = new Vector2(length, height);
+
         for (int i = spacers.Count; i > spacersNeeded; i--) 
         {
             DestorySpacer(spacers[i-1]);
         }
 
+        Vector2 Center = Vector2.zero;
 
         // Place based on content size
         switch (display)
@@ -121,30 +130,36 @@ public class SpriteSpacer : MonoBehaviour
                 {
                     case ContentAlign.Left:
                         // Alight Left by design
+                        Center.x = (length / 2);
                         break;
                     case ContentAlign.Center:
                         lastPosition.x = -(length / 2);
                         break;
                     case ContentAlign.Right:
                         lastPosition.x = -length;
+                        Center.x = -(length / 2);
                         break;
                 }
                 break;
             case Display.Vertical:
+                Bounds.size = new Vector2(Bounds.extents.y, Bounds.extents.x);
                 switch (contentAlign)
                 {
                     case ContentAlign.Top:
                         // Alight Top by design
+                        Center.y = -(length / 2);
                         break;
                     case ContentAlign.Center:
                         lastPosition.y = -(length / 2);
                         break;
                     case ContentAlign.Bottom:
                         lastPosition.y = -length;
+                        Center.y = (length / 2);
                         break;
                 }
                 break;
         }
+        Bounds.center = Center;
 
         // Return transformation back
         container.transform.localPosition = lastPosition;
@@ -196,21 +211,25 @@ public class SpriteSpacer : MonoBehaviour
         container.transform.rotation = Quaternion.identity;
         Vector3 lastPosition = container.transform.localPosition;
         container.transform.position = Vector3.zero;
+        Bounds = new Bounds();
 
         DestorySpacers();
 
         float length = 0;
+        float height = 0;
         for(int i = 0; i < icons.Count; i++)
         {
             GameObject item = icons[i];
 
             RectTransform rectTransform = item.transform as RectTransform;
             var width = rectTransform.rect.width;
+            height = rectTransform.rect.height > height ? rectTransform.rect.height : height; // height if larger
             item.transform.localPosition = new Vector3(length + (width / 2), 0, 0);
 
             if (display == Display.Vertical) 
             {
                 width = rectTransform.rect.height;
+                height = rectTransform.rect.width > height ? rectTransform.rect.width : height; // height if larger
                 item.transform.localPosition = new Vector3(0, length + (width / 2), 0);
             }
             
@@ -231,39 +250,48 @@ public class SpriteSpacer : MonoBehaviour
                 }
             }
         }
+        Bounds.size = new Vector2(length, height);
+
+        Vector2 Center = Vector2.zero;
 
         // Place based on content size
-        switch (display) 
+        switch (display)
         {
             case Display.Horizontal:
                 switch (contentAlign)
                 {
                     case ContentAlign.Left:
                         // Alight Left by design
+                        Center.x = (length / 2);
                         break;
                     case ContentAlign.Center:
                         lastPosition.x = -(length / 2);
                         break;
                     case ContentAlign.Right:
                         lastPosition.x = -length;
+                        Center.x = -(length / 2);
                         break;
                 }
                 break;
             case Display.Vertical:
+                Bounds.size = new Vector2(Bounds.extents.y, Bounds.extents.x);
                 switch (contentAlign)
                 {
                     case ContentAlign.Top:
                         // Alight Top by design
+                        Center.y = -(length / 2);
                         break;
                     case ContentAlign.Center:
                         lastPosition.y = -(length / 2);
                         break;
                     case ContentAlign.Bottom:
                         lastPosition.y = -length;
+                        Center.y = (length / 2);
                         break;
                 }
                 break;
         }
+        Bounds.center = Center;
 
         // Return transformation back
         container.transform.localPosition = lastPosition;
@@ -316,5 +344,14 @@ public class SpriteSpacer : MonoBehaviour
     {
         this.spacer = spacer;
         CreateSprites();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(1, 0.5f, 0.5f);
+        if (Bounds != null) 
+        {
+            GizmoExtensions.DrawBox(Bounds, transform.position);
+        }
     }
 }
