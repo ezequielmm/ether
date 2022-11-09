@@ -221,7 +221,8 @@ public enum WS_DATA_REQUEST_TYPES
     UpgradableCards,
     UpgradablePair,
     UpgradeCard,
-    MerchantData
+    MerchantData,
+    TreasureData
 }
 
 [Serializable]

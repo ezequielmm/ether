@@ -19,6 +19,7 @@ public class TreasureManager : MonoBehaviour
         if (value == true)
         {
             GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
+            GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.TreasureData);
         }
     }
 
