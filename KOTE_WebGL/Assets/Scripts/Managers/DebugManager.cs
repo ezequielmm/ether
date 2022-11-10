@@ -83,7 +83,7 @@ public class DebugManager : MonoBehaviour
             case ConsoleCommands.apis_url:
                 string
                     apiUrl = PlayerPrefs.GetString("api_url");
-                if (apiUrl == "") url = "No API URL found.";
+                if (apiUrl == "") apiUrl = "No API URL found.";
                 PublicLog(apiUrl);
                 break;
             case ConsoleCommands.player_token:
