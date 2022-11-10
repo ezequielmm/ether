@@ -28,10 +28,32 @@ public class DamageAnimationManager : MonoBehaviour
 
         if (entityId == "unknown")
         {
-            Debug.LogError($"[DamageAnimationManager] An enemy/player could not be found. This is on the [{gameObject.name}] object which is a child of [{transform.parent.name}].");
+            StartCoroutine(GetEntity());
         }
 
         GameManager.Instance.EVENT_DAMAGE.AddListener(onDamage);
+    }
+
+    IEnumerator GetEntity()
+    {
+        yield return null;
+        entityId = Utils.FindEntityId(gameObject);
+        for (int i = 0; i < 20; i++)
+        {
+            if (entityId == "unknown")
+            {
+                yield return null;
+                entityId = Utils.FindEntityId(gameObject);
+            }
+            else
+            {
+                break;
+            }
+        }
+        if (entityId == "unknown")
+        {
+            Debug.LogError($"[DamageAnimationManager] An enemy/player could not be found. This is on the [{gameObject.name}] object which is a child of [{transform.parent.name}].");
+        }
     }
 
     void onDamage(CombatTurnData.Target data)
