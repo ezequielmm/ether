@@ -42,7 +42,7 @@ public class MapSpriteManagerTests
         Assert.False(_mapSpriteManager.playerIcon.activeInHierarchy);
         Assert.AreNotEqual(true, _mapSpriteManager.playerIcon.activeSelf);
     }
-   
+
     [Test]
     public void PortalAnimationHasCorrectSortingLayer()
     {
@@ -94,9 +94,9 @@ public class MapSpriteManagerTests
         List<NodeData> createdNodes = _mapSpriteManager.nodesHolder.GetComponentsInChildren<NodeData>().ToList();
         NodeData activeNode = createdNodes.Find(node => node.status == NODE_STATUS.active);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(_mapSpriteManager.playerIcon.transform.localPosition.x,
-            activeNode.transform.localPosition.x);
+            activeNode.transform.localPosition.x + -0.25f);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(_mapSpriteManager.playerIcon.transform.localPosition.y,
-            activeNode.transform.localPosition.y);
+            activeNode.transform.localPosition.y + -0.25f);
     }
 
     [Test]
@@ -108,9 +108,9 @@ public class MapSpriteManagerTests
         List<NodeData> createdNodes = _mapSpriteManager.nodesHolder.GetComponentsInChildren<NodeData>().ToList();
         NodeData correctNode = createdNodes.Find(node => node.id == 2);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(_mapSpriteManager.playerIcon.transform.localPosition.x,
-            correctNode.transform.localPosition.x);
+            correctNode.transform.localPosition.x + -0.25f);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(_mapSpriteManager.playerIcon.transform.localPosition.y,
-            correctNode.transform.localPosition.y);
+            correctNode.transform.localPosition.y + -0.25f);
     }
 
     [UnityTest]
@@ -167,6 +167,7 @@ public class MapSpriteManagerTests
         {
             if (node.nodeClickDisabled) nodesInteractionsDisabled++;
         }
+
         Assert.AreEqual(20, nodesInteractionsDisabled);
     }
 

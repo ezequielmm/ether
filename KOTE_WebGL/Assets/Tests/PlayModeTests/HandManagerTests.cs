@@ -41,7 +41,7 @@ public class HandManagerTests
         {
             new Card
             {
-                id = "drawTest", cardId = 1, cardType = "attack", pool = "knight", description = "", energy = 1,
+                id = "discardTest", cardId = 1, cardType = "attack", pool = "knight", description = "", energy = 1,
                 isUpgraded = false, keywords = new List<string>(), name = "test", properties = new Effects(),
                 rarity = "rare", showPointer = false
             }
@@ -54,7 +54,7 @@ public class HandManagerTests
         {
             new Card
             {
-                id = "drawTest", cardId = 1, cardType = "attack", pool = "knight", description = "", energy = 1,
+                id = "exhaustTest", cardId = 1, cardType = "attack", pool = "knight", description = "", energy = 1,
                 isUpgraded = false, keywords = new List<string>(), name = "test", properties = new Effects(),
                 rarity = "rare", showPointer = false
             }
@@ -161,7 +161,10 @@ public class HandManagerTests
         {
             data = new Cards
             {
-                hand = new List<Card>()
+                hand = new List<Card>(),
+                exhausted = new List<Card>(),
+                discard = new List<Card>(),
+                draw = new List<Card>()
             }
         });
         GameManager.Instance.EVENT_CARD_DRAW_CARDS.Invoke();
@@ -182,7 +185,10 @@ public class HandManagerTests
         {
             data = new Cards
             {
-                hand = new List<Card>()
+                hand = new List<Card>(),
+                exhausted = new List<Card>(),
+                discard = new List<Card>(),
+                draw = new List<Card>()
             }
         });
         GameManager.Instance.EVENT_CARD_DRAW_CARDS.Invoke();

@@ -40,7 +40,7 @@ public class CampPanelManagerTests : MonoBehaviour
     [Test]
     public void IsCampPanelDeactivatedOnStart()
     {
-        Assert.False(_campPanelManager.campContainer);
+        Assert.False(_campPanelManager.campContainer.activeSelf);
     }
 
     [Test]
@@ -54,7 +54,7 @@ public class CampPanelManagerTests : MonoBehaviour
     public void DoesShowCampPanelToggleCombatElements()
     {
         bool eventFired = false;
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.AddListener((data) => { eventFired = false; });
+        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.AddListener((data) => { eventFired = true; });
         GameManager.Instance.EVENT_CAMP_SHOW_PANEL.Invoke();
         Assert.True(eventFired);
     }
