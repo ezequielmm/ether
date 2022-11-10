@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166fea724da6f124ba2eab8a9bdc8519, type: 3}
   m_Name: CardGems
   m_EditorClassIdentifier: 
-  NamedSpriteList:
+  SpriteList:
   - name: attack
     image: {fileID: 21300000, guid: 8e28d90fcfe29c440b2b5cc0e693c1ea, type: 3}
   - name: attackUpgraded
@@ -35,5 +35,5 @@ MonoBehaviour:
     image: {fileID: 21300000, guid: 21974add9c6582743b346de7dca6351a, type: 3}
   - name: status
     image: {fileID: 21300000, guid: b33ff4b61c05ab0409323cbebfe68d84, type: 3}
-  - name: statusUpdated
+  - name: statusUpgraded
     image: {fileID: 21300000, guid: 6f964a85ba65f1d459ff72f3fe64ab19, type: 3}
