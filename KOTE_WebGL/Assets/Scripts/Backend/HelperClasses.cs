@@ -25,6 +25,7 @@ public class NodeDataHelper
     public string status;
     public int[] exits;
     public int[] enter;
+    public string title;
 }
 
 [Serializable]
