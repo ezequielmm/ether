@@ -24,6 +24,7 @@ public class NodeData : MonoBehaviour
     public int id;
     public NODE_TYPES type;
     public NODE_SUBTYPES subType;
+    public string title;
     public NODE_STATUS status;
     public int[] exits;
     public int[] enter;
@@ -65,7 +66,7 @@ public class NodeData : MonoBehaviour
             if (type == NODE_TYPES.royal_house)
             {
                 GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
-                    "Do you want to enter " + Utils.CapitalizeEveryWordOfEnum(subType), OnConfirmRoyalHouse);
+                    "Do you want to enter " + title + "?", OnConfirmRoyalHouse);
                 return;
             }
             else
@@ -138,6 +139,7 @@ public class NodeData : MonoBehaviour
         name = nodeData.type + "_" + nodeData.id;
         act = nodeData.act;
         step = nodeData.step;
+        title = nodeData.title;
     }
 
     private void SelectNodeImage()
