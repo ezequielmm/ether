@@ -209,12 +209,6 @@ public class WebSocketManager : MonoBehaviour
         SWSM_Parser.ParseJSON(data);
     }
 
-    public void OnMerchantGetData() 
-    {
-        EmitWithResponse("MerchantData");
-        EmitWithResponse("merchant_data");
-    }
-
     private void OnCardPlayed(string cardId, string id)//int enemyId)//TODO: enemyId will an array 
     {
         CardPlayedData cardData = new CardPlayedData();
