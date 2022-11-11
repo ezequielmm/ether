@@ -1,12 +1,32 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 
 public static class TestUtils
 {
+    public static object CallUnityPrivateMethod(this object o, string methodName, params object[] args)
+    {
+        switch (methodName)
+        {
+            // only call the method if it's one of the Unity callback methods that require user input
+            case "OnMouseEnter":
+            case "OnMouseExit":
+                MethodInfo mi = o.GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);
+                if (mi != null)
+                {
+                    return mi.Invoke(o, args);
+                }
+
+                break;
+        }
+
+        return null;
+    }
+
     public static string BuildTestSwsmData(string messageType, string action)
     {
         return "{\"data\":{\"message_type\":\"" + messageType + "\",\"action\":\"" + action + "\",\"data\":[]}}";
