@@ -8,6 +8,7 @@ public class TrinketsHolderManager : MonoBehaviour
     public GameObject trinketsContainer;
 
     public TrinketItemManager trinketItem;
+    private List<TrinketItemManager> spawnedTrinketList;
 
     // we need this to set the parent of the created trinkets
     [FormerlySerializedAs("HorizontalGroup")] public GameObject GridLayout;
@@ -17,42 +18,30 @@ public class TrinketsHolderManager : MonoBehaviour
     {
         // we might need to change this once we get trinkets properly implemented, idk
         trinketsContainer.SetActive(false);
+        spawnedTrinketList = new List<TrinketItemManager>();
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(UpdateTrinketHolder);
-        DisplayRandomTrinkets();
     }
 
     // when we get a player status update, that tells us to update the trinkets
     private void UpdateTrinketHolder(PlayerStateData playerState)
     {
-       /* string[] activeTrinkets = playerState.data.playerState.trinkets;
+        List<Trinket> activeTrinkets = playerState.data.playerState.trinkets;
         // currently we're picking trinkets at random, that will change once we do more with them
-        if (activeTrinkets != null && activeTrinkets.Length > 0)
+        if (activeTrinkets != null && activeTrinkets.Count > 0)
         {
-            for (int i = 0; i < activeTrinkets.Length; i++)
+            for (int i = 0; i < activeTrinkets.Count; i++)
             {
+                if (spawnedTrinketList.Exists(trinket => trinket.Id == activeTrinkets[i].id))
+                {
+                    continue;
+                }
                 TrinketItemManager trinket = Instantiate(trinketItem, GridLayout.transform);
-                trinket.Populate("Trinket" + Random.Range(1, 5), "Common");
+                trinket.Populate(activeTrinkets[i]);
+                spawnedTrinketList.Add(trinket);
             }
             trinketsContainer.SetActive(true);
-        }*/
+        }
    
     }
-     
-    // --------- TEMP CODE TO BE DELETED WHEN WE RECEIVE TRINKET DATA -------------------------
-    private void DisplayRandomTrinkets()
-    {
-        for (int i = 0; i < Random.Range(3, 10); i++)
-        {
-            TrinketItemManager trinket = Instantiate(trinketItem, GridLayout.transform);
-            Trinket trinketData = new Trinket()
-            {
-                name = "Trinket" + Random.Range(1, 5),
-                rarity = "Common"
-            };
-            trinket.Populate(trinketData);
-        }
-        trinketsContainer.SetActive(true);
-    }
-    // ---------- END TEMP CODE ----------------------------------------------------------------
     
 }

@@ -222,6 +222,7 @@ public class PlayerData
     public int defense;
     public List<Card> cards;
     public List<PotionData> potions;
+    public List<Trinket> trinkets;
 }
 
 [Serializable]
@@ -247,10 +248,11 @@ public class Card
 public class Trinket 
 {
     public string id;
+    public int trinketId;
     public string name;
     public string rarity;
     public string description;
-    public int coinCost;
+    public Effects effects;
 }
 
 [Serializable]
@@ -757,6 +759,7 @@ public class RewardItemData
     public bool taken;
     public PotionData potion;
     public Card card;
+    public Trinket trinket;
 }
 
 [Serializable]

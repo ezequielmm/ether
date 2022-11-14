@@ -26,8 +26,9 @@ public class CardAssetManager : SingleTon<CardAssetManager>
         }
     }
 
-    public Sprite GetGem(string cardType)
+    public Sprite GetGem(string cardType, bool isUpgraded)
     {
+        if (isUpgraded) cardType += "Upgraded";
         return gems.SpriteList.Find(gem => gem.name == cardType).image;
     }
 

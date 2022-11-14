@@ -54,33 +54,6 @@ public static class Utils
         return returnString.Trim();
     }
 
-    public static void GizmoDrawBox(Bounds bounds, Vector3 offset = default(Vector3))
-    {
-        offset += new Vector3(bounds.center.x, bounds.center.y, 0);
-        GizmoDrawBox(
-            new Vector3(bounds.extents.x + offset.x, bounds.extents.y + offset.y, offset.z),
-            new Vector3(-bounds.extents.x + offset.x, bounds.extents.y + offset.y, offset.z),
-            new Vector3(bounds.extents.x + offset.x, -bounds.extents.y + offset.y, offset.z),
-            new Vector3(-bounds.extents.x + offset.x, -bounds.extents.y + offset.y, offset.z));
-    }
-
-    public static void GizmoDrawBox(float width, float height, Vector3 offset = default(Vector3))
-    {
-        GizmoDrawBox(
-            new Vector3((width / 2) + offset.x, (height / 2) + offset.y, offset.z),
-            new Vector3(-(width / 2) + offset.x, (height / 2) + offset.y, offset.z),
-            new Vector3((width / 2) + offset.x, -(height / 2) + offset.y, offset.z),
-            new Vector3(-(width / 2) + offset.x, -(height / 2) + offset.y, offset.z));
-    }
-
-    public static void GizmoDrawBox(Vector3 TopLeft, Vector3 TopRight, Vector3 BottomLeft, Vector3 BottomRight)
-    {
-        Gizmos.DrawLine(TopLeft, TopRight);
-        Gizmos.DrawLine(TopRight, BottomRight);
-        Gizmos.DrawLine(BottomRight, BottomLeft);
-        Gizmos.DrawLine(BottomLeft, TopLeft);
-    }
-
     public static string PrettyText(string input) 
     {
         StringBuilder sb = new StringBuilder();
