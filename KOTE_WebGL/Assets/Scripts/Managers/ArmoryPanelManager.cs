@@ -15,7 +15,13 @@ public class ArmoryPanelManager : MonoBehaviour
 
     public void ActivateContainer(bool show)
     {
-        panelContainer.SetActive(show);
+        int enableRegistration = PlayerPrefs.GetInt("enable_armory");
+        if (enableRegistration == 1)
+        {
+            panelContainer.SetActive(show);
+            return;
+        }
+        panelContainer.SetActive(false);
     }
     
     public void OnConfirmSelection()
