@@ -7,8 +7,10 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
 {
     public Sprite defaultImage;
     public List<SpriteList> potionImageList;
+    public List<SpriteList> trinketImageList;
     public NamedSpriteList miscImages;
     private List<(int, int)> _potionListRanges = new List<(int, int)>();
+    private List<(int, int)> _trinketListRanges = new List<(int, int)>();
 
     private void Start()
     {
@@ -18,6 +20,12 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
         foreach (SpriteList imageList in potionImageList)
         {
             _potionListRanges.Add((int.Parse(imageList.entityImages[0].name),
+                int.Parse(imageList.entityImages[imageList.entityImages.Count - 1].name)));
+        }
+
+        foreach (SpriteList imageList in trinketImageList)
+        {
+            _trinketListRanges.Add((int.Parse(imageList.entityImages[0].name),
                 int.Parse(imageList.entityImages[imageList.entityImages.Count - 1].name)));
         }
     }
@@ -40,6 +48,26 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
         }
 
         Debug.LogWarning($"No potion image for potion ID {potionId} found. You probably need to pester the backend");
+        return defaultImage;
+    }
+    public Sprite GetTrinketImage(int trinketId)
+    {
+        for (int i = 0; i < trinketImageList.Count; i++)
+        {
+            var range = _trinketListRanges[i];
+            if (trinketId < range.Item1 || trinketId > range.Item2)
+            {
+                continue;
+            }
+
+            List<Sprite> cardImages = trinketImageList[i].entityImages;
+            if (cardImages.Exists(image => int.Parse(image.name) == trinketId))
+            {
+                return cardImages.Find(image => int.Parse(image.name) == trinketId);
+            }
+        }
+
+        Debug.LogWarning($"No trinket image for trinket ID {trinketId} found. You probably need to pester the backend");
         return defaultImage;
     }
 

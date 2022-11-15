@@ -68,7 +68,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3900988959352967964}
+  - component: {fileID: 5569524051285087611}
   m_Layer: 0
   m_Name: TrinketsHolderContainer
   m_TagString: Untagged
@@ -76,8 +76,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3900988959352967964
-Transform:
+--- !u!224 &5569524051285087611
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -91,6 +91,11 @@ Transform:
   m_Father: {fileID: 2005680357519280615}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 358, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2906862804351701192
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,14 +124,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 3900988959352967964}
+  - {fileID: 5569524051285087611}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 358, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7245473843279279073
 MonoBehaviour:
@@ -143,7 +148,7 @@ MonoBehaviour:
   trinketsContainer: {fileID: 1743759707051231933}
   trinketItem: {fileID: 8955764042965538764, guid: b3eaf907ed788894c822fbfc968063d9,
     type: 3}
-  HorizontalGroup: {fileID: 276959131564336516}
+  GridLayout: {fileID: 276959131564336516}
 --- !u!1 &6922185527644366812
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,12 +179,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3333286532270122857}
-  m_Father: {fileID: 3900988959352967964}
+  m_Father: {fileID: 5569524051285087611}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 130, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 358, y: 56}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7094653473484289899

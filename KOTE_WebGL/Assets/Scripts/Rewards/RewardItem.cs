@@ -22,7 +22,8 @@ public class RewardItem : MonoBehaviour //, IPointerClickHandler
     //and then we pass in the action we want to take when the reward is selected
     private Action onRewardSelected;
 
-    public void PopulateRewardItem(RewardItemData reward, Action<RewardItemType> EffectsAction, Action onAddACard = null)
+    public void PopulateRewardItem(RewardItemData reward, Action<RewardItemType> EffectsAction,
+        Action onAddACard = null)
     {
         rewardEffectsAction = EffectsAction;
         if (onAddACard == null || reward.type != "card")
@@ -36,6 +37,7 @@ public class RewardItem : MonoBehaviour //, IPointerClickHandler
 
         rewardItemType = Utils.ParseEnum<RewardItemType>(reward.type);
         rewardData = reward;
+        List<Tooltip> tooltips = new List<Tooltip>();
         switch (rewardItemType)
         {
             case RewardItemType.card:
@@ -56,12 +58,20 @@ public class RewardItem : MonoBehaviour //, IPointerClickHandler
                 rewardImage.sprite = SpriteAssetManager.Instance.GetPotionImage(potion.potionId);
 
                 // setup description tooltip
-                List<Tooltip> tooltips = new List<Tooltip>
+                tooltips = new List<Tooltip>
                     { new Tooltip { description = rewardData.potion.description, title = rewardData.potion.name } };
                 tooltipController.SetTooltips(tooltips);
                 break;
 
             case RewardItemType.trinket:
+                Trinket trinket = reward.trinket;
+                rewardText.text = trinket.name;
+                rewardImage.sprite = SpriteAssetManager.Instance.GetTrinketImage(trinket.trinketId);
+
+                // setup description tooltip
+                tooltips = new List<Tooltip>
+                    { new Tooltip { description = rewardData.trinket.description, title = rewardData.trinket.name } };
+                tooltipController.SetTooltips(tooltips);
                 break;
 
             case RewardItemType.fief:
