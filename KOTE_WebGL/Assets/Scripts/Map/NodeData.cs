@@ -45,6 +45,7 @@ public class NodeData : MonoBehaviour
     private GameObject activeIconImage;
     private Vector3 originalScale;
     private Tween activeAnimation;
+    private bool showNodeNumber;
 
     #region UnityEventFunctions
 
@@ -124,6 +125,8 @@ public class NodeData : MonoBehaviour
 
     public void Populate(NodeDataHelper nodeData)
     {
+        int numbersEnabled = PlayerPrefs.GetInt("enable_node_numbers");
+        if (numbersEnabled == 1) showNodeNumber = true;
         PopulateNodeInformation(nodeData);
         SelectNodeImage();
         UpdateNodeStatusVisuals();
@@ -202,7 +205,7 @@ public class NodeData : MonoBehaviour
 
         idText.SetText(id.ToString());
         idText.color = indexColor;
-        idText.gameObject.SetActive(true);
+        idText.gameObject.SetActive(showNodeNumber);
     }
 
     private void PlayActiveNodeAnimation(GameObject backgroundImage)
