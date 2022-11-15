@@ -161,6 +161,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>> EVENT_SHOW_SELECT_CARD_PANEL = new UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>>();
     [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<string>> EVENT_SHOW_DIRECT_SELECT_CARD_PANEL = new UnityEvent<List<Card>, SelectPanelOptions, Action<string>>();
     [HideInInspector] public UnityEvent<Deck> EVENT_CARD_PILE_SHOW_DECK = new UnityEvent<Deck>();
+        [HideInInspector] public UnityEvent<List<string>> EVENT_CARDS_SELECTED = new UnityEvent<List<string>>();
     [HideInInspector] public UnityEvent EVENT_HIDE_COMMON_CARD_PANEL = new UnityEvent();
 
     //CARDS EVENTS
@@ -171,6 +172,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_CARD_DRAW_CARDS = new UnityEvent();
     [HideInInspector] public UnityEvent<CardPiles> EVENT_CARDS_PILES_UPDATED = new UnityEvent<CardPiles>();
     [HideInInspector] public UnityEvent<CardToMoveData, float> EVENT_MOVE_CARD = new UnityEvent<CardToMoveData, float>();
+    [HideInInspector] public UnityEvent EVENT_REARRANGE_HAND = new UnityEvent();
 
     [HideInInspector]
     public UnityEvent<string> EVENT_CARD_DISABLED = new UnityEvent<string>(); //id fo the cards being destroyed
@@ -205,6 +207,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<StatusData> EVENT_UPDATE_STATUS_EFFECTS = new UnityEvent<StatusData>();
     [HideInInspector] public UnityEvent EVENT_CLEAR_TOOLTIPS = new UnityEvent();
     [HideInInspector] public UnityEvent<bool> EVENT_TOGGLE_TOOLTIPS = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<string> EVENT_SHOW_COMBAT_OVERLAY_TEXT = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>  EVENT_SET_TOOLTIPS { get; } = 
         new UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>();
     [HideInInspector] public UnityEvent<string, int> EVENT_HEAL = new UnityEvent<string, int>(); // id, healed amount

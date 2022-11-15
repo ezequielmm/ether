@@ -377,6 +377,12 @@ public class CardPlayedData //outgoing data
 }
 
 [Serializable]
+public class CardsSelectedList
+{
+    public List<string> cardsToTake;
+}
+
+[Serializable]
 public class PotionUsedData
 {
     public string potionId;
@@ -600,6 +606,25 @@ public class StatusData
         public int counter;
         public string description;
     }
+}
+
+[Serializable]
+public class SWSM_ShowCardDialog
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public showCardData data;
+    }
+}
+
+[Serializable]
+public class showCardData
+{
+    public List<Card> cards;
+    public int cardsToTake;
 }
 
 
