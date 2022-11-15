@@ -7,16 +7,10 @@ using UnityEngine.UI;
 
 public class CommonCardsPanel : CardPanelBase
 {
-    public GameObject uiCardPrefab;
-    public UnityEvent<string, UICardPrefabManager> OnCardClick = new UnityEvent<string, UICardPrefabManager>();
-
     private Deck playerDeck;
     private Deck drawDeck;
     private Deck discardDeck;
     private Deck exhaustDeck;
-
-    public bool scaleOnHover = true;
-    public bool useBackgroundImage = false;
 
 
     protected override void Start()
@@ -73,8 +67,6 @@ public class CommonCardsPanel : CardPanelBase
             commonCardsContainer.SetActive(true);
             ShowCards(pileType);
         }
-        
-        
     }
 
     private void onFullDeckShow(Deck deck) 
@@ -82,7 +74,7 @@ public class CommonCardsPanel : CardPanelBase
         playerDeck = deck;
         commonCardsContainer.SetActive(true);
         DestroyCards();
-        GenerateCards(playerDeck);
+        GenerateCards(playerDeck.cards);
     }
     
     private void ShowCards(PileTypes pileType)
@@ -91,47 +83,9 @@ public class CommonCardsPanel : CardPanelBase
         switch (pileType)
         {
             case PileTypes.Deck: GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.PlayerDeck); break;
-            case PileTypes.Draw: GenerateCards(drawDeck); break;
-            case PileTypes.Discarded: GenerateCards(discardDeck); break;
-            case PileTypes.Exhausted: GenerateCards(exhaustDeck); break;
+            case PileTypes.Draw: GenerateCards(drawDeck.cards); break;
+            case PileTypes.Discarded: GenerateCards(discardDeck.cards); break;
+            case PileTypes.Exhausted: GenerateCards(exhaustDeck.cards); break;
         }       
     }
-
-    public void ShowCards(List<Card> cards) 
-    {
-        DestroyCards();
-        commonCardsContainer.SetActive(true);
-        GenerateCards(new Deck(){ cards = cards });
-    }
-
-    private void GenerateCards(Deck deck)
-    {
-        if (deck != null && deck.cards !=null)
-        {
-            foreach (Card card in deck.cards)
-            {
-                GameObject newCard = Instantiate(uiCardPrefab, gridCardsContainer.transform);
-                var uiCard = newCard.GetComponent<UICardPrefabManager>();
-                uiCard.useBackgroundImage = useBackgroundImage;
-                uiCard.scaleCardOnHover = scaleOnHover;
-                var button = uiCard.GetComponentInChildren<Button>(true);
-                if (button != null) 
-                {
-                    button.enabled = true;
-                    button.gameObject.SetActive(true);
-                    button.onClick.AddListener(() => {
-                        OnCardClick.Invoke(uiCard.id, uiCard);
-                    });
-                }
-                uiCard.populate(card);
-            }
-        }
-    }
-
-    public void HideCards() 
-    {
-        commonCardsContainer.SetActive(false);
-        DestroyCards();
-    }
-
 }

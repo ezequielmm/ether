@@ -37,9 +37,15 @@ public class MerchantNodeManager : MonoBehaviour
 
     [Header("Services")]
     [SerializeField]
-    private CommonCardsPanel serviceCardPanel;
+    private MerchantCardPanel serviceCardPanel;
     [SerializeField]
     private CardPairPanelManager cardPairPanel;
+
+    [Header("Service Buttons")]
+    [SerializeField]
+    private Button upgradeButton;
+    [SerializeField]
+    private Button removeButton;
 
     private List<MerchantItem<MerchantData.Merchant<Card>>> cardItems = new List<MerchantItem<MerchantData.Merchant<Card>>>();
     private List<MerchantItem<MerchantData.Merchant<PotionData>>> potionItems = new List<MerchantItem<MerchantData.Merchant<PotionData>>>();
@@ -185,6 +191,9 @@ public class MerchantNodeManager : MonoBehaviour
             i.CheckAffordability(gold);
         }
         totalText.text = "0";
+
+        upgradeButton.interactable = merchantData.upgradeCost >= gold;
+        removeButton.interactable = merchantData.destroyCost >= gold;
 
         selectedItem = null;
         buyButton.interactable = false;
