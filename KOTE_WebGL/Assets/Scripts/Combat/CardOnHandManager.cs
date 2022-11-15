@@ -234,8 +234,15 @@ public class CardOnHandManager : MonoBehaviour
         string cardType = card.cardType;
         // if (card.isUpgraded) cardType += "+";
         CardAssetManager cardAssetManager = CardAssetManager.Instance;
-        gemSprite.sprite = cardAssetManager.GetGem(card.cardType);
-        frameSprite.sprite = cardAssetManager.GetFrame(card.pool);
+        gemSprite.sprite = cardAssetManager.GetGem(card.cardType, card.isUpgraded);
+        if (card.cardType == "curse" || card.cardType == "status")
+        {
+            frameSprite.sprite = cardAssetManager.GetFrame(card.cardType);
+        }
+        else
+        {
+            frameSprite.sprite = cardAssetManager.GetFrame(card.pool);
+        }
         bannerSprite.sprite = cardAssetManager.GetBanner(card.rarity);
         cardImage.sprite = cardAssetManager.GetCardImage(card.cardId);
         /* this.id = card.id;

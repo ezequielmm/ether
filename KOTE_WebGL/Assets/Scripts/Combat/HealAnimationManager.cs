@@ -27,13 +27,34 @@ public class HealAnimationManager : MonoBehaviour
 
         if (entityId == "unknown")
         {
-            Debug.LogError(
-                $"[HealAnimationManager] An enemy/player could not be found. This is on the [{gameObject.name}] object which is a child of [{transform.parent.name}].");
+            StartCoroutine(GetEntity());
         }
 
         GameManager.Instance.EVENT_HEAL.AddListener(OnHeal);
     }
 
+    IEnumerator GetEntity() 
+    {
+        yield return null;
+        entityId = Utils.FindEntityId(gameObject);
+        for (int i = 0; i < 20; i++) 
+        {
+            if (entityId == "unknown")
+            {
+                yield return null;
+                entityId = Utils.FindEntityId(gameObject);
+            }
+            else 
+            {
+                break;
+            }
+        }
+        if (entityId == "unknown")
+        {
+            Debug.LogError($"[HealAnimationManager] An enemy/player could not be found. This is on the [{gameObject.name}] object which is a child of [{transform.parent.name}].");
+        }
+    }
+    
     protected virtual void OnHeal(string who, int healAmount)
     {
         // Check if me

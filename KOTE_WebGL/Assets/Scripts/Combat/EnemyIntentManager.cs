@@ -10,6 +10,10 @@ public class EnemyIntentManager : MonoBehaviour
     GameObject iconPrefab;
     [SerializeField]
     SpriteSpacer iconContainer;
+
+    [SerializeField]
+    BoxCollider2D intentCollider;
+
     EnemyManager enemyManager;
     static bool askedForIntent;
     bool intentSet;
@@ -33,8 +37,39 @@ public class EnemyIntentManager : MonoBehaviour
         }
         GameManager.Instance.EVENT_UPDATE_INTENT.AddListener(OnUpdateIntent);
         GameManager.Instance.EVENT_CHANGE_TURN.AddListener(onTurnChange);
+
+        GameManager.Instance.EVENT_ACTIVATE_POINTER.AddListener(DeactivateCollider);
+        GameManager.Instance.EVENT_DEACTIVATE_POINTER.AddListener(ActivateCollider);
+
         intentSet = false;
         iconContainer.SetFadeSpeed(GameSettings.INTENT_FADE_SPEED);
+    }
+
+    private void ActivateCollider(string _)
+    {
+        if (intentCollider != null)
+            intentCollider.enabled = true;
+    }
+    private void DeactivateCollider(PointerData _)
+    {
+        if (intentCollider != null)
+            intentCollider.enabled = false;
+    }
+
+    private void OnMouseEnter()
+    {
+        List<Tooltip> list = new List<Tooltip>();
+        foreach (IntentIcon icon in GetComponentsInChildren<IntentIcon>())
+        {
+            list.Add(icon.GetTooltip());
+        }
+
+        gameObject.GetComponentInParent<ITooltipSetter>().SetTooltip(list);
+    }
+    private void OnMouseExit()
+    {
+        // Tooltip Off
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
     }
 
     private void OnDrawGizmos()
@@ -42,9 +77,9 @@ public class EnemyIntentManager : MonoBehaviour
         var scale = Vector3.one * iconContainer.transform.localScale.y;
         var scale2 = (scale + new Vector3(scale.x * 3, 0, 0)) * 1.05f;
         Gizmos.color = Color.cyan;
-        Utils.GizmoDrawBox(new Bounds(transform.position, scale), new Vector3(0, scale.y / 2, transform.position.z));
+        GizmoExtensions.DrawBox(new Bounds(transform.position, scale), new Vector3(0, scale.y / 2, transform.position.z));
         Gizmos.color = Color.red;
-        Utils.GizmoDrawBox(new Bounds(transform.position, scale2), new Vector3(0, scale.y / 2, transform.position.z - 0.1f));
+        GizmoExtensions.DrawBox(new Bounds(transform.position, scale2), new Vector3(0, scale.y / 2, transform.position.z - 0.1f));
     }
 
     private void Update()
@@ -113,6 +148,10 @@ public class EnemyIntentManager : MonoBehaviour
         transform.DOScale(1, GameSettings.INTENT_FADE_SPEED);
         askedForIntent = false;
         intentSet = true;
+
+        intentCollider.enabled = true;
+        intentCollider.offset = iconContainer.Bounds.center + iconContainer.transform.localPosition;
+        intentCollider.size = iconContainer.Bounds.size;
     }
 
     private ENEMY_INTENT intentFromString(string value) 

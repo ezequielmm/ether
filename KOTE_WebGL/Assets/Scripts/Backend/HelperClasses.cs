@@ -25,6 +25,7 @@ public class NodeDataHelper
     public string status;
     public int[] exits;
     public int[] enter;
+    public string title;
 }
 
 [Serializable]
@@ -221,6 +222,7 @@ public class PlayerData
     public int defense;
     public List<Card> cards;
     public List<PotionData> potions;
+    public List<Trinket> trinkets;
 }
 
 [Serializable]
@@ -246,10 +248,11 @@ public class Card
 public class Trinket 
 {
     public string id;
+    public int trinketId;
     public string name;
     public string rarity;
     public string description;
-    public int coinCost;
+    public Effects effects;
 }
 
 [Serializable]
@@ -409,6 +412,9 @@ public class SWSM_Base
 [Serializable]
 public class MerchantData 
 {
+    public int coins;
+    public int shopkeeper;
+    public string speech_bubble;
     public List<Merchant<Card>> cards;
     public List<Merchant<Card>> neutral_cards; // TODO
     public List<Merchant<Trinket>> trinkets;
@@ -417,21 +423,32 @@ public class MerchantData
     [Serializable]
     public class Merchant<T> : IMerchant
     {
-        public int itemId { get; set; }
-        public int coin { get; set; }
-        public bool is_sale { get; set; }
-        public string type { get; set; }
-        public string id { get; set; }
+        [SerializeField]
+        protected int itemId;
+        [SerializeField]
+        protected int coin;
+        [SerializeField]
+        protected bool is_sale;
+        [SerializeField]
+        protected string type;
+        [SerializeField]
+        protected string id;
+
+        public int ItemId { get => itemId; set => itemId = value; }
+        public int Coin { get => coin; set => coin = value; }
+        public bool IsSold { get => is_sale; set => is_sale = value; }
+        public string Type { get => type; set => type = value; }
+        public string Id { get => id; set => id = value; }
         public T item;
     }
 
     public interface IMerchant 
     {
-        public int itemId { get; set; }
-        public int coin { get; set; }
-        public bool is_sale { get; set; }
-        public string type { get; set; }
-        public string id { get; set; }
+        public int ItemId { get; set; }
+        public int Coin { get; set; }
+        public bool IsSold { get; set; }
+        public string Type { get; set; }
+        public string Id { get; set; }
     }
 }
 
@@ -742,6 +759,7 @@ public class RewardItemData
     public bool taken;
     public PotionData potion;
     public Card card;
+    public Trinket trinket;
 }
 
 [Serializable]

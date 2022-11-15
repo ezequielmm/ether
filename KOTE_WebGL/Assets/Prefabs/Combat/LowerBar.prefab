@@ -27,6 +27,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8801781681316189589}
   - {fileID: 4835611581628050264}
@@ -153,7 +154,7 @@ PrefabInstance:
     - target: {fileID: 72096064159628363, guid: 59429e3372c534941b6533fe6df20c13,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.73
+      value: -0.82
       objectReference: {fileID: 0}
     - target: {fileID: 72096064159628363, guid: 59429e3372c534941b6533fe6df20c13,
         type: 3}
@@ -442,9 +443,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 904c89ccc97799747887a87344988a75, type: 3}
---- !u!224 &8801781681316189589 stripped
+--- !u!224 &4057696341061679892 stripped
 RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3586090695737697071, guid: 904c89ccc97799747887a87344988a75,
+  m_CorrespondingSourceObject: {fileID: 8335523957067287982, guid: 904c89ccc97799747887a87344988a75,
     type: 3}
   m_PrefabInstance: {fileID: 5468055711275759290}
   m_PrefabAsset: {fileID: 0}
@@ -460,9 +461,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f1ecb0a24cf7dd4583fb0a63b03a185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &4057696341061679892 stripped
+--- !u!224 &8801781681316189589 stripped
 RectTransform:
-  m_CorrespondingSourceObject: {fileID: 8335523957067287982, guid: 904c89ccc97799747887a87344988a75,
+  m_CorrespondingSourceObject: {fileID: 3586090695737697071, guid: 904c89ccc97799747887a87344988a75,
     type: 3}
   m_PrefabInstance: {fileID: 5468055711275759290}
   m_PrefabAsset: {fileID: 0}
