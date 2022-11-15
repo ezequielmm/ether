@@ -43,6 +43,19 @@ public class RegisterPanelManager : MonoBehaviour
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerRegisterPanel);
     }
 
+    private void CheckIfRegisterButtonIsEnabled()
+    {
+        int enableRegistration = PlayerPrefs.GetInt("enable_registration");
+        if (enableRegistration == 1)
+        {
+            registerButton.interactable = true;
+        }
+        else
+        {
+            registerButton.interactable = false;
+        }
+    }
+
     public void OnShowPassword()
     {
         passwordInputField.contentType =
@@ -82,7 +95,7 @@ public class RegisterPanelManager : MonoBehaviour
     {
         DeactivateAllErrorLabels();
 
-        registerButton.interactable = false;
+        CheckIfRegisterButtonIsEnabled();
 
         GameManager.Instance.EVENT_REQUEST_NAME.Invoke("");
     }
@@ -159,7 +172,13 @@ public class RegisterPanelManager : MonoBehaviour
         confirmEmailInputField.text = "";
         passwordInputField.text = "";
         confirmPasswordInputField.text = "";
-        registerContainer.SetActive(activate);
+        int enableRegistration = PlayerPrefs.GetInt("enable_registration");
+        if (enableRegistration == 1)
+        {
+            registerContainer.SetActive(activate);
+            return;
+        }
+        registerContainer.SetActive(false);
     }
 
     public void CheckIfCanActivateRegisterButton()

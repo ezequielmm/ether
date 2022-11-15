@@ -16,8 +16,8 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_EXPEDITION_MAP = "ExpeditionMap";
     private const string WS_MESSAGE_PLAYER_STATE = "PlayerState";
     private const string WS_MESSAGE_INIT_COMBAT = "InitCombat";
-    private const string WS_MESSAGE_ENEMY_INTENTS = "EnemiesIntents";   
-    private const string WS_MESSAGE_PUT_DATA = "PutData";   
+    private const string WS_MESSAGE_ENEMY_INTENTS = "EnemiesIntents";
+    private const string WS_MESSAGE_PUT_DATA = "PutData";
 
 
     //Websockets outgoing messages with callback
@@ -28,6 +28,8 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_GET_CARD_UPGRADE_PAIR = "CardUpgradeSelected";
     private const string WS_MESSAGE_UPGRADE_CARD = "UpgradeCard";
     private const string WS_MESSAGE_CAMP_HEAL = "CampRecoverHealth";
+    private const string WS_MESSAGE_MOVE_SELECTED_CARDS = "MoveCard";
+
     private const string WS_MESSAGE_USE_POTION = "UsePotion";
     private const string WS_MESSAGE_REMOVE_POTION = "RemovePotion";
     private const string WS_MESSAGE_MERCHANT_BUY = "MerchantBuy";
@@ -62,7 +64,7 @@ public class WebSocketManager : MonoBehaviour
 
         string token = PlayerPrefs.GetString("session_token");
 
-       // Debug.Log("Connecting socket using token: " + token);
+        // Debug.Log("Connecting socket using token: " + token);
 
         SocketOptions options = new SocketOptions();
         //  options.AutoConnect = false;
@@ -73,10 +75,20 @@ public class WebSocketManager : MonoBehaviour
         string uriStr = "https://api.dev.kote.robotseamonster.com";
         //string uriStr = "https://api.alpha.knightsoftheether.com:443";
 
-        if (hostName.IndexOf("alpha") > -1) { uriStr = "https://api.alpha.knightsoftheether.com:443"; }
-        if (hostName.IndexOf("stage") > -1) { uriStr = "https://api.stage.kote.robotseamonster.com"; }
-        if (hostName.IndexOf("dev") > -1) { uriStr = "https://api.dev.kote.robotseamonster.com"; }
+        if (hostName.IndexOf("alpha") > -1)
+        {
+            uriStr = "https://api.alpha.knightsoftheether.com:443";
+        }
 
+        if (hostName.IndexOf("stage") > -1)
+        {
+            uriStr = "https://api.stage.kote.robotseamonster.com";
+        }
+
+        if (hostName.IndexOf("dev") > -1)
+        {
+            uriStr = "https://api.dev.kote.robotseamonster.com";
+        }
 
 
         /*string[] splitURL = hostURL.Split('.');
@@ -101,9 +113,9 @@ public class WebSocketManager : MonoBehaviour
         }*/
 
         // default to the stage server if running from the unity editor
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         uriStr = "https://api.dev.kote.robotseamonster.com";
-        #endif
+#endif
 
         PlayerPrefs.SetString("ws_url", uriStr);
         Debug.Log("[WebSocket Manager] Connecting to " + uriStr);
@@ -127,7 +139,9 @@ public class WebSocketManager : MonoBehaviour
 
         //  manager.Open();
     }
+
     #region
+
     private void GenericParser(string data)
     {
         SWSM_Parser.ParseJSON(data);
@@ -135,7 +149,7 @@ public class WebSocketManager : MonoBehaviour
 
     void OnConnected(ConnectResponse resp)
     {
-        Debug.Log("Websocket Connected sucessfully! Setting listeners" );
+        Debug.Log("Websocket Connected sucessfully! Setting listeners");
         //events
         GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnNodeClicked);
         GameManager.Instance.EVENT_CARD_PLAYED.AddListener(OnCardPlayed);
@@ -146,6 +160,7 @@ public class WebSocketManager : MonoBehaviour
         GameManager.Instance.EVENT_CAMP_GET_UPGRADE_PAIR.AddListener(OnShowUpgradePair);
         GameManager.Instance.EVENT_CAMP_UPGRADE_CARD.AddListener(OnCardUpgradeConfirmed);
         GameManager.Instance.EVENT_CAMP_HEAL.AddListener(OnCampHealSelected);
+        GameManager.Instance.EVENT_CARDS_SELECTED.AddListener(OnCardsSelected);
         GameManager.Instance.EVENT_POTION_USED.AddListener(OnPotionUsed);
         GameManager.Instance.EVENT_POTION_DISCARDED.AddListener(OnPotionDiscarded);
         GameManager.Instance.EVENT_MERCHANT_BUY.AddListener(OnBuyItem);
@@ -181,12 +196,11 @@ public class WebSocketManager : MonoBehaviour
     /// 
     /// </summary>
     /// <param name="test"></param>
-
     private void OnNodeClickedAnswer(string data)
     {
         //NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
         //GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState,WS_QUERY_TYPE.MAP_NODE_SELECTED);
-        
+
         SWSM_Parser.ParseJSON(data);
 
         //Debug.Log("OnNodeClickedAnswer: " + nodeState);
@@ -209,7 +223,7 @@ public class WebSocketManager : MonoBehaviour
         SWSM_Parser.ParseJSON(data);
     }
 
-    private void OnCardPlayed(string cardId, string id)//int enemyId)//TODO: enemyId will an array 
+    private void OnCardPlayed(string cardId, string id) //int enemyId)//TODO: enemyId will an array 
     {
         CardPlayedData cardData = new CardPlayedData();
         cardData.cardId = cardId;
@@ -221,6 +235,12 @@ public class WebSocketManager : MonoBehaviour
         //rootSocket.ExpectAcknowledgement<string>(OnCardPlayedAnswer).Emit(WS_MESSAGE_CARD_PLAYED, data);
         Emit(WS_MESSAGE_CARD_PLAYED, data);
 
+    private void OnCardsSelected(List<string> cardIds)
+    {
+        CardsSelectedList cardList = new CardsSelectedList { cardsToTake = cardIds };
+        string data = JsonUtility.ToJson(cardList);
+        Debug.Log("[WebSocket Manager] OnCardsSelected data: " + data);
+        rootSocket.Emit(WS_MESSAGE_MOVE_SELECTED_CARDS, data);
     }
     private void OnBuyItem(string type, string id)
     {
@@ -278,7 +298,7 @@ public class WebSocketManager : MonoBehaviour
     {
         EmitWithResponse(WS_MESSAGE_UPGRADE_CARD, cardId);
     }
-    
+
     private void OnEndTurn()
     {
         LogEmission(WS_MESSAGE_END_TURN);
@@ -300,7 +320,7 @@ public class WebSocketManager : MonoBehaviour
         EmitWithResponse(WS_MESSAGE_CONTINUE_EXPEDITION);
     }
 
-    #endregion 
+    #endregion
 
     private void OnGenericWSDataRequest(WS_DATA_REQUEST_TYPES dataType)
     {

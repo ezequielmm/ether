@@ -25,6 +25,7 @@ public class NodeDataHelper
     public string status;
     public int[] exits;
     public int[] enter;
+    public string title;
 }
 
 [Serializable]
@@ -221,6 +222,7 @@ public class PlayerData
     public int defense;
     public List<Card> cards;
     public List<PotionData> potions;
+    public List<Trinket> trinkets;
 }
 
 [Serializable]
@@ -246,10 +248,11 @@ public class Card
 public class Trinket 
 {
     public string id;
+    public int trinketId;
     public string name;
     public string rarity;
     public string description;
-    public int coinCost;
+    public Effects effects;
 }
 
 [Serializable]
@@ -378,6 +381,12 @@ public class PurchaseData //outgoing data
 {
     public string type;
     public string targetId;
+}
+
+[Serializable]
+public class CardsSelectedList
+{
+    public List<string> cardsToTake;
 }
 
 [Serializable]
@@ -611,6 +620,25 @@ public class StatusData
     }
 }
 
+[Serializable]
+public class SWSM_ShowCardDialog
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public showCardData data;
+    }
+}
+
+[Serializable]
+public class showCardData
+{
+    public List<Card> cards;
+    public int cardsToTake;
+}
+
 
 [Serializable]
 public class SWSM_ErrorData
@@ -768,6 +796,7 @@ public class RewardItemData
     public bool taken;
     public PotionData potion;
     public Card card;
+    public Trinket trinket;
 }
 
 [Serializable]

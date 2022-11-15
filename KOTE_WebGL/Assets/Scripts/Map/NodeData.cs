@@ -24,6 +24,7 @@ public class NodeData : MonoBehaviour
     public int id;
     public NODE_TYPES type;
     public NODE_SUBTYPES subType;
+    public string title;
     public NODE_STATUS status;
     public int[] exits;
     public int[] enter;
@@ -44,6 +45,7 @@ public class NodeData : MonoBehaviour
     private GameObject activeIconImage;
     private Vector3 originalScale;
     private Tween activeAnimation;
+    private bool showNodeNumber;
 
     #region UnityEventFunctions
 
@@ -65,7 +67,7 @@ public class NodeData : MonoBehaviour
             if (type == NODE_TYPES.royal_house)
             {
                 GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
-                    "Do you want to enter " + Utils.CapitalizeEveryWordOfEnum(subType), OnConfirmRoyalHouse);
+                    "Do you want to enter " + title + "?", OnConfirmRoyalHouse);
                 return;
             }
             else
@@ -123,6 +125,8 @@ public class NodeData : MonoBehaviour
 
     public void Populate(NodeDataHelper nodeData)
     {
+        int numbersEnabled = PlayerPrefs.GetInt("enable_node_numbers");
+        if (numbersEnabled == 1) showNodeNumber = true;
         PopulateNodeInformation(nodeData);
         SelectNodeImage();
         UpdateNodeStatusVisuals();
@@ -138,6 +142,7 @@ public class NodeData : MonoBehaviour
         name = nodeData.type + "_" + nodeData.id;
         act = nodeData.act;
         step = nodeData.step;
+        title = nodeData.title;
     }
 
     private void SelectNodeImage()
@@ -200,7 +205,7 @@ public class NodeData : MonoBehaviour
 
         idText.SetText(id.ToString());
         idText.color = indexColor;
-        idText.gameObject.SetActive(true);
+        idText.gameObject.SetActive(showNodeNumber);
     }
 
     private void PlayActiveNodeAnimation(GameObject backgroundImage)
