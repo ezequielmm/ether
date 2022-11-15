@@ -465,6 +465,19 @@ public class SWSM_MerchantData
     }
 }
 
+public class SWSM_TreasureData
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public string message_type;
+        public string action;
+        public string data;
+    }
+}
+
 [Serializable]
 public class SWSM_PlayerDeckData
 {
