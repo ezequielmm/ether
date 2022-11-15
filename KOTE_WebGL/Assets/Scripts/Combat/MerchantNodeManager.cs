@@ -192,8 +192,8 @@ public class MerchantNodeManager : MonoBehaviour
         }
         totalText.text = "0";
 
-        upgradeButton.interactable = merchantData.upgradeCost >= gold;
-        removeButton.interactable = merchantData.destroyCost >= gold;
+        upgradeButton.interactable = merchantData.upgradeCost <= gold;
+        removeButton.interactable = merchantData.destroyCost <= gold;
 
         selectedItem = null;
         buyButton.interactable = false;
