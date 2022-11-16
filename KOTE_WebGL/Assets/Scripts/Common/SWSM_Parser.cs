@@ -512,6 +512,12 @@ public class SWSM_Parser
             case "begin_merchant":
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Merchant);
                 break;
+            case "purchase_success":
+                GameManager.Instance.EVENT_MERCHANT_PURCHASE_SUCCESS.Invoke(true);
+                break;
+            case "purchase_failure":
+                GameManager.Instance.EVENT_MERCHANT_PURCHASE_SUCCESS.Invoke(false);
+                break;
         }
     }
 
