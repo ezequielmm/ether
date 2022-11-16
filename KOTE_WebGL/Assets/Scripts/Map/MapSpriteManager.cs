@@ -646,9 +646,29 @@ namespace map
                 if (nodeMapRef.ContainsKey(splineRef.Position))
                 {
                     Vector3 newPos = splineRef.MasterSpline.Position;
-                    newPos.z =  GameSettings.MAP_SPRITE_ELEMENTS_Z;
+                    newPos.z = GameSettings.MAP_SPRITE_ELEMENTS_Z;
+                    
+                    // adjust the player icon to the new position if needed
+                    AdjustPlayerIcon(newPos, nodeMapRef[splineRef.Position].transform.position);
+
                     nodeMapRef[splineRef.Position].transform.position = newPos;
                 }
+            }
+        }
+
+        private void AdjustPlayerIcon(Vector3 newPos, Vector3 iconPos)
+        {
+            float xDifference = iconPos.x - playerIcon.transform.position.x;
+            float yDifference = iconPos.y - playerIcon.transform.position.y;
+            if (xDifference.Equals(-0.25f) && Mathf.Abs(yDifference).Equals(0.25f))
+            {
+                playerIcon.transform.position = newPos += playerIconOffset;
+            }
+
+            if (xDifference.Equals(0.25f)&& Mathf.Abs(yDifference).Equals(0.25f))
+            {
+                playerIcon.transform.localPosition = new Vector3(newPos.x - playerIconOffset.x,
+                    newPos.y + playerIconOffset.y, newPos.z);
             }
         }
 
@@ -832,6 +852,7 @@ namespace map
                 MapGrid.SetTile(node, lakeTiles[randomLakeTile]);
                 return;
             }
+
             int randomTile = Random.Range(0, grassTiles.Length);
             MapGrid.SetTile(node, grassTiles[randomTile]);
         }
