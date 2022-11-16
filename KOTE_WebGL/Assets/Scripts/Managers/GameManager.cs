@@ -108,6 +108,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_TREASURE_ELEMENTS = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<SWSM_TreasureData> EVENT_TREASURE_CHEST_SIZE = new UnityEvent<SWSM_TreasureData>();
     [HideInInspector] public UnityEvent EVENT_TREASURE_OPEN_CHEST = new UnityEvent();
+    [HideInInspector] public UnityEvent<SWSM_ChestResult> EVENT_TREASURE_CHEST_RESULT = new UnityEvent<SWSM_ChestResult>();
 
 
     //UPGRADE EVENTS

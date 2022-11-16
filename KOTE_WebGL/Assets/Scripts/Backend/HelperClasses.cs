@@ -471,7 +471,7 @@ public class SWSM_MerchantData
         public MerchantData data;
     }
 }
-
+[Serializable]
 public class SWSM_TreasureData
 {
     public Data data;
@@ -483,6 +483,27 @@ public class SWSM_TreasureData
         public string action;
         public string data;
     }
+}
+[Serializable]
+public class SWSM_ChestResult
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public ChestResult data;
+    }
+}
+
+[Serializable]
+public class ChestResult
+{
+    public int coin;
+    public Trinket trinket;
+    public PotionData potion;
+    public string trappedType;
+    public string trappedText;
 }
 
 [Serializable]

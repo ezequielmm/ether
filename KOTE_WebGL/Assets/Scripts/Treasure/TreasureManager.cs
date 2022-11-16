@@ -12,6 +12,7 @@ public class TreasureManager : MonoBehaviour
         treasureContainer.SetActive(false);
         GameManager.Instance.EVENT_TOOGLE_TREASURE_ELEMENTS.AddListener(ContainerToggle);
         GameManager.Instance.EVENT_TREASURE_CHEST_SIZE.AddListener(OnGetChestSize);
+        GameManager.Instance.EVENT_TREASURE_CHEST_RESULT.AddListener(OnChestOpened);
     }
 
     private void ContainerToggle(bool value)
@@ -37,6 +38,15 @@ public class TreasureManager : MonoBehaviour
                 treasureSprite.transform.localScale = new Vector3(3, 3, 3);
                 break;
         }
+    }
+
+    private void OnChestOpened(SWSM_ChestResult chestResult)
+    {
+        if (!string.IsNullOrEmpty(chestResult.data.data.trappedText))
+        {
+            GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT.Invoke(chestResult.data.data.trappedText);
+        }
+        GameManager.Instance.EVENT_SHOW_REWARDS_PANEL.Invoke(true);
     }
 
     private void StartCombat()
