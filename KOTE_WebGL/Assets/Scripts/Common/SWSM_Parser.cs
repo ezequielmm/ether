@@ -122,6 +122,9 @@ public class SWSM_Parser
             case "combat_queue":
                 ProcessCombatQueue(data);
                 break;
+            case "show_card_dialog":
+                ProcessShowCardDialog(data);
+                break;
             default:
                 Debug.Log($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
                 break;
@@ -341,6 +344,30 @@ public class SWSM_Parser
         {
             GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(combatData);
         }
+    }
+
+    private static void ProcessShowCardDialog(string data)
+    {
+        SWSM_ShowCardDialog showCards = JsonUtility.FromJson<SWSM_ShowCardDialog>(data);
+        Debug.Log($"[SWSM Parser] [Show Card Dialog] data: {data}");
+        if (showCards.data.data.cards == null ||showCards.data.data.cards.Count == 0)
+        {
+            GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT.Invoke("Not enough cards on pile");
+            return;
+        }
+        SelectPanelOptions panelOptions = new SelectPanelOptions
+        {
+            HideBackButton = true,
+            MustSelectAllCards = false,
+            NumberOfCardsToSelect = showCards.data.data.cardsToTake,
+            ShowCardInCenter = true
+        };
+        GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCards.data.data.cards,
+           panelOptions,
+            (selectedCards) =>
+            {
+                GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards);
+            });
     }
 
     private static void UpdateEnergy(string data)
