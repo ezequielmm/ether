@@ -146,7 +146,14 @@ public class RoyalHouseManager : MonoBehaviour
 
     public void ActivateInnerRoyalHousePanel(bool activate)
     {
-        royalHouseContainer.SetActive(activate);
+        int panelEnabled = PlayerPrefs.GetInt("enable_royal_house");
+        if (panelEnabled == 1)
+        {
+            royalHouseContainer.SetActive(activate);
+            return;
+        }
+        // if the panel isn't enabled, automatically continue
+        GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
     }
 
     public void OnArmoryUpArrow()

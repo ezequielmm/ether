@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
 
     [Tooltip("A List of sounds linked to a name. [case insensitive]")]
     [SerializeField] List<SoundClip> soundClipList;
+    [SerializeField] bool showSoundDebugs = false;
 
     float MasterVolume => PlayerPrefs.GetFloat("settings_volume");
 
@@ -38,7 +39,10 @@ public class SoundManager : MonoBehaviour
             Debug.LogError($"[Sound Manager] Audio clip for \"{sound}\" could not be found. Make sure you spelled it right and make sure the clip exists in the Sound Manager.");
             return;
         }
-        //Debug.Log($"[Sound Manager] Playing Sound: {sound}");
+        if (showSoundDebugs)
+        {
+            Debug.Log($"[Sound Manager] Playing Sound: {sound}");
+        }
         AudioSource.PlayClipAtPoint(clip, location, MasterVolume);
     }
 

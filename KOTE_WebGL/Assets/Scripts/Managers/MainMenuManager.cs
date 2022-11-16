@@ -26,8 +26,36 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(false);
 
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(OnExpeditionUpdate);
+        CheckIfRegisterButtonIsEnabled();
+        CheckIfArmoryButtonIsEnabled();
 
         TogglePreLoginStatus(true);
+    }
+
+    private void CheckIfRegisterButtonIsEnabled()
+    {
+        int enableRegistration = PlayerPrefs.GetInt("enable_registration");
+        if (enableRegistration == 1)
+        {
+            registerButton.interactable = true;
+        }
+        else
+        {
+            registerButton.interactable = false;
+        }
+    }
+    
+    private void CheckIfArmoryButtonIsEnabled()
+    {
+        int enableRegistration = PlayerPrefs.GetInt("enable_armory");
+        if (enableRegistration == 1)
+        {
+            treasuryButton.interactable = true;
+        }
+        else
+        {
+            treasuryButton.interactable = false;
+        }
     }
 
     private void OnExpeditionUpdate(bool hasExpedition)
