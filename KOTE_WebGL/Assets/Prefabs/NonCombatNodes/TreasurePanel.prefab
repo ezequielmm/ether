@@ -322,6 +322,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   treasureContainer: {fileID: 7223217478432394021}
   treasureSprite: {fileID: 8364405662695334324}
+  openButton: {fileID: 7861674227916835948}
+  skipButton: {fileID: 46996356461575558}
 --- !u!1 &5772744350465995399
 GameObject:
   m_ObjectHideFlags: 0

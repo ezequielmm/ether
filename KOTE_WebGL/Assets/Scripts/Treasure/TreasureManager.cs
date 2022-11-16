@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TreasureManager : MonoBehaviour
 {
     [SerializeField] private GameObject treasureContainer;
     [SerializeField] private GameObject treasureSprite;
+    [SerializeField] private Button openButton;
+    [SerializeField] private Button skipButton;
 
     void Start()
     {
@@ -23,6 +26,8 @@ public class TreasureManager : MonoBehaviour
             GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
             GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.TreasureData);
         }
+        openButton.gameObject.SetActive(value);
+        skipButton.gameObject.SetActive(value);
     }
 
     private void OnGetChestSize(SWSM_TreasureData data)
@@ -42,6 +47,8 @@ public class TreasureManager : MonoBehaviour
 
     private void OnChestOpened(SWSM_ChestResult chestResult)
     {
+        openButton.gameObject.SetActive(false);
+        skipButton.gameObject.SetActive(false);
         if (!string.IsNullOrEmpty(chestResult.data.data.trappedText))
         {
             GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT.Invoke(chestResult.data.data.trappedText);
