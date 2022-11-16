@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 using UnityEngine.U2D;
 
 [Serializable]
-public class NodeData : MonoBehaviour
+public class NodeData : MonoBehaviour, ITooltipSetter
 {
     [Serializable]
     public struct BackgroundImage
@@ -46,6 +46,7 @@ public class NodeData : MonoBehaviour
     private Vector3 originalScale;
     private Tween activeAnimation;
     private bool showNodeNumber;
+    private List<Tooltip> tooltips;
 
     #region UnityEventFunctions
 
@@ -84,6 +85,11 @@ public class NodeData : MonoBehaviour
         DOTween.Kill(activeIconImage.transform);
     }
 
+    private void OnMouseEnter()
+    {
+        SetTooltip(tooltips);
+    }
+
     private void OnMouseOver()
     {
         if (status == NODE_STATUS.available || status == NODE_STATUS.active)
@@ -101,6 +107,7 @@ public class NodeData : MonoBehaviour
             activeIconImage.transform.DOScale(originalScale, 0.5f);
         }
 
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
         GameManager.Instance.EVENT_MAP_NODE_MOUSE_OVER.Invoke(-1);
     }
 
@@ -128,6 +135,7 @@ public class NodeData : MonoBehaviour
         int numbersEnabled = PlayerPrefs.GetInt("enable_node_numbers");
         if (numbersEnabled == 1) showNodeNumber = true;
         PopulateNodeInformation(nodeData);
+        PopulateTooltip(nodeData);
         SelectNodeImage();
         UpdateNodeStatusVisuals();
     }
@@ -143,6 +151,35 @@ public class NodeData : MonoBehaviour
         act = nodeData.act;
         step = nodeData.step;
         title = nodeData.title;
+    }
+
+    private void PopulateTooltip(NodeDataHelper nodeData)
+    {
+        Tooltip tooltip = new Tooltip();
+        tooltip.title = FormatTooltipName(nodeData.type);
+        // populate the tooltip as well
+        if (type == NODE_TYPES.royal_house)
+        {
+            tooltip.description = nodeData.title;
+        }
+        else
+        {
+            tooltip.description = FormatTooltipDescription(nodeData.subType);
+        }
+
+        tooltips = new List<Tooltip> { tooltip };
+    }
+
+    private string FormatTooltipName(string tooltipName)
+    {
+        return Utils.PrettyText(tooltipName.Replace('_', ' '));
+    }
+
+    private string FormatTooltipDescription(string tooltipDesc)
+    {
+        string[] split = tooltipDesc.Split('_');
+        if (split.Length > 1) return Utils.PrettyText(split[1] + " " + split[0]);
+        return Utils.PrettyText(split[0]);
     }
 
     private void SelectNodeImage()
@@ -239,6 +276,14 @@ public class NodeData : MonoBehaviour
     private void OnConfirmRoyalHouse()
     {
         GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);
+    }
+
+    public void SetTooltip(List<Tooltip> tooltips)
+    {
+        Vector3 tooltipAnchor = transform.position;
+        tooltipAnchor.y -= 0.5f;
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.TopCenter,
+            tooltipAnchor, null);
     }
 
     #region oldFunctions
