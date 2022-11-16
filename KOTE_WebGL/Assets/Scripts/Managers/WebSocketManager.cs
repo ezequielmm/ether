@@ -29,7 +29,7 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_CAMP_HEAL = "CampRecoverHealth";
     private const string WS_MESSAGE_USE_POTION = "UsePotion";
     private const string WS_MESSAGE_REMOVE_POTION = "RemovePotion";
-    private const string WS_MESSAGE_OPEN_CHEST = "OpenChest";
+    private const string WS_MESSAGE_OPEN_CHEST = "ChestOpened";
     
     /*private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
     private const string WS_MESSAGE_GET_CARD_PILES = "GetCardPiles";
