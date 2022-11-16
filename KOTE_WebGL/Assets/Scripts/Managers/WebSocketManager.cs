@@ -234,7 +234,7 @@ public class WebSocketManager : MonoBehaviour
 
         //rootSocket.ExpectAcknowledgement<string>(OnCardPlayedAnswer).Emit(WS_MESSAGE_CARD_PLAYED, data);
         Emit(WS_MESSAGE_CARD_PLAYED, data);
-
+    }
     private void OnCardsSelected(List<string> cardIds)
     {
         CardsSelectedList cardList = new CardsSelectedList { cardsToTake = cardIds };
