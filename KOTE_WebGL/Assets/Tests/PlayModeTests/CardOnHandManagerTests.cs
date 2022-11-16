@@ -420,8 +420,8 @@ public class CardOnHandManagerTests : MonoBehaviour
     [UnityTest]
     public IEnumerator DoesMovingCardMoveCardToDestination()
     {
-        Vector3 FinalPos = TransformUIToOrtho("ExhaustedPilePrefab");
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.exhaust);
+        Vector3 FinalPos = TransformUIToOrtho("DiscardCardPile");
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.discard);
         UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(FinalPos.x, cardManager.transform.position.x);
         UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(FinalPos.y, cardManager.transform.position.y);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(FinalPos.z, cardManager.transform.position.z);
@@ -468,7 +468,7 @@ public class CardOnHandManagerTests : MonoBehaviour
     [UnityTest]
     public IEnumerator DoesMovingCardScaleDownToZero()
     {
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.hand);
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.discard);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.x);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.y);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.z);
