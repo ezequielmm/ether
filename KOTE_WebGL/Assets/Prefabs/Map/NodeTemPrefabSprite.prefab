@@ -11066,6 +11066,7 @@ MonoBehaviour:
   id: 0
   type: 0
   subType: 0
+  title: 
   status: 0
   exits: 
   enter: 
@@ -11077,3 +11078,4 @@ MonoBehaviour:
   spriteShapePrefab: {fileID: 166793866925265225, guid: e9df6b78fba15624eaf4e961880a4ce4,
     type: 3}
   NodeArt: {fileID: 5971962843985705620}
+  tooltipManager: {fileID: 0}
