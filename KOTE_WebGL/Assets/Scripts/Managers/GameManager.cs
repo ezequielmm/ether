@@ -92,9 +92,11 @@ public class GameManager : SingleTon<GameManager>
     //ENCOUNTER EVENTS
     [HideInInspector] public UnityEvent EVENT_SHOW_ENCOUNTER_PANEL = new UnityEvent();
 
-    //MERCHANT PANEL EVENTS
+    //MERCHANT EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_TOGGLE_MERCHANT_PANEL = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<MerchantData> EVENT_POPULATE_MERCHANT_PANEL = new UnityEvent<MerchantData>();
+    [HideInInspector] public UnityEvent<string, string> EVENT_MERCHANT_BUY = new UnityEvent<string, string>(); // type, id
+    [HideInInspector] public UnityEvent<bool> EVENT_MERCHANT_PURCHASE_SUCCESS = new UnityEvent<bool>();
 
     //CAMP EVENTS
     [HideInInspector] public UnityEvent EVENT_CAMP_SHOW_PANEL = new UnityEvent();

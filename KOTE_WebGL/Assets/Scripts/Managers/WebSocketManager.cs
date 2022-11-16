@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using BestHTTP.SocketIO3;
 using BestHTTP.SocketIO3.Events;
+using System.Text;
 
 public class WebSocketManager : MonoBehaviour
 {
@@ -32,6 +33,7 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_USE_POTION = "UsePotion";
     private const string WS_MESSAGE_REMOVE_POTION = "RemovePotion";
     private const string WS_MESSAGE_OPEN_CHEST = "ChestOpened";
+    private const string WS_MESSAGE_MERCHANT_BUY = "MerchantBuy";
     
     /*private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
     private const string WS_MESSAGE_GET_CARD_PILES = "GetCardPiles";
@@ -117,7 +119,7 @@ public class WebSocketManager : MonoBehaviour
 #endif
 
         PlayerPrefs.SetString("ws_url", uriStr);
-        Debug.Log("Connecting to " + uriStr);
+        Debug.Log("[WebSocket Manager] Connecting to " + uriStr);
 
         manager = new SocketManager(new Uri(uriStr), options);
 
@@ -146,11 +148,6 @@ public class WebSocketManager : MonoBehaviour
         SWSM_Parser.ParseJSON(data);
     }
 
-    private void OnHello(string obj)
-    {
-        Debug.Log(obj);
-    }
-
     void OnConnected(ConnectResponse resp)
     {
         Debug.Log("Websocket Connected sucessfully! Setting listeners");
@@ -168,6 +165,7 @@ public class WebSocketManager : MonoBehaviour
         GameManager.Instance.EVENT_POTION_USED.AddListener(OnPotionUsed);
         GameManager.Instance.EVENT_POTION_DISCARDED.AddListener(OnPotionDiscarded);
         GameManager.Instance.EVENT_TREASURE_OPEN_CHEST.AddListener(OnTreasureOpened);
+        GameManager.Instance.EVENT_MERCHANT_BUY.AddListener(OnBuyItem);
 
         GameManager.Instance.EVENT_WS_CONNECTED.Invoke();
     }
@@ -175,10 +173,10 @@ public class WebSocketManager : MonoBehaviour
     void OnError(Error resp)
     {
         // Method 1: received as parameter
-        Debug.Log("Error message: " + resp.message);
+        Debug.Log("[WebSocket Manager] Error message: " + resp.message);
 
         // Method 2: access through the socket
-        Debug.Log("Sid through socket: " + manager.Socket.Id);
+        Debug.Log("[WebSocket Manager] Sid through socket: " + manager.Socket.Id);
     }
 
     /// <summary>
@@ -188,9 +186,10 @@ public class WebSocketManager : MonoBehaviour
     /// 
     private void OnNodeClicked(int nodeId)
     {
-        Debug.Log("Sending message NodeSelected with node id " + nodeId);
+        //Debug.Log("[WebSocket Manager] Sending message NodeSelected with node id " + nodeId);
         //customNamespace.Emit("NodeSelected",nodeId);
 
+        LogEmission(WS_MESSAGE_NODE_SELECTED, nodeId);
         rootSocket.ExpectAcknowledgement<string>(OnNodeClickedAnswer).Emit(WS_MESSAGE_NODE_SELECTED, nodeId);
     }
 
@@ -221,7 +220,7 @@ public class WebSocketManager : MonoBehaviour
             //data = Utils.ReadJsonFile("node_data_act_test.txt");
         }
 #endif
-        Debug.Log("Data from OnExpeditionMap: " + data);
+        //Debug.Log("Data from OnExpeditionMap: " + data);
         // GameManager.Instance.EVENT_MAP_NODES_UPDATE.Invoke(data);
         SWSM_Parser.ParseJSON(data);
     }
@@ -233,12 +232,11 @@ public class WebSocketManager : MonoBehaviour
         cardData.targetId = id;
 
         string data = JsonUtility.ToJson(cardData).ToString();
-        Debug.Log("[WebSocket Manager] OnCardPlayed data: " + data);
+        //Debug.Log("[WebSocket Manager] OnCardPlayed data: " + data);
 
         //rootSocket.ExpectAcknowledgement<string>(OnCardPlayedAnswer).Emit(WS_MESSAGE_CARD_PLAYED, data);
-        rootSocket.Emit(WS_MESSAGE_CARD_PLAYED, data);
+        Emit(WS_MESSAGE_CARD_PLAYED, data);
     }
-
     private void OnCardsSelected(List<string> cardIds)
     {
         CardsSelectedList cardList = new CardsSelectedList { cardsToTake = cardIds };
@@ -246,6 +244,20 @@ public class WebSocketManager : MonoBehaviour
         Debug.Log("[WebSocket Manager] OnCardsSelected data: " + data);
         rootSocket.Emit(WS_MESSAGE_MOVE_SELECTED_CARDS, data);
     }
+    private void OnBuyItem(string type, string id)
+    {
+        PurchaseData purchase = new PurchaseData() 
+        {
+            type = type,
+            targetId = id
+        };
+
+        string data = JsonUtility.ToJson(purchase).ToString();
+        //Debug.Log($"[WebSocket Manager] OnBuyItem data: {data}");
+
+        Emit(WS_MESSAGE_MERCHANT_BUY, data);
+    }
+
 
     private void OnPotionUsed(string potionId, string targetId)
     {
@@ -255,25 +267,25 @@ public class WebSocketManager : MonoBehaviour
             targetId = targetId
         };
         string data = JsonUtility.ToJson(potionData);
-        Debug.Log("[WebSocket Manager] OnPotionUsed data: " + data);
+        //Debug.Log("[WebSocket Manager] OnPotionUsed data: " + data);
 
-        rootSocket.Emit(WS_MESSAGE_USE_POTION, data);
+        Emit(WS_MESSAGE_USE_POTION, data);
     }
 
     private void OnPotionDiscarded(string potionId)
     {
-        Debug.Log("[WebSocket Manager] OnDiscardPotion id: " + potionId);
-        rootSocket.Emit(WS_MESSAGE_REMOVE_POTION, potionId);
+        //Debug.Log("[WebSocket Manager] OnDiscardPotion id: " + potionId);
+        Emit(WS_MESSAGE_REMOVE_POTION, potionId);
     }
 
     void OnRewardSelected(string rewardId)
     {
-        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_REWARD_SELECTED, rewardId);
+        EmitWithResponse(WS_MESSAGE_REWARD_SELECTED, rewardId);
     }
 
     private void OnCampHealSelected()
     {
-        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_CAMP_HEAL);
+        EmitWithResponse(WS_MESSAGE_CAMP_HEAL);
     }
 
     private void OnTreasureOpened()
@@ -287,16 +299,17 @@ public class WebSocketManager : MonoBehaviour
         Debug.Log($"Sending message {WS_MESSAGE_GET_CARD_UPGRADE_PAIR} with card id {cardId}");
         //customNamespace.Emit("NodeSelected",nodeId);
 
-        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_GET_CARD_UPGRADE_PAIR, cardId);
+        EmitWithResponse(WS_MESSAGE_GET_CARD_UPGRADE_PAIR, cardId);
     }
 
     private void OnCardUpgradeConfirmed(string cardId)
     {
-        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_UPGRADE_CARD, cardId);
+        EmitWithResponse(WS_MESSAGE_UPGRADE_CARD, cardId);
     }
 
     private void OnEndTurn()
     {
+        LogEmission(WS_MESSAGE_END_TURN);
         rootSocket.ExpectAcknowledgement<string>(OnEndOfTurnAnswer).Emit(WS_MESSAGE_END_TURN);
     }
 
@@ -312,14 +325,40 @@ public class WebSocketManager : MonoBehaviour
 
     private void OnContinueExpedition()
     {
-        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_CONTINUE_EXPEDITION);
+        EmitWithResponse(WS_MESSAGE_CONTINUE_EXPEDITION);
     }
 
     #endregion
 
     private void OnGenericWSDataRequest(WS_DATA_REQUEST_TYPES dataType)
     {
-        // Debug.Log("[OnGenericWSDataRequest]"+ dataType.ToString());
-        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(WS_MESSAGE_GET_DATA, dataType.ToString());
+        EmitWithResponse(WS_MESSAGE_GET_DATA, dataType.ToString());
+    }
+
+    private void Emit(string eventName, params object[] variables) 
+    {
+        LogEmission(eventName, variables);
+        rootSocket.Emit(eventName, variables);
+    }
+    private void EmitWithResponse(string eventName, params object[] variables)
+    {
+        LogEmission(eventName, variables);
+        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(eventName, variables);
+
+    }
+
+    private void LogEmission(string eventName, params object[] variables) 
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append($"[WebSocketManager] EMISSION >> Message: {eventName}");
+        if (variables != null && variables.Length >= 1)
+        {
+            sb.Append($" | Action: {variables[0]}");
+            for (int i = 1; i < variables.Length; i++)
+            {
+                sb.Append($" | Param [{i}]: {variables[i]}");
+            }
+        }
+        Debug.Log(sb.ToString());
     }
 }

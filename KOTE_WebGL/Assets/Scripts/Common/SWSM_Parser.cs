@@ -13,7 +13,7 @@ public class SWSM_Parser
     {
         SWSM_Base swsm = JsonUtility.FromJson<SWSM_Base>(data);
 
-        Debug.Log($"[SWSM Parser][MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}\n{data}");
+        Debug.Log($"[SWSM Parser] <<< [MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}\n{data}");
 
         switch (swsm.data.message_type)
         {
@@ -527,6 +527,12 @@ public class SWSM_Parser
         {
             case "begin_merchant":
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Merchant);
+                break;
+            case "purchase_success":
+                GameManager.Instance.EVENT_MERCHANT_PURCHASE_SUCCESS.Invoke(true);
+                break;
+            case "purchase_failure":
+                GameManager.Instance.EVENT_MERCHANT_PURCHASE_SUCCESS.Invoke(false);
                 break;
         }
     }
