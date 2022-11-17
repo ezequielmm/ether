@@ -511,11 +511,19 @@ public class SWSM_ChestResult
 [Serializable]
 public class ChestResult
 {
-    public int coin;
-    public Trinket trinket;
-    public PotionData potion;
+    public string isOpen;
+    public List<RewardItemData> rewards;
+    public TrappedResult trapped;
+}
+
+[Serializable]
+public class TrappedResult
+{
     public string trappedType;
     public string trappedText;
+    public string monster_type;
+    public int damage;
+    public Card curse_card;
 }
 
 [Serializable]

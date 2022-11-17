@@ -18,6 +18,16 @@ public class TreasureManager : MonoBehaviour
         GameManager.Instance.EVENT_TREASURE_CHEST_RESULT.AddListener(OnChestOpened);
     }
 
+    public void OpenChest()
+    {
+        GameManager.Instance.EVENT_TREASURE_OPEN_CHEST.Invoke();
+    }
+
+    public void OnTreasureDone()
+    {
+        GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
+    }
+
     private void ContainerToggle(bool value)
     {
         treasureContainer.SetActive(value);
@@ -49,44 +59,72 @@ public class TreasureManager : MonoBehaviour
     {
         openButton.gameObject.SetActive(false);
         skipButton.gameObject.SetActive(false);
-        if (!string.IsNullOrEmpty(chestResult.data.data.trappedText))
-        {
-        }
-
-        switch (chestResult.data.data.trappedType)
+       // Debug.LogError("Trapped Type: " + chestResult.data.data.trapped.trappedType);
+        switch (chestResult.data.data.trapped.trappedType)
         {
             case "combat":
-                GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT_WITH_ON_COMPLETE.Invoke(
-                    chestResult.data.data.trappedText,
-                    () => { GameManager.Instance.EVENT_START_COMBAT_ENCOUNTER.Invoke(); });
+                OnCombatTrap(chestResult);
                 break;
             case "card":
+                OnCardTrap(chestResult);
+                break;
             case "damage":
-                GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT_WITH_ON_COMPLETE.Invoke(
-                    chestResult.data.data.trappedText,
-                    () => { GameManager.Instance.EVENT_SHOW_REWARDS_PANEL.Invoke(true); });
+                OnDamageTrap(chestResult);
                 break;
             default:
-                GameManager.Instance.EVENT_SHOW_REWARDS_PANEL.Invoke(true);
+                ShowRewardsPanel(chestResult.data.data.rewards);
                 break;
         }
     }
 
-    private void StartCombat()
+    private void OnCombatTrap(SWSM_ChestResult chestResult)
     {
-        // Enable combat UI
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(true);
-        // Disable treasure container
-        ContainerToggle(false);
+        GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT_WITH_ON_COMPLETE.Invoke(
+            chestResult.data.data.trapped.trappedText,
+            () => { GameManager.Instance.EVENT_START_COMBAT_ENCOUNTER.Invoke(); });
     }
 
-    public void OpenChest()
+    private void OnCardTrap(SWSM_ChestResult chestResult)
     {
-        GameManager.Instance.EVENT_TREASURE_OPEN_CHEST.Invoke();
+        ShowTrappedMessage(chestResult);
     }
 
-    public void OnTreasureDone()
+    private void OnDamageTrap(SWSM_ChestResult chestResult)
     {
-        GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
+        GameManager.Instance.EVENT_DAMAGE.Invoke(new CombatTurnData.Target
+        {
+            defenseDelta = 0,
+            finalDefense = 0,
+            effectType = "damage",
+            finalHealth = 0,
+            healthDelta = chestResult.data.data.trapped.damage,
+            statuses = new List<StatusData.Status>(),
+            targetId = "player",
+            targetType = "player"
+        });
+        ShowTrappedMessage(chestResult);
+    }
+
+    private void ShowTrappedMessage(SWSM_ChestResult chestResult)
+    {
+        GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT_WITH_ON_COMPLETE.Invoke(
+            chestResult.data.data.trapped.trappedText,
+            () => { ShowRewardsPanel(chestResult.data.data.rewards); });
+    }
+
+    private void ShowRewardsPanel(List<RewardItemData> rewardsData)
+    {
+        // have to package the rewards in a SWSM_RewardsData to send it
+        GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(new SWSM_RewardsData
+        {
+            data = new SWSM_RewardsData.Data
+            {
+                data = new SWSM_RewardsData.Data.RewardsData
+                {
+                    rewards = rewardsData
+                }
+            }
+        });
+        GameManager.Instance.EVENT_SHOW_REWARDS_PANEL.Invoke(true);
     }
 }
