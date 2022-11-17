@@ -23,9 +23,9 @@ public class TreasureManager : MonoBehaviour
         treasureContainer.SetActive(value);
         if (value == true)
         {
-            GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
             GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.TreasureData);
         }
+
         openButton.gameObject.SetActive(value);
         skipButton.gameObject.SetActive(value);
     }
@@ -51,9 +51,25 @@ public class TreasureManager : MonoBehaviour
         skipButton.gameObject.SetActive(false);
         if (!string.IsNullOrEmpty(chestResult.data.data.trappedText))
         {
-            GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT.Invoke(chestResult.data.data.trappedText);
         }
-        GameManager.Instance.EVENT_SHOW_REWARDS_PANEL.Invoke(true);
+
+        switch (chestResult.data.data.trappedType)
+        {
+            case "combat":
+                GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT_WITH_ON_COMPLETE.Invoke(
+                    chestResult.data.data.trappedText,
+                    () => { GameManager.Instance.EVENT_START_COMBAT_ENCOUNTER.Invoke(); });
+                break;
+            case "card":
+            case "damage":
+                GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT_WITH_ON_COMPLETE.Invoke(
+                    chestResult.data.data.trappedText,
+                    () => { GameManager.Instance.EVENT_SHOW_REWARDS_PANEL.Invoke(true); });
+                break;
+            default:
+                GameManager.Instance.EVENT_SHOW_REWARDS_PANEL.Invoke(true);
+                break;
+        }
     }
 
     private void StartCombat()
