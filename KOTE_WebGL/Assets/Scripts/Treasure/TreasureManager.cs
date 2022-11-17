@@ -37,10 +37,10 @@ public class TreasureManager : MonoBehaviour
             case "small":
                 break;
             case "medium":
-                treasureSprite.transform.localScale = new Vector3(2, 2, 2);
+                treasureSprite.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 break;
             case "large":
-                treasureSprite.transform.localScale = new Vector3(3, 3, 3);
+                treasureSprite.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
                 break;
         }
     }
