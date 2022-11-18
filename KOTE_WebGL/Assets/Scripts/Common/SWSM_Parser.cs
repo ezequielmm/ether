@@ -208,6 +208,12 @@ public class SWSM_Parser
             case nameof(WS_DATA_REQUEST_TYPES.MerchantData):
                 ProcessMerchantData(data);
                 break;
+           case nameof(WS_DATA_REQUEST_TYPES.TreasureData):
+               ProcessTreasureData(data);
+               break;
+           case "chest_result":
+               ProcessChestResult(data);
+               break;
             default:
                 Debug.Log($"[SWSM Parser] [Generic Data] Uncaught Action \"{action}\". Data = {data}");
                 break;
@@ -433,7 +439,17 @@ public class SWSM_Parser
         GameManager.Instance.EVENT_POPULATE_MERCHANT_PANEL.Invoke(merchant.data.data);
     }
 
+    private static void ProcessTreasureData(string data)
+    {
+        SWSM_TreasureData treasureData = JsonUtility.FromJson<SWSM_TreasureData>(data);
+        GameManager.Instance.EVENT_TREASURE_CHEST_SIZE.Invoke(treasureData);
+    }
 
+    private static void ProcessChestResult(string data)
+    {
+        SWSM_ChestResult chestResult = JsonUtility.FromJson<SWSM_ChestResult>(data);
+        GameManager.Instance.EVENT_TREASURE_CHEST_RESULT.Invoke(chestResult);
+    }
 
     private static void ProcessMoveCard(string rawData)
     {
@@ -537,7 +553,7 @@ public class SWSM_Parser
                 break;
         }
     }
-
+    
     private static void ProcessCardUpgrade(string action, string data)
     {
         switch (action)

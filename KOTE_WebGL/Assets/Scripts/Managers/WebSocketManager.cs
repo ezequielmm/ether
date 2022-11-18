@@ -32,7 +32,9 @@ public class WebSocketManager : MonoBehaviour
 
     private const string WS_MESSAGE_USE_POTION = "UsePotion";
     private const string WS_MESSAGE_REMOVE_POTION = "RemovePotion";
+    private const string WS_MESSAGE_OPEN_CHEST = "ChestOpened";
     private const string WS_MESSAGE_MERCHANT_BUY = "MerchantBuy";
+    private const string WS_MESSAGE_START_ENCOUNTER_COMBAT = "CombatEncounter";
     
     /*private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
     private const string WS_MESSAGE_GET_CARD_PILES = "GetCardPiles";
@@ -163,7 +165,9 @@ public class WebSocketManager : MonoBehaviour
         GameManager.Instance.EVENT_CARDS_SELECTED.AddListener(OnCardsSelected);
         GameManager.Instance.EVENT_POTION_USED.AddListener(OnPotionUsed);
         GameManager.Instance.EVENT_POTION_DISCARDED.AddListener(OnPotionDiscarded);
+        GameManager.Instance.EVENT_TREASURE_OPEN_CHEST.AddListener(OnTreasureOpened);
         GameManager.Instance.EVENT_MERCHANT_BUY.AddListener(OnBuyItem);
+        GameManager.Instance.EVENT_START_COMBAT_ENCOUNTER.AddListener(OnStartCombatEncounter);
 
         GameManager.Instance.EVENT_WS_CONNECTED.Invoke();
     }
@@ -284,6 +288,17 @@ public class WebSocketManager : MonoBehaviour
     private void OnCampHealSelected()
     {
         EmitWithResponse(WS_MESSAGE_CAMP_HEAL);
+    }
+
+    private void OnTreasureOpened()
+    {
+       // Debug.Log($"[WebSocketManager] Sending message {WS_MESSAGE_OPEN_CHEST}");
+        EmitWithResponse(WS_MESSAGE_OPEN_CHEST);
+    }
+
+    private void OnStartCombatEncounter()
+    {
+        EmitWithResponse(WS_MESSAGE_START_ENCOUNTER_COMBAT);
     }
 
     private void OnShowUpgradePair(string cardId)

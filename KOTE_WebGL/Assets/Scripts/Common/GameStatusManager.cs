@@ -149,7 +149,7 @@ public class GameStatusManager : MonoBehaviour
         //tell top bar to show the map icon
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
+        GameManager.Instance.EVENT_SHOW_PLAYER_CHARACTER.Invoke();
         GameManager.Instance.EVENT_TOOGLE_TREASURE_ELEMENTS.Invoke(true);
     }
 
