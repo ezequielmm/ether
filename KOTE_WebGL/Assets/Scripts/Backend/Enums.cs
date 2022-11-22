@@ -242,6 +242,7 @@ public enum WS_MESSAGE_TYPES
     camp_update,
     combat_update,
     treasure_update,
+    end_treasure,
     enemy_intents,
     player_state_update,
     error,
