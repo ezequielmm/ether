@@ -28,7 +28,7 @@ public abstract class MerchantItem<T> : MonoBehaviour where T : MerchantData.IMe
         button.onClick.AddListener(OnSelect);
     }
 
-    public UnityEvent<int, MerchantData.IMerchant> PrepareBuy = new UnityEvent<int, MerchantData.IMerchant>();
+    public UnityEvent<int, MerchantData.IMerchant> PrepareBuy { get; } = new UnityEvent<int, MerchantData.IMerchant>();
 
     protected void SetPrice()
     {

@@ -13,7 +13,7 @@ public class SWSM_Parser
     {
         SWSM_Base swsm = JsonUtility.FromJson<SWSM_Base>(data);
 
-        Debug.Log($"[SWSM Parser][MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}\n{data}");
+        Debug.Log($"[SWSM Parser] <<< [MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}\n{data}");
 
         switch (swsm.data.message_type)
         {
@@ -206,6 +206,12 @@ public class SWSM_Parser
             case nameof(WS_DATA_REQUEST_TYPES.MerchantData):
                 ProcessMerchantData(data);
                 break;
+           case nameof(WS_DATA_REQUEST_TYPES.TreasureData):
+               ProcessTreasureData(data);
+               break;
+           case "chest_result":
+               ProcessChestResult(data);
+               break;
             default:
                 Debug.Log($"[SWSM Parser] [Generic Data] Uncaught Action \"{action}\". Data = {data}");
                 break;
@@ -431,7 +437,17 @@ public class SWSM_Parser
         GameManager.Instance.EVENT_POPULATE_MERCHANT_PANEL.Invoke(merchant.data.data);
     }
 
+    private static void ProcessTreasureData(string data)
+    {
+        SWSM_TreasureData treasureData = JsonUtility.FromJson<SWSM_TreasureData>(data);
+        GameManager.Instance.EVENT_TREASURE_CHEST_SIZE.Invoke(treasureData);
+    }
 
+    private static void ProcessChestResult(string data)
+    {
+        SWSM_ChestResult chestResult = JsonUtility.FromJson<SWSM_ChestResult>(data);
+        GameManager.Instance.EVENT_TREASURE_CHEST_RESULT.Invoke(chestResult);
+    }
 
     private static void ProcessMoveCard(string rawData)
     {
@@ -510,6 +526,12 @@ public class SWSM_Parser
             case "begin_merchant":
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Merchant);
                 break;
+            case "purchase_success":
+                GameManager.Instance.EVENT_MERCHANT_PURCHASE_SUCCESS.Invoke(true);
+                break;
+            case "purchase_failure":
+                GameManager.Instance.EVENT_MERCHANT_PURCHASE_SUCCESS.Invoke(false);
+                break;
         }
     }
 
@@ -529,7 +551,7 @@ public class SWSM_Parser
                 break;
         }
     }
-
+    
     private static void ProcessCardUpgrade(string action, string data)
     {
         switch (action)
