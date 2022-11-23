@@ -68,7 +68,7 @@ public class CardOnHandManager : MonoBehaviour
     [Header("Movement")] public ParticleSystem movePs;
 
     public Card thisCardValues;
-    private bool isUnplayable;
+    private bool hasUnplayableKeyword;
     private bool activateCardAfterMove;
     private bool cardIsShowingUp;
     private bool pointerIsActive;
@@ -279,7 +279,7 @@ public class CardOnHandManager : MonoBehaviour
 
         if (card.keywords != null && card.keywords.Contains("unplayable"))
         {
-            isUnplayable = true;
+            hasUnplayableKeyword = true;
         }
 
         UpdateCardBasedOnEnergy(energy);
@@ -570,7 +570,13 @@ public class CardOnHandManager : MonoBehaviour
 
     private void UpdateCardBasedOnEnergy(int energy)
     {
-        if (thisCardValues.energy <= energy && !isUnplayable)
+        if (hasUnplayableKeyword)
+        {
+            energyTF.text = "-";
+            outlineMaterial = greenOutlineMaterial;
+            card_can_be_played = false;
+        }
+        else if (thisCardValues.energy <= energy)
         {
             var main = auraPS.main;
             main.startColor = greenColor;
@@ -729,7 +735,7 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!card_can_be_played && !isUnplayable)
+        if (!card_can_be_played && !hasUnplayableKeyword)
         {
             GameManager.Instance.EVENT_CARD_NO_ENERGY.Invoke();
             return;
