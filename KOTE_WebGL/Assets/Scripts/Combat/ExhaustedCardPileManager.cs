@@ -27,26 +27,26 @@ public class ExhaustedCardPileManager : MonoBehaviour, IPointerEnterHandler, IPo
     {
         Debug.Log($"[Exhaust Pile] Card Exhausted.");
         cardsExhausted++;
-        StartCoroutine(ExhaustedCardSFX());
+        //StartCoroutine(ExhaustedCardSFX());
     }
 
-    private IEnumerator ExhaustedCardSFX()
-    {
-        if (!audioRunning)
-        {
-            audioRunning = true;
-            for (; cardsExhausted >= 0; cardsExhausted--)
-            {
-                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Exhaust");
-                yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
-            }
-            if (cardsExhausted < 0)
-            {
-                cardsExhausted = 0;
-            }
-            audioRunning = false;
-        }
-    }
+    //private IEnumerator ExhaustedCardSFX()
+    //{
+    //    if (!audioRunning)
+    //    {
+    //        audioRunning = true;
+    //        for (; cardsExhausted >= 0; cardsExhausted--)
+    //        {
+    //            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Exhaust");
+    //            yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
+    //        }
+    //        if (cardsExhausted < 0)
+    //        {
+    //            cardsExhausted = 0;
+    //        }
+    //        audioRunning = false;
+    //    }
+    //}
 
     private void OnNodeStateDateUpdate(NodeStateData nodeState, WS_QUERY_TYPE wsType)
     {

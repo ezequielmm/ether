@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 using UnityEngine.U2D;
 
 [Serializable]
-public class NodeData : MonoBehaviour
+public class NodeData : MonoBehaviour, ITooltipSetter
 {
     [Serializable]
     public struct BackgroundImage
@@ -24,6 +24,7 @@ public class NodeData : MonoBehaviour
     public int id;
     public NODE_TYPES type;
     public NODE_SUBTYPES subType;
+    public string title;
     public NODE_STATUS status;
     public int[] exits;
     public int[] enter;
@@ -44,6 +45,8 @@ public class NodeData : MonoBehaviour
     private GameObject activeIconImage;
     private Vector3 originalScale;
     private Tween activeAnimation;
+    private bool showNodeNumber;
+    private List<Tooltip> tooltips;
 
     #region UnityEventFunctions
 
@@ -65,13 +68,14 @@ public class NodeData : MonoBehaviour
             if (type == NODE_TYPES.royal_house)
             {
                 GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
-                    "Do you want to enter" + Utils.CapitalizeEveryWordOfEnum(subType), OnConfirmRoyalHouse);
+                    "Do you want to enter " + title + "?", OnConfirmRoyalHouse);
                 return;
             }
             else
             {
                 GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(id);
                 GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(act, step);
+                GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
                 StopActiveNodeAnimation();
             }
         }
@@ -80,6 +84,11 @@ public class NodeData : MonoBehaviour
     private void OnDestroy()
     {
         DOTween.Kill(activeIconImage.transform);
+    }
+
+    private void OnMouseEnter()
+    {
+        SetTooltip(tooltips);
     }
 
     private void OnMouseOver()
@@ -99,6 +108,7 @@ public class NodeData : MonoBehaviour
             activeIconImage.transform.DOScale(originalScale, 0.5f);
         }
 
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
         GameManager.Instance.EVENT_MAP_NODE_MOUSE_OVER.Invoke(-1);
     }
 
@@ -123,7 +133,10 @@ public class NodeData : MonoBehaviour
 
     public void Populate(NodeDataHelper nodeData)
     {
+        int numbersEnabled = PlayerPrefs.GetInt("enable_node_numbers");
+        if (numbersEnabled == 1) showNodeNumber = true;
         PopulateNodeInformation(nodeData);
+        PopulateTooltip(nodeData);
         SelectNodeImage();
         UpdateNodeStatusVisuals();
     }
@@ -138,6 +151,36 @@ public class NodeData : MonoBehaviour
         name = nodeData.type + "_" + nodeData.id;
         act = nodeData.act;
         step = nodeData.step;
+        title = nodeData.title;
+    }
+
+    private void PopulateTooltip(NodeDataHelper nodeData)
+    {
+        Tooltip tooltip = new Tooltip();
+        tooltip.title = FormatTooltipName(nodeData.type);
+        // populate the tooltip as well
+        if (type == NODE_TYPES.royal_house)
+        {
+            tooltip.description = nodeData.title;
+        }
+        else
+        {
+            tooltip.description = FormatTooltipDescription(nodeData.subType);
+        }
+
+        tooltips = new List<Tooltip> { tooltip };
+    }
+
+    private string FormatTooltipName(string tooltipName)
+    {
+        return Utils.PrettyText(tooltipName.Replace('_', ' '));
+    }
+
+    private string FormatTooltipDescription(string tooltipDesc)
+    {
+        string[] split = tooltipDesc.Split('_');
+        if (split.Length > 1) return Utils.PrettyText(split[1] + " " + split[0]);
+        return Utils.PrettyText(split[0]);
     }
 
     private void SelectNodeImage()
@@ -151,7 +194,7 @@ public class NodeData : MonoBehaviour
             // resize the node depending on the status
             if (status == NODE_STATUS.disabled || status == NODE_STATUS.completed)
             {
-                bgi.imageGo.transform.localScale *= 0.5f;
+                bgi.imageGo.transform.localScale *= GameSettings.COMPLETED_NODE_SCALE;
                 if (GameSettings.COLOR_UNAVAILABLE_MAP_NODES == false)
                 {
                     bgi.imageGo.GetComponent<SpriteRenderer>().material = grayscaleMaterial;
@@ -159,7 +202,7 @@ public class NodeData : MonoBehaviour
             }
             else if (status == NODE_STATUS.active || status == NODE_STATUS.available)
             {
-                bgi.imageGo.transform.localScale *= 0.85f;
+                bgi.imageGo.transform.localScale *= 1.2f;
                 PlayActiveNodeAnimation(bgi.imageGo);
             }
 
@@ -190,18 +233,22 @@ public class NodeData : MonoBehaviour
                 break;
             case NODE_STATUS.available:
                 indexColor = Color.green;
-                availableParticleSystem.Play();
+                if (type == NODE_TYPES.portal)
+                {
+                    availableParticleSystem.Play();
+                }
+
                 break;
         }
 
         idText.SetText(id.ToString());
         idText.color = indexColor;
-        idText.gameObject.SetActive(true);
+        idText.gameObject.SetActive(showNodeNumber);
     }
 
     private void PlayActiveNodeAnimation(GameObject backgroundImage)
     {
-        activeAnimation = backgroundImage.transform.DOScale(backgroundImage.transform.localScale * 0.8f,
+        activeAnimation = backgroundImage.transform.DOScale(backgroundImage.transform.localScale * 0.7f,
                 GameSettings.ACTIVE_NODE_PULSE_TIME)
             .SetLoops(-1, LoopType.Yoyo);
     }
@@ -230,6 +277,14 @@ public class NodeData : MonoBehaviour
     private void OnConfirmRoyalHouse()
     {
         GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(this.id);
+    }
+
+    public void SetTooltip(List<Tooltip> tooltips)
+    {
+        Vector3 tooltipAnchor = transform.position;
+        tooltipAnchor.y -= 0.5f;
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.TopCenter,
+            tooltipAnchor, null);
     }
 
     #region oldFunctions
@@ -263,4 +318,10 @@ public class NodeData : MonoBehaviour
     }
 
     #endregion
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.position, 0.1f);
+    }
 }

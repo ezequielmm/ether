@@ -13,7 +13,7 @@ public class SWSM_Parser
     {
         SWSM_Base swsm = JsonUtility.FromJson<SWSM_Base>(data);
 
-        Debug.Log($"[SWSM Parser][MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}\n{data}");
+        Debug.Log($"[SWSM Parser] <<< [MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}\n{data}");
 
         switch (swsm.data.message_type)
         {
@@ -37,6 +37,9 @@ public class SWSM_Parser
                 break;
             case nameof(WS_MESSAGE_TYPES.use_potion):
                 ProcessUsePotion(swsm.data.action, data);
+                break;
+            case nameof(WS_MESSAGE_TYPES.add_trinket):
+                ProcessAddTrinket(swsm.data.action, data);
                 break;
             case nameof(WS_MESSAGE_TYPES.combat_update):
                 ProcessCombatUpdate(swsm.data.action, data);
@@ -118,6 +121,9 @@ public class SWSM_Parser
                 break;
             case "combat_queue":
                 ProcessCombatQueue(data);
+                break;
+            case "show_card_dialog":
+                ProcessShowCardDialog(data);
                 break;
             default:
                 Debug.Log($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
@@ -202,6 +208,12 @@ public class SWSM_Parser
             case nameof(WS_DATA_REQUEST_TYPES.MerchantData):
                 ProcessMerchantData(data);
                 break;
+           case nameof(WS_DATA_REQUEST_TYPES.TreasureData):
+               ProcessTreasureData(data);
+               break;
+           case "chest_result":
+               ProcessChestResult(data);
+               break;
             default:
                 Debug.Log($"[SWSM Parser] [Generic Data] Uncaught Action \"{action}\". Data = {data}");
                 break;
@@ -337,6 +349,30 @@ public class SWSM_Parser
         }
     }
 
+    private static void ProcessShowCardDialog(string data)
+    {
+        SWSM_ShowCardDialog showCards = JsonUtility.FromJson<SWSM_ShowCardDialog>(data);
+        Debug.Log($"[SWSM Parser] [Show Card Dialog] data: {data}");
+        if (showCards.data.data.cards == null ||showCards.data.data.cards.Count == 0)
+        {
+            GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT.Invoke("Not enough cards on pile");
+            return;
+        }
+        SelectPanelOptions panelOptions = new SelectPanelOptions
+        {
+            HideBackButton = true,
+            MustSelectAllCards = false,
+            NumberOfCardsToSelect = showCards.data.data.cardsToTake,
+            ShowCardInCenter = true
+        };
+        GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCards.data.data.cards,
+           panelOptions,
+            (selectedCards) =>
+            {
+                GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards);
+            });
+    }
+
     private static void UpdateEnergy(string data)
     {
         SWSM_EnergyArray energyData = JsonUtility.FromJson<SWSM_EnergyArray>(data);
@@ -403,7 +439,17 @@ public class SWSM_Parser
         GameManager.Instance.EVENT_POPULATE_MERCHANT_PANEL.Invoke(merchant.data.data);
     }
 
+    private static void ProcessTreasureData(string data)
+    {
+        SWSM_TreasureData treasureData = JsonUtility.FromJson<SWSM_TreasureData>(data);
+        GameManager.Instance.EVENT_TREASURE_CHEST_SIZE.Invoke(treasureData);
+    }
 
+    private static void ProcessChestResult(string data)
+    {
+        SWSM_ChestResult chestResult = JsonUtility.FromJson<SWSM_ChestResult>(data);
+        GameManager.Instance.EVENT_TREASURE_CHEST_RESULT.Invoke(chestResult);
+    }
 
     private static void ProcessMoveCard(string rawData)
     {
@@ -482,6 +528,12 @@ public class SWSM_Parser
             case "begin_merchant":
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Merchant);
                 break;
+            case "purchase_success":
+                GameManager.Instance.EVENT_MERCHANT_PURCHASE_SUCCESS.Invoke(true);
+                break;
+            case "purchase_failure":
+                GameManager.Instance.EVENT_MERCHANT_PURCHASE_SUCCESS.Invoke(false);
+                break;
         }
     }
 
@@ -501,7 +553,7 @@ public class SWSM_Parser
                 break;
         }
     }
-
+    
     private static void ProcessCardUpgrade(string action, string data)
     {
         switch (action)
@@ -534,6 +586,16 @@ public class SWSM_Parser
         {
             case "potion_not_usable_outside_combat":
                 GameManager.Instance.EVENT_POTION_WARNING.Invoke(action);
+                break;
+        }
+    }
+
+    private static void ProcessAddTrinket(string action, string data)
+    {
+        switch (action)
+        {
+            case "trinket_not_found_in_database":
+                Debug.LogError("Selected trinket not found in database");
                 break;
         }
     }

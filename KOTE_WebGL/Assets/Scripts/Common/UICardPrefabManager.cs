@@ -21,12 +21,21 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
     public Image cardImage;
 
     public CardOnHandManager managerReference;
-    public string id;
+    public string id => card?.id;
 
     private Vector3 originalScale;
     public bool scaleCardOnHover = true;
     public float scaleOnHover = 2;
-    
+
+    [SerializeField]
+    private Sprite cardBackground;
+    [SerializeField]
+    private Sprite cardSelectedBackground;
+
+    [SerializeField]
+    Image cardBackgroundImage;
+
+    public bool useBackgroundImage = false;
 
     private Card card;
 
@@ -37,7 +46,6 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public void populate(Card card)
     {
-        id = card.id;
         string cardEnergy = Mathf.Max(card.energy, 0).ToString();
         if (card.energy < 0)
         {
@@ -48,14 +56,47 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
         rarityTF.SetText(card.rarity);
         descriptionTF.SetText(card.description);
 
-        string cardType = card.cardType;
         CardAssetManager cardAssetManager = CardAssetManager.Instance;
-        gemSprite.sprite = cardAssetManager.GetGem(card.cardType);
-        frameSprite.sprite = cardAssetManager.GetFrame(card.pool);
+        gemSprite.sprite = cardAssetManager.GetGem(card.cardType, card.isUpgraded);
+        // check to see if it's a curse or status card, because they have unique frames within the neutral pool
+        if (card.cardType == "curse" || card.cardType == "status")
+        {
+            frameSprite.sprite = cardAssetManager.GetFrame(card.cardType);
+        }
+        else
+        {
+            frameSprite.sprite = cardAssetManager.GetFrame(card.pool);
+        }
+
         bannerSprite.sprite = cardAssetManager.GetBanner(card.rarity);
         cardImage.sprite = cardAssetManager.GetCardImage(card.cardId);
       
         this.card = card;
+
+        Deselect();
+    }
+
+    public void Select() 
+    {
+        if (useBackgroundImage)
+        {
+            cardBackgroundImage.enabled = true;
+            cardBackgroundImage.sprite = cardSelectedBackground;
+        }
+    }
+
+    public void Deselect()
+    {
+        if (useBackgroundImage)
+        {
+            cardBackgroundImage.enabled = true;
+            cardBackgroundImage.sprite = cardBackground;
+        }
+        else 
+        {
+            cardBackgroundImage.sprite = null;
+            cardBackgroundImage.enabled = false;
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)

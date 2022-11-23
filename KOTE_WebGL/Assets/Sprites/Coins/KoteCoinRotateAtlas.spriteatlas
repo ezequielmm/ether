@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: KoteCoinRotateAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 74935f2d397ab59468e4833fca58f73c, type: 3}
+    - {fileID: 2800000, guid: e04b349ac383d8c4faa2557c31d3606d, type: 3}
+    - {fileID: 2800000, guid: 49ed6d5a8dd361048a47f95c28654519, type: 3}
+    - {fileID: 2800000, guid: a99ccbd59fc058c478fbec56feda97d7, type: 3}
+    - {fileID: 2800000, guid: afced1daac14aa04b8f47fd2d3c3041e, type: 3}
+    - {fileID: 2800000, guid: 402053909fa3e4345ab3ba44cefbd476, type: 3}
+    - {fileID: 2800000, guid: c6588a09bfef4f44c9261c11174fe75c, type: 3}
+    - {fileID: 2800000, guid: b3d6bc7a9287b7b48be8bf745761188e, type: 3}
+    - {fileID: 2800000, guid: c230606aa66f3804ab51f1b79c36eb24, type: 3}
+    - {fileID: 2800000, guid: 0667b9259b88c0b42ae6b335e859acc3, type: 3}
+    - {fileID: 2800000, guid: 4bba3358f2a96744c838c8ded21f5537, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 402053909fa3e4345ab3ba44cefbd476, type: 3}
+  - {fileID: 21300000, guid: 0667b9259b88c0b42ae6b335e859acc3, type: 3}
+  - {fileID: 21300000, guid: a99ccbd59fc058c478fbec56feda97d7, type: 3}
+  - {fileID: 21300000, guid: 4bba3358f2a96744c838c8ded21f5537, type: 3}
+  - {fileID: 21300000, guid: c6588a09bfef4f44c9261c11174fe75c, type: 3}
+  - {fileID: 21300000, guid: 49ed6d5a8dd361048a47f95c28654519, type: 3}
+  - {fileID: 21300000, guid: c230606aa66f3804ab51f1b79c36eb24, type: 3}
+  - {fileID: 21300000, guid: b3d6bc7a9287b7b48be8bf745761188e, type: 3}
+  - {fileID: 21300000, guid: e04b349ac383d8c4faa2557c31d3606d, type: 3}
+  - {fileID: 21300000, guid: afced1daac14aa04b8f47fd2d3c3041e, type: 3}
+  - {fileID: 21300000, guid: 74935f2d397ab59468e4833fca58f73c, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - kote-gold-coin-animation_0005
+  - kote-gold-coin-animation_0009
+  - kote-gold-coin-animation_0003
+  - kote-gold-coin-animation_0010
+  - kote-gold-coin-animation_0006
+  - kote-gold-coin-animation_0002
+  - kote-gold-coin-animation_0008
+  - kote-gold-coin-animation_0007
+  - kote-gold-coin-animation_0001
+  - kote-gold-coin-animation_0004
+  - kote-gold-coin-animation_000
+  m_RenderDataMap: {}
+  m_Tag: KoteCoinRotateAtlas
+  m_IsVariant: 0

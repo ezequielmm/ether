@@ -3,6 +3,7 @@ using UnityEngine;
 public static class GameSettings 
 {   
     //MAP
+    public const float COMPLETED_NODE_SCALE = 0.9f;
     public const bool COLOR_UNAVAILABLE_MAP_NODES = true;
     public const float MAP_SPRITE_ELEMENTS_Z = -20f;
     public const float MAP_SPRITE_NODE_X_OFFSET = 4.5f;
@@ -21,7 +22,7 @@ public static class GameSettings
     public static float DOUBLE_CLICK_TIME_DELTA = 0.5f;
     public static float PORTAL_ACTIVATION_ANIMATION_TIME = 2;
     public static float MAP_STRETCH_LIMIT = 2f;
-    public const float ACTIVE_NODE_PULSE_TIME = 2f;
+    public const float ACTIVE_NODE_PULSE_TIME = 1f;
     
     /// <summary>
     /// Negitive to go to the left, positive for the right. Between -1 and 1. -1 is left edge, 1 is right edge, and 0 is center.
@@ -44,6 +45,7 @@ public static class GameSettings
     public static Vector3 HAND_CARDS_GENERATION_POINT = new Vector3(-7, -5, -9);
     public static float CARD_SFX_MIN_RATE = 0.1f; // Time in seconds between SFX of cards
     public static float CARD_DRAW_SHOW_TIME = 0.5f;
+    public static float EXHAUST_EFFECT_DURATION = 0.6f;
 
     // COMBAT
     public const float COMBAT_ANIMATION_DELAY = 0.5f;

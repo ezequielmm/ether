@@ -20,6 +20,19 @@ public class CardPairPanelManager : MonoBehaviour
         cardPairPanel.SetActive(true);
     }
 
+    public void ShowUpgrade(Card card, Card upgradedCard) 
+    {
+        uiCardPair[0].populate(card);
+        uiCardPair[1].populate(upgradedCard);
+
+        cardPairPanel.SetActive(true);
+    }
+
+    public void HidePairPannel() 
+    {
+        cardPairPanel.SetActive(false);
+    }
+
     public void OnPairBackButton()
     {
         cardPairPanel.SetActive(false);

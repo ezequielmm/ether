@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class CommonCardsPanel : CardPanelBase
 {
-    public GameObject uiCardPrefab;
-
     private Deck playerDeck;
     private Deck drawDeck;
     private Deck discardDeck;
@@ -67,8 +67,6 @@ public class CommonCardsPanel : CardPanelBase
             commonCardsContainer.SetActive(true);
             ShowCards(pileType);
         }
-        
-        
     }
 
     private void onFullDeckShow(Deck deck) 
@@ -76,7 +74,7 @@ public class CommonCardsPanel : CardPanelBase
         playerDeck = deck;
         commonCardsContainer.SetActive(true);
         DestroyCards();
-        GenerateCards(playerDeck);
+        GenerateCards(playerDeck.cards);
     }
     
     private void ShowCards(PileTypes pileType)
@@ -85,22 +83,9 @@ public class CommonCardsPanel : CardPanelBase
         switch (pileType)
         {
             case PileTypes.Deck: GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.PlayerDeck); break;
-            case PileTypes.Draw: GenerateCards(drawDeck); break;
-            case PileTypes.Discarded: GenerateCards(discardDeck); break;
-            case PileTypes.Exhausted: GenerateCards(exhaustDeck); break;
+            case PileTypes.Draw: GenerateCards(drawDeck.cards); break;
+            case PileTypes.Discarded: GenerateCards(discardDeck.cards); break;
+            case PileTypes.Exhausted: GenerateCards(exhaustDeck.cards); break;
         }       
     }
-
-    private void GenerateCards(Deck deck)
-    {
-        if (deck != null && deck.cards !=null)
-        {
-            foreach (Card card in deck.cards)
-            {
-                GameObject newCard = Instantiate(uiCardPrefab, gridCardsContainer.transform);
-                newCard.GetComponent<UICardPrefabManager>().populate(card);
-            }
-        }
-    }
-
 }

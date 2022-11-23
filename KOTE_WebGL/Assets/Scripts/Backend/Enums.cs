@@ -221,7 +221,8 @@ public enum WS_DATA_REQUEST_TYPES
     UpgradableCards,
     UpgradablePair,
     UpgradeCard,
-    MerchantData
+    MerchantData,
+    TreasureData
 }
 
 [Serializable]
@@ -253,7 +254,8 @@ public enum WS_MESSAGE_TYPES
     end_node,
     card_upgrade,
     add_potion,
-    use_potion
+    use_potion,
+    add_trinket
 }
 
 [Serializable]
@@ -314,4 +316,31 @@ public enum RewardItemType
     fief
 }
 
+[Serializable]
+public enum ConsoleCommands
+{
+    ws_url,
+    apis_url,
+    api_url,
+    player_token,
+    quit,
+    exit,
+    close,
+    close_console,
+    enable_debug,
+    disable_debug,
+    version,
+    show_commands,
+    help,
+    enable_all_functionality,
+    enable_register_panel,
+    enable_armory_panel,
+    enable_royal_houses_panel,
+    enable_node_numbers,
+    disable_all_functionality,
+    disable_register_panel,
+    disable_armory_panel,
+    disable_royal_houses_panel,
+    disable_node_numbers
+}
 

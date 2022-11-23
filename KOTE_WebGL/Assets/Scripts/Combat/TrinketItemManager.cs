@@ -1,29 +1,30 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TrinketItemManager : MonoBehaviour
 {
-    private Trinket trinket;
-
-    [Serializable]
-    public struct TrinketImage
-    {
-        public String trinketName;
-        public Sprite trinketSprite;
-    }
-
-    public List<TrinketImage> imageList;
     public Image trinketImage;
+    public GameObject counter;
+    public TMP_Text counterText;
+    public TooltipAtCursor tooltipController;
+
+    public string Id => _trinket.id;
+    private Trinket _trinket;
+    private Tooltip _tooltip;
 
     // uses string values for right now, will probably need to change once we parse trinket data
-    public void Populate(Trinket data)
+    public void Populate(Trinket trinket)
     {
-        trinket = data;
-
-        //TODO determine how to populate the trinket data
-        TrinketImage correctImg = imageList.Find(image => image.trinketName == trinket.name);
-        trinketImage.sprite = correctImg.trinketSprite;
+        _trinket = trinket;
+        trinketImage.sprite = SpriteAssetManager.Instance.GetTrinketImage(trinket.trinketId);
+        _tooltip = new Tooltip()
+        {
+            title = _trinket.name,
+            description = _trinket.description
+        };
+        tooltipController.SetTooltips(new List<Tooltip> { _tooltip });
     }
 }
