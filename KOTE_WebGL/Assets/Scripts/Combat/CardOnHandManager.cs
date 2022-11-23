@@ -134,11 +134,7 @@ public class CardOnHandManager : MonoBehaviour
     {
         if (cardID == thisCardValues.id)
         {
-            /*cardcontent.SetActive(true);
-            cardActive = true;
-            card_can_be_played = true;*/
-
-            MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, true);
+           MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, true);
         }
     }
 
@@ -146,7 +142,6 @@ public class CardOnHandManager : MonoBehaviour
     {
         if (cardId != thisCardValues.id && !cardIsShowingUp)
         {
-            // Debug.Log("[OnCardMouseExit]");
             ResetCardPosition();
         }
     }

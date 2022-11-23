@@ -81,7 +81,7 @@ public class CardOnHandManagerTests : MonoBehaviour
 
         GameObject drawPilePrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/BattleUI/DrawCardPile.prefab");
-        drawPileManager = Instantiate(drawPilePrefab);
+        drawPileManager = Instantiate(drawPilePrefab, new Vector3(10, 10, 0), Quaternion.identity);
         drawPileManager.name = "DrawCardPile";
         drawPos = drawPileManager.transform;
         drawPileManager.SetActive(true);
@@ -89,7 +89,7 @@ public class CardOnHandManagerTests : MonoBehaviour
 
         GameObject DiscardPilePrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/BattleUI/DiscardCardPile.prefab");
-        discardPile = GameObject.Instantiate(DiscardPilePrefab);
+        discardPile = GameObject.Instantiate(DiscardPilePrefab, new Vector3(100, 100, 0), Quaternion.identity);
         discardPos = discardPile.transform;
         discardPile.name = "DiscardCardPile";
         discardPile.SetActive(true);
@@ -97,7 +97,7 @@ public class CardOnHandManagerTests : MonoBehaviour
 
         GameObject exhaustedCardPilePrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/BattleUI/ExhaustedPilePrefab.prefab");
-        exhaustPileManager = Instantiate(exhaustedCardPilePrefab);
+        exhaustPileManager = Instantiate(exhaustedCardPilePrefab, new Vector3(50, 50, 0), Quaternion.identity);
         exhaustPos = exhaustPileManager.transform;
         exhaustPileManager.name = "ExhaustedPilePrefab";
         exhaustPileManager.SetActive(true);
@@ -356,27 +356,28 @@ public class CardOnHandManagerTests : MonoBehaviour
     {
         Vector3 originPos = TransformUIToOrtho("DrawCardPile");
         cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.exhaust, delay: 0.5f);
-        UnityEngine.Assertions.Assert.AreApproximatelyEqual(originPos.x, cardManager.transform.position.x);
-        UnityEngine.Assertions.Assert.AreApproximatelyEqual(originPos.y, cardManager.transform.position.y);
-        UnityEngine.Assertions.Assert.AreApproximatelyEqual(originPos.z, cardManager.transform.position.z);
+        UnityEngine.Assertions.Assert.AreApproximatelyEqual(originPos.x, cardManager.transform.position.x, 0.01f);
+        UnityEngine.Assertions.Assert.AreApproximatelyEqual(originPos.y, cardManager.transform.position.y, 0.01f);
+        UnityEngine.Assertions.Assert.AreApproximatelyEqual(originPos.z, cardManager.transform.position.z, 0.01f);
         yield return new WaitForSeconds(0.6f);
-        UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(originPos.x, cardManager.transform.position.x);
-        UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(originPos.y, cardManager.transform.position.y);
-        UnityEngine.Assertions.Assert.AreApproximatelyEqual(originPos.z, cardManager.transform.position.z);
+        UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(originPos.x, cardManager.transform.position.x, 0.01f);
+        UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(originPos.y, cardManager.transform.position.y, 0.01f);
+        Assert.Greater(originPos.z, cardManager.transform.position.z);
     }
 
     [UnityTest]
     public IEnumerator DoesMovingCardWithDelayMoveCardToDestination()
     {
-        Vector3 FinalPos = TransformUIToOrtho("ExhaustedPilePrefab");
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.exhaust, delay: 0.5f);
-        UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(FinalPos.x, cardManager.transform.position.x);
-        UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(FinalPos.y, cardManager.transform.position.y);
-        UnityEngine.Assertions.Assert.AreApproximatelyEqual(FinalPos.z, cardManager.transform.position.z);
-        yield return new WaitForSeconds(1.6f);
-        UnityEngine.Assertions.Assert.AreApproximatelyEqual(FinalPos.x, cardManager.transform.position.x);
-        UnityEngine.Assertions.Assert.AreApproximatelyEqual(FinalPos.y, cardManager.transform.position.y);
-        UnityEngine.Assertions.Assert.AreApproximatelyEqual(FinalPos.z, cardManager.transform.position.z);
+        Vector3 FinalPos = TransformUIToOrtho("DiscardCardPile");
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.discard, delay: 0.5f);
+        yield return new WaitForSeconds(0.501f);
+        UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(FinalPos.x, cardManager.transform.position.x, 0.01f);
+        UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(FinalPos.y, cardManager.transform.position.y, 0.01f);
+        UnityEngine.Assertions.Assert.AreApproximatelyEqual(FinalPos.z, cardManager.transform.position.z, 0.01f);
+        yield return new WaitForSeconds(1.01f);
+        UnityEngine.Assertions.Assert.AreApproximatelyEqual(FinalPos.x, cardManager.transform.position.x, 0.01f);
+        UnityEngine.Assertions.Assert.AreApproximatelyEqual(FinalPos.y, cardManager.transform.position.y, 0.01f);
+        UnityEngine.Assertions.Assert.AreApproximatelyEqual(FinalPos.z, cardManager.transform.position.z, 0.01f);
     }
 
     [Test]
@@ -406,7 +407,7 @@ public class CardOnHandManagerTests : MonoBehaviour
     public IEnumerator DoesMovingCardWithDelayScaleDownToZero()
     {
         Vector3 currentScale = cardManager.transform.localScale;
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.hand, delay: 0.5f);
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.exhaust, delay: 0.5f);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.x);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.y);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.z);
@@ -492,7 +493,7 @@ public class CardOnHandManagerTests : MonoBehaviour
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_CARD_DISABLED.AddListener((data) => eventFired = false);
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand);
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.exhaust);
         yield return new WaitForSeconds(1.01f);
         Assert.True(eventFired);
     }

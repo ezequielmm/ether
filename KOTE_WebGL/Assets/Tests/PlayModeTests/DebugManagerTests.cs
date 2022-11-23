@@ -70,7 +70,6 @@ public class DebugManagerTests : MonoBehaviour
     public void DoesSendingUnknownCommandLogTheProblem()
     {
         debugManager.OnTextInput("test");
-        LogAssert.Expect(LogType.Error, "Warning: Enum not parsed. No value 'test' in enum type ConsoleCommands");
         LogAssert.Expect(LogType.Log, "Unknown Command.");
     }
 
@@ -200,7 +199,10 @@ public class DebugManagerTests : MonoBehaviour
     {
         debugManager.OnTextInput("show_commands");
         LogAssert.Expect(LogType.Log,
-            "Available commands: ws_url, apis_url, api_url, player_token, quit, exit, close, close_console,"+
-            " enable_debug, disable_debug, version, show_commands, help");
+            "Available commands: ws_url, apis_url, api_url, player_token, quit, exit, close, close_console," +
+            " enable_debug, disable_debug, version, show_commands, help, enable_all_functionality, " +
+            "enable_register_panel, enable_armory_panel, enable_royal_houses_panel, enable_node_numbers, " +
+            "disable_all_functionality, disable_register_panel, disable_armory_panel, disable_royal_houses_panel," +
+            " disable_node_numbers");
     }
 }
