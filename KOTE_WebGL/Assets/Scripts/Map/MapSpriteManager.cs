@@ -299,11 +299,13 @@ namespace map
             if (mapContainer.activeSelf)
             {
                 mapContainer.SetActive(false);
+                GameManager.Instance.EVENT_TOGGLE_COMBAT_UI.Invoke();
                 GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
             }
             else
             {
                 mapContainer.SetActive(true);
+                GameManager.Instance.EVENT_TOGGLE_COMBAT_UI.Invoke();
                 GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(true);
             }
         }
