@@ -1,0 +1,113 @@
+AncientOne.png
+size:4096,2048
+filter:Linear,Linear
+pma:true
+Back_Horn 1
+bounds:915,4,844,1096
+rotate:90
+Back_Horn 2
+bounds:478,591,1453,1170
+rotate:90
+Bell
+bounds:2588,1893,246,122
+Bell 1
+bounds:256,1801,111,106
+offsets:1,2,113,109
+Bell 2
+bounds:2225,1250,204,240
+Bell 3
+bounds:4,1971,165,73
+offsets:1,1,167,106
+Bell 4
+bounds:1401,1331,223,111
+Eye 4
+bounds:225,1876,24,40
+offsets:1,1,26,42
+FX_bite01
+bounds:1652,1213,569,720
+FX_bite02
+bounds:2716,467,510,152
+offsets:1,1,515,154
+rotate:90
+Front Horn 1
+bounds:1557,4,1109,1155
+rotate:90
+Front Horn 2
+bounds:687,427,782,1192
+rotate:270
+Head
+bounds:4,217,612,501
+Hoof_Back leg 1
+bounds:1304,1851,119,193
+Hoof_Back leg 2
+bounds:378,661,67,174
+Hoof_Front leg 1
+bounds:1883,906,142,303
+Hoof_Front leg 2
+bounds:489,1043,200,192
+Lower leg_Back leg 1
+bounds:267,772,218,325
+Lower leg_Back leg 2
+bounds:2254,794,103,235
+Lower leg_Front leg 1
+bounds:2772,10,228,453
+Lower leg_Front leg 2
+bounds:2537,1493,166,417
+Lower teeth
+bounds:4,50,244,175
+offsets:1,1,246,177
+Lower teeth 2
+bounds:1548,1430,95,122
+offsets:1,1,97,124
+Lower1
+bounds:4,1633,20,44
+offsets:1,1,22,46
+Lower2
+bounds:688,1985,36,59
+offsets:1,1,38,61
+Lower3
+bounds:4,1681,41,55
+offsets:1,1,43,57
+Mainbody
+bounds:4,1037,1310,1007
+Mid leg_Back leg 1
+bounds:252,37,203,176
+offsets:0,0,203,194
+Mid leg_Back leg 2
+bounds:847,286,139,177
+Mid leg_Front leg 1
+bounds:4,643,261,542
+Mid leg_Front leg 2
+bounds:1158,991,336,438
+rotate:90
+Mouth interior
+bounds:467,4,376,379
+Tail
+bounds:2015,818,1141,1012
+rotate:270
+Tongue
+bounds:4,1696,248,265
+Upper leg_Back leg 1
+bounds:2326,4,284,601
+Upper leg_Back leg 2
+bounds:2604,4,238,497
+Upper leg_Front leg 1
+bounds:2225,1494,359,550
+Upper teeth 1
+bounds:2015,673,266,141
+offsets:1,1,268,144
+Upper teeth 2
+bounds:173,1992,35,52
+offsets:1,3,37,56
+Upper1
+bounds:371,1853,18,44
+offsets:1,1,20,46
+Upper2
+bounds:255,1713,37,59
+offsets:1,1,39,61
+Upper3
+bounds:296,1744,41,53
+offsets:1,1,43,55
+shadow
+bounds:1359,4,133,133
+offsets:2,0,137,134
