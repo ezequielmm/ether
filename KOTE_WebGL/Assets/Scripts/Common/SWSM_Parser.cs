@@ -505,7 +505,8 @@ public class SWSM_Parser
     {
         switch (action)
         {
-            case nameof(WS_TREASURE_ACTIONS.begin_treasure):
+            case nameof(WS_TREASURE_ACTIONS.begin_treasure):           
+            case nameof(WS_TREASURE_ACTIONS.continue_treasure):
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Treasure);
                 break;
             default:
