@@ -242,6 +242,7 @@ public enum WS_MESSAGE_TYPES
     camp_update,
     combat_update,
     treasure_update,
+    end_treasure,
     enemy_intents,
     player_state_update,
     error,
@@ -269,7 +270,8 @@ public enum WS_COMBAT_ACTIONS
 [Serializable]
 public enum WS_TREASURE_ACTIONS
 {
-    begin_treasure
+    begin_treasure,
+    continue_treasure
 }
 
 [Serializable]

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -91,17 +92,7 @@ public class TreasureManager : MonoBehaviour
 
     private void OnDamageTrap(SWSM_ChestResult chestResult)
     {
-        GameManager.Instance.EVENT_DAMAGE.Invoke(new CombatTurnData.Target
-        {
-            defenseDelta = 0,
-            finalDefense = 0,
-            effectType = "damage",
-            finalHealth = 0,
-            healthDelta = chestResult.data.data.trapped.damage,
-            statuses = new List<StatusData.Status>(),
-            targetId = "player",
-            targetType = "player"
-        });
+        GameManager.Instance.EVENT_ENCOUNTER_DAMAGE.Invoke(chestResult.data.data.trapped.damage);
         ShowTrappedMessage(chestResult);
     }
 

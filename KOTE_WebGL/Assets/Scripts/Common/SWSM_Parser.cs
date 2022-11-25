@@ -47,6 +47,9 @@ public class SWSM_Parser
             case nameof(WS_MESSAGE_TYPES.treasure_update):
                 ProcessTreasureUpdate(swsm.data.action, data);
                 break;
+            case nameof(WS_MESSAGE_TYPES.end_treasure):
+                ProcessEndTreasureUpdate(swsm.data.action, data);
+                break;
             case nameof(WS_MESSAGE_TYPES.enemy_intents):
                 //ProcessEnemyIntents(swsm.data.action, data);
                 Debug.LogWarning($"[SWSM Parser] Enemy Intents are no longer listened for.");
@@ -502,11 +505,23 @@ public class SWSM_Parser
     {
         switch (action)
         {
-            case nameof(WS_TREASURE_ACTIONS.begin_treasure):
+            case nameof(WS_TREASURE_ACTIONS.begin_treasure):           
+            case nameof(WS_TREASURE_ACTIONS.continue_treasure):
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Treasure);
                 break;
             default:
                 Debug.LogWarning($"[SWSM Parser][Treasure Update] Unknown Action \"{action}\". Data = {data}");
+                break;
+        }
+    }
+
+    private static void ProcessEndTreasureUpdate(string action, string data)
+    {
+        switch (action)
+        {
+            case nameof(WS_MESSAGE_ACTIONS.select_another_reward):
+                SWSM_RewardsData updatedRewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
+                GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(updatedRewardsData);
                 break;
         }
     }
