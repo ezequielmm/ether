@@ -41,6 +41,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener(OnUpdatePlayer);
         GameManager.Instance.EVENT_WS_CONNECTED.AddListener(OnWSConnected);
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
+        GameManager.Instance.EVENT_ENCOUNTER_DAMAGE.AddListener(OnEncounterDamage);
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
 
 
@@ -280,6 +281,12 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         PlayerData = newPlayerData;
     }
 
+    private void OnEncounterDamage(int damageTaken)
+    {
+        OnHit();
+        // the math here is due to only receiving the damage dealt, but the backend applies it to the player state
+        SetHealth(playerData.hpCurrent - damageTaken);
+    }
     private void SetDefense(int? value = null)
     {
         if (value == null)
