@@ -980,7 +980,7 @@ namespace map
             
             // get the path in reverse to confirm that we have the correct path
             List<Vector3Int> checkPath = new List<Vector3Int>();
-            if (allTiles.TryGetValue(end, out MapTilePath curTile))
+            if (allTiles.TryGetValue(end, out MapTilePath curTile) && !allTiles[start].Connections.Exists(x => x.TargetNode == end))
             {
                 checkPath.Add(curTile.Position);
                 while (curTile.Position != start)
