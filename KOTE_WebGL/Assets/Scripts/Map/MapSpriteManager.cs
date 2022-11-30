@@ -2,13 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
-using UnityEditor.U2D.Path;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 using UnityEngine.U2D;
-using Spline = UnityEngine.U2D.Spline;
 
 namespace map
 {
@@ -80,8 +76,7 @@ namespace map
         Dictionary<Vector3Int, TileSplineRef> tileSplineRef = new Dictionary<Vector3Int, TileSplineRef>();
         Dictionary<Vector3Int, GameObject> nodeMapRef = new Dictionary<Vector3Int, GameObject>();
         private Vector3 playerIconOffset = new Vector3(-0.25f, -0.25f, 0);
-
-
+        
         private class SplinePoint
         {
             public Vector3Int tileLoc;
@@ -561,7 +556,7 @@ namespace map
 
                         // Record node
                         nodeMapRef.Add(mapPos, newNode.gameObject);
-                        
+
                         newNode.GetComponent<NodeData>().Populate(nodeData);
 
                         // if the node is active or the last completed node, move the player icon there
@@ -651,8 +646,6 @@ namespace map
 
                     // adjust the player icon to the new position if needed
                     AdjustPlayerIcon(newPos, nodeMapRef[splineRef.Position].transform.position);
-
-                    nodeMapRef[splineRef.Position].transform.position = newPos;
                 }
             }
         }
@@ -868,7 +861,7 @@ namespace map
 
             // we need the full path from one node to the next for the dotted line
             List<Vector3Int> linePath = new List<Vector3Int>();
-            
+
             // Generate path first
             var tilePath = FindPath(start, end);
             int startIndex = 0;
@@ -984,6 +977,34 @@ namespace map
                     tileMap.CreateConnection(tilePath[i + 1], end);
                 }
             }
+            
+            // get the path in reverse to confirm that we have the correct path
+            List<Vector3Int> checkPath = new List<Vector3Int>();
+            if (allTiles.TryGetValue(end, out MapTilePath curTile))
+            {
+                checkPath.Add(curTile.Position);
+                while (curTile.Position != start)
+                {
+                    if (curTile.Connections.Exists(x => x.TargetNode == start))
+                    {
+                        MapTilePath.Connection connection = curTile.Connections.Find(x => x.TargetNode == start);
+                        checkPath.Insert(0, connection.NextNode);
+                        curTile = allTiles[connection.NextNode];
+                    }
+                    else
+                    {
+                        checkPath.Clear();
+                        break;
+                    }
+                }
+            }
+
+            // if there is a different path, use that
+            if (checkPath.Count > 0)
+            {
+                linePath = checkPath;
+            }
+
 
             // Set dashed lines to follow full path created
             spline = path.lineController.spline;
@@ -1001,9 +1022,10 @@ namespace map
                     tileSplineRef.Add(currentTile,
                         new TileSplineRef(currentTile, new SplineData(spline, i, path.transform)));
                 }
+
                 // Set spline to path
                 Vector3 localTileCenter = path.transform.InverseTransformPoint(MapGrid.CellToWorld(currentTile));
-                bool lastSplineKnot = (i == (spline.GetPointCount() -1));
+                bool lastSplineKnot = (i == (spline.GetPointCount() - 1));
                 bool addNode = lastSplineKnot && i != tilePath.Count - 1;
 
                 if (addNode)
