@@ -115,7 +115,9 @@ public class GameStatusManager : MonoBehaviour
                 break;
             case GameStatuses.RoyalHouse: break;
             case GameStatuses.GameOver: break;
-            case GameStatuses.RewardsPanel: break;
+            case GameStatuses.RewardsPanel:
+                GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Rewards);
+                break;
         }
 
         preppingStatus = GameStatuses.None;

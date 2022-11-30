@@ -214,6 +214,9 @@ public class SWSM_Parser
            case nameof(WS_DATA_REQUEST_TYPES.TreasureData):
                ProcessTreasureData(data);
                break;
+           case nameof(WS_DATA_REQUEST_TYPES.Rewards):
+               ProcessRewardsData(data);
+               break;
            case "chest_result":
                ProcessChestResult(data);
                break;
@@ -308,7 +311,6 @@ public class SWSM_Parser
                 Debug.Log("Should move cards from draw to hand");
                 SWSM_RewardsData rewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
                 GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
-                GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(rewardsData);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.player_defeated):
             case nameof(WS_MESSAGE_ACTIONS.players_defeated):
@@ -448,6 +450,12 @@ public class SWSM_Parser
         GameManager.Instance.EVENT_TREASURE_CHEST_SIZE.Invoke(treasureData);
     }
 
+    private static void ProcessRewardsData(string data)
+    {
+        SWSM_RewardsData rewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
+        GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(rewardsData);
+    }
+    
     private static void ProcessChestResult(string data)
     {
         SWSM_ChestResult chestResult = JsonUtility.FromJson<SWSM_ChestResult>(data);
