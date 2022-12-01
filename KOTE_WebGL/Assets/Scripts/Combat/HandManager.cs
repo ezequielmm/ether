@@ -72,17 +72,19 @@ public class HandManager : MonoBehaviour
         if (!audioRunning)
         {
             audioRunning = true;
-            for (; cardsDrawn >= 0; cardsDrawn--)
+
+            if (cardsDrawn == 1)
             {
-                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Draw");
-                yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Draw Single");
+            }
+            else if (cardsDrawn > 1)
+            {
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Draw Multiple");
             }
 
-            if (cardsDrawn < 0)
-            {
-                cardsDrawn = 0;
-            }
+            yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
 
+            cardsDrawn = 0;
             audioRunning = false;
         }
     }
