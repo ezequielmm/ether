@@ -580,7 +580,7 @@ namespace map
                             }
 
                             playerIcon.transform.localPosition = knightPos;
-                            GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(nodeData.act, nodeData.step);
+                            GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.Invoke(nodeData.act, nodeData.step);
                         }
 
                         // if the node is an available royal house, turn royal house mode on
