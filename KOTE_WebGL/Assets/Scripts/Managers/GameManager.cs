@@ -247,6 +247,7 @@ public class GameManager : SingleTon<GameManager>
     
     //Console Events
     [HideInInspector] public UnityEvent EVENT_SHOW_CONSOLE = new UnityEvent();
+    [HideInInspector] public UnityEvent<int> EVENT_SKIP_NODE = new UnityEvent<int>();
 
     // Wallet Events
     [HideInInspector] public UnityEvent<string> EVENT_NEW_WALLET = new UnityEvent<string>();

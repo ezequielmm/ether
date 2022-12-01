@@ -6,7 +6,7 @@ public class SWSM_Parser
     static SWSM_Parser()
     {
         // Turns off non-exception logging when outside of development enviroment
-        DebugManager.DisableOnBuild();
+        HiddenConsoleManager.DisableOnBuild();
     }
 
     public static void ParseJSON(string data)
