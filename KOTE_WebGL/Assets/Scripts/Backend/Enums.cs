@@ -355,3 +355,11 @@ public enum SoundTypes
     Knight,
     UI
 }
+
+[Serializable]
+public enum MusicTypes
+{
+    Ambience,
+    Boss,
+    Music
+}

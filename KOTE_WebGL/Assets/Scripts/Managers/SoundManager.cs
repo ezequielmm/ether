@@ -7,9 +7,9 @@ public class SoundManager : MonoBehaviour
 {
     SettingsManager settingsManager;
 
-    [Tooltip("A List of sounds linked to a name. [case insensitive]")] [SerializeField]
-    private NamedSoundList KnightSounds;
-
+    [SerializeField] private AudioSource MusicSource;
+    [SerializeField] private List<NamedSoundList> BackgroundMusic;
+    [SerializeField] private NamedSoundList KnightSounds;
     [SerializeField] private NamedSoundList EnemyDefensiveSounds;
     [SerializeField] private NamedSoundList EnemyOffensiveSounds;
     [SerializeField] private NamedSoundList CardSounds;
@@ -22,6 +22,8 @@ public class SoundManager : MonoBehaviour
     public void Start()
     {
         GameManager.Instance.EVENT_PLAY_SFX.AddListener(PlaySfx);
+        GameManager.Instance.EVENT_PLAY_MUSIC.AddListener(PlayMusic);
+        MusicSource.loop = true;
     }
 
     public void PlaySfx(SoundTypes soundType, string sound)
@@ -82,5 +84,16 @@ public class SoundManager : MonoBehaviour
         }
 
         return relatedClip.clips[Random.Range(0, relatedClip.clips.Count)];
+    }
+
+    private void PlayMusic(MusicTypes type, int act)
+    {
+        List<NamedSoundList.SoundClip> musicList = BackgroundMusic[act].soundClips;
+        if (musicList.Exists(x => x.name == nameof(type)))
+        {
+            AudioClip music = musicList.Find(x => x.name == nameof(type)).clips[0];
+            MusicSource.clip = music;
+        }
+        
     }
 }
