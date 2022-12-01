@@ -35,6 +35,7 @@ public class SettingsManager : MonoBehaviour
 
     public void OnVolumeChanged()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         AudioListener.volume = volumeSlider.value;
         float volumePercent = volumeSlider.value * 100;
         string volumeAmount = volumePercent.ToString("F0");
@@ -51,6 +52,7 @@ public class SettingsManager : MonoBehaviour
 
     public void OnWalletsButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 

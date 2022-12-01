@@ -40,11 +40,13 @@ MonoBehaviour:
     - {fileID: 8300000, guid: a228e20ae9ac6a14a8702651af7b986b, type: 3}
   - name: SwarmMasterCast
     clips:
-    - {fileID: 8300000, guid: dd5cce405fb8fc74dafe396395a89a63, type: 3}
-  - name: ThornWolf
+    - {fileID: 8300000, guid: 290cfe96eeeb32f40998a34df330e650, type: 3}
+  - name: ThornWolfAttack
     clips:
     - {fileID: 8300000, guid: b00636d097517534c87a3bd75699b9ba, type: 3}
     - {fileID: 8300000, guid: a25d801633577ad43b05dbde3a7882d8, type: 3}
+  - name: ThornWolfCast
+    clips:
     - {fileID: 8300000, guid: 80ed03c2b038cde44a2c4403e35b47e5, type: 3}
     - {fileID: 8300000, guid: 79f9483fc6aba6f428dc6c78b4213720, type: 3}
   - name: TreantAttack
@@ -56,3 +58,15 @@ MonoBehaviour:
     clips:
     - {fileID: 8300000, guid: dd5cce405fb8fc74dafe396395a89a63, type: 3}
     - {fileID: 8300000, guid: 674cbd660b8990d4dbb137406b869197, type: 3}
+  - name: SporemongerAttack
+    clips:
+    - {fileID: 8300000, guid: 3a5515a5422205944b402e5eaf7f0bd1, type: 3}
+  - name: SporemongerCast
+    clips:
+    - {fileID: 8300000, guid: ceb164d06f3d8be489463fcc48709fc5, type: 3}
+  - name: MimicFrog1Attack
+    clips:
+    - {fileID: 8300000, guid: 3a5515a5422205944b402e5eaf7f0bd1, type: 3}
+  - name: MimicFrog1Cast
+    clips:
+    - {fileID: 8300000, guid: ceb164d06f3d8be489463fcc48709fc5, type: 3}

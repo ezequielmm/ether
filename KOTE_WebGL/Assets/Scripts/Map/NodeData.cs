@@ -73,7 +73,10 @@ public class NodeData : MonoBehaviour, ITooltipSetter
             }
             else
             {
-                GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(id);
+                if (type == NODE_TYPES.combat)
+                {GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Combat Selected");}
+
+            GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(id);
                 GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(act, step);
                 GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
                 StopActiveNodeAnimation();

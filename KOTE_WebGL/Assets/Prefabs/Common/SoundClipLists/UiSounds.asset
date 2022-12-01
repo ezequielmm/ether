@@ -12,4 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fff91411776e8a942af5d181dceadb85, type: 3}
   m_Name: UiSounds
   m_EditorClassIdentifier: 
-  soundClips: []
+  soundClips:
+  - name: Coin Reward
+    clips:
+    - {fileID: 8300000, guid: c3735369473dc604aaff347d1f66c726, type: 3}
+  - name: Open Chest
+    clips:
+    - {fileID: 8300000, guid: da844233e85fc974cbec0feb434ec422, type: 3}
+  - name: Rest
+    clips:
+    - {fileID: 8300000, guid: 760640fd18fde8047ba754594860e9d4, type: 3}
+  - name: Battle Start
+    clips:
+    - {fileID: 8300000, guid: 0e686c34406560c49890cdcaa80fd36d, type: 3}
+  - name: Victory
+    clips:
+    - {fileID: 8300000, guid: 00938cad8bb7f2d4d990ab232325b3c3, type: 3}
+  - name: Use Potion
+    clips:
+    - {fileID: 8300000, guid: 0fbe872fa7586a44db9ebfa22ada7eb8, type: 3}
+  - name: Confirm Purchase
+    clips:
+    - {fileID: 8300000, guid: c5f90bc8b21670143a42c413b06e6ff7, type: 3}
+  - name: Combat Selected
+    clips:
+    - {fileID: 8300000, guid: ddbc4e7fc7ba2ee45bba253e8784fa34, type: 3}
+  - name: Top Bar Click
+    clips:
+    - {fileID: 8300000, guid: bff7f17b63c41884eb630198d6783016, type: 3}
+  - name: Button Click
+    clips:
+    - {fileID: 8300000, guid: bff7f17b63c41884eb630198d6783016, type: 3}

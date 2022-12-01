@@ -18,7 +18,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: e73ec3360bcfd044e97364562cc467bb, type: 3}
   - name: Cancel
     clips:
-    - {fileID: 8300000, guid: e73ec3360bcfd044e97364562cc467bb, type: 3}
+    - {fileID: 8300000, guid: 52409cb3cd7d85e4bbcba30f7472b67e, type: 3}
   - name: Draw Single
     clips:
     - {fileID: 8300000, guid: 00ba3b534a07ea74b9e7578d24f24faa, type: 3}
@@ -34,3 +34,12 @@ MonoBehaviour:
   - name: Out Of Energy
     clips:
     - {fileID: 8300000, guid: 6eaa37120c0547948a5ffd2a161bfea9, type: 3}
+  - name: Shuffle
+    clips:
+    - {fileID: 8300000, guid: e167fa8ae71e0c6418db2178d3ce940e, type: 3}
+  - name: Reward
+    clips:
+    - {fileID: 8300000, guid: 21cbc1b5186f51045b3a3402771fa7c4, type: 3}
+  - name: Upgrade
+    clips:
+    - {fileID: 8300000, guid: 4b279d7ee44c89744bb9a49718d2048f, type: 3}

@@ -116,16 +116,24 @@ public class TopBarManager : MonoBehaviour
     
     public void OnMapButtonClicked()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Top Bar Click");
         GameManager.Instance.EVENT_MAP_ICON_CLICKED.Invoke();
     }
 
     public void OnSettingsButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Top Bar Click");
         GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
     public void OnDeskButtonClicked()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Top Bar Click");
         GameManager.Instance.EVENT_CARD_PILE_CLICKED.Invoke(PileTypes.Deck);
+    }
+
+    public void OnGearButtonClicked()
+    {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Top Bar Click");
     }
 }

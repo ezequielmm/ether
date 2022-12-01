@@ -30,11 +30,13 @@ public class CampPanelManager : MonoBehaviour
     public void OnRestSelected()
     {
         GameManager.Instance.EVENT_CAMP_HEAL.Invoke();
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Rest");
         OnCampFinish();
     }
 
     public void OnSmithSelected()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.UpgradableCards);
     }
 
@@ -51,6 +53,7 @@ public class CampPanelManager : MonoBehaviour
 
     public void OnSkipSelected()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
         campContainer.SetActive(false);
     }
