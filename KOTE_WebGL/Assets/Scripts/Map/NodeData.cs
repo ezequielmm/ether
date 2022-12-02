@@ -46,6 +46,7 @@ public class NodeData : MonoBehaviour, ITooltipSetter
     private Vector3 originalScale;
     private Tween activeAnimation;
     private bool showNodeNumber;
+    private bool playHoverAnimation;
     private List<Tooltip> tooltips;
 
     #region UnityEventFunctions
@@ -56,6 +57,7 @@ public class NodeData : MonoBehaviour, ITooltipSetter
         availableParticleSystem.GetComponent<Renderer>().sortingLayerName =
             GameSettings.MAP_ELEMENTS_SORTING_LAYER_NAME;
         HideNode();
+        GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnShowMapPanel);
     }
 
 
@@ -77,6 +79,7 @@ public class NodeData : MonoBehaviour, ITooltipSetter
                 GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.Invoke(act, step);
                 GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
                 StopActiveNodeAnimation();
+                activeIconImage.transform.localScale = originalScale;
             }
         }
     }
@@ -93,7 +96,7 @@ public class NodeData : MonoBehaviour, ITooltipSetter
 
     private void OnMouseOver()
     {
-        if (status == NODE_STATUS.available || status == NODE_STATUS.active)
+        if ((status == NODE_STATUS.available || status == NODE_STATUS.active) && playHoverAnimation)
         {
             activeIconImage.transform.DOScale(new Vector3(originalScale.x * 1.2f, originalScale.y * 1.2f), 0.5f);
         }
@@ -256,6 +259,12 @@ public class NodeData : MonoBehaviour, ITooltipSetter
     private void StopActiveNodeAnimation()
     {
         activeAnimation.Kill();
+    }
+
+    private void OnShowMapPanel()
+    {
+        playHoverAnimation = false;
+        activeAnimation.Rewind();
     }
 
 

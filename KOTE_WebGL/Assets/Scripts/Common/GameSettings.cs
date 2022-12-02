@@ -71,7 +71,7 @@ public static class GameSettings
     /*//////////////  
     ///Debug
     //*/
-    public const bool DEBUG_MODE_ON = true;
+    public const bool DEBUG_MODE_ON = false;
 
     
 }
