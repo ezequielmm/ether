@@ -1,0 +1,67 @@
+FungalBrute.png
+size:8192,1024
+filter:Linear,Linear
+pma:true
+Back-L antenna
+bounds:1604,36,369,102
+Back-R antenna
+bounds:1977,34,534,194
+offsets:0,0,534,207
+Base
+bounds:4263,521,498,303
+rotate:90
+Front-L antenna
+bounds:3005,404,228,615
+Front-R antenna
+bounds:2188,296,283,723
+Higher leg-R-B
+bounds:3433,8,478,449
+Higher leg-R-F
+bounds:2475,394,526,625
+Lower leg-L-B
+bounds:4946,225,320,308
+offsets:0,56,320,364
+rotate:90
+Lower leg-L-F
+bounds:3915,30,428,483
+rotate:90
+Lower leg-R-B
+bounds:2760,21,364,369
+Lower leg-R-F
+bounds:4570,549,464,470
+MAIN BODY
+bounds:569,142,1230,877
+MS bottom left (low)
+bounds:710,7,170,131
+MS bottom-right
+bounds:2515,4,386,241
+rotate:90
+MS middle-R
+bounds:884,20,264,118
+MS top-left
+bounds:4653,117,289,428
+MS top-right
+bounds:3786,462,473,557
+Mushroom bottom left (high)
+bounds:4946,55,154,166
+Neck
+bounds:1803,232,787,381
+rotate:90
+Tail
+bounds:4402,38,479,247
+offsets:0,0,487,247
+rotate:90
+Undercap
+bounds:1152,29,448,109
+offsets:1,1,451,111
+Upper leg-L-B
+bounds:3128,45,355,301
+rotate:90
+Upper leg-L-F
+bounds:3237,461,545,558
+cap
+bounds:4,108,911,561
+offsets:1,1,913,563
+rotate:90
+shadow
+bounds:569,4,137,134
