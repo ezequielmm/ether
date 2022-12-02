@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +16,8 @@ public class SettingsManager : MonoBehaviour
     public GameObject logoutConfirmContainer;
     public Button logoutHyperlink, manageWallets;
 
+    private bool settingsInitalized;
+
     private void Start()
     {
         settingsContainer.SetActive(false);
@@ -27,17 +30,22 @@ public class SettingsManager : MonoBehaviour
 
         logoutHyperlink.interactable = false;
 
-        // Debug.Log($"{PlayerPrefs.GetFloat("settings_volume")}");
+        Debug.LogError($"master volume: {PlayerPrefs.GetFloat("settings_volume")}");
+        Debug.LogError($"sfx volume: {PlayerPrefs.GetFloat("sfx_volume")}");
+        Debug.LogError($"music volume: {PlayerPrefs.GetFloat("music_volume")}");
         volumeSlider.value = PlayerPrefs.GetFloat("settings_volume", 1);
         sfxSlider.value = PlayerPrefs.GetFloat("sfx_volume", 1);
         musicSlider.value = PlayerPrefs.GetFloat("music_volume", 0.8f);
         AudioListener.volume = volumeSlider.value;
 
         languageDropdown.value = PlayerPrefs.GetInt("settings_dropdown");
+        settingsInitalized = true;
     }
 
     public void OnVolumeChanged(string volumeType)
     {
+        // if this isn't here this will be called before Start() or Awake()
+        if (!settingsInitalized) return;
         Slider changedSlider = volumeSlider;
         TMP_Text sliderText = volumeText;
         switch (volumeType)
@@ -60,6 +68,7 @@ public class SettingsManager : MonoBehaviour
         string volumeAmount = volumePercent.ToString("F0");
         sliderText.text = (volumeAmount);
         PlayerPrefs.SetFloat(volumeType, changedSlider.value);
+        Debug.LogError($"new volume: {changedSlider.value}");
         PlayerPrefs.Save();
         GameManager.Instance.EVENT_VOLUME_CHANGED.Invoke();
     }

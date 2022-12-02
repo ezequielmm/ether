@@ -9,6 +9,7 @@ public class SoundManager : SingleTon<SoundManager>
 
     [SerializeField] private AudioSource MusicSource;
     [SerializeField] private AudioSource SfxSource;
+    [SerializeField] private AudioSource AmbienceSource;
     [SerializeField] private List<NamedSoundList> BackgroundMusic;
     [SerializeField] private NamedSoundList KnightSounds;
     [SerializeField] private NamedSoundList EnemyDefensiveSounds;
@@ -24,10 +25,9 @@ public class SoundManager : SingleTon<SoundManager>
     public void Start()
     {
         GameManager.Instance.EVENT_PLAY_SFX.AddListener(PlaySfx);
-        GameManager.Instance.EVENT_PLAY_MUSIC.AddListener(PlayMusic);
+        GameManager.Instance.EVENT_PLAY_MUSIC.AddListener(OnPlayMusic);
         GameManager.Instance.EVENT_VOLUME_CHANGED.AddListener(UpdateVolume);
-        MusicSource.volume = MusicVolume;
-        SfxSource.volume = SfxVolume;
+        UpdateVolume();
     }
 
     public void PlaySfx(SoundTypes soundType, string sound)
@@ -49,7 +49,7 @@ public class SoundManager : SingleTon<SoundManager>
         {
             Debug.Log($"[Sound Manager] Playing Sound: {sound}");
         }
-        
+
         SfxSource.PlayOneShot(clip);
     }
 
@@ -90,14 +90,45 @@ public class SoundManager : SingleTon<SoundManager>
         return relatedClip.clips[Random.Range(0, relatedClip.clips.Count)];
     }
 
+    private void OnPlayMusic(MusicTypes type, int act)
+    {
+        switch (type)
+        {
+            case MusicTypes.Boss:
+            case MusicTypes.Music:
+                PlayMusic(type, act);
+                break;
+            case MusicTypes.Ambient:
+                PlayAmbientSound(act);
+                break;
+        }
+    }
+
     private void PlayMusic(MusicTypes type, int act)
     {
         List<NamedSoundList.SoundClip> musicList = BackgroundMusic[act].soundClips;
         if (musicList.Exists(x => x.name == type.ToString()))
         {
             AudioClip music = musicList.Find(x => x.name == type.ToString()).clips[0];
-            MusicSource.clip = music;
-            MusicSource.Play();
+            if (music != MusicSource.clip || MusicSource.isPlaying == false)
+            {
+                MusicSource.clip = music;
+                MusicSource.Play();
+            }
+        }
+    }
+
+    private void PlayAmbientSound(int act)
+    {
+        List<NamedSoundList.SoundClip> musicList = BackgroundMusic[act].soundClips;
+        if (musicList.Exists(x => x.name == "Ambient"))
+        {
+            AudioClip music = musicList.Find(x => x.name == "Ambient").clips[0];
+            if (music != AmbienceSource.clip || AmbienceSource.isPlaying == false)
+            {
+                AmbienceSource.clip = music;
+                AmbienceSource.Play();
+            }
         }
     }
 
@@ -105,5 +136,6 @@ public class SoundManager : SingleTon<SoundManager>
     {
         MusicSource.volume = MusicVolume;
         SfxSource.volume = SfxVolume;
+        AmbienceSource.volume = SfxVolume;
     }
 }
