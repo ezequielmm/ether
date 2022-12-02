@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class EnemiesManager : MonoBehaviour
 {
@@ -103,12 +104,17 @@ public class EnemiesManager : MonoBehaviour
             }
         }
 
+        // if there's no enemies, then combat is completed
         if (enemies.Count == 0)
         {
             GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), nameof(EnemyState.dead));
             return;
         }
         
+        // if there are enemies, signal the game status manager to start combat
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(GameStatuses), nameof(GameStatuses.Combat));
+
+
         for(int i = 0; i < enemies.Count; i++)
         {
             var enemy = enemies[i];
