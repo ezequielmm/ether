@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class SoundManager : MonoBehaviour
+public class SoundManager : SingleTon<SoundManager>
 {
     SettingsManager settingsManager;
 
     [SerializeField] private AudioSource MusicSource;
+    [SerializeField] private AudioSource SfxSource;
     [SerializeField] private List<NamedSoundList> BackgroundMusic;
     [SerializeField] private NamedSoundList KnightSounds;
     [SerializeField] private NamedSoundList EnemyDefensiveSounds;
@@ -17,13 +18,16 @@ public class SoundManager : MonoBehaviour
 
     [SerializeField] bool showSoundDebugs = false;
 
-    float MasterVolume => PlayerPrefs.GetFloat("settings_volume");
+    private float SfxVolume => PlayerPrefs.GetFloat("sfx_volume", 1);
+    private float MusicVolume => PlayerPrefs.GetFloat("music_volume", 0.5f);
 
     public void Start()
     {
         GameManager.Instance.EVENT_PLAY_SFX.AddListener(PlaySfx);
         GameManager.Instance.EVENT_PLAY_MUSIC.AddListener(PlayMusic);
-        MusicSource.loop = true;
+        GameManager.Instance.EVENT_VOLUME_CHANGED.AddListener(UpdateVolume);
+        MusicSource.volume = MusicVolume;
+        SfxSource.volume = SfxVolume;
     }
 
     public void PlaySfx(SoundTypes soundType, string sound)
@@ -45,8 +49,8 @@ public class SoundManager : MonoBehaviour
         {
             Debug.Log($"[Sound Manager] Playing Sound: {sound}");
         }
-
-        AudioSource.PlayClipAtPoint(clip, location, MasterVolume);
+        
+        SfxSource.PlayOneShot(clip);
     }
 
     private AudioClip GetAudioClip(SoundTypes soundType, string soundName)
@@ -95,5 +99,11 @@ public class SoundManager : MonoBehaviour
             MusicSource.clip = music;
         }
         
+    }
+
+    private void UpdateVolume()
+    {
+        MusicSource.volume = MusicVolume;
+        SfxSource.volume = SfxVolume;
     }
 }

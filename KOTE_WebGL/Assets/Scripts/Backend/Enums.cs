@@ -359,7 +359,7 @@ public enum SoundTypes
 [Serializable]
 public enum MusicTypes
 {
-    Ambience,
+    Ambient,
     Boss,
     Music
 }
