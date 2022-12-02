@@ -93,12 +93,12 @@ public class SoundManager : SingleTon<SoundManager>
     private void PlayMusic(MusicTypes type, int act)
     {
         List<NamedSoundList.SoundClip> musicList = BackgroundMusic[act].soundClips;
-        if (musicList.Exists(x => x.name == nameof(type)))
+        if (musicList.Exists(x => x.name == type.ToString()))
         {
-            AudioClip music = musicList.Find(x => x.name == nameof(type)).clips[0];
+            AudioClip music = musicList.Find(x => x.name == type.ToString()).clips[0];
             MusicSource.clip = music;
+            MusicSource.Play();
         }
-        
     }
 
     private void UpdateVolume()
