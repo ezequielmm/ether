@@ -92,6 +92,13 @@ public class SWSM_Parser
 
     private static void UpdateMapActionPicker(string action, string data)
     {
+#if UNITY_EDITOR
+        if (GameSettings.DEBUG_MODE_ON)
+        {
+            data = Utils.ReadJsonFile("map_test_data.json");
+        }
+#endif
+
         SWSM_MapData mapData = JsonUtility.FromJson<SWSM_MapData>(data);
         switch (action)
         {
@@ -358,11 +365,12 @@ public class SWSM_Parser
     {
         SWSM_ShowCardDialog showCards = JsonUtility.FromJson<SWSM_ShowCardDialog>(data);
         Debug.Log($"[SWSM Parser] [Show Card Dialog] data: {data}");
-        if (showCards.data.data.cards == null ||showCards.data.data.cards.Count == 0)
+        if (showCards.data.data.cards == null || showCards.data.data.cards.Count == 0)
         {
             GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT.Invoke("Not enough cards on pile");
             return;
         }
+
         SelectPanelOptions panelOptions = new SelectPanelOptions
         {
             HideBackButton = true,
@@ -371,11 +379,8 @@ public class SWSM_Parser
             ShowCardInCenter = true
         };
         GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCards.data.data.cards,
-           panelOptions,
-            (selectedCards) =>
-            {
-                GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards);
-            });
+            panelOptions,
+            (selectedCards) => { GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards); });
     }
 
     private static void UpdateEnergy(string data)
@@ -513,7 +518,7 @@ public class SWSM_Parser
     {
         switch (action)
         {
-            case nameof(WS_TREASURE_ACTIONS.begin_treasure):           
+            case nameof(WS_TREASURE_ACTIONS.begin_treasure):
             case nameof(WS_TREASURE_ACTIONS.continue_treasure):
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Treasure);
                 break;
@@ -567,7 +572,7 @@ public class SWSM_Parser
             case "begin_camp":
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Camp);
                 break;
-            case"heal_amount":
+            case "heal_amount":
                 SWSM_HealData healData = JsonUtility.FromJson<SWSM_HealData>(data);
                 GameManager.Instance.EVENT_HEAL.Invoke("camp", healData.data.data.healed);
                 break;
@@ -576,7 +581,7 @@ public class SWSM_Parser
                 break;
         }
     }
-    
+
     private static void ProcessCardUpgrade(string action, string data)
     {
         switch (action)
@@ -597,7 +602,7 @@ public class SWSM_Parser
         {
             case "potion_not_found_in_database":
             case "potion_not_in_inventory":
-            case"potion_max_count_reached":
+            case "potion_max_count_reached":
                 GameManager.Instance.EVENT_POTION_WARNING.Invoke(action);
                 break;
         }
@@ -622,17 +627,17 @@ public class SWSM_Parser
                 break;
         }
     }
-    
+
     private static void ProcessUpgradeablePair(string data)
     {
-        
         SWSM_DeckData deckData = JsonUtility.FromJson<SWSM_DeckData>(data);
         Deck deck = new Deck() { cards = deckData.data.data.deck };
-       GameManager.Instance.EVENT_UPGRADE_SHOW_UPGRADE_PAIR.Invoke(deck);
+        GameManager.Instance.EVENT_UPGRADE_SHOW_UPGRADE_PAIR.Invoke(deck);
     }
 
     private static void ProcessConfirmUpgrade(string data)
     {
         SWSM_ConfirmUpgrade confirmUpgradeData = JsonUtility.FromJson<SWSM_ConfirmUpgrade>(data);
-GameManager.Instance.EVENT_UPGRADE_CONFIRMED.Invoke(confirmUpgradeData);    }
+        GameManager.Instance.EVENT_UPGRADE_CONFIRMED.Invoke(confirmUpgradeData);
+    }
 }
