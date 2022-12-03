@@ -17,6 +17,11 @@ public class SettingsManager : MonoBehaviour
     private void Start()
     {
         settingsContainer.SetActive(false);
+        ScrollRect[] scrollList = settingsContainer.GetComponentsInChildren<ScrollRect>();
+        foreach (ScrollRect scrollRect in scrollList)
+        {
+            scrollRect.scrollSensitivity = GameSettings.PANEL_SCROLL_SPEED;
+        }
 
         GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerSettingsPanel);
 
