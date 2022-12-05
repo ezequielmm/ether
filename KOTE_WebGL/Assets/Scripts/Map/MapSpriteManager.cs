@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 using UnityEngine.U2D;
 
@@ -78,8 +76,7 @@ namespace map
         Dictionary<Vector3Int, TileSplineRef> tileSplineRef = new Dictionary<Vector3Int, TileSplineRef>();
         Dictionary<Vector3Int, GameObject> nodeMapRef = new Dictionary<Vector3Int, GameObject>();
         private Vector3 playerIconOffset = new Vector3(-0.25f, -0.25f, 0);
-
-
+        
         private class SplinePoint
         {
             public Vector3Int tileLoc;
@@ -299,11 +296,13 @@ namespace map
             if (mapContainer.activeSelf)
             {
                 mapContainer.SetActive(false);
+                GameManager.Instance.EVENT_TOGGLE_COMBAT_UI.Invoke();
                 GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
             }
             else
             {
                 mapContainer.SetActive(true);
+                GameManager.Instance.EVENT_TOGGLE_COMBAT_UI.Invoke();
                 GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(true);
             }
         }
@@ -560,7 +559,6 @@ namespace map
                         // Record node
                         nodeMapRef.Add(mapPos, newNode.gameObject);
 
-
                         newNode.GetComponent<NodeData>().Populate(nodeData);
 
                         // if the node is active or the last completed node, move the player icon there
@@ -647,11 +645,9 @@ namespace map
                 {
                     Vector3 newPos = splineRef.MasterSpline.Position;
                     newPos.z = GameSettings.MAP_SPRITE_ELEMENTS_Z;
-                    
+
                     // adjust the player icon to the new position if needed
                     AdjustPlayerIcon(newPos, nodeMapRef[splineRef.Position].transform.position);
-
-                    nodeMapRef[splineRef.Position].transform.position = newPos;
                 }
             }
         }
@@ -665,7 +661,7 @@ namespace map
                 playerIcon.transform.position = newPos += playerIconOffset;
             }
 
-            if (xDifference.Equals(0.25f)&& Mathf.Abs(yDifference).Equals(0.25f))
+            if (xDifference.Equals(0.25f) && Mathf.Abs(yDifference).Equals(0.25f))
             {
                 playerIcon.transform.localPosition = new Vector3(newPos.x - playerIconOffset.x,
                     newPos.y + playerIconOffset.y, newPos.z);
@@ -865,6 +861,9 @@ namespace map
             end.z = 0;
             Spline spline = path.pathController.spline;
 
+            // we need the full path from one node to the next for the dotted line
+            List<Vector3Int> linePath = new List<Vector3Int>();
+
             // Generate path first
             var tilePath = FindPath(start, end);
             int startIndex = 0;
@@ -873,7 +872,7 @@ namespace map
             for (int i = 0; i < tilePath.Count(); i++)
             {
                 var currentTile = tilePath[i];
-
+                linePath.Add(currentTile);
                 if (allTiles.ContainsKey(currentTile))
                 {
                     // Look for last good starting point in path (Leaving First Path)
@@ -980,144 +979,64 @@ namespace map
                     tileMap.CreateConnection(tilePath[i + 1], end);
                 }
             }
-
-            // Set dashed lines to follow full path created
-            splineIndex = 0;
-            spline = path.lineController.spline;
-            Vector3Int current = start;
-            bool lastnode = false;
-            while (!lastnode)
+            
+            // get the path in reverse to confirm that we have the correct path
+            List<Vector3Int> checkPath = new List<Vector3Int>();
+            if (allTiles.TryGetValue(end, out MapTilePath curTile) && !allTiles[start].Connections.Exists(x => x.TargetNode == end))
             {
-                lastnode = current == end;
-                if (tileSplineRef.ContainsKey(current))
+                checkPath.Add(curTile.Position);
+                while (curTile.Position != start)
                 {
-                    tileSplineRef[current].AddChildSpline(new SplineData(spline, splineIndex, path.transform));
-                }
-                else
-                {
-                    tileSplineRef.Add(current,
-                        new TileSplineRef(current, new SplineData(spline, splineIndex, path.transform)));
-                }
-
-                // Set spline to path
-                Vector3 localTileCenter = path.transform.InverseTransformPoint(MapGrid.CellToWorld(current));
-                bool lastSplineKnot = splineIndex == spline.GetPointCount() - 1;
-                bool addNode = lastSplineKnot && !lastnode;
-
-                if (addNode)
-                {
-                    spline.InsertPointAt(splineIndex, localTileCenter);
-                }
-                else
-                {
-                    spline.SetPosition(splineIndex, localTileCenter);
-                }
-
-                splineIndex++;
-
-                // Find next tile
-                Vector3Int nextNode = default(Vector3Int);
-                if (allTiles.ContainsKey(current))
-                {
-                    foreach (var connection in allTiles[current].Connections)
+                    if (curTile.Connections.Exists(x => x.TargetNode == start))
                     {
-                        if (connection.TargetNode == end)
-                        {
-                            nextNode = connection.NextNode;
-                            break;
-                        }
-                    }
-                }
-
-                if (nextNode == current)
-                {
-                    lastnode = true;
-                }
-                else
-                {
-                    current = nextNode;
-                }
-            }
-        }
-
-        private void GenerateNodeBackground()
-        {
-            foreach (NodeData node in nodes)
-            {
-                Vector3 nodePos = nodesHolder.transform.TransformPoint(node.transform.position);
-                Vector3Int nodeCelPos = MapGrid.layoutGrid.WorldToCell(nodePos);
-                MapGrid.SetTile(nodeCelPos, grassTiles[0]);
-                Debug.Log("[MapSpriteManager] nodePos: " + nodePos + " nodeCelPos: " + MapGrid.CellToWorld(nodeCelPos));
-                // now we need to know where the node is in relation to the cell
-                Vector3 cellPosition = MapGrid.CellToWorld(nodeCelPos);
-                // we need to determine if it's in the center of the cell
-                if (cellPosition.y - 0.2f < nodePos.y && nodePos.y < cellPosition.y + 0.2f)
-                {
-                    if (nodePos.x < cellPosition.x)
-                    {
-                        // node is on the left side, so color relevant tiles
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y + 1, nodeCelPos.z),
-                            grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y - 1, nodeCelPos.z),
-                            grassTiles[0]);
-                    }
-
-                    if (nodePos.x > cellPosition.x)
-                    {
-                        // node is on the right side, so color those tiles
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y + 1, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y - 1, nodeCelPos.z), grassTiles[0]);
+                        MapTilePath.Connection connection = curTile.Connections.Find(x => x.TargetNode == start);
+                        checkPath.Insert(0, connection.NextNode);
+                        curTile = allTiles[connection.NextNode];
                     }
                     else
                     {
-                        // node is in the center, so color those tiles
+                        checkPath.Clear();
+                        break;
                     }
                 }
+            }
 
-                // or if it's in the top section
-                if (nodePos.y > cellPosition.y + 0.2f)
+            // if there is a different path, use that
+            if (checkPath.Count > 0)
+            {
+                linePath = checkPath;
+            }
+
+
+            // Set dashed lines to follow full path created
+            spline = path.lineController.spline;
+
+            // assign each point of the dotted line to that path
+            for (int i = 0; i < linePath.Count; i++)
+            {
+                Vector3Int currentTile = linePath[i];
+                if (tileSplineRef.ContainsKey(currentTile))
                 {
-                    if (nodePos.x <= cellPosition.x)
-                    {
-                        // node is on the left side, so color relevant tiles
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y + 1, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y + 1, nodeCelPos.z),
-                            grassTiles[0]);
-                    }
-
-                    if (nodePos.x > cellPosition.x)
-                    {
-                        // node is on the right side, so color those tiles
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y + 1, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y + 1, nodeCelPos.z),
-                            grassTiles[0]);
-                    }
+                    tileSplineRef[currentTile].AddChildSpline(new SplineData(spline, i, path.transform));
+                }
+                else
+                {
+                    tileSplineRef.Add(currentTile,
+                        new TileSplineRef(currentTile, new SplineData(spline, i, path.transform)));
                 }
 
-                // or if it's in the bottom section
-                if (nodePos.y < cellPosition.y - 0.2f)
-                {
-                    if (nodePos.x <= cellPosition.x)
-                    {
-                        // node is on the left side, so color relevant tiles
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y - 1, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y - 1, nodeCelPos.z),
-                            grassTiles[0]);
-                    }
+                // Set spline to path
+                Vector3 localTileCenter = path.transform.InverseTransformPoint(MapGrid.CellToWorld(currentTile));
+                bool lastSplineKnot = (i == (spline.GetPointCount() - 1));
+                bool addNode = lastSplineKnot && i != tilePath.Count - 1;
 
-                    if (nodePos.x > cellPosition.x)
-                    {
-                        // node is on the right side, so color those tiles
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y - 1, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y - 1, nodeCelPos.z),
-                            grassTiles[0]);
-                    }
+                if (addNode)
+                {
+                    spline.InsertPointAt(i, localTileCenter);
+                }
+                else
+                {
+                    spline.SetPosition(i, localTileCenter);
                 }
             }
         }

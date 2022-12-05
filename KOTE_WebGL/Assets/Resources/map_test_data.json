@@ -1,0 +1,3994 @@
+﻿{
+  "data": {
+    "message_type": "map_update",
+    "seed": 1669664039,
+    "action": "show_map",
+    "data": [
+      {
+        "id": 1,
+        "act": 0,
+        "step": 0,
+        "type": "royal_house",
+        "subType": "royal_house_a",
+        "exits": [
+          5
+        ],
+        "enter": [],
+        "status": "disabled",
+        "private_data": {},
+        "state": {},
+        "title": "House Cynthienne"
+      },
+      {
+        "id": 2,
+        "act": 0,
+        "step": 0,
+        "type": "royal_house",
+        "subType": "royal_house_b",
+        "exits": [
+          5
+        ],
+        "enter": [],
+        "status": "disabled",
+        "private_data": {},
+        "state": {},
+        "title": "House Medici"
+      },
+      {
+        "id": 3,
+        "act": 0,
+        "step": 0,
+        "type": "royal_house",
+        "subType": "royal_house_c",
+        "exits": [
+          5
+        ],
+        "enter": [],
+        "status": "disabled",
+        "private_data": {},
+        "state": {},
+        "title": "House Brightflame"
+      },
+      {
+        "id": 4,
+        "act": 0,
+        "step": 0,
+        "type": "royal_house",
+        "subType": "royal_house_d",
+        "exits": [
+          5
+        ],
+        "enter": [],
+        "status": "completed",
+        "private_data": {},
+        "state": {},
+        "title": "House Rhunn"
+      },
+      {
+        "id": 5,
+        "act": 0,
+        "step": 1,
+        "type": "portal",
+        "subType": "portal",
+        "exits": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "enter": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "status": "completed",
+        "private_data": {},
+        "state": {}
+      },
+      {
+        "id": 6,
+        "act": 1,
+        "step": 0,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          10,
+          11,
+          12
+        ],
+        "enter": [
+          5
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                10,
+                10
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                6,
+                6
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                1
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                8
+              ],
+              "probability": 0.25
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 7,
+        "act": 1,
+        "step": 0,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          12,
+          13
+        ],
+        "enter": [
+          5
+        ],
+        "status": "completed",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                10,
+                10
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                6,
+                6
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                1
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                8
+              ],
+              "probability": 0.25
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 8,
+        "act": 1,
+        "step": 0,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          13
+        ],
+        "enter": [
+          5
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                10,
+                10
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                6,
+                6
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                1
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                8
+              ],
+              "probability": 0.25
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 9,
+        "act": 1,
+        "step": 0,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          13
+        ],
+        "enter": [
+          5
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                10,
+                10
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                6,
+                6
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                1
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                8
+              ],
+              "probability": 0.25
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 10,
+        "act": 1,
+        "step": 1,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          14,
+          15
+        ],
+        "enter": [
+          6
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                10,
+                10
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                6,
+                6
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                1
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                8
+              ],
+              "probability": 0.25
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 11,
+        "act": 1,
+        "step": 1,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          15,
+          16
+        ],
+        "enter": [
+          6
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                10,
+                10
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                6,
+                6
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                1
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                8
+              ],
+              "probability": 0.25
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 12,
+        "act": 1,
+        "step": 1,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          16
+        ],
+        "enter": [
+          6,
+          7
+        ],
+        "status": "available",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                10,
+                10
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                6,
+                6
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                1
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                8
+              ],
+              "probability": 0.25
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 13,
+        "act": 1,
+        "step": 1,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          16
+        ],
+        "enter": [
+          7,
+          8,
+          9
+        ],
+        "status": "available",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                10,
+                10
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                6,
+                6
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                1
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                8
+              ],
+              "probability": 0.25
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 14,
+        "act": 1,
+        "step": 2,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          17,
+          18
+        ],
+        "enter": [
+          10
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                10,
+                10
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                6,
+                6
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                1
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                8
+              ],
+              "probability": 0.25
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 15,
+        "act": 1,
+        "step": 2,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          18
+        ],
+        "enter": [
+          10,
+          11
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                10,
+                10
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                6,
+                6
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                1
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                8
+              ],
+              "probability": 0.25
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 16,
+        "act": 1,
+        "step": 2,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          18,
+          19,
+          20
+        ],
+        "enter": [
+          11,
+          12,
+          13
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                10,
+                10
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                6,
+                6
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                1
+              ],
+              "probability": 0.25
+            },
+            {
+              "enemies": [
+                8
+              ],
+              "probability": 0.25
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 17,
+        "act": 1,
+        "step": 3,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          21
+        ],
+        "enter": [
+          14
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                6
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                2,
+                10
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 18,
+        "act": 1,
+        "step": 3,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          21,
+          22,
+          23
+        ],
+        "enter": [
+          14,
+          15,
+          16
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                6
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                2,
+                10
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 19,
+        "act": 1,
+        "step": 3,
+        "type": "combat",
+        "subType": "combat_elite",
+        "exits": [
+          23
+        ],
+        "enter": [
+          16
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                11
+              ],
+              "probability": 33.3
+            },
+            {
+              "enemies": [
+                9
+              ],
+              "probability": 33.3
+            },
+            {
+              "enemies": [
+                5
+              ],
+              "probability": 33.3
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 20,
+        "act": 1,
+        "step": 3,
+        "type": "treasure",
+        "subType": "treasure",
+        "exits": [
+          23
+        ],
+        "enter": [
+          16
+        ],
+        "status": "disabled",
+        "private_data": null,
+        "state": {}
+      },
+      {
+        "id": 21,
+        "act": 1,
+        "step": 4,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          24
+        ],
+        "enter": [
+          17,
+          18
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                6
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                2,
+                10
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 22,
+        "act": 1,
+        "step": 4,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          24
+        ],
+        "enter": [
+          18
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                6
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                2,
+                10
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 23,
+        "act": 1,
+        "step": 4,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          24,
+          25
+        ],
+        "enter": [
+          18,
+          19,
+          20
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                6
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                2,
+                10
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 24,
+        "act": 1,
+        "step": 5,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          26,
+          27,
+          28
+        ],
+        "enter": [
+          21,
+          22,
+          23
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                6
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                2,
+                10
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 25,
+        "act": 1,
+        "step": 5,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          28
+        ],
+        "enter": [
+          23
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                6
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                2,
+                10
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 26,
+        "act": 1,
+        "step": 6,
+        "type": "camp",
+        "subType": "camp_regular",
+        "exits": [
+          29,
+          30,
+          31
+        ],
+        "enter": [
+          24
+        ],
+        "status": "disabled",
+        "private_data": null,
+        "state": {}
+      },
+      {
+        "id": 27,
+        "act": 1,
+        "step": 6,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          31,
+          32
+        ],
+        "enter": [
+          24
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                6
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                2,
+                10
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 28,
+        "act": 1,
+        "step": 6,
+        "type": "camp",
+        "subType": "camp_regular",
+        "exits": [
+          32
+        ],
+        "enter": [
+          24,
+          25
+        ],
+        "status": "disabled",
+        "private_data": null,
+        "state": {}
+      },
+      {
+        "id": 29,
+        "act": 1,
+        "step": 7,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          33,
+          34,
+          35
+        ],
+        "enter": [
+          26
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                6
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                2,
+                10
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 30,
+        "act": 1,
+        "step": 7,
+        "type": "treasure",
+        "subType": "treasure",
+        "exits": [
+          35
+        ],
+        "enter": [
+          26
+        ],
+        "status": "disabled",
+        "private_data": null,
+        "state": {}
+      },
+      {
+        "id": 31,
+        "act": 1,
+        "step": 7,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          35
+        ],
+        "enter": [
+          26,
+          27
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                6
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                2,
+                10
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 32,
+        "act": 1,
+        "step": 7,
+        "type": "merchant",
+        "subType": "merchant",
+        "exits": [
+          35
+        ],
+        "enter": [
+          27,
+          28
+        ],
+        "status": "disabled",
+        "private_data": null,
+        "state": {}
+      },
+      {
+        "id": 33,
+        "act": 1,
+        "step": 8,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          36
+        ],
+        "enter": [
+          29
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                6
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                2,
+                10
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 34,
+        "act": 1,
+        "step": 8,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          36
+        ],
+        "enter": [
+          29
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                6
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                2,
+                10
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 35,
+        "act": 1,
+        "step": 8,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          36,
+          37
+        ],
+        "enter": [
+          29,
+          30,
+          31,
+          32
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                6
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                2,
+                10
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 36,
+        "act": 1,
+        "step": 9,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          38,
+          39,
+          40
+        ],
+        "enter": [
+          33,
+          34,
+          35
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                6
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                2,
+                10
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 37,
+        "act": 1,
+        "step": 9,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          40,
+          41
+        ],
+        "enter": [
+          35
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                6
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                2,
+                10
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 38,
+        "act": 1,
+        "step": 10,
+        "type": "camp",
+        "subType": "camp_regular",
+        "exits": [
+          42
+        ],
+        "enter": [
+          36
+        ],
+        "status": "disabled",
+        "private_data": null,
+        "state": {}
+      },
+      {
+        "id": 39,
+        "act": 1,
+        "step": 10,
+        "type": "combat",
+        "subType": "combat_elite",
+        "exits": [
+          42,
+          43
+        ],
+        "enter": [
+          36
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                11
+              ],
+              "probability": 33.3
+            },
+            {
+              "enemies": [
+                9
+              ],
+              "probability": 33.3
+            },
+            {
+              "enemies": [
+                5
+              ],
+              "probability": 33.3
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 40,
+        "act": 1,
+        "step": 10,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          43,
+          44
+        ],
+        "enter": [
+          36,
+          37
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                6
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                2,
+                10
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 41,
+        "act": 1,
+        "step": 10,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          44
+        ],
+        "enter": [
+          37
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                6
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                2,
+                10
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 42,
+        "act": 1,
+        "step": 11,
+        "type": "combat",
+        "subType": "combat_elite",
+        "exits": [
+          45
+        ],
+        "enter": [
+          38,
+          39
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                11
+              ],
+              "probability": 33.3
+            },
+            {
+              "enemies": [
+                9
+              ],
+              "probability": 33.3
+            },
+            {
+              "enemies": [
+                5
+              ],
+              "probability": 33.3
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 43,
+        "act": 1,
+        "step": 11,
+        "type": "combat",
+        "subType": "combat_elite",
+        "exits": [
+          45
+        ],
+        "enter": [
+          39,
+          40
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                11
+              ],
+              "probability": 33.3
+            },
+            {
+              "enemies": [
+                9
+              ],
+              "probability": 33.3
+            },
+            {
+              "enemies": [
+                5
+              ],
+              "probability": 33.3
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 44,
+        "act": 1,
+        "step": 11,
+        "type": "combat",
+        "subType": "combat_elite",
+        "exits": [
+          45
+        ],
+        "enter": [
+          40,
+          41
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                11
+              ],
+              "probability": 33.3
+            },
+            {
+              "enemies": [
+                9
+              ],
+              "probability": 33.3
+            },
+            {
+              "enemies": [
+                5
+              ],
+              "probability": 33.3
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 45,
+        "act": 1,
+        "step": 12,
+        "type": "camp",
+        "subType": "camp_regular",
+        "exits": [
+          46,
+          47,
+          48
+        ],
+        "enter": [
+          42,
+          43,
+          44
+        ],
+        "status": "disabled",
+        "private_data": null,
+        "state": {}
+      },
+      {
+        "id": 46,
+        "act": 1,
+        "step": 13,
+        "type": "treasure",
+        "subType": "treasure",
+        "exits": [
+          49
+        ],
+        "enter": [
+          45
+        ],
+        "status": "disabled",
+        "private_data": null,
+        "state": {}
+      },
+      {
+        "id": 47,
+        "act": 1,
+        "step": 13,
+        "type": "camp",
+        "subType": "camp_regular",
+        "exits": [
+          49
+        ],
+        "enter": [
+          45
+        ],
+        "status": "disabled",
+        "private_data": null,
+        "state": {}
+      },
+      {
+        "id": 48,
+        "act": 1,
+        "step": 13,
+        "type": "treasure",
+        "subType": "treasure",
+        "exits": [
+          49,
+          50,
+          51,
+          52
+        ],
+        "enter": [
+          45
+        ],
+        "status": "disabled",
+        "private_data": null,
+        "state": {}
+      },
+      {
+        "id": 49,
+        "act": 1,
+        "step": 14,
+        "type": "treasure",
+        "subType": "treasure",
+        "exits": [
+          53
+        ],
+        "enter": [
+          46,
+          47,
+          48
+        ],
+        "status": "disabled",
+        "private_data": null,
+        "state": {}
+      },
+      {
+        "id": 50,
+        "act": 1,
+        "step": 14,
+        "type": "camp",
+        "subType": "camp_regular",
+        "exits": [
+          53,
+          54
+        ],
+        "enter": [
+          48
+        ],
+        "status": "disabled",
+        "private_data": null,
+        "state": {}
+      },
+      {
+        "id": 51,
+        "act": 1,
+        "step": 14,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          54
+        ],
+        "enter": [
+          48
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8,
+                1
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2,
+                1
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                10,
+                10
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3,
+                4
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                2,
+                2
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 52,
+        "act": 1,
+        "step": 14,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          54,
+          55
+        ],
+        "enter": [
+          48
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8,
+                1
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2,
+                1
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                10,
+                10
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3,
+                4
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                2,
+                2
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 53,
+        "act": 1,
+        "step": 15,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          56,
+          57
+        ],
+        "enter": [
+          49,
+          50
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8,
+                1
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2,
+                1
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                10,
+                10
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3,
+                4
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                2,
+                2
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 54,
+        "act": 1,
+        "step": 15,
+        "type": "treasure",
+        "subType": "treasure",
+        "exits": [
+          57
+        ],
+        "enter": [
+          50,
+          51,
+          52
+        ],
+        "status": "disabled",
+        "private_data": null,
+        "state": {}
+      },
+      {
+        "id": 55,
+        "act": 1,
+        "step": 15,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          57
+        ],
+        "enter": [
+          52
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8,
+                1
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2,
+                1
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                10,
+                10
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3,
+                4
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                2,
+                2
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 56,
+        "act": 1,
+        "step": 16,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          58,
+          59
+        ],
+        "enter": [
+          53
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8,
+                1
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2,
+                1
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                10,
+                10
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3,
+                4
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                2,
+                2
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 57,
+        "act": 1,
+        "step": 16,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          59,
+          60,
+          61
+        ],
+        "enter": [
+          53,
+          54,
+          55
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8,
+                1
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2,
+                1
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                10,
+                10
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3,
+                4
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                2,
+                2
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 58,
+        "act": 1,
+        "step": 17,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          62,
+          63
+        ],
+        "enter": [
+          56
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8,
+                1
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2,
+                1
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                10,
+                10
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3,
+                4
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                2,
+                2
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 59,
+        "act": 1,
+        "step": 17,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          63
+        ],
+        "enter": [
+          56,
+          57
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8,
+                1
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2,
+                1
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                10,
+                10
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3,
+                4
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                2,
+                2
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 60,
+        "act": 1,
+        "step": 17,
+        "type": "combat",
+        "subType": "combat_elite",
+        "exits": [
+          63
+        ],
+        "enter": [
+          57
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                11
+              ],
+              "probability": 33.3
+            },
+            {
+              "enemies": [
+                9
+              ],
+              "probability": 33.3
+            },
+            {
+              "enemies": [
+                5
+              ],
+              "probability": 33.3
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 61,
+        "act": 1,
+        "step": 17,
+        "type": "treasure",
+        "subType": "treasure",
+        "exits": [
+          63
+        ],
+        "enter": [
+          57
+        ],
+        "status": "disabled",
+        "private_data": null,
+        "state": {}
+      },
+      {
+        "id": 62,
+        "act": 1,
+        "step": 18,
+        "type": "treasure",
+        "subType": "treasure",
+        "exits": [
+          64,
+          65,
+          66
+        ],
+        "enter": [
+          58
+        ],
+        "status": "disabled",
+        "private_data": null,
+        "state": {}
+      },
+      {
+        "id": 63,
+        "act": 1,
+        "step": 18,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          66
+        ],
+        "enter": [
+          58,
+          59,
+          60,
+          61
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8,
+                1
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2,
+                1
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                10,
+                10
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3,
+                4
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                2,
+                2
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 64,
+        "act": 1,
+        "step": 19,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          67
+        ],
+        "enter": [
+          62
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8,
+                1
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2,
+                1
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                10,
+                10
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3,
+                4
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                2,
+                2
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 65,
+        "act": 1,
+        "step": 19,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          67
+        ],
+        "enter": [
+          62
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8,
+                1
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2,
+                1
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                10,
+                10
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3,
+                4
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                2,
+                2
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 66,
+        "act": 1,
+        "step": 19,
+        "type": "combat",
+        "subType": "combat_standard",
+        "exits": [
+          67
+        ],
+        "enter": [
+          62,
+          63
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                8,
+                8,
+                1
+              ],
+              "probability": 0.12
+            },
+            {
+              "enemies": [
+                2,
+                1
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                10,
+                10
+              ],
+              "probability": 0.11
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                3,
+                4
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                4,
+                4,
+                3,
+                3
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                1,
+                1,
+                12
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                12,
+                12,
+                8
+              ],
+              "probability": 0.1
+            },
+            {
+              "enemies": [
+                6,
+                6,
+                4
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                10,
+                10,
+                10,
+                10,
+                10
+              ],
+              "probability": 0.09
+            },
+            {
+              "enemies": [
+                2,
+                2
+              ],
+              "probability": 0.08
+            }
+          ]
+        },
+        "state": {}
+      },
+      {
+        "id": 67,
+        "act": 1,
+        "step": 20,
+        "type": "camp",
+        "subType": "camp_regular",
+        "exits": [
+          68
+        ],
+        "enter": [
+          64,
+          65,
+          66
+        ],
+        "status": "disabled",
+        "private_data": null,
+        "state": {}
+      },
+      {
+        "id": 68,
+        "act": 1,
+        "step": 21,
+        "type": "combat",
+        "subType": "combat_boss",
+        "exits": [],
+        "enter": [
+          67
+        ],
+        "status": "disabled",
+        "private_data": {
+          "enemies": [
+            {
+              "enemies": [
+                13
+              ],
+              "probability": 0.5
+            },
+            {
+              "enemies": [
+                7
+              ],
+              "probability": 0.5
+            }
+          ]
+        },
+        "state": {}
+      }
+    ]
+  }
+}
