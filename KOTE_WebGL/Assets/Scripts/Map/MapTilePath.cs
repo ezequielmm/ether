@@ -28,9 +28,9 @@ public class MapTilePath : HexTile
     /// </summary>
     public Vector3Int Position;
 
-    public void CreateConnection(Vector3Int otherTile, Vector3Int targetTile) 
+    public void CreateConnection(Vector3Int nextTile, Vector3Int targetTile) 
     {
-        Connections.Add(new Connection(otherTile, targetTile));
+        Connections.Add(new Connection(nextTile, targetTile));
     }
 
     public MapTilePath(Vector3Int currentPosition) 
