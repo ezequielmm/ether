@@ -3332,6 +3332,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5587173521213615958}
     m_Modifications:
+    - target: {fileID: 902047205667501318, guid: d70a85a2e42ea4540b500ab28ec9ecbd,
+        type: 3}
+      propertyPath: m_ScrollSensitivity
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 902047205774541834, guid: d70a85a2e42ea4540b500ab28ec9ecbd,
         type: 3}
       propertyPath: m_SizeDelta.y

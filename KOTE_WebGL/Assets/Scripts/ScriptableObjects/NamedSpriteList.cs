@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-[CreateAssetMenu(fileName="NamedSpriteList", menuName = "ScriptableObjects/NamedSpriteList")]
+[CreateAssetMenu(fileName="NamedSpriteList", menuName = "ScriptableObjects/SpriteLists/NamedSpriteList")]
 public class NamedSpriteList : ScriptableObject
 {
     [Serializable]

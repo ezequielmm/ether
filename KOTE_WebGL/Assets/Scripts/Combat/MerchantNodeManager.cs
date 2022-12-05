@@ -222,11 +222,13 @@ public class MerchantNodeManager : MonoBehaviour
         // Item Purchase
         if (selectedItem != null)
         {
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Confirm Purchase");
             GameManager.Instance.EVENT_MERCHANT_BUY.Invoke(selectedItem.Type.ToLower(), selectedItem.Id);
         }
         // Service Purchase
         else if (selectedCard != null) 
         {
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Confirm Purchase");
             GameManager.Instance.EVENT_MERCHANT_BUY.Invoke(upgradeCard ? "upgrade" : "remove", selectedCard.id);
         }
     }
@@ -313,6 +315,7 @@ public class MerchantNodeManager : MonoBehaviour
     public void CloseMerchantPanel()
     {
         ToggleVisibility(false);
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
     }
 }

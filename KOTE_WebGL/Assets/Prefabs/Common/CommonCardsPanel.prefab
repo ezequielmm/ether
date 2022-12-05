@@ -358,7 +358,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 30
   m_Viewport: {fileID: 902047206810383659}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 902047207203648268}
@@ -1197,10 +1197,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6d8cc3cde6403440a18c18c24c99c95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  commonCardsContainer: {fileID: 902047207662230093}
-  gridCardsContainer: {fileID: 902047205774541833}
   uiCardPrefab: {fileID: 7797539488213526578, guid: a87c99eb745359a41a0c6a2304341a8c,
     type: 3}
+  commonCardsContainer: {fileID: 902047207662230093}
+  gridCardsContainer: {fileID: 902047205774541833}
+  scaleOnHover: 1
+  useBackgroundImage: 0
 --- !u!114 &382812150100250055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1213,8 +1215,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98598c35c3439934bb780b8a63c5b8ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiCardPrefab: {fileID: 0}
   commonCardsContainer: {fileID: 902047207662230093}
   gridCardsContainer: {fileID: 902047205774541833}
+  scaleOnHover: 1
+  useBackgroundImage: 0
   selectCardPrefab: {fileID: 4040004165665311213, guid: 9bbabae692a5c0b4b9d0e665e9598abd,
     type: 3}
   cardPlaceholder: {fileID: 6380034822144806817, guid: ee66ab723f4cd4c4bac066bd6b76f453,
