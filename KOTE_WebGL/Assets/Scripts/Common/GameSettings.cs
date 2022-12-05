@@ -66,12 +66,13 @@ public static class GameSettings
     public const float DEFAUT_TEXTEFFECT_X_SPREAD = 1f;
     public const int DEFAUT_TEXTEFFECT_POOL_SIZE = 10;
 
-
+    // UI
+    public static float PANEL_SCROLL_SPEED = 30f;
 
     /*//////////////  
     ///Debug
     //*/
-    public const bool DEBUG_MODE_ON = true;
+    public const bool DEBUG_MODE_ON = false;
 
     
 }

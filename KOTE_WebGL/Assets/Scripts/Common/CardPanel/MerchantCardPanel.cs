@@ -22,6 +22,7 @@ public class MerchantCardPanel : CardPanelBase
             button.gameObject.SetActive(true);
             button.onClick.AddListener(() =>
             {
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
                 OnCardClick.Invoke(uiCard.id, uiCard);
             });
         }

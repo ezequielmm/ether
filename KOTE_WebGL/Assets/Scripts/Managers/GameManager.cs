@@ -165,7 +165,7 @@ public class GameManager : SingleTon<GameManager>
     //TOP BAR EVENTS
     [HideInInspector] public UnityEvent EVENT_MAP_ICON_CLICKED = new UnityEvent();
     [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_TOPBAR_MAP_ICON = new UnityEvent<bool>();
-    [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_CURRENT_STEP_TEXT = new UnityEvent<int, int>();
+    [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_CURRENT_STEP_INFORMATION = new UnityEvent<int, int>();
 
     //CARD PANEL EVENTS
     [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>> EVENT_SHOW_SELECT_CARD_PANEL = new UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>>();
@@ -205,6 +205,7 @@ public class GameManager : SingleTon<GameManager>
     //Combat events
     [HideInInspector] public UnityEvent EVENT_START_COMBAT_ENCOUNTER = new UnityEvent();
     [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent EVENT_TOGGLE_COMBAT_UI = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_SHOW_PLAYER_CHARACTER = new UnityEvent();
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_ENERGY = new UnityEvent<int, int>();//current energy, max energy 
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_PLAYER_HEALTH = new UnityEvent<int, int>();//current health, max health
@@ -243,8 +244,10 @@ public class GameManager : SingleTon<GameManager>
 
 
     // Audio Events
-    [HideInInspector] public UnityEvent<string> EVENT_PLAY_SFX = new UnityEvent<string>();
-    
+    [HideInInspector] public UnityEvent<SoundTypes, string> EVENT_PLAY_SFX = new UnityEvent<SoundTypes, string>();
+    [HideInInspector] public UnityEvent<MusicTypes, int> EVENT_PLAY_MUSIC = new UnityEvent<MusicTypes, int>();
+    [HideInInspector] public UnityEvent EVENT_VOLUME_CHANGED = new UnityEvent();
+
     //Console Events
     [HideInInspector] public UnityEvent EVENT_SHOW_CONSOLE = new UnityEvent();
     [HideInInspector] public UnityEvent<int> EVENT_SKIP_NODE = new UnityEvent<int>();

@@ -15,6 +15,7 @@ public class CardPanelBase : MonoBehaviour
     // Start is called before the first frame update
     protected virtual void Start()
     {
+        commonCardsContainer.GetComponentInChildren<ScrollRect>().scrollSensitivity = GameSettings.PANEL_SCROLL_SPEED;
         GameManager.Instance.EVENT_HIDE_COMMON_CARD_PANEL.AddListener(OnHideSelectCardPanel);
         commonCardsContainer.SetActive(false);
     }

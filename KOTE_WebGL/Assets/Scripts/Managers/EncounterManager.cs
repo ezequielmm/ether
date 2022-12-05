@@ -19,6 +19,7 @@ public class EncounterManager : MonoBehaviour
     {
         //TODO add logic to display options
         EncounterContainer.SetActive(false);
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
     }
 
@@ -26,6 +27,7 @@ public class EncounterManager : MonoBehaviour
     {
         //TODO add logic to display options
         EncounterContainer.SetActive(false);
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
     }
 }
