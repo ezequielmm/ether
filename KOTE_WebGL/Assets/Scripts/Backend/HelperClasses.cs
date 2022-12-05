@@ -527,6 +527,12 @@ public class TrappedResult
 }
 
 [Serializable]
+public class SWSM_EncounterData
+{
+    
+}
+
+[Serializable]
 public class SWSM_PlayerDeckData
 {
     public Data data;
