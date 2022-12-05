@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class SoundManager : MonoBehaviour
+public class SoundManager : SingleTon<SoundManager>
 {
     SettingsManager settingsManager;
 
-    [Tooltip("A List of sounds linked to a name. [case insensitive]")] [SerializeField]
-    private NamedSoundList KnightSounds;
-
+    [SerializeField] private AudioSource MusicSource;
+    [SerializeField] private AudioSource SfxSource;
+    [SerializeField] private AudioSource AmbienceSource;
+    [SerializeField] private List<NamedSoundList> BackgroundMusic;
+    [SerializeField] private NamedSoundList KnightSounds;
     [SerializeField] private NamedSoundList EnemyDefensiveSounds;
     [SerializeField] private NamedSoundList EnemyOffensiveSounds;
     [SerializeField] private NamedSoundList CardSounds;
@@ -17,11 +19,15 @@ public class SoundManager : MonoBehaviour
 
     [SerializeField] bool showSoundDebugs = false;
 
-    float MasterVolume => PlayerPrefs.GetFloat("settings_volume");
+    private float SfxVolume => PlayerPrefs.GetFloat("sfx_volume", 1);
+    private float MusicVolume => PlayerPrefs.GetFloat("music_volume", 0.5f);
 
     public void Start()
     {
         GameManager.Instance.EVENT_PLAY_SFX.AddListener(PlaySfx);
+        GameManager.Instance.EVENT_PLAY_MUSIC.AddListener(OnPlayMusic);
+        GameManager.Instance.EVENT_VOLUME_CHANGED.AddListener(UpdateVolume);
+        UpdateVolume();
     }
 
     public void PlaySfx(SoundTypes soundType, string sound)
@@ -44,7 +50,7 @@ public class SoundManager : MonoBehaviour
             Debug.Log($"[Sound Manager] Playing Sound: {sound}");
         }
 
-        AudioSource.PlayClipAtPoint(clip, location, MasterVolume);
+        SfxSource.PlayOneShot(clip);
     }
 
     private AudioClip GetAudioClip(SoundTypes soundType, string soundName)
@@ -82,5 +88,54 @@ public class SoundManager : MonoBehaviour
         }
 
         return relatedClip.clips[Random.Range(0, relatedClip.clips.Count)];
+    }
+
+    private void OnPlayMusic(MusicTypes type, int act)
+    {
+        switch (type)
+        {
+            case MusicTypes.Boss:
+            case MusicTypes.Music:
+                PlayMusic(type, act);
+                break;
+            case MusicTypes.Ambient:
+                PlayAmbientSound(act);
+                break;
+        }
+    }
+
+    private void PlayMusic(MusicTypes type, int act)
+    {
+        List<NamedSoundList.SoundClip> musicList = BackgroundMusic[act].soundClips;
+        if (musicList.Exists(x => x.name == type.ToString()))
+        {
+            AudioClip music = musicList.Find(x => x.name == type.ToString()).clips[0];
+            if (music != MusicSource.clip || MusicSource.isPlaying == false)
+            {
+                MusicSource.clip = music;
+                MusicSource.Play();
+            }
+        }
+    }
+
+    private void PlayAmbientSound(int act)
+    {
+        List<NamedSoundList.SoundClip> musicList = BackgroundMusic[act].soundClips;
+        if (musicList.Exists(x => x.name == "Ambient"))
+        {
+            AudioClip music = musicList.Find(x => x.name == "Ambient").clips[0];
+            if (music != AmbienceSource.clip || AmbienceSource.isPlaying == false)
+            {
+                AmbienceSource.clip = music;
+                AmbienceSource.Play();
+            }
+        }
+    }
+
+    private void UpdateVolume()
+    {
+        MusicSource.volume = MusicVolume;
+        SfxSource.volume = SfxVolume;
+        AmbienceSource.volume = SfxVolume;
     }
 }

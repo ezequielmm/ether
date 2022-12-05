@@ -245,7 +245,9 @@ public class GameManager : SingleTon<GameManager>
 
     // Audio Events
     [HideInInspector] public UnityEvent<SoundTypes, string> EVENT_PLAY_SFX = new UnityEvent<SoundTypes, string>();
-    
+    [HideInInspector] public UnityEvent<MusicTypes, int> EVENT_PLAY_MUSIC = new UnityEvent<MusicTypes, int>();
+    [HideInInspector] public UnityEvent EVENT_VOLUME_CHANGED = new UnityEvent();
+
     //Console Events
     [HideInInspector] public UnityEvent EVENT_SHOW_CONSOLE = new UnityEvent();
 
