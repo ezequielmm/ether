@@ -21,6 +21,11 @@ public class TreasuryManager : MonoBehaviour
 
     private void Start()
     {
+        ScrollRect[] scrollList = treasuryContainer.GetComponentsInChildren<ScrollRect>();
+        foreach (ScrollRect scrollRect in scrollList)
+        {
+            scrollRect.scrollSensitivity = GameSettings.PANEL_SCROLL_SPEED;
+        }
         GameManager.Instance.EVENT_TREASURYPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerTreasuryPanel);
 
         Button firstCharacterButton = characterList.transform.GetChild(0)?.GetComponent<Button>();

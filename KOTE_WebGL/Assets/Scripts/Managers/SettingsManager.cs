@@ -21,6 +21,11 @@ public class SettingsManager : MonoBehaviour
     private void Start()
     {
         settingsContainer.SetActive(false);
+        ScrollRect[] scrollList = settingsContainer.GetComponentsInChildren<ScrollRect>();
+        foreach (ScrollRect scrollRect in scrollList)
+        {
+            scrollRect.scrollSensitivity = GameSettings.PANEL_SCROLL_SPEED;
+        }
 
         GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerSettingsPanel);
 
@@ -29,10 +34,7 @@ public class SettingsManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
 
         logoutHyperlink.interactable = false;
-
-        Debug.LogError($"master volume: {PlayerPrefs.GetFloat("settings_volume")}");
-        Debug.LogError($"sfx volume: {PlayerPrefs.GetFloat("sfx_volume")}");
-        Debug.LogError($"music volume: {PlayerPrefs.GetFloat("music_volume")}");
+               
         volumeSlider.value = PlayerPrefs.GetFloat("settings_volume", 1);
         sfxSlider.value = PlayerPrefs.GetFloat("sfx_volume", 1);
         musicSlider.value = PlayerPrefs.GetFloat("music_volume", 0.8f);

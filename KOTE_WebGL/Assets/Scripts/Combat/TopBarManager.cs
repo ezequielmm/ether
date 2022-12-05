@@ -35,7 +35,7 @@ public class TopBarManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusupdate);
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.AddListener(OnToggleMapIcon);
-        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.AddListener(UpdateStageText);
+        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.AddListener(UpdateStageText);
         GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnPlayerAttacked);
 
         // this has to be set here, as it is not visible in the inspector
