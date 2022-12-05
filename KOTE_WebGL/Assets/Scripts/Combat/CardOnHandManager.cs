@@ -543,7 +543,7 @@ public class CardOnHandManager : MonoBehaviour
         yield return null;
 
         // SFX
-        GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Exhaust");
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Exhaust");
         float effectLength = GameSettings.EXHAUST_EFFECT_DURATION;
 
         // Temp fade animation
@@ -708,7 +708,7 @@ public class CardOnHandManager : MonoBehaviour
             if (cardIsDisplaced)
             {
                 // Play Cancellation sound
-                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Cancel");
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Cancel");
             }
 
             if (!Input.GetMouseButton(0))

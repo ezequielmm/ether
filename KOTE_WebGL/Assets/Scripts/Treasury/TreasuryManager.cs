@@ -34,6 +34,7 @@ public class TreasuryManager : MonoBehaviour
 
     public void OnCharacterButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         tabsNavigatorManager.SelectFirstTab();
 
         SetNftPanelContent();
@@ -89,6 +90,7 @@ public class TreasuryManager : MonoBehaviour
 
     public void OnWalletsButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
