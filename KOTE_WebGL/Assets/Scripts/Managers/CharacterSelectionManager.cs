@@ -19,11 +19,12 @@ public class CharacterSelectionManager : MonoBehaviour
     {
         //GameManager.Instance.webRequester.RequestCharacterList();// we are not requesting the list until we have more than one type so for the moment only knight
 
-        GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerCharacterSelectionPanel);
+        GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.AddListener(
+            ActivateInnerCharacterSelectionPanel);
         GameManager.Instance.EVENT_EXPEDITION_CONFIRMED.AddListener(OnExpeditionConfirmed);
 
         startExpeditionButton.interactable = false;
-        
+
         //--------------------------AUTOMATICALLY SELECT KNIGHT ON START----------------------
         OnCharacterSelected(characterBorders[0]);
         //--------------------------DELETE ONCE OTHER CHARACTERS ARE ADDED--------------------
@@ -36,12 +37,14 @@ public class CharacterSelectionManager : MonoBehaviour
 
     public void OnArmoryButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_ARMORYPANEL_ACTIVATION_REQUEST.Invoke(true);
         ActivateInnerCharacterSelectionPanel(false);
     }
 
     public void OnCharacterSelected(GameObject currentCharacterBorder)
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         startExpeditionButton.interactable = true;
 
         foreach (GameObject characterBorder in characterBorders)
@@ -58,8 +61,8 @@ public class CharacterSelectionManager : MonoBehaviour
     public void OnStartExpedition()
     {
         startExpeditionButton.enabled = false;
-
-        GameManager.Instance.webRequester.RequestStartExpedition("knight");//for the moment this is harcoded
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
+        GameManager.Instance.webRequester.RequestStartExpedition("knight"); //for the moment this is harcoded
 
         //TO DO: implement API call expedition passing the character id selected
         /* GameManager.Instance.LoadScene(inGameScenes.Expedition);

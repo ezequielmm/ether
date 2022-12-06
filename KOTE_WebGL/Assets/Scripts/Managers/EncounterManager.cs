@@ -22,6 +22,7 @@ public class EncounterManager : MonoBehaviour
         //TODO add logic to display options
         EncounterContainer.SetActive(false);
         GameManager.Instance.EVENT_ENCOUNTER_OPTION_SELECTED.Invoke(1);
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
     }
 
@@ -30,6 +31,7 @@ public class EncounterManager : MonoBehaviour
         //TODO add logic to display options
         EncounterContainer.SetActive(false);
         GameManager.Instance.EVENT_ENCOUNTER_OPTION_SELECTED.Invoke(2);
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
     }
 

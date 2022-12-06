@@ -115,7 +115,9 @@ public class GameStatusManager : MonoBehaviour
                 break;
             case GameStatuses.RoyalHouse: break;
             case GameStatuses.GameOver: break;
-            case GameStatuses.RewardsPanel: break;
+            case GameStatuses.RewardsPanel:
+                GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Rewards);
+                break;
         }
 
         preppingStatus = GameStatuses.None;
@@ -138,6 +140,7 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
         GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(true);
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Battle Start");
         GameManager.Instance.EVENT_TOOGLE_TREASURE_ELEMENTS.Invoke(false);
         //GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
         GameManager.Instance.EVENT_CARD_DRAW_CARDS.Invoke();

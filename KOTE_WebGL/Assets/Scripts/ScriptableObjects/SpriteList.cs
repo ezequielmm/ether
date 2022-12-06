@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-[CreateAssetMenu(fileName="SpriteList", menuName = "ScriptableObjects/SpriteList")]
+[CreateAssetMenu(fileName="SpriteList", menuName = "ScriptableObjects/SpriteLists/SpriteList")]
 public class SpriteList : ScriptableObject
 {
     [FormerlySerializedAs("cardImages")] public List<Sprite> entityImages;

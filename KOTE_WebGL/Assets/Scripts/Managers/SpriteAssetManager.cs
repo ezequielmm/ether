@@ -8,6 +8,7 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
     public Sprite defaultImage;
     public List<SpriteList> potionImageList;
     public List<SpriteList> trinketImageList;
+    public List<NamedSpriteList> combatBackgroundList;
     public NamedSpriteList miscImages;
     private List<(int, int)> _potionListRanges = new List<(int, int)>();
     private List<(int, int)> _trinketListRanges = new List<(int, int)>();
@@ -81,6 +82,27 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
         }
 
         Debug.LogWarning($"no misc image with name {imageName} was found. Check that you are using a valid image name");
+        return defaultImage;
+    }
+
+    public Sprite GetCombatBackground(int act, int step)
+    {
+        NamedSpriteList actBackgrounds = combatBackgroundList[act];
+        
+        for (int i = actBackgrounds.SpriteList.Count - 1; i >= 0; i--)
+        {
+            // if the step is less than the step for the background, continue
+            if (step < int.Parse(actBackgrounds.SpriteList[i].name))
+            {
+                continue;
+            }
+
+            // else set that as the background and continue
+           return actBackgrounds.SpriteList[i].image;
+            break;
+        }
+
+        Debug.LogError($"No background found for act {act} step {step}");
         return defaultImage;
     }
 }

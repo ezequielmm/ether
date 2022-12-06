@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class DebugManager : MonoBehaviour
+public class HiddenConsoleManager : MonoBehaviour
 {
     public GameObject consoleContainer;
     public TMP_InputField consoleInput;
@@ -65,6 +66,45 @@ public class DebugManager : MonoBehaviour
     {
         input = input.Trim().ToLower();
         consoleInput.text = "";
+        string[] inputSplit = input.Split();
+        if (inputSplit.Length > 1)
+        {
+            string[] args = new string[inputSplit.Length - 1];
+            Array.Copy(inputSplit, 1, args, 0, inputSplit.Length - 1);
+            RunCommand(inputSplit[0], args);
+            return;
+        }
+
+        RunCommand(input);
+    }
+
+    private void RunCommand(string input, params string[] args)
+    {
+        bool isCommand = Enum.TryParse(input, out ConsoleCommands command);
+        if (!isCommand)
+        {
+            PublicLog("Unknown Command.");
+            return;
+        }
+
+        switch (command)
+        {
+            case ConsoleCommands.enable_node:
+                if (SceneManager.GetActiveScene().name != "Expedition")
+                {
+                    PublicLog("Socket not active, please enter expedition before using this command");
+                    break;
+                }
+
+                int nodeId = int.Parse(args[0]);
+                GameManager.Instance.EVENT_SKIP_NODE.Invoke(nodeId);
+                PublicLog($"Skipping to node {nodeId}, reload map to update");
+                break;
+        }
+    }
+
+    private void RunCommand(string input)
+    {
         bool isCommand = Enum.TryParse(input, out ConsoleCommands command);
         if (!isCommand)
         {
@@ -121,7 +161,7 @@ public class DebugManager : MonoBehaviour
                 PublicLog("Armory panel enabled.");
                 break;
             case ConsoleCommands.enable_royal_houses_panel:
-                PlayerPrefs.SetInt("enable_royal_house", 1);  
+                PlayerPrefs.SetInt("enable_royal_house", 1);
                 PublicLog("Royal House panel enabled.");
                 break;
             case ConsoleCommands.enable_node_numbers:
@@ -155,6 +195,9 @@ public class DebugManager : MonoBehaviour
                 PlayerPrefs.SetInt("enable_armory", 0);
                 PlayerPrefs.SetInt("enable_royal_house", 0);
                 PublicLog("Register, armory, and royal house panels disabled");
+                break;
+            case ConsoleCommands.enable_node:
+                PublicLog("Invalid syntax, format is 'enable_node X'");
                 break;
             default:
                 PublicLog("Unknown Command.");

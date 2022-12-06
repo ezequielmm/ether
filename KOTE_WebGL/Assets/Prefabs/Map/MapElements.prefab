@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5237346165803081541}
   - component: {fileID: 5237346165803081531}
   - component: {fileID: 5237346165803081540}
-  m_Layer: 3
+  m_Layer: 5
   m_Name: MapGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5237346165936166370}
   - component: {fileID: 5237346165936166369}
-  m_Layer: 3
+  m_Layer: 5
   m_Name: MapTiles
   m_TagString: MapPath
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5758494260201197930}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MapContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5758494260307054459}
   - component: {fileID: 5758494260307054458}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MapElements
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -370,7 +370,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5758494260706819150}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NodesHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -407,7 +407,7 @@ GameObject:
   - component: {fileID: 5758494260742172186}
   - component: {fileID: 5758494260742172197}
   - component: {fileID: 5758494260742172196}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: rightScrollBt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -532,7 +532,7 @@ GameObject:
   - component: {fileID: 5758494260838671920}
   - component: {fileID: 5758494260838671923}
   - component: {fileID: 5758494260838671922}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: leftScrollBt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -657,7 +657,7 @@ GameObject:
   - component: {fileID: 5758494260882502598}
   - component: {fileID: 5758494260882502592}
   - component: {fileID: 5758494260882502593}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Sprite Mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -785,7 +785,7 @@ GameObject:
   - component: {fileID: 5758494261437137033}
   - component: {fileID: 5758494261437137035}
   - component: {fileID: 5758494261437137032}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PortalAnimation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5596,7 +5596,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5758494261547567398}
   - component: {fileID: 5758494261547567393}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MapBg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5680,7 +5680,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5758494261910173601}
   - component: {fileID: 5758494261910173600}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: knight 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
