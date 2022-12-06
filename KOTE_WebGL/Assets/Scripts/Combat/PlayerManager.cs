@@ -22,16 +22,11 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
     Bounds playerBounds;
 
     private PlayerData playerData;
+
     public PlayerData PlayerData
     {
-        set
-        {
-            playerData = ProcessNewData(playerData, value);
-        }
-        get
-        {
-            return playerData;
-        }
+        set { playerData = ProcessNewData(playerData, value); }
+        get { return playerData; }
     }
 
     private void Start()
@@ -61,7 +56,6 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
 
         //spineAnimationsManagement.SetSkin("weapon/sword");
         spineAnimationsManagement.PlayAnimationSequence("Idle");
-
     }
 
     private void ActivateCollider(PointerData _)
@@ -69,6 +63,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         if (collider != null)
             collider.enabled = true;
     }
+
     private void DeactivateCollider(string _)
     {
         if (collider != null)
@@ -111,8 +106,10 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
                 RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
         }
+
         if (!endCalled)
-        { // If no conditions met, pass onto the target and play cast
+        {
+            // If no conditions met, pass onto the target and play cast
             var f = PlayAnimation("Cast");
             if (f > afterEvent) afterEvent = f;
             endCalled = true;
@@ -130,6 +127,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
             });
         }
     }
+
     private void OnAttackResponse(CombatTurnData attack)
     {
         var target = attack.GetTarget("player");
@@ -137,6 +135,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         if (target == null) return;
 
         Debug.Log($"[PlayerManager] Combat Response GET!");
+        Debug.Log($"[PlayerManager] healthDelta: {target.healthDelta} defenseDelta: {target.defenseDelta}");
 
         // Negitive Deltas
         float waitDuration = 0;
@@ -145,7 +144,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
             GameManager.Instance.EVENT_DAMAGE.Invoke(target);
         }
 
-        else if (target.healthDelta < 0) // Damage Taken no armor
+        if (target.healthDelta < 0) // Damage Taken no armor
         {
             // Play Attack audio
             // Can be specific, but we'll default to "Attack"
@@ -155,7 +154,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         if (target.healthDelta > 0) // Healed!
         {
             // Play Rising Chimes
-            GameManager.Instance.EVENT_HEAL.Invoke(/*PlayerData.id*/ "player", target.healthDelta);
+            GameManager.Instance.EVENT_HEAL.Invoke( /*PlayerData.id*/ "player", target.healthDelta);
             waitDuration += 1;
         }
 
@@ -164,6 +163,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         {
             SetDefense(target.finalDefense);
         }
+
         if (target.healthDelta != 0)
         {
             SetHealth(target.finalHealth);
@@ -273,10 +273,12 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         {
             current = playerData.hpCurrent;
         }
+
         if (max == null)
         {
             max = playerData.hpMax;
         }
+
         Debug.Log($"[PlayerManager] Health: {current}/{max}");
 
         healthTF.SetText($"{current}/{max}");
@@ -287,7 +289,15 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         {
             healthBar.DOValue(current.Value, 1).OnComplete(() => { CheckDeath(current.Value); });
         }
+
+        // update the player data so we can check health values in combat for animations
+        if (playerData != null)
+        {
+            playerData.hpCurrent = current.Value;
+            playerData.hpMax = max.Value;
+        }
     }
+
     private void OnUpdateEnergy(int currentEnergy, int maxEnergy)
     {
         if (currentEnergy == 0)
@@ -299,7 +309,6 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
 
     private void OnWSConnected()
     {
-
     }
 
     private void OnUpdatePlayer(PlayerData newPlayerData)
@@ -313,19 +322,21 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         // the math here is due to only receiving the damage dealt, but the backend applies it to the player state
         SetHealth(playerData.hpCurrent - damageTaken);
     }
+
     private void SetDefense(int? value = null)
     {
         if (value == null)
         {
             value = playerData.defense;
         }
+
         defenseController.Defense = value.Value;
     }
 
     public float PlayAnimation(string animationSequence)
     {
         float length = spineAnimationsManagement.PlayAnimationSequence(animationSequence);
-        spineAnimationsManagement.PlayAnimationSequence("Idle");
+        OnIdle();
         return length;
     }
 
@@ -333,14 +344,14 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
     {
         Debug.Log("+++++++++++++++[Player]Attack");
         float length = spineAnimationsManagement.PlayAnimationSequence("Attack");
-        spineAnimationsManagement.PlayAnimationSequence("Idle");
+        OnIdle();
         return length;
     }
 
     private float OnHit()
     {
         float length = spineAnimationsManagement.PlayAnimationSequence("Hit");
-        spineAnimationsManagement.PlayAnimationSequence("Idle");
+        OnIdle();
         return length;
     }
 
@@ -348,6 +359,17 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
     {
         float length = spineAnimationsManagement.PlayAnimationSequence("Death");
         return length;
+    }
+
+    private void OnIdle()
+    {
+        if (playerData.hpCurrent < (playerData.hpMax / 2))
+        {
+            spineAnimationsManagement.PlayAnimationSequence("InjuredIdle");
+            return;
+        }
+
+        spineAnimationsManagement.PlayAnimationSequence("Idle");
     }
 
 
@@ -375,6 +397,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
             playerBounds.center.y, 0);
         collider.enabled = false;
         // Tooltip On
-        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.MiddleLeft, anchorPoint, null);
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.MiddleLeft, anchorPoint,
+            null);
     }
 }
