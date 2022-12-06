@@ -135,7 +135,6 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         if (target == null) return;
 
         Debug.Log($"[PlayerManager] Combat Response GET!");
-        Debug.Log($"[PlayerManager] healthDelta: {target.healthDelta} defenseDelta: {target.defenseDelta}");
 
         // Negitive Deltas
         float waitDuration = 0;
