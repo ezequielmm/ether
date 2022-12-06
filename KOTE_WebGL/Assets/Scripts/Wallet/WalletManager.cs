@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class WalletManager : MonoBehaviour
@@ -19,6 +20,7 @@ public class WalletManager : MonoBehaviour
 
     private void Start()
     {
+        walletsContainer.GetComponentInChildren<ScrollRect>().scrollSensitivity = GameSettings.PANEL_SCROLL_SPEED;
         GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerWalletsPanel);
         GameManager.Instance.EVENT_DISCONNECTWALLETPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerDisconnectWalletConfirmPanel);
 

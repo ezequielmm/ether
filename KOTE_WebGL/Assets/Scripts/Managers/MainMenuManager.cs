@@ -112,26 +112,31 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnRegisterButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
     public void OnLoginButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
     public void OnSettingsButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
     public void OnTreasuryButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_TREASURYPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
     public void OnPlayButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         //check if we are playing a new expedition or resuming
         if (_hasExpedition)
         {
@@ -173,6 +178,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnNewExpeditionButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Do you want to cancel the current expedition?", OnNewExpeditionConfirmed);
     }
 

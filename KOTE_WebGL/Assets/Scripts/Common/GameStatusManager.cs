@@ -148,6 +148,7 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
         GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(true);
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Battle Start");
         GameManager.Instance.EVENT_TOOGLE_TREASURE_ELEMENTS.Invoke(false);
         //GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
         //Invoke("InvokeDrawCards", 0.2f);

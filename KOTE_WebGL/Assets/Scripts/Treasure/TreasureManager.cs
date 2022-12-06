@@ -22,10 +22,12 @@ public class TreasureManager : MonoBehaviour
     public void OpenChest()
     {
         GameManager.Instance.EVENT_TREASURE_OPEN_CHEST.Invoke();
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Open Chest");
     }
 
     public void OnTreasureDone()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
     }
 
