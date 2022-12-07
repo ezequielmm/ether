@@ -33,10 +33,11 @@ public class EncounterManager : MonoBehaviour
 
     private void PopulateEncounterText(string text)
     {
-        string[] textSplit = text.Split();
+        string[] textSplit = text.Split('.');
         int midpoint = textSplit.Length / 2;
-        leftText.text = text.Substring(0, text.Length / 2);
-        rightText.text = text.Substring(text.Length / 2, text.Length / 2 );
+
+        leftText.text = string.Join('.', textSplit[..midpoint]);
+        rightText.text = string.Join('.', textSplit[midpoint..]);;
     }
 
     private void PopulateButtonText(List<string> optionText)
