@@ -529,7 +529,20 @@ public class TrappedResult
 [Serializable]
 public class SWSM_EncounterData
 {
-    
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public EncounterData data;
+
+        [Serializable]
+        public class EncounterData
+        {
+            public string displayText;
+            public List<string> buttonText;
+        }
+    }
 }
 
 [Serializable]
