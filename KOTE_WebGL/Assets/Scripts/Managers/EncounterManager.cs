@@ -76,8 +76,11 @@ public class EncounterManager : MonoBehaviour
         {
             int buttonNum = i;
             string text = optionText[i];
-            text = text.Insert(0, "<color=#FAB919>");
-            int charIndex = text.IndexOf('[');
+            // add in the color changes for the different options
+            text = text.Insert(0, "<color=#E1D5A4> <size=120%>");
+            int charIndex = text.IndexOf(':');
+            text = text.Insert(charIndex + 1, "<color=#FAB919> <size=100%>");
+            charIndex = text.IndexOf('[');
             text = text.Insert(charIndex - 1, "<color=#E1D5A4>");
 
 
