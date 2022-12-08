@@ -35,7 +35,7 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_OPEN_CHEST = "ChestOpened";
     private const string WS_MESSAGE_MERCHANT_BUY = "MerchantBuy";
     private const string WS_MESSAGE_START_ENCOUNTER_COMBAT = "CombatEncounter";
-    private const string WS_MESSAGE_ENCOUNTER_SELECTION = "";
+    private const string WS_MESSAGE_ENCOUNTER_SELECTION = "EncounterChoice";
     
     /*private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
     private const string WS_MESSAGE_GET_CARD_PILES = "GetCardPiles";

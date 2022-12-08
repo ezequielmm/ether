@@ -33,11 +33,41 @@ public class EncounterManager : MonoBehaviour
 
     private void PopulateEncounterText(string text)
     {
-        string[] textSplit = text.Split('.');
-        int midpoint = textSplit.Length / 2;
+        if (text.Length <= 200)
+        {
+            leftText.text = text;
+            rightText.gameObject.SetActive(false);
+            return;
+        }
 
-        leftText.text = string.Join('.', textSplit[..midpoint]);
-        rightText.text = string.Join('.', textSplit[midpoint..]);;
+        string[] textSplit = text.Split('.');
+        string firstText = "";
+        int index = 0;
+        while (firstText.Length < 200)
+        {
+            if (firstText.Length + textSplit[index].Length < 200)
+            {
+                firstText += textSplit[index];
+                if (index != 0)
+                {
+                    firstText += ". ";
+                }
+
+                index++;
+            }
+
+            if (index >= textSplit.Length || firstText.Length + textSplit[index].Length >= 200)
+            {
+                break;
+            }
+        }
+
+        leftText.text = firstText;
+        if (index < textSplit.Length)
+        {
+            rightText.gameObject.SetActive(true);
+            rightText.text = string.Join(".", textSplit[index..]);
+        }
     }
 
     private void PopulateButtonText(List<string> optionText)
@@ -45,7 +75,13 @@ public class EncounterManager : MonoBehaviour
         for (int i = 0; i < optionButtons.Length; i++)
         {
             int buttonNum = i;
-            buttonTexts[i].text = optionText[i];
+            string text = optionText[i];
+            text = text.Insert(0, "<color=#FAB919>");
+            int charIndex = text.IndexOf('[');
+            text = text.Insert(charIndex - 1, "<color=#E1D5A4>");
+
+
+            buttonTexts[i].text = text;
             optionButtons[i].onClick.AddListener(() =>
             {
                 GameManager.Instance.EVENT_ENCOUNTER_OPTION_SELECTED.Invoke(buttonNum);
