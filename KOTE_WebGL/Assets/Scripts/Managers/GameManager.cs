@@ -266,7 +266,8 @@ public class GameManager : SingleTon<GameManager>
     // Start is called before the first frame update
     void Start()
     {
-        EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
+        EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogout);
+        EVENT_REQUEST_LOGOUT_ERROR.AddListener(OnLogout);
         SceneManager.activeSceneChanged += UpdateSoundVolume;
         //EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ReturnToMainMenu);
     }
@@ -277,7 +278,7 @@ public class GameManager : SingleTon<GameManager>
         SceneManager.LoadScene(inGameScenes.Loader.ToString());
     }
 
-    private void OnLogoutSuccessful(string message)
+    private void OnLogout(string message)
     {
         LoadScene(inGameScenes.MainMenu);
     }
