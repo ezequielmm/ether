@@ -1174,9 +1174,13 @@ namespace map
 
             StartCoroutine(RevealMapThenReturnToPlayer(nodesHolder.transform.localPosition, numberOfSteps));
             */
-            if (!GameSettings.SHOW_MAP_REVEAL_ON_PORTAL) ScrollBackToPlayerIcon();
-            StartCoroutine(RevealMapThenReturnToPlayer(nodesHolder.transform.localPosition,
-                GameSettings.MAP_SCROLL_ANIMATION_DURATION));
+            if (GameSettings.SHOW_MAP_REVEAL_ON_PORTAL)
+            {
+                StartCoroutine(RevealMapThenReturnToPlayer(nodesHolder.transform.localPosition,
+                    GameSettings.MAP_SCROLL_ANIMATION_DURATION));
+                return;
+            }
+            ScrollBackToPlayerIcon();
         }
 
         private IEnumerator RevealMapThenReturnToPlayer(Vector3 mapPos, float animDuration)
