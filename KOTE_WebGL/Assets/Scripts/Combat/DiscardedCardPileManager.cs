@@ -39,7 +39,7 @@ public class DiscardedCardPileManager : MonoBehaviour, IPointerEnterHandler, IPo
             audioRunning = true;
             for (; cardsDiscarded >= 0; cardsDiscarded--)
             {
-                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Discard");
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Discard");
                 yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
                 cardsDiscarded = 0; // Forces the audio to only play once
             }

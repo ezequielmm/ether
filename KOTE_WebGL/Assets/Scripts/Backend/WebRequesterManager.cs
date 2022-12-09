@@ -25,7 +25,7 @@ public class WebRequesterManager : MonoBehaviour
 
     private void Awake()
     {
-        DebugManager.DisableOnBuild();
+        HiddenConsoleManager.DisableOnBuild();
 
         // determine the correct server the client is running on
         string hostName = Application.absoluteURL;

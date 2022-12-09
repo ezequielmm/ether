@@ -27,6 +27,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8045455772843585760}
   m_Father: {fileID: 0}
@@ -49,7 +50,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2c9c985c40de374f84e3413d54e6ee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  combatBg: {fileID: 0}
+  combatBackgrounds:
+  - {fileID: 11400000, guid: 11f71193e73e7be42810fc75a9e09422, type: 2}
+  - {fileID: 11400000, guid: 4f6ea6a8aee73794a93bd5c165b0e268, type: 2}
+  combatBg: {fileID: 3087476550169699235}
 --- !u!1 &7770983170382743867
 GameObject:
   m_ObjectHideFlags: 0
@@ -76,6 +80,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8824349259063195792}
   - {fileID: 6546666574212034006}
@@ -110,6 +115,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8045455772843585760}
   m_RootOrder: 0
@@ -185,6 +191,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8045455772843585760}
   m_RootOrder: 1

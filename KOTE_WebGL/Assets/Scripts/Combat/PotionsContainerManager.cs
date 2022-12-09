@@ -91,12 +91,14 @@ public class PotionsContainerManager : MonoBehaviour
                 return;
             }
 
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Use Potion");
             GameManager.Instance.EVENT_POTION_USED.Invoke(potion.GetPotionId(), null);
             potionOptionPanel.SetActive(false);
         });
         discardButton.onClick.AddListener(() =>
         {
             GameManager.Instance.EVENT_POTION_DISCARDED.Invoke(potion.GetPotionId());
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             potionOptionPanel.SetActive(false);
         });
     }

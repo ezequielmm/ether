@@ -28,6 +28,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -74,4 +75,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 02b8b74284bd9304b945ec54786b40ba, type: 2}
   - {fileID: 11400000, guid: de98c7cdac64a0340984e74f14a49dab, type: 2}
   - {fileID: 11400000, guid: 92b7cbedfa5bf6e43a86dcd614c54e23, type: 2}
+  combatBackgroundList:
+  - {fileID: 11400000, guid: 11f71193e73e7be42810fc75a9e09422, type: 2}
+  - {fileID: 11400000, guid: 4f6ea6a8aee73794a93bd5c165b0e268, type: 2}
   miscImages: {fileID: 11400000, guid: d387e2d0bffaf704293b5cda2dd4d12b, type: 2}

@@ -43,11 +43,12 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_GET_ENEMIES = "GetEnemies";*/
     private const string WS_MESSAGE_GET_DATA = "GetData";
     private const string WS_MESSAGE_CONTINUE_EXPEDITION = "ContinueExpedition";
+    private const string WS_MESSAGE_NODE_SKIP = "NodeSkipped";
 
     private void Awake()
     {
         // Turns off non-exception logging when outside of development enviroment
-        DebugManager.DisableOnBuild();
+        HiddenConsoleManager.DisableOnBuild();
     }
 
     void Start()
@@ -168,6 +169,7 @@ public class WebSocketManager : MonoBehaviour
         GameManager.Instance.EVENT_TREASURE_OPEN_CHEST.AddListener(OnTreasureOpened);
         GameManager.Instance.EVENT_MERCHANT_BUY.AddListener(OnBuyItem);
         GameManager.Instance.EVENT_START_COMBAT_ENCOUNTER.AddListener(OnStartCombatEncounter);
+        GameManager.Instance.EVENT_SKIP_NODE.AddListener(OnSkipNode);
 
         GameManager.Instance.EVENT_WS_CONNECTED.Invoke();
     }
@@ -312,6 +314,11 @@ public class WebSocketManager : MonoBehaviour
     private void OnCardUpgradeConfirmed(string cardId)
     {
         EmitWithResponse(WS_MESSAGE_UPGRADE_CARD, cardId);
+    }
+
+    private void OnSkipNode(int nodeId)
+    {
+        Emit(WS_MESSAGE_NODE_SKIP, nodeId);
     }
 
     private void OnEndTurn()

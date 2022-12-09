@@ -179,6 +179,7 @@ public class SelectCardsPanel : CardPanelBase
     {
         cardManager.cardSelectorToggle.onValueChanged.AddListener((isOn) =>
         {
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             selectAction.Invoke(cardManager.GetId());
         });
     }

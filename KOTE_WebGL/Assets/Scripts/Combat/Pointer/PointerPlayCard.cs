@@ -8,12 +8,12 @@ public class PointerPlayCard : MonoBehaviour, IPointerRunable
 
     public void OnCancel()
     {
-        GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Cancel");
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Cancel");
     }
 
     public void OnSelect()
     {
-        GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Play");
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Play");
     }
 
     public void Run(string originId, string targetId)
