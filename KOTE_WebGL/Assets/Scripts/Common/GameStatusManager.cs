@@ -87,6 +87,14 @@ public class GameStatusManager : MonoBehaviour
                     break;
             }
         }
+        // if there's enemies in the combat, then fully start combat
+        else if (enumType == typeof(GameStatuses))
+        {
+            if (eventName == nameof(GameStatuses.Combat))
+            {
+                GameManager.Instance.EVENT_CARD_DRAW_CARDS.Invoke();
+            }
+        }
     }
 
     public void OnChangeGameStatus(GameStatuses newGameStatus)
@@ -140,9 +148,9 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
         GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(true);
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Battle Start");
         GameManager.Instance.EVENT_TOOGLE_TREASURE_ELEMENTS.Invoke(false);
         //GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-        GameManager.Instance.EVENT_CARD_DRAW_CARDS.Invoke();
         //Invoke("InvokeDrawCards", 0.2f);
     }
 
