@@ -11,6 +11,7 @@ public class EncounterManager : MonoBehaviour
     public TMP_Text[] buttonTexts;
     public TMP_Text leftText;
     public TMP_Text rightText;
+    public Image creatureImage;
 
     private void Start()
     {
@@ -27,6 +28,8 @@ public class EncounterManager : MonoBehaviour
 
     private void OnPopulateEncounter(SWSM_EncounterData encounterData)
     {
+        creatureImage.sprite = SpriteAssetManager.Instance.GetEncounterCreature(encounterData.data.data.imageId);
+        creatureImage.SetNativeSize();
         PopulateEncounterText(encounterData.data.data.displayText);
         PopulateButtonText(encounterData.data.data.buttonText);
     }
@@ -48,10 +51,7 @@ public class EncounterManager : MonoBehaviour
             if (firstText.Length + textSplit[index].Length < 200)
             {
                 firstText += textSplit[index];
-                if (index != 0)
-                {
-                    firstText += ". ";
-                }
+                firstText += ". ";
 
                 index++;
             }
@@ -87,12 +87,14 @@ public class EncounterManager : MonoBehaviour
 
             return;
         }
+
         for (int i = 0; i < optionButtons.Length; i++)
         {
             if (i > optionText.Count)
             {
                 optionButtons[i].gameObject.SetActive(false);
             }
+
             int buttonNum = i;
             string text = optionText[i];
             // add in the color changes for the different options

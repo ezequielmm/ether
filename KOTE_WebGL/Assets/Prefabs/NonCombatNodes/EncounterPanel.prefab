@@ -1003,7 +1003,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 637, y: 924}
+  m_SizeDelta: {x: 484, y: 726}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3682596948926609950
 CanvasRenderer:
@@ -1033,7 +1033,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e7709244b1e8e9044a632ab1736a8d39, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a7af417e637316e42a5014f41a1a03a8, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1236,3 +1236,4 @@ MonoBehaviour:
   - {fileID: 8011257331380316299}
   leftText: {fileID: 5638531353217035920}
   rightText: {fileID: 3649226466289177100}
+  creatureImage: {fileID: 9115432054289053863}

@@ -539,6 +539,7 @@ public class SWSM_EncounterData
         [Serializable]
         public class EncounterData
         {
+            public string imageId;
             public string displayText;
             public List<string> buttonText;
         }
