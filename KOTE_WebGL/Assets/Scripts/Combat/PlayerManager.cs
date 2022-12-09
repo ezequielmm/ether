@@ -293,7 +293,6 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         if (currentEnergy == 0)
         {
             // Out of energy audio
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Out Of Energy");
         }
     }
 

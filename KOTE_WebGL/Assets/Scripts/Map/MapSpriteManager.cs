@@ -580,10 +580,6 @@ namespace map
                             playerIcon.transform.localPosition = knightPos;
                             GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.Invoke(nodeData.act, nodeData.step);
                           //  GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(nodeData.act, nodeData.step);
-                            
-                            // play the correct music depending on where the player is
-                            GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Music, nodeData.act);
-                            GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Ambient, nodeData.act);
                         }
 
                         // if the node is an available royal house, turn royal house mode on

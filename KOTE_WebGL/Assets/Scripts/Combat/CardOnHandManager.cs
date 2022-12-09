@@ -813,6 +813,7 @@ public class CardOnHandManager : MonoBehaviour
             {
                 Debug.Log("card is on center");
                 // Get Player ID
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Play");
                 GameManager.Instance.EVENT_CARD_PLAYED.Invoke(thisCardValues.id, "-1");
                 cardActive = false;
             }
