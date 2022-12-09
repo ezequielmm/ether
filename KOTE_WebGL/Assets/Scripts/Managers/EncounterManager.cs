@@ -72,8 +72,27 @@ public class EncounterManager : MonoBehaviour
 
     private void PopulateButtonText(List<string> optionText)
     {
+        if (optionText == null || optionText.Count == 0)
+        {
+            // if there's no text sent, show the continue option and hide the rest of the buttons
+            optionButtons[0].onClick.RemoveAllListeners();
+            optionButtons[0].onClick.AddListener(() => GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke());
+            buttonTexts[0].text = "<color=#E1D5A4> <size=120%>A: <color=#FAB919><size=100%>Continue";
+            optionButtons[0].gameObject.SetActive(true);
+
+            for (int i = 1; i < optionButtons.Length; i++)
+            {
+                optionButtons[i].gameObject.SetActive(false);
+            }
+
+            return;
+        }
         for (int i = 0; i < optionButtons.Length; i++)
         {
+            if (i > optionText.Count)
+            {
+                optionButtons[i].gameObject.SetActive(false);
+            }
             int buttonNum = i;
             string text = optionText[i];
             // add in the color changes for the different options
@@ -85,11 +104,13 @@ public class EncounterManager : MonoBehaviour
 
 
             buttonTexts[i].text = text;
+            optionButtons[i].onClick.RemoveAllListeners();
             optionButtons[i].onClick.AddListener(() =>
             {
                 GameManager.Instance.EVENT_ENCOUNTER_OPTION_SELECTED.Invoke(buttonNum);
                 GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             });
+            optionButtons[i].gameObject.SetActive(true);
         }
     }
 

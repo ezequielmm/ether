@@ -556,7 +556,7 @@ public class SWSM_Parser
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Encounter);
                 break;
             case "finish_encounter":
-                GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
+              //  GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
                 break;
         }
     }
