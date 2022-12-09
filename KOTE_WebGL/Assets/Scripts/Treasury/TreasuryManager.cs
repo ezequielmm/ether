@@ -21,6 +21,11 @@ public class TreasuryManager : MonoBehaviour
 
     private void Start()
     {
+        ScrollRect[] scrollList = treasuryContainer.GetComponentsInChildren<ScrollRect>();
+        foreach (ScrollRect scrollRect in scrollList)
+        {
+            scrollRect.scrollSensitivity = GameSettings.PANEL_SCROLL_SPEED;
+        }
         GameManager.Instance.EVENT_TREASURYPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerTreasuryPanel);
 
         Button firstCharacterButton = characterList.transform.GetChild(0)?.GetComponent<Button>();
@@ -29,6 +34,7 @@ public class TreasuryManager : MonoBehaviour
 
     public void OnCharacterButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         tabsNavigatorManager.SelectFirstTab();
 
         SetNftPanelContent();
@@ -84,6 +90,7 @@ public class TreasuryManager : MonoBehaviour
 
     public void OnWalletsButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 

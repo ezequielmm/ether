@@ -6,7 +6,7 @@ public class SWSM_Parser
     static SWSM_Parser()
     {
         // Turns off non-exception logging when outside of development enviroment
-        DebugManager.DisableOnBuild();
+        HiddenConsoleManager.DisableOnBuild();
     }
 
     public static void ParseJSON(string data)
@@ -46,6 +46,9 @@ public class SWSM_Parser
                 break;
             case nameof(WS_MESSAGE_TYPES.treasure_update):
                 ProcessTreasureUpdate(swsm.data.action, data);
+                break;
+            case nameof(WS_MESSAGE_TYPES.end_treasure):
+                ProcessEndTreasureUpdate(swsm.data.action, data);
                 break;
             case nameof(WS_MESSAGE_TYPES.enemy_intents):
                 //ProcessEnemyIntents(swsm.data.action, data);
@@ -89,6 +92,13 @@ public class SWSM_Parser
 
     private static void UpdateMapActionPicker(string action, string data)
     {
+#if UNITY_EDITOR
+        if (GameSettings.DEBUG_MODE_ON)
+        {
+            data = Utils.ReadJsonFile("map_test_data.json");
+        }
+#endif
+
         SWSM_MapData mapData = JsonUtility.FromJson<SWSM_MapData>(data);
         switch (action)
         {
@@ -208,6 +218,15 @@ public class SWSM_Parser
             case nameof(WS_DATA_REQUEST_TYPES.MerchantData):
                 ProcessMerchantData(data);
                 break;
+           case nameof(WS_DATA_REQUEST_TYPES.TreasureData):
+               ProcessTreasureData(data);
+               break;
+           case nameof(WS_DATA_REQUEST_TYPES.Rewards):
+               ProcessRewardsData(data);
+               break;
+           case "chest_result":
+               ProcessChestResult(data);
+               break;
             default:
                 Debug.Log($"[SWSM Parser] [Generic Data] Uncaught Action \"{action}\". Data = {data}");
                 break;
@@ -299,7 +318,6 @@ public class SWSM_Parser
                 Debug.Log("Should move cards from draw to hand");
                 SWSM_RewardsData rewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
                 GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
-                GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(rewardsData);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.player_defeated):
             case nameof(WS_MESSAGE_ACTIONS.players_defeated):
@@ -347,11 +365,12 @@ public class SWSM_Parser
     {
         SWSM_ShowCardDialog showCards = JsonUtility.FromJson<SWSM_ShowCardDialog>(data);
         Debug.Log($"[SWSM Parser] [Show Card Dialog] data: {data}");
-        if (showCards.data.data.cards == null ||showCards.data.data.cards.Count == 0)
+        if (showCards.data.data.cards == null || showCards.data.data.cards.Count == 0)
         {
             GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT.Invoke("Not enough cards on pile");
             return;
         }
+
         SelectPanelOptions panelOptions = new SelectPanelOptions
         {
             HideBackButton = true,
@@ -360,11 +379,8 @@ public class SWSM_Parser
             ShowCardInCenter = true
         };
         GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCards.data.data.cards,
-           panelOptions,
-            (selectedCards) =>
-            {
-                GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards);
-            });
+            panelOptions,
+            (selectedCards) => { GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards); });
     }
 
     private static void UpdateEnergy(string data)
@@ -433,7 +449,23 @@ public class SWSM_Parser
         GameManager.Instance.EVENT_POPULATE_MERCHANT_PANEL.Invoke(merchant.data.data);
     }
 
+    private static void ProcessTreasureData(string data)
+    {
+        SWSM_TreasureData treasureData = JsonUtility.FromJson<SWSM_TreasureData>(data);
+        GameManager.Instance.EVENT_TREASURE_CHEST_SIZE.Invoke(treasureData);
+    }
 
+    private static void ProcessRewardsData(string data)
+    {
+        SWSM_RewardsData rewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
+        GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(rewardsData);
+    }
+    
+    private static void ProcessChestResult(string data)
+    {
+        SWSM_ChestResult chestResult = JsonUtility.FromJson<SWSM_ChestResult>(data);
+        GameManager.Instance.EVENT_TREASURE_CHEST_RESULT.Invoke(chestResult);
+    }
 
     private static void ProcessMoveCard(string rawData)
     {
@@ -487,10 +519,22 @@ public class SWSM_Parser
         switch (action)
         {
             case nameof(WS_TREASURE_ACTIONS.begin_treasure):
+            case nameof(WS_TREASURE_ACTIONS.continue_treasure):
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Treasure);
                 break;
             default:
                 Debug.LogWarning($"[SWSM Parser][Treasure Update] Unknown Action \"{action}\". Data = {data}");
+                break;
+        }
+    }
+
+    private static void ProcessEndTreasureUpdate(string action, string data)
+    {
+        switch (action)
+        {
+            case nameof(WS_MESSAGE_ACTIONS.select_another_reward):
+                SWSM_RewardsData updatedRewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
+                GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(updatedRewardsData);
                 break;
         }
     }
@@ -528,7 +572,7 @@ public class SWSM_Parser
             case "begin_camp":
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Camp);
                 break;
-            case"heal_amount":
+            case "heal_amount":
                 SWSM_HealData healData = JsonUtility.FromJson<SWSM_HealData>(data);
                 GameManager.Instance.EVENT_HEAL.Invoke("camp", healData.data.data.healed);
                 break;
@@ -558,7 +602,7 @@ public class SWSM_Parser
         {
             case "potion_not_found_in_database":
             case "potion_not_in_inventory":
-            case"potion_max_count_reached":
+            case "potion_max_count_reached":
                 GameManager.Instance.EVENT_POTION_WARNING.Invoke(action);
                 break;
         }
@@ -583,17 +627,17 @@ public class SWSM_Parser
                 break;
         }
     }
-    
+
     private static void ProcessUpgradeablePair(string data)
     {
-        
         SWSM_DeckData deckData = JsonUtility.FromJson<SWSM_DeckData>(data);
         Deck deck = new Deck() { cards = deckData.data.data.deck };
-       GameManager.Instance.EVENT_UPGRADE_SHOW_UPGRADE_PAIR.Invoke(deck);
+        GameManager.Instance.EVENT_UPGRADE_SHOW_UPGRADE_PAIR.Invoke(deck);
     }
 
     private static void ProcessConfirmUpgrade(string data)
     {
         SWSM_ConfirmUpgrade confirmUpgradeData = JsonUtility.FromJson<SWSM_ConfirmUpgrade>(data);
-GameManager.Instance.EVENT_UPGRADE_CONFIRMED.Invoke(confirmUpgradeData);    }
+        GameManager.Instance.EVENT_UPGRADE_CONFIRMED.Invoke(confirmUpgradeData);
+    }
 }

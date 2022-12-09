@@ -106,6 +106,14 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_CAMP_UPGRADE_CARD = new UnityEvent<string>();
     [HideInInspector] public UnityEvent EVENT_CAMP_FINISH = new UnityEvent();
     
+    //TREASURE EVENTS
+    [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_TREASURE_ELEMENTS = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<SWSM_TreasureData> EVENT_TREASURE_CHEST_SIZE = new UnityEvent<SWSM_TreasureData>();
+    [HideInInspector] public UnityEvent EVENT_TREASURE_OPEN_CHEST = new UnityEvent();
+    [HideInInspector] public UnityEvent<SWSM_ChestResult> EVENT_TREASURE_CHEST_RESULT = new UnityEvent<SWSM_ChestResult>();
+    [HideInInspector] public UnityEvent<int> EVENT_ENCOUNTER_DAMAGE = new UnityEvent<int>();
+
+
     //UPGRADE EVENTS
     [HideInInspector] public UnityEvent<Deck> EVENT_UPGRADE_SHOW_UPGRADE_PAIR = new UnityEvent<Deck>();
     [HideInInspector] public UnityEvent<SWSM_ConfirmUpgrade> EVENT_UPGRADE_CONFIRMED = new UnityEvent<SWSM_ConfirmUpgrade>();
@@ -157,7 +165,7 @@ public class GameManager : SingleTon<GameManager>
     //TOP BAR EVENTS
     [HideInInspector] public UnityEvent EVENT_MAP_ICON_CLICKED = new UnityEvent();
     [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_TOPBAR_MAP_ICON = new UnityEvent<bool>();
-    [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_CURRENT_STEP_TEXT = new UnityEvent<int, int>();
+    [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_CURRENT_STEP_INFORMATION = new UnityEvent<int, int>();
 
     //CARD PANEL EVENTS
     [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>> EVENT_SHOW_SELECT_CARD_PANEL = new UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>>();
@@ -195,8 +203,10 @@ public class GameManager : SingleTon<GameManager>
 
 
     //Combat events
-    [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();   
-    [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_TREASURE_ELEMENTS = new UnityEvent<bool>();   
+    [HideInInspector] public UnityEvent EVENT_START_COMBAT_ENCOUNTER = new UnityEvent();
+    [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent EVENT_TOGGLE_COMBAT_UI = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_SHOW_PLAYER_CHARACTER = new UnityEvent();
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_ENERGY = new UnityEvent<int, int>();//current energy, max energy 
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_PLAYER_HEALTH = new UnityEvent<int, int>();//current health, max health
     [HideInInspector] public UnityEvent<CombatTurnData> EVENT_ATTACK_REQUEST = new UnityEvent<CombatTurnData>();
@@ -210,6 +220,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_CLEAR_TOOLTIPS = new UnityEvent();
     [HideInInspector] public UnityEvent<bool> EVENT_TOGGLE_TOOLTIPS = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<string> EVENT_SHOW_COMBAT_OVERLAY_TEXT = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<string, Action> EVENT_SHOW_COMBAT_OVERLAY_TEXT_WITH_ON_COMPLETE = new UnityEvent<string, Action>();
     [HideInInspector] public UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>  EVENT_SET_TOOLTIPS { get; } = 
         new UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>();
     [HideInInspector] public UnityEvent<string, int> EVENT_HEAL = new UnityEvent<string, int>(); // id, healed amount
@@ -233,10 +244,13 @@ public class GameManager : SingleTon<GameManager>
 
 
     // Audio Events
-    [HideInInspector] public UnityEvent<string> EVENT_PLAY_SFX = new UnityEvent<string>();
-    
+    [HideInInspector] public UnityEvent<SoundTypes, string> EVENT_PLAY_SFX = new UnityEvent<SoundTypes, string>();
+    [HideInInspector] public UnityEvent<MusicTypes, int> EVENT_PLAY_MUSIC = new UnityEvent<MusicTypes, int>();
+    [HideInInspector] public UnityEvent EVENT_VOLUME_CHANGED = new UnityEvent();
+
     //Console Events
     [HideInInspector] public UnityEvent EVENT_SHOW_CONSOLE = new UnityEvent();
+    [HideInInspector] public UnityEvent<int> EVENT_SKIP_NODE = new UnityEvent<int>();
 
     // Wallet Events
     [HideInInspector] public UnityEvent<string> EVENT_NEW_WALLET = new UnityEvent<string>();

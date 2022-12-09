@@ -41,6 +41,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener(OnUpdatePlayer);
         GameManager.Instance.EVENT_WS_CONNECTED.AddListener(OnWSConnected);
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
+        GameManager.Instance.EVENT_ENCOUNTER_DAMAGE.AddListener(OnEncounterDamage);
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
 
 
@@ -132,6 +133,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
     private void OnAttackResponse(CombatTurnData attack)
     {
         var target = attack.GetTarget("player");
+        if (attack.originType == "player") PlaySound(attack);
         if (target == null) return;
 
         Debug.Log($"[PlayerManager] Combat Response GET!");
@@ -143,29 +145,16 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
             GameManager.Instance.EVENT_DAMAGE.Invoke(target);
         }
 
-        if (target.defenseDelta < 0 && target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
-        {
-            // Play Armored Clang
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Block");
-        }
         else if (target.healthDelta < 0) // Damage Taken no armor
         {
             // Play Attack audio
             // Can be specific, but we'll default to "Attack"
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Attack");
             waitDuration += OnHit();
         }
 
-        // Positive Deltas
-        if (target.defenseDelta > 0) // Defense Buffed
-        {
-            // Play Metallic Ring
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Up");
-        }
         if (target.healthDelta > 0) // Healed!
         {
             // Play Rising Chimes
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
             GameManager.Instance.EVENT_HEAL.Invoke(/*PlayerData.id*/ "player", target.healthDelta);
             waitDuration += 1;
         }
@@ -192,6 +181,44 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
             //CheckDeath(target.finalHealth); 
         });
     }
+
+    private void PlaySound(CombatTurnData attack)
+    {
+        foreach (var target in attack.targets)
+        {
+            if (target.defenseDelta < 0 || target.healthDelta < 0)
+            {
+                GameManager.Instance.EVENT_DAMAGE.Invoke(target);
+            }
+
+            if (target.defenseDelta < 0 &&
+                target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
+            {
+                // Play Armored Clang
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Knight, "Block");
+            }
+            else if (target.healthDelta < 0) // Damage Taken no armor
+            {
+                // Play Attack audio
+                // Can be specific, but we'll default to "Attack"
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Knight, "Attack");
+            }
+
+            // Positive Deltas
+            if (target.defenseDelta > 0) // Defense Buffed
+            {
+                // Play Metallic Ring
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Knight, "Buff");
+            }
+
+            if (target.healthDelta > 0) // Healed!
+            {
+                // Play Rising Chimes
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Knight, "Buff");
+            }
+        }
+    }
+
     private void RunAfterEvent(Action toRun)
     {
         RunWithEvent = toRun;
@@ -266,7 +293,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         if (currentEnergy == 0)
         {
             // Out of energy audio
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Out Of Energy");
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Out Of Energy");
         }
     }
 
@@ -280,6 +307,12 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         PlayerData = newPlayerData;
     }
 
+    private void OnEncounterDamage(int damageTaken)
+    {
+        OnHit();
+        // the math here is due to only receiving the damage dealt, but the backend applies it to the player state
+        SetHealth(playerData.hpCurrent - damageTaken);
+    }
     private void SetDefense(int? value = null)
     {
         if (value == null)

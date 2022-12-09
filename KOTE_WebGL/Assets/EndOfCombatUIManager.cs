@@ -18,6 +18,7 @@ public class EndOfCombatUIManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(OnGameStatusChange);
         GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT.AddListener(OnShowOverlayText);
+        GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT_WITH_ON_COMPLETE.AddListener(OnShowOverlayText);
         DeactivateLabels();
     }
 
@@ -37,6 +38,7 @@ public class EndOfCombatUIManager : MonoBehaviour
                 victoryLabel.DOFade(1, 2).SetDelay(GameSettings.VICTORY_LABEL_ANIMATION_DELAY).From(0)
                     .SetLoops(2, LoopType.Yoyo).OnComplete(OnVictoryComplete).OnStart(() =>
                     {
+                        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Victory");
                         victoryLabel.gameObject.SetActive(true);
                     });
                 break;
@@ -48,6 +50,18 @@ public class EndOfCombatUIManager : MonoBehaviour
         messageLabel.text = text;
         messageLabel.DOFade(1, 2).SetDelay(GameSettings.VICTORY_LABEL_ANIMATION_DELAY).From(0)
             .SetLoops(2, LoopType.Yoyo).OnComplete(() => { messageLabel.gameObject.SetActive(false); })
+            .OnStart(() => { messageLabel.gameObject.SetActive(true); });
+    }
+
+    private void OnShowOverlayText(string text, Action OnComplete)
+    {
+        messageLabel.text = text;
+        messageLabel.DOFade(1, 2).SetDelay(GameSettings.VICTORY_LABEL_ANIMATION_DELAY).From(0)
+            .SetLoops(2, LoopType.Yoyo).OnComplete(() =>
+            {
+                messageLabel.gameObject.SetActive(false);
+                OnComplete.Invoke();
+            })
             .OnStart(() => { messageLabel.gameObject.SetActive(true); });
     }
 

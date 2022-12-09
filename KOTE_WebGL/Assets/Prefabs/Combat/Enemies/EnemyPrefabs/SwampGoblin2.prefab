@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 5.32, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7839970432105090531}
   m_RootOrder: 0
@@ -56,6 +57,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.78, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7839970432105090531}
   m_RootOrder: 1
@@ -93,6 +95,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 637937264444858106}
   - {fileID: 8082651498716096778}
@@ -118,6 +121,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -204,48 +208,47 @@ MonoBehaviour:
   animationJson: {fileID: 4900000, guid: d5dec9ade5fc07048ad50b953f9f4ce2, type: 3}
   atlasAssetBase: {fileID: 11400000, guid: 18760e58d2837a2468b9fb005b8b5b64, type: 2}
   animations:
-  - sequenceName: Attack
+  - sequenceName: attack
     sequence:
     - track: 1
-      name: Attack
+      name: attack1
       loop: 0
       delay: 0
       animationEvent: 1
   - sequenceName: cast
     sequence:
     - track: 1
-      name: Cast1
+      name: cast1
       loop: 0
       delay: 0
       animationEvent: 1
   - sequenceName: Idle
     sequence:
     - track: 1
-      name: Idle
+      name: idle
       loop: 1
       delay: 0
       animationEvent: 0
-  - sequenceName: Hit
+  - sequenceName: hit
     sequence:
     - track: 1
-      name: Hit
+      name: hit
       loop: 0
       delay: 0.5
       animationEvent: 1
-  - sequenceName: Death
+  - sequenceName: death
     sequence:
     - track: 1
-      name: Death
+      name: death
       loop: 0
       delay: 0
       animationEvent: 1
   availableAnimations:
-  - Attack
-  - Cast1
-  - Death
-  - Death-Alt
-  - Hit
-  - Idle
+  - attack1
+  - cast1
+  - death
+  - hit
+  - idle
 --- !u!61 &5686819444545257724
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -292,6 +295,10 @@ MonoBehaviour:
   onCursorExit:
     m_PersistentCalls:
       m_Calls: []
+  spineAnimationsManagement: {fileID: 0}
+  setBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!50 &9042282606503098450
 Rigidbody2D:
   serializedVersion: 4

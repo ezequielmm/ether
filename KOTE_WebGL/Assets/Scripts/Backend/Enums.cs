@@ -15,6 +15,7 @@ public enum PileTypes
     Exhausted,
     Discarded
 }
+
 [Serializable]
 public enum GameStatuses
 {
@@ -31,7 +32,7 @@ public enum GameStatuses
 }
 
 [Serializable]
-public enum PlayerState 
+public enum PlayerState
 {
     dying,
     dead
@@ -45,7 +46,7 @@ public enum EnemyState
 }
 
 [Serializable]
-public enum Size 
+public enum Size
 {
     medium = 0,
     tiny,
@@ -99,10 +100,9 @@ public enum NODE_STATUS
     active,
     available,
     disabled
-    
 }
 
-public enum ENEMY_INTENT 
+public enum ENEMY_INTENT
 {
     unknown = 0,
 
@@ -174,7 +174,7 @@ public enum STATUS
 }
 
 [Serializable]
-public enum EnemyTypes 
+public enum EnemyTypes
 {
     sporeMonger = 0,
     ancientOne,
@@ -198,7 +198,7 @@ public enum EntityType
     Enemy
 }
 
-public enum PointerOrigin 
+public enum PointerOrigin
 {
     potion,
     card
@@ -207,10 +207,10 @@ public enum PointerOrigin
 [Serializable]
 public enum WS_DATA_REQUEST_TYPES
 {
-    Energy,//done
+    Energy, //done
     Health,
     Players,
-    CardsPiles,//done
+    CardsPiles, //done
     Enemies,
     EnemyIntents,
     Potions,
@@ -221,7 +221,9 @@ public enum WS_DATA_REQUEST_TYPES
     UpgradableCards,
     UpgradablePair,
     UpgradeCard,
-    MerchantData
+    MerchantData,
+    TreasureData,
+    Rewards
 }
 
 [Serializable]
@@ -241,6 +243,7 @@ public enum WS_MESSAGE_TYPES
     camp_update,
     combat_update,
     treasure_update,
+    end_treasure,
     enemy_intents,
     player_state_update,
     error,
@@ -258,7 +261,7 @@ public enum WS_MESSAGE_TYPES
 }
 
 [Serializable]
-public enum WS_COMBAT_ACTIONS 
+public enum WS_COMBAT_ACTIONS
 {
     begin_combat,
     update_statuses,
@@ -268,7 +271,8 @@ public enum WS_COMBAT_ACTIONS
 [Serializable]
 public enum WS_TREASURE_ACTIONS
 {
-    begin_treasure
+    begin_treasure,
+    continue_treasure
 }
 
 [Serializable]
@@ -340,6 +344,24 @@ public enum ConsoleCommands
     disable_register_panel,
     disable_armory_panel,
     disable_royal_houses_panel,
-    disable_node_numbers
+    disable_node_numbers,
+    enable_node
 }
 
+[Serializable]
+public enum SoundTypes
+{
+    Card,
+    EnemyOffensive,
+    EnemyDefensive,
+    Knight,
+    UI
+}
+
+[Serializable]
+public enum MusicTypes
+{
+    Ambient,
+    Boss,
+    Music
+}

@@ -68,6 +68,7 @@ public class CardOnHandManager : MonoBehaviour
     [Header("Movement")] public ParticleSystem movePs;
 
     public Card thisCardValues;
+    private bool hasUnplayableKeyword;
     private bool activateCardAfterMove;
     private bool cardIsShowingUp;
     private bool pointerIsActive;
@@ -247,6 +248,7 @@ public class CardOnHandManager : MonoBehaviour
         {
             frameSprite.sprite = cardAssetManager.GetFrame(card.pool);
         }
+
         bannerSprite.sprite = cardAssetManager.GetBanner(card.rarity);
         cardImage.sprite = cardAssetManager.GetCardImage(card.cardId);
         /* this.id = card.id;
@@ -275,6 +277,10 @@ public class CardOnHandManager : MonoBehaviour
             }
         }
 
+        if (card.keywords != null && card.keywords.Contains("unplayable"))
+        {
+            hasUnplayableKeyword = true;
+        }
 
         UpdateCardBasedOnEnergy(energy);
     }
@@ -341,7 +347,7 @@ public class CardOnHandManager : MonoBehaviour
         }
 
         activateCardAfterMove = false;
-        
+
         currentPosition = destinationType;
 
         if (pos.magnitude > 0)
@@ -510,7 +516,7 @@ public class CardOnHandManager : MonoBehaviour
 
         inTransit = false;
 
-        if (currentPosition == CARDS_POSITIONS_TYPES.exhaust) 
+        if (currentPosition == CARDS_POSITIONS_TYPES.exhaust)
         {
             StartCoroutine(ExhaustEffect());
             return;
@@ -532,16 +538,16 @@ public class CardOnHandManager : MonoBehaviour
         }
     }
 
-    private IEnumerator ExhaustEffect() 
+    private IEnumerator ExhaustEffect()
     {
         yield return null;
 
         // SFX
-        GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Exhaust");
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Exhaust");
         float effectLength = GameSettings.EXHAUST_EFFECT_DURATION;
 
         // Temp fade animation
-        foreach (var renderer in GetComponentsInChildren<SpriteRenderer>()) 
+        foreach (var renderer in GetComponentsInChildren<SpriteRenderer>())
         {
             renderer.DOFade(0, effectLength);
         }
@@ -564,7 +570,13 @@ public class CardOnHandManager : MonoBehaviour
 
     private void UpdateCardBasedOnEnergy(int energy)
     {
-        if (thisCardValues.energy <= energy)
+        if (hasUnplayableKeyword)
+        {
+            energyTF.text = "-";
+            outlineMaterial = greenOutlineMaterial;
+            card_can_be_played = false;
+        }
+        else if (thisCardValues.energy <= energy)
         {
             var main = auraPS.main;
             main.startColor = greenColor;
@@ -696,7 +708,7 @@ public class CardOnHandManager : MonoBehaviour
             if (cardIsDisplaced)
             {
                 // Play Cancellation sound
-                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Cancel");
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Cancel");
             }
 
             if (!Input.GetMouseButton(0))
@@ -723,7 +735,7 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!card_can_be_played)
+        if (!card_can_be_played && !hasUnplayableKeyword)
         {
             GameManager.Instance.EVENT_CARD_NO_ENERGY.Invoke();
             return;

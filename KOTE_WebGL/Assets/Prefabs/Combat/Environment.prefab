@@ -50,7 +50,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2c9c985c40de374f84e3413d54e6ee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  combatBg: {fileID: 0}
+  combatBackgrounds:
+  - {fileID: 11400000, guid: 11f71193e73e7be42810fc75a9e09422, type: 2}
+  - {fileID: 11400000, guid: 4f6ea6a8aee73794a93bd5c165b0e268, type: 2}
+  combatBg: {fileID: 3087476550169699235}
 --- !u!1 &7770983170382743867
 GameObject:
   m_ObjectHideFlags: 0

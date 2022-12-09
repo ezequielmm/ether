@@ -483,6 +483,48 @@ public class SWSM_MerchantData
         public MerchantData data;
     }
 }
+[Serializable]
+public class SWSM_TreasureData
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public string message_type;
+        public string action;
+        public string data;
+    }
+}
+[Serializable]
+public class SWSM_ChestResult
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public ChestResult data;
+    }
+}
+
+[Serializable]
+public class ChestResult
+{
+    public string isOpen;
+    public List<RewardItemData> rewards;
+    public TrappedResult trapped;
+}
+
+[Serializable]
+public class TrappedResult
+{
+    public string trappedType;
+    public string trappedText;
+    public string monster_type;
+    public int damage;
+    public Card curse_card;
+}
 
 [Serializable]
 public class SWSM_PlayerDeckData

@@ -7,27 +7,16 @@ using UnityEngine.UI;
 
 public class EnvironmentManager : MonoBehaviour
 {
-    public Image combatBg; 
+    public Image combatBg;
 
     void Start()
     {
-      //  GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnMapIconClicked);
-       // GameManager.Instance.EVENT_MAP_NODES_UPDATE.AddListener(OnMapNodesUpdate);
-      //  GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnMapNodeSelected);
+        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.AddListener(OnMapNodeSelected);
     }
 
-
-    private void onMapNodeSelected(int arg0)
+    private void OnMapNodeSelected(int act, int step)
     {
+            // else set that as the background and continue
+            combatBg.sprite = SpriteAssetManager.Instance.GetCombatBackground(act, step);
     }
-
-    private void onMapNodesUpdate(string arg0)
-    {
-    }
-
-    private void OnMapIconClicked()
-    {
-    }
-
- 
 }

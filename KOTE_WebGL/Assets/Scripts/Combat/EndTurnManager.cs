@@ -72,6 +72,7 @@ public class EndTurnManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if (isPlayersTurn)
         {
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             GameManager.Instance.EVENT_END_TURN_CLICKED.Invoke();
         }
     }

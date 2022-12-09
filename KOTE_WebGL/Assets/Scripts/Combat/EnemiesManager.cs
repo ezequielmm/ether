@@ -102,6 +102,13 @@ public class EnemiesManager : MonoBehaviour
                 newEnemyList.Add(enemyManager.gameObject);
             }
         }
+
+        if (enemies.Count == 0)
+        {
+            GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), nameof(EnemyState.dead));
+            return;
+        }
+        
         for(int i = 0; i < enemies.Count; i++)
         {
             var enemy = enemies[i];

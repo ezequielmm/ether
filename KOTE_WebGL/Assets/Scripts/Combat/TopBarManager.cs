@@ -35,7 +35,7 @@ public class TopBarManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusupdate);
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.AddListener(OnToggleMapIcon);
-        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.AddListener(UpdateStageText);
+        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.AddListener(UpdateStageText);
         GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnPlayerAttacked);
 
         // this has to be set here, as it is not visible in the inspector
@@ -116,16 +116,24 @@ public class TopBarManager : MonoBehaviour
     
     public void OnMapButtonClicked()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Top Bar Click");
         GameManager.Instance.EVENT_MAP_ICON_CLICKED.Invoke();
     }
 
     public void OnSettingsButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Top Bar Click");
         GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
     public void OnDeskButtonClicked()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Top Bar Click");
         GameManager.Instance.EVENT_CARD_PILE_CLICKED.Invoke(PileTypes.Deck);
+    }
+
+    public void OnGearButtonClicked()
+    {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Top Bar Click");
     }
 }

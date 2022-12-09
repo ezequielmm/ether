@@ -13,6 +13,7 @@ public class BattleBottomUIManager : MonoBehaviour
         container.SetActive(false);
         GameManager.Instance.EVENT_NODE_DATA_UPDATE.AddListener(OnNodeDataUpdated);//TODO: this will change as not all nodes will be combat
         GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.AddListener(OnCombatElementsToggle);
+        GameManager.Instance.EVENT_TOGGLE_COMBAT_UI.AddListener(OnToggleCombatUi);
 }
 
     private void OnCombatElementsToggle(bool arg0)
@@ -21,13 +22,17 @@ public class BattleBottomUIManager : MonoBehaviour
         container.SetActive(arg0);
     }
 
+    private void OnToggleCombatUi()
+    {
+        container.SetActive(!container.activeSelf);
+    }
+    
     private void OnNodeDataUpdated(NodeStateData nodeData, WS_QUERY_TYPE wsType)
     {
         if (wsType == WS_QUERY_TYPE.MAP_NODE_SELECTED)
         {
             container.SetActive(true);
         }
-       
     }
 
 }

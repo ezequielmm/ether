@@ -166,6 +166,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     private void OnAttackResponse(CombatTurnData attack)
     {
         var target = attack.GetTarget(enemyData.id);
+        if (attack.originId == enemyData.id) PlaySound(attack);
         if (target == null) return;
 
         Debug.Log($"[EnemyManager] Combat Response GET!");
@@ -176,29 +177,16 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             GameManager.Instance.EVENT_DAMAGE.Invoke(target);
         }
 
-        if (target.defenseDelta < 0 && target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
-        {
-            // Play Armored Clang
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Block");
-        }
         else if (target.healthDelta < 0) // Damage Taken no armor
         {
             // Play Attack audio
             // Can be specific, but we'll default to "Attack"
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Attack");
             waitDuration += OnHit();
         }
-
-        // Positive Deltas
-        if (target.defenseDelta > 0) // Defense Buffed
-        {
-            // Play Metallic Ring
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Up");
-        }
+        
         if (target.healthDelta > 0) // Healed!
         {
             // Play Rising Chimes
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
             GameManager.Instance.EVENT_HEAL.Invoke(EnemyData.id, target.healthDelta);
             waitDuration += 1;
         }
@@ -220,6 +208,38 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         }
 
         RunAfterTime(waitDuration, () => GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId));
+    }
+
+    private void PlaySound(CombatTurnData attack)
+    {
+        foreach (var target in attack.targets)
+        {
+            if (target.defenseDelta < 0 &&
+                target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
+            {
+                // Play Armored Clang
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.EnemyDefensive, /*enemyData.name +*/ "Block");
+            }
+            else if (target.healthDelta < 0) // Damage Taken no armor
+            {
+                // Play Attack audio
+                // Can be specific, but we'll default to "Attack"
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.EnemyOffensive, enemyData.name + "Attack");
+            }
+
+            // Positive Deltas
+            if (target.defenseDelta > 0) // Defense Buffed
+            {
+                // Play Metallic Ring
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.EnemyDefensive, enemyData.name + "Cast");
+            }
+
+            if (target.healthDelta > 0) // Healed!
+            {
+                // Play Rising Chimes
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.EnemyOffensive, enemyData.name + "Cast");
+            }
+        }
     }
 
     private void SetDefense(int? value = null)
