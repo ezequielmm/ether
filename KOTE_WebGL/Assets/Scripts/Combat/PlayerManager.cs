@@ -187,7 +187,8 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         {
             if (target.defenseDelta < 0 || target.healthDelta < 0)
             {
-                GameManager.Instance.EVENT_DAMAGE.Invoke(target);
+                Debug.LogWarning("Commented out sending an event from a PlaySpund method??");
+               // GameManager.Instance.EVENT_DAMAGE.Invoke(target);
             }
 
             if (target.defenseDelta < 0 &&

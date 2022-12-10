@@ -65,9 +65,19 @@ public class DamageAnimationManager : MonoBehaviour
         // Check if me
         if (entityId != data.targetId && intEntityId.ToString() != data.targetId) return;
 
+       /* Debug.Log("[onDamage]" + data);
+        // Check if me
+        if (entityId != data.targetId && !(entityId == "player" && entityId == data.targetType))
+        {
+            Debug.Log("[onDamage] it is NOT me");
+            return;
+        }*/
+      
         // Run Animation
         if (data.healthDelta < 0 || data.defenseDelta != 0) 
         {
+            Debug.Log("[onDamage] it is me and I am showing damage");
+
             StartCoroutine(Animation(data.healthDelta, data.defenseDelta, 
                 data.defenseDelta != 0 && data.finalDefense == 0));
         }
