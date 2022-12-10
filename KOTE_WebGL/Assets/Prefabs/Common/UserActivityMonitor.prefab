@@ -49,5 +49,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f579409e8b631c46b520a3ecf5d4ead, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AfkTime: 1
+  AfkTime: 5
   AfkCheckInterval: 1
