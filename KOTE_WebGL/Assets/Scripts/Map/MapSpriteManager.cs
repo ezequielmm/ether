@@ -76,7 +76,7 @@ namespace map
         Dictionary<Vector3Int, TileSplineRef> tileSplineRef = new Dictionary<Vector3Int, TileSplineRef>();
         Dictionary<Vector3Int, GameObject> nodeMapRef = new Dictionary<Vector3Int, GameObject>();
         private Vector3 playerIconOffset = new Vector3(-0.25f, -0.25f, 0);
-        
+
         private class SplinePoint
         {
             public Vector3Int tileLoc;
@@ -326,7 +326,10 @@ namespace map
 
         IEnumerator Scroll()
         {
-            yield return new WaitForSeconds(0.5f);
+            if (GameSettings.MAP_AUTO_SCROLL_ACTIVE)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
             ScrollBackToPlayerIcon();
         }
 
@@ -980,10 +983,11 @@ namespace map
                     tileMap.CreateConnection(tilePath[i + 1], end);
                 }
             }
-            
+
             // get the path in reverse to confirm that we have the correct path
             List<Vector3Int> checkPath = new List<Vector3Int>();
-            if (allTiles.TryGetValue(end, out MapTilePath curTile) && !allTiles[start].Connections.Exists(x => x.TargetNode == end))
+            if (allTiles.TryGetValue(end, out MapTilePath curTile) &&
+                !allTiles[start].Connections.Exists(x => x.TargetNode == end))
             {
                 checkPath.Add(curTile.Position);
                 while (curTile.Position != start)
@@ -1137,7 +1141,15 @@ namespace map
 
             if ((mapBounds.max.x < halfScreenWidth * 2) == false)
             {
-                activeTween = nodesHolder.transform.DOLocalMoveX(targetx, scrollTime);
+                if (GameSettings.MAP_AUTO_SCROLL_ACTIVE)
+                {
+                    activeTween = nodesHolder.transform.DOLocalMoveX(targetx, scrollTime);
+                }
+                else
+                {
+                    nodesHolder.transform.localPosition = new Vector3(targetx, nodesHolder.transform.localPosition.y,
+                        nodesHolder.transform.localPosition.z);
+                }
             }
         }
 
@@ -1158,8 +1170,13 @@ namespace map
 
             StartCoroutine(RevealMapThenReturnToPlayer(nodesHolder.transform.localPosition, numberOfSteps));
             */
-            StartCoroutine(RevealMapThenReturnToPlayer(nodesHolder.transform.localPosition,
-                GameSettings.MAP_SCROLL_ANIMATION_DURATION));
+            if (GameSettings.SHOW_MAP_REVEAL_ON_PORTAL)
+            {
+                StartCoroutine(RevealMapThenReturnToPlayer(nodesHolder.transform.localPosition,
+                    GameSettings.MAP_SCROLL_ANIMATION_DURATION));
+                return;
+            }
+            ScrollBackToPlayerIcon();
         }
 
         private IEnumerator RevealMapThenReturnToPlayer(Vector3 mapPos, float animDuration)

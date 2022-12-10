@@ -319,10 +319,10 @@ public class CardOnHandManager : MonoBehaviour
     public void MoveCard(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType,
         bool activateCard = false, Vector3 pos = default(Vector3), float delay = 0)
     {
-        //  Debug.Log("[CardOnHandManager] MoveCard = " + originType + " to " + destinationType + "........card id: " +                  thisCardValues.id);
+         Debug.Log("[CardOnHandManager] MoveCard = " + originType + " to " + destinationType + "........card id: " +                  thisCardValues.id);
         movePs.Play();
 
-        Debug.Log("[CardOnHandManager] Card Is Now Moving");
+     //   Debug.Log("[CardOnHandManager] Card Is Now Moving");
 
         Vector3 origin = new Vector3();
         Vector3 destination = new Vector3();
