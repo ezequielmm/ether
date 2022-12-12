@@ -542,6 +542,13 @@ public class SWSM_EncounterData
             public string imageId;
             public string displayText;
             public List<string> buttonText;
+
+            [Serializable]
+            public class ButtonData
+            {
+                public string text;
+                public bool enabled;
+            }
         }
     }
 }
