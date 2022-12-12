@@ -211,7 +211,7 @@ public class PlayerData
     /// Index of Player
     /// </summary>
     [Obsolete("Int IDs will be phased out")]
-    public int playerId { get; set; } = 1; // This will be static for now. We'll need this when we have multiple players
+    public int playerId;
 
     public string id;
     public int hpCurrent;
