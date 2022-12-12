@@ -139,4 +139,10 @@ public static class Utils
         return source.GetComponentInParent<EnemyManager>()?.EnemyData?.id ?? source.GetComponentInParent<PlayerManager>()?.PlayerData?.id ??
             source.GetComponentInChildren<EnemyManager>()?.EnemyData?.id ?? source.GetComponentInChildren<PlayerManager>()?.PlayerData?.id ?? "unknown";
     }
+
+    public static int FindIntEntityId(GameObject source)
+    {
+        return source.GetComponentInParent<EnemyManager>()?.EnemyData?.enemyId ?? source.GetComponentInParent<PlayerManager>()?.PlayerData?.playerId ??
+            source.GetComponentInChildren<EnemyManager>()?.EnemyData?.enemyId ?? source.GetComponentInChildren<PlayerManager>()?.PlayerData?.playerId ?? -1;
+    }
 }

@@ -72,17 +72,19 @@ public class HandManager : MonoBehaviour
         if (!audioRunning)
         {
             audioRunning = true;
-            for (; cardsDrawn >= 0; cardsDrawn--)
+
+            if (cardsDrawn == 1)
             {
-                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Draw");
-                yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Draw Single");
+            }
+            else if (cardsDrawn > 1)
+            {
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Draw Multiple");
             }
 
-            if (cardsDrawn < 0)
-            {
-                cardsDrawn = 0;
-            }
+            yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
 
+            cardsDrawn = 0;
             audioRunning = false;
         }
     }
@@ -119,14 +121,14 @@ public class HandManager : MonoBehaviour
         {
             Debug.Log("[HandManager] No cards data at all. Retrieving");
             GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-            Invoke("OnDrawCards", 0.2f);
+            Invoke("OnDrawCards", 1f);//0.2f
             return;
         }
         else if (cardPilesData.data.hand.Count < 1)
         {
             Debug.Log("[HandManager] No hands cards data. Retrieving");
             GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-            Invoke("OnDrawCards", 0.2f);
+            Invoke("OnDrawCards", 1f);//0.2f
             return;
         }
 

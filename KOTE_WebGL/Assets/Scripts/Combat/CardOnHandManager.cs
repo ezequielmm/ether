@@ -319,10 +319,10 @@ public class CardOnHandManager : MonoBehaviour
     public void MoveCard(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType,
         bool activateCard = false, Vector3 pos = default(Vector3), float delay = 0)
     {
-        //  Debug.Log("[CardOnHandManager] MoveCard = " + originType + " to " + destinationType + "........card id: " +                  thisCardValues.id);
+         Debug.Log("[CardOnHandManager] MoveCard = " + originType + " to " + destinationType + "........card id: " +                  thisCardValues.id);
         movePs.Play();
 
-        Debug.Log("[CardOnHandManager] Card Is Now Moving");
+     //   Debug.Log("[CardOnHandManager] Card Is Now Moving");
 
         Vector3 origin = new Vector3();
         Vector3 destination = new Vector3();
@@ -543,7 +543,7 @@ public class CardOnHandManager : MonoBehaviour
         yield return null;
 
         // SFX
-        GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Exhaust");
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Exhaust");
         float effectLength = GameSettings.EXHAUST_EFFECT_DURATION;
 
         // Temp fade animation
@@ -708,7 +708,7 @@ public class CardOnHandManager : MonoBehaviour
             if (cardIsDisplaced)
             {
                 // Play Cancellation sound
-                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Cancel");
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Cancel");
             }
 
             if (!Input.GetMouseButton(0))
@@ -813,6 +813,7 @@ public class CardOnHandManager : MonoBehaviour
             {
                 Debug.Log("card is on center");
                 // Get Player ID
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Play");
                 GameManager.Instance.EVENT_CARD_PLAYED.Invoke(thisCardValues.id, "-1");
                 cardActive = false;
             }

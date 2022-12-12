@@ -61,12 +61,14 @@ public class LoginPanelManager : MonoBehaviour
 
     public void OnShowPassword()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         passwordInputField.contentType = showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
         passwordInputField.ForceLabelUpdate();
     }
 
     public void OnRegisterButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         ActivateInnerLoginPanel(false);
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
@@ -129,6 +131,7 @@ public class LoginPanelManager : MonoBehaviour
 
     public void OnLogin()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         validLoginEmail.gameObject.SetActive(false);
         validLoginPassword.gameObject.SetActive(false);
 
