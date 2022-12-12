@@ -162,7 +162,7 @@ public enum STATUS
     blinded,
     blighted,
     oiled,
-    trapping,
+    trapped,
     mimic,
     moldy,
     squishy,
