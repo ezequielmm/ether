@@ -135,7 +135,7 @@ public class HandManager : MonoBehaviour
         //move to the discard pile
         GameManager.Instance.EVENT_MOVE_CARD.Invoke(new CardToMoveData
         {
-            destination = "discard",
+            destination = "draw",
             id = addCardData.card.id,
             source = "none"
         }, GameSettings.SHOW_NEW_CARD_DURATION);
