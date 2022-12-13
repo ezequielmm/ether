@@ -31,7 +31,7 @@ public class EncounterManager : MonoBehaviour
         creatureImage.sprite = SpriteAssetManager.Instance.GetEncounterCreature(encounterData.data.data.imageId);
         creatureImage.SetNativeSize();
         PopulateEncounterText(encounterData.data.data.displayText);
-        PopulateButtonText(encounterData.data.data.buttonText);
+        PopulateButtonText(encounterData.data.data.buttons);
     }
 
     private void PopulateEncounterText(string text)
@@ -70,62 +70,70 @@ public class EncounterManager : MonoBehaviour
         }
     }
 
-    private void PopulateButtonText(List<string> optionText)
+    private void PopulateButtonText(List<ButtonData> ButtonsData)
     {
-        if (optionText == null || optionText.Count == 0)
+        if (ButtonsData == null || ButtonsData.Count == 0)
         {
-            // if there's no text sent, show the continue option and hide the rest of the buttons
-            optionButtons[0].onClick.RemoveAllListeners();
-            optionButtons[0].onClick.AddListener(() => GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke());
-            buttonTexts[0].text = "<color=#E1D5A4> <size=120%>A: <color=#FAB919><size=100%>Continue";
-            optionButtons[0].gameObject.SetActive(true);
-
-            for (int i = 1; i < optionButtons.Length; i++)
-            {
-                optionButtons[i].gameObject.SetActive(false);
-            }
-
+            SetButtonsToContinue();
             return;
         }
 
         for (int i = 0; i < optionButtons.Length; i++)
         {
-            if (i > optionText.Count)
+            if (i > ButtonsData.Count)
             {
                 optionButtons[i].gameObject.SetActive(false);
+                continue;
             }
 
             int buttonNum = i;
-            string text = optionText[i];
-            // add in the color changes for the different options
-            text = text.Insert(0, "<color=#E1D5A4> <size=120%>");
-            int charIndex = text.IndexOf(':');
-            text = text.Insert(charIndex + 1, "<color=#FAB919> <size=100%>");
-            charIndex = text.IndexOf('[');
-            text = text.Insert(charIndex - 1, "<color=#E1D5A4>");
-
-
-            buttonTexts[i].text = text;
+            buttonTexts[i].text = FormatButtonText( ButtonsData[i].text);
+            
+            // update the on click listener
             optionButtons[i].onClick.RemoveAllListeners();
             optionButtons[i].onClick.AddListener(() =>
             {
                 GameManager.Instance.EVENT_ENCOUNTER_OPTION_SELECTED.Invoke(buttonNum);
                 GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
+                DisableButtons();
             });
+            
+            // activate the button
+            optionButtons[i].interactable = ButtonsData[i].enabled;
             optionButtons[i].gameObject.SetActive(true);
         }
     }
 
-    private void DisableButtons()
+    private void SetButtonsToContinue()
     {
-        foreach (Button button in optionButtons)
+        // if there's no text sent, show the continue option and hide the rest of the buttons
+        optionButtons[0].onClick.RemoveAllListeners();
+        optionButtons[0].onClick.AddListener(() => GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke());
+        buttonTexts[0].text = "<color=#E1D5A4> <size=120%>A: <color=#FAB919><size=100%>Continue";
+        optionButtons[0].interactable = true;
+        optionButtons[0].gameObject.SetActive(true);
+
+        for (int i = 1; i < optionButtons.Length; i++)
         {
-            button.interactable = false;
+            optionButtons[i].interactable = false;
+            optionButtons[i].gameObject.SetActive(false);
         }
     }
 
+    private string FormatButtonText(string text)
+    {
+        // add in the color changes for the different options
+        text = text.Insert(0, "<color=#E1D5A4> <size=120%>");
+        int charIndex = text.IndexOf(':');
+        text = text.Insert(charIndex + 1, "<color=#FAB919> <size=100%>");
+        charIndex = text.IndexOf('[');
+        text = text.Insert(charIndex - 1, "<color=#E1D5A4>");
 
-    private void EnableButtons()
+        return text;
+    }
+
+
+    private void DisableButtons()
     {
         foreach (Button button in optionButtons)
         {

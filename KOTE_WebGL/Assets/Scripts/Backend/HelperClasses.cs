@@ -541,16 +541,18 @@ public class SWSM_EncounterData
         {
             public string imageId;
             public string displayText;
-            public List<string> buttonText;
+            public List<ButtonData> buttons;
 
-            [Serializable]
-            public class ButtonData
-            {
-                public string text;
-                public bool enabled;
-            }
+          
         }
     }
+}
+
+[Serializable]
+public class ButtonData
+{
+    public string text;
+    public bool enabled;
 }
 
 [Serializable]
