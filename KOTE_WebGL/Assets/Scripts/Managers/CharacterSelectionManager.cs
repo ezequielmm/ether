@@ -32,6 +32,9 @@ public class CharacterSelectionManager : MonoBehaviour
 
     private void OnExpeditionConfirmed()
     {
+        // play the correct music depending on where the player is
+        GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Music, 1);
+        GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Ambient, 1);
         GameManager.Instance.LoadScene(inGameScenes.Expedition);
     }
 
