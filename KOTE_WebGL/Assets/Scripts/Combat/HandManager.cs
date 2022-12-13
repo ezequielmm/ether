@@ -118,9 +118,13 @@ public class HandManager : MonoBehaviour
         listOfCardsOnHand.Add(addCardData.card.id, newCard);
         newCard.GetComponent<CardOnHandManager>().Populate(addCardData.card, cardPilesData.data.energy);
         
-        // wait for the next frame before telling the card to move so that Start() runs on the card
-        StartCoroutine(WaitToMoveAddedCard(addCardData));
-
+        // animate the card appearing
+        newCard.transform.localScale = Vector3.zero;
+        newCard.transform.DOScale(Vector3.one, 0.5f).OnComplete(() =>
+        {
+            // wait for the next frame before telling the card to move so that Start() runs on the card
+            StartCoroutine(WaitToMoveAddedCard(addCardData));
+        });
     }
 
     private IEnumerator WaitToMoveAddedCard(AddCardData addCardData)
