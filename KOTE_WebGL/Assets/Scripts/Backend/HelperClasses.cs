@@ -801,6 +801,26 @@ public class CardToMoveData
     public string id;
 }
 
+[Serializable]
+public class SWSM_CardAdd
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public List<AddCardData> data;
+    }
+}
+
+[Serializable]
+public class AddCardData
+{
+    public string destination;
+    public string id;
+    public Card card;
+}
+
 public class SWSM_ChangeTurn
 {
     public Data data;

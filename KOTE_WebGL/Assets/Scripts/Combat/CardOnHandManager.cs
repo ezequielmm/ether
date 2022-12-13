@@ -177,7 +177,7 @@ public class CardOnHandManager : MonoBehaviour
                 delay += 0.1f;
             }
 
-            if (!(origin == CARDS_POSITIONS_TYPES.draw && destination == CARDS_POSITIONS_TYPES.hand))
+            if (!(origin == CARDS_POSITIONS_TYPES.draw && destination == CARDS_POSITIONS_TYPES.hand) && origin != CARDS_POSITIONS_TYPES.none)
             {
                 delayIndex = 0;
             }
@@ -343,6 +343,9 @@ public class CardOnHandManager : MonoBehaviour
             case CARDS_POSITIONS_TYPES.exhaust:
                 origin = exhaustPileOrthoPosition;
                 transform.localScale = Vector3.one * 0.2f;
+                break;
+            case CARDS_POSITIONS_TYPES.none:
+                origin = Vector3.zero;
                 break;
         }
 

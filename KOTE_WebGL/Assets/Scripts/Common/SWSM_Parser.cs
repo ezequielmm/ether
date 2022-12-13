@@ -278,6 +278,9 @@ public class SWSM_Parser
                 ProcessCreateCard(data);
                 // ProcessMoveCard(data);
                 break;
+            case nameof(WS_MESSAGE_ACTIONS.add_card):
+                ProcessAddCard(data);
+                break;
             default:
                 Debug.LogWarning("[ProcessPlayerAffected] unknown action: "+ action +" , data: "+data);
                 break;
@@ -509,6 +512,14 @@ public class SWSM_Parser
         }
     }
 
+    private static void ProcessAddCard(string data)
+    {
+        SWSM_CardAdd cardAddData = JsonUtility.FromJson<SWSM_CardAdd>(data);
+        foreach(AddCardData addCardData in cardAddData.data.data)
+        {
+            GameManager.Instance.EVENT_CARD_ADD.Invoke(addCardData);
+        }
+    }
     private static void ProcessChangeTurn(string data)
     {
         SWSM_ChangeTurn who = JsonUtility.FromJson<SWSM_ChangeTurn>(data);

@@ -50,6 +50,7 @@ public class HandManager : MonoBehaviour
         GameManager.Instance.EVENT_CARD_DRAW_CARDS.AddListener(OnDrawCards);
         GameManager.Instance.EVENT_CARD_DRAW.AddListener(OnCardDraw); // SFX
         GameManager.Instance.EVENT_CARD_CREATE.AddListener(CreateCard);
+        GameManager.Instance.EVENT_CARD_ADD.AddListener(OnCardAdd);
         GameManager.Instance.EVENT_CARD_DISABLED.AddListener(OnCardDestroyed);
         // if we're adding a card to the hand that isn't a draw
         GameManager.Instance.EVENT_REARRANGE_HAND.AddListener(OnRearrangeHand);
@@ -108,6 +109,32 @@ public class HandManager : MonoBehaviour
         discardDeck.cards.Remove(cardMoved);
 
         handDeck.cards.Add(cardMoved);
+    }
+
+    private void OnCardAdd(AddCardData addCardData)
+    {
+        // create the new card in the middle of the screen
+        GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
+        listOfCardsOnHand.Add(addCardData.card.id, newCard);
+        newCard.GetComponent<CardOnHandManager>().Populate(addCardData.card, cardPilesData.data.energy);
+        
+        // wait for the next frame before telling the card to move so that Start() runs on the card
+        StartCoroutine(WaitToMoveAddedCard(addCardData));
+
+    }
+
+    private IEnumerator WaitToMoveAddedCard(AddCardData addCardData)
+    {
+        // wait for a frame
+        yield return null;
+        
+        //move to the discard pile
+        GameManager.Instance.EVENT_MOVE_CARD.Invoke(new CardToMoveData
+        {
+            destination = "discard",
+            id = addCardData.card.id,
+            source = "none"
+        }, GameSettings.SHOW_NEW_CARD_DURATION);
     }
 
     private void OnRearrangeHand()
