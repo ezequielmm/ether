@@ -65,6 +65,9 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<string, Action, Action, string[]> EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL =
         new UnityEvent<string, Action, Action, string[]>();
 
+    [HideInInspector] public UnityEvent<string> EVENT_SHOW_WARNING_MESSAGE = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent EVENT_HIDE_WARNING_MESSAGE = new UnityEvent();
+
     //CHARACTER SELECTION EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<string> EVENT_CHARACTERSELECTED = new UnityEvent<string>();
@@ -269,7 +272,8 @@ public class GameManager : SingleTon<GameManager>
     // Start is called before the first frame update
     void Start()
     {
-        EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
+        EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogout);
+        EVENT_REQUEST_LOGOUT_ERROR.AddListener(OnLogout);
         SceneManager.activeSceneChanged += UpdateSoundVolume;
         //EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ReturnToMainMenu);
     }
@@ -284,7 +288,7 @@ public class GameManager : SingleTon<GameManager>
         SceneManager.LoadScene(inGameScenes.Loader.ToString());
     }
 
-    private void OnLogoutSuccessful(string message)
+    private void OnLogout(string message)
     {
         LoadScene(inGameScenes.MainMenu);
     }
