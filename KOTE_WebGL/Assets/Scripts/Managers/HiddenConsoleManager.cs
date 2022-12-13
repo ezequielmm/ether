@@ -199,6 +199,13 @@ public class HiddenConsoleManager : MonoBehaviour
             case ConsoleCommands.enable_node:
                 PublicLog("Invalid syntax, format is 'enable_node X'");
                 break;
+            case ConsoleCommands.reset_all:
+                PlayerPrefs.SetInt("enable_registration", 0);
+                PlayerPrefs.SetInt("enable_armory", 0);
+                PlayerPrefs.SetInt("enable_royal_house", 0);
+                PlayerPrefs.SetInt("enable_node_numbers", 0);
+                PublicLog("All console modified settings reset");
+                break;
             default:
                 PublicLog("Unknown Command.");
                 break;
