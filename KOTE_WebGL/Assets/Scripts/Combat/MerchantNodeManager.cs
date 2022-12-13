@@ -236,6 +236,7 @@ public class MerchantNodeManager : MonoBehaviour
     bool upgradeCard = false;
     public void UpgradeCard() 
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         ResetItems();
         // Run upgrade card pannel
         ShowCardPanel(merchantData.upgradeableCards);
@@ -245,6 +246,7 @@ public class MerchantNodeManager : MonoBehaviour
 
     public void RemoveCard() 
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         ResetItems();
         // Run remove card pannel
         ShowCardPanel(merchantData.playerCards);
