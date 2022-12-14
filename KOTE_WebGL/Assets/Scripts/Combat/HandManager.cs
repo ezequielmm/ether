@@ -117,18 +117,19 @@ public class HandManager : MonoBehaviour
 
     private void OnDrawCards()
     {
+        Debug.Log("[HandManager]------------------------------------------------>[OnDrawCards]");
         if (cardPilesData == null)
         {
             Debug.Log("[HandManager] No cards data at all. Retrieving");
             GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-            Invoke("OnDrawCards", 1f);//0.2f
+            Invoke("OnDrawCards", 0.2f);//0.2f
             return;
         }
         else if (cardPilesData.data.hand.Count < 1)
         {
             Debug.Log("[HandManager] No hands cards data. Retrieving");
             GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-            Invoke("OnDrawCards", 1f);//0.2f
+            Invoke("OnDrawCards", 0.2f);//0.2f
             return;
         }
 

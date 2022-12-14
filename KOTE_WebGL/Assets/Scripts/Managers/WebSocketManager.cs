@@ -58,6 +58,15 @@ public class WebSocketManager : MonoBehaviour
         ConnectSocket(); //Disabled connection until actual implementation
     }
 
+    void OnDestroy()
+    {
+        if (rootSocket != null)
+        {
+            Debug.Log("[WebSocket Manager] socket disconnected");
+            rootSocket.Disconnect();
+        }
+    }
+
 
     /// <summary>
     /// 

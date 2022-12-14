@@ -151,7 +151,7 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Battle Start");
         GameManager.Instance.EVENT_TOOGLE_TREASURE_ELEMENTS.Invoke(false);
         //GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-        //Invoke("InvokeDrawCards", 0.2f);
+        Invoke("InvokeDrawCards", 0.2f);
     }
 
     private void InitializeTreasureMode()
