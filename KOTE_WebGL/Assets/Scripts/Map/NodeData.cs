@@ -86,7 +86,7 @@ public class NodeData : MonoBehaviour, ITooltipSetter
                 }
 
                 GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(id);
-                GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(act, step);
+                GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.Invoke(act, step);
                 GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
                 StopActiveNodeAnimation();
                 activeIconImage.transform.localScale = originalScale;
@@ -170,29 +170,16 @@ public class NodeData : MonoBehaviour, ITooltipSetter
     private void PopulateTooltip(NodeDataHelper nodeData)
     {
         Tooltip tooltip = new Tooltip();
-        tooltip.title = FormatTooltipName(nodeData.type);
-        // populate the tooltip as well
-        if (type == NODE_TYPES.royal_house)
-        {
-            tooltip.description = nodeData.title;
-        }
-        else
-        {
-            tooltip.description = FormatTooltipDescription(nodeData.subType);
-        }
-
+        tooltip.title = FormatTooltip(nodeData.title);
         tooltips = new List<Tooltip> { tooltip };
     }
 
-    private string FormatTooltipName(string tooltipName)
-    {
-        return Utils.PrettyText(tooltipName.Replace('_', ' '));
-    }
-
-    private string FormatTooltipDescription(string tooltipDesc)
+    private string FormatTooltip(string tooltipDesc)
     {
         string[] split = tooltipDesc.Split('_');
         if (split.Length > 1) return Utils.PrettyText(split[1] + " " + split[0]);
+        split = tooltipDesc.Split();
+        if(split.Length> 1) return Utils.PrettyText(split[0] + split[1]);
         return Utils.PrettyText(split[0]);
     }
 

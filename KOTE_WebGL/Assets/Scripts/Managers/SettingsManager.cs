@@ -34,19 +34,20 @@ public class SettingsManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
 
         logoutHyperlink.interactable = false;
-
-        Debug.LogError($"master volume: {PlayerPrefs.GetFloat("settings_volume")}");
-        Debug.LogError($"sfx volume: {PlayerPrefs.GetFloat("sfx_volume")}");
-        Debug.LogError($"music volume: {PlayerPrefs.GetFloat("music_volume")}");
+               
         volumeSlider.value = PlayerPrefs.GetFloat("settings_volume", 1);
         sfxSlider.value = PlayerPrefs.GetFloat("sfx_volume", 1);
         musicSlider.value = PlayerPrefs.GetFloat("music_volume", 0.8f);
         AudioListener.volume = volumeSlider.value;
-
         languageDropdown.value = PlayerPrefs.GetInt("settings_dropdown");
         settingsInitalized = true;
     }
 
+    public void OnVolumeClicked()
+    {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
+    }
+    
     public void OnVolumeChanged(string volumeType)
     {
         // if this isn't here this will be called before Start() or Awake()
@@ -68,7 +69,6 @@ public class SettingsManager : MonoBehaviour
                 break;
         }
 
-        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         float volumePercent = changedSlider.value * 100;
         string volumeAmount = volumePercent.ToString("F0");
         sliderText.text = (volumeAmount);

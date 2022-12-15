@@ -38,7 +38,6 @@ public class EndOfCombatUIManager : MonoBehaviour
                 victoryLabel.DOFade(1, 2).SetDelay(GameSettings.VICTORY_LABEL_ANIMATION_DELAY).From(0)
                     .SetLoops(2, LoopType.Yoyo).OnComplete(OnVictoryComplete).OnStart(() =>
                     {
-                        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Victory");
                         victoryLabel.gameObject.SetActive(true);
                     });
                 break;

@@ -19,6 +19,7 @@ public class NoEnergyManager : MonoBehaviour
     void OnCardNoEnergy()
     {
         noEnergyLabel.gameObject.SetActive(true);
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Out Of Energy");
         noEnergyLabel.DOFade(1, .5f).From(0).SetLoops(2, LoopType.Yoyo).OnComplete(OnComplete);
         
     }
