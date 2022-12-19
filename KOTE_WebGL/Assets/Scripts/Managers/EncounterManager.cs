@@ -82,13 +82,14 @@ public class EncounterManager : MonoBehaviour
         {
             if (i > ButtonsData.Count)
             {
+                buttonTexts[i].text = "";
                 optionButtons[i].gameObject.SetActive(false);
                 continue;
             }
 
             int buttonNum = i;
-            buttonTexts[i].text = FormatButtonText( ButtonsData[i].text);
-            
+            buttonTexts[i].text = FormatButtonText(ButtonsData[i].text);
+
             // update the on click listener
             optionButtons[i].onClick.RemoveAllListeners();
             optionButtons[i].onClick.AddListener(() =>
@@ -97,7 +98,7 @@ public class EncounterManager : MonoBehaviour
                 GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
                 DisableButtons();
             });
-            
+
             // activate the button
             optionButtons[i].interactable = ButtonsData[i].enabled;
             optionButtons[i].gameObject.SetActive(true);
@@ -127,7 +128,10 @@ public class EncounterManager : MonoBehaviour
         int charIndex = text.IndexOf(':');
         text = text.Insert(charIndex + 1, "<color=#FAB919> <size=100%>");
         charIndex = text.IndexOf('[');
-        text = text.Insert(charIndex - 1, "<color=#E1D5A4>");
+        if (charIndex != -1)
+        {
+            text = text.Insert(charIndex - 1, "<color=#E1D5A4>");
+        }
 
         return text;
     }
