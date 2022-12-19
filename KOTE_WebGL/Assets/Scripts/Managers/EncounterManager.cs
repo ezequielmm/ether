@@ -80,7 +80,7 @@ public class EncounterManager : MonoBehaviour
 
         for (int i = 0; i < optionButtons.Length; i++)
         {
-            if (i > ButtonsData.Count)
+            if (i >= ButtonsData.Count)
             {
                 buttonTexts[i].text = "";
                 optionButtons[i].gameObject.SetActive(false);
