@@ -22,15 +22,9 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_NODE_DATA_UPDATE
             .AddListener(OnNodeDataUpdate); //a node has been selected an we got an update node data
 
-        // GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusUpdate);
         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(OnChangeGameStatus);
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.AddListener(OnPrepareStatusChange);
         GameManager.Instance.EVENT_CONFIRM_EVENT.AddListener(OnEventConfirmation);
-    }
-
-    private void OnPlayerStatusUpdate(PlayerStateData playerState)
-    {
-        Debug.Log(playerState);
     }
 
     private void OnNodeDataUpdate(NodeStateData nodeState, WS_QUERY_TYPE wsType)
@@ -91,13 +85,9 @@ public class GameStatusManager : MonoBehaviour
                     break;
             }
         }
-        // if there's enemies in the combat, then fully start combat
-        else if (enumType == typeof(GameStatuses))
+        else
         {
-            if (eventName == nameof(GameStatuses.Combat))
-            {
-                GameManager.Instance.EVENT_CARD_DRAW_CARDS.Invoke();
-            }
+            Debug.LogWarning("[GameStatusManager] Event called without setting a prep status!");
         }
     }
 
@@ -107,7 +97,7 @@ public class GameStatusManager : MonoBehaviour
         switch (newGameStatus)
         {
             case GameStatuses.Combat:
-                InitializeCombatmode();
+                InitializeCombatMode();
                 break;
             case GameStatuses.Map:
                 InitializeMapMode();
@@ -127,8 +117,8 @@ public class GameStatusManager : MonoBehaviour
             case GameStatuses.RewardsPanel:
                 InitializeRewards();
                 break;
-            case GameStatuses.RoyalHouse: break;
             case GameStatuses.GameOver: break;
+            case GameStatuses.RoyalHouse:
             default:
                 Debug.LogWarning("[GameStatusManager] This game status is not implemented!");
                 break;
@@ -149,7 +139,7 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_TOOGLE_TREASURE_ELEMENTS.Invoke(false);
     }
 
-    private void InitializeCombatmode()
+    private void InitializeCombatMode()
     {
         //tell top bar to show the map icon
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
@@ -157,7 +147,6 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(true);
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Battle Start");
         GameManager.Instance.EVENT_TOOGLE_TREASURE_ELEMENTS.Invoke(false);
-        //GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
         Invoke("InvokeDrawCards", 0.2f);
     }
 
@@ -205,7 +194,7 @@ public class GameStatusManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
-        GameManager.Instance.EVENT_SHOW_PLAYER_CHARACTER.Invoke();
+        //GameManager.Instance.EVENT_SHOW_PLAYER_CHARACTER.Invoke();
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Rewards);
     }
 

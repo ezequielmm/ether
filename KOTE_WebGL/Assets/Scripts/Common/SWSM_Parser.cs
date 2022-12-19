@@ -326,7 +326,6 @@ public class SWSM_Parser
         {
             case nameof(WS_MESSAGE_ACTIONS.enemies_defeated):
                 Debug.Log("Should move cards from draw to hand");
-                SWSM_RewardsData rewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
                 GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.player_defeated):
@@ -343,6 +342,9 @@ public class SWSM_Parser
                 break;
             case nameof(WS_MESSAGE_ACTIONS.show_map):
                 GameManager.Instance.LoadScene(inGameScenes.Expedition);
+                break;
+            default:
+                Debug.LogWarning("[ProcessEndCombat] unknown action: " + action + " , data: " + data);
                 break;
         }
     }
