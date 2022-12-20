@@ -223,6 +223,7 @@ public enum WS_DATA_REQUEST_TYPES
     UpgradeCard,
     MerchantData,
     TreasureData,
+    EncounterData,
     Rewards
 }
 

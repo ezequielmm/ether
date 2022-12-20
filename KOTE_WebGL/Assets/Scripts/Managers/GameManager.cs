@@ -94,6 +94,8 @@ public class GameManager : SingleTon<GameManager>
 
     //ENCOUNTER EVENTS
     [HideInInspector] public UnityEvent EVENT_SHOW_ENCOUNTER_PANEL = new UnityEvent();
+    [HideInInspector] public UnityEvent<SWSM_EncounterData> EVENT_POPULATE_ENCOUNTER_PANEL = new UnityEvent<SWSM_EncounterData>();
+    [HideInInspector] public UnityEvent<int> EVENT_ENCOUNTER_OPTION_SELECTED = new UnityEvent<int>();
 
     //MERCHANT EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_TOGGLE_MERCHANT_PANEL = new UnityEvent<bool>();

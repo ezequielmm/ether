@@ -527,6 +527,35 @@ public class TrappedResult
 }
 
 [Serializable]
+public class SWSM_EncounterData
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public EncounterData data;
+
+        [Serializable]
+        public class EncounterData
+        {
+            public string imageId;
+            public string displayText;
+            public List<ButtonData> buttons;
+
+          
+        }
+    }
+}
+
+[Serializable]
+public class ButtonData
+{
+    public string text;
+    public bool enabled;
+}
+
+[Serializable]
 public class SWSM_PlayerDeckData
 {
     public Data data;

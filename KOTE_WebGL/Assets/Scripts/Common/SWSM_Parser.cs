@@ -225,6 +225,9 @@ public class SWSM_Parser
            case nameof(WS_DATA_REQUEST_TYPES.TreasureData):
                ProcessTreasureData(data);
                break;
+           case nameof(WS_DATA_REQUEST_TYPES.EncounterData):
+               ProcessEncounterData(data);
+               break;
            case nameof(WS_DATA_REQUEST_TYPES.Rewards):
                ProcessRewardsData(data);
                break;
@@ -477,6 +480,12 @@ public class SWSM_Parser
         GameManager.Instance.EVENT_TREASURE_CHEST_RESULT.Invoke(chestResult);
     }
 
+    private static void ProcessEncounterData(string data)
+    {
+        SWSM_EncounterData encounterData = JsonUtility.FromJson<SWSM_EncounterData>(data);
+        GameManager.Instance.EVENT_POPULATE_ENCOUNTER_PANEL.Invoke(encounterData);
+    }
+    
     private static void ProcessMoveCard(string rawData)
     {
         SWSM_CardMove cardMoveData = JsonUtility.FromJson<SWSM_CardMove>(rawData);
@@ -555,6 +564,9 @@ public class SWSM_Parser
         {
             case "begin_encounter":
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Encounter);
+                break;
+            case "finish_encounter":
+              //  GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
                 break;
         }
     }
