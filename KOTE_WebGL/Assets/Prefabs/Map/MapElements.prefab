@@ -353,8 +353,8 @@ MonoBehaviour:
   endY: 4
   LeftButton: {fileID: 5758494260838671926}
   RightScrollButton: {fileID: 5758494260742172184}
-  pathCurveStrengthRange: {x: 0.3, y: 0.7}
-  angleFuzziness: {x: -30, y: 30}
+  pathCurveStrengthRange: {x: 1.5, y: 2}
+  angleFuzziness: {x: -10, y: 10}
   pathPositionFuzziness: 0.25
   columnFuzziness: {x: 0, y: 2.25}
   mapCamera: {fileID: 0}

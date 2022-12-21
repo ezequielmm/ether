@@ -58,6 +58,7 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void OnShowPassword()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         passwordInputField.contentType =
             showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
         passwordInputField.ForceLabelUpdate();
@@ -65,6 +66,7 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void OnShowConfirmPassword()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         confirmPasswordInputField.contentType = showConfirmPassword.isOn
             ? TMP_InputField.ContentType.Standard
             : TMP_InputField.ContentType.Password;
@@ -143,12 +145,14 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void RequestNewName()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         nameText.text = "Loading...";
         GameManager.Instance.EVENT_REQUEST_NAME.Invoke(nameText.text);
     }
 
     public void OnRegister()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         if (!VerifyEmail()) return;
         if (!ConfirmEmail()) return;
         if (!VerifyPassword()) return;
@@ -162,6 +166,7 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void LoginHyperlink()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         ActivateInnerRegisterPanel(false);
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
@@ -178,6 +183,7 @@ public class RegisterPanelManager : MonoBehaviour
             registerContainer.SetActive(activate);
             return;
         }
+
         registerContainer.SetActive(false);
     }
 

@@ -211,7 +211,7 @@ public class PlayerData
     /// Index of Player
     /// </summary>
     [Obsolete("Int IDs will be phased out")]
-    public int playerId { get; set; } = 1; // This will be static for now. We'll need this when we have multiple players
+    public int playerId;
 
     public string id;
     public int hpCurrent;
@@ -524,6 +524,35 @@ public class TrappedResult
     public string monster_type;
     public int damage;
     public Card curse_card;
+}
+
+[Serializable]
+public class SWSM_EncounterData
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public EncounterData data;
+
+        [Serializable]
+        public class EncounterData
+        {
+            public string imageId;
+            public string displayText;
+            public List<ButtonData> buttons;
+
+          
+        }
+    }
+}
+
+[Serializable]
+public class ButtonData
+{
+    public string text;
+    public bool enabled;
 }
 
 [Serializable]

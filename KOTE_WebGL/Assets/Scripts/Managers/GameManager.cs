@@ -65,6 +65,9 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<string, Action, Action, string[]> EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL =
         new UnityEvent<string, Action, Action, string[]>();
 
+    [HideInInspector] public UnityEvent<string> EVENT_SHOW_WARNING_MESSAGE = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent EVENT_HIDE_WARNING_MESSAGE = new UnityEvent();
+
     //CHARACTER SELECTION EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<string> EVENT_CHARACTERSELECTED = new UnityEvent<string>();
@@ -91,6 +94,8 @@ public class GameManager : SingleTon<GameManager>
 
     //ENCOUNTER EVENTS
     [HideInInspector] public UnityEvent EVENT_SHOW_ENCOUNTER_PANEL = new UnityEvent();
+    [HideInInspector] public UnityEvent<SWSM_EncounterData> EVENT_POPULATE_ENCOUNTER_PANEL = new UnityEvent<SWSM_EncounterData>();
+    [HideInInspector] public UnityEvent<int> EVENT_ENCOUNTER_OPTION_SELECTED = new UnityEvent<int>();
 
     //MERCHANT EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_TOGGLE_MERCHANT_PANEL = new UnityEvent<bool>();
@@ -247,6 +252,8 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<SoundTypes, string> EVENT_PLAY_SFX = new UnityEvent<SoundTypes, string>();
     [HideInInspector] public UnityEvent<MusicTypes, int> EVENT_PLAY_MUSIC = new UnityEvent<MusicTypes, int>();
     [HideInInspector] public UnityEvent EVENT_VOLUME_CHANGED = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_STOP_MUSIC = new UnityEvent();
+
 
     //Console Events
     [HideInInspector] public UnityEvent EVENT_SHOW_CONSOLE = new UnityEvent();
@@ -266,7 +273,8 @@ public class GameManager : SingleTon<GameManager>
     // Start is called before the first frame update
     void Start()
     {
-        EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
+        EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogout);
+        EVENT_REQUEST_LOGOUT_ERROR.AddListener(OnLogout);
         SceneManager.activeSceneChanged += UpdateSoundVolume;
         //EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ReturnToMainMenu);
     }
@@ -274,10 +282,14 @@ public class GameManager : SingleTon<GameManager>
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene
     {
         nextSceneToLoad = scene;
+        if (scene == inGameScenes.MainMenu)
+        {
+            EVENT_STOP_MUSIC.Invoke();
+        }
         SceneManager.LoadScene(inGameScenes.Loader.ToString());
     }
 
-    private void OnLogoutSuccessful(string message)
+    private void OnLogout(string message)
     {
         LoadScene(inGameScenes.MainMenu);
     }

@@ -81,7 +81,7 @@ public class SWSM_Parser
                 ProcessEndCombat(swsm.data.action, data);
                 break;
             default:
-                Debug.LogError("[SWSM Parser] No message_type processed. Data Received: " + data);
+                Debug.LogWarning("[SWSM Parser] Unknown message_type: " + swsm.data.message_type + " , data:"+ data);
                 break;
         }
 
@@ -112,6 +112,10 @@ public class SWSM_Parser
             case "extend_map":
                 GameManager.Instance.EVENT_MAP_REVEAL.Invoke(mapData);
                 break;
+            default:
+                Debug.LogWarning("[UpdateMapActionPicker] unknown action: " + action + " , data: " + data);
+                break;
+
         }
     }
 
@@ -136,7 +140,7 @@ public class SWSM_Parser
                 ProcessShowCardDialog(data);
                 break;
             default:
-                Debug.Log($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
+                Debug.LogWarning($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
                 break;
         }
     }
@@ -221,6 +225,9 @@ public class SWSM_Parser
            case nameof(WS_DATA_REQUEST_TYPES.TreasureData):
                ProcessTreasureData(data);
                break;
+           case nameof(WS_DATA_REQUEST_TYPES.EncounterData):
+               ProcessEncounterData(data);
+               break;
            case nameof(WS_DATA_REQUEST_TYPES.Rewards):
                ProcessRewardsData(data);
                break;
@@ -274,6 +281,9 @@ public class SWSM_Parser
                 ProcessCreateCard(data);
                 // ProcessMoveCard(data);
                 break;
+            default:
+                Debug.LogWarning("[ProcessPlayerAffected] unknown action: "+ action +" , data: "+data);
+                break;
         }
     }
 
@@ -292,6 +302,9 @@ public class SWSM_Parser
                 break;
             case nameof(WS_MESSAGE_ACTIONS.update_player):
                 ProcessUpdatePlayer(data);
+                break;
+            default:
+                Debug.LogWarning("[ProcessEndOfTurn] unknown action: " + action + " , data: " + data);
                 break;
         }
     }
@@ -467,6 +480,12 @@ public class SWSM_Parser
         GameManager.Instance.EVENT_TREASURE_CHEST_RESULT.Invoke(chestResult);
     }
 
+    private static void ProcessEncounterData(string data)
+    {
+        SWSM_EncounterData encounterData = JsonUtility.FromJson<SWSM_EncounterData>(data);
+        GameManager.Instance.EVENT_POPULATE_ENCOUNTER_PANEL.Invoke(encounterData);
+    }
+    
     private static void ProcessMoveCard(string rawData)
     {
         SWSM_CardMove cardMoveData = JsonUtility.FromJson<SWSM_CardMove>(rawData);
@@ -545,6 +564,9 @@ public class SWSM_Parser
         {
             case "begin_encounter":
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Encounter);
+                break;
+            case "finish_encounter":
+              //  GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
                 break;
         }
     }

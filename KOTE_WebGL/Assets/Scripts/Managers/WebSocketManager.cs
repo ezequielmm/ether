@@ -35,6 +35,7 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_OPEN_CHEST = "ChestOpened";
     private const string WS_MESSAGE_MERCHANT_BUY = "MerchantBuy";
     private const string WS_MESSAGE_START_ENCOUNTER_COMBAT = "CombatEncounter";
+    private const string WS_MESSAGE_ENCOUNTER_SELECTION = "EncounterChoice";
     
     /*private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
     private const string WS_MESSAGE_GET_CARD_PILES = "GetCardPiles";
@@ -55,6 +56,15 @@ public class WebSocketManager : MonoBehaviour
     {
         options = new SocketOptions();
         ConnectSocket(); //Disabled connection until actual implementation
+    }
+
+    void OnDestroy()
+    {
+        if (rootSocket != null)
+        {
+            Debug.Log("[WebSocket Manager] socket disconnected");
+            rootSocket.Disconnect();
+        }
     }
 
 
@@ -168,6 +178,7 @@ public class WebSocketManager : MonoBehaviour
         GameManager.Instance.EVENT_POTION_DISCARDED.AddListener(OnPotionDiscarded);
         GameManager.Instance.EVENT_TREASURE_OPEN_CHEST.AddListener(OnTreasureOpened);
         GameManager.Instance.EVENT_MERCHANT_BUY.AddListener(OnBuyItem);
+        GameManager.Instance.EVENT_ENCOUNTER_OPTION_SELECTED.AddListener(OnEncounterOptionSelected);
         GameManager.Instance.EVENT_START_COMBAT_ENCOUNTER.AddListener(OnStartCombatEncounter);
         GameManager.Instance.EVENT_SKIP_NODE.AddListener(OnSkipNode);
 
@@ -296,6 +307,11 @@ public class WebSocketManager : MonoBehaviour
     {
        // Debug.Log($"[WebSocketManager] Sending message {WS_MESSAGE_OPEN_CHEST}");
         EmitWithResponse(WS_MESSAGE_OPEN_CHEST);
+    }
+
+    private void OnEncounterOptionSelected(int option)
+    {
+        EmitWithResponse(WS_MESSAGE_ENCOUNTER_SELECTION, option);
     }
 
     private void OnStartCombatEncounter()
