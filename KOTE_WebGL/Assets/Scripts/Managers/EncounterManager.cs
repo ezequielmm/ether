@@ -22,7 +22,6 @@ public class EncounterManager : MonoBehaviour
 
     public void ShowEncounterPanel()
     {
-        EncounterContainer.SetActive(true);
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.EncounterData);
     }
 
@@ -32,6 +31,7 @@ public class EncounterManager : MonoBehaviour
         creatureImage.SetNativeSize();
         PopulateEncounterText(encounterData.data.data.displayText);
         PopulateButtonText(encounterData.data.data.buttons);
+        EncounterContainer.SetActive(true);
     }
 
     private void PopulateEncounterText(string text)
@@ -88,7 +88,15 @@ public class EncounterManager : MonoBehaviour
             }
 
             int buttonNum = i;
-            buttonTexts[i].text = FormatButtonText(ButtonsData[i].text);
+            
+            if (ButtonsData[i].enabled)
+            {
+                buttonTexts[i].text = FormatEnabledButtonText(ButtonsData[i].text);
+            }
+            else if (ButtonsData[i].enabled == false)
+            {
+                buttonTexts[i].text =FormatDisabledButtonText(ButtonsData[i].text);
+            }
 
             // update the on click listener
             optionButtons[i].onClick.RemoveAllListeners();
@@ -121,7 +129,12 @@ public class EncounterManager : MonoBehaviour
         }
     }
 
-    private string FormatButtonText(string text)
+    /// <summary>
+    /// Formats the button text for enabled buttons
+    /// </summary>
+    /// <param name="text"> the text to format </param>
+    /// <returns>the formatted button text</returns>
+    private string FormatEnabledButtonText(string text)
     {
         // add in the color changes for the different options
         text = text.Insert(0, "<color=#E1D5A4> <size=120%>");
@@ -134,6 +147,19 @@ public class EncounterManager : MonoBehaviour
         }
 
         return text;
+    }
+
+    /// <summary>
+    /// turn the text gray, but keep the same formatting as the enabled text
+    /// </summary>
+    /// <param name="text">the text to format</param>
+    /// <returns>the formatted text</returns>
+    private string FormatDisabledButtonText(string text)
+    {
+        text = text.Insert(0, "<color=#999999> <size=120%>");
+        int charIndex = text.IndexOf(':');
+        text = text.Insert(charIndex + 1, "<size=100%>");
+       return text;
     }
 
 
