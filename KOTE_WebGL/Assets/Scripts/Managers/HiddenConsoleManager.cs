@@ -202,10 +202,12 @@ public class HiddenConsoleManager : MonoBehaviour
             case ConsoleCommands.enable_injured_idle:
                 GameSettings.SHOW_PLAYER_INJURED_IDLE = true;
                 PlayerPrefs.SetInt("enable_injured_idle", 1);
+                PublicLog("Injured idle animation enabled");
                 break;
             case ConsoleCommands.disable_injured_idle:
                 GameSettings.SHOW_PLAYER_INJURED_IDLE = false;
                 PlayerPrefs.SetInt("enable_injured_idle", 0);
+                PublicLog("Injured idle animation disabled");
                 break;
             case ConsoleCommands.reset_all:
                 PlayerPrefs.SetInt("enable_registration", 0);
