@@ -362,7 +362,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
 
     private void OnIdle()
     {
-        if (playerData.hpCurrent < (playerData.hpMax / 2))
+        if (playerData.hpCurrent < (playerData.hpMax / 4)  && GameSettings.SHOW_PLAYER_INJURED_IDLE)
         {
             spineAnimationsManagement.PlayAnimationSequence("InjuredIdle");
             return;

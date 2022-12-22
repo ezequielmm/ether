@@ -345,7 +345,8 @@ public enum ConsoleCommands
     disable_armory_panel,
     disable_royal_houses_panel,
     disable_node_numbers,
-    enable_node
+    enable_node,
+    enable_injured_idle
 }
 
 [Serializable]

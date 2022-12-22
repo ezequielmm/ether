@@ -57,7 +57,8 @@ public static class GameSettings
     public static float INTENT_MAX_HEIGHT = 3.2f;
     public static float INTENT_HEIGHT = 1.1f;
     public static float HEALTH_HEIGHT = 0.9f;
-
+    public static bool SHOW_PLAYER_INJURED_IDLE = false;
+    
     // Text Effects
     public static Color DEFAUT_TEXTEFFECT_COLOR = Color.green;
     public const float DEFAUT_TEXTEFFECT_RISE_HEIGHT = 1f;

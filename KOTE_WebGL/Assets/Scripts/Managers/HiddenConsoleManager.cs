@@ -199,6 +199,9 @@ public class HiddenConsoleManager : MonoBehaviour
             case ConsoleCommands.enable_node:
                 PublicLog("Invalid syntax, format is 'enable_node X'");
                 break;
+            case ConsoleCommands.enable_injured_idle:
+                GameSettings.SHOW_PLAYER_INJURED_IDLE = true;
+                break;
             default:
                 PublicLog("Unknown Command.");
                 break;
