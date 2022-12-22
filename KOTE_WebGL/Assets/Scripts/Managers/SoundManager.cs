@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using DG.Tweening;
 
 public class SoundManager : SingleTon<SoundManager>
 {
@@ -27,6 +28,7 @@ public class SoundManager : SingleTon<SoundManager>
         GameManager.Instance.EVENT_PLAY_SFX.AddListener(PlaySfx);
         GameManager.Instance.EVENT_PLAY_MUSIC.AddListener(OnPlayMusic);
         GameManager.Instance.EVENT_VOLUME_CHANGED.AddListener(UpdateVolume);
+        GameManager.Instance.EVENT_STOP_MUSIC.AddListener(StopMusic);
         UpdateVolume();
     }
 
@@ -49,7 +51,6 @@ public class SoundManager : SingleTon<SoundManager>
         {
             Debug.Log($"[Sound Manager] Playing Sound: {sound}");
         }
-
         SfxSource.PlayOneShot(clip);
     }
 
@@ -116,6 +117,20 @@ public class SoundManager : SingleTon<SoundManager>
                 MusicSource.Play();
             }
         }
+    }
+
+    private void StopMusic()
+    {
+        MusicSource.DOFade(0, 0.5f).OnComplete(() =>
+        {
+            MusicSource.Stop();
+            MusicSource.volume = MusicVolume;
+        });
+        AmbienceSource.DOFade(0, 0.5f).OnComplete(() =>
+        {
+            AmbienceSource.Stop();
+            AmbienceSource.volume = SfxVolume;
+        });;
     }
 
     private void PlayAmbientSound(int act)

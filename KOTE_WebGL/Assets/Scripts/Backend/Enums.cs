@@ -162,7 +162,7 @@ public enum STATUS
     blinded,
     blighted,
     oiled,
-    trapping,
+    trapped,
     mimic,
     moldy,
     squishy,
@@ -223,6 +223,7 @@ public enum WS_DATA_REQUEST_TYPES
     UpgradeCard,
     MerchantData,
     TreasureData,
+    EncounterData,
     Rewards
 }
 
@@ -346,7 +347,8 @@ public enum ConsoleCommands
     disable_royal_houses_panel,
     disable_node_numbers,
     enable_node,
-    enable_injured_idle
+    enable_injured_idle,
+    reset_all
 }
 
 [Serializable]
