@@ -45,6 +45,14 @@ public enum EnemyState
     dead
 }
 
+public enum EnemyColor
+{
+    Red,
+    Blue,
+    Green,
+    Magenta
+}
+
 [Serializable]
 public enum Size
 {
