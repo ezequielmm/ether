@@ -55,6 +55,10 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         spineAnimationsManagement.ANIMATION_EVENT.AddListener(OnAnimationEvent);
 
         //spineAnimationsManagement.SetSkin("weapon/sword");
+        if(PlayerPrefs.GetInt("enable_injured_idle") == 1)
+        {
+            GameSettings.SHOW_PLAYER_INJURED_IDLE = true;
+        }
         spineAnimationsManagement.PlayAnimationSequence("Idle");
     }
 

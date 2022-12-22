@@ -201,12 +201,18 @@ public class HiddenConsoleManager : MonoBehaviour
                 break;
             case ConsoleCommands.enable_injured_idle:
                 GameSettings.SHOW_PLAYER_INJURED_IDLE = true;
+                PlayerPrefs.SetInt("enable_injured_idle", 1);
+                break;
+            case ConsoleCommands.disable_injured_idle:
+                GameSettings.SHOW_PLAYER_INJURED_IDLE = false;
+                PlayerPrefs.SetInt("enable_injured_idle", 0);
                 break;
             case ConsoleCommands.reset_all:
                 PlayerPrefs.SetInt("enable_registration", 0);
                 PlayerPrefs.SetInt("enable_armory", 0);
                 PlayerPrefs.SetInt("enable_royal_house", 0);
                 PlayerPrefs.SetInt("enable_node_numbers", 0);
+                PlayerPrefs.SetInt("enable_injured_idle", 0);
                 GameSettings.SHOW_PLAYER_INJURED_IDLE = false;
                 PublicLog("All console modified settings reset");
                 break;

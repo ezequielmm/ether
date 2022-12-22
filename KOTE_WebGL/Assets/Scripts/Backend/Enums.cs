@@ -348,6 +348,7 @@ public enum ConsoleCommands
     disable_node_numbers,
     enable_node,
     enable_injured_idle,
+    disable_injured_idle,
     reset_all
 }
 
