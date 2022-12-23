@@ -565,6 +565,9 @@ public class SWSM_Parser
             case "begin_encounter":
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Encounter);
                 break;
+            case "show_upgrade_card_dialog":
+                GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.UpgradableCards);
+                break;
             case "finish_encounter":
               //  GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
                 break;

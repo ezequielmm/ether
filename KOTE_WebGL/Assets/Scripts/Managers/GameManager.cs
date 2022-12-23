@@ -106,9 +106,6 @@ public class GameManager : SingleTon<GameManager>
     //CAMP EVENTS
     [HideInInspector] public UnityEvent EVENT_CAMP_SHOW_PANEL = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CAMP_HEAL = new UnityEvent();
-    //[HideInInspector] public UnityEvent<Deck> EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS = new UnityEvent<Deck>();
-    //[HideInInspector] public UnityEvent<string> EVENT_CAMP_GET_UPGRADE_PAIR = new UnityEvent<string>();
-   // [HideInInspector] public UnityEvent<string> EVENT_CAMP_UPGRADE_CARD = new UnityEvent<string>();
     [HideInInspector] public UnityEvent EVENT_CAMP_FINISH = new UnityEvent();
     
     //TREASURE EVENTS
@@ -120,7 +117,6 @@ public class GameManager : SingleTon<GameManager>
 
 
     //UPGRADE CARDS EVENTS
-    //[HideInInspector] public UnityEvent<Deck> EVENT_UPGRADE_SHOW_UPGRADE_PAIR = new UnityEvent<Deck>();
     [HideInInspector] public UnityEvent<Deck> EVENT_SHOW_UPGRADE_CARDS_PANEL = new UnityEvent<Deck>(); //event from the BE to show the upgradable cards panel
     [HideInInspector] public UnityEvent<string> EVENT_GET_UPGRADE_PAIR = new UnityEvent<string>(); // when the user click a card, we need the show the upgraded card data. We send
     [HideInInspector] public UnityEvent<Deck> EVENT_SHOW_UPGRADE_PAIR = new UnityEvent<Deck>();// BE sending us the 2 cards
