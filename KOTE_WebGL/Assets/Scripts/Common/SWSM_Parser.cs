@@ -451,7 +451,7 @@ public class SWSM_Parser
     {
         SWSM_PlayerDeckData deckData = JsonUtility.FromJson<SWSM_PlayerDeckData>(data);
         Deck deck = new Deck() { cards = deckData.data.data };
-        GameManager.Instance.EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS.Invoke(deck);
+        GameManager.Instance.EVENT_SHOW_UPGRADE_CARDS_PANEL.Invoke(deck);
     }
 
 
@@ -654,7 +654,7 @@ public class SWSM_Parser
     {
         SWSM_DeckData deckData = JsonUtility.FromJson<SWSM_DeckData>(data);
         Deck deck = new Deck() { cards = deckData.data.data.deck };
-        GameManager.Instance.EVENT_UPGRADE_SHOW_UPGRADE_PAIR.Invoke(deck);
+        GameManager.Instance.EVENT_SHOW_UPGRADE_PAIR.Invoke(deck);
     }
 
     private static void ProcessConfirmUpgrade(string data)

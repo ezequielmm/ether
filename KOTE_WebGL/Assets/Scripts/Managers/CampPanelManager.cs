@@ -16,7 +16,8 @@ public class CampPanelManager : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.EVENT_CAMP_SHOW_PANEL.AddListener(ShowCampPanel);
-        GameManager.Instance.EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS.AddListener(OnShowCardUpgradePanel);
+       // GameManager.Instance.EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS.AddListener(OnShowCardUpgradePanel);
+        GameManager.Instance.EVENT_SHOW_UPGRADE_CARDS_PANEL.AddListener(OnShowCardUpgradePanel);
         GameManager.Instance.EVENT_CAMP_FINISH.AddListener(OnCampFinish);
         campContainer.SetActive(false);
     }
@@ -68,7 +69,7 @@ public class CampPanelManager : MonoBehaviour
             FireSelectWhenCardClicked = true
         };
         GameManager.Instance.EVENT_SHOW_DIRECT_SELECT_CARD_PANEL.Invoke(deck.cards, selectOptions,
-            (cardId) => { GameManager.Instance.EVENT_CAMP_GET_UPGRADE_PAIR.Invoke(cardId); });
+            (cardId) => { GameManager.Instance.EVENT_GET_UPGRADE_PAIR.Invoke(cardId); });
     }
 
     private void OnCampFinish()
