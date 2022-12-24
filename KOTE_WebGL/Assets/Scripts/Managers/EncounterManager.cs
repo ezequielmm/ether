@@ -8,6 +8,7 @@ public class EncounterManager : MonoBehaviour
 {
     public GameObject EncounterContainer;
     public Button[] optionButtons;
+    public TMP_Text titleText;
     public TMP_Text[] buttonTexts;
     public TMP_Text leftText;
     public TMP_Text rightText;
@@ -16,6 +17,7 @@ public class EncounterManager : MonoBehaviour
     private void Start()
     {
         EncounterContainer.SetActive(false);
+        ClearPanel();
         GameManager.Instance.EVENT_SHOW_ENCOUNTER_PANEL.AddListener(ShowEncounterPanel);
         GameManager.Instance.EVENT_POPULATE_ENCOUNTER_PANEL.AddListener(OnPopulateEncounter);
     }
@@ -25,10 +27,24 @@ public class EncounterManager : MonoBehaviour
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.EncounterData);
     }
 
+    // clear the panel so it doesn't show anything while waiting to be populated
+    private void ClearPanel()
+    {
+        creatureImage.gameObject.SetActive(false);
+        leftText.text = "";
+        rightText.text = "";
+        foreach (TMP_Text buttonText in buttonTexts)
+        {
+            buttonText.text = "";
+        }
+    }
+
     private void OnPopulateEncounter(SWSM_EncounterData encounterData)
     {
         creatureImage.sprite = SpriteAssetManager.Instance.GetEncounterCreature(encounterData.data.data.imageId);
         creatureImage.SetNativeSize();
+        creatureImage.gameObject.SetActive(true);
+        titleText.text = encounterData.data.data.encounterName;
         PopulateEncounterText(encounterData.data.data.displayText);
         PopulateButtonText(encounterData.data.data.buttons);
         EncounterContainer.SetActive(true);
@@ -88,14 +104,14 @@ public class EncounterManager : MonoBehaviour
             }
 
             int buttonNum = i;
-            
+
             if (ButtonsData[i].enabled)
             {
                 buttonTexts[i].text = FormatEnabledButtonText(ButtonsData[i].text);
             }
             else if (ButtonsData[i].enabled == false)
             {
-                buttonTexts[i].text =FormatDisabledButtonText(ButtonsData[i].text);
+                buttonTexts[i].text = FormatDisabledButtonText(ButtonsData[i].text);
             }
 
             // update the on click listener
@@ -159,7 +175,7 @@ public class EncounterManager : MonoBehaviour
         text = text.Insert(0, "<color=#999999> <size=120%>");
         int charIndex = text.IndexOf(':');
         text = text.Insert(charIndex + 1, "<size=100%>");
-       return text;
+        return text;
     }
 
 
