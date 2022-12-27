@@ -707,6 +707,7 @@ public class showCardData
 {
     public List<Card> cards;
     public int cardsToTake;
+    public string kind;
 }
 
 
