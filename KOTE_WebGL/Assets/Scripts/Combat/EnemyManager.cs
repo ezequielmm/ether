@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using Spine.Unity;
 using TMPro;
-using Random = UnityEngine.Random;
 
 public class EnemyManager : MonoBehaviour, ITooltipSetter
 {
@@ -102,28 +100,12 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             collider = activeEnemy.GetComponent<Collider2D>();
             enemyBounds = collider.bounds;
             collider.enabled = false;
-            
 
             this.enemyType = Utils.ParseEnum<EnemyTypes>(enemyType);
             gameObject.name = Enum.GetName(typeof(EnemyTypes), this.enemyType);
 
-            if (this.enemyType == EnemyTypes.mimicFrog1)
-            {
-                SpineAnimationsManagement animationsManagement = activeEnemy.GetComponent<SpineAnimationsManagement>();
-                EnemyColor color = GetRandomEnemyColor();
-                animationsManagement.SetSkin(color.ToString());
-            }
-            
             Instantiate();
         }
-    }
-
-    private EnemyColor GetRandomEnemyColor()
-    {
-        Array colorValues = Enum.GetValues(typeof(EnemyColor));
-        Random.InitState(System.DateTime.Now.Millisecond);
-        int index = Random.Range(0, colorValues.Length);
-        return (EnemyColor)colorValues.GetValue(index);
     }
 
     private void OnAttackRequest(CombatTurnData attack)

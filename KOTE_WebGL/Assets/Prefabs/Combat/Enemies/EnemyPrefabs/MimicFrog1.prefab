@@ -131,7 +131,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 0cb38b372cabc114d860d579f0980472, type: 2}
-  - {fileID: 2100000, guid: ba06fd0cea48ec04bb85d2f11c01da0b, type: 2}
+  - {fileID: 2100000, guid: 54c8602b0bde1cf4498da8cb48028fdc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonDataAsset: {fileID: 0}
-  initialSkinName: Green
+  initialSkinName: Blue
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
   initialFlipY: 0
