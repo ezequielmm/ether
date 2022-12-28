@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9032002354893603804}
   - component: {fileID: 9032002354893603800}
+  - component: {fileID: 51213778445258972}
   - component: {fileID: 9032002354893603803}
   - component: {fileID: 9032002354893603801}
   - component: {fileID: 9032002354893603797}
@@ -77,6 +78,23 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &51213778445258972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9032002354893603805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d19a7c6b39488404aa73979e63aaa391, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skeletonAnimation: {fileID: 9032002354893603797}
+  spineManagement: {fileID: 9032002354893603801}
+  skinName: character-nude
+  slotName: ARMOR-Breastplates
+  AttachmentKey: ARMOR-Breastplates
 --- !u!33 &9032002354893603803
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -172,7 +190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonDataAsset: {fileID: 0}
-  initialSkinName: 
+  initialSkinName: character-nude
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
   initialFlipY: 0

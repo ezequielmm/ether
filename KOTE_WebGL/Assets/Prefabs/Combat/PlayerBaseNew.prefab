@@ -327,31 +327,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1787672423935589736}
     m_Modifications:
-    - target: {fileID: 9032002354893603799, guid: 00da284390956bf4aab0067a0d16eee2,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9032002354893603799, guid: 00da284390956bf4aab0067a0d16eee2,
-        type: 3}
-      propertyPath: healthValueTF
-      value: 
-      objectReference: {fileID: 1858022735637176085}
-    - target: {fileID: 9032002354893603799, guid: 00da284390956bf4aab0067a0d16eee2,
-        type: 3}
-      propertyPath: defenseValueTF
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 9032002354893603800, guid: 00da284390956bf4aab0067a0d16eee2,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 644da6b270a5cbd449ecab818ab32e2a, type: 2}
-    - target: {fileID: 9032002354893603803, guid: 00da284390956bf4aab0067a0d16eee2,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 9032002354893603804, guid: 00da284390956bf4aab0067a0d16eee2,
         type: 3}
       propertyPath: m_LocalPosition.x

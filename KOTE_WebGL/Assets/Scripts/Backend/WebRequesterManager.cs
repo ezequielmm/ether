@@ -22,6 +22,7 @@ public class WebRequesterManager : MonoBehaviour
     private readonly string urlExpeditionRequest = "/gsrv/v1/expeditions";
     private readonly string urlExpeditionCancel = "/gsrv/v1/expeditions/cancel";
 
+    private readonly string urlOpenSea = "https://api.opensea.io/api/v1/asset/0x32A322C7C77840c383961B8aB503c9f45440c81f/xxxx/?format=json";
 
     private void Awake()
     {
@@ -64,6 +65,7 @@ public class WebRequesterManager : MonoBehaviour
         {
             GameManager.Instance.webRequester = this;
             DontDestroyOnLoad(this);
+            RequestNftData(2702);
         }
         else if(GameManager.Instance.webRequester != this)
         {
@@ -89,6 +91,11 @@ public class WebRequesterManager : MonoBehaviour
     public void RequestExpeditionCancel()
     {
         StartCoroutine(CancelOngoingExpedition());
+    }
+
+    public void RequestNftData(int tokenId)
+    {
+        StartCoroutine(GetNftData(tokenId));
     }
 
     public void OnRandomNameEvent(string previousName)
@@ -340,6 +347,24 @@ public class WebRequesterManager : MonoBehaviour
         //string message = logoutData.data.message;
 
         //TODO: check for errors even on sucessful result
+    }
+
+    public IEnumerator GetNftData(int tokenId)
+    {
+        string nftUrl = urlOpenSea.Replace("xxxx", tokenId.ToString());
+        UnityWebRequest openSeaRequest = UnityWebRequest.Get(nftUrl);
+        openSeaRequest.SetRequestHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
+        yield return openSeaRequest.SendWebRequest();
+        if (openSeaRequest.result == UnityWebRequest.Result.ConnectionError ||
+            openSeaRequest.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.Log($"{openSeaRequest.error}");
+            yield break;
+        }
+        
+        Debug.Log(openSeaRequest.downloadHandler.text);
+        NftMetaData nftMetaData = JsonUtility.FromJson<NftMetaData>(openSeaRequest.downloadHandler.text);
+        Debug.Log(nftMetaData.ToString());
     }
 
     public IEnumerator RequestNewExpedition(string characterType)
