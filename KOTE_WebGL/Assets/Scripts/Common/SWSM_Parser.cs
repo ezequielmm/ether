@@ -139,6 +139,9 @@ public class SWSM_Parser
             case "show_card_dialog":
                 ProcessShowCardDialog(data);
                 break;
+            case "spawn_enemies":
+                Debug.LogWarning("[SWSM Parser][Combat Update] spawn_enemies not implemented yet");
+                break;
             default:
                 Debug.LogWarning($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
                 break;
@@ -394,6 +397,13 @@ public class SWSM_Parser
         GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCards.data.data.cards,
             panelOptions,
             (selectedCards) => { GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards); });
+    }
+
+    private void ProcessSpawnEnemies()
+    {
+        // this should work without breaking anything
+      //  GameManager.Instance.EVENT_UPDATE_ENEMIES.Invoke(enemiesData.data);
+
     }
 
     private static void UpdateEnergy(string data)
