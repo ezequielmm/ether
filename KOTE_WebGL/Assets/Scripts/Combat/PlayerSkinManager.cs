@@ -22,21 +22,5 @@ public class PlayerSkinManager : MonoBehaviour
     {
          _skeleton = skeletonAnimation.skeleton;
          _skeletonData = _skeleton.Data;
-         foreach (SlotData slot in _skeletonData.Slots)
-         {
-             Debug.LogError($"Slot {slot.Name}");
-         }
-
-         foreach (Skin skin in _skeletonData.Skins)
-         {
-             if (skin.Name == "default")
-             {
-                 
-                 foreach (Skin.SkinEntry attachment in skin.Attachments)
-                 {
-                     Debug.LogError($"Skin {attachment.Attachment.Name}");
-                 }
-             }
-         }
     }
 }

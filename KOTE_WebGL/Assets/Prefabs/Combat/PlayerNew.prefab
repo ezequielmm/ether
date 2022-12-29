@@ -92,9 +92,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skeletonAnimation: {fileID: 9032002354893603797}
   spineManagement: {fileID: 9032002354893603801}
-  skinName: character-nude
-  slotName: ARMOR-Breastplates
-  AttachmentKey: ARMOR-Breastplates
+  skinName: test_template
+  slotName: BASE-waist
+  AttachmentKey: waist-basic
 --- !u!33 &9032002354893603803
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonDataAsset: {fileID: 0}
-  initialSkinName: character-nude
+  initialSkinName: test_template
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
   initialFlipY: 0
