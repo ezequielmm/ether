@@ -98,9 +98,9 @@ public class WebRequesterManager : MonoBehaviour
         StartCoroutine(GetNftData(tokenId));
     }
 
-    public void RequestNftSkinElement(string spriteName)
+    public void RequestNftSkinElement(Trait spriteTrait)
     {
-        StartCoroutine(GetNftSkinElement(spriteName));
+        StartCoroutine(GetNftSkinElement(spriteTrait));
     }
 
     public void OnRandomNameEvent(string previousName)
@@ -371,22 +371,29 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.Invoke(nftMetaData);
     }
 
-    public IEnumerator GetNftSkinElement(string spriteName)
+    public IEnumerator GetNftSkinElement(Trait spriteTrait)
     {
+        string[] valueSplit = spriteTrait.value.Split();
+        string spriteName = spriteTrait.trait_type+ "s_" + string.Join('_', valueSplit) + ".png";
         string spriteUrl = urlNftSkinSprites + spriteName;
+        
         UnityWebRequest nftSpriteRequest = UnityWebRequestTexture.GetTexture(spriteUrl);
         yield return nftSpriteRequest.SendWebRequest();
+        
         if (nftSpriteRequest.result == UnityWebRequest.Result.ConnectionError ||
             nftSpriteRequest.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.LogWarning($"Error getting nft skin sprite {spriteName} at url {spriteUrl} from server: {nftSpriteRequest.error}");
+            // keep track of failures so the player knows when to update
+            GameManager.Instance.EVENT_NFT_SKIN_SPRITE_FAILED.Invoke();
             yield break;
         }
         
         Texture2D myTexture = ((DownloadHandlerTexture)nftSpriteRequest.downloadHandler).texture;
         Sprite nftSkinElement = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height),
             Vector2.zero);
-        GameManager.Instance.EVENT_NFT_SKIN_SPRITE_RECEIVED.Invoke(nftSkinElement);
+        nftSkinElement.name = spriteName;
+        GameManager.Instance.EVENT_NFT_SKIN_SPRITE_RECEIVED.Invoke(nftSkinElement, spriteTrait);
     }
 
     public IEnumerator RequestNewExpedition(string characterType)

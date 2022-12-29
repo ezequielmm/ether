@@ -900,11 +900,11 @@ public class SWSM_HealData
 public class NftMetaData
 {
     public Trait[] traits;
+}
 
-    [Serializable]
-    public class Trait
-    {
-        public string trait_type;
-        public string value;
-    }
+[Serializable]
+public class Trait
+{
+    public string trait_type;
+    public string value;
 }

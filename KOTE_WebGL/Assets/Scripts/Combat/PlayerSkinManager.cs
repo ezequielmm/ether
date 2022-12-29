@@ -17,10 +17,24 @@ public class PlayerSkinManager : MonoBehaviour
     private Skeleton _skeleton;
 
     private SkeletonData _skeletonData;
+
+    void Awake()
+    {
+        GameManager.Instance.EVENT_UPDATE_PLAYER_SKIN.AddListener(UpdateSkin);
+    }
+    
     // Start is called before the first frame update
     void Start()
     {
          _skeleton = skeletonAnimation.skeleton;
          _skeletonData = _skeleton.Data;
+         UpdateSkin();
+    }
+
+    private void UpdateSkin()
+    {
+        Debug.Log("[PlayerSkinManager] Updating Player Skin");
+        Sprite helmetSprite = PlayerSpriteManager.Instance.GetSpriteForTrait("Helmet");
+        Debug.Log($"[PlayerSkinManager] Received Helmet sprite {helmetSprite.name}");
     }
 }
