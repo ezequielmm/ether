@@ -141,6 +141,7 @@ public class SWSM_Parser
                 break;
             case "spawn_enemies":
                 Debug.LogWarning("[SWSM Parser][Combat Update] spawn_enemies not implemented yet");
+                ProcessSpawnEnemies(data);
                 break;
             default:
                 Debug.LogWarning($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
@@ -399,10 +400,11 @@ public class SWSM_Parser
             (selectedCards) => { GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards); });
     }
 
-    private void ProcessSpawnEnemies()
+    private static void ProcessSpawnEnemies(string data)
     {
+        SWSM_Enemies enemiesData = JsonUtility.FromJson<SWSM_Enemies>(data);
         // this should work without breaking anything
-      //  GameManager.Instance.EVENT_UPDATE_ENEMIES.Invoke(enemiesData.data);
+        GameManager.Instance.EVENT_ADD_ENEMIES.Invoke(enemiesData.data);
 
     }
 
