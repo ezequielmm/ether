@@ -12,6 +12,7 @@ public class EncounterManager : MonoBehaviour
     public TMP_Text[] buttonTexts;
     public TMP_Text leftText;
     public TMP_Text rightText;
+    public GameObject rightTextPanel;
     public Image creatureImage;
 
     private void Start()
@@ -52,19 +53,19 @@ public class EncounterManager : MonoBehaviour
 
     private void PopulateEncounterText(string text)
     {
-        if (text.Length <= 200)
+        if (text.Length <= GameSettings.ENCOUNTER_TEXT_BOX_CHARACTER_COUNT)
         {
             leftText.text = text;
-            rightText.gameObject.SetActive(false);
+            rightTextPanel.SetActive(false);
             return;
         }
 
         string[] textSplit = text.Split('.');
         string firstText = "";
         int index = 0;
-        while (firstText.Length < 200)
+        while (firstText.Length < GameSettings.ENCOUNTER_TEXT_BOX_CHARACTER_COUNT)
         {
-            if (firstText.Length + textSplit[index].Length < 200)
+            if (firstText.Length + textSplit[index].Length < GameSettings.ENCOUNTER_TEXT_BOX_CHARACTER_COUNT)
             {
                 firstText += textSplit[index];
                 firstText += ". ";
@@ -72,7 +73,7 @@ public class EncounterManager : MonoBehaviour
                 index++;
             }
 
-            if (index >= textSplit.Length || firstText.Length + textSplit[index].Length >= 200)
+            if (index >= textSplit.Length || firstText.Length + textSplit[index].Length >= GameSettings.ENCOUNTER_TEXT_BOX_CHARACTER_COUNT)
             {
                 break;
             }
@@ -81,7 +82,7 @@ public class EncounterManager : MonoBehaviour
         leftText.text = firstText;
         if (index < textSplit.Length)
         {
-            rightText.gameObject.SetActive(true);
+            rightTextPanel.SetActive(true);
             rightText.text = string.Join(".", textSplit[index..]);
         }
     }

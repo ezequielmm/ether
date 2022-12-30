@@ -280,9 +280,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et gravida
-    lorem, sed pretium metus. In consectetur hendrerit dolor sit amet maximus. Morbi
-    id vulputate metus. Mauris vitae sodales non.
+  m_text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis
+    libero sed justo faucibus ornare nec vel turpis. Donec sed nulla et dui condimentum
+    tincidunt in eu arcu. Nam orci lectus, dictum a dapibus nec, lobortis ut dui.
+    Donec id euismod justo. Nunc lobortis venenatis nisi, a fermentum urna placerat
+    sed. Nulla facilisis augue lorem, ut consectetur erat lobortis vel. Sed consectetur
+    tortor mi, at vehicula ante dignissim nec. Praesent maximus sem et vestibulum
+    vehicula. Praesent metus.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 498f6c917a308a24f9808660f1e0b631, type: 2}
   m_sharedMaterial: {fileID: -8945685614816413018, guid: 498f6c917a308a24f9808660f1e0b631,
@@ -310,8 +314,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -760,9 +764,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et gravida
-    lorem, sed pretium metus. In consectetur hendrerit dolor sit amet maximus. Morbi
-    id vulputate metus. Mauris vitae sodales non.
+  m_text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis
+    libero sed justo faucibus ornare nec vel turpis. Donec sed nulla et dui condimentum
+    tincidunt in eu arcu. Nam orci lectus, dictum a dapibus nec, lobortis ut dui.
+    Donec id euismod justo. Nunc lobortis venenatis nisi, a fermentum urna placerat
+    sed. Nulla facilisis augue lorem, ut consectetur erat lobortis vel. Sed consectetur
+    tortor mi, at vehicula ante dignissim nec. Praesent maximus sem et vestibulum
+    vehicula. Praesent metus.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 498f6c917a308a24f9808660f1e0b631, type: 2}
   m_sharedMaterial: {fileID: -8945685614816413018, guid: 498f6c917a308a24f9808660f1e0b631,
@@ -790,8 +798,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1374,4 +1382,5 @@ MonoBehaviour:
   - {fileID: 8011257331380316299}
   leftText: {fileID: 5638531353217035920}
   rightText: {fileID: 3649226466289177100}
+  rightTextPanel: {fileID: 4006438124923190619}
   creatureImage: {fileID: 9115432054289053863}
