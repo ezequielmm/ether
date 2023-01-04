@@ -94,6 +94,8 @@ public class GameManager : SingleTon<GameManager>
 
     //ENCOUNTER EVENTS
     [HideInInspector] public UnityEvent EVENT_SHOW_ENCOUNTER_PANEL = new UnityEvent();
+    [HideInInspector] public UnityEvent<SWSM_EncounterData> EVENT_POPULATE_ENCOUNTER_PANEL = new UnityEvent<SWSM_EncounterData>();
+    [HideInInspector] public UnityEvent<int> EVENT_ENCOUNTER_OPTION_SELECTED = new UnityEvent<int>();
 
     //MERCHANT EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_TOGGLE_MERCHANT_PANEL = new UnityEvent<bool>();
@@ -104,9 +106,6 @@ public class GameManager : SingleTon<GameManager>
     //CAMP EVENTS
     [HideInInspector] public UnityEvent EVENT_CAMP_SHOW_PANEL = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CAMP_HEAL = new UnityEvent();
-    [HideInInspector] public UnityEvent<Deck> EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS = new UnityEvent<Deck>();
-    [HideInInspector] public UnityEvent<string> EVENT_CAMP_GET_UPGRADE_PAIR = new UnityEvent<string>();
-    [HideInInspector] public UnityEvent<string> EVENT_CAMP_UPGRADE_CARD = new UnityEvent<string>();
     [HideInInspector] public UnityEvent EVENT_CAMP_FINISH = new UnityEvent();
     
     //TREASURE EVENTS
@@ -117,9 +116,13 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<int> EVENT_ENCOUNTER_DAMAGE = new UnityEvent<int>();
 
 
-    //UPGRADE EVENTS
-    [HideInInspector] public UnityEvent<Deck> EVENT_UPGRADE_SHOW_UPGRADE_PAIR = new UnityEvent<Deck>();
-    [HideInInspector] public UnityEvent<SWSM_ConfirmUpgrade> EVENT_UPGRADE_CONFIRMED = new UnityEvent<SWSM_ConfirmUpgrade>();
+    //UPGRADE CARDS EVENTS
+    [HideInInspector] public UnityEvent<Deck> EVENT_SHOW_UPGRADE_CARDS_PANEL = new UnityEvent<Deck>(); //event from the BE to show the upgradable cards panel
+    [HideInInspector] public UnityEvent<string> EVENT_GET_UPGRADE_PAIR = new UnityEvent<string>(); // when the user click a card, we need the show the upgraded card data. We send
+    [HideInInspector] public UnityEvent<Deck> EVENT_SHOW_UPGRADE_PAIR = new UnityEvent<Deck>();// BE sending us the 2 cards
+    [HideInInspector] public UnityEvent<string> EVENT_USER_CONFIRMATION_UPGRADE_CARD = new UnityEvent<string>();// the user confirmed to upgrade this card id. We send
+    [HideInInspector] public UnityEvent<SWSM_ConfirmUpgrade> EVENT_UPGRADE_CONFIRMED = new UnityEvent<SWSM_ConfirmUpgrade>();//from BE confirming. Can contain an error    
+   
 
     //EXPEDITION EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_EXPEDITION_STATUS_UPDATE = new UnityEvent<bool>();
