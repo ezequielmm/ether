@@ -913,6 +913,7 @@ public class Trait
 [Serializable]
 public struct TraitSprite
 {
+    public string skinName;
     public string traitType;
     public int attachmentIndex;
     public string imageName;

@@ -10,12 +10,8 @@ public class PlayerSkinManager : MonoBehaviour
     public SkeletonAnimation skeletonAnimation;
     public Material skeletonMaterial;
     public MeshRenderer meshRenderer;
-
-    [SpineSkin] public string skinName;
-    [SpineSlot] public string slotName;
-
-    [SpineAttachment(slotField: "slotName", skinField: "skinName")]
-    public string AttachmentKey;
+    
+    public AtlasAssetBase atlasBase;
 
     private Skeleton _skeleton;
 
@@ -23,7 +19,7 @@ public class PlayerSkinManager : MonoBehaviour
 
     void Awake()
     {
-        GameManager.Instance.EVENT_UPDATE_PLAYER_SKIN.AddListener(UpdateSkin);
+        //GameManager.Instance.EVENT_UPDATE_PLAYER_SKIN.AddListener(UpdateSkin);
     }
 
     // Start is called before the first frame update
@@ -35,9 +31,10 @@ public class PlayerSkinManager : MonoBehaviour
         UpdateSkin();
     }
 
-    private void UpdateSkin()
+   private void UpdateSkin()
     {
         Skin playerSkin = new Skin("player_skin");
+        /*
         playerSkin.AddSkin(_skeletonData.FindSkin("Boots/Boots_Medici"));
         playerSkin.AddSkin(_skeletonData.FindSkin("Gauntlet/Gauntlet_Medici"));
         playerSkin.AddSkin(_skeletonData.FindSkin("Weapon/Weapon_Medici"));
@@ -49,8 +46,15 @@ public class PlayerSkinManager : MonoBehaviour
         playerSkin.AddSkin(_skeletonData.FindSkin("Crest/Crest_Red_Halo"));
         playerSkin.AddSkin(_skeletonData.FindSkin("Pauldrons/Pauldrons_Medici"));
         playerSkin.AddSkin(_skeletonData.FindSkin("Legguard/Legguard_Medici"));
-        // playerSkin.AddSkin(_skeletonData.FindSkin("Sigil/Sigil_Medici"));
+        // playerSkin.AddSkin(_skeletonData.FindSkin("Sigil/Sigil_Medici"));*/
         List<(Attachment, int)> UpdatedAttachmentList = new List<(Attachment, int)>();
+        
+        List<TraitSprite> skinSprites = PlayerSpriteManager.Instance.GetAllTraitSprites();
+        foreach (TraitSprite traitSprite in skinSprites)
+        {
+            playerSkin.AddSkin(_skeletonData.FindSkin(traitSprite.skinName));
+        }
+        
         foreach (Skin.SkinEntry skinAttachment in playerSkin.Attachments)
         {
             Debug.Log(skinAttachment.Attachment.Name);
@@ -58,7 +62,10 @@ public class PlayerSkinManager : MonoBehaviour
             // if there's no sprite for that slot, ignore it
             if (attachmentSprite == null) continue;
             Attachment updatedAttachment =
-                skinAttachment.Attachment.GetRemappedClone(attachmentSprite, skeletonMaterial, useOriginalRegionSize:true);
+                skinAttachment.Attachment.GetRemappedClone(attachmentSprite, skeletonMaterial,
+                    useOriginalRegionSize: true);
+            updatedAttachment.SetRegion(attachmentSprite.ToAtlasRegion(skeletonMaterial));
+
             UpdatedAttachmentList.Add((updatedAttachment, skinAttachment.SlotIndex));
         }
 
@@ -70,13 +77,13 @@ public class PlayerSkinManager : MonoBehaviour
 
         Material newMaterial;
         Texture2D newTexture;
-        
+
         Skin repackedSkin =
-            playerSkin.GetRepackedSkin("true player skin", skeletonMaterial, out newMaterial, out newTexture, 8192);
-        _skeleton.SetSkin(repackedSkin);
+            playerSkin.GetRepackedSkin("true player skin", skeletonMaterial, out newMaterial, out newTexture);
+        _skeleton.SetSkin(playerSkin);
         _skeleton.SetSlotsToSetupPose();
 
-        meshRenderer.material.mainTexture = newTexture;
+       // meshRenderer.material.mainTexture = newTexture;
         skeletonAnimation.Update(0);
         Debug.Log("[PlayerSkinManager] Updating Player Skin");
     }

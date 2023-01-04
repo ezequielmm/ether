@@ -10,6 +10,7 @@ using UnityEngine;
 public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 {
     public List<TraitSprite> SkinSprites = new List<TraitSprite>();
+
     // we need the skeleton data so we can pull the image assets without needing the player to be activated in combat
     public SkeletonDataAsset KinghtData;
     private List<Trait> currentMetadata = new List<Trait>();
@@ -24,7 +25,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(OnNftMetadataReceived);
         GameManager.Instance.EVENT_NFT_SKIN_SPRITE_RECEIVED.AddListener(OnSkinSpriteReceived);
         GameManager.Instance.EVENT_NFT_SKIN_SPRITE_FAILED.AddListener(OnSkinSpriteFailed);
-        GameManager.Instance.EVENT_REQUEST_NFT_METADATA.Invoke(2702);
+        GameManager.Instance.EVENT_REQUEST_NFT_METADATA.Invoke(219);
         knightSkeletonData = KinghtData.GetSkeletonData(true);
     }
 
@@ -36,23 +37,24 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         {
             string[] traitSplit = trait.value.Split();
             Skin traitSkin = knightSkeletonData.Skins.Find(x => x.Name.Contains(string.Join('_', traitSplit)));
-            if(traitSkin == null) continue;
+            if (traitSkin == null) continue;
             foreach (Skin.SkinEntry skinEntry in traitSkin.Attachments)
             {
                 string[] baseImageName = skinEntry.Attachment.Name.Split('/');
                 string imageName = (baseImageName.Length > 1) ? baseImageName[1] : baseImageName[0];
-                
+
                 // pack this all as a single object to make Events and transferring the information easier
                 TraitSprite tempTraitSprite = new TraitSprite
                 {
+                    skinName = traitSkin.Name,
                     traitType = trait.trait_type,
                     attachmentIndex = skinEntry.SlotIndex,
                     imageName = imageName
                 };
-                
+
                 GameManager.Instance.EVENT_REQUEST_NFT_SKIN_SPRITE.Invoke(tempTraitSprite);
                 skinRequestsMade++;
-            } 
+            }
         }
     }
 
@@ -67,6 +69,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         {
             SkinSprites.Add(receivedSprite);
         }
+
         completedSkinRequests++;
         CheckIfSkinRequestsCompleted();
     }
@@ -92,7 +95,12 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         {
             return SkinSprites.Find(x => x.attachmentIndex == attachmentIndex).sprite;
         }
+
         return null;
     }
-}
 
+    public List<TraitSprite> GetAllTraitSprites()
+    {
+        return SkinSprites;
+    }
+}
