@@ -56,7 +56,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 644da6b270a5cbd449ecab818ab32e2a, type: 2}
+  - {fileID: 2100000, guid: 3ab5ee4db8fe4bd46a152b4c2bd5ded1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -91,10 +91,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonAnimation: {fileID: 9032002354893603797}
-  spineManagement: {fileID: 9032002354893603801}
-  skinName: test_template
-  slotName: BASE-waist
-  AttachmentKey: waist-basic
+  skeletonMaterial: {fileID: 2100000, guid: 3ab5ee4db8fe4bd46a152b4c2bd5ded1, type: 2}
+  skinName: Weapon/Weapon_Medici
+  slotName: ARMOR-Weapons
+  AttachmentKey: ARMOR-Weapons
 --- !u!33 &9032002354893603803
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -189,8 +189,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 0}
-  initialSkinName: test_template
+  skeletonDataAsset: {fileID: 11400000, guid: 0833cefecbb1e774184077143e73eb05, type: 2}
+  initialSkinName: Helmet/Helmet_Medici
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
   initialFlipY: 0

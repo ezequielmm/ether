@@ -98,9 +98,9 @@ public class WebRequesterManager : MonoBehaviour
         StartCoroutine(GetNftData(tokenId));
     }
 
-    public void RequestNftSkinElement(Trait spriteTrait)
+    public void RequestNftSkinElement(TraitSprite spriteToPopulate)
     {
-        StartCoroutine(GetNftSkinElement(spriteTrait));
+        StartCoroutine(GetNftSkinElement(spriteToPopulate));
     }
 
     public void OnRandomNameEvent(string previousName)
@@ -371,10 +371,9 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.Invoke(nftMetaData);
     }
 
-    public IEnumerator GetNftSkinElement(Trait spriteTrait)
+    public IEnumerator GetNftSkinElement(TraitSprite spriteToPopulate)
     {
-        string[] valueSplit = spriteTrait.value.Split();
-        string spriteName = spriteTrait.trait_type+ "s_" + string.Join('_', valueSplit) + ".png";
+        string spriteName = spriteToPopulate.imageName + ".png";
         string spriteUrl = urlNftSkinSprites + spriteName;
         
         UnityWebRequest nftSpriteRequest = UnityWebRequestTexture.GetTexture(spriteUrl);
@@ -393,7 +392,8 @@ public class WebRequesterManager : MonoBehaviour
         Sprite nftSkinElement = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height),
             Vector2.zero);
         nftSkinElement.name = spriteName;
-        GameManager.Instance.EVENT_NFT_SKIN_SPRITE_RECEIVED.Invoke(nftSkinElement, spriteTrait);
+        spriteToPopulate.sprite = nftSkinElement;
+        GameManager.Instance.EVENT_NFT_SKIN_SPRITE_RECEIVED.Invoke(spriteToPopulate);
     }
 
     public IEnumerator RequestNewExpedition(string characterType)

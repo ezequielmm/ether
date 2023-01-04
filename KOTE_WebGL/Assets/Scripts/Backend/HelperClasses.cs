@@ -908,3 +908,13 @@ public class Trait
     public string trait_type;
     public string value;
 }
+
+// this is to pass along data needed for each individual skin image downloaded from the server
+[Serializable]
+public struct TraitSprite
+{
+    public string traitType;
+    public int attachmentIndex;
+    public string imageName;
+    public Sprite sprite;
+}
