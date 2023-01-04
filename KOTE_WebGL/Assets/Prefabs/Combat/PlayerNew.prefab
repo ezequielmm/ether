@@ -56,7 +56,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3ab5ee4db8fe4bd46a152b4c2bd5ded1, type: 2}
+  - {fileID: 2100000, guid: dc69b9ba17eccbb41bce83063eac909e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -91,8 +91,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonAnimation: {fileID: 9032002354893603797}
-  skeletonMaterial: {fileID: 2100000, guid: 3ab5ee4db8fe4bd46a152b4c2bd5ded1, type: 2}
-  skinName: Weapon/Weapon_Medici
+  skeletonMaterial: {fileID: 2100000, guid: 7c6832fc74eb7fc409b7ab0a6491c54f, type: 2}
+  meshRenderer: {fileID: 9032002354893603800}
+  skinName: Legguard/Legguard_Medici
   slotName: ARMOR-Weapons
   AttachmentKey: ARMOR-Weapons
 --- !u!33 &9032002354893603803
@@ -190,7 +191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonDataAsset: {fileID: 11400000, guid: 0833cefecbb1e774184077143e73eb05, type: 2}
-  initialSkinName: Helmet/Helmet_Medici
+  initialSkinName: Legguard/Legguard_Medici
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
   initialFlipY: 0

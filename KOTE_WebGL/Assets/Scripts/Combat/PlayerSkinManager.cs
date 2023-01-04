@@ -9,11 +9,14 @@ public class PlayerSkinManager : MonoBehaviour
 {
     public SkeletonAnimation skeletonAnimation;
     public Material skeletonMaterial;
+    public MeshRenderer meshRenderer;
 
     [SpineSkin] public string skinName;
     [SpineSlot] public string slotName;
 
-    [SpineAttachment(slotField: "slotName", skinField: "skinName")] public string AttachmentKey;
+    [SpineAttachment(slotField: "slotName", skinField: "skinName")]
+    public string AttachmentKey;
+
     private Skeleton _skeleton;
 
     private SkeletonData _skeletonData;
@@ -22,14 +25,14 @@ public class PlayerSkinManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_UPDATE_PLAYER_SKIN.AddListener(UpdateSkin);
     }
-    
+
     // Start is called before the first frame update
     void Start()
     {
-         _skeleton = skeletonAnimation.skeleton;
-         // SkeletonData is the data from the json, so we don't need to pull or parse it ourselves
-         _skeletonData = _skeleton.Data;
-         UpdateSkin();
+        _skeleton = skeletonAnimation.skeleton;
+        // SkeletonData is the data from the json, so we don't need to pull or parse it ourselves
+        _skeletonData = _skeleton.Data;
+        UpdateSkin();
     }
 
     private void UpdateSkin()
@@ -45,17 +48,17 @@ public class PlayerSkinManager : MonoBehaviour
         playerSkin.AddSkin(_skeletonData.FindSkin("Breastplate/Breastplate_Medici"));
         playerSkin.AddSkin(_skeletonData.FindSkin("Crest/Crest_Red_Halo"));
         playerSkin.AddSkin(_skeletonData.FindSkin("Pauldrons/Pauldrons_Medici"));
-       // playerSkin.AddSkin(_skeletonData.FindSkin("Sigil/Sigil_Medici"));
-       List<(Attachment, int)> UpdatedAttachmentList = new List<(Attachment, int)>();
+        playerSkin.AddSkin(_skeletonData.FindSkin("Legguard/Legguard_Medici"));
+        // playerSkin.AddSkin(_skeletonData.FindSkin("Sigil/Sigil_Medici"));
+        List<(Attachment, int)> UpdatedAttachmentList = new List<(Attachment, int)>();
         foreach (Skin.SkinEntry skinAttachment in playerSkin.Attachments)
         {
-            
             Debug.Log(skinAttachment.Attachment.Name);
             Sprite attachmentSprite = PlayerSpriteManager.Instance.GetSpriteForAttachment(skinAttachment.SlotIndex);
             // if there's no sprite for that slot, ignore it
             if (attachmentSprite == null) continue;
             Attachment updatedAttachment =
-                skinAttachment.Attachment.GetRemappedClone(attachmentSprite, skeletonMaterial, cloneMeshAsLinked:true);
+                skinAttachment.Attachment.GetRemappedClone(attachmentSprite, skeletonMaterial, useOriginalRegionSize:true);
             UpdatedAttachmentList.Add((updatedAttachment, skinAttachment.SlotIndex));
         }
 
@@ -64,9 +67,16 @@ public class PlayerSkinManager : MonoBehaviour
         {
             playerSkin.SetAttachment(attachmentData.Item2, attachmentData.Item1.Name, attachmentData.Item1);
         }
+
+        Material newMaterial;
+        Texture2D newTexture;
         
-        _skeleton.SetSkin(playerSkin);
+        Skin repackedSkin =
+            playerSkin.GetRepackedSkin("true player skin", skeletonMaterial, out newMaterial, out newTexture, 8192);
+        _skeleton.SetSkin(repackedSkin);
         _skeleton.SetSlotsToSetupPose();
+
+        meshRenderer.material.mainTexture = newTexture;
         skeletonAnimation.Update(0);
         Debug.Log("[PlayerSkinManager] Updating Player Skin");
     }
