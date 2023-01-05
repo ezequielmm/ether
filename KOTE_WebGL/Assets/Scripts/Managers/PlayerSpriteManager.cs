@@ -25,7 +25,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(OnNftMetadataReceived);
         GameManager.Instance.EVENT_NFT_SKIN_SPRITE_RECEIVED.AddListener(OnSkinSpriteReceived);
         GameManager.Instance.EVENT_NFT_SKIN_SPRITE_FAILED.AddListener(OnSkinSpriteFailed);
-        GameManager.Instance.EVENT_REQUEST_NFT_METADATA.Invoke(219);
+        GameManager.Instance.EVENT_REQUEST_NFT_METADATA.Invoke(100);//219
         knightSkeletonData = KinghtData.GetSkeletonData(true);
     }
 
@@ -94,6 +94,16 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         if (SkinSprites.Exists(x => x.attachmentIndex == attachmentIndex))
         {
             return SkinSprites.Find(x => x.attachmentIndex == attachmentIndex).sprite;
+        }
+
+        return null;
+    }
+
+    public String GetSkinName(int attachmentIndex)
+    {
+        if (SkinSprites.Exists(x => x.attachmentIndex == attachmentIndex))
+        {
+            return SkinSprites.Find(x => x.attachmentIndex == attachmentIndex).skinName;
         }
 
         return null;
