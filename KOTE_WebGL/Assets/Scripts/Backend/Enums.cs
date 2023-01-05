@@ -189,7 +189,8 @@ public enum EnemyTypes
     swampGoblin2,
     thornWolf,
     trapelican,
-    treant
+    treant,
+    thornWolfPup
 }
 
 public enum EntityType
