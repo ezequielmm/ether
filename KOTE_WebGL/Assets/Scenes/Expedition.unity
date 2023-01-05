@@ -130,6 +130,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1377507125569026328, guid: fd9aeb50c8fc5fe468f95867b44a9fff,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.0029296875
+      objectReference: {fileID: 0}
     - target: {fileID: 4123488319708662965, guid: fd9aeb50c8fc5fe468f95867b44a9fff,
         type: 3}
       propertyPath: m_Name
@@ -291,11 +296,11 @@ RectTransform:
   m_Children:
   - {fileID: 1081915357}
   - {fileID: 1019504124}
+  - {fileID: 981238411}
   - {fileID: 1785792896}
   - {fileID: 258305017}
   - {fileID: 423660875}
   - {fileID: 1963112302}
-  - {fileID: 981238411}
   - {fileID: 358337462}
   - {fileID: 1724829466}
   - {fileID: 974997430}
@@ -467,7 +472,7 @@ PrefabInstance:
     - target: {fileID: 8649418466282296155, guid: ee5e9e7152999294fb2f20a8107966a9,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8649418466282296155, guid: ee5e9e7152999294fb2f20a8107966a9,
         type: 3}
@@ -615,7 +620,7 @@ PrefabInstance:
     - target: {fileID: 7862905672770297982, guid: a343a3e8879f23140908c30f5042dec0,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7862905672770297982, guid: a343a3e8879f23140908c30f5042dec0,
         type: 3}
@@ -1061,7 +1066,7 @@ PrefabInstance:
     - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
         type: 3}
@@ -1363,7 +1368,7 @@ RectTransform:
   - {fileID: 635427976}
   - {fileID: 946482418}
   m_Father: {fileID: 252026739}
-  m_RootOrder: 6
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2135,7 +2140,7 @@ PrefabInstance:
     - target: {fileID: 7042207118271053235, guid: d2e06bd1a4ff8264ea5e7faae64b81e5,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7042207118271053235, guid: d2e06bd1a4ff8264ea5e7faae64b81e5,
         type: 3}
@@ -2997,7 +3002,7 @@ PrefabInstance:
     - target: {fileID: 7986825379624671967, guid: 06a86a70f65420f4796a8a6dfd201f79,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7986825379624671967, guid: 06a86a70f65420f4796a8a6dfd201f79,
         type: 3}
@@ -3367,6 +3372,12 @@ MonoBehaviour:
   EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_SHOW_WARNING_MESSAGE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_HIDE_WARNING_MESSAGE:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST:
     m_PersistentCalls:
       m_Calls: []
@@ -3523,7 +3534,7 @@ MonoBehaviour:
   EVENT_TOOGLE_TOPBAR_MAP_ICON:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_UPDATE_CURRENT_STEP_TEXT:
+  EVENT_UPDATE_CURRENT_STEP_INFORMATION:
     m_PersistentCalls:
       m_Calls: []
   EVENT_SHOW_SELECT_CARD_PANEL:
@@ -3602,6 +3613,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   EVENT_TOOGLE_COMBAT_ELEMENTS:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_TOGGLE_COMBAT_UI:
     m_PersistentCalls:
       m_Calls: []
   EVENT_SHOW_PLAYER_CHARACTER:
@@ -3685,7 +3699,13 @@ MonoBehaviour:
   EVENT_VOLUME_CHANGED:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_STOP_MUSIC:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_SHOW_CONSOLE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SKIP_NODE:
     m_PersistentCalls:
       m_Calls: []
   EVENT_NEW_WALLET:
@@ -4908,7 +4928,7 @@ PrefabInstance:
     - target: {fileID: 7612459578312946485, guid: cfde224b6c58c614eadd85e7c967e1a0,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7612459578312946485, guid: cfde224b6c58c614eadd85e7c967e1a0,
         type: 3}

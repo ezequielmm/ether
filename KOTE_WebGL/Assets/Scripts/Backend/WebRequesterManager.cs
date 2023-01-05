@@ -60,8 +60,15 @@ public class WebRequesterManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.webRequester = this;
-        DontDestroyOnLoad(this);
+        if (GameManager.Instance.webRequester == null)
+        {
+            GameManager.Instance.webRequester = this;
+            DontDestroyOnLoad(this);
+        }
+        else if(GameManager.Instance.webRequester != this)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     internal void RequestStartExpedition(string characterType)

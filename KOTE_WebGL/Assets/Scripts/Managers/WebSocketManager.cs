@@ -170,8 +170,8 @@ public class WebSocketManager : MonoBehaviour
         GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener(OnGenericWSDataRequest);
         GameManager.Instance.EVENT_REWARD_SELECTED.AddListener(OnRewardSelected);
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.AddListener(OnContinueExpedition);
-        GameManager.Instance.EVENT_CAMP_GET_UPGRADE_PAIR.AddListener(OnShowUpgradePair);
-        GameManager.Instance.EVENT_CAMP_UPGRADE_CARD.AddListener(OnCardUpgradeConfirmed);
+        GameManager.Instance.EVENT_GET_UPGRADE_PAIR.AddListener(OnShowUpgradePair);
+        GameManager.Instance.EVENT_USER_CONFIRMATION_UPGRADE_CARD.AddListener(OnCardUpgradeConfirmed);
         GameManager.Instance.EVENT_CAMP_HEAL.AddListener(OnCampHealSelected);
         GameManager.Instance.EVENT_CARDS_SELECTED.AddListener(OnCardsSelected);
         GameManager.Instance.EVENT_POTION_USED.AddListener(OnPotionUsed);
