@@ -200,7 +200,7 @@ public class MerchantNodeManager : MonoBehaviour
         buyButtonText.text = "BUY";
         selectedCard = null;
         upgradeCard = false;
-        serviceCardPanel.HideCards();
+        serviceCardPanel.HideCardSelectPanel();
         cardPairPanel.HidePairPannel();
     }
 

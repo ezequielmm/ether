@@ -173,13 +173,15 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_TOPBAR_MAP_ICON = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_CURRENT_STEP_INFORMATION = new UnityEvent<int, int>();
 
-    //CARD PANEL EVENTS
+    //SELECT PANEL EVENTS
     [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>> EVENT_SHOW_SELECT_CARD_PANEL = new UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>>();
     [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<string>> EVENT_SHOW_DIRECT_SELECT_CARD_PANEL = new UnityEvent<List<Card>, SelectPanelOptions, Action<string>>();
     [HideInInspector] public UnityEvent<Deck> EVENT_CARD_PILE_SHOW_DECK = new UnityEvent<Deck>();
         [HideInInspector] public UnityEvent<List<string>> EVENT_CARDS_SELECTED = new UnityEvent<List<string>>();
     [HideInInspector] public UnityEvent EVENT_HIDE_COMMON_CARD_PANEL = new UnityEvent();
-
+    [HideInInspector] public UnityEvent<SWSM_SelectTrinketData> EVENT_SHOW_SELECT_TRINKET_PANEL = new UnityEvent<SWSM_SelectTrinketData>();
+    [HideInInspector] public UnityEvent<List<string>> EVENT_TRINKETS_SELECTED = new UnityEvent<List<string>>();
+    
     //CARDS EVENTS
     [HideInInspector] public UnityEvent<PileTypes> EVENT_CARD_PILE_CLICKED = new UnityEvent<PileTypes>();
     [HideInInspector] public UnityEvent<string> EVENT_CARD_MOUSE_ENTER = new UnityEvent<string>();

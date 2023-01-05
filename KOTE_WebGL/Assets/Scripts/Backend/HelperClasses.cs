@@ -895,3 +895,21 @@ public class SWSM_HealData
         }
     }
 }
+
+[Serializable]
+public class SWSM_SelectTrinketData
+{
+    public SelectTrinketData data;
+
+    [Serializable]
+    public class SelectTrinketData
+    {
+        public TrinketData data;
+    }
+}
+
+[Serializable]
+public class TrinketData
+{
+    public List<Trinket> trinkets;
+}
