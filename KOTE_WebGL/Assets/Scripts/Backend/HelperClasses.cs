@@ -539,11 +539,10 @@ public class SWSM_EncounterData
         [Serializable]
         public class EncounterData
         {
+            public string encounterName;
             public string imageId;
             public string displayText;
             public List<ButtonData> buttons;
-
-          
         }
     }
 }
@@ -708,6 +707,7 @@ public class showCardData
 {
     public List<Card> cards;
     public int cardsToTake;
+    public string kind;
 }
 
 
