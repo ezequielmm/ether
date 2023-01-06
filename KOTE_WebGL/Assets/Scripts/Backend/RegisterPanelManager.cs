@@ -43,8 +43,22 @@ public class RegisterPanelManager : MonoBehaviour
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerRegisterPanel);
     }
 
+    private void CheckIfRegisterButtonIsEnabled()
+    {
+        int enableRegistration = PlayerPrefs.GetInt("enable_registration");
+        if (enableRegistration == 1)
+        {
+            registerButton.interactable = true;
+        }
+        else
+        {
+            registerButton.interactable = false;
+        }
+    }
+
     public void OnShowPassword()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         passwordInputField.contentType =
             showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
         passwordInputField.ForceLabelUpdate();
@@ -52,6 +66,7 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void OnShowConfirmPassword()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         confirmPasswordInputField.contentType = showConfirmPassword.isOn
             ? TMP_InputField.ContentType.Standard
             : TMP_InputField.ContentType.Password;
@@ -82,7 +97,7 @@ public class RegisterPanelManager : MonoBehaviour
     {
         DeactivateAllErrorLabels();
 
-        registerButton.interactable = false;
+        CheckIfRegisterButtonIsEnabled();
 
         GameManager.Instance.EVENT_REQUEST_NAME.Invoke("");
     }
@@ -130,12 +145,14 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void RequestNewName()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         nameText.text = "Loading...";
         GameManager.Instance.EVENT_REQUEST_NAME.Invoke(nameText.text);
     }
 
     public void OnRegister()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         if (!VerifyEmail()) return;
         if (!ConfirmEmail()) return;
         if (!VerifyPassword()) return;
@@ -149,6 +166,7 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void LoginHyperlink()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         ActivateInnerRegisterPanel(false);
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
@@ -159,7 +177,14 @@ public class RegisterPanelManager : MonoBehaviour
         confirmEmailInputField.text = "";
         passwordInputField.text = "";
         confirmPasswordInputField.text = "";
-        registerContainer.SetActive(activate);
+        int enableRegistration = PlayerPrefs.GetInt("enable_registration");
+        if (enableRegistration == 1)
+        {
+            registerContainer.SetActive(activate);
+            return;
+        }
+
+        registerContainer.SetActive(false);
     }
 
     public void CheckIfCanActivateRegisterButton()

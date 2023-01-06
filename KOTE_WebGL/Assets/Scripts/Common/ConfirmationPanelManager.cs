@@ -87,6 +87,7 @@ public class ConfirmationPanelManager : MonoBehaviour
 
     public void OnCancel()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         if (currentOnCancelFunction != null) currentOnCancelFunction();
         currentOnCancelFunction = null;
         // deactivate the panel and get rid of the action that was sent
@@ -95,6 +96,7 @@ public class ConfirmationPanelManager : MonoBehaviour
 
     public void OnConfirmation()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         // don't need to null check this as it will always receive a confirmation action
         currentOnConfirmAction();
         confirmationPanelContainer.SetActive(false);

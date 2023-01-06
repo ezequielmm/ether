@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
 
-public class EnemyManager : MonoBehaviour
+public class EnemyManager : MonoBehaviour, ITooltipSetter
 {
     private EnemyData enemyData;
     public ParticleSystem hitPS;
@@ -31,6 +31,7 @@ public class EnemyManager : MonoBehaviour
     private bool CalledEvent;
 
     new private Collider2D collider;
+    private Bounds enemyBounds;
     private StatusManager statusManager;
 
 
@@ -97,11 +98,8 @@ public class EnemyManager : MonoBehaviour
             BottomBar.position = bottom;
 
             collider = activeEnemy.GetComponent<Collider2D>();
-
-            // Set tooltip events
-            enemyPlacementData.onCursorEnter.AddListener(SetTooltip);
-            enemyPlacementData.onCursorExit.AddListener(SemoveTooltip);
-
+            enemyBounds = collider.bounds;
+            collider.enabled = false;
 
             this.enemyType = Utils.ParseEnum<EnemyTypes>(enemyType);
             gameObject.name = Enum.GetName(typeof(EnemyTypes), this.enemyType);
@@ -168,6 +166,7 @@ public class EnemyManager : MonoBehaviour
     private void OnAttackResponse(CombatTurnData attack)
     {
         var target = attack.GetTarget(enemyData.id);
+        if (attack.originId == enemyData.id) PlaySound(attack);
         if (target == null) return;
 
         Debug.Log($"[EnemyManager] Combat Response GET!");
@@ -178,29 +177,16 @@ public class EnemyManager : MonoBehaviour
             GameManager.Instance.EVENT_DAMAGE.Invoke(target);
         }
 
-        if (target.defenseDelta < 0 && target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
-        {
-            // Play Armored Clang
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Block");
-        }
         else if (target.healthDelta < 0) // Damage Taken no armor
         {
             // Play Attack audio
             // Can be specific, but we'll default to "Attack"
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Attack");
             waitDuration += OnHit();
         }
-
-        // Positive Deltas
-        if (target.defenseDelta > 0) // Defense Buffed
-        {
-            // Play Metallic Ring
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Up");
-        }
+        
         if (target.healthDelta > 0) // Healed!
         {
             // Play Rising Chimes
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
             GameManager.Instance.EVENT_HEAL.Invoke(EnemyData.id, target.healthDelta);
             waitDuration += 1;
         }
@@ -224,6 +210,38 @@ public class EnemyManager : MonoBehaviour
         RunAfterTime(waitDuration, () => GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId));
     }
 
+    private void PlaySound(CombatTurnData attack)
+    {
+        foreach (var target in attack.targets)
+        {
+            if (target.defenseDelta < 0 &&
+                target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
+            {
+                // Play Armored Clang
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.EnemyDefensive, /*enemyData.name +*/ "Block");
+            }
+            else if (target.healthDelta < 0) // Damage Taken no armor
+            {
+                // Play Attack audio
+                // Can be specific, but we'll default to "Attack"
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.EnemyOffensive, enemyData.name + "Attack");
+            }
+
+            // Positive Deltas
+            if (target.defenseDelta > 0) // Defense Buffed
+            {
+                // Play Metallic Ring
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.EnemyDefensive, enemyData.name + "Cast");
+            }
+
+            if (target.healthDelta > 0) // Healed!
+            {
+                // Play Rising Chimes
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.EnemyOffensive, enemyData.name + "Cast");
+            }
+        }
+    }
+
     private void SetDefense(int? value = null)
     {
         if (value == null)
@@ -238,6 +256,9 @@ public class EnemyManager : MonoBehaviour
         GameManager.Instance.EVENT_UPDATE_ENEMY.AddListener(OnUpdateEnemy);
         GameManager.Instance.EVENT_ATTACK_REQUEST.AddListener(OnAttackRequest);
         GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnAttackResponse);
+
+        GameManager.Instance.EVENT_ACTIVATE_POINTER.AddListener(ActivateCollider);
+        GameManager.Instance.EVENT_DEACTIVATE_POINTER.AddListener(DeactivateCollider);
 
         statusManager = GetComponentInChildren<StatusManager>();
     }
@@ -278,7 +299,7 @@ public class EnemyManager : MonoBehaviour
         {
             float size = Utils.GetSceneSize(Utils.ParseEnum<Size>(enemyData.size));
             Gizmos.color = Color.cyan;
-            Utils.GizmoDrawBox(size, size * 2, (Vector3.up * size) + transform.position);
+            GizmoExtensions.DrawBox(size, size * 2, (Vector3.up * size) + transform.position);
         }
     }
 
@@ -333,6 +354,17 @@ public class EnemyManager : MonoBehaviour
     {
         float length = spine.PlayAnimationSequence("Death");
         return length;
+    }
+
+    private void ActivateCollider(PointerData _) 
+    {
+        if (collider != null)
+            collider.enabled = true;
+    }
+    private void DeactivateCollider(string _) 
+    {
+        if(collider != null)
+            collider.enabled = false;
     }
 
     private void CheckDeath(int current)
@@ -394,33 +426,15 @@ public class EnemyManager : MonoBehaviour
         return null;
     }
 
-    private List<Tooltip> GetTooltipInfo()
+    public void SetTooltip(List<Tooltip> tooltips)
     {
-        List<Tooltip> list = new List<Tooltip>();
-
-        foreach (IntentIcon icon in GetComponentsInChildren<IntentIcon>())
-        {
-            list.Add(icon.GetTooltip());
-        }
-
-        foreach (StatusIcon icon in GetComponentsInChildren<StatusIcon>())
-        {
-            list.Add(icon.GetTooltip());
-        }
-
-        return list;
-    }
-    private void SetTooltip()
-    {
-        Vector3 anchorPoint = new Vector3(collider.bounds.center.x - collider.bounds.extents.x,
-            collider.bounds.center.y, 0);
+        collider.enabled = true;
+        enemyBounds = collider.bounds;
+        Vector3 anchorPoint = new Vector3(enemyBounds.center.x - enemyBounds.extents.x,
+            enemyBounds.center.y, 0);
         // Tooltip On
-        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(GetTooltipInfo(), TooltipController.Anchor.MiddleRight, anchorPoint, null);
-    }
-    private void SemoveTooltip()
-    {
-        // Tooltip Off
-        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.MiddleRight, anchorPoint, null);
+        collider.enabled = false;
     }
 
     private GameObject FindPrefab(string enemyName)

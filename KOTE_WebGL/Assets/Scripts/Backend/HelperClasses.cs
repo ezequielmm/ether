@@ -25,6 +25,7 @@ public class NodeDataHelper
     public string status;
     public int[] exits;
     public int[] enter;
+    public string title;
 }
 
 [Serializable]
@@ -46,15 +47,18 @@ public class TargetProfile
     /// If the Players can be targeted
     /// </summary>
     public bool player;
+
     /// <summary>
     /// If the Enemies can be targeted
     /// </summary>
     public bool enemy;
+
     /// <summary>
     /// This is true if the target can not be specified. If so, when player or enemy
     /// is true, that means that who may get targeted at random or as a whole.
     /// </summary>
     public bool notSpecified;
+
     /// <summary>
     /// A List of specific entities that can be targeted.
     /// </summary>
@@ -69,7 +73,7 @@ public class Step
 
 [Serializable]
 public class Tooltip
-{ 
+{
     public string title;
     public string description;
 }
@@ -207,7 +211,7 @@ public class PlayerData
     /// Index of Player
     /// </summary>
     [Obsolete("Int IDs will be phased out")]
-    public int playerId { get; set; } = 1; // This will be static for now. We'll need this when we have multiple players
+    public int playerId;
 
     public string id;
     public int hpCurrent;
@@ -217,6 +221,8 @@ public class PlayerData
     public int energyMax;
     public int defense;
     public List<Card> cards;
+    public List<PotionData> potions;
+    public List<Trinket> trinkets;
 }
 
 [Serializable]
@@ -239,6 +245,31 @@ public class Card
 }
 
 [Serializable]
+public class Trinket 
+{
+    public string id;
+    public int trinketId;
+    public string name;
+    public string rarity;
+    public string description;
+    public Effects effects;
+}
+
+[Serializable]
+public class PotionData
+{
+    public string id;
+    public int potionId;
+    public string name;
+    public string rarity;
+    public string description;
+    public int cost;
+    public List<Effect> effects;
+    public bool usableOutsideCombat;
+    public bool showPointer;
+}
+
+[Serializable]
 public class Effects
 {
     public List<Effect> effects;
@@ -246,14 +277,14 @@ public class Effects
 }
 
 [Serializable]
-public class Statuses 
+public class Statuses
 {
     public string name;
     public Args args;
     public Tooltip tooltip;
 
     [Serializable]
-    public class Args 
+    public class Args
     {
         public int value;
         public string attachTo;
@@ -264,16 +295,16 @@ public class Statuses
 [Serializable]
 public class Effect
 {
-    public string name;
+    public string effect;
+    public string target;
     public EffectArgs args;
 }
+
 
 [Serializable]
 public class EffectArgs
 {
-    public int base_value; //TODO change name on backend
-    public int calculated_value; //TODO change name on backend
-    public string targeted;
+    public int value;
 }
 
 [Serializable]
@@ -346,6 +377,26 @@ public class CardPlayedData //outgoing data
 }
 
 [Serializable]
+public class PurchaseData //outgoing data
+{
+    public string type;
+    public string targetId;
+}
+
+[Serializable]
+public class CardsSelectedList
+{
+    public List<string> cardsToTake;
+}
+
+[Serializable]
+public class PotionUsedData
+{
+    public string potionId;
+    public string targetId;
+}
+
+[Serializable]
 public class Errordata
 {
     public Data data;
@@ -372,6 +423,138 @@ public class SWSM_Base
 }
 
 [Serializable]
+public class MerchantData 
+{
+    public int coins;
+    public int shopkeeper;
+    public string speechBubble;
+    public List<Card> upgradeableCards = new List<Card>();
+    public List<Card> upgradedCards = new List<Card>();
+    public List<Card> playerCards = new List<Card>();
+    public int upgradeCost;
+    public int destroyCost;
+    public List<Merchant<Card>> cards = new List<Merchant<Card>>();
+    public List<Merchant<Card>> neutralCards = new List<Merchant<Card>>();// TODO
+    public List<Merchant<Trinket>> trinkets = new List<Merchant<Trinket>>();
+    public List<Merchant<PotionData>> potions = new List<Merchant<PotionData>>();
+
+    [Serializable]
+    public class Merchant<T> : IMerchant
+    {
+        [SerializeField]
+        protected int itemId;
+        [SerializeField]
+        protected int cost;
+        [SerializeField]
+        protected bool isSold;
+        [SerializeField]
+        protected string type;
+        [SerializeField]
+        protected string id;
+
+        public int ItemId { get => itemId; set => itemId = value; }
+        public int Coin { get => cost; set => cost = value; }
+        public bool IsSold { get => isSold; set => isSold = value; }
+        public string Type { get => type; set => type = value; }
+        public string Id { get => id; set => id = value; }
+        public T item;
+    }
+
+    public interface IMerchant 
+    {
+        public int ItemId { get; set; }
+        public int Coin { get; set; }
+        public bool IsSold { get; set; }
+        public string Type { get; set; }
+        public string Id { get; set; }
+    }
+}
+
+[Serializable]
+public class SWSM_MerchantData
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public string message_type;
+        public string action;
+        public MerchantData data;
+    }
+}
+[Serializable]
+public class SWSM_TreasureData
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public string message_type;
+        public string action;
+        public string data;
+    }
+}
+[Serializable]
+public class SWSM_ChestResult
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public ChestResult data;
+    }
+}
+
+[Serializable]
+public class ChestResult
+{
+    public string isOpen;
+    public List<RewardItemData> rewards;
+    public TrappedResult trapped;
+}
+
+[Serializable]
+public class TrappedResult
+{
+    public string trappedType;
+    public string trappedText;
+    public string monster_type;
+    public int damage;
+    public Card curse_card;
+}
+
+[Serializable]
+public class SWSM_EncounterData
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public EncounterData data;
+
+        [Serializable]
+        public class EncounterData
+        {
+            public string encounterName;
+            public string imageId;
+            public string displayText;
+            public List<ButtonData> buttons;
+        }
+    }
+}
+
+[Serializable]
+public class ButtonData
+{
+    public string text;
+    public bool enabled;
+}
+
+[Serializable]
 public class SWSM_PlayerDeckData
 {
     public Data data;
@@ -382,6 +565,43 @@ public class SWSM_PlayerDeckData
         public string message_type;
         public string action;
         public List<Card> data;
+    }
+}
+
+[Serializable]
+public class SWSM_DeckData
+{
+    public SWSM_Deck data;
+}
+
+[Serializable]
+public class SWSM_Deck
+{
+    public DeckData data;
+}
+
+[Serializable]
+public class DeckData
+{
+    public List<Card> deck;
+}
+
+[Serializable]
+public class SWSM_ConfirmUpgrade
+{
+    public SWSM_UpgradeData data;
+
+    [Serializable]
+    public class SWSM_UpgradeData
+    {
+        public UpgradeData data;
+
+        [Serializable]
+        public class UpgradeData
+        {
+            public string cardIdToDelete;
+            public Card newCard;
+        }
     }
 }
 
@@ -470,6 +690,26 @@ public class StatusData
     }
 }
 
+[Serializable]
+public class SWSM_ShowCardDialog
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public showCardData data;
+    }
+}
+
+[Serializable]
+public class showCardData
+{
+    public List<Card> cards;
+    public int cardsToTake;
+    public string kind;
+}
+
 
 [Serializable]
 public class SWSM_ErrorData
@@ -507,12 +747,12 @@ public class SWSM_CurrentStep
 
         //public string data;
         public CurrentStep data;
-        
-        
     }
 }
+
 [Serializable]
-public class CurrentStep{
+public class CurrentStep
+{
     public int act;
     public int step;
 }
@@ -609,12 +849,11 @@ public class SWSM_RewardsData
     public class Data
     {
         public RewardsData data;
-        
+
         [Serializable]
         public class RewardsData
         {
             public List<RewardItemData> rewards;
-    
         }
     }
 }
@@ -626,4 +865,33 @@ public class RewardItemData
     public string type;
     public int amount;
     public bool taken;
+    public PotionData potion;
+    public Card card;
+    public Trinket trinket;
+}
+
+[Serializable]
+public class RewardPotion
+{
+    public int potionId;
+    public string name;
+    public string description;
+}
+
+[Serializable]
+public class SWSM_HealData
+{
+    public HealData data;
+
+    [Serializable]
+    public class HealData
+    {
+        public HealAmount data;
+
+        [Serializable]
+        public class HealAmount
+        {
+            public int healed;
+        }
+    }
 }

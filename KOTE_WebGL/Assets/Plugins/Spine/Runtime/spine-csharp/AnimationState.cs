@@ -707,7 +707,7 @@ namespace Spine {
 		/// <summary>Queues an animation by name.</summary>
 		/// <seealso cref="AddAnimation(int, Animation, bool, float)" />
 		public TrackEntry AddAnimation (int trackIndex, string animationName, bool loop, float delay) {
-			Animation animation = data.skeletonData.FindAnimation(animationName);
+			Animation animation = data.skeletonData.FindAnimation(animationName.ToLower());
 			if (animation == null) throw new ArgumentException("Animation not found: " + animationName, "animationName");
 			return AddAnimation(trackIndex, animation, loop, delay);
 		}

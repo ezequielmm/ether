@@ -15,17 +15,26 @@ public class ArmoryPanelManager : MonoBehaviour
 
     public void ActivateContainer(bool show)
     {
-        panelContainer.SetActive(show);
+        int enableRegistration = PlayerPrefs.GetInt("enable_armory");
+        if (enableRegistration == 1)
+        {
+            panelContainer.SetActive(show);
+            return;
+        }
+
+        panelContainer.SetActive(false);
     }
-    
+
     public void OnConfirmSelection()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
         ActivateContainer(false);
     }
 
     public void OnBackButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         ActivateContainer(false);
     }
 }

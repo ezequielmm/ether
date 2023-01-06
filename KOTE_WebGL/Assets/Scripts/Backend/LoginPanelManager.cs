@@ -28,6 +28,10 @@ public class LoginPanelManager : MonoBehaviour
     [Space(20)]
     public GameObject loginContainer;
 
+    [Space(20)]
+    [SerializeField]
+    private MetaMask metaMask;
+
     private bool validEmail;
     private bool validLogin;
 
@@ -57,12 +61,14 @@ public class LoginPanelManager : MonoBehaviour
 
     public void OnShowPassword()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         passwordInputField.contentType = showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
         passwordInputField.ForceLabelUpdate();
     }
 
     public void OnRegisterButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         ActivateInnerLoginPanel(false);
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
@@ -77,6 +83,11 @@ public class LoginPanelManager : MonoBehaviour
         }
 
         ActivateInnerLoginPanel(false);
+
+        if (metaMask.HasMetamask)
+        {
+            metaMask.GetAccount();
+        }
     }
 
     private void OnLoginError(string errorMessage)
@@ -98,6 +109,11 @@ public class LoginPanelManager : MonoBehaviour
         validLoginPassword.gameObject.SetActive(false);
 
         loginButton.interactable = false;
+
+        if (metaMask == null) 
+        {
+            metaMask = FindObjectOfType<MetaMask>();
+        }
     }
 
     private void Update()
@@ -115,6 +131,7 @@ public class LoginPanelManager : MonoBehaviour
 
     public void OnLogin()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         validLoginEmail.gameObject.SetActive(false);
         validLoginPassword.gameObject.SetActive(false);
 

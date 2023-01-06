@@ -22,15 +22,9 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_NODE_DATA_UPDATE
             .AddListener(OnNodeDataUpdate); //a node has been selected an we got an update node data
 
-        // GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusUpdate);
         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(OnChangeGameStatus);
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.AddListener(OnPrepareStatusChange);
         GameManager.Instance.EVENT_CONFIRM_EVENT.AddListener(OnEventConfirmation);
-    }
-
-    private void OnPlayerStatusUpdate(PlayerStateData playerState)
-    {
-        Debug.Log(playerState);
     }
 
     private void OnNodeDataUpdate(NodeStateData nodeState, WS_QUERY_TYPE wsType)
@@ -57,6 +51,7 @@ public class GameStatusManager : MonoBehaviour
                         // Prevent Game-Level Interaction (UI Only)
                         GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(true);
                     }
+
                     break;
                 case nameof(PlayerState.dead):
                     if (preppingStatus == GameStatuses.GameOver)
@@ -64,6 +59,7 @@ public class GameStatusManager : MonoBehaviour
                         // End game when last player dies
                         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
                     }
+
                     break;
             }
         }
@@ -77,6 +73,7 @@ public class GameStatusManager : MonoBehaviour
                         // Prevent Game-Level Interaction (UI Only)
                         GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(true);
                     }
+
                     break;
                 case nameof(EnemyState.dead):
                     if (preppingStatus == GameStatuses.RewardsPanel)
@@ -84,19 +81,23 @@ public class GameStatusManager : MonoBehaviour
                         // Reward panel when enemy dies
                         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
                     }
+
                     break;
             }
+        }
+        else
+        {
+            Debug.LogWarning("[GameStatusManager] Event called without setting a prep status!");
         }
     }
 
     public void OnChangeGameStatus(GameStatuses newGameStatus)
     {
         currentGameStatus = newGameStatus;
-
         switch (newGameStatus)
         {
             case GameStatuses.Combat:
-                InitializeCombatmode();
+                InitializeCombatMode();
                 break;
             case GameStatuses.Map:
                 InitializeMapMode();
@@ -113,10 +114,16 @@ public class GameStatusManager : MonoBehaviour
             case GameStatuses.Camp:
                 InitializeCampNode();
                 break;
-            case GameStatuses.RoyalHouse: break;
+            case GameStatuses.RewardsPanel:
+                InitializeRewards();
+                break;
             case GameStatuses.GameOver: break;
-            case GameStatuses.RewardsPanel: break;
+            case GameStatuses.RoyalHouse:
+            default:
+                Debug.LogWarning("[GameStatusManager] This game status is not implemented!");
+                break;
         }
+
 
         preppingStatus = GameStatuses.None;
     }
@@ -132,16 +139,15 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_TOOGLE_TREASURE_ELEMENTS.Invoke(false);
     }
 
-    private void InitializeCombatmode()
+    private void InitializeCombatMode()
     {
         //tell top bar to show the map icon
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
         GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(true);
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Battle Start");
         GameManager.Instance.EVENT_TOOGLE_TREASURE_ELEMENTS.Invoke(false);
-        //GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-        GameManager.Instance.EVENT_CARD_DRAW_CARDS.Invoke();
-        //Invoke("InvokeDrawCards", 0.2f);
+        Invoke("InvokeDrawCards", 0.2f);
     }
 
     private void InitializeTreasureMode()
@@ -149,7 +155,7 @@ public class GameStatusManager : MonoBehaviour
         //tell top bar to show the map icon
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
+        GameManager.Instance.EVENT_SHOW_PLAYER_CHARACTER.Invoke();
         GameManager.Instance.EVENT_TOOGLE_TREASURE_ELEMENTS.Invoke(true);
     }
 
@@ -166,7 +172,7 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
         GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
-        GameManager.Instance.EVENT_SHOW_MERCHANT_PANEL.Invoke();
+        GameManager.Instance.EVENT_TOGGLE_MERCHANT_PANEL.Invoke(true);
     }
 
     private void InitializeCampNode()
@@ -174,7 +180,7 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
         GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
-        GameManager.Instance.EVENT_SHOW_CAMP_PANEL.Invoke();
+        GameManager.Instance.EVENT_CAMP_SHOW_PANEL.Invoke();
     }
 
     private void InitializeRoyaHouseNode()
@@ -182,6 +188,13 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
         GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
+    }
+
+    private void InitializeRewards()
+    {
+        GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
+        GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Rewards);
     }
 
     private void InvokeDrawCards()

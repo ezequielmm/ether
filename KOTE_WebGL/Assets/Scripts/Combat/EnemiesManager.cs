@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class EnemiesManager : MonoBehaviour
 {
@@ -102,6 +103,15 @@ public class EnemiesManager : MonoBehaviour
                 newEnemyList.Add(enemyManager.gameObject);
             }
         }
+
+        // if there's no enemies, then combat is completed
+        if (enemies.Count == 0)
+        {
+            GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), nameof(EnemyState.dead));
+            return;
+        }
+        
+
         for(int i = 0; i < enemies.Count; i++)
         {
             var enemy = enemies[i];
@@ -156,7 +166,7 @@ public class EnemiesManager : MonoBehaviour
     {
         Bounds b = new Bounds(transform.position, new Vector3(extent * 2, 5, 0));
         Gizmos.color = Color.green;
-        Utils.GizmoDrawBox(b);
+        GizmoExtensions.DrawBox(b);
         Gizmos.color = Color.magenta;
         Gizmos.DrawLine(new Vector3(transform.position.x - 4, transform.position.y + floor, 0), new Vector3(transform.position.x + 4, transform.position.y + floor, 0));
     }

@@ -11,6 +11,8 @@ public class TooltipComponent : MonoBehaviour
     TextMeshProUGUI title;
     [SerializeField]
     TextMeshProUGUI description;
+    [SerializeField] 
+    private VerticalLayoutGroup verticalLayoutGroup;
 
 
     [SerializeField]
@@ -38,6 +40,10 @@ public class TooltipComponent : MonoBehaviour
     {
         this.title.text = data.title;
         this.description.text = data.description;
+        if (string.IsNullOrEmpty(data.description))
+        {
+            verticalLayoutGroup.padding.bottom = 20;
+        }
     }
 
     public void Delete()

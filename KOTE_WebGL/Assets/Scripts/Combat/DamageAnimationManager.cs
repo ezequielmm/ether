@@ -11,6 +11,7 @@ public class DamageAnimationManager : MonoBehaviour
     bool testRun;
 
     string entityId;
+    private int intEntityId;
 
 
     private void Update()
@@ -25,23 +26,58 @@ public class DamageAnimationManager : MonoBehaviour
     void Start()
     {
         entityId = Utils.FindEntityId(gameObject);
+        intEntityId = Utils.FindIntEntityId(gameObject);
 
         if (entityId == "unknown")
         {
-            Debug.LogError($"[DamageAnimationManager] An enemy/player could not be found. This is on the [{gameObject.name}] object which is a child of [{transform.parent.name}].");
+            StartCoroutine(GetEntity());
         }
 
         GameManager.Instance.EVENT_DAMAGE.AddListener(onDamage);
     }
 
+    IEnumerator GetEntity()
+    {
+        yield return null;
+        entityId = Utils.FindEntityId(gameObject);
+        intEntityId = Utils.FindIntEntityId(gameObject);
+        for (int i = 0; i < 20; i++)
+        {
+            if (entityId == "unknown")
+            {
+                yield return null;
+                entityId = Utils.FindEntityId(gameObject);
+                intEntityId = Utils.FindIntEntityId(gameObject);
+            }
+            else
+            {
+                break;
+            }
+        }
+        if (entityId == "unknown")
+        {
+            Debug.LogError($"[DamageAnimationManager] An enemy/player could not be found. This is on the [{gameObject.name}] object which is a child of [{transform.parent.name}].");
+        }
+    }
+
     void onDamage(CombatTurnData.Target data)
     {
         // Check if me
-        if (entityId != data.targetId && !(entityId == "player" && entityId == data.targetType)) return;
+        if (entityId != data.targetId && intEntityId.ToString() != data.targetId) return;
 
+       /* Debug.Log("[onDamage]" + data);
+        // Check if me
+        if (entityId != data.targetId && !(entityId == "player" && entityId == data.targetType))
+        {
+            Debug.Log("[onDamage] it is NOT me");
+            return;
+        }*/
+      
         // Run Animation
         if (data.healthDelta < 0 || data.defenseDelta != 0) 
         {
+            Debug.Log("[onDamage] it is me and I am showing damage");
+
             StartCoroutine(Animation(data.healthDelta, data.defenseDelta, 
                 data.defenseDelta != 0 && data.finalDefense == 0));
         }

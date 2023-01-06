@@ -26,8 +26,36 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(false);
 
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(OnExpeditionUpdate);
+        CheckIfRegisterButtonIsEnabled();
+        CheckIfArmoryButtonIsEnabled();
 
         TogglePreLoginStatus(true);
+    }
+
+    private void CheckIfRegisterButtonIsEnabled()
+    {
+        int enableRegistration = PlayerPrefs.GetInt("enable_registration");
+        if (enableRegistration == 1)
+        {
+            registerButton.interactable = true;
+        }
+        else
+        {
+            registerButton.interactable = false;
+        }
+    }
+    
+    private void CheckIfArmoryButtonIsEnabled()
+    {
+        int enableRegistration = PlayerPrefs.GetInt("enable_armory");
+        if (enableRegistration == 1)
+        {
+            treasuryButton.interactable = true;
+        }
+        else
+        {
+            treasuryButton.interactable = false;
+        }
     }
 
     private void OnExpeditionUpdate(bool hasExpedition)
@@ -84,30 +112,38 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnRegisterButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
     public void OnLoginButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
     public void OnSettingsButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
     public void OnTreasuryButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_TREASURYPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
     public void OnPlayButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         //check if we are playing a new expedition or resuming
         if (_hasExpedition)
         {
             //load the expedition
+            // play the correct music depending on where the player is
+            GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Music, 1);
+            GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Ambient, 1);
             GameManager.Instance.LoadScene(inGameScenes.Expedition);
         }
         else
@@ -145,6 +181,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnNewExpeditionButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Do you want to cancel the current expedition?", OnNewExpeditionConfirmed);
     }
 

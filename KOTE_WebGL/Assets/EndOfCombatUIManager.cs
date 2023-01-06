@@ -11,10 +11,14 @@ public class EndOfCombatUIManager : MonoBehaviour
 
     public TextMeshProUGUI victoryLabel;
 
+    public TextMeshProUGUI messageLabel;
+
     // Start is called before the first frame update
     void Start()
     {
         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(OnGameStatusChange);
+        GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT.AddListener(OnShowOverlayText);
+        GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT_WITH_ON_COMPLETE.AddListener(OnShowOverlayText);
         DeactivateLabels();
     }
 
@@ -40,10 +44,31 @@ public class EndOfCombatUIManager : MonoBehaviour
         }
     }
 
+    private void OnShowOverlayText(string text)
+    {
+        messageLabel.text = text;
+        messageLabel.DOFade(1, 2).SetDelay(GameSettings.VICTORY_LABEL_ANIMATION_DELAY).From(0)
+            .SetLoops(2, LoopType.Yoyo).OnComplete(() => { messageLabel.gameObject.SetActive(false); })
+            .OnStart(() => { messageLabel.gameObject.SetActive(true); });
+    }
+
+    private void OnShowOverlayText(string text, Action OnComplete)
+    {
+        messageLabel.text = text;
+        messageLabel.DOFade(1, 2).SetDelay(GameSettings.VICTORY_LABEL_ANIMATION_DELAY).From(0)
+            .SetLoops(2, LoopType.Yoyo).OnComplete(() =>
+            {
+                messageLabel.gameObject.SetActive(false);
+                OnComplete.Invoke();
+            })
+            .OnStart(() => { messageLabel.gameObject.SetActive(true); });
+    }
+
     void OnGameOverComplete()
     {
         DeactivateLabels();
-        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke("Defeat", LoadMainMenu, LoadMainMenu, new string[] { "Continue", "" });
+        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke("Defeat", LoadMainMenu,
+            LoadMainMenu, new string[] { "Continue", "" });
     }
 
     void OnVictoryComplete()
@@ -57,7 +82,7 @@ public class EndOfCombatUIManager : MonoBehaviour
         GameManager.Instance.LoadScene(inGameScenes.Expedition);
     }
 
-    void LoadMainMenu() 
+    void LoadMainMenu()
     {
         GameManager.Instance.LoadScene(inGameScenes.MainMenu);
     }

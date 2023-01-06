@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(Collider2D))]
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : MonoBehaviour, ITooltipSetter
 {
     public SpineAnimationsManagement spineAnimationsManagement;
     public DefenseController defenseController;
@@ -19,17 +19,14 @@ public class PlayerManager : MonoBehaviour
     private Action RunWithEvent;
     private bool CalledEvent;
 
+    Bounds playerBounds;
+
     private PlayerData playerData;
+
     public PlayerData PlayerData
     {
-        set
-        {
-            playerData = ProcessNewData(playerData, value);
-        }
-        get
-        {
-            return playerData;
-        }
+        set { playerData = ProcessNewData(playerData, value); }
+        get { return playerData; }
     }
 
     private void Start()
@@ -39,8 +36,16 @@ public class PlayerManager : MonoBehaviour
         GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener(OnUpdatePlayer);
         GameManager.Instance.EVENT_WS_CONNECTED.AddListener(OnWSConnected);
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
+        GameManager.Instance.EVENT_ENCOUNTER_DAMAGE.AddListener(OnEncounterDamage);
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
+
 
         collider = GetComponent<Collider2D>();
+        playerBounds = collider.bounds;
+        collider.enabled = false;
+
+        GameManager.Instance.EVENT_ACTIVATE_POINTER.AddListener(ActivateCollider);
+        GameManager.Instance.EVENT_DEACTIVATE_POINTER.AddListener(DeactivateCollider);
 
         if (statusManager == null)
             statusManager = GetComponentInChildren<StatusManager>();
@@ -50,19 +55,28 @@ public class PlayerManager : MonoBehaviour
         spineAnimationsManagement.ANIMATION_EVENT.AddListener(OnAnimationEvent);
 
         //spineAnimationsManagement.SetSkin("weapon/sword");
+        if(PlayerPrefs.GetInt("enable_injured_idle") == 1)
+        {
+            GameSettings.SHOW_PLAYER_INJURED_IDLE = true;
+        }
         spineAnimationsManagement.PlayAnimationSequence("Idle");
-
     }
 
-    private void OnEnable()
+    private void ActivateCollider(PointerData _)
     {
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
+        if (collider != null)
+            collider.enabled = true;
     }
 
-
-    private void OnAttackRequest(CombatTurnData attack) 
+    private void DeactivateCollider(string _)
     {
-        if(attack.originType != "player") return;
+        if (collider != null)
+            collider.enabled = false;
+    }
+
+    private void OnAttackRequest(CombatTurnData attack)
+    {
+        if (attack.originType != "player") return;
         RunAfterEvent(null);
 
         Debug.Log($"[PlayerManager] Combat Request GET!");
@@ -96,8 +110,10 @@ public class PlayerManager : MonoBehaviour
                 RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
             }
         }
+
         if (!endCalled)
-        { // If no conditions met, pass onto the target and play cast
+        {
+            // If no conditions met, pass onto the target and play cast
             var f = PlayAnimation("Cast");
             if (f > afterEvent) afterEvent = f;
             endCalled = true;
@@ -115,9 +131,11 @@ public class PlayerManager : MonoBehaviour
             });
         }
     }
-    private void OnAttackResponse(CombatTurnData attack) 
+
+    private void OnAttackResponse(CombatTurnData attack)
     {
         var target = attack.GetTarget("player");
+        if (attack.originType == "player") PlaySound(attack);
         if (target == null) return;
 
         Debug.Log($"[PlayerManager] Combat Response GET!");
@@ -129,30 +147,17 @@ public class PlayerManager : MonoBehaviour
             GameManager.Instance.EVENT_DAMAGE.Invoke(target);
         }
 
-        if (target.defenseDelta < 0 && target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
-        {
-            // Play Armored Clang
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Block");
-        } 
-        else if (target.healthDelta < 0) // Damage Taken no armor
+        if (target.healthDelta < 0) // Damage Taken no armor
         {
             // Play Attack audio
             // Can be specific, but we'll default to "Attack"
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Attack");
             waitDuration += OnHit();
         }
 
-        // Positive Deltas
-        if (target.defenseDelta > 0) // Defense Buffed
-        {
-            // Play Metallic Ring
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Defense Up");
-        }
         if (target.healthDelta > 0) // Healed!
         {
             // Play Rising Chimes
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Heal");
-            GameManager.Instance.EVENT_HEAL.Invoke(/*PlayerData.id*/ "player", target.healthDelta);
+            GameManager.Instance.EVENT_HEAL.Invoke( /*PlayerData.id*/ "player", target.healthDelta);
             waitDuration += 1;
         }
 
@@ -161,6 +166,7 @@ public class PlayerManager : MonoBehaviour
         {
             SetDefense(target.finalDefense);
         }
+
         if (target.healthDelta != 0)
         {
             SetHealth(target.finalHealth);
@@ -172,31 +178,71 @@ public class PlayerManager : MonoBehaviour
             statusManager.UpdateStatus(target.statuses);
         }
 
-        RunAfterTime(waitDuration, () => {
-            GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId); 
+        RunAfterTime(waitDuration, () =>
+        {
+            GameManager.Instance.EVENT_COMBAT_TURN_END.Invoke(attack.attackId);
             //CheckDeath(target.finalHealth); 
         });
     }
-    private void RunAfterEvent(Action toRun) 
+
+    private void PlaySound(CombatTurnData attack)
+    {
+        foreach (var target in attack.targets)
+        {
+            if (target.defenseDelta < 0 || target.healthDelta < 0)
+            {
+                Debug.LogWarning("Commented out sending an event from a PlaySpund method??");
+               // GameManager.Instance.EVENT_DAMAGE.Invoke(target);
+            }
+
+            if (target.defenseDelta < 0 &&
+                target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
+            {
+                // Play Armored Clang
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Knight, "Block");
+            }
+            else if (target.healthDelta < 0) // Damage Taken no armor
+            {
+                // Play Attack audio
+                // Can be specific, but we'll default to "Attack"
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Knight, "Attack");
+            }
+
+            // Positive Deltas
+            if (target.defenseDelta > 0) // Defense Buffed
+            {
+                // Play Metallic Ring
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Knight, "Buff");
+            }
+
+            if (target.healthDelta > 0) // Healed!
+            {
+                // Play Rising Chimes
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Knight, "Buff");
+            }
+        }
+    }
+
+    private void RunAfterEvent(Action toRun)
     {
         RunWithEvent = toRun;
     }
 
-    private void OnAnimationEvent(string eventName) 
+    private void OnAnimationEvent(string eventName)
     {
-        if (eventName.Equals("attack") || eventName.Equals("release")) 
+        if (eventName.Equals("attack") || eventName.Equals("release"))
         {
             CalledEvent = true;
             RunWithEvent.Invoke();
         }
     }
 
-    private void RunAfterTime(float time, Action toRun) 
+    private void RunAfterTime(float time, Action toRun)
     {
         StartCoroutine(runCoroutine(time, toRun));
     }
 
-    private IEnumerator runCoroutine(float time, Action toRun) 
+    private IEnumerator runCoroutine(float time, Action toRun)
     {
         yield return new WaitForSeconds(time);
         toRun.Invoke();
@@ -204,7 +250,7 @@ public class PlayerManager : MonoBehaviour
 
     private PlayerData ProcessNewData(PlayerData old, PlayerData current)
     {
-        if (old == null) 
+        if (old == null)
         {
             SetDefense(current.defense);
             SetHealth(current.hpCurrent, current.hpMax);
@@ -214,7 +260,7 @@ public class PlayerManager : MonoBehaviour
         int hpDelta = current.hpCurrent - old.hpCurrent;
         int defenseDelta = current.defense - old.defense;
 
-        if (defenseDelta < 0) 
+        if (defenseDelta < 0)
         {
             // Natural Defense Fall (eg: New Turn)
         }
@@ -227,14 +273,16 @@ public class PlayerManager : MonoBehaviour
 
     private void SetHealth(int? current = null, int? max = null)
     {
-        if (current == null) 
+        if (current == null)
         {
             current = playerData.hpCurrent;
         }
-        if (max == null) 
+
+        if (max == null)
         {
             max = playerData.hpMax;
         }
+
         Debug.Log($"[PlayerManager] Health: {current}/{max}");
 
         healthTF.SetText($"{current}/{max}");
@@ -243,21 +291,27 @@ public class PlayerManager : MonoBehaviour
 
         if (healthBar.value != current)
         {
-            healthBar.DOValue(current.Value, 1).OnComplete( () => { CheckDeath(current.Value); });
+            healthBar.DOValue(current.Value, 1).OnComplete(() => { CheckDeath(current.Value); });
+        }
+
+        // update the player data so we can check health values in combat for animations
+        if (playerData != null)
+        {
+            playerData.hpCurrent = current.Value;
+            playerData.hpMax = max.Value;
         }
     }
-    private void OnUpdateEnergy(int currentEnergy, int maxEnergy) 
+
+    private void OnUpdateEnergy(int currentEnergy, int maxEnergy)
     {
-        if (currentEnergy == 0) 
+        if (currentEnergy == 0)
         {
             // Out of energy audio
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke("Out Of Energy");
         }
     }
 
     private void OnWSConnected()
     {
-
     }
 
     private void OnUpdatePlayer(PlayerData newPlayerData)
@@ -265,26 +319,27 @@ public class PlayerManager : MonoBehaviour
         PlayerData = newPlayerData;
     }
 
+    private void OnEncounterDamage(int damageTaken)
+    {
+        OnHit();
+        // the math here is due to only receiving the damage dealt, but the backend applies it to the player state
+        SetHealth(playerData.hpCurrent - damageTaken);
+    }
+
     private void SetDefense(int? value = null)
     {
-        if (value == null) 
+        if (value == null)
         {
             value = playerData.defense;
         }
+
         defenseController.Defense = value.Value;
     }
 
-#if UNITY_EDITOR
-    private void OnMouseDown()
-    {
-        OnDeath();
-    }
-#endif
-
-    public float PlayAnimation(string animationSequence) 
+    public float PlayAnimation(string animationSequence)
     {
         float length = spineAnimationsManagement.PlayAnimationSequence(animationSequence);
-        spineAnimationsManagement.PlayAnimationSequence("Idle");
+        OnIdle();
         return length;
     }
 
@@ -292,21 +347,32 @@ public class PlayerManager : MonoBehaviour
     {
         Debug.Log("+++++++++++++++[Player]Attack");
         float length = spineAnimationsManagement.PlayAnimationSequence("Attack");
-        spineAnimationsManagement.PlayAnimationSequence("Idle");
+        OnIdle();
         return length;
     }
 
     private float OnHit()
     {
         float length = spineAnimationsManagement.PlayAnimationSequence("Hit");
-        spineAnimationsManagement.PlayAnimationSequence("Idle");
+        OnIdle();
         return length;
     }
 
-    private float OnDeath() 
+    private float OnDeath()
     {
         float length = spineAnimationsManagement.PlayAnimationSequence("Death");
         return length;
+    }
+
+    private void OnIdle()
+    {
+        if (playerData.hpCurrent < (playerData.hpMax / 4)  && GameSettings.SHOW_PLAYER_INJURED_IDLE)
+        {
+            spineAnimationsManagement.PlayAnimationSequence("InjuredIdle");
+            return;
+        }
+
+        spineAnimationsManagement.PlayAnimationSequence("Idle");
     }
 
 
@@ -318,40 +384,23 @@ public class PlayerManager : MonoBehaviour
             GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), nameof(PlayerState.dying));
 
             // Play animation
-            RunAfterTime(OnDeath(), () => {
+            RunAfterTime(OnDeath(), () =>
+            {
                 // Tell game that a player is dead
                 GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), nameof(PlayerState.dead));
             });
         }
     }
 
-    private List<Tooltip> GetTooltipInfo()
+    public void SetTooltip(List<Tooltip> tooltips)
     {
-        List<Tooltip> list = new List<Tooltip>();
-
-        foreach (IntentIcon icon in GetComponentsInChildren<IntentIcon>())
-        {
-            list.Add(icon.GetTooltip());
-        }
-
-        foreach (StatusIcon icon in GetComponentsInChildren<StatusIcon>())
-        {
-            list.Add(icon.GetTooltip());
-        }
-
-        return list;
-    }
-
-    private void OnMouseEnter()
-    {
-        Vector3 anchorPoint = new Vector3(collider.bounds.center.x + collider.bounds.extents.x,
-            collider.bounds.center.y, 0);
+        collider.enabled = true;
+        playerBounds = collider.bounds;
+        Vector3 anchorPoint = new Vector3(playerBounds.center.x + playerBounds.extents.x,
+            playerBounds.center.y, 0);
+        collider.enabled = false;
         // Tooltip On
-        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(GetTooltipInfo(), TooltipController.Anchor.MiddleLeft, anchorPoint, null);
-    }
-    private void OnMouseExit()
-    {
-        // Tooltip Off
-        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.MiddleLeft, anchorPoint,
+            null);
     }
 }
