@@ -139,7 +139,6 @@ public class SWSM_Parser
                 ProcessShowCardDialog(data);
                 break;
             case "spawn_enemies":
-                Debug.LogWarning("[SWSM Parser][Combat Update] spawn_enemies not implemented yet");
                 ProcessSpawnEnemies(data);
                 break;
             default:
@@ -407,9 +406,7 @@ public class SWSM_Parser
     private static void ProcessSpawnEnemies(string data)
     {
         SWSM_Enemies enemiesData = JsonUtility.FromJson<SWSM_Enemies>(data);
-        // this should work without breaking anything
         GameManager.Instance.EVENT_ADD_ENEMIES.Invoke(enemiesData.data);
-
     }
 
     private static void UpdateEnergy(string data)
