@@ -276,10 +276,6 @@ public class SWSM_Parser
             case nameof(WS_MESSAGE_ACTIONS.update_player):
                 ProcessUpdatePlayer(data);
                 break;
-            case nameof(WS_MESSAGE_ACTIONS.create_card):
-                ProcessCreateCard(data);
-                // ProcessMoveCard(data);
-                break;
             case nameof(WS_MESSAGE_ACTIONS.add_card):
                 ProcessAddCard(data);
                 break;
@@ -511,18 +507,6 @@ public class SWSM_Parser
     {
         //GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
         GameManager.Instance.EVENT_CARD_DRAW_CARDS.Invoke();
-    }
-
-    private static void ProcessCreateCard(string data)
-    {
-        Debug.Log("[ProcessCreateCard] data:" + data);
-        SWSM_CardMove cardMoveData = JsonUtility.FromJson<SWSM_CardMove>(data);
-        // GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-
-        foreach (CardToMoveData cardData in cardMoveData.data.data)
-        {
-            GameManager.Instance.EVENT_CARD_CREATE.Invoke(cardData.id);
-        }
     }
 
     private static void ProcessAddCard(string data)

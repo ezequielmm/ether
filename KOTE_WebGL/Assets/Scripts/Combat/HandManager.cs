@@ -49,7 +49,6 @@ public class HandManager : MonoBehaviour
         GameManager.Instance.EVENT_CARDS_PILES_UPDATED.AddListener(OnCardsPilesUpdated);
         GameManager.Instance.EVENT_CARD_DRAW_CARDS.AddListener(OnDrawCards);
         GameManager.Instance.EVENT_CARD_DRAW.AddListener(OnCardDraw); // SFX
-        GameManager.Instance.EVENT_CARD_CREATE.AddListener(CreateCard);
         GameManager.Instance.EVENT_CARD_ADD.AddListener(OnCardAdd);
         GameManager.Instance.EVENT_CARD_DISABLED.AddListener(OnCardDestroyed);
         // if we're adding a card to the hand that isn't a draw
@@ -89,28 +88,7 @@ public class HandManager : MonoBehaviour
             audioRunning = false;
         }
     }
-
-    private void CreateCard(string cardID)
-    {
-        Debug.Log($"[HandManager] Moving card [{cardID}] from Draw to Hand");
-        var cardMoved = drawDeck.cards.Find(card => card.id == cardID);
-        if (cardMoved == null)
-        {
-            cardMoved = discardDeck.cards.Find(card => card.id == cardID);
-        }
-
-        if (cardMoved == null)
-        {
-            Debug.LogWarning($"[HandManager] Card [{cardID}] could not be found. No card has been created.");
-            return;
-        }
-
-        drawDeck.cards.Remove(cardMoved);
-        discardDeck.cards.Remove(cardMoved);
-
-        handDeck.cards.Add(cardMoved);
-    }
-
+    
     private void OnCardAdd(AddCardData addCardData)
     {
         // create the new card in the middle of the screen
@@ -135,7 +113,7 @@ public class HandManager : MonoBehaviour
         //move to the discard pile
         GameManager.Instance.EVENT_MOVE_CARD.Invoke(new CardToMoveData
         {
-            destination = "draw",
+            destination = addCardData.destination,
             id = addCardData.card.id,
             source = "none"
         }, GameSettings.SHOW_NEW_CARD_DURATION);

@@ -114,7 +114,6 @@ public class CardOnHandManager : MonoBehaviour
         GameManager.Instance.EVENT_MOVE_CARD.AddListener(OnCardToMove);
         GameManager.Instance.EVENT_CARD_SHOWING_UP.AddListener(OnCardMouseShowingUp);
         GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);
-        GameManager.Instance.EVENT_CARD_CREATE.AddListener(OnCreateCard);
         var death = gameObject.AddComponent<DestroyOnGameStatus>();
         death.causesOfDeath.Add(new DestroyOnGameStatus.CauseOfDeath()
         {
@@ -129,18 +128,6 @@ public class CardOnHandManager : MonoBehaviour
             player = false,
             enemy = true
         };
-    }
-
-    private void OnCreateCard(string cardID)
-    {
-        if (cardID == thisCardValues.id)
-        {
-            /*cardcontent.SetActive(true);
-            cardActive = true;
-            card_can_be_played = true;*/
-
-            MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, true);
-        }
     }
 
     private void OnCardMouseExit(string cardId)
