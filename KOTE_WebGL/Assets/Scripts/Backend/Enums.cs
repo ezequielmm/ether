@@ -223,6 +223,7 @@ public enum WS_DATA_REQUEST_TYPES
     UpgradeCard,
     MerchantData,
     TreasureData,
+    EncounterData,
     Rewards
 }
 
@@ -288,6 +289,7 @@ public enum WS_MESSAGE_ACTIONS
     enemies_defeated,
     players_defeated,
     player_defeated,
+    show_rewards,
     select_another_reward,
     show_map
 }
@@ -347,6 +349,8 @@ public enum ConsoleCommands
     disable_royal_houses_panel,
     disable_node_numbers,
     enable_node,
+    enable_injured_idle,
+    disable_injured_idle,
     reset_all
 }
 

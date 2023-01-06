@@ -111,9 +111,6 @@ public class EnemiesManager : MonoBehaviour
             return;
         }
         
-        // if there are enemies, signal the game status manager to start combat
-       // GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(GameStatuses), nameof(GameStatuses.Combat));
-
 
         for(int i = 0; i < enemies.Count; i++)
         {

@@ -78,4 +78,6 @@ MonoBehaviour:
   combatBackgroundList:
   - {fileID: 11400000, guid: 11f71193e73e7be42810fc75a9e09422, type: 2}
   - {fileID: 11400000, guid: 4f6ea6a8aee73794a93bd5c165b0e268, type: 2}
+  encounterCreatureList: {fileID: 11400000, guid: 0eb3155688a4d9d408d01bba4fcc3344,
+    type: 2}
   miscImages: {fileID: 11400000, guid: d387e2d0bffaf704293b5cda2dd4d12b, type: 2}
