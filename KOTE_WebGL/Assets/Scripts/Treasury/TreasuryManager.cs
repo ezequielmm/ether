@@ -27,7 +27,7 @@ public class TreasuryManager : MonoBehaviour
             scrollRect.scrollSensitivity = GameSettings.PANEL_SCROLL_SPEED;
         }
         GameManager.Instance.EVENT_TREASURYPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerTreasuryPanel);
-
+        
         Button firstCharacterButton = characterList.transform.GetChild(0)?.GetComponent<Button>();
         if (firstCharacterButton != null) firstCharacterButton.onClick?.Invoke();
     }

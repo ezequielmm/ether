@@ -16,6 +16,7 @@ public class WebRequesterManager : MonoBehaviour
     private readonly string urlRegister = "/auth/v1/register";
     private readonly string urlLogin = "/auth/v1/login";
     private readonly string urlProfile = "/gsrv/v1/profile";
+    private readonly string urlWalletData = "";
     private readonly string urlLogout = "/auth/v1/logout";
     private readonly string urlExpeditionStatus = "/gsrv/v1/expeditions/status";
     private readonly string urlCharactersList = "/gsrv/v1/characters";
@@ -54,6 +55,7 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_REGISTER.AddListener(OnRegisterEvent);
         GameManager.Instance.EVENT_REQUEST_LOGIN.AddListener(RequestLogin);
         GameManager.Instance.EVENT_REQUEST_PROFILE.AddListener(RequestProfile);
+        GameManager.Instance.EVENT_REQUEST_WALLET_CONTENTS.AddListener(RequestWalletContents);
         GameManager.Instance.EVENT_REQUEST_LOGOUT.AddListener(RequestLogout);
         GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.AddListener(RequestExpeditionCancel);
     }
@@ -109,6 +111,11 @@ public class WebRequesterManager : MonoBehaviour
     public void RequestProfile(string token)
     {
         StartCoroutine(GetProfile(token));
+    }
+
+    public void RequestWalletContents(string walletAddress)
+    {
+        StartCoroutine(GetWalletContents(walletAddress));
     }
 
     public void RequestCharacterList()
@@ -341,7 +348,26 @@ public class WebRequesterManager : MonoBehaviour
 
         //TODO: check for errors even on sucessful result
     }
+    
+    public IEnumerator GetWalletContents(string walletAddress)
+    {
+        string fullUrl = $"{baseUrl}{urlWalletData}{walletAddress}";
+        
+        UnityWebRequest request = UnityWebRequest.Get($"{fullUrl}");
 
+        yield return request.SendWebRequest();
+        
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.Log("[Error getting Wallet Contents] " + request.error);
+
+            yield break;
+        }
+        
+        Debug.Log("Wallet contents retrieved: " + request.downloadHandler.text);
+    }
+    
     public IEnumerator RequestNewExpedition(string characterType)
     {
         string fullURL = $"{baseUrl}{urlExpeditionRequest}";

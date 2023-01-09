@@ -22,9 +22,15 @@ public class WalletManager : MonoBehaviour
     {
         walletsContainer.GetComponentInChildren<ScrollRect>().scrollSensitivity = GameSettings.PANEL_SCROLL_SPEED;
         GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerWalletsPanel);
-        GameManager.Instance.EVENT_DISCONNECTWALLETPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerDisconnectWalletConfirmPanel);
-
+        GameManager.Instance.EVENT_DISCONNECT_WALLET_PANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerDisconnectWalletConfirmPanel);
+        GameManager.Instance.EVENT_WALLET_CONTENTS_RECEIVED.AddListener(OnWalletDataReceived);
         SetInformationRows();
+    }
+
+    public void OnWalletDataReceived()
+    {
+        int[] tokenIds = { 1, 219, 170 };
+        
     }
 
     public void SetInformationRows()
