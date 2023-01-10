@@ -369,3 +369,20 @@ public enum MusicTypes
     Boss,
     Music
 }
+
+[Serializable]
+public enum TraitTypes
+{
+    Breastplate,
+    Helmet,
+    Weapon,
+    Gauntlet,
+    Padding,
+    Crest,
+    Shield,
+    Pauldrons,
+    Sigil,
+    Vambrace,
+    Boots,
+    Legguard
+}

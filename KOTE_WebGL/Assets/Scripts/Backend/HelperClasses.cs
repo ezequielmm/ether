@@ -918,4 +918,5 @@ public struct TraitSprite
     public int attachmentIndex;
     public string imageName;
     public Sprite sprite;
+    public bool isDefault;
 }
