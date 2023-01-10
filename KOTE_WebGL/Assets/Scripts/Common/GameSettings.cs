@@ -70,7 +70,8 @@ public static class GameSettings
     public const int DEFAUT_TEXTEFFECT_POOL_SIZE = 10;
 
     // UI
-    public static float PANEL_SCROLL_SPEED = 30f;
+    public const float PANEL_SCROLL_SPEED = 30f;
+    public const int ENCOUNTER_TEXT_BOX_CHARACTER_COUNT = 500;
 
     // Player Skin Defaults
     public static TraitSprite[] DEFAULT_SKIN_DATA = new[]

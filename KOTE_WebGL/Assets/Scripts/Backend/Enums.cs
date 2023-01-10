@@ -288,6 +288,7 @@ public enum WS_MESSAGE_ACTIONS
     enemies_defeated,
     players_defeated,
     player_defeated,
+    show_rewards,
     select_another_reward,
     show_map
 }
