@@ -897,8 +897,16 @@ public class SWSM_HealData
 }
 
 [Serializable]
+public class NftData
+{
+    public NftMetaData[] assets;
+    
+}
+
+[Serializable]
 public class NftMetaData
 {
+    public string image_url;
     public Trait[] traits;
 }
 
@@ -907,6 +915,12 @@ public class Trait
 {
     public string trait_type;
     public string value;
+}
+
+[Serializable]
+public class WalletKnightIds
+{
+    public int[] data;
 }
 
 // this is to pass along data needed for each individual skin image downloaded from the server

@@ -42,9 +42,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<bool, GameObject> EVENT_DISCONNECT_WALLET_PANEL_ACTIVATION_REQUEST =
         new UnityEvent<bool, GameObject>();
     [HideInInspector] public UnityEvent<bool> EVENT_DISCONNECT_WALLET_CONFIRMED = new UnityEvent<bool>();
-    [HideInInspector] public UnityEvent<string> EVENT_NEW_WALLET = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<string> EVENT_WALLET_ADDRESS_RECEIVED = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_WALLET_CONTENTS = new UnityEvent<string>();
-    [HideInInspector] public UnityEvent EVENT_WALLET_CONTENTS_RECEIVED = new UnityEvent();
+    [HideInInspector] public UnityEvent<WalletKnightIds> EVENT_WALLET_CONTENTS_RECEIVED = new UnityEvent<WalletKnightIds>();
     [HideInInspector] public UnityEvent<string> EVENT_MESSAGE_SIGN = new UnityEvent<string>();
 
     //TREASURY EVENTS
@@ -168,8 +168,8 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<PlayerData> EVENT_UPDATE_PLAYER = new UnityEvent<PlayerData>();
     
     // NFT SKIN EVENTS
-    [HideInInspector] public UnityEvent<int> EVENT_REQUEST_NFT_METADATA = new UnityEvent<int>();
-    [HideInInspector] public UnityEvent<NftMetaData> EVENT_NFT_METADATA_RECEIVED = new UnityEvent<NftMetaData>();
+    [HideInInspector] public UnityEvent<int[]> EVENT_REQUEST_NFT_METADATA = new UnityEvent<int[]>();
+    [HideInInspector] public UnityEvent<NftData> EVENT_NFT_METADATA_RECEIVED = new UnityEvent<NftData>();
     [HideInInspector] public UnityEvent<TraitSprite> EVENT_REQUEST_NFT_SKIN_SPRITE = new UnityEvent<TraitSprite>();
     [HideInInspector] public UnityEvent<TraitSprite> EVENT_NFT_SKIN_SPRITE_RECEIVED = new UnityEvent<TraitSprite>();
     [HideInInspector] public UnityEvent EVENT_NFT_SKIN_SPRITE_FAILED = new UnityEvent();

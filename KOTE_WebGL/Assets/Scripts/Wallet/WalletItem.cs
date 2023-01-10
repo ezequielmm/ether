@@ -1,18 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class WalletItem : MonoBehaviour
 {
-    public List<Image> columns;
+    public TMP_Text walletAddressText;
+    public TMP_Text knightCountText;
 
-    public void SetColor(Color color)
+    public void SetWalletAddress(string address)
     {
-        foreach (Image column in columns)
-        {
-            column.color = color;
-        }
+        walletAddressText.text = address;
+    }
+
+    public void SetKnightCount(int count)
+    {
+        knightCountText.text = count + " Knights";
     }
 
     public void ActivateConfirmation()

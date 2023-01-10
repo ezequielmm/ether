@@ -21,10 +21,8 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 
     private void Start()
     {
-        GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(OnNftMetadataReceived);
         GameManager.Instance.EVENT_NFT_SKIN_SPRITE_RECEIVED.AddListener(OnSkinSpriteReceived);
         GameManager.Instance.EVENT_NFT_SKIN_SPRITE_FAILED.AddListener(OnSkinSpriteFailed);
-        GameManager.Instance.EVENT_REQUEST_NFT_METADATA.Invoke(100); //219
         knightSkeletonData = KinghtData.GetSkeletonData(true);
         RequestDefaultSkins();
     }
