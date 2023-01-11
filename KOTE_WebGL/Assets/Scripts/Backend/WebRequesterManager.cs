@@ -459,7 +459,7 @@ public class WebRequesterManager : MonoBehaviour
                 nftImageRequest.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogWarning(
-                    $"Error getting nft image knight {requestData.Item1} at url {requestData.Item2}: {nftImageRequest.downloadHandler.text}");
+                    $"[WebRequesterManager] [GetNftImages] Error getting nft image knight {requestData.Item1} at url {requestData.Item2}: {nftImageRequest.downloadHandler.text}");
                 requestsFailed++;
                 continue;
             }
@@ -472,7 +472,7 @@ public class WebRequesterManager : MonoBehaviour
             requestsSucceeded++;
         }
         nftQueueRunning = false;
-        Debug.LogError($"requests made: {requestsMade} requests failed: {requestsFailed} requests succeeded: {requestsSucceeded}");
+        Debug.Log($"[WebRequesterManager] [GetNftImages] requests made: {requestsMade} requests failed: {requestsFailed} requests succeeded: {requestsSucceeded}");
     }
 
     public IEnumerator GetNftSkinElement(TraitSprite spriteToPopulate)
