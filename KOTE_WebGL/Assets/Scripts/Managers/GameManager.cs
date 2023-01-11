@@ -173,7 +173,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<int[]> EVENT_REQUEST_NFT_METADATA = new UnityEvent<int[]>();
     [HideInInspector] public UnityEvent<NftData> EVENT_NFT_METADATA_RECEIVED = new UnityEvent<NftData>();
     [HideInInspector] public UnityEvent<NftMetaData> EVENT_NFT_SELECTED = new UnityEvent<NftMetaData>();
-    [HideInInspector] public UnityEvent<string, string> EVENT_REQUEST_NFT_IMAGE = new UnityEvent<string, string>();
+    [HideInInspector] public UnityEvent<NftMetaData[]> EVENT_REQUEST_NFT_IMAGE = new UnityEvent<NftMetaData[]>();
     [HideInInspector] public UnityEvent<string, Sprite> EVENT_NFT_IMAGE_RECEIVED = new UnityEvent<string, Sprite>();
     [HideInInspector] public UnityEvent<TraitSprite> EVENT_REQUEST_NFT_SKIN_SPRITE = new UnityEvent<TraitSprite>();
     [HideInInspector] public UnityEvent<TraitSprite> EVENT_NFT_SKIN_SPRITE_RECEIVED = new UnityEvent<TraitSprite>();

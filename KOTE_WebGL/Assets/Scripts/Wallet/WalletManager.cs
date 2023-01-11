@@ -24,7 +24,7 @@ public class WalletManager : MonoBehaviour
         
         // hardcoded wallet data for testing, metamask doesn't exist in editor so we have to send a wallet id manually
         #if UNITY_EDITOR
-        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke("0xbd22537d05207e470A458773683041012ddcAB65");
+        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke("0xA10f15B66a2e05c4e376F8bfC35aE662438153Be");
 #endif
     }
 

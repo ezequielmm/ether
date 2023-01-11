@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8123202173711684050}
   - component: {fileID: 3299591649399607022}
   - component: {fileID: 5179243166295883219}
+  - component: {fileID: 4132858634265602636}
   m_Layer: 0
   m_Name: SpriteManager
   m_TagString: Untagged
@@ -94,5 +95,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bce15e6f3d810149851620def90261a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SkinSprites: []
   KinghtData: {fileID: 11400000, guid: 0833cefecbb1e774184077143e73eb05, type: 2}
+--- !u!114 &4132858634265602636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3382859683205716808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bd21d22cf1609d4c8b08ec3a6b9de42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

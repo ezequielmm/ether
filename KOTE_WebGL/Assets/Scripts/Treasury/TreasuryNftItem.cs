@@ -9,8 +9,14 @@ public class TreasuryNftItem : MonoBehaviour
     public void Populate(NftMetaData metaData)
     {
         this.metaData = metaData;
+        Sprite image = NftImageManager.Instance.GetNftImage(metaData);
+        if (image != null)
+        {
+            nftImage.sprite = image;
+            return;
+        }
+        // if the image isn't already downloaded, wait for it to be
         GameManager.Instance.EVENT_NFT_IMAGE_RECEIVED.AddListener(OnImageReceived);
-        GameManager.Instance.EVENT_REQUEST_NFT_IMAGE.Invoke(this.metaData.token_id, this.metaData.image_original_url);
     }
 
     private void OnImageReceived(string tokenId, Sprite image)

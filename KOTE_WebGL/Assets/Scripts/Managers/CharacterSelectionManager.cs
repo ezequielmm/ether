@@ -6,19 +6,15 @@ public class CharacterSelectionManager : MonoBehaviour
 {
     public Button startExpeditionButton;
     public GameObject characterSelectionContainer;
-    
-    [Space]
-    [Header("Class Select")]
-    public List<GameObject> characterBorders;
-    
-    [Space]
-    [Header("NFT Select")]
-    public GameObject nftSelectionLayout;
+
+    [Space] [Header("Class Select")] public List<GameObject> characterBorders;
+
+    [Space] [Header("NFT Select")] public GameObject nftSelectionLayout;
     public GameObject nftSelectItemPrefab;
-    
+
     private GameObject currentClass;
     private SelectableNftManager selectedNft;
-    
+
     private void Start()
     {
         //GameManager.Instance.webRequester.RequestCharacterList();// we are not requesting the list until we have more than one type so for the moment only knight
@@ -30,7 +26,7 @@ public class CharacterSelectionManager : MonoBehaviour
 
         startExpeditionButton.interactable = false;
     }
-    
+
     private void ActivateInnerCharacterSelectionPanel(bool activate)
     {
         characterSelectionContainer.SetActive(activate);
@@ -42,39 +38,45 @@ public class CharacterSelectionManager : MonoBehaviour
         {
             GameObject localObject = Instantiate(nftSelectItemPrefab, nftSelectionLayout.transform);
             SelectableNftManager currentNft = localObject.GetComponent<SelectableNftManager>();
-            currentNft.Populate(metaData, (isToggled) =>
+            currentNft.Populate(metaData, (isOn) =>
             {
-                if (isToggled)
+                if (!currentNft.isSelected)
                 {
                     if (selectedNft == null)
                     {
                         selectedNft = currentNft;
                         startExpeditionButton.interactable = true;
+                        currentNft.isSelected = true;
                     }
                     else if (selectedNft != currentNft)
                     {
-                        selectedNft.toggle.onValueChanged.Invoke(false);
+                        // clear the previous selected nft
+                        selectedNft.isSelected = false;
+                        selectedNft.DetermineToggleColor();
+                        // and set the current nft as the new one
                         selectedNft = currentNft;
+                        startExpeditionButton.interactable = true;
+                        currentNft.isSelected = true;
                     }
-                    return;
+                }
+                else if (currentNft.isSelected && selectedNft == currentNft)
+                {
+                    selectedNft = null;
+                    startExpeditionButton.interactable = false;
+                    currentNft.isSelected = false;
                 }
 
-                if (selectedNft == currentNft)
-                {
-                    currentNft = null;
-                    startExpeditionButton.interactable = false;
-                }
+                currentNft.DetermineToggleColor();
             });
         }
     }
-    
+
     public void OnStartExpedition()
     {
         startExpeditionButton.enabled = false;
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_NFT_SELECTED.Invoke(selectedNft.internalPrefab.metaData);
         GameManager.Instance.webRequester.RequestStartExpedition("knight"); //for the moment this is hardcoded
-        
     }
 
     private void OnExpeditionConfirmed()
@@ -93,7 +95,9 @@ public class CharacterSelectionManager : MonoBehaviour
     }
 
     // Leaving this so we still have it when we need to do class selections
+
     #region ClassSelect
+
     public void OnCharacterSelected(GameObject currentClassBorder)
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
@@ -109,5 +113,6 @@ public class CharacterSelectionManager : MonoBehaviour
     {
         currentClass = selectedClass;
     }
+
     #endregion
 }

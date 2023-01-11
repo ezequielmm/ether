@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using BestHTTP.JSON;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -24,6 +26,10 @@ public class WebRequesterManager : MonoBehaviour
     private readonly string urlNftSkinSprites = "https://client.dev.kote.robotseamonster.com/SkinAssets/";
     private readonly string urlOpenSea = "https://api.opensea.io/api/v1/assets?xxxx&asset_contract_address=0x32A322C7C77840c383961B8aB503c9f45440c81f&format=json";
 
+    // we have to queue the requested nft images due to rate limiting
+    private Queue<(string, string)> requestedNftImages = new Queue<(string, string)>();
+    private bool nftQueueRunning;
+    
     private void Awake()
     {
         HiddenConsoleManager.DisableOnBuild();
@@ -59,6 +65,7 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_LOGOUT.AddListener(RequestLogout);
         GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.AddListener(RequestExpeditionCancel);
         GameManager.Instance.EVENT_REQUEST_NFT_METADATA.AddListener(RequestNftData);
+        GameManager.Instance.EVENT_REQUEST_NFT_IMAGE.AddListener(RequestNftImage);
         GameManager.Instance.EVENT_REQUEST_NFT_SKIN_SPRITE.AddListener(RequestNftSkinElement);
     }
 
@@ -100,9 +107,16 @@ public class WebRequesterManager : MonoBehaviour
         StartCoroutine(GetNftData(tokenIds));
     }
 
-    public void RequestNftImage(string tokenId, string imageUrl)
+    public void RequestNftImage(NftMetaData[] requestedTokens)
     {
-        StartCoroutine(GetNftImage(tokenId, imageUrl));
+        foreach (NftMetaData metaData in requestedTokens)
+        {
+            requestedNftImages.Enqueue((metaData.token_id, metaData.image_original_url));
+        }
+        if (!nftQueueRunning)
+        {
+            StartCoroutine(GetNftImages());
+        }
     }
 
     public void RequestNftSkinElement(TraitSprite spriteToPopulate)
@@ -368,7 +382,7 @@ public class WebRequesterManager : MonoBehaviour
     
     public IEnumerator GetWalletContents(string walletAddress)
     {
-        string fullUrl = $"{baseUrl}{urlWalletData}/{walletAddress}";
+        string fullUrl = $"api.dev.kote.robotseamonster.com{urlWalletData}/{walletAddress}";
         
         UnityWebRequest request = UnityWebRequest.Get($"{fullUrl}");
 
@@ -389,40 +403,76 @@ public class WebRequesterManager : MonoBehaviour
     
     public IEnumerator GetNftData(int[] tokenIds)
     {
-        string nftUrl = urlOpenSea;
-        nftUrl = nftUrl.Replace("xxxx", "token_ids=" + string.Join("&token_ids=", tokenIds));
-        Debug.Log("[WebRequesterManager] nft metadata url: " + nftUrl);
-        UnityWebRequest openSeaRequest = UnityWebRequest.Get(nftUrl);
-        openSeaRequest.SetRequestHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
-        yield return openSeaRequest.SendWebRequest();
-        if (openSeaRequest.result == UnityWebRequest.Result.ConnectionError ||
-            openSeaRequest.result == UnityWebRequest.Result.ProtocolError)
+        List<int[]> splitTokenLists = new List<int[]>();
+        for (int i = 0; i < tokenIds.Length; i += 30)
         {
-            Debug.Log($"{openSeaRequest.error}");
-            yield break;
+            int[] tokenIdChunk;
+            if (tokenIds.Length - i < 30)
+            {
+                tokenIdChunk = new int[tokenIds.Length - i];
+            }
+            else
+            {
+                tokenIdChunk = new int[30];
+            }
+            
+            Array.Copy(tokenIds, i, tokenIdChunk, 0, tokenIdChunk.Length);
+            splitTokenLists.Add(tokenIdChunk);
         }
-        
-        NftData nftData = JsonUtility.FromJson<NftData>(openSeaRequest.downloadHandler.text);
-        GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.Invoke(nftData);
+
+        foreach (int[] idChunk in splitTokenLists)
+        {
+            string nftUrl = urlOpenSea;
+            nftUrl = nftUrl.Replace("xxxx", "token_ids=" + string.Join("&token_ids=", idChunk));
+            Debug.Log("[WebRequesterManager] nft metadata url: " + nftUrl);
+            UnityWebRequest openSeaRequest = UnityWebRequest.Get(nftUrl);
+            openSeaRequest.SetRequestHeader("User-Agent",
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
+            yield return openSeaRequest.SendWebRequest();
+            if (openSeaRequest.result == UnityWebRequest.Result.ConnectionError ||
+                openSeaRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.Log($"{openSeaRequest.error} {openSeaRequest.downloadHandler.text}");
+                yield break;
+            }
+            
+            Debug.Log("Nft metadata received");
+            NftData nftData = JsonUtility.FromJson<NftData>(openSeaRequest.downloadHandler.text);
+            GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.Invoke(nftData);
+        }
     }
 
-    public IEnumerator GetNftImage(string tokenId, string imageUrl)
+    public IEnumerator GetNftImages()
     {
-        UnityWebRequest nftImageRequest = UnityWebRequestTexture.GetTexture(imageUrl);
-        yield return nftImageRequest.SendWebRequest();
-        
-        if (nftImageRequest.result == UnityWebRequest.Result.ConnectionError ||
-            nftImageRequest.result == UnityWebRequest.Result.ProtocolError)
+        nftQueueRunning = true;
+        int requestsMade = 0;
+        int requestsFailed = 0;
+        int requestsSucceeded = 0;
+        while (requestedNftImages.Count > 0)
         {
-            Debug.LogWarning($"Error getting nft image knight {tokenId} at url {imageUrl}");
-            yield break;
+            (string, string) requestData = requestedNftImages.Dequeue();
+            UnityWebRequest nftImageRequest = UnityWebRequestTexture.GetTexture(requestData.Item2);
+            requestsMade++;
+            yield return nftImageRequest.SendWebRequest();
+
+            if (nftImageRequest.result == UnityWebRequest.Result.ConnectionError ||
+                nftImageRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogWarning(
+                    $"Error getting nft image knight {requestData.Item1} at url {requestData.Item2}: {nftImageRequest.downloadHandler.text}");
+                requestsFailed++;
+                continue;
+            }
+
+            Texture2D myTexture = ((DownloadHandlerTexture)nftImageRequest.downloadHandler).texture;
+            Sprite nftImage = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height),
+                Vector2.zero);
+            nftImage.name = requestData.Item1;
+            GameManager.Instance.EVENT_NFT_IMAGE_RECEIVED.Invoke(requestData.Item1, nftImage);
+            requestsSucceeded++;
         }
-        
-        Texture2D myTexture = ((DownloadHandlerTexture)nftImageRequest.downloadHandler).texture;
-        Sprite nftImage = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height),
-            Vector2.zero);
-        nftImage.name = tokenId;
-        GameManager.Instance.EVENT_NFT_IMAGE_RECEIVED.Invoke(tokenId, nftImage);
+        nftQueueRunning = false;
+        Debug.LogError($"requests made: {requestsMade} requests failed: {requestsFailed} requests succeeded: {requestsSucceeded}");
     }
 
     public IEnumerator GetNftSkinElement(TraitSprite spriteToPopulate)

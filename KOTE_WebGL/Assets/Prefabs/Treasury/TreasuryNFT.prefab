@@ -166,4 +166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8575e0ad5e0593341a9f0e10aca76a3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nftImage: {fileID: 7326041469427555711}
+  nftImage: {fileID: 8854309543504419940}
+  metaData:
+    token_id: 
+    image_original_url: 
+    traits: []
