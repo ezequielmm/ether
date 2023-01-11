@@ -23,6 +23,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     {
         GameManager.Instance.EVENT_NFT_SKIN_SPRITE_RECEIVED.AddListener(OnSkinSpriteReceived);
         GameManager.Instance.EVENT_NFT_SKIN_SPRITE_FAILED.AddListener(OnSkinSpriteFailed);
+        GameManager.Instance.EVENT_NFT_SELECTED.AddListener(OnNftSelected);
         knightSkeletonData = KinghtData.GetSkeletonData(true);
         RequestDefaultSkins();
     }
@@ -52,7 +53,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         }
     }
 
-    private void OnNftMetadataReceived(NftMetaData nftMetaData)
+    private void OnNftSelected(NftMetaData nftMetaData)
     {
         currentMetadata.Clear();
         currentMetadata.AddRange(nftMetaData.traits);
