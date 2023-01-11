@@ -100,6 +100,11 @@ public class WebRequesterManager : MonoBehaviour
         StartCoroutine(GetNftData(tokenIds));
     }
 
+    public void RequestNftImage(string tokenId, string imageUrl)
+    {
+        StartCoroutine(GetNftImage(tokenId, imageUrl));
+    }
+
     public void RequestNftSkinElement(TraitSprite spriteToPopulate)
     {
         StartCoroutine(GetNftSkinElement(spriteToPopulate));
@@ -372,7 +377,7 @@ public class WebRequesterManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.ConnectionError ||
             request.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log("[Error getting Wallet Contents] " + request.error);
+            Debug.Log("[Error getting Wallet Contents] " + request.error + " from " + fullUrl);
 
             yield break;
         }
@@ -399,6 +404,25 @@ public class WebRequesterManager : MonoBehaviour
         
         NftData nftData = JsonUtility.FromJson<NftData>(openSeaRequest.downloadHandler.text);
         GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.Invoke(nftData);
+    }
+
+    public IEnumerator GetNftImage(string tokenId, string imageUrl)
+    {
+        UnityWebRequest nftImageRequest = UnityWebRequestTexture.GetTexture(imageUrl);
+        yield return nftImageRequest.SendWebRequest();
+        
+        if (nftImageRequest.result == UnityWebRequest.Result.ConnectionError ||
+            nftImageRequest.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogWarning($"Error getting nft image knight {tokenId} at url {imageUrl}");
+            yield break;
+        }
+        
+        Texture2D myTexture = ((DownloadHandlerTexture)nftImageRequest.downloadHandler).texture;
+        Sprite nftImage = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height),
+            Vector2.zero);
+        nftImage.name = tokenId;
+        GameManager.Instance.EVENT_NFT_IMAGE_RECEIVED.Invoke(tokenId, nftImage);
     }
 
     public IEnumerator GetNftSkinElement(TraitSprite spriteToPopulate)

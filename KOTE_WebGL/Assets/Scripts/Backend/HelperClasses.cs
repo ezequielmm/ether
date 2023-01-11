@@ -906,7 +906,8 @@ public class NftData
 [Serializable]
 public class NftMetaData
 {
-    public string image_url;
+    public string token_id;
+    public string image_original_url;
     public Trait[] traits;
 }
 

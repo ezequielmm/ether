@@ -27,7 +27,7 @@ public class TreasuryManager : MonoBehaviour
             scrollRect.scrollSensitivity = GameSettings.PANEL_SCROLL_SPEED;
         }
         GameManager.Instance.EVENT_TREASURYPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerTreasuryPanel);
-        
+        GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(SetNftPanelContent);
         Button firstCharacterButton = characterList.transform.GetChild(0)?.GetComponent<Button>();
         if (firstCharacterButton != null) firstCharacterButton.onClick?.Invoke();
     }
@@ -36,18 +36,21 @@ public class TreasuryManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         tabsNavigatorManager.SelectFirstTab();
-
-        SetNftPanelContent();
+        
         SetCardPanelContent();
         SetPowerPanelContent();
         SetArmorPanelContent();
     }
 
     // setting random object for testing, but each panel will eventually be handled differently
-    private void SetNftPanelContent()
+    private void SetNftPanelContent(NftData heldNftData)
     {
         DestroyChildren(nftPanel);
-        SetObjects(nftPanel, treasuryNftPrefab);
+        foreach (NftMetaData metaData in heldNftData.assets)
+        {
+            GameObject localObject = Instantiate(treasuryNftPrefab, transform);
+            localObject.GetComponent<TreasuryNftItem>().Populate(metaData);
+        }
     }
 
     private void SetCardPanelContent()
