@@ -28,6 +28,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.13, y: 0.13, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9201802348708546017}
   m_RootOrder: 0
@@ -86,6 +87,7 @@ GameObject:
   - component: {fileID: 9201802348708546017}
   - component: {fileID: 6560463872070685962}
   - component: {fileID: 7326041469427555711}
+  - component: {fileID: 3586634574311673506}
   m_Layer: 5
   m_Name: TreasuryNFT
   m_TagString: Untagged
@@ -103,6 +105,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 597235607352591245}
   m_Father: {fileID: 0}
@@ -151,3 +154,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3586634574311673506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5248840075696290227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8575e0ad5e0593341a9f0e10aca76a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nftImage: {fileID: 8854309543504419940}
+  metaData:
+    token_id: 
+    image_original_url: 
+    traits: []
