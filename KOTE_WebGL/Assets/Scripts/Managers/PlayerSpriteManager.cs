@@ -131,34 +131,6 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         }
     }
 
-    public Sprite GetSpriteForAttachment(int attachmentIndex)
-    {
-        if (SkinSprites.Exists(x => x.attachmentIndex == attachmentIndex))
-        {
-            return SkinSprites.Find(x => x.attachmentIndex == attachmentIndex).sprite;
-        }
-        if (DefaultSprites.Exists(x => x.attachmentIndex == attachmentIndex))
-        {
-            return DefaultSprites.Find(x => x.attachmentIndex == attachmentIndex).sprite;
-        }
-
-        return null;
-    }
-
-    public String GetSkinName(int attachmentIndex)
-    {
-        if (SkinSprites.Exists(x => x.attachmentIndex == attachmentIndex))
-        {
-            return SkinSprites.Find(x => x.attachmentIndex == attachmentIndex).skinName;
-        }
-        if (DefaultSprites.Exists(x => x.attachmentIndex == attachmentIndex))
-        {
-            return DefaultSprites.Find(x => x.attachmentIndex == attachmentIndex).skinName;
-        }
-
-        return null;
-    }
-
     // get the list of all skins for the knight, using the defaults if it doesn't exist
     public List<TraitSprite> GetAllTraitSprites()
     {
