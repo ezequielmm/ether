@@ -588,7 +588,10 @@ public class SWSM_Parser
                 GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCardData.data.data.cards, panelOptions,
                     (selectedCards) => { GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards); });
                 break;
-
+            case "select_trinkets":
+                SWSM_SelectTrinketData trinketData = JsonUtility.FromJson<SWSM_SelectTrinketData>(data);
+                GameManager.Instance.EVENT_SHOW_SELECT_TRINKET_PANEL.Invoke(trinketData);
+                break;
             case "finish_encounter":
                 //  GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
                 break;
