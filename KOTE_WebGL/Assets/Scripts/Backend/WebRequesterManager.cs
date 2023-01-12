@@ -16,7 +16,7 @@ public class WebRequesterManager : MonoBehaviour
     private readonly string urlRegister = "/auth/v1/register";
     private readonly string urlLogin = "/auth/v1/login";
     private readonly string urlProfile = "/gsrv/v1/profile";
-    private readonly string urlWalletData = "/v1/wallets";
+    private readonly string urlWalletData = "/gsrv/v1/wallets";
     private readonly string urlLogout = "/auth/v1/logout";
     private readonly string urlExpeditionStatus = "/gsrv/v1/expeditions/status";
     private readonly string urlCharactersList = "/gsrv/v1/characters";
@@ -382,7 +382,7 @@ public class WebRequesterManager : MonoBehaviour
     
     public IEnumerator GetWalletContents(string walletAddress)
     {
-        string fullUrl = $"api.dev.kote.robotseamonster.com{urlWalletData}/{walletAddress}";
+        string fullUrl = $"{baseUrl}{urlWalletData}/{walletAddress}";
         
         UnityWebRequest request = UnityWebRequest.Get($"{fullUrl}");
 

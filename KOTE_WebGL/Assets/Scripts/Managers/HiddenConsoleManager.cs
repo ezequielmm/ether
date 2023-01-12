@@ -98,7 +98,8 @@ public class HiddenConsoleManager : MonoBehaviour
 
                 int nodeId = int.Parse(args[0]);
                 GameManager.Instance.EVENT_SKIP_NODE.Invoke(nodeId);
-                PublicLog($"Skipping to node {nodeId}, reload map to update");
+                PublicLog($"Skipping to node {nodeId}");
+                GameManager.Instance.LoadScene(inGameScenes.Expedition);
                 break;
         }
     }
