@@ -104,7 +104,10 @@ public class SelectCardsPanel : CardPanelBase
                 selectedCards++;
                 selectedCardIds.Add(cardManager.GetId());
                 cardManager.isSelected = true;
-                ShowCardInCenter(cardManager.gameObject, cardManager);
+                if (selectOptions.ShowCardInCenter)
+                {
+                    ShowCardInCenter(cardManager.gameObject, cardManager);
+                }
             }
             else if (cardManager.isSelected)
             {
@@ -186,8 +189,8 @@ public class SelectCardsPanel : CardPanelBase
 
     public void HidePanel()
     {
-        commonCardsContainer.SetActive(false);
         ClearSelectList();
+        HideCardSelectPanel();
     }
 
     private void ClearSelectList()

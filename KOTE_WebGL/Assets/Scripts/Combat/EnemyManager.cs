@@ -21,29 +21,24 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     public EnemyTypes enemyType;
     public bool setEnemy = false;
 
-    [SerializeField]
-    private List<GameObject> enemyMap;
+    [SerializeField] private List<GameObject> enemyMap;
     private EnemyPrefab enemyPlacementData;
     private GameObject activeEnemy;
 
     private SpineAnimationsManagement spine;
     private Action RunWithEvent;
     private bool CalledEvent;
+    private List<Guid> runningEvents = new List<Guid>();
 
     new private Collider2D collider;
     private Bounds enemyBounds;
     private StatusManager statusManager;
 
 
-    public EnemyData EnemyData { 
-        set
-        {
-            enemyData = ProcessNewData(enemyData, value);
-        }
-        get
-        {
-            return enemyData;
-        }
+    public EnemyData EnemyData
+    {
+        set { enemyData = ProcessNewData(enemyData, value); }
+        get { return enemyData; }
     }
 
 
@@ -69,7 +64,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
     private void Update()
     {
-        if (setEnemy) 
+        if (setEnemy)
         {
             setEnemy = false;
             SetEnemyPrefab(Enum.GetName(typeof(EnemyTypes), enemyType));
@@ -123,46 +118,71 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             // Run Attack Animation Or Status effects
             if (target.effectType == nameof(ATTACK_EFFECT_TYPES.damage))
             {
+                runningEvents.Add(attack.attackId);
                 // Run Attack
                 var f = Attack();
                 if (f > afterEvent) afterEvent = f;
                 endCalled = true;
-                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+                RunAfterEvent(() =>
+                {
+                    GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack);
+                    runningEvents.Remove(attack.attackId);
+                });
             }
             else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
             {
+                runningEvents.Add(attack.attackId);
                 var f = PlayAnimation("Cast");
                 if (f > afterEvent) afterEvent = f;
                 endCalled = true;
-                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+                RunAfterEvent(() =>
+                {
+                    GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack);
+                    runningEvents.Remove(attack.attackId);
+                });
             }
             else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.heal)) // Health Up
             {
+                runningEvents.Add(attack.attackId);
                 var f = PlayAnimation("Cast");
                 if (f > afterEvent) afterEvent = f;
                 endCalled = true;
-                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+                RunAfterEvent(() =>
+                {
+                    GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack);
+                    runningEvents.Remove(attack.attackId);
+                });
             }
         }
+
         if (!endCalled)
-        { // If no conditions met, pass onto the target and play cast
+
+        {
+            runningEvents.Add(attack.attackId); // If no conditions met, pass onto the target and play cast
             var f = PlayAnimation("Cast");
             if (f > afterEvent) afterEvent = f;
             endCalled = true;
-            RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
-        }
-        else if (afterEvent > 0) 
-        {
-            RunAfterTime(afterEvent, () => 
+            RunAfterEvent(() =>
             {
-                if (RunWithEvent != null && !CalledEvent) 
+                GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack);
+                runningEvents.Remove(attack.attackId);
+            });
+        }
+        else if (afterEvent > 0)
+        {
+            RunAfterTime(afterEvent, () =>
+            {
+                if (RunWithEvent != null && !CalledEvent && runningEvents.Contains(attack.attackId))
                 {
-                    Debug.LogWarning($"[EnemyManager | {enemyData.name}] Animation is missing a 'attack' or 'release' event!");
+                    Debug.LogWarning(
+                        $"[EnemyManager | {enemyData.name}] Animation is missing a 'attack' or 'release' event!");
                     RunWithEvent.Invoke();
+                    runningEvents.Remove(attack.attackId);
                 }
             });
         }
     }
+
     private void OnAttackResponse(CombatTurnData attack)
     {
         var target = attack.GetTarget(enemyData.id);
@@ -173,7 +193,8 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
         // Negitive Deltas
         float waitDuration = 0;
-        if (target.defenseDelta < 0 || target.healthDelta < 0) {
+        if (target.defenseDelta < 0 || target.healthDelta < 0)
+        {
             GameManager.Instance.EVENT_DAMAGE.Invoke(target);
         }
 
@@ -183,7 +204,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             // Can be specific, but we'll default to "Attack"
             waitDuration += OnHit();
         }
-        
+
         if (target.healthDelta > 0) // Healed!
         {
             // Play Rising Chimes
@@ -196,6 +217,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         {
             SetDefense(target.finalDefense);
         }
+
         if (target.healthDelta != 0)
         {
             SetHealth(target.finalHealth);
@@ -248,6 +270,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         {
             value = enemyData.defense;
         }
+
         defenseController.Defense = value.Value;
     }
 
@@ -263,7 +286,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         statusManager = GetComponentInChildren<StatusManager>();
     }
 
-    private void Instantiate() 
+    private void Instantiate()
     {
         // Grab first spine animation management script we find. This is a default. We'll set this when spawning the enemy usually.
         if (activeEnemy == null)
@@ -275,13 +298,12 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             }
         }
 
-        if (activeEnemy != null) 
+        if (activeEnemy != null)
         {
             spine = activeEnemy.GetComponent<SpineAnimationsManagement>();
             spine.ANIMATION_EVENT.AddListener(OnAnimationEvent);
             spine.PlayAnimationSequence("Idle");
         }
-        
     }
 
     private void OnUpdateEnemy(EnemyData newEnemyData)
@@ -309,10 +331,12 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         {
             current = enemyData.hpCurrent;
         }
+
         if (max == null)
         {
             max = enemyData.hpMax;
         }
+
         Debug.Log($"[EnemyManager] Health: {current}/{max}");
 
         healthTF.SetText($"{current}/{max}");
@@ -322,7 +346,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         if (healthBar.value != current)
         {
             hitPS.Play();
-            healthBar.DOValue(current.Value, 1).OnComplete(()=>CheckDeath(current.Value));
+            healthBar.DOValue(current.Value, 1).OnComplete(() => CheckDeath(current.Value));
         }
     }
 
@@ -333,7 +357,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         return length;
     }
 
-    private float Attack() 
+    private float Attack()
     {
         Debug.Log("+++++++++++++++[Enemy]Attack");
 
@@ -347,7 +371,6 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         float length = spine.PlayAnimationSequence("Hit");
         spine.PlayAnimationSequence("Idle");
         return length;
-
     }
 
     private float OnDeath()
@@ -356,21 +379,22 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         return length;
     }
 
-    private void ActivateCollider(PointerData _) 
+    private void ActivateCollider(PointerData _)
     {
         if (collider != null)
             collider.enabled = true;
     }
-    private void DeactivateCollider(string _) 
+
+    private void DeactivateCollider(string _)
     {
-        if(collider != null)
+        if (collider != null)
             collider.enabled = false;
     }
 
     private void CheckDeath(int current)
     {
-       // if (enemyData.hpCurrent < 1)//TODO: enemyData is not up to date
-        if (current  < 1)
+        // if (enemyData.hpCurrent < 1)//TODO: enemyData is not up to date
+        if (current < 1)
         {
             // Tell game that a player is dying
             GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), nameof(EnemyState.dying));
@@ -379,7 +403,8 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             explodePS.Play();
 
             // Play animation
-            RunAfterTime(OnDeath(), () => {
+            RunAfterTime(OnDeath(), () =>
+            {
                 // Tell game that a player is dead
                 GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), nameof(EnemyState.dead));
                 Destroy(explodePS.gameObject);
@@ -392,6 +417,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     {
         RunWithEvent = toRun;
     }
+
     private void OnAnimationEvent(string eventName)
     {
         if (eventName.Equals("attack") || eventName.Equals("release"))
@@ -400,24 +426,27 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             RunWithEvent.Invoke();
         }
     }
+
     private void RunAfterTime(float time, Action toRun)
     {
         StartCoroutine(runCoroutine(time, toRun));
     }
+
     private IEnumerator runCoroutine(float time, Action toRun)
     {
         yield return new WaitForSeconds(time);
         toRun.Invoke();
     }
 
-    private GameObject GetEnemyPrefab(string enemyName) 
+    private GameObject GetEnemyPrefab(string enemyName)
     {
-        if (overrideEnemy) 
+        if (overrideEnemy)
         {
             enemyName = enemyType.ToString();
         }
+
         var enemy = FindPrefab(enemyName);
-        if(enemy != null) return enemy;
+        if (enemy != null) return enemy;
         Debug.LogError($"[EnemyManager] Missing {enemyName} prefab. Using SporeMonger as a backup");
         enemyName = "SporeMonger";
         enemy = FindPrefab(enemyName);
@@ -433,7 +462,8 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         Vector3 anchorPoint = new Vector3(enemyBounds.center.x - enemyBounds.extents.x,
             enemyBounds.center.y, 0);
         // Tooltip On
-        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.MiddleRight, anchorPoint, null);
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.MiddleRight, anchorPoint,
+            null);
         collider.enabled = false;
     }
 
@@ -446,6 +476,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
                 return enemy;
             }
         }
+
         return null;
     }
 }

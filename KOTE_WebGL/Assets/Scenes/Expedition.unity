@@ -130,6 +130,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1377507125569026328, guid: fd9aeb50c8fc5fe468f95867b44a9fff,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.0029296875
+      objectReference: {fileID: 0}
     - target: {fileID: 4123488319708662965, guid: fd9aeb50c8fc5fe468f95867b44a9fff,
         type: 3}
       propertyPath: m_Name
@@ -291,11 +296,11 @@ RectTransform:
   m_Children:
   - {fileID: 1081915357}
   - {fileID: 1019504124}
+  - {fileID: 981238411}
   - {fileID: 1785792896}
   - {fileID: 258305017}
   - {fileID: 423660875}
   - {fileID: 1963112302}
-  - {fileID: 981238411}
   - {fileID: 358337462}
   - {fileID: 1724829466}
   - {fileID: 974997430}
@@ -319,136 +324,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 252026739}
     m_Modifications:
-    - target: {fileID: 2251464647497306478, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2251464647497306478, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2251464647497306478, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 96.243744
-      objectReference: {fileID: 0}
-    - target: {fileID: 2251464647497306478, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 399.74738
-      objectReference: {fileID: 0}
-    - target: {fileID: 2251464647497306478, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -48.121872
-      objectReference: {fileID: 0}
-    - target: {fileID: 2693688159839931509, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2693688159839931509, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2693688159839931509, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 96.243744
-      objectReference: {fileID: 0}
-    - target: {fileID: 2693688159839931509, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 149
-      objectReference: {fileID: 0}
-    - target: {fileID: 2693688159839931509, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -48.121872
-      objectReference: {fileID: 0}
-    - target: {fileID: 4749205334901070803, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -197.89996
-      objectReference: {fileID: 0}
-    - target: {fileID: 4749205334901070803, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -251.29999
-      objectReference: {fileID: 0}
-    - target: {fileID: 5615298483800157825, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -222.8999
-      objectReference: {fileID: 0}
-    - target: {fileID: 5615298483800157825, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 112.3999
-      objectReference: {fileID: 0}
-    - target: {fileID: 5983924779970246627, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5983924779970246627, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5983924779970246627, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 96.243744
-      objectReference: {fileID: 0}
-    - target: {fileID: 5983924779970246627, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 686.1448
-      objectReference: {fileID: 0}
-    - target: {fileID: 5983924779970246627, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -48.121872
-      objectReference: {fileID: 0}
-    - target: {fileID: 6314686470507730677, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6314686470507730677, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7026248347119648745, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7026248347119648745, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7026248347119648745, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 96.243744
-      objectReference: {fileID: 0}
-    - target: {fileID: 7026248347119648745, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 1157.7222
-      objectReference: {fileID: 0}
-    - target: {fileID: 7026248347119648745, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -48.121872
-      objectReference: {fileID: 0}
     - target: {fileID: 8649418466282296154, guid: ee5e9e7152999294fb2f20a8107966a9,
         type: 3}
       propertyPath: m_Name
@@ -467,7 +342,7 @@ PrefabInstance:
     - target: {fileID: 8649418466282296155, guid: ee5e9e7152999294fb2f20a8107966a9,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8649418466282296155, guid: ee5e9e7152999294fb2f20a8107966a9,
         type: 3}
@@ -559,16 +434,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8649418467033877781, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9199369622860533142, guid: ee5e9e7152999294fb2f20a8107966a9,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: -433.50348
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee5e9e7152999294fb2f20a8107966a9, type: 3}
 --- !u!224 &258305017 stripped
@@ -615,7 +480,7 @@ PrefabInstance:
     - target: {fileID: 7862905672770297982, guid: a343a3e8879f23140908c30f5042dec0,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7862905672770297982, guid: a343a3e8879f23140908c30f5042dec0,
         type: 3}
@@ -1061,7 +926,7 @@ PrefabInstance:
     - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6007782403552800907, guid: 85fcd610dfa64284c8f96c821210c654,
         type: 3}
@@ -1363,7 +1228,7 @@ RectTransform:
   - {fileID: 635427976}
   - {fileID: 946482418}
   m_Father: {fileID: 252026739}
-  m_RootOrder: 6
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2135,7 +2000,7 @@ PrefabInstance:
     - target: {fileID: 7042207118271053235, guid: d2e06bd1a4ff8264ea5e7faae64b81e5,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7042207118271053235, guid: d2e06bd1a4ff8264ea5e7faae64b81e5,
         type: 3}
@@ -2997,7 +2862,7 @@ PrefabInstance:
     - target: {fileID: 7986825379624671967, guid: 06a86a70f65420f4796a8a6dfd201f79,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7986825379624671967, guid: 06a86a70f65420f4796a8a6dfd201f79,
         type: 3}
@@ -3346,10 +3211,22 @@ MonoBehaviour:
   EVENT_WALLETSPANEL_ACTIVATION_REQUEST:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_DISCONNECTWALLETPANEL_ACTIVATION_REQUEST:
+  EVENT_DISCONNECT_WALLET_PANEL_ACTIVATION_REQUEST:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_DISCONNECTWALLET_CONFIRMED:
+  EVENT_WALLET_ADDRESS_RECEIVED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_REQUEST_WALLET_CONTENTS:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_WALLET_CONTENTS_RECEIVED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_MESSAGE_SIGN:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_DISCONNECT_WALLET_CONFIRMED:
     m_PersistentCalls:
       m_Calls: []
   EVENT_TREASURYPANEL_ACTIVATION_REQUEST:
@@ -3365,6 +3242,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SHOW_WARNING_MESSAGE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_HIDE_WARNING_MESSAGE:
     m_PersistentCalls:
       m_Calls: []
   EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST:
@@ -3412,6 +3295,12 @@ MonoBehaviour:
   EVENT_SHOW_ENCOUNTER_PANEL:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_POPULATE_ENCOUNTER_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_ENCOUNTER_OPTION_SELECTED:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_TOGGLE_MERCHANT_PANEL:
     m_PersistentCalls:
       m_Calls: []
@@ -3428,15 +3317,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   EVENT_CAMP_HEAL:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_CAMP_GET_UPGRADE_PAIR:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_CAMP_UPGRADE_CARD:
     m_PersistentCalls:
       m_Calls: []
   EVENT_CAMP_FINISH:
@@ -3457,7 +3337,16 @@ MonoBehaviour:
   EVENT_ENCOUNTER_DAMAGE:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_UPGRADE_SHOW_UPGRADE_PAIR:
+  EVENT_SHOW_UPGRADE_CARDS_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_GET_UPGRADE_PAIR:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SHOW_UPGRADE_PAIR:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_USER_CONFIRMATION_UPGRADE_CARD:
     m_PersistentCalls:
       m_Calls: []
   EVENT_UPGRADE_CONFIRMED:
@@ -3517,13 +3406,40 @@ MonoBehaviour:
   EVENT_UPDATE_PLAYER:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_REQUEST_NFT_METADATA:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_NFT_METADATA_RECEIVED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_NFT_SELECTED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_REQUEST_NFT_IMAGE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_NFT_IMAGE_RECEIVED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_REQUEST_NFT_SKIN_SPRITE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_NFT_SKIN_SPRITE_RECEIVED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_NFT_SKIN_SPRITE_FAILED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_UPDATE_PLAYER_SKIN:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_MAP_ICON_CLICKED:
     m_PersistentCalls:
       m_Calls: []
   EVENT_TOOGLE_TOPBAR_MAP_ICON:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_UPDATE_CURRENT_STEP_TEXT:
+  EVENT_UPDATE_CURRENT_STEP_INFORMATION:
     m_PersistentCalls:
       m_Calls: []
   EVENT_SHOW_SELECT_CARD_PANEL:
@@ -3602,6 +3518,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   EVENT_TOOGLE_COMBAT_ELEMENTS:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_TOGGLE_COMBAT_UI:
     m_PersistentCalls:
       m_Calls: []
   EVENT_SHOW_PLAYER_CHARACTER:
@@ -3685,13 +3604,13 @@ MonoBehaviour:
   EVENT_VOLUME_CHANGED:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_STOP_MUSIC:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_SHOW_CONSOLE:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_NEW_WALLET:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_MESSAGE_SIGN:
+  EVENT_SKIP_NODE:
     m_PersistentCalls:
       m_Calls: []
   nextSceneToLoad: 0
@@ -4908,7 +4827,7 @@ PrefabInstance:
     - target: {fileID: 7612459578312946485, guid: cfde224b6c58c614eadd85e7c967e1a0,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7612459578312946485, guid: cfde224b6c58c614eadd85e7c967e1a0,
         type: 3}

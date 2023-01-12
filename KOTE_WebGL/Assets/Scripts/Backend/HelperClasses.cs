@@ -527,6 +527,34 @@ public class TrappedResult
 }
 
 [Serializable]
+public class SWSM_EncounterData
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public EncounterData data;
+
+        [Serializable]
+        public class EncounterData
+        {
+            public string encounterName;
+            public string imageId;
+            public string displayText;
+            public List<ButtonData> buttons;
+        }
+    }
+}
+
+[Serializable]
+public class ButtonData
+{
+    public string text;
+    public bool enabled;
+}
+
+[Serializable]
 public class SWSM_PlayerDeckData
 {
     public Data data;
@@ -679,6 +707,7 @@ public class showCardData
 {
     public List<Card> cards;
     public int cardsToTake;
+    public string kind;
 }
 
 
@@ -865,4 +894,60 @@ public class SWSM_HealData
             public int healed;
         }
     }
+}
+
+[Serializable]
+public class SWSM_SelectTrinketData
+{
+    public SelectTrinketData data;
+
+    [Serializable]
+    public class SelectTrinketData
+    {
+        public TrinketData data;
+    }
+}
+
+[Serializable]
+public class TrinketData
+{
+    public List<Trinket> trinkets;
+}
+public class NftData
+{
+    public NftMetaData[] assets;
+    
+}
+
+[Serializable]
+public class NftMetaData
+{
+    public string token_id;
+    public string image_original_url;
+    public Trait[] traits;
+}
+
+[Serializable]
+public class Trait
+{
+    public string trait_type;
+    public string value;
+}
+
+[Serializable]
+public class WalletKnightIds
+{
+    public int[] data;
+}
+
+// this is to pass along data needed for each individual skin image downloaded from the server
+[Serializable]
+public struct TraitSprite
+{
+    public string skinName;
+    public string traitType;
+    public int attachmentIndex;
+    public string imageName;
+    public Sprite sprite;
+    public bool isDefault;
 }

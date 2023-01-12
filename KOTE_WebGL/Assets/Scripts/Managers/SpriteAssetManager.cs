@@ -9,6 +9,7 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
     public List<SpriteList> potionImageList;
     public List<SpriteList> trinketImageList;
     public List<NamedSpriteList> combatBackgroundList;
+    public NamedSpriteList encounterCreatureList;
     public NamedSpriteList miscImages;
     private List<(int, int)> _potionListRanges = new List<(int, int)>();
     private List<(int, int)> _trinketListRanges = new List<(int, int)>();
@@ -104,5 +105,16 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
 
         Debug.LogError($"No background found for act {act} step {step}");
         return defaultImage;
+    }
+
+    public Sprite GetEncounterCreature(string name)
+    {
+        if (encounterCreatureList.SpriteList.Exists(item => item.name == name))
+        {
+            return encounterCreatureList.SpriteList.Find(x => x.name == name).image;
+        }
+
+        Debug.LogError($"No image found for encounter creature {name}");
+        return encounterCreatureList.SpriteList[0].image;
     }
 }

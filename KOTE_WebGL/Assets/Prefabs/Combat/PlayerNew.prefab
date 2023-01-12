@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9032002354893603804}
   - component: {fileID: 9032002354893603800}
+  - component: {fileID: 51213778445258972}
   - component: {fileID: 9032002354893603803}
   - component: {fileID: 9032002354893603801}
   - component: {fileID: 9032002354893603797}
@@ -55,7 +56,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 644da6b270a5cbd449ecab818ab32e2a, type: 2}
+  - {fileID: 2100000, guid: dc69b9ba17eccbb41bce83063eac909e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -77,6 +78,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &51213778445258972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9032002354893603805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d19a7c6b39488404aa73979e63aaa391, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skeletonAnimation: {fileID: 9032002354893603797}
+  skeletonMaterial: {fileID: 2100000, guid: 7c6832fc74eb7fc409b7ab0a6491c54f, type: 2}
+  meshRenderer: {fileID: 9032002354893603800}
+  skinName: Legguard/Legguard_Medici
+  slotName: ARMOR-Weapons
+  AttachmentKey: ARMOR-Weapons
 --- !u!33 &9032002354893603803
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -171,8 +190,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 0}
-  initialSkinName: 
+  skeletonDataAsset: {fileID: 11400000, guid: 0833cefecbb1e774184077143e73eb05, type: 2}
+  initialSkinName: Legguard/Legguard_Medici
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
   initialFlipY: 0

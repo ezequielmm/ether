@@ -81,7 +81,7 @@ public class SWSM_Parser
                 ProcessEndCombat(swsm.data.action, data);
                 break;
             default:
-                Debug.LogWarning("[SWSM Parser] Unknown message_type: " + swsm.data.message_type + " , data:"+ data);
+                Debug.LogWarning("[SWSM Parser] Unknown message_type: " + swsm.data.message_type + " , data:" + data);
                 break;
         }
 
@@ -115,7 +115,6 @@ public class SWSM_Parser
             default:
                 Debug.LogWarning("[UpdateMapActionPicker] unknown action: " + action + " , data: " + data);
                 break;
-
         }
     }
 
@@ -222,15 +221,18 @@ public class SWSM_Parser
             case nameof(WS_DATA_REQUEST_TYPES.MerchantData):
                 ProcessMerchantData(data);
                 break;
-           case nameof(WS_DATA_REQUEST_TYPES.TreasureData):
-               ProcessTreasureData(data);
-               break;
-           case nameof(WS_DATA_REQUEST_TYPES.Rewards):
-               ProcessRewardsData(data);
-               break;
-           case "chest_result":
-               ProcessChestResult(data);
-               break;
+            case nameof(WS_DATA_REQUEST_TYPES.TreasureData):
+                ProcessTreasureData(data);
+                break;
+            case nameof(WS_DATA_REQUEST_TYPES.EncounterData):
+                ProcessEncounterData(data);
+                break;
+            case nameof(WS_DATA_REQUEST_TYPES.Rewards):
+                ProcessRewardsData(data);
+                break;
+            case "chest_result":
+                ProcessChestResult(data);
+                break;
             default:
                 Debug.Log($"[SWSM Parser] [Generic Data] Uncaught Action \"{action}\". Data = {data}");
                 break;
@@ -279,7 +281,7 @@ public class SWSM_Parser
                 // ProcessMoveCard(data);
                 break;
             default:
-                Debug.LogWarning("[ProcessPlayerAffected] unknown action: "+ action +" , data: "+data);
+                Debug.LogWarning("[ProcessPlayerAffected] unknown action: " + action + " , data: " + data);
                 break;
         }
     }
@@ -326,7 +328,6 @@ public class SWSM_Parser
         {
             case nameof(WS_MESSAGE_ACTIONS.enemies_defeated):
                 Debug.Log("Should move cards from draw to hand");
-                SWSM_RewardsData rewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
                 GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.player_defeated):
@@ -334,12 +335,18 @@ public class SWSM_Parser
                 Debug.Log("GAME OVER");
                 GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
                 break;
+            case nameof(WS_MESSAGE_ACTIONS.show_rewards):
+                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
+                break;
             case nameof(WS_MESSAGE_ACTIONS.select_another_reward):
                 SWSM_RewardsData updatedRewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
                 GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(updatedRewardsData);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.show_map):
                 GameManager.Instance.LoadScene(inGameScenes.Expedition);
+                break;
+            default:
+                Debug.LogWarning("[ProcessEndCombat] unknown action: " + action + " , data: " + data);
                 break;
         }
     }
@@ -448,7 +455,7 @@ public class SWSM_Parser
     {
         SWSM_PlayerDeckData deckData = JsonUtility.FromJson<SWSM_PlayerDeckData>(data);
         Deck deck = new Deck() { cards = deckData.data.data };
-        GameManager.Instance.EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS.Invoke(deck);
+        GameManager.Instance.EVENT_SHOW_UPGRADE_CARDS_PANEL.Invoke(deck);
     }
 
 
@@ -470,11 +477,17 @@ public class SWSM_Parser
         SWSM_RewardsData rewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
         GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(rewardsData);
     }
-    
+
     private static void ProcessChestResult(string data)
     {
         SWSM_ChestResult chestResult = JsonUtility.FromJson<SWSM_ChestResult>(data);
         GameManager.Instance.EVENT_TREASURE_CHEST_RESULT.Invoke(chestResult);
+    }
+
+    private static void ProcessEncounterData(string data)
+    {
+        SWSM_EncounterData encounterData = JsonUtility.FromJson<SWSM_EncounterData>(data);
+        GameManager.Instance.EVENT_POPULATE_ENCOUNTER_PANEL.Invoke(encounterData);
     }
 
     private static void ProcessMoveCard(string rawData)
@@ -555,6 +568,32 @@ public class SWSM_Parser
         {
             case "begin_encounter":
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Encounter);
+                break;
+            case "show_cards":
+                SWSM_ShowCardDialog showCardData = JsonUtility.FromJson<SWSM_ShowCardDialog>(data);
+                if (showCardData.data.data.kind == "upgrade")
+                {
+                    GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.UpgradableCards);
+                    break;
+                }
+
+                SelectPanelOptions panelOptions = new SelectPanelOptions
+                {
+                    FireSelectWhenCardClicked = false,
+                    HideBackButton = true,
+                    MustSelectAllCards = true,
+                    NumberOfCardsToSelect = showCardData.data.data.cardsToTake,
+                    ShowCardInCenter = false
+                };
+                GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCardData.data.data.cards, panelOptions,
+                    (selectedCards) => { GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards); });
+                break;
+            case "select_trinkets":
+                SWSM_SelectTrinketData trinketData = JsonUtility.FromJson<SWSM_SelectTrinketData>(data);
+                GameManager.Instance.EVENT_SHOW_SELECT_TRINKET_PANEL.Invoke(trinketData);
+                break;
+            case "finish_encounter":
+                //  GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
                 break;
         }
     }
@@ -642,7 +681,7 @@ public class SWSM_Parser
     {
         SWSM_DeckData deckData = JsonUtility.FromJson<SWSM_DeckData>(data);
         Deck deck = new Deck() { cards = deckData.data.data.deck };
-        GameManager.Instance.EVENT_UPGRADE_SHOW_UPGRADE_PAIR.Invoke(deck);
+        GameManager.Instance.EVENT_SHOW_UPGRADE_PAIR.Invoke(deck);
     }
 
     private static void ProcessConfirmUpgrade(string data)

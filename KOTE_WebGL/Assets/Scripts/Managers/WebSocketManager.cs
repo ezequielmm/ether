@@ -29,12 +29,14 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_UPGRADE_CARD = "UpgradeCard";
     private const string WS_MESSAGE_CAMP_HEAL = "CampRecoverHealth";
     private const string WS_MESSAGE_MOVE_SELECTED_CARDS = "MoveCard";
+    private const string WS_MESSAGE_TRINKETS_SELECTED = "TrinketsSelected";
 
     private const string WS_MESSAGE_USE_POTION = "UsePotion";
     private const string WS_MESSAGE_REMOVE_POTION = "RemovePotion";
     private const string WS_MESSAGE_OPEN_CHEST = "ChestOpened";
     private const string WS_MESSAGE_MERCHANT_BUY = "MerchantBuy";
     private const string WS_MESSAGE_START_ENCOUNTER_COMBAT = "CombatEncounter";
+    private const string WS_MESSAGE_ENCOUNTER_SELECTION = "EncounterChoice";
     
     /*private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
     private const string WS_MESSAGE_GET_CARD_PILES = "GetCardPiles";
@@ -169,16 +171,18 @@ public class WebSocketManager : MonoBehaviour
         GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener(OnGenericWSDataRequest);
         GameManager.Instance.EVENT_REWARD_SELECTED.AddListener(OnRewardSelected);
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.AddListener(OnContinueExpedition);
-        GameManager.Instance.EVENT_CAMP_GET_UPGRADE_PAIR.AddListener(OnShowUpgradePair);
-        GameManager.Instance.EVENT_CAMP_UPGRADE_CARD.AddListener(OnCardUpgradeConfirmed);
+        GameManager.Instance.EVENT_GET_UPGRADE_PAIR.AddListener(OnShowUpgradePair);
+        GameManager.Instance.EVENT_USER_CONFIRMATION_UPGRADE_CARD.AddListener(OnCardUpgradeConfirmed);
         GameManager.Instance.EVENT_CAMP_HEAL.AddListener(OnCampHealSelected);
         GameManager.Instance.EVENT_CARDS_SELECTED.AddListener(OnCardsSelected);
         GameManager.Instance.EVENT_POTION_USED.AddListener(OnPotionUsed);
         GameManager.Instance.EVENT_POTION_DISCARDED.AddListener(OnPotionDiscarded);
         GameManager.Instance.EVENT_TREASURE_OPEN_CHEST.AddListener(OnTreasureOpened);
         GameManager.Instance.EVENT_MERCHANT_BUY.AddListener(OnBuyItem);
+        GameManager.Instance.EVENT_ENCOUNTER_OPTION_SELECTED.AddListener(OnEncounterOptionSelected);
         GameManager.Instance.EVENT_START_COMBAT_ENCOUNTER.AddListener(OnStartCombatEncounter);
         GameManager.Instance.EVENT_SKIP_NODE.AddListener(OnSkipNode);
+        GameManager.Instance.EVENT_TRINKETS_SELECTED.AddListener(OnTrinketsSelected);
 
         GameManager.Instance.EVENT_WS_CONNECTED.Invoke();
     }
@@ -257,6 +261,14 @@ public class WebSocketManager : MonoBehaviour
         Debug.Log("[WebSocket Manager] OnCardsSelected data: " + data);
         rootSocket.Emit(WS_MESSAGE_MOVE_SELECTED_CARDS, data);
     }
+
+    private void OnTrinketsSelected(List<string> trinketIds)
+    {
+        string data = JsonUtility.ToJson(trinketIds);
+        Debug.Log("[WebSocket Manager] OnTrinketsSelected data: " + data);
+        rootSocket.Emit(WS_MESSAGE_TRINKETS_SELECTED, data);
+    }
+    
     private void OnBuyItem(string type, string id)
     {
         PurchaseData purchase = new PurchaseData() 
@@ -305,6 +317,11 @@ public class WebSocketManager : MonoBehaviour
     {
        // Debug.Log($"[WebSocketManager] Sending message {WS_MESSAGE_OPEN_CHEST}");
         EmitWithResponse(WS_MESSAGE_OPEN_CHEST);
+    }
+
+    private void OnEncounterOptionSelected(int option)
+    {
+        EmitWithResponse(WS_MESSAGE_ENCOUNTER_SELECTION, option);
     }
 
     private void OnStartCombatEncounter()
