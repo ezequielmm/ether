@@ -21,12 +21,17 @@ public class NftImageManager : SingleTon<NftImageManager>
 
     private void OnMetadataReceived(NftData nftData)
     {
+        List<NftMetaData> tokensToRequest = new List<NftMetaData>();
         foreach (NftMetaData metaData in nftData.assets)
         {
-            requestedImages.Add(metaData.token_id);
+            if (!requestedImages.Contains(metaData.token_id))
+            {
+                requestedImages.Add(metaData.token_id);
+                tokensToRequest.Add(metaData);
+            }
         }
 
-        GameManager.Instance.EVENT_REQUEST_NFT_IMAGE.Invoke(nftData.assets);
+        GameManager.Instance.EVENT_REQUEST_NFT_IMAGE.Invoke(tokensToRequest.ToArray());
     }
 
     private void OnSpriteReceived(string tokenId, Sprite tokenImage)
