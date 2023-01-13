@@ -203,7 +203,7 @@ public class CardOnHandManager : MonoBehaviour
                 MoveCard(origin, destination);
             }
             
-            if(data.card != null) UpdateCardEnergyText(data.card.energy);
+            if(data.card != null && data.card.name != null) UpdateCardEnergyText(data.card.energy);
         }
     }
 
