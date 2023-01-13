@@ -22,8 +22,8 @@ public class WebRequesterManager : MonoBehaviour
     private readonly string urlCharactersList = "/gsrv/v1/characters";
     private readonly string urlExpeditionRequest = "/gsrv/v1/expeditions";
     private readonly string urlExpeditionCancel = "/gsrv/v1/expeditions/cancel";
+    private readonly string urlNftSkinSprites = "/client/v1/skinassets/";
     
-    private readonly string urlNftSkinSprites = "https://client.dev.kote.robotseamonster.com/SkinAssets/";
     private readonly string urlOpenSea = "https://api.opensea.io/api/v1/assets?xxxx&asset_contract_address=0x32A322C7C77840c383961B8aB503c9f45440c81f&format=json";
 
     // we have to queue the requested nft images due to rate limiting
@@ -478,7 +478,8 @@ public class WebRequesterManager : MonoBehaviour
     public IEnumerator GetNftSkinElement(TraitSprite spriteToPopulate)
     {
         string spriteName = spriteToPopulate.imageName + ".png";
-        string spriteUrl = urlNftSkinSprites + spriteName;
+        //string spriteUrl = "https://client.dev.kote.robotseamonster.com/skinassets/" + spriteName;
+        string spriteUrl = baseUrl + urlNftSkinSprites + spriteName;
         
         UnityWebRequest nftSpriteRequest = UnityWebRequestTexture.GetTexture(spriteUrl);
         yield return nftSpriteRequest.SendWebRequest();
