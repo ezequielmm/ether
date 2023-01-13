@@ -924,7 +924,7 @@ public class NftData
 public class NftMetaData
 {
     public string token_id;
-    public string image_original_url;
+    public string image_url;
     public Trait[] traits;
 }
 

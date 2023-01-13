@@ -111,7 +111,7 @@ public class WebRequesterManager : MonoBehaviour
     {
         foreach (NftMetaData metaData in requestedTokens)
         {
-            requestedNftImages.Enqueue((metaData.token_id, metaData.image_original_url));
+            requestedNftImages.Enqueue((metaData.token_id, metaData.image_url));
         }
         if (!nftQueueRunning)
         {
