@@ -828,6 +828,7 @@ public class CardToMoveData
     public string source;
     public string destination;
     public string id;
+    public Card card;
 }
 
 public class SWSM_ChangeTurn
