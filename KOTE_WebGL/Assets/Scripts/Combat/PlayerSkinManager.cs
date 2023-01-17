@@ -92,10 +92,46 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
 
         var templateSkin = skeletonData.FindSkin(templateSkinName);
         Attachment templateAttachment = templateSkin.GetAttachment(slotIndex, templateAttachmentName);
-        attachment = templateAttachment.GetRemappedClone(sprite, skeletonMaterial, premultiplyAlpha: true, useOriginalRegionSize: true, useOriginalRegionScale: true);
+
+        if (templateAttachment.GetType() == typeof(RegionAttachment))
+        {
+            RegionAttachment baseAttachment = (RegionAttachment)templateAttachment;
+            
+            attachment = templateAttachment.GetRemappedClone(sprite, skeletonMaterial, premultiplyAlpha: true, useOriginalRegionSize: true, useOriginalRegionScale: true);
+            RegionAttachment newAttachment = (RegionAttachment)attachment;
+            newAttachment.RegionHeight = baseAttachment.RegionHeight;
+            newAttachment.RegionWidth = baseAttachment.RegionWidth;
+            newAttachment.RegionOffsetX = baseAttachment.RegionOffsetX;
+            newAttachment.RegionOffsetY = baseAttachment.RegionOffsetY;
+            for (int i = 0; i < baseAttachment.Offset.Length; i++)
+            {
+                newAttachment.Offset[i] = baseAttachment.Offset[i];
+            }
+
+            return newAttachment;
+        }
+        else if (templateAttachment.GetType() == typeof(MeshAttachment))
+        {
+            MeshAttachment baseAttachment = (MeshAttachment)templateAttachment;
+            attachment = templateAttachment.GetRemappedClone(sprite, skeletonMaterial, premultiplyAlpha: true, useOriginalRegionSize: true, useOriginalRegionScale: true);
+            MeshAttachment newAttachment = (MeshAttachment)attachment;
+           
+            newAttachment.RegionOffsetX = baseAttachment.RegionOffsetX;
+            newAttachment.RegionOffsetY = baseAttachment.RegionOffsetY;
+            newAttachment.UVs = baseAttachment.UVs;
+            newAttachment.Triangles = baseAttachment.Triangles;
+            newAttachment.Edges = baseAttachment.Edges;
+            newAttachment.RegionUVs = baseAttachment.RegionUVs;
+          
+           
+            newAttachment.UpdateUVs();
+            return attachment;
+        }
+        
         // Note: Each call to `GetRemappedClone()` with parameter `premultiplyAlpha` set to `true` creates
         // a cached Texture copy which can be cleared by calling AtlasUtilities.ClearCache() as shown in the method below.
-        return attachment;
+        Debug.LogWarning("[UpdateSkin] Warning! Skin attachment not a mesh or a region!");
+        return null;
     }
 
     void RefreshSkeletonAttachments()
