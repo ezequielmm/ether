@@ -3,7 +3,7 @@ guid: d1269cdb31ff8d244b2fd600e8c0ea8c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -20,10 +20,11 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -35,13 +36,13 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
-    wrapW: 0
-  nPOTScale: 1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -52,7 +53,7 @@ TextureImporter:
   alphaUsage: 1
   alphaIsTransparency: 0
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -62,6 +63,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -74,32 +76,4425 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 1
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: 1x1_placeholder
+      rect:
+        serializedVersion: 2
+        x: 677
+        y: 2
+        width: 1
+        height: 1
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37dcbf7f0e1628e70800000000000000
+      internalID: 9115956214612348275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FX/FX-Swipe
+      rect:
+        serializedVersion: 2
+        x: 5075
+        y: 1248
+        width: 147
+        height: 212
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cfe2b049d92bea80800000000000000
+      internalID: -8436603463878381623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FX/FX-Swipe2
+      rect:
+        serializedVersion: 2
+        x: 2191
+        y: 2222
+        width: 260
+        height: 217
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5398e43e915b7c680800000000000000
+      internalID: -8734813829469402827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arm-L/arm-L-basic
+      rect:
+        serializedVersion: 2
+        x: 4723
+        y: 259
+        width: 117
+        height: 230
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 902c4fe73558d0300800000000000000
+      internalID: 219978550469771785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arm-L/arm-L-nude
+      rect:
+        serializedVersion: 2
+        x: 3386
+        y: 432
+        width: 94
+        height: 210
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa70566c07f79a000800000000000000
+      internalID: 47709393405675439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arm-R/arm-R-basic
+      rect:
+        serializedVersion: 2
+        x: 5706
+        y: 2
+        width: 153
+        height: 216
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0115af6ce1c4caac0800000000000000
+      internalID: -3842612686982852336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arm-R/arm-R-nude
+      rect:
+        serializedVersion: 2
+        x: 2354
+        y: 2
+        width: 162
+        height: 230
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22be0c6bfaf5e68c0800000000000000
+      internalID: -4004157810395780318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: armorFront-01/armorFront-01-dummy
+      rect:
+        serializedVersion: 2
+        x: 5298
+        y: 1558
+        width: 174
+        height: 172
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ae5d88162d064790800000000000000
+      internalID: -7546329668340851038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: armorFront-02/armorFront-02-dummy
+      rect:
+        serializedVersion: 2
+        x: 4636
+        y: 694
+        width: 133
+        height: 148
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7b830d928e144370800000000000000
+      internalID: 8305797159106874237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boots/Boots_Articulated
+      rect:
+        serializedVersion: 2
+        x: 1358
+        y: 1998
+        width: 570
+        height: 356
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e030bad8af6afc3e0800000000000000
+      internalID: -2031221311871974642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boots/Boots_Dread
+      rect:
+        serializedVersion: 2
+        x: 2582
+        y: 1928
+        width: 574
+        height: 377
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6406779b479f24560800000000000000
+      internalID: 7296668626016755782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boots/Boots_Flaming_Dread
+      rect:
+        serializedVersion: 2
+        x: 4241
+        y: 1802
+        width: 592
+        height: 377
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd66be4feb3093130800000000000000
+      internalID: 3546870300218713820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boots/Boots_Gold_Dread
+      rect:
+        serializedVersion: 2
+        x: 4892
+        y: 1940
+        width: 574
+        height: 377
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b4ff27e474566310800000000000000
+      internalID: 1397897595416736952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: boots/Boots_Spiked
+      rect:
+        serializedVersion: 2
+        x: 5095
+        y: 1463
+        width: 580
+        height: 392
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ff54fe983b510730800000000000000
+      internalID: 3963549445805858808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/Breastplate_Galactic
+      rect:
+        serializedVersion: 2
+        x: 1977
+        y: 1840
+        width: 309
+        height: 262
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f89a1772448200b0800000000000000
+      internalID: -5763899152079873805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/Breastplates_Ancient
+      rect:
+        serializedVersion: 2
+        x: 4152
+        y: 1309
+        width: 347
+        height: 295
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 608d2001b7d259fd0800000000000000
+      internalID: -2335910825148884986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/Breastplates_Blue_And_Gold
+      rect:
+        serializedVersion: 2
+        x: 1655
+        y: 1815
+        width: 320
+        height: 261
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86f0246e214ba3c10800000000000000
+      internalID: 2034136174976700264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/Breastplates_Dark
+      rect:
+        serializedVersion: 2
+        x: 5639
+        y: 1809
+        width: 320
+        height: 266
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aeb4d3a01f8a73b80800000000000000
+      internalID: -8415071625506108438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/Breastplates_Engraved
+      rect:
+        serializedVersion: 2
+        x: 7140
+        y: 1796
+        width: 324
+        height: 263
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07be99a927fe01340800000000000000
+      internalID: 4832625675667630960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/Breastplates_Gold_Engraved
+      rect:
+        serializedVersion: 2
+        x: 3813
+        y: 1744
+        width: 263
+        height: 325
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32a59712d2e50f2f0800000000000000
+      internalID: -941148774192293341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/Breastplates_Gold_Templar
+      rect:
+        serializedVersion: 2
+        x: 644
+        y: 1576
+        width: 328
+        height: 278
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fca4b71c42e627e50800000000000000
+      internalID: 6805623091054201551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/Breastplates_Gothic_Bloodstained
+      rect:
+        serializedVersion: 2
+        x: 5636
+        y: 1168
+        width: 350
+        height: 303
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a05d30530e29a83b0800000000000000
+      internalID: -5509429702474607350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/Breastplates_Gothic_Gold
+      rect:
+        serializedVersion: 2
+        x: 3800
+        y: 1141
+        width: 350
+        height: 303
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90eff559793477070800000000000000
+      internalID: 8104020372801715721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/Breastplates_Gothic_Silver
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 1139
+        width: 350
+        height: 303
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1690a951ee3b515c0800000000000000
+      internalID: -4245289238580819615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/Breastplates_Leather_Blue
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 1715
+        width: 316
+        height: 277
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe38b802bb27c4910800000000000000
+      internalID: 1822958097208673263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/Breastplates_Leather_Brown
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1715
+        width: 316
+        height: 277
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f9f5c996834a2fe0800000000000000
+      internalID: -1213082904238360076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/Breastplates_Leather_Purple
+      rect:
+        serializedVersion: 2
+        x: 974
+        y: 1576
+        width: 277
+        height: 316
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2ede750aad8b0cd0800000000000000
+      internalID: -2590821399245431251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/breastplates_reddragonrent_blue
+      rect:
+        serializedVersion: 2
+        x: 5963
+        y: 1557
+        width: 334
+        height: 284
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: caff0fdf03b4fbb70800000000000000
+      internalID: 8916928461007814572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/breastplates_reddragonrent_purple
+      rect:
+        serializedVersion: 2
+        x: 6804
+        y: 1533
+        width: 334
+        height: 284
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2fbc7debb4fda23b0800000000000000
+      internalID: -5536367275481248782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/breastplates_reddragonrent_red
+      rect:
+        serializedVersion: 2
+        x: 5677
+        y: 1473
+        width: 284
+        height: 334
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78d60f24af4b8e910800000000000000
+      internalID: 1866941032502947207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/breastplates_royalguard_gold
+      rect:
+        serializedVersion: 2
+        x: 273
+        y: 1444
+        width: 369
+        height: 269
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4305238e76efc5820800000000000000
+      internalID: 2908479181605195828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/breastplates_royalguard_silver
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1316
+        width: 269
+        height: 369
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ea614214665e9940800000000000000
+      internalID: 5304772398892018400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/breastplates_whitehand_gold
+      rect:
+        serializedVersion: 2
+        x: 4737
+        y: 1248
+        width: 336
+        height: 309
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79a32a09cf5828cf0800000000000000
+      internalID: -251491309374522729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: breastplates/breastplates_whitehand_silver
+      rect:
+        serializedVersion: 2
+        x: 5236
+        y: 1247
+        width: 336
+        height: 309
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f68008ed5432c3520800000000000000
+      internalID: 2683058260998621295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cape/cape-dummy
+      rect:
+        serializedVersion: 2
+        x: 548
+        y: -79
+        width: 789
+        height: 870
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8129df7b8d4dcff30800000000000000
+      internalID: 4610794145785418264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chest/chest-basic
+      rect:
+        serializedVersion: 2
+        x: 2697
+        y: 1775
+        width: 292
+        height: 323
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3f12c389e5bc3880800000000000000
+      internalID: -8629822771406168262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chest/chest-dummy
+      rect:
+        serializedVersion: 2
+        x: 7597
+        y: 1594
+        width: 330
+        height: 274
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: edb6029a204bf7ce0800000000000000
+      internalID: -1405206635195896866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: chest/chest-nude
+      rect:
+        serializedVersion: 2
+        x: 5961
+        y: 1843
+        width: 276
+        height: 344
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01769c605173d4fe0800000000000000
+      internalID: -1203244961990351088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crest-FX/crest-FX-halo-glow
+      rect:
+        serializedVersion: 2
+        x: 6922
+        y: 1037
+        width: 413
+        height: 301
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5303f3f2078b9f50800000000000000
+      internalID: 6889248501745779548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crest/crest-halo
+      rect:
+        serializedVersion: 2
+        x: 2199
+        y: 597
+        width: 327
+        height: 198
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0be5ce3da5fd0cf20800000000000000
+      internalID: 3440995696506592944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: elbow-L/elbow-L-dummy
+      rect:
+        serializedVersion: 2
+        x: 8048
+        y: 372
+        width: 127
+        height: 111
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d63969ab3469b5ed0800000000000000
+      internalID: -2424178756771474579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: elbow-R/elbow-R-dummy
+      rect:
+        serializedVersion: 2
+        x: 2395
+        y: 486
+        width: 131
+        height: 95
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a6c5e07631034a30800000000000000
+      internalID: 4198200610973402789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: footMain-L/footMain-L-dummy
+      rect:
+        serializedVersion: 2
+        x: 7898
+        y: 372
+        width: 148
+        height: 115
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e78a3f16a1389900800000000000000
+      internalID: 691357132359632871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: footMain-L/footMain-L-nude
+      rect:
+        serializedVersion: 2
+        x: 2882
+        y: 1475
+        width: 145
+        height: 135
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f0b53982f9403d00800000000000000
+      internalID: 950340827408085235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: footMain-R/footMain-R-dummy
+      rect:
+        serializedVersion: 2
+        x: 7898
+        y: 676
+        width: 88
+        height: 151
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86fdc62f476232b10800000000000000
+      internalID: 1955448946934210408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: footMain-R/footMain-R-nude
+      rect:
+        serializedVersion: 2
+        x: 610
+        y: 424
+        width: 88
+        height: 154
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80da3a277fea82ac0800000000000000
+      internalID: -3879658701176197880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: footTip-L/footTip-L-dummy
+      rect:
+        serializedVersion: 2
+        x: 818
+        y: 2
+        width: 92
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74708670d39138520800000000000000
+      internalID: 2703031951260387143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: footTip-R/footTip-R-dummy
+      rect:
+        serializedVersion: 2
+        x: 2265
+        y: 2
+        width: 86
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e98ad802c683e7b60800000000000000
+      internalID: 7745690446177609886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: footTop-L/footTop-L-dummy
+      rect:
+        serializedVersion: 2
+        x: 511
+        y: 605
+        width: 83
+        height: 112
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8eaa09aad331bbb0800000000000000
+      internalID: -4922095903507304819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: footTop-R/footTop-R-dummy
+      rect:
+        serializedVersion: 2
+        x: 6260
+        y: 848
+        width: 91
+        height: 140
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aed65565c90b71390800000000000000
+      internalID: -7847609640159973910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: forearm-L
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 2
+        width: 173
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 458b9bd3633bf84d0800000000000000
+      internalID: -3130086170454017964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: forearm-L/forearm-L-basic
+      rect:
+        serializedVersion: 2
+        x: 2876
+        y: 552
+        width: 162
+        height: 104
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8aed44834379f650800000000000000
+      internalID: 6267167090282457740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: forearm-L/forearm-L-nude
+      rect:
+        serializedVersion: 2
+        x: 4216
+        y: 532
+        width: 171
+        height: 88
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0f63949f9dc8f990800000000000000
+      internalID: -7351900306406150389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: forearm-R
+      rect:
+        serializedVersion: 2
+        x: 4939
+        y: 1559
+        width: 151
+        height: 177
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65be2053ae309e750800000000000000
+      internalID: 6334598655319927638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: forearm-R/forearm-R-basic
+      rect:
+        serializedVersion: 2
+        x: 1345
+        y: 2448
+        width: 147
+        height: 198
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a99faeaabf78332e0800000000000000
+      internalID: -2147223082351527526
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: forearm-R/forearm-R-nude
+      rect:
+        serializedVersion: 2
+        x: 8033
+        y: 1599
+        width: 157
+        height: 194
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80569c122cdccde00800000000000000
+      internalID: 1070957045081531656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gauntlet-L-dummy
+      rect:
+        serializedVersion: 2
+        x: 2741
+        y: 1613
+        width: 143
+        height: 131
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe375dbbe5c35d310800000000000000
+      internalID: 1429114834335921135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gauntlet-R-dummy
+      rect:
+        serializedVersion: 2
+        x: 7932
+        y: 2394
+        width: 176
+        height: 183
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebc8eb1b896f4b330800000000000000
+      internalID: 3725873927419759806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gauntlets/Gauntlets_Articulated
+      rect:
+        serializedVersion: 2
+        x: 6112
+        y: 2303
+        width: 596
+        height: 273
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46160cfb42723a300800000000000000
+      internalID: 262096242106982756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gauntlets/Gauntlets_Bloodied_Articulated
+      rect:
+        serializedVersion: 2
+        x: 1498
+        y: 2291
+        width: 596
+        height: 273
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49bdb75e8015b8060800000000000000
+      internalID: 6956743148055550868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gauntlets/Gauntlets_Blue_Flaming_Dread
+      rect:
+        serializedVersion: 2
+        x: 5409
+        y: 2186
+        width: 647
+        height: 273
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bc708a77e36a7270800000000000000
+      internalID: 8249015513326320818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gauntlets/Gauntlets_Dread
+      rect:
+        serializedVersion: 2
+        x: 1214
+        y: 2316
+        width: 592
+        height: 273
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3e35c13d05c05dc0800000000000000
+      internalID: -3652202637337215429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gauntlets/Gauntlets_Elven
+      rect:
+        serializedVersion: 2
+        x: 6899
+        y: 2225
+        width: 590
+        height: 280
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6250fc1ff19e6fb10800000000000000
+      internalID: 2015054206705009958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gauntlets/Gauntlets_Flaming_Dread
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 2170
+        width: 647
+        height: 273
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36fc9c3c959207ee0800000000000000
+      internalID: -1265466029777498269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gauntlets/Gauntlets_Gold_Knuckle
+      rect:
+        serializedVersion: 2
+        x: 5519
+        y: 2310
+        width: 578
+        height: 279
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34c30a4f72092dbf0800000000000000
+      internalID: -301019723798135741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gauntlets/Gauntlets_Mittens_Gold
+      rect:
+        serializedVersion: 2
+        x: 7163
+        y: 2091
+        width: 605
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aae2bff5abf912160800000000000000
+      internalID: 6999050918733491882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gauntlets/Gauntlets_Mittens_Silver
+      rect:
+        serializedVersion: 2
+        x: 5406
+        y: 2019
+        width: 605
+        height: 289
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44964ac7a56c4d220800000000000000
+      internalID: 2509848984292714820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gauntlets/Gauntlets_Spiked
+      rect:
+        serializedVersion: 2
+        x: 3144
+        y: 1929
+        width: 634
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b34b607d3a70b51e0800000000000000
+      internalID: -2208162792026491845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hand-L/hand-L-dummy
+      rect:
+        serializedVersion: 2
+        x: 7898
+        y: 489
+        width: 66
+        height: 80
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e66f31484b8f1f0c0800000000000000
+      internalID: -4543577094846417298
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hand-L/hand-L-nude
+      rect:
+        serializedVersion: 2
+        x: 610
+        y: 114
+        width: 71
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1aa01082608015930800000000000000
+      internalID: 4130091155809438369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hand-R/hand-R-dummy
+      rect:
+        serializedVersion: 2
+        x: 3730
+        y: 2
+        width: 110
+        height: 104
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4299027bfeff53f0800000000000000
+      internalID: -909728243802074548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hand-R/hand-R-nude
+      rect:
+        serializedVersion: 2
+        x: 5289
+        y: 2
+        width: 101
+        height: 106
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f649bb35c08b6c620800000000000000
+      internalID: 2794122981913891951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: handFingers-L/HandFingers-L
+      rect:
+        serializedVersion: 2
+        x: 4771
+        y: 491
+        width: 70
+        height: 94
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64a7d4083a1e9a140800000000000000
+      internalID: 4731560975877896774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: handFingers-L/handFingers-nude
+      rect:
+        serializedVersion: 2
+        x: 3134
+        y: 552
+        width: 76
+        height: 90
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fdbe5ef082651bf90800000000000000
+      internalID: -6939670820735816737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: head/head-bucketHelmet
+      rect:
+        serializedVersion: 2
+        x: 3700
+        y: 664
+        width: 212
+        height: 225
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 242cff5ded6bf1310800000000000000
+      internalID: 1378021079187964482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: head/head-dummy
+      rect:
+        serializedVersion: 2
+        x: 1927
+        y: 658
+        width: 247
+        height: 146
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a9b5f5900e67afd0800000000000000
+      internalID: -2330773333345977947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: head/head-nude
+      rect:
+        serializedVersion: 2
+        x: 1013
+        y: 1139
+        width: 126
+        height: 190
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed567e61f8e0bc330800000000000000
+      internalID: 3732092723933963742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: helmets/Helmets_Avant_Guard
+      rect:
+        serializedVersion: 2
+        x: 1258
+        y: 1462
+        width: 340
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ab5e999e6cfa7230800000000000000
+      internalID: 3637497201008991139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: helmets/Helmets_Black_Hound
+      rect:
+        serializedVersion: 2
+        x: 700
+        y: 2292
+        width: 279
+        height: 194
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eeaf74bfb975060c0800000000000000
+      internalID: -4584568093215819026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: helmets/Helmets_Dread_Knight
+      rect:
+        serializedVersion: 2
+        x: 1098
+        y: 2059
+        width: 204
+        height: 295
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f142f8d013309fd0800000000000000
+      internalID: -2337312059153038857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: helmets/Helmets_Gold_Wraith
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 2312
+        width: 176
+        height: 250
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c3c790c3bf0680e0800000000000000
+      internalID: -2268108097629731900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: helmets/Helmets_Great_Helmet
+      rect:
+        serializedVersion: 2
+        x: 981
+        y: 2356
+        width: 168
+        height: 228
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da9aae165770f47b0800000000000000
+      internalID: -5237959640873260627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: helmets/Helmets_Hood
+      rect:
+        serializedVersion: 2
+        x: 2288
+        y: 1928
+        width: 212
+        height: 292
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c0ac314f7ea08070800000000000000
+      internalID: 8106671190845464776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: helmets/Helmets_Hood_With_Pipe
+      rect:
+        serializedVersion: 2
+        x: 4233
+        y: 2166
+        width: 197
+        height: 280
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5891370903695e610800000000000000
+      internalID: 1649889973827213701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: helmets/Helmets_Horned
+      rect:
+        serializedVersion: 2
+        x: 7424
+        y: 1119
+        width: 168
+        height: 267
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5dc80d12c7484f9f0800000000000000
+      internalID: -435577595269968683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: helmets/Helmets_Lord
+      rect:
+        serializedVersion: 2
+        x: 4689
+        y: 2374
+        width: 248
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5e30ac21d02e97e0800000000000000
+      internalID: -1756930721858961825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: helmets/Helmets_Northerner
+      rect:
+        serializedVersion: 2
+        x: 7897
+        y: 2
+        width: 282
+        height: 368
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c072f5ee584c1e260800000000000000
+      internalID: 7125192164985743116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: helmets/Helmets_Prince
+      rect:
+        serializedVersion: 2
+        x: 7936
+        y: 2121
+        width: 206
+        height: 271
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c658b8e775b13dfe0800000000000000
+      internalID: -1165557815959648916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: helmets/Helmets_Reaper
+      rect:
+        serializedVersion: 2
+        x: 4432
+        y: 2374
+        width: 255
+        height: 168
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65fda50ee7e463810800000000000000
+      internalID: 1744668212489543510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: helmets/Helmets_Royal
+      rect:
+        serializedVersion: 2
+        x: 7770
+        y: 2241
+        width: 160
+        height: 295
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d97261ef6c29e540800000000000000
+      internalID: 5037606517224929746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: helmets/Helmets_Silver_Hound
+      rect:
+        serializedVersion: 2
+        x: 3076
+        y: 2192
+        width: 194
+        height: 280
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fb6e4e37742cade0800000000000000
+      internalID: -1320640496161362952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: helmets/Helmets_Templar
+      rect:
+        serializedVersion: 2
+        x: 6239
+        y: 1865
+        width: 178
+        height: 249
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2140fc269cefada0800000000000000
+      internalID: -5931262054480461525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: helmets/Helmets_Toad
+      rect:
+        serializedVersion: 2
+        x: 4501
+        y: 1309
+        width: 174
+        height: 232
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 001f9657ddd416490800000000000000
+      internalID: -7754831469802295040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: helmets/Helmets_Undead
+      rect:
+        serializedVersion: 2
+        x: 2054
+        y: 1488
+        width: 266
+        height: 350
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95d7e3742931f56d0800000000000000
+      internalID: -2999657307824030375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: helmets/Helmets_Wraith
+      rect:
+        serializedVersion: 2
+        x: 1131
+        y: 2
+        width: 250
+        height: 175
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2fca64516b0bca60800000000000000
+      internalID: 7695256900948643628
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kneeArmor-L/kneeArmor-L-dummy
+      rect:
+        serializedVersion: 2
+        x: 4518
+        y: 722
+        width: 117
+        height: 120
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb6faf0a9d895cb30800000000000000
+      internalID: 4307016679125874366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: kneeArmor-R/knee armor-R-dummy
+      rect:
+        serializedVersion: 2
+        x: 8051
+        y: 1391
+        width: 137
+        height: 143
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc626650060947e40800000000000000
+      internalID: 5653302174338655949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: legguards/Leg_Guards_Ancient
+      rect:
+        serializedVersion: 2
+        x: 2825
+        y: 1100
+        width: 483
+        height: 373
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a48cd8fef8340100800000000000000
+      internalID: 73246161692820644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: legguards/Leg_Guards_Blue_And_Gold
+      rect:
+        serializedVersion: 2
+        x: 3310
+        y: 1111
+        width: 488
+        height: 336
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5401f541e78f77b0800000000000000
+      internalID: -5224307641115671457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: legguards/Leg_Guards_Dark
+      rect:
+        serializedVersion: 2
+        x: 2322
+        y: 1613
+        width: 417
+        height: 313
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f3f6cb9b72d4e400800000000000000
+      internalID: 352638099178058739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: legguards/Leg_Guards_Gold_Hand
+      rect:
+        serializedVersion: 2
+        x: 1222
+        y: 1755
+        width: 431
+        height: 318
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46dcc9b3e58cabd50800000000000000
+      internalID: 6753930898248093028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: legguards/Leg_Guards_White_Hand
+      rect:
+        serializedVersion: 2
+        x: 3381
+        y: 1712
+        width: 431
+        height: 318
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: adb1bee6033d8c130800000000000000
+      internalID: 3587349308173392858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: legguards/legduards_royalguard
+      rect:
+        serializedVersion: 2
+        x: 1600
+        y: 1470
+        width: 452
+        height: 343
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ddc8b4125746df60800000000000000
+      internalID: 8058707001086627285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: legguards/legguards_gothic
+      rect:
+        serializedVersion: 2
+        x: 2392
+        y: 1100
+        width: 431
+        height: 325
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6c749c90bf37ec70800000000000000
+      internalID: 9000232408096996458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: legguards/legguards_gothic_bloodied
+      rect:
+        serializedVersion: 2
+        x: 4093
+        y: 1614
+        width: 431
+        height: 325
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90310384703d19fc0800000000000000
+      internalID: -3489776208006081783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: legguards/legguards_gothic_gold
+      rect:
+        serializedVersion: 2
+        x: 4966
+        y: 1743
+        width: 435
+        height: 329
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e40446372fb192480800000000000000
+      internalID: -8923570458525941682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: legguards/legguards_reddragonrent_blue
+      rect:
+        serializedVersion: 2
+        x: 4501
+        y: 1545
+        width: 436
+        height: 306
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7bbe386aa7aac4510800000000000000
+      internalID: 1534789016782891959
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: legguards/legguards_reddragonrent_purple
+      rect:
+        serializedVersion: 2
+        x: 2942
+        y: 1648
+        width: 436
+        height: 306
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a423f5584f8a47c0800000000000000
+      internalID: -4086296171042888535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: legguards/legguards_reddragonrent_red
+      rect:
+        serializedVersion: 2
+        x: 6308
+        y: 1557
+        width: 436
+        height: 306
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41856353d7b438c00800000000000000
+      internalID: 901647351539980308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: legguards/legguards_redleather_blue
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 1231
+        width: 444
+        height: 343
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 207304477ec1569f0800000000000000
+      internalID: -475942405204330750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: legguards/legguards_redleather_purple
+      rect:
+        serializedVersion: 2
+        x: 5988
+        y: 1214
+        width: 440
+        height: 341
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e826f6b62d0d3f050800000000000000
+      internalID: 5833235544539095694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: legguards/legguards_redleather_red
+      rect:
+        serializedVersion: 2
+        x: 6430
+        y: 1231
+        width: 440
+        height: 341
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29ec52869792f0d40800000000000000
+      internalID: 5552702466986200722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mainHand/mainHand-dummy
+      rect:
+        serializedVersion: 2
+        x: 2622
+        y: 893
+        width: 655
+        height: 205
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f60c8204f4c6f9990800000000000000
+      internalID: -7377058576974954385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: mainHand/mainHand-rustySword
+      rect:
+        serializedVersion: 2
+        x: 7944
+        y: 1091
+        width: 105
+        height: 629
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad86a70b39d3ba280800000000000000
+      internalID: -9031056923231098662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: neck/neck-dummy
+      rect:
+        serializedVersion: 2
+        x: 7178
+        y: 868
+        width: 144
+        height: 149
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a69da474da83632a0800000000000000
+      internalID: -6758151873946265238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: offHand/offHand-dummy
+      rect:
+        serializedVersion: 2
+        x: 5763
+        y: 511
+        width: 588
+        height: 438
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb83d6e1fdde05ca0800000000000000
+      internalID: -6030058358505129797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: offHand/offHand-rustyShield
+      rect:
+        serializedVersion: 2
+        x: 7594
+        y: 1053
+        width: 348
+        height: 346
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a158242ad3b794240800000000000000
+      internalID: 4776484384448611610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pauldrons/Pauldrons_GoldUnicorn_Gold
+      rect:
+        serializedVersion: 2
+        x: 3091
+        y: 1430
+        width: 511
+        height: 296
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 195f8efab4b4709a0800000000000000
+      internalID: -6266957568016845423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pauldrons/Pauldrons_GoldUnicorn_Silver
+      rect:
+        serializedVersion: 2
+        x: 3605
+        y: 1446
+        width: 511
+        height: 296
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9383ed2557d937e0800000000000000
+      internalID: -1785159016433613924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pauldrons/Pauldrons_Gold_Engraved
+      rect:
+        serializedVersion: 2
+        x: 491
+        y: 2058
+        width: 466
+        height: 232
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81b15979eabfa03e0800000000000000
+      internalID: -2086578750046790888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pauldrons/Pauldrons_Gold_Flared
+      rect:
+        serializedVersion: 2
+        x: 4468
+        y: 2124
+        width: 446
+        height: 248
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ca0808ae86331d70800000000000000
+      internalID: 9012607265630849732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pauldrons/Pauldrons_Gold_Scalloped
+      rect:
+        serializedVersion: 2
+        x: 6470
+        y: 2225
+        width: 450
+        height: 205
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00214be64873225d0800000000000000
+      internalID: -3088845352490233344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pauldrons/Pauldrons_Gold_Wolf
+      rect:
+        serializedVersion: 2
+        x: 6419
+        y: 1819
+        width: 488
+        height: 282
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05c88b363d4505080800000000000000
+      internalID: -9200760771830051760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pauldrons/Pauldrons_Silver_Engraved
+      rect:
+        serializedVersion: 2
+        x: 3779
+        y: 2071
+        width: 466
+        height: 234
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe38ddeab4857fa00800000000000000
+      internalID: 790197341706355695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pauldrons/Pauldrons_Silver_Flared
+      rect:
+        serializedVersion: 2
+        x: 2486
+        y: 2222
+        width: 446
+        height: 248
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8dcfe8f99a4747770800000000000000
+      internalID: 8607633059687103704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pauldrons/Pauldrons_Silver_Wolf
+      rect:
+        serializedVersion: 2
+        x: 7667
+        y: 1836
+        width: 488
+        height: 282
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8c78559a3f628140800000000000000
+      internalID: 4720457656842091660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pauldrons/pauldrons_blackspikedleather_red
+      rect:
+        serializedVersion: 2
+        x: 7140
+        y: 1594
+        width: 455
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee940d101746540e0800000000000000
+      internalID: -2286310799296149010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pauldrons/pauldrons_blackspikedleather_silver
+      rect:
+        serializedVersion: 2
+        x: 6013
+        y: 2156
+        width: 455
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbc90d02ca007d400800000000000000
+      internalID: 348748235429420220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pauldrons/pauldrons_fineleather_red
+      rect:
+        serializedVersion: 2
+        x: 638
+        y: 1894
+        width: 487
+        height: 208
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8663f68f14314b920800000000000000
+      internalID: 3005048025424803432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pauldrons/pauldrons_fineleather_silver
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1994
+        width: 487
+        height: 208
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d33481bf235166be0800000000000000
+      internalID: -1484475718466780355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pauldrons/pauldrons_goldlion_gold
+      rect:
+        serializedVersion: 2
+        x: 6603
+        y: 1982
+        width: 468
+        height: 241
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7e98c1e091b3c880800000000000000
+      internalID: -8591828428271346052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pauldrons/pauldrons_goldlion_silver
+      rect:
+        serializedVersion: 2
+        x: 7466
+        y: 1998
+        width: 468
+        height: 241
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a96b5b74e7746f6b0800000000000000
+      internalID: -5262940506841303398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pauldrons/pauldrons_leatheredge
+      rect:
+        serializedVersion: 2
+        x: 3323
+        y: 2170
+        width: 470
+        height: 240
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aae2288fbf88f1c20800000000000000
+      internalID: 3179410477734309546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pelvis/pelvis-basic
+      rect:
+        serializedVersion: 2
+        x: 6883
+        y: 1819
+        width: 249
+        height: 182
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14d72b6d509b35b90800000000000000
+      internalID: -7254251140035740351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pelvis/pelvis-dummy
+      rect:
+        serializedVersion: 2
+        x: 1479
+        y: 2076
+        width: 233
+        height: 168
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e89faccb9adef1940800000000000000
+      internalID: 5269191402319444366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shadow
+      rect:
+        serializedVersion: 2
+        x: 3040
+        y: 552
+        width: 92
+        height: 90
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 568dd867609f81df0800000000000000
+      internalID: -209143576518600603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shields/Shields_Aegis
+      rect:
+        serializedVersion: 2
+        x: 7445
+        y: 2
+        width: 450
+        height: 454
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f3e430306453f200800000000000000
+      internalID: 212606379518911472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shields/Shields_Circle_Gold
+      rect:
+        serializedVersion: 2
+        x: 4835
+        y: 847
+        width: 399
+        height: 399
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89ff3e7ebab588fd0800000000000000
+      internalID: -2339519212530958440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shields/Shields_Circle_Silver
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 738
+        width: 399
+        height: 399
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 487999820142e6160800000000000000
+      internalID: 7020588520936413060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shields/Shields_Circle_Wood
+      rect:
+        serializedVersion: 2
+        x: 5236
+        y: 847
+        width: 398
+        height: 398
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db6bdce8f1c318c50800000000000000
+      internalID: 6665675029722543805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shields/Shields_Reaper_Shield
+      rect:
+        serializedVersion: 2
+        x: 4844
+        y: 2
+        width: 443
+        height: 563
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ae26ba58da1b1690800000000000000
+      internalID: -7630475627112026460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shields/Shields_Rose_Shield
+      rect:
+        serializedVersion: 2
+        x: 2876
+        y: 2
+        width: 513
+        height: 548
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a75ce49e743433910800000000000000
+      internalID: 1815869050896434554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shields/Shields_Royal_Guard
+      rect:
+        serializedVersion: 2
+        x: 6796
+        y: 534
+        width: 380
+        height: 501
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 764121ad8ffeac4a0800000000000000
+      internalID: -6572176854104271769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shields/Shields_RunicShield
+      rect:
+        serializedVersion: 2
+        x: 7445
+        y: 458
+        width: 451
+        height: 446
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3c29e487ecca6aa0800000000000000
+      internalID: -6166891444991087553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shields/Shields_Screaming_Star_Shield
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 2
+        width: 606
+        height: 601
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae63e8666280587a0800000000000000
+      internalID: -6375680736450693398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shields/Shields_Spiral_Shield
+      rect:
+        serializedVersion: 2
+        x: 6353
+        y: 534
+        width: 441
+        height: 441
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecae95401545f6660800000000000000
+      internalID: 7381211021225618126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shields/Shields_Tortoise_Shield
+      rect:
+        serializedVersion: 2
+        x: 1420
+        y: 2
+        width: 505
+        height: 588
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ef23d73936ec0770800000000000000
+      internalID: 8578484523658063846
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shields/shield_door
+      rect:
+        serializedVersion: 2
+        x: 5289
+        y: 2
+        width: 580
+        height: 629
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a38b03494d53ac7e0800000000000000
+      internalID: -1744522718517086150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shields/shield_dragon
+      rect:
+        serializedVersion: 2
+        x: 3391
+        y: 2
+        width: 556
+        height: 661
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30c15a792fce74e80800000000000000
+      internalID: -8194320470306907133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shields/shield_king
+      rect:
+        serializedVersion: 2
+        x: 1927
+        y: 2
+        width: 599
+        height: 655
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb8d8c2abe426f180800000000000000
+      internalID: -9082031004079040321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shields/shields_legendaryshield
+      rect:
+        serializedVersion: 2
+        x: 5871
+        y: 2
+        width: 459
+        height: 507
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8120b0ed22268480800000000000000
+      internalID: -8897386433385324146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shields/shields_triangle_black
+      rect:
+        serializedVersion: 2
+        x: 6761
+        y: 2
+        width: 427
+        height: 530
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2f2514546a675c90800000000000000
+      internalID: -7181154101679018193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shields/shields_triangle_silver
+      rect:
+        serializedVersion: 2
+        x: 6332
+        y: 2
+        width: 427
+        height: 530
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5493ceb8a43f76f0800000000000000
+      internalID: -684770718977387430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shin-L/shin-L-basic
+      rect:
+        serializedVersion: 2
+        x: 610
+        y: 196
+        width: 101
+        height: 226
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 948fc4957ceb39a50800000000000000
+      internalID: 6526770048395966537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shin-L/shin-L-dummy
+      rect:
+        serializedVersion: 2
+        x: 5289
+        y: 402
+        width: 96
+        height: 170
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 196cd3597164771b0800000000000000
+      internalID: -5658977339665693039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shin-R/shin-R-basic
+      rect:
+        serializedVersion: 2
+        x: 7491
+        y: 2380
+        width: 260
+        height: 161
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d3c64960f32c8b10800000000000000
+      internalID: 1985001051228914643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shin-R/shin-R-dummy
+      rect:
+        serializedVersion: 2
+        x: 6268
+        y: 2433
+        width: 146
+        height: 217
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d640f87c75598c170800000000000000
+      internalID: 8198967325870720109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shoulder-L/shoulder-L-dummy
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 605
+        width: 237
+        height: 182
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eae461d1906c2ce40800000000000000
+      internalID: 5675316222885252782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: shoulder-R/shoulder-R-dummy
+      rect:
+        serializedVersion: 2
+        x: 1930
+        y: 2104
+        width: 259
+        height: 230
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9154b85493ffdb30800000000000000
+      internalID: 4314434786513146267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thigh-L/thigh-L-basic
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 2373
+        width: 206
+        height: 253
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b80fa7ff8c4871650800000000000000
+      internalID: 6203573010540720267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thigh-L/thigh-L-dummy
+      rect:
+        serializedVersion: 2
+        x: 5022
+        y: 2284
+        width: 250
+        height: 206
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ab1f72820f0a81b0800000000000000
+      internalID: -5653689878756516954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thigh-R/thigh-R-basic
+      rect:
+        serializedVersion: 2
+        x: 5609
+        y: 633
+        width: 162
+        height: 289
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 672c6eb41959db020800000000000000
+      internalID: 2359206231088218742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: thigh-R/thigh-R-dummy
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 605
+        width: 268
+        height: 160
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93882708e5855eac0800000000000000
+      internalID: -3826555145476208583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vambraces/Vambraces_Darkened
+      rect:
+        serializedVersion: 2
+        x: 6710
+        y: 2413
+        width: 507
+        height: 199
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eea7912e5291c61f0800000000000000
+      internalID: -1050436962586363154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vambraces/Vambraces_Gold_Polished
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 2445
+        width: 507
+        height: 222
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33e9ab27ff3d18540800000000000000
+      internalID: 5008517354707656243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vambraces/Vambraces_Leather_Blue
+      rect:
+        serializedVersion: 2
+        x: 2042
+        y: 2384
+        width: 550
+        height: 226
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fdeacff5947cf6e70800000000000000
+      internalID: 9110719689150738143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vambraces/Vambraces_Leather_Brown
+      rect:
+        serializedVersion: 2
+        x: 3285
+        y: 2375
+        width: 550
+        height: 226
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47b379d740f9ac0e0800000000000000
+      internalID: -2248810222282392716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vambraces/Vambraces_Pointed
+      rect:
+        serializedVersion: 2
+        x: 7327
+        y: 2460
+        width: 523
+        height: 182
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ce79e7f8d17ffc20800000000000000
+      internalID: 3242435433416195782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vambraces/Vambraces_Silver_Polished
+      rect:
+        serializedVersion: 2
+        x: 5274
+        y: 2395
+        width: 507
+        height: 224
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4f543f91f4d15890800000000000000
+      internalID: -7470956172607725750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vambraces/vambraces_strappedelbow_gold
+      rect:
+        serializedVersion: 2
+        x: 2639
+        y: 2430
+        width: 499
+        height: 217
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88aa843794321c8f0800000000000000
+      internalID: -522097283424540024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vambraces/vambraces_strappedelbow_silver
+      rect:
+        serializedVersion: 2
+        x: 3786
+        y: 2463
+        width: 499
+        height: 216
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0524dbe410460e70800000000000000
+      internalID: 9081016157239256333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waist/waist-basic
+      rect:
+        serializedVersion: 2
+        x: 3854
+        y: 2298
+        width: 324
+        height: 205
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28e44bb75f804a260800000000000000
+      internalID: 7107815962332909186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waist/waist-dummy
+      rect:
+        serializedVersion: 2
+        x: 8051
+        y: 1140
+        width: 137
+        height: 249
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ccf313ee5af309bb0800000000000000
+      internalID: -4931371610072334388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/Weapons_Blue_Flaming_Sword
+      rect:
+        serializedVersion: 2
+        x: 3949
+        y: 259
+        width: 772
+        height: 271
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48bbc0009551836c0800000000000000
+      internalID: -4163554383506916476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/Weapons_Blue_Sword
+      rect:
+        serializedVersion: 2
+        x: 1927
+        y: 820
+        width: 693
+        height: 253
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecd1eba3cd2db4920800000000000000
+      internalID: 2975703822128520654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/Weapons_Broken_Blade
+      rect:
+        serializedVersion: 2
+        x: 1815
+        y: 1286
+        width: 517
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ebb434c9cd94c3c70800000000000000
+      internalID: 8952111371168992190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/Weapons_Gold_Broken_Blade
+      rect:
+        serializedVersion: 2
+        x: 1296
+        y: 1260
+        width: 517
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd26e8c3ec2ef8f00800000000000000
+      internalID: 1121364207645647581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/Weapons_Gold_Horsemans_Mace
+      rect:
+        serializedVersion: 2
+        x: 1816
+        y: 1075
+        width: 574
+        height: 209
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd02491ac830438a0800000000000000
+      internalID: -6326427674007559971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/Weapons_Horsemans_Mace
+      rect:
+        serializedVersion: 2
+        x: 4163
+        y: 1098
+        width: 572
+        height: 209
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d097bf2b473a2edb0800000000000000
+      internalID: -4764065734190204659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/Weapons_LionSword_Gold
+      rect:
+        serializedVersion: 2
+        x: 1174
+        y: 606
+        width: 751
+        height: 253
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35ee0e27a7b744630800000000000000
+      internalID: 3910386142308003411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/Weapons_LionSword_Silver
+      rect:
+        serializedVersion: 2
+        x: 4771
+        y: 592
+        width: 755
+        height: 253
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad5a4d2b821faa2c0800000000000000
+      internalID: -4419454927209454118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/Weapons_MorningStar_Gold
+      rect:
+        serializedVersion: 2
+        x: 7400
+        y: 1401
+        width: 526
+        height: 191
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9bf7d6d9bbac64c0800000000000000
+      internalID: -4292867530129146978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/Weapons_Morningstar_Silver
+      rect:
+        serializedVersion: 2
+        x: 6872
+        y: 1340
+        width: 526
+        height: 191
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40027ad74c9a38c10800000000000000
+      internalID: 2054672516397867012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/Weapons_PropulsionHammer
+      rect:
+        serializedVersion: 2
+        x: 2528
+        y: 2
+        width: 346
+        height: 817
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e7778f0516594190800000000000000
+      internalID: -7977750616455284760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/Weapons_PurpleDualityBlade
+      rect:
+        serializedVersion: 2
+        x: 2876
+        y: 664
+        width: 822
+        height: 227
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24b40dfd6996be800800000000000000
+      internalID: 642723468551408450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/Weapons_SilverScythe_Gold
+      rect:
+        serializedVersion: 2
+        x: 7369
+        y: 318
+        width: 646
+        height: 821
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9f895ec617786700800000000000000
+      internalID: 533807495678365599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/Weapons_SilverScythe_Silver
+      rect:
+        serializedVersion: 2
+        x: 3949
+        y: 532
+        width: 821
+        height: 607
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f75deab9ff2d05220800000000000000
+      internalID: 2472708190696822143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/Weapons_Wolf_Sword
+      rect:
+        serializedVersion: 2
+        x: 4161
+        y: 847
+        width: 672
+        height: 249
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 993a375473d3a89b0800000000000000
+      internalID: -5077178322309110887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/sword_vicious
+      rect:
+        serializedVersion: 2
+        x: 7190
+        y: 2
+        width: 253
+        height: 864
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d31bc3e886f50d980800000000000000
+      internalID: -8516201992690028227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/weapons_EtherBlade
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 792
+        width: 710
+        height: 261
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b866a905f12aaec0800000000000000
+      internalID: -3554991619542980430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/weapons_Flail
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1055
+        width: 494
+        height: 259
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67cae7729f646b7d0800000000000000
+      internalID: -2903054873870291850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/weapons_GiantBone
+      rect:
+        serializedVersion: 2
+        x: 2334
+        y: 1427
+        width: 546
+        height: 184
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f324556292ada8de0800000000000000
+      internalID: -1330010869662924225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/weapons_MercurialBlade_gold
+      rect:
+        serializedVersion: 2
+        x: 5636
+        y: 950
+        width: 607
+        height: 216
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0252ff7ef684b3540800000000000000
+      internalID: 4988660657713784096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/weapons_MercurialBlade_silver
+      rect:
+        serializedVersion: 2
+        x: 3279
+        y: 893
+        width: 607
+        height: 216
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d29a53c8f48e0e050800000000000000
+      internalID: 5827913346169809197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/weapons_Poleaxe
+      rect:
+        serializedVersion: 2
+        x: 3850
+        y: 2
+        width: 992
+        height: 255
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca4185a14bb36e3a0800000000000000
+      internalID: -6636551356161715028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/weapons_dreadBlade
+      rect:
+        serializedVersion: 2
+        x: 1174
+        y: 861
+        width: 695
+        height: 205
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88e7aea8619ded280800000000000000
+      internalID: -9016530713106022776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/weapons_hand&halfSword
+      rect:
+        serializedVersion: 2
+        x: 6245
+        y: 1036
+        width: 675
+        height: 193
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf00d8150a7d12070800000000000000
+      internalID: 8079976290042315003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons/weapons_taperedSwords
+      rect:
+        serializedVersion: 2
+        x: 1174
+        y: 1068
+        width: 640
+        height: 190
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bae778aa36f83a630800000000000000
+      internalID: 3937148157477486251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      gauntlets/Gauntlets_Mittens_Silver: 2509848984292714820
+      breastplates/Breastplates_Gothic_Bloodstained: -5509429702474607350
+      pauldrons/Pauldrons_Silver_Engraved: 790197341706355695
+      shadow: -209143576518600603
+      legguards/legguards_gothic_gold: -8923570458525941682
+      head/head-dummy: -2330773333345977947
+      weapons/weapons_MercurialBlade_gold: 4988660657713784096
+      legguards/legduards_royalguard: 8058707001086627285
+      gauntlets/Gauntlets_Gold_Knuckle: -301019723798135741
+      breastplates/breastplates_royalguard_silver: 5304772398892018400
+      gauntlets/Gauntlets_Elven: 2015054206705009958
+      pauldrons/Pauldrons_Gold_Flared: 9012607265630849732
+      legguards/legguards_redleather_red: 5552702466986200722
+      weapons/Weapons_MorningStar_Gold: -4292867530129146978
+      shields/shields_triangle_silver: -684770718977387430
+      weapons/Weapons_LionSword_Gold: 3910386142308003411
+      pauldrons/pauldrons_fineleather_silver: -1484475718466780355
+      shoulder-L/shoulder-L-dummy: 5675316222885252782
+      forearm-R/forearm-R-basic: -2147223082351527526
+      pauldrons/Pauldrons_GoldUnicorn_Silver: -1785159016433613924
+      vambraces/vambraces_strappedelbow_silver: 9081016157239256333
+      weapons/Weapons_Wolf_Sword: -5077178322309110887
+      pauldrons/pauldrons_fineleather_red: 3005048025424803432
+      pauldrons/Pauldrons_GoldUnicorn_Gold: -6266957568016845423
+      thigh-L/thigh-L-basic: 6203573010540720267
+      helmets/Helmets_Toad: -7754831469802295040
+      gauntlets/Gauntlets_Flaming_Dread: -1265466029777498269
+      vambraces/Vambraces_Pointed: 3242435433416195782
+      breastplates/breastplates_whitehand_silver: 2683058260998621295
+      helmets/Helmets_Templar: -5931262054480461525
+      crest-FX/crest-FX-halo-glow: 6889248501745779548
+      pauldrons/Pauldrons_Gold_Wolf: -9200760771830051760
+      mainHand/mainHand-rustySword: -9031056923231098662
+      vambraces/Vambraces_Darkened: -1050436962586363154
+      breastplates/Breastplates_Blue_And_Gold: 2034136174976700264
+      shields/Shields_Spiral_Shield: 7381211021225618126
+      offHand/offHand-rustyShield: 4776484384448611610
+      pauldrons/pauldrons_blackspikedleather_silver: 348748235429420220
+      chest/chest-nude: -1203244961990351088
+      breastplates/Breastplates_Gold_Templar: 6805623091054201551
+      arm-R/arm-R-nude: -4004157810395780318
+      FX/FX-Swipe2: -8734813829469402827
+      gauntlets/Gauntlets_Blue_Flaming_Dread: 8249015513326320818
+      gauntlets/Gauntlets_Spiked: -2208162792026491845
+      weapons/Weapons_Broken_Blade: 8952111371168992190
+      legguards/legguards_reddragonrent_blue: 1534789016782891959
+      legguards/legguards_reddragonrent_red: 901647351539980308
+      shields/Shields_Circle_Gold: -2339519212530958440
+      weapons/weapons_taperedSwords: 3937148157477486251
+      shin-R/shin-R-dummy: 8198967325870720109
+      cape/cape-dummy: 4610794145785418264
+      shoulder-R/shoulder-R-dummy: 4314434786513146267
+      thigh-R/thigh-R-dummy: -3826555145476208583
+      breastplates/Breastplates_Leather_Brown: -1213082904238360076
+      shields/Shields_Reaper_Shield: -7630475627112026460
+      forearm-L: -3130086170454017964
+      shin-L/shin-L-basic: 6526770048395966537
+      footTop-R/footTop-R-dummy: -7847609640159973910
+      shields/Shields_Circle_Wood: 6665675029722543805
+      weapons/Weapons_PurpleDualityBlade: 642723468551408450
+      weapons/weapons_hand&halfSword: 8079976290042315003
+      helmets/Helmets_Wraith: 7695256900948643628
+      arm-L/arm-L-basic: 219978550469771785
+      helmets/Helmets_Reaper: 1744668212489543510
+      breastplates/Breastplates_Gothic_Silver: -4245289238580819615
+      weapons/weapons_MercurialBlade_silver: 5827913346169809197
+      kneeArmor-R/knee armor-R-dummy: 5653302174338655949
+      boots/Boots_Spiked: 3963549445805858808
+      weapons/sword_vicious: -8516201992690028227
+      arm-L/arm-L-nude: 47709393405675439
+      weapons/Weapons_PropulsionHammer: -7977750616455284760
+      pelvis/pelvis-basic: -7254251140035740351
+      helmets/Helmets_Gold_Wraith: -2268108097629731900
+      hand-R/hand-R-dummy: -909728243802074548
+      breastplates/Breastplate_Galactic: -5763899152079873805
+      footMain-R/footMain-R-nude: -3879658701176197880
+      breastplates/Breastplates_Leather_Blue: 1822958097208673263
+      shields/Shields_Tortoise_Shield: 8578484523658063846
+      weapons/Weapons_Blue_Flaming_Sword: -4163554383506916476
+      vambraces/vambraces_strappedelbow_gold: -522097283424540024
+      pauldrons/Pauldrons_Gold_Scalloped: -3088845352490233344
+      breastplates/breastplates_reddragonrent_purple: -5536367275481248782
+      shields/Shields_Screaming_Star_Shield: -6375680736450693398
+      armorFront-02/armorFront-02-dummy: 8305797159106874237
+      hand-L/hand-L-dummy: -4543577094846417298
+      weapons/weapons_dreadBlade: -9016530713106022776
+      vambraces/Vambraces_Leather_Blue: 9110719689150738143
+      shields/shield_dragon: -8194320470306907133
+      legguards/Leg_Guards_Gold_Hand: 6753930898248093028
+      shin-R/shin-R-basic: 1985001051228914643
+      footTip-L/footTip-L-dummy: 2703031951260387143
+      weapons/Weapons_Gold_Broken_Blade: 1121364207645647581
+      helmets/Helmets_Undead: -2999657307824030375
+      breastplates/Breastplates_Leather_Purple: -2590821399245431251
+      breastplates/breastplates_reddragonrent_red: 1866941032502947207
+      head/head-nude: 3732092723933963742
+      shin-L/shin-L-dummy: -5658977339665693039
+      legguards/Leg_Guards_Ancient: 73246161692820644
+      armorFront-01/armorFront-01-dummy: -7546329668340851038
+      shields/shields_legendaryshield: -8897386433385324146
+      gauntlets/Gauntlets_Articulated: 262096242106982756
+      legguards/legguards_redleather_purple: 5833235544539095694
+      pauldrons/pauldrons_leatheredge: 3179410477734309546
+      gauntlets/Gauntlets_Mittens_Gold: 6999050918733491882
+      neck/neck-dummy: -6758151873946265238
+      pelvis/pelvis-dummy: 5269191402319444366
+      forearm-L/forearm-L-basic: 6267167090282457740
+      forearm-R: 6334598655319927638
+      forearm-R/forearm-R-nude: 1070957045081531656
+      legguards/Leg_Guards_Blue_And_Gold: -5224307641115671457
+      legguards/legguards_gothic_bloodied: -3489776208006081783
+      weapons/weapons_Flail: -2903054873870291850
+      chest/chest-dummy: -1405206635195896866
+      helmets/Helmets_Royal: 5037606517224929746
+      shields/shield_door: -1744522718517086150
+      legguards/Leg_Guards_Dark: 352638099178058739
+      pauldrons/pauldrons_goldlion_silver: -5262940506841303398
+      legguards/legguards_reddragonrent_purple: -4086296171042888535
+      boots/Boots_Gold_Dread: 1397897595416736952
+      boots/Boots_Flaming_Dread: 3546870300218713820
+      shields/Shields_Circle_Silver: 7020588520936413060
+      weapons/weapons_GiantBone: -1330010869662924225
+      mainHand/mainHand-dummy: -7377058576974954385
+      boots/Boots_Dread: 7296668626016755782
+      helmets/Helmets_Hood_With_Pipe: 1649889973827213701
+      helmets/Helmets_Great_Helmet: -5237959640873260627
+      gauntlets/Gauntlets_Dread: -3652202637337215429
+      hand-L/hand-L-nude: 4130091155809438369
+      legguards/legguards_redleather_blue: -475942405204330750
+      helmets/Helmets_Lord: -1756930721858961825
+      hand-R/hand-R-nude: 2794122981913891951
+      crest/crest-halo: 3440995696506592944
+      breastplates/Breastplates_Engraved: 4832625675667630960
+      pauldrons/Pauldrons_Gold_Engraved: -2086578750046790888
+      pauldrons/pauldrons_blackspikedleather_red: -2286310799296149010
+      weapons/Weapons_Morningstar_Silver: 2054672516397867012
+      arm-R/arm-R-basic: -3842612686982852336
+      helmets/Helmets_Dread_Knight: -2337312059153038857
+      weapons/weapons_EtherBlade: -3554991619542980430
+      kneeArmor-L/kneeArmor-L-dummy: 4307016679125874366
+      FX/FX-Swipe: -8436603463878381623
+      footMain-L/footMain-L-dummy: 691357132359632871
+      weapons/weapons_Poleaxe: -6636551356161715028
+      vambraces/Vambraces_Leather_Brown: -2248810222282392716
+      helmets/Helmets_Prince: -1165557815959648916
+      pauldrons/Pauldrons_Silver_Flared: 8607633059687103704
+      waist/waist-basic: 7107815962332909186
+      pauldrons/Pauldrons_Silver_Wolf: 4720457656842091660
+      shields/Shields_RunicShield: -6166891444991087553
+      footTip-R/footTip-R-dummy: 7745690446177609886
+      gauntlets/Gauntlets_Bloodied_Articulated: 6956743148055550868
+      footMain-R/footMain-R-dummy: 1955448946934210408
+      helmets/Helmets_Silver_Hound: -1320640496161362952
+      thigh-L/thigh-L-dummy: -5653689878756516954
+      vambraces/Vambraces_Silver_Polished: -7470956172607725750
+      gauntlet-R-dummy: 3725873927419759806
+      helmets/Helmets_Northerner: 7125192164985743116
+      weapons/Weapons_Gold_Horsemans_Mace: -6326427674007559971
+      handFingers-L/handFingers-nude: -6939670820735816737
+      legguards/Leg_Guards_White_Hand: 3587349308173392858
+      offHand/offHand-dummy: -6030058358505129797
+      elbow-R/elbow-R-dummy: 4198200610973402789
+      weapons/Weapons_Blue_Sword: 2975703822128520654
+      gauntlet-L-dummy: 1429114834335921135
+      shields/Shields_Rose_Shield: 1815869050896434554
+      shields/Shields_Royal_Guard: -6572176854104271769
+      weapons/Weapons_SilverScythe_Gold: 533807495678365599
+      legguards/legguards_gothic: 9000232408096996458
+      weapons/Weapons_Horsemans_Mace: -4764065734190204659
+      shields/shields_triangle_black: -7181154101679018193
+      shields/shield_king: -9082031004079040321
+      1x1_placeholder: 9115956214612348275
+      helmets/Helmets_Horned: -435577595269968683
+      head/head-bucketHelmet: 1378021079187964482
+      footMain-L/footMain-L-nude: 950340827408085235
+      pauldrons/pauldrons_goldlion_gold: -8591828428271346052
+      breastplates/breastplates_whitehand_gold: -251491309374522729
+      shields/Shields_Aegis: 212606379518911472
+      boots/Boots_Articulated: -2031221311871974642
+      breastplates/Breastplates_Dark: -8415071625506108438
+      elbow-L/elbow-L-dummy: -2424178756771474579
+      helmets/Helmets_Hood: 8106671190845464776
+      waist/waist-dummy: -4931371610072334388
+      breastplates/breastplates_royalguard_gold: 2908479181605195828
+      breastplates/Breastplates_Ancient: -2335910825148884986
+      weapons/Weapons_SilverScythe_Silver: 2472708190696822143
+      breastplates/Breastplates_Gold_Engraved: -941148774192293341
+      breastplates/breastplates_reddragonrent_blue: 8916928461007814572
+      vambraces/Vambraces_Gold_Polished: 5008517354707656243
+      helmets/Helmets_Black_Hound: -4584568093215819026
+      thigh-R/thigh-R-basic: 2359206231088218742
+      forearm-L/forearm-L-nude: -7351900306406150389
+      helmets/Helmets_Avant_Guard: 3637497201008991139
+      weapons/Weapons_LionSword_Silver: -4419454927209454118
+      footTop-L/footTop-L-dummy: -4922095903507304819
+      breastplates/Breastplates_Gothic_Gold: 8104020372801715721
+      chest/chest-basic: -8629822771406168262
+      handFingers-L/HandFingers-L: 4731560975877896774
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -189,6 +189,8 @@ public class CardOnHandManager : MonoBehaviour
             {
                 MoveCard(origin, destination);
             }
+            
+            if(data.card != null && data.card.name != null) UpdateCardEnergyText(data.card.energy);
         }
     }
 
@@ -270,6 +272,19 @@ public class CardOnHandManager : MonoBehaviour
         }
 
         UpdateCardBasedOnEnergy(energy);
+    }
+
+    private void UpdateCardEnergyText(int energy)
+    {
+        string cardEnergy = Mathf.Max(energy, 0).ToString();
+        if (energy < 0)
+        {
+            cardEnergy = "X";
+        }
+
+        energyTF.text = cardEnergy;
+        thisCardValues.energy = energy;
+        UpdateCardBasedOnEnergy(currentPlayerEnergy);
     }
 
     public bool MoveCardIfClose(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType)

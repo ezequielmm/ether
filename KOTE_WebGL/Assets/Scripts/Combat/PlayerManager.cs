@@ -18,6 +18,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
     private StatusManager statusManager;
     private Action RunWithEvent;
     private bool CalledEvent;
+    private List<Guid> runningEvents = new List<Guid>();
 
     Bounds playerBounds;
 
@@ -89,44 +90,65 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
             // Run Attack Animation Or Status effects
             if (target.effectType == nameof(ATTACK_EFFECT_TYPES.damage))
             {
+                runningEvents.Add(attack.attackId);
                 // Run Attack
                 var f = Attack();
                 if (f > afterEvent) afterEvent = f;
                 endCalled = true;
-                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+                RunAfterEvent(() =>
+                {
+                    GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack);
+                    runningEvents.Remove(attack.attackId);
+                });
             }
             else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
             {
+                runningEvents.Add(attack.attackId);
                 var f = PlayAnimation("Cast");
                 if (f > afterEvent) afterEvent = f;
                 endCalled = true;
-                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+                RunAfterEvent(() =>
+                {
+                    GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack);
+                    runningEvents.Remove(attack.attackId);
+                });
             }
             else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.heal)) // Health Up
             {
+                runningEvents.Add(attack.attackId);
                 var f = PlayAnimation("Cast");
                 if (f > afterEvent) afterEvent = f;
                 endCalled = true;
-                RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+                RunAfterEvent(() =>
+                {
+                    GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack);
+                    runningEvents.Remove(attack.attackId);
+                });
             }
         }
 
         if (!endCalled)
         {
             // If no conditions met, pass onto the target and play cast
+            runningEvents.Add(attack.attackId);
             var f = PlayAnimation("Cast");
             if (f > afterEvent) afterEvent = f;
             endCalled = true;
-            RunAfterEvent(() => GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack));
+            RunAfterEvent(() =>
+            {
+                GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack);
+                runningEvents.Remove(attack.attackId);
+            });
         }
         else if (afterEvent > 0)
         {
             RunAfterTime(afterEvent, () =>
             {
-                if (RunWithEvent != null && !CalledEvent)
+                if (RunWithEvent != null && !CalledEvent && runningEvents.Contains(attack.attackId))
                 {
                     Debug.LogWarning($"[{gameObject.name}] Animation is missing a 'attack' or 'release' event!");
                     RunWithEvent.Invoke();
+                    runningEvents.Remove(attack.attackId);
                 }
             });
         }

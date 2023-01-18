@@ -1,7 +1,7 @@
 using UnityEngine;
 
-public static class GameSettings 
-{   
+public static class GameSettings
+{
     //MAP
     public const float COMPLETED_NODE_SCALE = 0.9f;
     public const bool COLOR_UNAVAILABLE_MAP_NODES = true;
@@ -25,7 +25,7 @@ public static class GameSettings
     public const float ACTIVE_NODE_PULSE_TIME = 1f;
     public const bool MAP_AUTO_SCROLL_ACTIVE = false;
     public const bool SHOW_MAP_REVEAL_ON_PORTAL = false;
-    
+
     /// <summary>
     /// Negitive to go to the left, positive for the right. Between -1 and 1. -1 is left edge, 1 is right edge, and 0 is center.
     /// This affects where the knight is attepted to be put on the screen when focused.
@@ -61,7 +61,7 @@ public static class GameSettings
     public static float INTENT_HEIGHT = 1.1f;
     public static float HEALTH_HEIGHT = 0.9f;
     public static bool SHOW_PLAYER_INJURED_IDLE = false;
-    
+
     // Text Effects
     public static Color DEFAUT_TEXTEFFECT_COLOR = Color.green;
     public const float DEFAUT_TEXTEFFECT_RISE_HEIGHT = 1f;
@@ -74,9 +74,41 @@ public static class GameSettings
     public const float PANEL_SCROLL_SPEED = 30f;
     public const int ENCOUNTER_TEXT_BOX_CHARACTER_COUNT = 500;
 
-    /*//////////////  
-    ///Debug
-    //*/
+    // Player Skin Defaults
+    public static TraitSprite[] DEFAULT_SKIN_DATA = new[]
+    {
+        new TraitSprite{skinName ="Boots/Boots_Medici",
+        traitType = nameof(TraitTypes.Boots)
+        },
+        new TraitSprite{skinName ="Gauntlet/Gauntlet_Medici",
+        traitType = nameof(TraitTypes.Gauntlet)
+        },
+        new TraitSprite{skinName ="Weapon/Weapon_Medici",
+        traitType = nameof(TraitTypes.Weapon)
+        },
+        new TraitSprite{skinName ="Padding/Padding_Brown",
+        traitType = nameof(TraitTypes.Padding)
+        },
+        new TraitSprite{skinName ="Helmet/Helmet_Medici",
+        traitType = nameof(TraitTypes.Helmet)
+        },
+        new TraitSprite{skinName ="Shield/Shield_Medici",
+        traitType = nameof(TraitTypes.Shield)
+        },
+        new TraitSprite{skinName ="Breastplate/Breastplate_Medici",
+        traitType = nameof(TraitTypes.Breastplate)
+        },
+        new TraitSprite{skinName ="Pauldrons/Pauldrons_Medici",
+        traitType = nameof(TraitTypes.Pauldrons)
+        },
+        new TraitSprite{skinName ="Legguard/Legguard_Medici",
+        traitType = nameof(TraitTypes.Legguard)
+        }
+    };
+
+/*//////////////  
+///Debug
+//*/
     public const bool DEBUG_MODE_ON = false;
 
     

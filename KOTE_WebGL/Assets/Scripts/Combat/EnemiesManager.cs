@@ -21,6 +21,7 @@ public class EnemiesManager : MonoBehaviour
     private void Awake()
     {
         GameManager.Instance.EVENT_UPDATE_ENEMIES.AddListener(OnEnemiesUpdate);
+        GameManager.Instance.EVENT_ADD_ENEMIES.AddListener(OnAddEnemies);
     }
 
     private EnemyManager SpawnEnemy(EnemyData enemyData)
@@ -110,8 +111,7 @@ public class EnemiesManager : MonoBehaviour
             GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), nameof(EnemyState.dead));
             return;
         }
-        
-
+     
         for(int i = 0; i < enemies.Count; i++)
         {
             var enemy = enemies[i];
@@ -129,6 +129,29 @@ public class EnemiesManager : MonoBehaviour
         enemies.Clear();
         enemies = newEnemyList;
 
+        PositionEnemies();
+    }
+
+    private void OnAddEnemies(EnemiesData enemiesData)
+    {
+        foreach (EnemyData data in enemiesData.data)
+        {
+            bool enemyExists = EnemyExists(data);
+            EnemyManager enemyManager = null;
+            if (enemyExists) 
+            {
+                enemyManager = GetEnemy(data.id);
+                if (enemyManager.gameObject != null) 
+                {
+                    enemyManager.EnemyData = data;
+                }
+            }
+            else
+            {
+                enemyManager = SpawnEnemy(data);
+                enemies.Add(enemyManager.gameObject);
+            }
+        }
         PositionEnemies();
     }
 
