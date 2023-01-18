@@ -12,6 +12,7 @@ using UnityEngine.Networking;
 public class WebRequesterManager : MonoBehaviour
 {
     private string baseUrl;
+    private string skinUrl;
     private readonly string urlRandomName = "/auth/v1/generate/username";
     private readonly string urlRegister = "/auth/v1/register";
     private readonly string urlLogin = "/auth/v1/login";
@@ -41,14 +42,26 @@ public class WebRequesterManager : MonoBehaviour
         baseUrl = "https://gateway.dev.kote.robotseamonster.com";//make sure if anything fails we use DEV
        // baseUrl = "https://gateway.alpha.knightsoftheether.com";//make sure if anything fails we use DEV
 
-        if (hostName.IndexOf("alpha") > -1) { baseUrl = "https://gateway.alpha.knightsoftheether.com"; }
-        if (hostName.IndexOf("stage") > -1) { baseUrl = "https://gateway.stage.kote.robotseamonster.com"; }
-        if (hostName.IndexOf("dev") > -1) { baseUrl = "https://gateway.dev.kote.robotseamonster.com"; }
+       if (hostName.IndexOf("alpha") > -1)
+       {
+           baseUrl = "https://gateway.alpha.knightsoftheether.com";
+       }
+        if (hostName.IndexOf("stage") > -1)
+        {
+            baseUrl = "https://gateway.stage.kote.robotseamonster.com"; 
+            skinUrl = "https://koteskins.robotseamonster.com/";
+        }
+        if (hostName.IndexOf("dev") > -1)
+        {
+            baseUrl = "https://gateway.dev.kote.robotseamonster.com";
+            skinUrl = "https://koteskins.robotseamonster.com/";
+        }
 
 
         // default to the stage server if we're in the editor
         #if UNITY_EDITOR
         baseUrl = "https://gateway.dev.kote.robotseamonster.com";
+        skinUrl = "https://koteskins.robotseamonster.com/";
         #endif
       
         PlayerPrefs.SetString("api_url", baseUrl);
@@ -478,8 +491,7 @@ public class WebRequesterManager : MonoBehaviour
     public IEnumerator GetNftSkinElement(TraitSprite spriteToPopulate)
     {
         string spriteName = spriteToPopulate.imageName + ".png";
-        //string spriteUrl = "https://client.dev.kote.robotseamonster.com/skinassets/" + spriteName;
-        string spriteUrl = baseUrl + urlNftSkinSprites + spriteName;
+        string spriteUrl = skinUrl + spriteName;
         
         UnityWebRequest nftSpriteRequest = UnityWebRequestTexture.GetTexture(spriteUrl);
         yield return nftSpriteRequest.SendWebRequest();
