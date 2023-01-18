@@ -82,9 +82,9 @@ public class WebRequesterManager : MonoBehaviour
         }
     }
 
-    internal void RequestStartExpedition(string characterType)
+    internal void RequestStartExpedition(string characterType, string selectedNft)
     {
-        StartCoroutine(RequestNewExpedition(characterType));
+        StartCoroutine(RequestNewExpedition(characterType, selectedNft));
     }
 
     public void RequestLogout(string token)
@@ -501,7 +501,7 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_NFT_SKIN_SPRITE_RECEIVED.Invoke(spriteToPopulate);
     }
 
-    public IEnumerator RequestNewExpedition(string characterType)
+    public IEnumerator RequestNewExpedition(string characterType, string selectedNft)
     {
         string fullURL = $"{baseUrl}{urlExpeditionRequest}";
 
@@ -509,6 +509,7 @@ public class WebRequesterManager : MonoBehaviour
 
         WWWForm form = new WWWForm();
         form.AddField("class", characterType);
+        form.AddField("nftId", selectedNft);
 
         UnityWebRequest request = UnityWebRequest.Post(fullURL, form);
         request.SetRequestHeader("Authorization", $"Bearer {token}");
