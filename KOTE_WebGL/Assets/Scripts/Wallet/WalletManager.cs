@@ -68,7 +68,7 @@ public class WalletManager : MonoBehaviour
         // if there's no expedition, default to requesting all the data
         if (!hasExpedition)
         {
-            RequestMetadata(true);
+            RequestMetadata(false);
             return;
         }
 
