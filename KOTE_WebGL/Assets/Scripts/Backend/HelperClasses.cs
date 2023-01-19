@@ -93,6 +93,7 @@ public class ExpeditionStatusData
     public class Data
     {
         public string hasExpedition;
+        public int nftId;
     }
 }
 

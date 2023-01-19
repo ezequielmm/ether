@@ -12,6 +12,7 @@ using UnityEngine.Networking;
 public class WebRequesterManager : MonoBehaviour
 {
     private string baseUrl;
+    private string skinUrl;
     private readonly string urlRandomName = "/auth/v1/generate/username";
     private readonly string urlRegister = "/auth/v1/register";
     private readonly string urlLogin = "/auth/v1/login";
@@ -41,14 +42,26 @@ public class WebRequesterManager : MonoBehaviour
         baseUrl = "https://gateway.dev.kote.robotseamonster.com";//make sure if anything fails we use DEV
        // baseUrl = "https://gateway.alpha.knightsoftheether.com";//make sure if anything fails we use DEV
 
-        if (hostName.IndexOf("alpha") > -1) { baseUrl = "https://gateway.alpha.knightsoftheether.com"; }
-        if (hostName.IndexOf("stage") > -1) { baseUrl = "https://gateway.stage.kote.robotseamonster.com"; }
-        if (hostName.IndexOf("dev") > -1) { baseUrl = "https://gateway.dev.kote.robotseamonster.com"; }
+       if (hostName.IndexOf("alpha") > -1)
+       {
+           baseUrl = "https://gateway.alpha.knightsoftheether.com";
+       }
+        if (hostName.IndexOf("stage") > -1)
+        {
+            baseUrl = "https://gateway.stage.kote.robotseamonster.com"; 
+            skinUrl = "https://koteskins.robotseamonster.com/";
+        }
+        if (hostName.IndexOf("dev") > -1)
+        {
+            baseUrl = "https://gateway.dev.kote.robotseamonster.com";
+            skinUrl = "https://koteskins.robotseamonster.com/";
+        }
 
 
         // default to the stage server if we're in the editor
         #if UNITY_EDITOR
         baseUrl = "https://gateway.dev.kote.robotseamonster.com";
+        skinUrl = "https://koteskins.robotseamonster.com/";
         #endif
       
         PlayerPrefs.SetString("api_url", baseUrl);
@@ -82,9 +95,9 @@ public class WebRequesterManager : MonoBehaviour
         }
     }
 
-    internal void RequestStartExpedition(string characterType)
+    internal void RequestStartExpedition(string characterType, string selectedNft)
     {
-        StartCoroutine(RequestNewExpedition(characterType));
+        StartCoroutine(RequestNewExpedition(characterType, selectedNft));
     }
 
     public void RequestLogout(string token)
@@ -343,7 +356,7 @@ public class WebRequesterManager : MonoBehaviour
 
         ExpeditionStatusData data = JsonUtility.FromJson<ExpeditionStatusData>(request.downloadHandler.text);
 
-        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(data.GetHasExpedition());
+        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(data.GetHasExpedition(), data.data.nftId);
 
         Debug.Log("answer from expedition status " + request.downloadHandler.text);
     }
@@ -391,7 +404,7 @@ public class WebRequesterManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.ConnectionError ||
             request.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log("[Error getting Wallet Contents] " + request.error + " from " + fullUrl);
+            Debug.LogError("[Error getting Wallet Contents] " + request.error + " from " + fullUrl);
 
             yield break;
         }
@@ -478,8 +491,7 @@ public class WebRequesterManager : MonoBehaviour
     public IEnumerator GetNftSkinElement(TraitSprite spriteToPopulate)
     {
         string spriteName = spriteToPopulate.imageName + ".png";
-        //string spriteUrl = "https://client.dev.kote.robotseamonster.com/skinassets/" + spriteName;
-        string spriteUrl = baseUrl + urlNftSkinSprites + spriteName;
+        string spriteUrl = skinUrl + spriteName;
         
         UnityWebRequest nftSpriteRequest = UnityWebRequestTexture.GetTexture(spriteUrl);
         yield return nftSpriteRequest.SendWebRequest();
@@ -501,7 +513,7 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_NFT_SKIN_SPRITE_RECEIVED.Invoke(spriteToPopulate);
     }
 
-    public IEnumerator RequestNewExpedition(string characterType)
+    public IEnumerator RequestNewExpedition(string characterType, string selectedNft)
     {
         string fullURL = $"{baseUrl}{urlExpeditionRequest}";
 
@@ -509,6 +521,7 @@ public class WebRequesterManager : MonoBehaviour
 
         WWWForm form = new WWWForm();
         form.AddField("class", characterType);
+        form.AddField("nftId", selectedNft);
 
         UnityWebRequest request = UnityWebRequest.Post(fullURL, form);
         request.SetRequestHeader("Authorization", $"Bearer {token}");
@@ -551,7 +564,7 @@ public class WebRequesterManager : MonoBehaviour
             yield break;
         }
 
-        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false);
+        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false, -1);
         Debug.Log("answer from cancel expedition " + request.downloadHandler.text);
     }
 }
