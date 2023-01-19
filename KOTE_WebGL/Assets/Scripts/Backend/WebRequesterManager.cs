@@ -343,7 +343,7 @@ public class WebRequesterManager : MonoBehaviour
 
         ExpeditionStatusData data = JsonUtility.FromJson<ExpeditionStatusData>(request.downloadHandler.text);
 
-        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(data.GetHasExpedition());
+        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(data.GetHasExpedition(), data.data.nftId);
 
         Debug.Log("answer from expedition status " + request.downloadHandler.text);
     }
@@ -391,7 +391,7 @@ public class WebRequesterManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.ConnectionError ||
             request.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log("[Error getting Wallet Contents] " + request.error + " from " + fullUrl);
+            Debug.LogError("[Error getting Wallet Contents] " + request.error + " from " + fullUrl);
 
             yield break;
         }
@@ -552,7 +552,7 @@ public class WebRequesterManager : MonoBehaviour
             yield break;
         }
 
-        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false);
+        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false, -1);
         Debug.Log("answer from cancel expedition " + request.downloadHandler.text);
     }
 }

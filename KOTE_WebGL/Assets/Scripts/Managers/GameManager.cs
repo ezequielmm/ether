@@ -31,6 +31,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_PROFILE_ERROR = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<ProfileData> EVENT_REQUEST_PROFILE_SUCCESSFUL = new UnityEvent<ProfileData>();
     
+    //PLAYER VERIFICATION EVENTS
+    [HideInInspector] public UnityEvent<bool> EVENT_OWNS_CURRENT_EXPEDITION_NFT = new UnityEvent<bool>();
+    
     //SETTINGS EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_SETTINGSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_LOGOUT = new UnityEvent<string>();
@@ -126,7 +129,7 @@ public class GameManager : SingleTon<GameManager>
    
 
     //EXPEDITION EVENTS
-    [HideInInspector] public UnityEvent<bool> EVENT_EXPEDITION_STATUS_UPDATE = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<bool, int> EVENT_EXPEDITION_STATUS_UPDATE = new UnityEvent<bool, int>();
     [HideInInspector] public UnityEvent EVENT_EXPEDITION_CONFIRMED = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_REQUEST_EXPEDITION_CANCEL = new UnityEvent();
 
