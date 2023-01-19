@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,6 +6,7 @@ using UnityEngine.Events;
 public class MetaMask : MonoBehaviour
 {
     public static MetaMask Instance { get; private set; } = null;
+
     /// <summary>
     /// Returns true if Metamask is installed
     /// </summary>
@@ -16,6 +16,7 @@ public class MetaMask : MonoBehaviour
     /// When true, we're waiting for the user to input their details about their account.
     /// </summary>
     public bool AwaitingAccount => awaitingAccountDetails;
+
     private bool awaitingAccountDetails = false;
     private UnityEvent<string> accountSuccess = null;
     private UnityEvent accountFail = null;
@@ -24,7 +25,9 @@ public class MetaMask : MonoBehaviour
     /// Returns the user's account. You can check if this has been populated via <see cref="HasAccount"/>.
     /// </summary>
     public string Account => account;
+
     private string account = null;
+
     /// <summary>
     /// Returns if the account has been set up yet.
     /// If false, you can call <see cref="GetAccount"/> to get the user's Account.
@@ -35,6 +38,7 @@ public class MetaMask : MonoBehaviour
     /// True when the user is in the middle of signing a message.
     /// </summary>
     public bool SigningMessage => currentlySigningMessage;
+
     private bool currentlySigningMessage = false;
     private UnityEvent<string> messageSuccess = null;
     private UnityEvent messageFail = null;
@@ -45,11 +49,12 @@ public class MetaMask : MonoBehaviour
         {
             Instance = this;
         }
-        else 
+        else
         {
             Debug.LogWarning($"[MetaMask] There is more than 1 instance of MetaMask.cs. Deleting it.");
             Destroy(this);
         }
+
         DontDestroyOnLoad(gameObject);
         gameObject.name = "MetaMask";
     }
@@ -59,7 +64,7 @@ public class MetaMask : MonoBehaviour
         Instance = null;
     }
 
-#region JS Calls
+    #region JS Calls
 
     /// <summary>
     /// Asks the user for their account info. Be sure to check if <see cref="AwaitingAccount"/> is true.
@@ -76,21 +81,38 @@ public class MetaMask : MonoBehaviour
 #endif
         if (!HasMetamask)
         {
-            Debug.LogError($"[MetaMask | {gameObject.name}] MetaMask is not found in the browser. Be sure to install it!");
+            Debug.LogError(
+                $"[MetaMask | {gameObject.name}] MetaMask is not found in the browser. Be sure to install it!");
             OnError?.Invoke();
             return;
         }
+
         if (awaitingAccountDetails)
         {
-            Debug.LogError($"[MetaMask | {gameObject.name}] Still waiting for user to give account info. Making multiple calls overrides the previous call.\n" +
+            Debug.LogError(
+                $"[MetaMask | {gameObject.name}] Still waiting for user to give account info. Making multiple calls overrides the previous call.\n" +
                 $"Please check if 'AwaitingAccount' before trying to get an account again.");
             OnError?.Invoke();
             return;
         }
+
         awaitingAccountDetails = true;
         accountSuccess = OnSuccess;
         accountFail = OnError;
+        OnSuccess?.AddListener(OnWalletResponseSuccess);
+        OnError?.AddListener(OnWalletResponseFailure);
         MetamaskSelectedAccount("AccountSuccess", "AccountError", gameObject.name);
+    }
+
+    // callbacks to clear the awaiting account details blocker
+    private void OnWalletResponseSuccess(string data)
+    {
+        awaitingAccountDetails = false;
+    }
+
+    private void OnWalletResponseFailure()
+    {
+        awaitingAccountDetails = false;
     }
 
     /// <summary>
@@ -108,19 +130,24 @@ public class MetaMask : MonoBehaviour
 #endif
         if (!HasMetamask)
         {
-            Debug.LogError($"[MetaMask | {gameObject.name}] MetaMask is not found in the browser. Be sure to install it!");
+            Debug.LogError(
+                $"[MetaMask | {gameObject.name}] MetaMask is not found in the browser. Be sure to install it!");
             OnError?.Invoke();
             return;
         }
+
         if (SigningMessage)
         {
-            Debug.LogError($"[MetaMask | {gameObject.name}] You need to wait for the previous message to be signed or to fail first. Check 'SingingMessage' to see if MetaMask is busy or not.");
+            Debug.LogError(
+                $"[MetaMask | {gameObject.name}] You need to wait for the previous message to be signed or to fail first. Check 'SingingMessage' to see if MetaMask is busy or not.");
             OnError?.Invoke();
             return;
         }
+
         if (!HasAccount)
         {
-            Debug.LogError($"[MetaMask | {gameObject.name}] You need to have the account set up before you can sign a messgae.");
+            Debug.LogError(
+                $"[MetaMask | {gameObject.name}] You need to have the account set up before you can sign a messgae.");
             OnError?.Invoke();
             return;
         }
@@ -131,9 +158,10 @@ public class MetaMask : MonoBehaviour
         MetamaskPersonalSign(Account, message, "MessageSuccess", "MessageError", gameObject.name);
     }
 
-#endregion
+    #endregion
 
-#region JS Callbacks
+    #region JS Callbacks
+
     /// <summary>
     /// Called by metamask when we are given an address
     /// </summary>
@@ -190,11 +218,13 @@ public class MetaMask : MonoBehaviour
         {
             messageFail.Invoke();
         }
+
         currentlySigningMessage = false;
     }
-#endregion
 
-    private bool hasMetaMask() 
+    #endregion
+
+    private bool hasMetaMask()
     {
         bool metaMask = false;
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -208,13 +238,15 @@ public class MetaMask : MonoBehaviour
         return (RequestError)JsonUtility.FromJson(json, typeof(RequestError));
     }
 
-#region JavascriptServiceLayer
+    #region JavascriptServiceLayer
+
     /// <summary>
     /// Checks to see if a unity instance is set or not
     /// </summary>
     /// <returns>True if "unity" is set.</returns>
     [DllImport("__Internal")]
     private static extern bool HasUnityInstance();
+
     /// <summary>
     /// Checks to see if the client has MetaMask installed.
     /// </summary>
@@ -229,7 +261,8 @@ public class MetaMask : MonoBehaviour
     /// <param name="error">Method to call on error (Method Name)</param>
     /// <param name="gameobject">Which game object to send the info to (By Name). Default: "MetaMask"</param>
     [DllImport("__Internal")]
-    private static extern void MetamaskSelectedAccount(string success, string error = null, string gameobject = "MetaMask");
+    private static extern void MetamaskSelectedAccount(string success, string error = null,
+        string gameobject = "MetaMask");
 
     /// <summary>
     /// Asks a user to sign a message with their wallet.
@@ -240,15 +273,17 @@ public class MetaMask : MonoBehaviour
     /// <param name="error">Method to call on error (Method Name)</param>
     /// <param name="gameobject">Which game object to send the info to (By Name). Default: "MetaMask"</param>
     [DllImport("__Internal")]
-    private static extern void MetamaskPersonalSign(string account, string message, string success, string error = null, string gameobject = "MetaMask");
+    private static extern void MetamaskPersonalSign(string account, string message, string success, string error = null,
+        string gameobject = "MetaMask");
 
-#endregion
- 
-#region Helper Classes
+    #endregion
+
+    #region Helper Classes
+
     /// <summary>
     /// Errors that are returned by MetaMask
     /// </summary>
-    [System.Serializable]
+    [Serializable]
     public class RequestError
     {
         public RequestError(int code, string message, string stack = "")
@@ -257,16 +292,21 @@ public class MetaMask : MonoBehaviour
             this.message = message;
             this.stack = stack;
         }
-        public RequestError() { }
+
+        public RequestError()
+        {
+        }
 
         /// <summary>
         /// The error code
         /// </summary>
         public int code;
+
         /// <summary>
         /// The error message
         /// </summary>
         public string message;
+
         /// <summary>
         /// The error stack
         /// </summary>
@@ -277,5 +317,6 @@ public class MetaMask : MonoBehaviour
             return $"({code}): {message}";
         }
     }
-#endregion
+
+    #endregion
 }
