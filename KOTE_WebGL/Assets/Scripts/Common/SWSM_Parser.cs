@@ -503,12 +503,14 @@ public class SWSM_Parser
         SWSM_CardMove cardMoveData = JsonUtility.FromJson<SWSM_CardMove>(rawData);
         Debug.Log($"[SWSM Parser] ProcessMoveCard [{cardMoveData.data.data.Length}]");
         int i = 0;
+        List<(CardToMoveData, float)> cardMoveList = new List<(CardToMoveData, float)>();
         for (int y = cardMoveData.data.data.Length - 1; y >= 0; y--)
         {
-            GameManager.Instance.EVENT_MOVE_CARD.Invoke(cardMoveData.data.data[y], i);
+            cardMoveList.Add((cardMoveData.data.data[y], i));
             i++;
         }
 
+        GameManager.Instance.EVENT_MOVE_CARDS.Invoke(cardMoveList);
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
     }
 

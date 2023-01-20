@@ -1,12 +1,14 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 
 public class HandManager : MonoBehaviour
 {
     public GameObject spriteCardPrefab;
+
+    // Hand Manager and CardMovementManager are one module, but are split for cleanlieness
+    public CardMovementManager cardMovementManager;
 
     //  public List<GameObject> listOfCardsOnHand;
     public Dictionary<string, GameObject>
@@ -92,35 +94,15 @@ public class HandManager : MonoBehaviour
             audioRunning = false;
         }
     }
-    
+
     private void OnCardAdd(AddCardData addCardData)
     {
         // create the new card in the middle of the screen
         GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
         listOfCardsOnHand.Add(addCardData.card.id, newCard);
-        newCard.GetComponent<CardOnHandManager>().Populate(addCardData.card, cardPilesData.data.energy);
-        
-        // animate the card appearing
-        newCard.transform.localScale = Vector3.zero;
-        newCard.transform.DOScale(Vector3.one, 0.5f).OnComplete(() =>
-        {
-            // wait for the next frame before telling the card to move so that Start() runs on the card
-            StartCoroutine(WaitToMoveAddedCard(addCardData));
-        });
-    }
-
-    private IEnumerator WaitToMoveAddedCard(AddCardData addCardData)
-    {
-        // wait for a frame
-        yield return null;
-        
-        //move to the discard pile
-        GameManager.Instance.EVENT_MOVE_CARD.Invoke(new CardToMoveData
-        {
-            destination = addCardData.destination,
-            id = addCardData.card.id,
-            source = "none"
-        }, GameSettings.SHOW_NEW_CARD_DURATION);
+        CardOnHandManager cardManager = newCard.GetComponent<CardOnHandManager>();
+        cardManager.Populate(addCardData.card, cardPilesData.data.energy);
+        cardManager.ShowAddedCard(addCardData);
     }
 
     private void OnRearrangeHand()
@@ -248,7 +230,7 @@ public class HandManager : MonoBehaviour
             yield return new WaitForSeconds(1);
             // if there are still no cards after a second, make another request
         } while (requestAgain);
-        
+
         // if the request was made, drop out
         requestTimerIsRunning = false;
     }
@@ -282,8 +264,12 @@ public class HandManager : MonoBehaviour
                 if (listOfCardsOnHand.TryGetValue(cardData.id, out card))
                 {
                     var manager = card.GetComponent<CardOnHandManager>();
-                    if (manager.MoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw))
+
+                    if (manager.TryMoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw,
+                            out Sequence sequence))
                     {
+                        // we can adjust the card right away here as this function is cleanup after other movement
+                        if (sequence != null) sequence.Play();
                         yield return new WaitForSeconds(0.1f);
                         pause = true;
                     }
@@ -296,8 +282,11 @@ public class HandManager : MonoBehaviour
                 if (listOfCardsOnHand.TryGetValue(cardData.id, out card))
                 {
                     var manager = card.GetComponent<CardOnHandManager>();
-                    if (manager.MoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw))
+                    if (manager.TryMoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw,
+                            out Sequence sequence))
                     {
+                        // we can adjust the card right away here as this function is cleanup after other movement
+                        if (sequence != null) sequence.Play();
                         yield return new WaitForSeconds(0.1f);
                         pause = true;
                     }
@@ -312,28 +301,24 @@ public class HandManager : MonoBehaviour
 
         foreach (Card cardData in handDeck.cards)
         {
-            //  foreach (GameObject card in listOfCardsOnHand.Values)
-            //  {
             GameObject card;
             if (listOfCardsOnHand.TryGetValue(cardData.id, out card))
             {
+                var cardManager = card.GetComponent<CardOnHandManager>();
+
                 Vector3 pos = Vector3.zero;
                 pos.x = counter * GameSettings.HAND_CARD_GAP - halfWidth + offset;
                 pos.y = GameSettings.HAND_CARD_REST_Y;
-                // pos.y = Camera.main.orthographicSize * Mathf.Cos(pos.x);
                 pos.z = depth;
-                //card.transform.position = pos;
 
-                //var angle = (float)(counter * Mathf.PI * 2);                   
                 var angle = (float)(pos.x * Mathf.PI * 2);
                 pos.y += Mathf.Cos(pos.x * GameSettings.HAND_CARD_Y_CURVE);
 
 
-                //newCard.transform.position = pos;
                 Vector3 rot = card.transform.eulerAngles;
                 rot.z = angle / -2;
                 card.transform.eulerAngles = rot;
-                var cardManager = card.GetComponent<CardOnHandManager>();
+
                 cardManager.targetRotation = rot;
                 cardManager.targetPosition = pos;
                 card.transform.localScale = Vector3.one;
@@ -344,7 +329,8 @@ public class HandManager : MonoBehaviour
                 var manager = cardManager;
                 if (move)
                 {
-                    manager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, true, pos, delay);
+                    // we can adjust the card right away here as this function is cleanup after other movement
+                    manager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, pos, delay).Play();
                     delay -= delayStep;
                 }
                 else
@@ -354,7 +340,6 @@ public class HandManager : MonoBehaviour
             }
         }
     }
-
 
     private void OnCardsPilesUpdated(CardPiles data)
     {
