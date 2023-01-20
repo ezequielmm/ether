@@ -64,6 +64,7 @@ public class HiddenConsoleManager : MonoBehaviour
 
     public void OnTextInput(string input)
     {
+        PublicLog($"> {input}");
         input = input.Trim().ToLower();
         consoleInput.text = "";
         string[] inputSplit = input.Split();
@@ -100,6 +101,11 @@ public class HiddenConsoleManager : MonoBehaviour
                 GameManager.Instance.EVENT_SKIP_NODE.Invoke(nodeId);
                 PublicLog($"Skipping to node {nodeId}");
                 GameManager.Instance.LoadScene(inGameScenes.Expedition);
+                break;
+            case ConsoleCommands.use_nft:
+                int nftNum = int.Parse(args[0]);
+                PublicLog($"Setting skin to #{nftNum}.");
+                GameManager.Instance.EVENT_REQUEST_NFT_SET_SKIN.Invoke(nftNum);
                 break;
         }
     }
@@ -218,6 +224,9 @@ public class HiddenConsoleManager : MonoBehaviour
                 PlayerPrefs.SetInt("enable_injured_idle", 0);
                 GameSettings.SHOW_PLAYER_INJURED_IDLE = false;
                 PublicLog("All console modified settings reset");
+                break;
+            case ConsoleCommands.use_nft:
+                PublicLog("NFT Number must be provided. Example usage: use_nft 0128");
                 break;
             default:
                 PublicLog("Unknown Command.");

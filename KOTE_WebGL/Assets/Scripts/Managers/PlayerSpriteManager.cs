@@ -47,8 +47,8 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
                 trait.isDefault = true;
 
 
-                GameManager.Instance.EVENT_REQUEST_NFT_SKIN_SPRITE.Invoke(trait);
                 skinRequestsMade++;
+                GameManager.Instance.EVENT_REQUEST_NFT_SKIN_SPRITE.Invoke(trait);
             }
         }
     }
@@ -81,6 +81,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
                 skinRequestsMade++;
             }
         }
+        Debug.Log($"[PlayerSpriteManager] Nft #{nftMetaData.token_id} has been selected.");
     }
 
     private void OnSkinSpriteReceived(TraitSprite receivedSprite)
@@ -126,7 +127,9 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     {
         if (completedSkinRequests >= skinRequestsMade)
         {
+            Debug.Log($"[PlayerSpriteManager] Skin Images have been loaded!");
             completedSkinRequests = 0;
+            skinRequestsMade = 0;
             GameManager.Instance.EVENT_UPDATE_PLAYER_SKIN.Invoke();
         }
     }

@@ -80,6 +80,8 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_NFT_METADATA.AddListener(RequestNftData);
         GameManager.Instance.EVENT_REQUEST_NFT_IMAGE.AddListener(RequestNftImage);
         GameManager.Instance.EVENT_REQUEST_NFT_SKIN_SPRITE.AddListener(RequestNftSkinElement);
+        GameManager.Instance.EVENT_REQUEST_NFT_SET_SKIN.AddListener(SetKnightNft);
+
     }
 
     private void Start()
@@ -113,6 +115,11 @@ public class WebRequesterManager : MonoBehaviour
     public void RequestExpeditionCancel()
     {
         StartCoroutine(CancelOngoingExpedition());
+    }
+
+    public void SetKnightNft(int tokenId) 
+    {
+        StartCoroutine(GetSingleNft(tokenId));
     }
 
     public void RequestNftData(int[] tokenIds)
@@ -452,6 +459,35 @@ public class WebRequesterManager : MonoBehaviour
             Debug.Log("Nft metadata received");
             NftData nftData = JsonUtility.FromJson<NftData>(openSeaRequest.downloadHandler.text);
             GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.Invoke(nftData);
+        }
+    }
+
+    public IEnumerator GetSingleNft(int tokenId)
+    {
+        string nftUrl = urlOpenSea;
+        nftUrl = nftUrl.Replace("xxxx", "token_ids=" + string.Join("&token_ids=", tokenId));
+        Debug.Log("[WebRequesterManager] nft metadata url: " + nftUrl);
+        UnityWebRequest openSeaRequest = UnityWebRequest.Get(nftUrl);
+        openSeaRequest.SetRequestHeader("User-Agent",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
+        yield return openSeaRequest.SendWebRequest();
+        if (openSeaRequest.result == UnityWebRequest.Result.ConnectionError ||
+            openSeaRequest.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.Log($"{openSeaRequest.error} {openSeaRequest.downloadHandler.text}");
+            yield break;
+        }
+
+        Debug.Log("Nft metadata received");
+        NftData nftData = JsonUtility.FromJson<NftData>(openSeaRequest.downloadHandler.text);
+        GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.Invoke(nftData);
+        if (nftData.assets.Length > 0)
+        {
+            GameManager.Instance.EVENT_NFT_SELECTED.Invoke(nftData.assets[0]);
+        }
+        else 
+        {
+            Debug.Log($"[WebRequesterManager] nft {tokenId} could not be found.");
         }
     }
 
