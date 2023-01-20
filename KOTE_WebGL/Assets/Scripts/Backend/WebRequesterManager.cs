@@ -97,9 +97,9 @@ public class WebRequesterManager : MonoBehaviour
         }
     }
 
-    internal void RequestStartExpedition(string characterType)
+    internal void RequestStartExpedition(string characterType, string selectedNft)
     {
-        StartCoroutine(RequestNewExpedition(characterType));
+        StartCoroutine(RequestNewExpedition(characterType, selectedNft));
     }
 
     public void RequestLogout(string token)
@@ -363,7 +363,7 @@ public class WebRequesterManager : MonoBehaviour
 
         ExpeditionStatusData data = JsonUtility.FromJson<ExpeditionStatusData>(request.downloadHandler.text);
 
-        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(data.GetHasExpedition());
+        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(data.GetHasExpedition(), data.data.nftId);
 
         Debug.Log("answer from expedition status " + request.downloadHandler.text);
     }
@@ -411,7 +411,7 @@ public class WebRequesterManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.ConnectionError ||
             request.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log("[Error getting Wallet Contents] " + request.error + " from " + fullUrl);
+            Debug.LogError("[Error getting Wallet Contents] " + request.error + " from " + fullUrl);
 
             yield break;
         }
@@ -549,7 +549,7 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_NFT_SKIN_SPRITE_RECEIVED.Invoke(spriteToPopulate);
     }
 
-    public IEnumerator RequestNewExpedition(string characterType)
+    public IEnumerator RequestNewExpedition(string characterType, string selectedNft)
     {
         string fullURL = $"{baseUrl}{urlExpeditionRequest}";
 
@@ -557,6 +557,7 @@ public class WebRequesterManager : MonoBehaviour
 
         WWWForm form = new WWWForm();
         form.AddField("class", characterType);
+        form.AddField("nftId", selectedNft);
 
         UnityWebRequest request = UnityWebRequest.Post(fullURL, form);
         request.SetRequestHeader("Authorization", $"Bearer {token}");
@@ -599,7 +600,7 @@ public class WebRequesterManager : MonoBehaviour
             yield break;
         }
 
-        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false);
+        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false, -1);
         Debug.Log("answer from cancel expedition " + request.downloadHandler.text);
     }
 }

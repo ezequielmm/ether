@@ -102,6 +102,11 @@ public static class GameSettings
         },
         new TraitSprite{skinName ="Legguard/Legguard_Medici",
         traitType = nameof(TraitTypes.Legguard)
+        },
+        new TraitSprite
+        {
+            skinName = "character-shadow",
+            traitType = nameof(TraitTypes.Shadow)
         }
     };
 

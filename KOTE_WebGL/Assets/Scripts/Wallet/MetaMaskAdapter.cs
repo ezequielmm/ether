@@ -40,7 +40,7 @@ public class MetaMaskAdapter : SingleTon<MetaMaskAdapter>
         mm.GetAccount(requestSuccess, requestFail);
     }
 
-    private void GetWalletFail() 
+    private void GetWalletFail()
     {
         Debug.LogError($"[MetaMaskAdapter] Could not get Wallet Address.");
     }

@@ -387,5 +387,6 @@ public enum TraitTypes
     Sigil,
     Vambrace,
     Boots,
-    Legguard
+    Legguard,
+    Shadow
 }
