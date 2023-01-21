@@ -26,6 +26,7 @@ public class WebRequesterManager : MonoBehaviour
     private readonly string urlNftSkinSprites = "/client/v1/skinassets/";
     
     private readonly string urlOpenSea = "https://api.opensea.io/api/v1/assets?xxxx&asset_contract_address=0x32A322C7C77840c383961B8aB503c9f45440c81f&format=json";
+    private readonly string urlKoteWhitelist = "http://api.knightsoftheether.com/verifyknights";
 
     // we have to queue the requested nft images due to rate limiting
     private Queue<(string, string)> requestedNftImages = new Queue<(string, string)>();
@@ -113,6 +114,11 @@ public class WebRequesterManager : MonoBehaviour
     public void RequestExpeditionCancel()
     {
         StartCoroutine(CancelOngoingExpedition());
+    }
+
+    public void RequestWhitelistStatus(float expires, float entropy, string message, string wallet)
+    {
+        StartCoroutine(WhitelistStatus(expires, entropy, message, wallet));
     }
 
     public void RequestNftData(int[] tokenIds)
@@ -413,7 +419,28 @@ public class WebRequesterManager : MonoBehaviour
         WalletKnightIds walletKnightIds = JsonUtility.FromJson<WalletKnightIds>(request.downloadHandler.text);
         GameManager.Instance.EVENT_WALLET_CONTENTS_RECEIVED.Invoke(walletKnightIds);
     }
-    
+
+    public IEnumerator WhitelistStatus(float expires, float entropy, string message, string wallet)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("sig", message);
+        form.AddField("wallet", wallet);
+        form.AddField("expires", (int)entropy);
+        form.AddField("entropy", (int)expires);
+        UnityWebRequest request = UnityWebRequest.Post(urlKoteWhitelist, form);
+        yield return request.SendWebRequest();
+        
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("[WhitelistStatus] Error getting white list status: " + request.error);
+            yield break;
+        }
+        
+        Debug.Log($"Whitelist status retrieved: {request.downloadHandler.text}");
+        GameManager.Instance.EVENT_WHITELIST_CHECK_RECEIVED.Invoke(true);
+        
+    }
     public IEnumerator GetNftData(int[] tokenIds)
     {
         List<int[]> splitTokenLists = new List<int[]>();

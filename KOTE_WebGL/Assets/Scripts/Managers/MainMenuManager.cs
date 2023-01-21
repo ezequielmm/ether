@@ -46,6 +46,8 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(OnExpeditionUpdate);
         GameManager.Instance.EVENT_OWNS_CURRENT_EXPEDITION_NFT.AddListener(OnCurrentNftConfirmed);
        
+        GameManager.Instance.EVENT_WHITELIST_CHECK_RECEIVED.AddListener(OnWalletWhitelisted);
+        
         // Listen for the metadata for the selected NFT so it can be sent on resume
         GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(OnCurrentNftDataReceived);
         
@@ -56,10 +58,7 @@ public class MainMenuManager : MonoBehaviour
         
         // default the play button to not being interactable
         playButton.interactable = false;
-
-//TODO TEMP CODE UNTIL WHITELISTING IS ENABLED.
-        _isWhitelisted = true;
-//TODO TEMP CODE UNTIL WHITELISTING IS ENABLED.
+        
     }
 
     private void CheckIfRegisterButtonIsEnabled()

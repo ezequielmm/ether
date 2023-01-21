@@ -50,6 +50,8 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_WALLET_CONTENTS = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<WalletKnightIds> EVENT_WALLET_CONTENTS_RECEIVED = new UnityEvent<WalletKnightIds>();
     [HideInInspector] public UnityEvent<string> EVENT_MESSAGE_SIGN = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<float, float, string, string> EVENT_REQUEST_WHITELIST_CHECK = new UnityEvent<float, float, string, string>();
+    [HideInInspector] public UnityEvent<bool> EVENT_WHITELIST_CHECK_RECEIVED = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<bool> EVENT_DISCONNECT_WALLET_CONFIRMED = new UnityEvent<bool>();
 
     //TREASURY EVENTS
