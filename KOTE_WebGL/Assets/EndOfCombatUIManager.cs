@@ -67,8 +67,16 @@ public class EndOfCombatUIManager : MonoBehaviour
     void OnGameOverComplete()
     {
         DeactivateLabels();
-        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke("Defeat", LoadMainMenu,
-            LoadMainMenu, new string[] { "Continue", "" });
+       GameManager.Instance.EVENT_GAME_OVER.Invoke(new SWSM_GameOverData()
+       {
+           data = new SWSM_GameOverData.GameOverData
+           {
+               expeditionType = "",
+               finalScore = 200,
+               achievements = new Achievement[1],
+               result = "Defeat"
+           }
+       });
     }
 
     void OnVictoryComplete()

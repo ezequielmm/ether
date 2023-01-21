@@ -52,6 +52,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_MESSAGE_SIGN = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<bool> EVENT_DISCONNECT_WALLET_CONFIRMED = new UnityEvent<bool>();
 
+    //GAME OVER EVENTS
+    [HideInInspector] public UnityEvent<SWSM_GameOverData> EVENT_GAME_OVER = new UnityEvent<SWSM_GameOverData>();
+    
     //TREASURY EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_TREASURYPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 

@@ -953,3 +953,25 @@ public struct TraitSprite
     public Sprite sprite;
     public bool isDefault;
 }
+
+[Serializable]
+public class SWSM_GameOverData
+{
+    public GameOverData data;
+
+    [Serializable]
+    public class GameOverData
+    {
+        public string result;
+        public string expeditionType;
+        public int finalScore;
+        public Achievement[] achievements;
+    }
+}
+
+[Serializable]
+public class Achievement
+{
+    public string name;
+    public int score;
+}
