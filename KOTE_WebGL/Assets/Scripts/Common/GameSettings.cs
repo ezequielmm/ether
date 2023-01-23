@@ -105,7 +105,7 @@ public static class GameSettings
         },
         new TraitSprite
         {
-            skinName = "character-shadow",
+            skinName = "character_shadow",
             traitType = nameof(TraitTypes.Shadow)
         }
     };
