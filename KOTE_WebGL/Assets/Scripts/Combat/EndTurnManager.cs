@@ -55,7 +55,7 @@ public class EndTurnManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if (who == "player")
         {
-            transform.DOMoveX(originalPos, 0.5f).SetDelay(4);
+            transform.DOMoveX(originalPos, 0.5f);
             listenForEmptyQueue = false;
             isPlayersTurn = true;
         }
