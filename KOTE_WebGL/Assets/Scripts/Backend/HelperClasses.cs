@@ -955,16 +955,16 @@ public struct TraitSprite
 }
 
 [Serializable]
-public class SWSM_GameOverData
+public class SWSM_ScoreboardData
 {
-    public GameOverData data;
+    public ScoreboardData data;
 
     [Serializable]
-    public class GameOverData
+    public class ScoreboardData
     {
-        public string result;
+        public string outcome;
         public string expeditionType;
-        public int finalScore;
+        public int totalScore;
         public Achievement[] achievements;
     }
 }

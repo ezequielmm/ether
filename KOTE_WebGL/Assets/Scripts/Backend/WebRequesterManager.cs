@@ -16,15 +16,16 @@ public class WebRequesterManager : MonoBehaviour
     private readonly string urlRandomName = "/auth/v1/generate/username";
     private readonly string urlRegister = "/auth/v1/register";
     private readonly string urlLogin = "/auth/v1/login";
+    private readonly string urlLogout = "/auth/v1/logout";
     private readonly string urlProfile = "/gsrv/v1/profile";
     private readonly string urlWalletData = "/gsrv/v1/wallets";
-    private readonly string urlLogout = "/auth/v1/logout";
-    private readonly string urlExpeditionStatus = "/gsrv/v1/expeditions/status";
     private readonly string urlCharactersList = "/gsrv/v1/characters";
+    private readonly string urlExpeditionStatus = "/gsrv/v1/expeditions/status";
     private readonly string urlExpeditionRequest = "/gsrv/v1/expeditions";
     private readonly string urlExpeditionCancel = "/gsrv/v1/expeditions/cancel";
+    private readonly string urlExpeditionScore = "/gsrv/v1/expeditions/score";
     private readonly string urlNftSkinSprites = "/client/v1/skinassets/";
-    
+
     private readonly string urlOpenSea = "https://api.opensea.io/api/v1/assets?xxxx&asset_contract_address=0x32A322C7C77840c383961B8aB503c9f45440c81f&format=json";
 
     // we have to queue the requested nft images due to rate limiting
@@ -80,6 +81,7 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_NFT_METADATA.AddListener(RequestNftData);
         GameManager.Instance.EVENT_REQUEST_NFT_IMAGE.AddListener(RequestNftImage);
         GameManager.Instance.EVENT_REQUEST_NFT_SKIN_SPRITE.AddListener(RequestNftSkinElement);
+        GameManager.Instance.EVENT_REQUEST_EXPEDITON_SCORE.AddListener(RequestExpeditionScore);
     }
 
     private void Start()
@@ -108,6 +110,11 @@ public class WebRequesterManager : MonoBehaviour
     public void RequestExpeditionStatus()
     {
         StartCoroutine(GetExpeditionStatus());
+    }
+
+    public void RequestExpeditionScore()
+    {
+        StartCoroutine(GetExpeditionScore());
     }
 
     public void RequestExpeditionCancel()
@@ -359,6 +366,31 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(data.GetHasExpedition(), data.data.nftId);
 
         Debug.Log("answer from expedition status " + request.downloadHandler.text);
+    }
+
+    IEnumerator GetExpeditionScore()
+    {
+        string token = PlayerPrefs.GetString("session_token");
+        
+        string fullUrl = $"{baseUrl}{urlExpeditionScore}";
+        WWWForm form = new WWWForm();
+
+        UnityWebRequest request = UnityWebRequest.Get(fullUrl);
+        request.SetRequestHeader("Authorization", $"Bearer {token}");
+        
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.Log("[Error getting expedition score] " + request.error);
+
+            yield break;
+        }
+
+        SWSM_ScoreboardData scoreboardData = JsonUtility.FromJson<SWSM_ScoreboardData>(request.downloadHandler.text);
+        Debug.Log("answer from expedition score " + request.downloadHandler.text);
+        GameManager.Instance.EVENT_SHOW_SCOREBOARD.Invoke(scoreboardData);
     }
 
     IEnumerator GetCharacterList()

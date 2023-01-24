@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class GameOverManager : MonoBehaviour
+public class ScoreboardManager : MonoBehaviour
 {
     public GameObject gameOverContainer;
     public GameObject achievementPanel;
@@ -19,7 +19,7 @@ public class GameOverManager : MonoBehaviour
     {
         gameOverContainer.SetActive(false);
         achievementPanel.SetActive(false);
-        GameManager.Instance.EVENT_GAME_OVER.AddListener(OnGameOver);
+        GameManager.Instance.EVENT_SHOW_SCOREBOARD.AddListener(OnShowScoreboard);
     }
 
     public void OnShowAchievementsButton()
@@ -32,48 +32,25 @@ public class GameOverManager : MonoBehaviour
         GameManager.Instance.LoadScene(inGameScenes.MainMenu);
     }
 
-    private void OnGameOver(SWSM_GameOverData gameOverData)
+    private void OnShowScoreboard(SWSM_ScoreboardData scoreboardData)
     {
-        Populate(gameOverData);
+        Populate(scoreboardData);
         gameOverContainer.SetActive(true);
     }
 
-    private void Populate(SWSM_GameOverData data)
+    private void Populate(SWSM_ScoreboardData data)
     {
-        resultText.text = data.data.result;
-        finalScoreText.text = data.data.finalScore.ToString();
-        achievementfinalScoreText.text = data.data.finalScore.ToString();
+        resultText.text = data.data.outcome;
+        finalScoreText.text = data.data.totalScore.ToString();
+        achievementfinalScoreText.text = data.data.totalScore.ToString();
         expeditionTypeText.text = string.IsNullOrEmpty(data.data.expeditionType) ? data.data.expeditionType : "CasualMode";
-        Achievement[] achievements = new[]
-        {
-            new Achievement
-            {
-                name = "test",
-                score = 1
-            },
-            new Achievement
-            {
-                name = "test",
-                score = 2
-            },
-            new Achievement
-            {
-                name = "test",
-                score = 3
-            },
-            new Achievement
-            {
-                name = "test",
-                score = 4
-            }
-        };
-
-        for (int i = 0; i < achievements.Length; i++)
+        
+        for (int i = 0; i < data.data.achievements.Length; i++)
         {
             GameObject achievementInstance = Instantiate(scoreboardAchievementPrefab, achievementLayout.transform);
             ScoreboardAchievementManager achievementManager =
                 achievementInstance.GetComponent<ScoreboardAchievementManager>();
-            achievementManager.Populate(achievements[i], i);
+            achievementManager.Populate(data.data.achievements[i], i);
         }
     }
 }
