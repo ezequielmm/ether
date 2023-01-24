@@ -138,6 +138,9 @@ public class SWSM_Parser
             case "show_card_dialog":
                 ProcessShowCardDialog(data);
                 break;
+            case "spawn_enemies":
+                ProcessSpawnEnemies(data);
+                break;
             default:
                 Debug.LogWarning($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
                 break;
@@ -400,6 +403,12 @@ public class SWSM_Parser
             (selectedCards) => { GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards); });
     }
 
+    private static void ProcessSpawnEnemies(string data)
+    {
+        SWSM_Enemies enemiesData = JsonUtility.FromJson<SWSM_Enemies>(data);
+        GameManager.Instance.EVENT_ADD_ENEMIES.Invoke(enemiesData.data);
+    }
+
     private static void UpdateEnergy(string data)
     {
         SWSM_EnergyArray energyData = JsonUtility.FromJson<SWSM_EnergyArray>(data);
@@ -588,7 +597,10 @@ public class SWSM_Parser
                 GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCardData.data.data.cards, panelOptions,
                     (selectedCards) => { GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards); });
                 break;
-
+            case "select_trinkets":
+                SWSM_SelectTrinketData trinketData = JsonUtility.FromJson<SWSM_SelectTrinketData>(data);
+                GameManager.Instance.EVENT_SHOW_SELECT_TRINKET_PANEL.Invoke(trinketData);
+                break;
             case "finish_encounter":
                 //  GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
                 break;

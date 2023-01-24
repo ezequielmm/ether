@@ -93,6 +93,7 @@ public class ExpeditionStatusData
     public class Data
     {
         public string hasExpedition;
+        public int nftId;
     }
 }
 
@@ -828,6 +829,7 @@ public class CardToMoveData
     public string source;
     public string destination;
     public string id;
+    public Card card;
 }
 
 public class SWSM_ChangeTurn
@@ -894,4 +896,60 @@ public class SWSM_HealData
             public int healed;
         }
     }
+}
+
+[Serializable]
+public class SWSM_SelectTrinketData
+{
+    public SelectTrinketData data;
+
+    [Serializable]
+    public class SelectTrinketData
+    {
+        public TrinketData data;
+    }
+}
+
+[Serializable]
+public class TrinketData
+{
+    public List<Trinket> trinkets;
+}
+public class NftData
+{
+    public NftMetaData[] assets;
+    
+}
+
+[Serializable]
+public class NftMetaData
+{
+    public string token_id;
+    public string image_url;
+    public Trait[] traits;
+}
+
+[Serializable]
+public class Trait
+{
+    public string trait_type;
+    public string value;
+}
+
+[Serializable]
+public class WalletKnightIds
+{
+    public int[] data;
+}
+
+// this is to pass along data needed for each individual skin image downloaded from the server
+[Serializable]
+public struct TraitSprite
+{
+    public string skinName;
+    public string traitType;
+    public int attachmentIndex;
+    public string imageName;
+    public Sprite sprite;
+    public bool isDefault;
 }

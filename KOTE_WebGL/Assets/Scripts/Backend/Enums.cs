@@ -189,7 +189,8 @@ public enum EnemyTypes
     swampGoblin2,
     thornWolf,
     trapelican,
-    treant
+    treant,
+    thornWolfPup
 }
 
 public enum EntityType
@@ -369,4 +370,22 @@ public enum MusicTypes
     Ambient,
     Boss,
     Music
+}
+
+[Serializable]
+public enum TraitTypes
+{
+    Breastplate,
+    Helmet,
+    Weapon,
+    Gauntlet,
+    Padding,
+    Crest,
+    Shield,
+    Pauldrons,
+    Sigil,
+    Vambrace,
+    Boots,
+    Legguard,
+    Shadow
 }

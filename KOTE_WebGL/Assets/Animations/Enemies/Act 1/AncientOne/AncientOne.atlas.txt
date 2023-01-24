@@ -1,113 +1,100 @@
 AncientOne.png
-size:4096,2048
+size:2048,2048
 filter:Linear,Linear
 pma:true
+scale:0.8
 Back_Horn 1
-bounds:915,4,844,1096
-rotate:90
+bounds:1169,578,675,877
+rotate:270
 Back_Horn 2
-bounds:478,591,1453,1170
+bounds:380,782,1162,936
 rotate:90
 Bell
-bounds:2588,1893,246,122
+bounds:537,435,197,98
 Bell 1
-bounds:256,1801,111,106
-offsets:1,2,113,109
+bounds:1025,1857,90,87
 Bell 2
-bounds:2225,1250,204,240
+bounds:1404,399,163,192
 Bell 3
-bounds:4,1971,165,73
-offsets:1,1,167,106
+bounds:1318,1859,134,85
 Bell 4
-bounds:1401,1331,223,111
+bounds:1113,1370,178,89
 Eye 4
-bounds:225,1876,24,40
-offsets:1,1,26,42
+bounds:139,1910,21,34
 FX_bite01
-bounds:1652,1213,569,720
+bounds:1318,1279,455,576
 FX_bite02
-bounds:2716,467,510,152
-offsets:1,1,515,154
-rotate:90
+bounds:2,28,412,123
 Front Horn 1
-bounds:1557,4,1109,1155
-rotate:90
+bounds:2,213,887,924
+rotate:180
 Front Horn 2
-bounds:687,427,782,1192
+bounds:546,651,626,954
 rotate:270
 Head
-bounds:4,217,612,501
+bounds:2,153,490,401
 Hoof_Back leg 1
-bounds:1304,1851,119,193
+bounds:413,1130,95,154
 Hoof_Back leg 2
-bounds:378,661,67,174
+bounds:825,1000,54,139
 Hoof_Front leg 1
-bounds:1883,906,142,303
+bounds:1501,1163,114,242
+rotate:90
 Hoof_Front leg 2
-bounds:489,1043,200,192
+bounds:272,1065,160,154
 Lower leg_Back leg 1
-bounds:267,772,218,325
+bounds:1267,355,174,260
 Lower leg_Back leg 2
-bounds:2254,794,103,235
+bounds:440,5,82,188
 Lower leg_Front leg 1
-bounds:2772,10,228,453
+bounds:1864,3,182,362
 Lower leg_Front leg 2
-bounds:2537,1493,166,417
+bounds:1145,177,133,334
 Lower teeth
-bounds:4,50,244,175
-offsets:1,1,246,177
+bounds:1775,1367,197,142
 Lower teeth 2
-bounds:1548,1430,95,122
-offsets:1,1,97,124
+bounds:426,681,78,99
 Lower1
-bounds:4,1633,20,44
-offsets:1,1,22,46
+bounds:2,1686,18,37
 Lower2
-bounds:688,1985,36,59
-offsets:1,1,38,61
+bounds:107,1895,30,49
 Lower3
-bounds:4,1681,41,55
-offsets:1,1,43,57
+bounds:2,1898,34,46
 Mainbody
-bounds:4,1037,1310,1007
+bounds:2,1138,1048,806
 Mid leg_Back leg 1
-bounds:252,37,203,176
-offsets:0,0,203,194
+bounds:1026,663,162,141
+offsets:0,0,162,155
 Mid leg_Back leg 2
-bounds:847,286,139,177
+bounds:202,1689,111,142
 Mid leg_Front leg 1
-bounds:4,643,261,542
+bounds:1773,1510,209,434
 Mid leg_Front leg 2
-bounds:1158,991,336,438
+bounds:920,1099,269,350
 rotate:90
 Mouth interior
-bounds:467,4,376,379
+bounds:493,2,301,303
+rotate:90
 Tail
-bounds:2015,818,1141,1012
+bounds:1236,60,913,810
 rotate:270
 Tongue
-bounds:4,1696,248,265
+bounds:2,1667,198,212
 Upper leg_Back leg 1
-bounds:2326,4,284,601
+bounds:931,96,227,481
 Upper leg_Back leg 2
-bounds:2604,4,238,497
+bounds:2,508,190,398
 Upper leg_Front leg 1
-bounds:2225,1494,359,550
+bounds:737,304,287,440
 Upper teeth 1
-bounds:2015,673,266,141
-offsets:1,1,268,144
+bounds:518,535,214,115
 Upper teeth 2
-bounds:173,1992,35,52
-offsets:1,3,37,56
+bounds:185,1797,30,45
 Upper1
-bounds:371,1853,18,44
-offsets:1,1,20,46
+bounds:162,1907,16,37
 Upper2
-bounds:255,1713,37,59
-offsets:1,1,39,61
+bounds:38,1895,31,49
 Upper3
-bounds:296,1744,41,53
-offsets:1,1,43,55
+bounds:71,1900,34,44
 shadow
-bounds:1359,4,133,133
-offsets:2,0,137,134
+bounds:266,934,110,107

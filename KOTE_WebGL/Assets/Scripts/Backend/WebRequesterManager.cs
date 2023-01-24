@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using System.Linq;
+using BestHTTP.JSON;
 using UnityEngine;
 using UnityEngine.Networking;
-using TMPro;
 
 /// <summary>
 /// Check HelperClasses.cs for the classes usaed to hold JSON data
@@ -12,17 +12,25 @@ using TMPro;
 public class WebRequesterManager : MonoBehaviour
 {
     private string baseUrl;
+    private string skinUrl;
     private readonly string urlRandomName = "/auth/v1/generate/username";
     private readonly string urlRegister = "/auth/v1/register";
     private readonly string urlLogin = "/auth/v1/login";
     private readonly string urlProfile = "/gsrv/v1/profile";
+    private readonly string urlWalletData = "/gsrv/v1/wallets";
     private readonly string urlLogout = "/auth/v1/logout";
     private readonly string urlExpeditionStatus = "/gsrv/v1/expeditions/status";
     private readonly string urlCharactersList = "/gsrv/v1/characters";
     private readonly string urlExpeditionRequest = "/gsrv/v1/expeditions";
     private readonly string urlExpeditionCancel = "/gsrv/v1/expeditions/cancel";
+    private readonly string urlNftSkinSprites = "/client/v1/skinassets/";
+    
+    private readonly string urlOpenSea = "https://api.opensea.io/api/v1/assets?xxxx&asset_contract_address=0x32A322C7C77840c383961B8aB503c9f45440c81f&format=json";
 
-
+    // we have to queue the requested nft images due to rate limiting
+    private Queue<(string, string)> requestedNftImages = new Queue<(string, string)>();
+    private bool nftQueueRunning;
+    
     private void Awake()
     {
         HiddenConsoleManager.DisableOnBuild();
@@ -34,14 +42,26 @@ public class WebRequesterManager : MonoBehaviour
         baseUrl = "https://gateway.dev.kote.robotseamonster.com";//make sure if anything fails we use DEV
        // baseUrl = "https://gateway.alpha.knightsoftheether.com";//make sure if anything fails we use DEV
 
-        if (hostName.IndexOf("alpha") > -1) { baseUrl = "https://gateway.alpha.knightsoftheether.com"; }
-        if (hostName.IndexOf("stage") > -1) { baseUrl = "https://gateway.stage.kote.robotseamonster.com"; }
-        if (hostName.IndexOf("dev") > -1) { baseUrl = "https://gateway.dev.kote.robotseamonster.com"; }
+       if (hostName.IndexOf("alpha") > -1)
+       {
+           baseUrl = "https://gateway.alpha.knightsoftheether.com";
+       }
+        if (hostName.IndexOf("stage") > -1)
+        {
+            baseUrl = "https://gateway.stage.kote.robotseamonster.com"; 
+            skinUrl = "https://koteskins.robotseamonster.com/";
+        }
+        if (hostName.IndexOf("dev") > -1)
+        {
+            baseUrl = "https://gateway.dev.kote.robotseamonster.com";
+            skinUrl = "https://koteskins.robotseamonster.com/";
+        }
 
 
         // default to the stage server if we're in the editor
         #if UNITY_EDITOR
         baseUrl = "https://gateway.dev.kote.robotseamonster.com";
+        skinUrl = "https://koteskins.robotseamonster.com/";
         #endif
       
         PlayerPrefs.SetString("api_url", baseUrl);
@@ -54,8 +74,12 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_REGISTER.AddListener(OnRegisterEvent);
         GameManager.Instance.EVENT_REQUEST_LOGIN.AddListener(RequestLogin);
         GameManager.Instance.EVENT_REQUEST_PROFILE.AddListener(RequestProfile);
+        GameManager.Instance.EVENT_REQUEST_WALLET_CONTENTS.AddListener(RequestWalletContents);
         GameManager.Instance.EVENT_REQUEST_LOGOUT.AddListener(RequestLogout);
         GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.AddListener(RequestExpeditionCancel);
+        GameManager.Instance.EVENT_REQUEST_NFT_METADATA.AddListener(RequestNftData);
+        GameManager.Instance.EVENT_REQUEST_NFT_IMAGE.AddListener(RequestNftImage);
+        GameManager.Instance.EVENT_REQUEST_NFT_SKIN_SPRITE.AddListener(RequestNftSkinElement);
     }
 
     private void Start()
@@ -71,9 +95,9 @@ public class WebRequesterManager : MonoBehaviour
         }
     }
 
-    internal void RequestStartExpedition(string characterType)
+    internal void RequestStartExpedition(string characterType, string selectedNft)
     {
-        StartCoroutine(RequestNewExpedition(characterType));
+        StartCoroutine(RequestNewExpedition(characterType, selectedNft));
     }
 
     public void RequestLogout(string token)
@@ -89,6 +113,28 @@ public class WebRequesterManager : MonoBehaviour
     public void RequestExpeditionCancel()
     {
         StartCoroutine(CancelOngoingExpedition());
+    }
+
+    public void RequestNftData(int[] tokenIds)
+    {
+        StartCoroutine(GetNftData(tokenIds));
+    }
+
+    public void RequestNftImage(NftMetaData[] requestedTokens)
+    {
+        foreach (NftMetaData metaData in requestedTokens)
+        {
+            requestedNftImages.Enqueue((metaData.token_id, metaData.image_url));
+        }
+        if (!nftQueueRunning)
+        {
+            StartCoroutine(GetNftImages());
+        }
+    }
+
+    public void RequestNftSkinElement(TraitSprite spriteToPopulate)
+    {
+        StartCoroutine(GetNftSkinElement(spriteToPopulate));
     }
 
     public void OnRandomNameEvent(string previousName)
@@ -109,6 +155,11 @@ public class WebRequesterManager : MonoBehaviour
     public void RequestProfile(string token)
     {
         StartCoroutine(GetProfile(token));
+    }
+
+    public void RequestWalletContents(string walletAddress)
+    {
+        StartCoroutine(GetWalletContents(walletAddress));
     }
 
     public void RequestCharacterList()
@@ -305,7 +356,7 @@ public class WebRequesterManager : MonoBehaviour
 
         ExpeditionStatusData data = JsonUtility.FromJson<ExpeditionStatusData>(request.downloadHandler.text);
 
-        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(data.GetHasExpedition());
+        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(data.GetHasExpedition(), data.data.nftId);
 
         Debug.Log("answer from expedition status " + request.downloadHandler.text);
     }
@@ -341,8 +392,128 @@ public class WebRequesterManager : MonoBehaviour
 
         //TODO: check for errors even on sucessful result
     }
+    
+    public IEnumerator GetWalletContents(string walletAddress)
+    {
+        string fullUrl = $"{baseUrl}{urlWalletData}/{walletAddress}";
+        
+        UnityWebRequest request = UnityWebRequest.Get($"{fullUrl}");
 
-    public IEnumerator RequestNewExpedition(string characterType)
+        yield return request.SendWebRequest();
+        
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("[Error getting Wallet Contents] " + request.error + " from " + fullUrl);
+
+            yield break;
+        }
+        
+        Debug.Log("Wallet contents retrieved: " + request.downloadHandler.text);
+        WalletKnightIds walletKnightIds = JsonUtility.FromJson<WalletKnightIds>(request.downloadHandler.text);
+        GameManager.Instance.EVENT_WALLET_CONTENTS_RECEIVED.Invoke(walletKnightIds);
+    }
+    
+    public IEnumerator GetNftData(int[] tokenIds)
+    {
+        List<int[]> splitTokenLists = new List<int[]>();
+        for (int i = 0; i < tokenIds.Length; i += 30)
+        {
+            int[] tokenIdChunk;
+            if (tokenIds.Length - i < 30)
+            {
+                tokenIdChunk = new int[tokenIds.Length - i];
+            }
+            else
+            {
+                tokenIdChunk = new int[30];
+            }
+            
+            Array.Copy(tokenIds, i, tokenIdChunk, 0, tokenIdChunk.Length);
+            splitTokenLists.Add(tokenIdChunk);
+        }
+
+        foreach (int[] idChunk in splitTokenLists)
+        {
+            string nftUrl = urlOpenSea;
+            nftUrl = nftUrl.Replace("xxxx", "token_ids=" + string.Join("&token_ids=", idChunk));
+            Debug.Log("[WebRequesterManager] nft metadata url: " + nftUrl);
+            UnityWebRequest openSeaRequest = UnityWebRequest.Get(nftUrl);
+            openSeaRequest.SetRequestHeader("User-Agent",
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
+            yield return openSeaRequest.SendWebRequest();
+            if (openSeaRequest.result == UnityWebRequest.Result.ConnectionError ||
+                openSeaRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.Log($"{openSeaRequest.error} {openSeaRequest.downloadHandler.text}");
+                yield break;
+            }
+            
+            Debug.Log("Nft metadata received");
+            NftData nftData = JsonUtility.FromJson<NftData>(openSeaRequest.downloadHandler.text);
+            GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.Invoke(nftData);
+        }
+    }
+
+    public IEnumerator GetNftImages()
+    {
+        nftQueueRunning = true;
+        int requestsMade = 0;
+        int requestsFailed = 0;
+        int requestsSucceeded = 0;
+        while (requestedNftImages.Count > 0)
+        {
+            (string, string) requestData = requestedNftImages.Dequeue();
+            UnityWebRequest nftImageRequest = UnityWebRequestTexture.GetTexture(requestData.Item2);
+            requestsMade++;
+            yield return nftImageRequest.SendWebRequest();
+
+            if (nftImageRequest.result == UnityWebRequest.Result.ConnectionError ||
+                nftImageRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogWarning(
+                    $"[WebRequesterManager] [GetNftImages] Error getting nft image knight {requestData.Item1} at url {requestData.Item2}: {nftImageRequest.downloadHandler.text}");
+                requestsFailed++;
+                continue;
+            }
+
+            Texture2D myTexture = ((DownloadHandlerTexture)nftImageRequest.downloadHandler).texture;
+            Sprite nftImage = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height),
+                Vector2.zero);
+            nftImage.name = requestData.Item1;
+            GameManager.Instance.EVENT_NFT_IMAGE_RECEIVED.Invoke(requestData.Item1, nftImage);
+            requestsSucceeded++;
+        }
+        nftQueueRunning = false;
+        Debug.Log($"[WebRequesterManager] [GetNftImages] requests made: {requestsMade} requests failed: {requestsFailed} requests succeeded: {requestsSucceeded}");
+    }
+
+    public IEnumerator GetNftSkinElement(TraitSprite spriteToPopulate)
+    {
+        string spriteName = spriteToPopulate.imageName + ".png";
+        string spriteUrl = skinUrl + spriteName;
+        
+        UnityWebRequest nftSpriteRequest = UnityWebRequestTexture.GetTexture(spriteUrl);
+        yield return nftSpriteRequest.SendWebRequest();
+        
+        if (nftSpriteRequest.result == UnityWebRequest.Result.ConnectionError ||
+            nftSpriteRequest.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogWarning($"Error getting nft skin sprite {spriteName} at url {spriteUrl} from server: {nftSpriteRequest.error}");
+            // keep track of failures so the player knows when to update
+            GameManager.Instance.EVENT_NFT_SKIN_SPRITE_FAILED.Invoke();
+            yield break;
+        }
+        
+        Texture2D myTexture = ((DownloadHandlerTexture)nftSpriteRequest.downloadHandler).texture;
+        Sprite nftSkinElement = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height),
+            Vector2.zero);
+        nftSkinElement.name = spriteName;
+        spriteToPopulate.sprite = nftSkinElement;
+        GameManager.Instance.EVENT_NFT_SKIN_SPRITE_RECEIVED.Invoke(spriteToPopulate);
+    }
+
+    public IEnumerator RequestNewExpedition(string characterType, string selectedNft)
     {
         string fullURL = $"{baseUrl}{urlExpeditionRequest}";
 
@@ -350,6 +521,7 @@ public class WebRequesterManager : MonoBehaviour
 
         WWWForm form = new WWWForm();
         form.AddField("class", characterType);
+        form.AddField("nftId", selectedNft);
 
         UnityWebRequest request = UnityWebRequest.Post(fullURL, form);
         request.SetRequestHeader("Authorization", $"Bearer {token}");
@@ -392,7 +564,7 @@ public class WebRequesterManager : MonoBehaviour
             yield break;
         }
 
-        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false);
+        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false, -1);
         Debug.Log("answer from cancel expedition " + request.downloadHandler.text);
     }
 }

@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7839970432105090531}
   m_RootOrder: 1
@@ -56,6 +57,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 3.83, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7839970432105090531}
   m_RootOrder: 0
@@ -93,6 +95,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2746094267836832852}
   - {fileID: 7226610427191325544}
@@ -118,6 +121,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -126,7 +130,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 35d4a3626d60fc148b1e93f04c26d99c, type: 2}
+  - {fileID: 2100000, guid: 0cb38b372cabc114d860d579f0980472, type: 2}
+  - {fileID: 2100000, guid: 54c8602b0bde1cf4498da8cb48028fdc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -161,7 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonDataAsset: {fileID: 0}
-  initialSkinName: 
+  initialSkinName: Blue
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
   initialFlipY: 0
@@ -285,13 +290,13 @@ MonoBehaviour:
   - attack1
   - attack2
   - cast1
-  - cast2
   - death
+  - hide_end
+  - hide_hit
+  - hide_idle
+  - hide_start
   - hit
   - idle
-  - idle_exit
-  - idle_hide
-  - mockup_fullHide
 --- !u!61 &1698277156229044708
 BoxCollider2D:
   m_ObjectHideFlags: 0

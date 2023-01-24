@@ -1,10 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
-using UnityEditor;
-using Random = UnityEngine.Random;
+using UnityEngine;
 
 public class TopBarManager : MonoBehaviour
 {    
@@ -22,16 +17,11 @@ public class TopBarManager : MonoBehaviour
     private int maxHealth;
     private void Start()
     {
-        //TODO : Now, all this will be implemented after the websocket is connected
-        //GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
-        //GameManager.Instance.EVENT_CHARACTERSELECTED.AddListener(SetClassSelected);
-
         GameManager.Instance.EVENT_REQUEST_PROFILE.Invoke(PlayerPrefs.GetString("session_token"));
 
         //currentClass = PlayerPrefs.GetString("class_selected");
-        //SetClassText(currentClass);
-        //SetHealth(Random.Range(30, 81));
-
+        
+        
         GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusupdate);
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.AddListener(OnToggleMapIcon);
@@ -53,11 +43,9 @@ public class TopBarManager : MonoBehaviour
         stageText.SetText("STAGE " + act + "-" + (step + 1));
     }
 
-    public void SetTextValues(string nameText, string classText, int health, int coins)
-   // public void SetTextValues(string nameText, string classText, string healthText, int coins)
+    public void SetTextValues(string nameText, int health, int coins)
     {
         this.nameText.text = nameText;
-     
         healthText.text = $"{health} health";
         coinsText.text = $"{coins} coins";
     }

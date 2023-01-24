@@ -30,6 +30,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     private const string WS_MESSAGE_UPGRADE_CARD = "UpgradeCard";
     private const string WS_MESSAGE_CAMP_HEAL = "CampRecoverHealth";
     private const string WS_MESSAGE_MOVE_SELECTED_CARDS = "MoveCard";
+    private const string WS_MESSAGE_TRINKETS_SELECTED = "TrinketsSelected";
 
     private const string WS_MESSAGE_USE_POTION = "UsePotion";
     private const string WS_MESSAGE_REMOVE_POTION = "RemovePotion";
@@ -186,6 +187,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         GameManager.Instance.EVENT_ENCOUNTER_OPTION_SELECTED.AddListener(OnEncounterOptionSelected);
         GameManager.Instance.EVENT_START_COMBAT_ENCOUNTER.AddListener(OnStartCombatEncounter);
         GameManager.Instance.EVENT_SKIP_NODE.AddListener(OnSkipNode);
+        GameManager.Instance.EVENT_TRINKETS_SELECTED.AddListener(OnTrinketsSelected);
 
         GameManager.Instance.EVENT_WS_CONNECTED.Invoke();
     }
@@ -264,6 +266,14 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         Debug.Log("[WebSocket Manager] OnCardsSelected data: " + data);
         rootSocket.Emit(WS_MESSAGE_MOVE_SELECTED_CARDS, data);
     }
+
+    private void OnTrinketsSelected(List<string> trinketIds)
+    {
+        string data = JsonUtility.ToJson(trinketIds);
+        Debug.Log("[WebSocket Manager] OnTrinketsSelected data: " + data);
+        rootSocket.Emit(WS_MESSAGE_TRINKETS_SELECTED, data);
+    }
+    
     private void OnBuyItem(string type, string id)
     {
         PurchaseData purchase = new PurchaseData() 

@@ -11,7 +11,7 @@ public class UserActivityMonitor : SingleTon<UserActivityMonitor>
 
     [Tooltip("the time in seconds between afk checks")]
     public float AfkCheckInterval = 1;
-    
+
     private int currentSeconds;
     private int afkSeconds;
     private bool resetTimer;
@@ -20,7 +20,9 @@ public class UserActivityMonitor : SingleTon<UserActivityMonitor>
     public void Start()
     {
         afkSeconds = AfkTime * 60;
+#if !UNITY_EDITOR
         afkTimer = StartCoroutine(AfkLogoutTimer());
+#endif
     }
 
     public void OnDestroy()
@@ -42,24 +44,28 @@ public class UserActivityMonitor : SingleTon<UserActivityMonitor>
                 GameManager.Instance.EVENT_HIDE_WARNING_MESSAGE.Invoke();
             }
 
-            
+
             currentSeconds++;
             yield return new WaitForSeconds(AfkCheckInterval);
             // if the player isn't logged in, dont do anything
             string token = PlayerPrefs.GetString("session_token");
-            if(string.IsNullOrEmpty(token)){continue;}
-            
+            if (string.IsNullOrEmpty(token))
+            {
+                continue;
+            }
+
             // if the timer is up, return the player to the main menu
             if (currentSeconds > afkSeconds)
             {
                 Debug.Log("[UserActivityMonitor] Afk logout activated");
-                
-                    GameManager.Instance.EVENT_REQUEST_LOGOUT.Invoke(token);
+
+                GameManager.Instance.EVENT_REQUEST_LOGOUT.Invoke(token);
             }
 
             if (afkSeconds - currentSeconds <= 10)
             {
-                GameManager.Instance.EVENT_SHOW_WARNING_MESSAGE.Invoke($"Logging out for inactivity in {afkSeconds- currentSeconds} seconds");
+                GameManager.Instance.EVENT_SHOW_WARNING_MESSAGE.Invoke(
+                    $"Logging out for inactivity in {afkSeconds - currentSeconds} seconds");
             }
         }
     }
