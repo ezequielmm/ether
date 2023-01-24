@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonDataAsset: {fileID: 0}
-  initialSkinName: Sigil/Sigil_CShield_TwoFeetOfTheVoets
+  initialSkinName: character-nude
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
   initialFlipY: 0
