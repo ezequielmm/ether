@@ -96,7 +96,7 @@ public class WalletManager : MonoBehaviour
     {
         if (requestSingle)
         {
-            GameManager.Instance.EVENT_REQUEST_NFT_METADATA.Invoke(new []{_selectedNft});
+            GameManager.Instance.EVENT_REQUEST_NFT_SET_SKIN.Invoke(_selectedNft);
             return;
         }
         GameManager.Instance.EVENT_REQUEST_NFT_METADATA.Invoke(nftIds.ToArray());
