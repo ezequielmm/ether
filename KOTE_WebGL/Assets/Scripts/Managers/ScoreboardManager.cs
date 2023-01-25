@@ -49,10 +49,10 @@ public class ScoreboardManager : MonoBehaviour
 
     private void Populate(SWSM_ScoreboardData data)
     {
-        resultText.text = data.data.outcome;
+        resultText.text = data.data.outcome.ToUpper();
         finalScoreText.text = data.data.totalScore.ToString();
         achievementfinalScoreText.text = data.data.totalScore.ToString();
-        expeditionTypeText.text = string.IsNullOrEmpty(data.data.expeditionType) ? data.data.expeditionType : "Casual Mode";
+        expeditionTypeText.text = "Casual";
 
         // if there's no achievements, ignore them as none were earned
         if (data.data.achievements == null) return;
