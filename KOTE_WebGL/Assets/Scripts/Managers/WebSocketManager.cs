@@ -6,7 +6,7 @@ using BestHTTP.SocketIO3;
 using BestHTTP.SocketIO3.Events;
 using System.Text;
 
-public class WebSocketManager : MonoBehaviour
+public class WebSocketManager : SingleTon<WebSocketManager>
 {
     SocketManager manager;
     SocketOptions options;
@@ -24,6 +24,7 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_NODE_SELECTED = "NodeSelected";
     private const string WS_MESSAGE_CARD_PLAYED = "CardPlayed";
     private const string WS_MESSAGE_END_TURN = "EndTurn";
+
     private const string WS_MESSAGE_REWARD_SELECTED = "RewardSelected";
     private const string WS_MESSAGE_GET_CARD_UPGRADE_PAIR = "CardUpgradeSelected";
     private const string WS_MESSAGE_UPGRADE_CARD = "UpgradeCard";
@@ -47,16 +48,24 @@ public class WebSocketManager : MonoBehaviour
     private const string WS_MESSAGE_CONTINUE_EXPEDITION = "ContinueExpedition";
     private const string WS_MESSAGE_NODE_SKIP = "NodeSkipped";
 
-    private void Awake()
+    protected override void Awake()
     {
-        // Turns off non-exception logging when outside of development enviroment
-        HiddenConsoleManager.DisableOnBuild();
+        base.Awake();
+        if (Instance == this)
+        {
+            Debug.Log($"[WebSocketManager] Socket manager Awake");
+            // Turns off non-exception logging when outside of development enviroments
+            HiddenConsoleManager.DisableOnBuild();
+        }
     }
 
     void Start()
     {
-        options = new SocketOptions();
-        ConnectSocket(); //Disabled connection until actual implementation
+        if (Instance == this && (rootSocket == null || !rootSocket.IsOpen))
+        {
+            options = new SocketOptions();
+            ConnectSocket();
+        }
     }
 
     void OnDestroy()
@@ -66,6 +75,15 @@ public class WebSocketManager : MonoBehaviour
             Debug.Log("[WebSocket Manager] socket disconnected");
             rootSocket.Disconnect();
         }
+        if (Instance == this)
+        {
+            Debug.Log($"[WebSocketManager] Socket manager destroyed");
+        }
+    }
+
+    private void OnEnable()
+    {
+        Debug.Log("[WebSocketManager] Socket manager Enabled");
     }
 
 
@@ -152,6 +170,7 @@ public class WebSocketManager : MonoBehaviour
 
 
         //  manager.Open();
+        Debug.Log("[WebSocketManager] Socket generated.");
     }
 
     #region
