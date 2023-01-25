@@ -278,10 +278,14 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_SHOW_CONSOLE = new UnityEvent();
     [HideInInspector] public UnityEvent<int> EVENT_SKIP_NODE = new UnityEvent<int>();
 
-   
+    // Scene Events
+    [HideInInspector] public UnityEvent<inGameScenes> EVENT_SCENE_LOADED = new UnityEvent<inGameScenes>();
+
+
 
     public inGameScenes
-        nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
+        nextSceneToLoad
+    { get; set; } // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
 
     public WebRequesterManager webRequester;
 
@@ -291,6 +295,7 @@ public class GameManager : SingleTon<GameManager>
     {
         EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogout);
         EVENT_REQUEST_LOGOUT_ERROR.AddListener(OnLogout);
+        EVENT_SCENE_LOADED.AddListener(OnSceneLoad);
         SceneManager.activeSceneChanged += UpdateSoundVolume;
         //EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ReturnToMainMenu);
     }
@@ -315,5 +320,25 @@ public class GameManager : SingleTon<GameManager>
     {
         float volumeSetting = PlayerPrefs.GetFloat("settings_volume");
         AudioListener.volume = volumeSetting;
+    }
+
+    List<(Action, inGameScenes)> SceneLoadsActions = new List<(Action, inGameScenes)>();
+    public void EnqueueActionForSceneLoad(Action action, inGameScenes sceneName) 
+    {
+        SceneLoadsActions.Add((action, sceneName));
+    }
+
+    private void OnSceneLoad(inGameScenes scene) 
+    {
+        Debug.Log($"[GameManager] Scene Loaded: {scene}");
+        for(int i = SceneLoadsActions.Count - 1; i >= 0; i--) 
+        {
+            (Action, inGameScenes) action = SceneLoadsActions[i];
+            if (action.Item2 == scene) 
+            {
+                action.Item1.Invoke();
+                SceneLoadsActions.RemoveAt(i);
+            }
+        }
     }
 }
