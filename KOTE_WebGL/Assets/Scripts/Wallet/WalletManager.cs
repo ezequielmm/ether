@@ -83,7 +83,6 @@ public class WalletManager : MonoBehaviour
         // if the nft is in the wallet, we only need the metadata for that single nft
         if (nftIds.Contains(nftId))
         {
-            
             GameManager.Instance.EVENT_OWNS_CURRENT_EXPEDITION_NFT.Invoke(true);
             return true;
         }
@@ -96,7 +95,7 @@ public class WalletManager : MonoBehaviour
     {
         if (requestSingle)
         {
-            GameManager.Instance.EVENT_REQUEST_NFT_SET_SKIN.Invoke(_selectedNft);
+            GameManager.Instance.EVENT_REQUEST_NFT_METADATA.Invoke(new int[] { _selectedNft} );
             return;
         }
         GameManager.Instance.EVENT_REQUEST_NFT_METADATA.Invoke(nftIds.ToArray());
