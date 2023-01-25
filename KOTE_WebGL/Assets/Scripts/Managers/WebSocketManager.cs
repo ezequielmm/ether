@@ -51,8 +51,12 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     protected override void Awake()
     {
         base.Awake();
-        // Turns off non-exception logging when outside of development enviroment
-        HiddenConsoleManager.DisableOnBuild();
+        if (Instance == this)
+        {
+            Debug.Log($"[WebSocketManager] Socket manager Awake");
+            // Turns off non-exception logging when outside of development enviroments
+            HiddenConsoleManager.DisableOnBuild();
+        }
     }
 
     void Start()
@@ -71,6 +75,15 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             Debug.Log("[WebSocket Manager] socket disconnected");
             rootSocket.Disconnect();
         }
+        if (Instance == this)
+        {
+            Debug.Log($"[WebSocketManager] Socket manager destroyed");
+        }
+    }
+
+    private void OnEnable()
+    {
+        Debug.Log("[WebSocketManager] Socket manager Enabled");
     }
 
 
@@ -157,6 +170,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
 
         //  manager.Open();
+        Debug.Log("[WebSocketManager] Socket generated.");
     }
 
     #region
