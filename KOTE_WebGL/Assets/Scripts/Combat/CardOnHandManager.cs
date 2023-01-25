@@ -239,20 +239,17 @@ public class CardOnHandManager : MonoBehaviour
         UpdateCardBasedOnEnergy(currentPlayerEnergy);
     }
 
-    public Sequence ShowAddedCard(AddCardData addCardData)
+    public void ShowAddedCard(AddCardData addCardData)
     {
-        Sequence sequence = DOTween.Sequence();
-        // animate the card appearing
-        transform.localScale = Vector3.zero;
-        sequence.Join(transform.DOScale(Vector3.one, 0.5f));
-        sequence.Join(
-            OnCardToMove(new CardToMoveData
+        GameManager.Instance.EVENT_MOVE_CARDS.Invoke(new List<(CardToMoveData, float)>
+        {
+            (new CardToMoveData
             {
                 destination = addCardData.destination,
                 id = addCardData.card.id,
                 source = "none"
-            }, GameSettings.SHOW_NEW_CARD_DURATION));
-        return sequence;
+            }, GameSettings.SHOW_NEW_CARD_DURATION)
+        });
     }
 
     public Sequence OnCardToMove(CardToMoveData data, float delayIndex)
