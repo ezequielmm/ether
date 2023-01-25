@@ -352,7 +352,8 @@ public enum ConsoleCommands
     enable_node,
     enable_injured_idle,
     disable_injured_idle,
-    reset_all
+    reset_all,
+    get_score
 }
 
 [Serializable]

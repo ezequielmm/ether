@@ -32,6 +32,8 @@ public class HandManager : MonoBehaviour
     int cardsDrawn = 0;
     bool audioRunning = false;
 
+    private bool gameOver;
+    
     private bool requestTimerIsRunning;
     private bool requestAgain;
     private Coroutine requestTimer;
@@ -59,6 +61,8 @@ public class HandManager : MonoBehaviour
         GameManager.Instance.EVENT_CARD_DISABLED.AddListener(OnCardDestroyed);
         // if we're adding a card to the hand that isn't a draw
         GameManager.Instance.EVENT_REARRANGE_HAND.AddListener(OnRearrangeHand);
+        // if the game is over, don't try to draw more cards
+        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(OnGameOver);
     }
 
     private void Start()
@@ -71,6 +75,14 @@ public class HandManager : MonoBehaviour
         //Debug.Log($"[Hand Pile] Card Drawn.");
         cardsDrawn++;
         StartCoroutine(DrawCardSFX());
+    }
+
+    private void OnGameOver(GameStatuses gameStatus)
+    {
+        if (gameStatus == GameStatuses.GameOver)
+        {
+            gameOver = true;
+        }
     }
 
     private IEnumerator DrawCardSFX()
@@ -112,6 +124,12 @@ public class HandManager : MonoBehaviour
 
     private void OnDrawCards()
     {
+        // if the game is over stop asking for cards
+        if (gameOver)
+        {
+            requestAgain = false;
+            return;
+        }
         Debug.Log("[HandManager]------------------------------------------------>[OnDrawCards]");
         if (cardPilesData == null)
         {
