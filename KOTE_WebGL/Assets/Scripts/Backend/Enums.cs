@@ -352,7 +352,8 @@ public enum ConsoleCommands
     enable_injured_idle,
     disable_injured_idle,
     reset_all,
-    use_nft
+    use_nft,
+    get_score
 }
 
 [Serializable]
