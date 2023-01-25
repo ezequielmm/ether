@@ -373,7 +373,6 @@ public class WebRequesterManager : MonoBehaviour
         string token = PlayerPrefs.GetString("session_token");
         
         string fullUrl = $"{baseUrl}{urlExpeditionScore}";
-        WWWForm form = new WWWForm();
 
         UnityWebRequest request = UnityWebRequest.Get(fullUrl);
         request.SetRequestHeader("Authorization", $"Bearer {token}");

@@ -52,7 +52,7 @@ public class ScoreboardManager : MonoBehaviour
         resultText.text = data.data.outcome;
         finalScoreText.text = data.data.totalScore.ToString();
         achievementfinalScoreText.text = data.data.totalScore.ToString();
-        expeditionTypeText.text = string.IsNullOrEmpty(data.data.expeditionType) ? data.data.expeditionType : "CasualMode";
+        expeditionTypeText.text = string.IsNullOrEmpty(data.data.expeditionType) ? data.data.expeditionType : "Casual Mode";
 
         // if there's no achievements, ignore them as none were earned
         if (data.data.achievements == null) return;
