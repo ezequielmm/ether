@@ -6,6 +6,7 @@ using UnityEngine;
 public class ScoreboardManager : MonoBehaviour
 {
     public GameObject gameOverContainer;
+    public GameObject scorePanel;
     public GameObject achievementPanel;
     public GameObject achievementLayout;
     public GameObject scoreboardAchievementPrefab;
@@ -34,6 +35,14 @@ public class ScoreboardManager : MonoBehaviour
 
     private void OnShowScoreboard(SWSM_ScoreboardData scoreboardData)
     {
+        // if the scoreboard data is null, that means there was an error, so just show the main menu button
+        if (scoreboardData == null)
+        {
+            scorePanel.SetActive(false);
+            gameOverContainer.SetActive(true);
+            return;
+        }
+        
         Populate(scoreboardData);
         gameOverContainer.SetActive(true);
     }

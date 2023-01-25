@@ -383,8 +383,8 @@ public class WebRequesterManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.ConnectionError ||
             request.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log("[Error getting expedition score] " + request.error);
-
+            Debug.LogError("[Error getting expedition score] " + request.error);
+            GameManager.Instance.EVENT_SHOW_SCOREBOARD.Invoke(null);
             yield break;
         }
 

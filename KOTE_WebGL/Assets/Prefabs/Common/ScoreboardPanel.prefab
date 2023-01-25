@@ -1722,6 +1722,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverContainer: {fileID: 2063020265825413810}
+  scorePanel: {fileID: 4925481857578224565}
   achievementPanel: {fileID: 8435117104567752627}
   achievementLayout: {fileID: 1609158966615050891}
   scoreboardAchievementPrefab: {fileID: 5935756273804931958, guid: edce5d11d1a0e024ea0e4503611a7475,
