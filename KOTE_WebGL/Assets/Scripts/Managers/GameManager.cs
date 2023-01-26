@@ -132,6 +132,7 @@ public class GameManager : SingleTon<GameManager>
    
 
     //EXPEDITION EVENTS
+    [HideInInspector] public UnityEvent EVENT_EXPEDITION_SYNC = new UnityEvent();
     [HideInInspector] public UnityEvent<bool, int> EVENT_EXPEDITION_STATUS_UPDATE = new UnityEvent<bool, int>();
     [HideInInspector] public UnityEvent EVENT_EXPEDITION_CONFIRMED = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_REQUEST_EXPEDITION_CANCEL = new UnityEvent();
@@ -308,11 +309,25 @@ public class GameManager : SingleTon<GameManager>
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene
     {
         nextSceneToLoad = scene;
+        if(scene== inGameScenes.Expedition)
+        {
+            RequestExpeditionSync();
+        }
         if (scene == inGameScenes.MainMenu)
         {
             EVENT_STOP_MUSIC.Invoke();
         }
         SceneManager.LoadScene(inGameScenes.Loader.ToString());
+    }
+
+    private void RequestExpeditionSync()
+    {
+        // Queue a map update for later
+        EnqueueActionForSceneLoad(() => 
+            {
+                EVENT_EXPEDITION_SYNC.Invoke();
+            }, 
+            inGameScenes.Expedition);
     }
 
     private void OnLogout(string message)

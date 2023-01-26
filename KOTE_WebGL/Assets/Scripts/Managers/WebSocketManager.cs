@@ -21,6 +21,8 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
 
     //Websockets outgoing messages with callback
+    private const string WS_MESSAGE_GAME_SYNC = "SyncExpedition";
+    
     private const string WS_MESSAGE_NODE_SELECTED = "NodeSelected";
     private const string WS_MESSAGE_CARD_PLAYED = "CardPlayed";
     private const string WS_MESSAGE_END_TURN = "EndTurn";
@@ -185,6 +187,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     {
         Debug.Log("Websocket Connected sucessfully! Setting listeners");
         //events
+        GameManager.Instance.EVENT_EXPEDITION_SYNC.AddListener(OnRequestSync);
         GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnNodeClicked);
         GameManager.Instance.EVENT_CARD_PLAYED.AddListener(OnCardPlayed);
         GameManager.Instance.EVENT_END_TURN_CLICKED.AddListener(OnEndTurn);
@@ -214,6 +217,12 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
         // Method 2: access through the socket
         Debug.Log("[WebSocket Manager] Sid through socket: " + manager.Socket.Id);
+    }
+
+    private void OnRequestSync()
+    {
+        LogEmission(WS_MESSAGE_GAME_SYNC);
+        rootSocket.Emit(WS_MESSAGE_GAME_SYNC);
     }
 
     /// <summary>
