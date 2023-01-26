@@ -13,8 +13,8 @@ public class LoadingManager : MonoBehaviour
 
     private void Start()
     {
-
         StartCoroutine(LoadAsynchronously(GameManager.Instance.nextSceneToLoad.ToString()));
+        DontDestroyOnLoad(gameObject);
     }
 
     IEnumerator LoadAsynchronously(string sceneName)
@@ -36,7 +36,9 @@ public class LoadingManager : MonoBehaviour
             //Debug.Log(asyncLoad.progress);
             yield return null;
         }
-        
+
+        GameManager.Instance.EVENT_SCENE_LOADED.Invoke(GameManager.Instance.nextSceneToLoad);
+        Destroy(gameObject);
     }
 
 }

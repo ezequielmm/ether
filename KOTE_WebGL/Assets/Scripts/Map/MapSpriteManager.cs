@@ -131,14 +131,14 @@ namespace map
 
         void Start()
         {
-            GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.AddListener(OnMapNodesDataUpdated);
+            GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.AddListener(OnMapNodesDataUpdated); // Gen Map
             GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.AddListener(OnToggleMap);
             GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnMapIconClicked);
             GameManager.Instance.EVENT_MAP_SCROLL_CLICK.AddListener(OnScrollButtonClicked);
             GameManager.Instance.EVENT_MAP_SCROLL_DRAG.AddListener(OnMapScrollDragged);
             GameManager.Instance.EVENT_MAP_MASK_DOUBLECLICK.AddListener(OnMaskDoubleClick);
             GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.AddListener(OnPortalActivated);
-            GameManager.Instance.EVENT_MAP_REVEAL.AddListener(OnRevealMap);
+            GameManager.Instance.EVENT_MAP_REVEAL.AddListener(OnRevealMap); // Gen Map
             GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnNodeSelected);
 
             playerIcon.SetActive(false);
