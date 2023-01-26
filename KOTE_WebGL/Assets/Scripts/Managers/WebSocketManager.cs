@@ -221,8 +221,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void OnRequestSync()
     {
-        LogEmission(WS_MESSAGE_GAME_SYNC);
-        rootSocket.Emit(WS_MESSAGE_GAME_SYNC);
+        Emit(WS_MESSAGE_GAME_SYNC);
     }
 
     /// <summary>
