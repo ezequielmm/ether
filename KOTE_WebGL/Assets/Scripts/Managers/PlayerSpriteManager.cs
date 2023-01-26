@@ -9,6 +9,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 {
     // we need the skeleton data so we can pull the image assets without needing the player to be activated in combat
     public SkeletonDataAsset KinghtData;
+    public SpriteList DefaultSkinImages;
     private List<Trait> currentMetadata = new List<Trait>();
 
     private List<TraitSprite> SkinSprites = new List<TraitSprite>();
@@ -18,6 +19,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     private int completedSkinRequests = 0;
     private int skinRequestsMade = 0;
     private SkeletonData knightSkeletonData;
+    private string shieldType = "";
 
     private void Start()
     {
@@ -46,9 +48,16 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
                 trait.imageName = imageName;
                 trait.isDefault = true;
 
-
                 skinRequestsMade++;
-                GameManager.Instance.EVENT_REQUEST_NFT_SKIN_SPRITE.Invoke(trait);
+                if (DefaultSkinImages.entityImages.Exists(x => x.name == trait.imageName))
+                {
+                    trait.sprite = DefaultSkinImages.entityImages.Find(x => x.name == trait.imageName);
+                    GameManager.Instance.EVENT_NFT_SKIN_SPRITE_RECEIVED.Invoke(trait);
+                }
+                else
+                {
+                    GameManager.Instance.EVENT_REQUEST_NFT_SKIN_SPRITE.Invoke(trait);
+                }
             }
         }
     }
@@ -57,7 +66,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     {
         currentMetadata.Clear();
         currentMetadata.AddRange(nftMetaData.traits);
-        
+
         // ===============TEMP CODE FOR BOTTOMS HANDLING=====================================
         if (currentMetadata.Exists(x => x.trait_type == nameof(TraitTypes.Gauntlet)))
         {
@@ -65,6 +74,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
             Trait bottomTrait = SelectTraitBottoms(tempTrait);
             if (bottomTrait != null) currentMetadata.Add(bottomTrait);
         }
+
         if (currentMetadata.Exists(x => x.trait_type == nameof(TraitTypes.Breastplate)))
         {
             Trait tempTrait = currentMetadata.Find(x => x.trait_type == nameof(TraitTypes.Breastplate));
@@ -72,11 +82,30 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
             if (bottomTrait != null) currentMetadata.Add(bottomTrait);
         }
         // ===============REMOVE WHEN NFTS HAVE BOOTS AND LEGGUARD TRAITS=====================================
-        
-        
+
+        // select correct sigil shape
+        if (currentMetadata.Exists(x => x.trait_type == nameof(TraitTypes.Sigil)))
+        {
+            Trait shield = currentMetadata.Find(x => x.trait_type == nameof(TraitTypes.Shield));
+           // default to circle shields until we get more info from art team
+            shieldType = "CShield";
+        }
+
+
         foreach (Trait trait in currentMetadata)
         {
             string[] traitSplit = trait.value.Split();
+            string skinName;
+            
+            if (trait.trait_type == nameof(TraitTypes.Sigil))
+            {
+                skinName = trait.trait_type + "_" + shieldType + "_" + string.Join('_', traitSplit);
+            }
+            else
+            {
+                skinName = trait.trait_type + "_" + string.Join('_', traitSplit);
+            }
+
             Skin traitSkin = knightSkeletonData.Skins.Find(x =>
                 x.Name.Contains(trait.trait_type + "_" + string.Join('_', traitSplit)));
             if (traitSkin == null)
@@ -84,6 +113,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
                 Debug.LogWarning($"[PlayerSpriteManager] {trait.trait_type} Skin not found for {trait.value}");
                 continue;
             }
+
             List<Skin.SkinEntry> skinEntries = traitSkin.Attachments.ToList();
             foreach (Skin.SkinEntry skinEntry in traitSkin.Attachments)
             {
@@ -385,7 +415,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
                     };
             }
         }
-        
+
         return null;
     }
 }
