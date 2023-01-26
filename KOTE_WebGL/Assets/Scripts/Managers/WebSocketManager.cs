@@ -50,6 +50,8 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     private const string WS_MESSAGE_CONTINUE_EXPEDITION = "ContinueExpedition";
     private const string WS_MESSAGE_NODE_SKIP = "NodeSkipped";
 
+    [SerializeField] private string SocketStatus = "Unknown";
+
     protected override void Awake()
     {
         base.Awake();
@@ -58,6 +60,27 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             Debug.Log($"[WebSocketManager] Socket manager Awake");
             // Turns off non-exception logging when outside of development enviroments
             HiddenConsoleManager.DisableOnBuild();
+
+            // Connect Events
+            GameManager.Instance.EVENT_EXPEDITION_SYNC.AddListener(OnRequestSync);
+            GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnNodeClicked);
+            GameManager.Instance.EVENT_CARD_PLAYED.AddListener(OnCardPlayed);
+            GameManager.Instance.EVENT_END_TURN_CLICKED.AddListener(OnEndTurn);
+            GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener(OnGenericWSDataRequest);
+            GameManager.Instance.EVENT_REWARD_SELECTED.AddListener(OnRewardSelected);
+            GameManager.Instance.EVENT_CONTINUE_EXPEDITION.AddListener(OnContinueExpedition);
+            GameManager.Instance.EVENT_GET_UPGRADE_PAIR.AddListener(OnShowUpgradePair);
+            GameManager.Instance.EVENT_USER_CONFIRMATION_UPGRADE_CARD.AddListener(OnCardUpgradeConfirmed);
+            GameManager.Instance.EVENT_CAMP_HEAL.AddListener(OnCampHealSelected);
+            GameManager.Instance.EVENT_CARDS_SELECTED.AddListener(OnCardsSelected);
+            GameManager.Instance.EVENT_POTION_USED.AddListener(OnPotionUsed);
+            GameManager.Instance.EVENT_POTION_DISCARDED.AddListener(OnPotionDiscarded);
+            GameManager.Instance.EVENT_TREASURE_OPEN_CHEST.AddListener(OnTreasureOpened);
+            GameManager.Instance.EVENT_MERCHANT_BUY.AddListener(OnBuyItem);
+            GameManager.Instance.EVENT_ENCOUNTER_OPTION_SELECTED.AddListener(OnEncounterOptionSelected);
+            GameManager.Instance.EVENT_START_COMBAT_ENCOUNTER.AddListener(OnStartCombatEncounter);
+            GameManager.Instance.EVENT_SKIP_NODE.AddListener(OnSkipNode);
+            GameManager.Instance.EVENT_TRINKETS_SELECTED.AddListener(OnTrinketsSelected);
         }
     }
 
@@ -68,6 +91,25 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             options = new SocketOptions();
             ConnectSocket();
         }
+    }
+
+    private void FixedUpdate()
+    {
+        string newSocketState = manager.State.ToString();
+        if(SocketStatus != newSocketState) 
+        {
+            switch (manager.State) 
+            {
+                case SocketManager.States.Reconnecting:
+                    Debug.LogWarning($"[WebSocketManager] New Socket State: {manager.State}.");
+                    break;
+                default:
+                    Debug.Log($"[WebSocketManager] New Socket State: {manager.State}.");
+                    break;
+            }
+            SocketStatus = manager.State.ToString();
+        }
+        
     }
 
     void OnDestroy()
@@ -185,28 +227,8 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     void OnConnected(ConnectResponse resp)
     {
-        Debug.Log("Websocket Connected sucessfully! Setting listeners");
-        //events
-        GameManager.Instance.EVENT_EXPEDITION_SYNC.AddListener(OnRequestSync);
-        GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnNodeClicked);
-        GameManager.Instance.EVENT_CARD_PLAYED.AddListener(OnCardPlayed);
-        GameManager.Instance.EVENT_END_TURN_CLICKED.AddListener(OnEndTurn);
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener(OnGenericWSDataRequest);
-        GameManager.Instance.EVENT_REWARD_SELECTED.AddListener(OnRewardSelected);
-        GameManager.Instance.EVENT_CONTINUE_EXPEDITION.AddListener(OnContinueExpedition);
-        GameManager.Instance.EVENT_GET_UPGRADE_PAIR.AddListener(OnShowUpgradePair);
-        GameManager.Instance.EVENT_USER_CONFIRMATION_UPGRADE_CARD.AddListener(OnCardUpgradeConfirmed);
-        GameManager.Instance.EVENT_CAMP_HEAL.AddListener(OnCampHealSelected);
-        GameManager.Instance.EVENT_CARDS_SELECTED.AddListener(OnCardsSelected);
-        GameManager.Instance.EVENT_POTION_USED.AddListener(OnPotionUsed);
-        GameManager.Instance.EVENT_POTION_DISCARDED.AddListener(OnPotionDiscarded);
-        GameManager.Instance.EVENT_TREASURE_OPEN_CHEST.AddListener(OnTreasureOpened);
-        GameManager.Instance.EVENT_MERCHANT_BUY.AddListener(OnBuyItem);
-        GameManager.Instance.EVENT_ENCOUNTER_OPTION_SELECTED.AddListener(OnEncounterOptionSelected);
-        GameManager.Instance.EVENT_START_COMBAT_ENCOUNTER.AddListener(OnStartCombatEncounter);
-        GameManager.Instance.EVENT_SKIP_NODE.AddListener(OnSkipNode);
-        GameManager.Instance.EVENT_TRINKETS_SELECTED.AddListener(OnTrinketsSelected);
-
+        Debug.Log("Websocket Connected sucessfully!");
+        
         GameManager.Instance.EVENT_WS_CONNECTED.Invoke();
     }
 

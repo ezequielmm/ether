@@ -35,7 +35,6 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         GameManager.Instance.EVENT_ATTACK_REQUEST.AddListener(OnAttackRequest);
         GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnAttackResponse);
         GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener(OnUpdatePlayer);
-        GameManager.Instance.EVENT_WS_CONNECTED.AddListener(OnWSConnected);
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
         GameManager.Instance.EVENT_ENCOUNTER_DAMAGE.AddListener(OnEncounterDamage);
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
@@ -330,10 +329,6 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         {
             // Out of energy audio
         }
-    }
-
-    private void OnWSConnected()
-    {
     }
 
     private void OnUpdatePlayer(PlayerData newPlayerData)

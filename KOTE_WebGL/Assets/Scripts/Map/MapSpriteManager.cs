@@ -338,6 +338,12 @@ namespace map
         {
             Debug.Log("[MapSpriteManager | OnMapNodesDataUpdated] " + expeditionMapData);
 
+            if (!mapContainer.activeSelf)
+            {
+                Debug.LogError($"[MapSpriteManager] The map is not currently being shown. Can not generate.");
+                return;
+            }
+
             ClearMap();
 
             // Set Seed
