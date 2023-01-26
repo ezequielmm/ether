@@ -52,6 +52,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     [SerializeField] private string SocketStatus = "Unknown";
     private bool doNotResuscitate = false;
+    private bool SocketHealthy => manager.State == SocketManager.States.Open && rootSocket.IsOpen;
 
     protected override void Awake()
     {
@@ -119,7 +120,11 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             }
             SocketStatus = manager.State.ToString();
         }
-        
+        if (SocketHealthy && EmissionQueue.Count > 0) 
+        {
+            EmissionQueue.Peek().Invoke();
+            EmissionQueue.Dequeue();
+        } 
     }
 
     void OnDestroy()
@@ -268,7 +273,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         //customNamespace.Emit("NodeSelected",nodeId);
 
         LogEmission(WS_MESSAGE_NODE_SELECTED, nodeId);
-        rootSocket.ExpectAcknowledgement<string>(OnNodeClickedAnswer).Emit(WS_MESSAGE_NODE_SELECTED, nodeId);
+        EmitWithResponse(OnNodeClickedAnswer, WS_MESSAGE_NODE_SELECTED, nodeId);
     }
 
 
@@ -312,7 +317,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         string data = JsonUtility.ToJson(cardData).ToString();
         //Debug.Log("[WebSocket Manager] OnCardPlayed data: " + data);
 
-        //rootSocket.ExpectAcknowledgement<string>(OnCardPlayedAnswer).Emit(WS_MESSAGE_CARD_PLAYED, data);
+        //EmitWithResponse(OnCardPlayedAnswer, WS_MESSAGE_CARD_PLAYED, data);
         Emit(WS_MESSAGE_CARD_PLAYED, data);
     }
     private void OnCardsSelected(List<string> cardIds)
@@ -411,7 +416,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     private void OnEndTurn()
     {
         LogEmission(WS_MESSAGE_END_TURN);
-        rootSocket.ExpectAcknowledgement<string>(OnEndOfTurnAnswer).Emit(WS_MESSAGE_END_TURN);
+        EmitWithResponse(OnEndOfTurnAnswer, WS_MESSAGE_END_TURN);
     }
 
     private void OnEndOfTurnAnswer(string nodeData)
@@ -436,23 +441,49 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         EmitWithResponse(WS_MESSAGE_GET_DATA, dataType.ToString());
     }
 
+    private Queue<Action> EmissionQueue = new Queue<Action>();
+
     private void Emit(string eventName, params object[] variables) 
     {
+        if (!SocketHealthy) 
+        {
+            EmissionQueue.Enqueue(() => 
+            {
+                Emit(eventName, variables);
+            });
+            Debug.LogWarning($"[WebSocketManager] Socket is Unhealthy. Queuing Emission ({eventName}) for Later.");
+            return;
+        }
         LogEmission(eventName, variables);
         rootSocket.Emit(eventName, variables);
     }
     private void EmitWithResponse(string eventName, params object[] variables)
     {
-        LogEmission(eventName, variables);
-        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(eventName, variables);
+        EmitWithResponse(GenericParser, eventName, variables);
 
     }
+
+    private void EmitWithResponse(Action<string> parser, string eventName, params object[] variables)
+    {
+        if (!SocketHealthy)
+        {
+            EmissionQueue.Enqueue(() =>
+            {
+                EmitWithResponse(parser, eventName, variables);
+            });
+            Debug.LogWarning($"[WebSocketManager] Socket is Unhealthy. Queuing Emission with Response ({eventName}) for Later.");
+            return;
+        }
+        LogEmission(eventName, variables);
+        rootSocket.ExpectAcknowledgement<string>(parser).Emit(eventName, variables);
+
+    }
+
 
 #if UNITY_EDITOR
     public void ForceEmit(string eventName, params object[] variables) 
     {
-        LogEmission(eventName, variables);
-        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(eventName, variables);
+        EmitWithResponse(eventName, variables);
     }
 #endif
 
