@@ -162,6 +162,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         rootSocket.On<ConnectResponse>(SocketIOEventTypes.Connect, OnConnected);
 
         //customNamespace.On<string>("ExpeditionMap", (arg1) => Debug.Log("Data from ReceiveExpeditionStatus:" + arg1));
+
         rootSocket.On<string>(WS_MESSAGE_EXPEDITION_MAP, GenericParser);
         rootSocket.On<string>(WS_MESSAGE_PLAYER_STATE, GenericParser);
         rootSocket.On<string>(WS_MESSAGE_INIT_COMBAT, GenericParser);
@@ -278,14 +279,14 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         CardsSelectedList cardList = new CardsSelectedList { cardsToTake = cardIds };
         string data = JsonUtility.ToJson(cardList);
         Debug.Log("[WebSocket Manager] OnCardsSelected data: " + data);
-        rootSocket.Emit(WS_MESSAGE_MOVE_SELECTED_CARDS, data);
+        Emit(WS_MESSAGE_MOVE_SELECTED_CARDS, data);
     }
 
     private void OnTrinketsSelected(List<string> trinketIds)
     {
         string data = JsonUtility.ToJson(trinketIds);
         Debug.Log("[WebSocket Manager] OnTrinketsSelected data: " + data);
-        rootSocket.Emit(WS_MESSAGE_TRINKETS_SELECTED, data);
+        Emit(WS_MESSAGE_TRINKETS_SELECTED, data);
     }
     
     private void OnBuyItem(string type, string id)
@@ -405,6 +406,14 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(eventName, variables);
 
     }
+
+#if UNITY_EDITOR
+    public void ForceEmit(string eventName, params object[] variables) 
+    {
+        LogEmission(eventName, variables);
+        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(eventName, variables);
+    }
+#endif
 
     private void LogEmission(string eventName, params object[] variables) 
     {
