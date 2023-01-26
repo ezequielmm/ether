@@ -58,3 +58,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   KinghtData: {fileID: 11400000, guid: 0833cefecbb1e774184077143e73eb05, type: 2}
+  DefaultSkinImages: {fileID: 11400000, guid: baf93baaee53bdf40a8a217e048cc1bc, type: 2}
