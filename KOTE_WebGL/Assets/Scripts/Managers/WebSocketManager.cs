@@ -51,6 +51,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     private const string WS_MESSAGE_NODE_SKIP = "NodeSkipped";
 
     [SerializeField] private string SocketStatus = "Unknown";
+    private bool doNotResuscitate = false;
 
     protected override void Awake()
     {
@@ -103,6 +104,15 @@ public class WebSocketManager : SingleTon<WebSocketManager>
                 case SocketManager.States.Reconnecting:
                     Debug.LogWarning($"[WebSocketManager] New Socket State: {manager.State}.");
                     break;
+                case SocketManager.States.Closed:
+                    if (!doNotResuscitate) 
+                    {
+                        Debug.LogWarning($"[WebSocketManager] New Socket State: {manager.State}. Attempting Reconnect...");
+                        ConnectSocket();
+                        break;
+                    }
+                    Debug.Log($"[WebSocketManager] New Socket State: {manager.State}.");
+                    break;
                 default:
                     Debug.Log($"[WebSocketManager] New Socket State: {manager.State}.");
                     break;
@@ -114,6 +124,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     void OnDestroy()
     {
+        doNotResuscitate = true;
         if (rootSocket != null)
         {
             Debug.Log("[WebSocket Manager] socket disconnected");
