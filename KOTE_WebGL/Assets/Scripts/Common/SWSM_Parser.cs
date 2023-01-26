@@ -349,15 +349,6 @@ public class SWSM_Parser
             case nameof(WS_MESSAGE_ACTIONS.show_map):
                 // Change to Loader Scene which will load the Map Scene
                 GameManager.Instance.LoadScene(inGameScenes.Expedition);
-                // Queue a map update for later
-                GameManager.Instance.EnqueueActionForSceneLoad(() => 
-                {
-                    // Update the map
-                    SWSM_MapData mapData = JsonUtility.FromJson<SWSM_MapData>(data);
-                    GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.Invoke(mapData);
-                Debug.Log("Loading Map");
-                }, 
-                inGameScenes.Expedition);
                 break;
             default:
                 Debug.LogWarning("[ProcessEndCombat] unknown action: " + action + " , data: " + data);
