@@ -191,7 +191,6 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     // get the list of all skins for the knight, using the defaults if it doesn't exist
     public List<TraitSprite> GetAllTraitSprites()
     {
-        return DefaultSprites;
         List<TraitSprite> allSprites = new List<TraitSprite>();
         foreach (var traitType in Enum.GetNames(typeof(TraitTypes)))
         {
