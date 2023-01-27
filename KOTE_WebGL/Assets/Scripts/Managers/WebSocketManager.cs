@@ -53,6 +53,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     [SerializeField] private string SocketStatus = "Unknown";
     private bool doNotResuscitate = false;
     private bool SocketHealthy => manager.State == SocketManager.States.Open && rootSocket.IsOpen;
+    private float socketOpenTimeGameSeconds = -1;
 
     protected override void Awake()
     {
@@ -100,27 +101,36 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         string newSocketState = manager.State.ToString();
         if(SocketStatus != newSocketState) 
         {
-            switch (manager.State) 
+            // Logs
+            switch (manager.State)
             {
+                case SocketManager.States.Closed:
                 case SocketManager.States.Reconnecting:
                     Debug.LogWarning($"[WebSocketManager] New Socket State: {manager.State}.");
-                    break;
-                case SocketManager.States.Closed:
-                    if (!doNotResuscitate) 
-                    {
-                        Debug.LogWarning($"[WebSocketManager] New Socket State: {manager.State}. Attempting Reconnect...");
-                        ConnectSocket();
-                        break;
-                    }
-                    Debug.Log($"[WebSocketManager] New Socket State: {manager.State}.");
                     break;
                 default:
                     Debug.Log($"[WebSocketManager] New Socket State: {manager.State}.");
                     break;
             }
+            // Actions
+            switch (manager.State)
+            {
+                case SocketManager.States.Closed:
+                    if (!doNotResuscitate)
+                    {
+                        ConnectSocket();
+                        break;
+                    }
+                    break;
+                case SocketManager.States.Open:
+                    socketOpenTimeGameSeconds = Time.time;
+                    break;
+            }
+            // Update Unity UI
             SocketStatus = manager.State.ToString();
         }
-        if (SocketHealthy && EmissionQueue.Count > 0) 
+
+        if (SocketHealthy && EmissionQueue.Count > 0 && Time.time - socketOpenTimeGameSeconds > 1) 
         {
             EmissionQueue.Peek().Invoke();
             EmissionQueue.Dequeue();
