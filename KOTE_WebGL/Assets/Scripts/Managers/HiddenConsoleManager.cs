@@ -5,10 +5,19 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class HiddenConsoleManager : MonoBehaviour
+public class HiddenConsoleManager : SingleTon<HiddenConsoleManager>
 {
     public GameObject consoleContainer;
     public TMP_InputField consoleInput;
+    public static bool DebugEnabled { get; private set; } = false;
+
+    protected override void Awake()
+    {
+        base.Awake();
+#if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
+            DisableDebug();
+#endif
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -23,9 +32,17 @@ public class HiddenConsoleManager : MonoBehaviour
     /// </summary>
     public static void DisableOnBuild()
     {
+        if (!DebugEnabled)
+        {
 #if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
             DisableDebug();
 #endif
+            Debug.Log($"[Console] Debugs Disabled.");
+        }
+        else 
+        {
+            Debug.Log($"[Console] Cannot disable logs. User force enabled.");
+        }
     }
 
     /// <summary>
@@ -145,10 +162,12 @@ public class HiddenConsoleManager : MonoBehaviour
                 consoleContainer.SetActive(false);
                 break;
             case ConsoleCommands.enable_debug:
+                DebugEnabled = true;
                 EnableDebug();
                 PublicLog("Console Enabled.");
                 break;
             case ConsoleCommands.disable_debug:
+                DebugEnabled = false;
                 DisableDebug();
                 PublicLog("Console Disabled.");
                 break;
