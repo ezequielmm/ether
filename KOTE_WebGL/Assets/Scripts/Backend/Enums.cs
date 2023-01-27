@@ -353,7 +353,8 @@ public enum ConsoleCommands
     disable_injured_idle,
     reset_all,
     use_nft,
-    get_score
+    get_score,
+    commit
 }
 
 [Serializable]
