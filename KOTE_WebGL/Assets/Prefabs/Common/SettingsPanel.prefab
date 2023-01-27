@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1275151894306790318}
   - component: {fileID: 3223139567860340585}
   - component: {fileID: 3143232065408524766}
+  - component: {fileID: 8937549155885045781}
   m_Layer: 5
   m_Name: bg_gradient
   m_TagString: Untagged
@@ -76,6 +77,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8937549155885045781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 30501365358793195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d40b57fa675efa4fb9dc005060d602b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &427816345720459490
 GameObject:
   m_ObjectHideFlags: 0

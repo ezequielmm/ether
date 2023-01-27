@@ -9,6 +9,7 @@ public class CardPanelBase : MonoBehaviour
     public GameObject uiCardPrefab;
     public GameObject commonCardsContainer;
     public GameObject gridCardsContainer;
+    public GridLayoutGroup gridLayout;
 
     public bool scaleOnHover = true;
     public bool useBackgroundImage = false;
@@ -16,7 +17,7 @@ public class CardPanelBase : MonoBehaviour
     protected virtual void Start()
     {
         commonCardsContainer.GetComponentInChildren<ScrollRect>().scrollSensitivity = GameSettings.PANEL_SCROLL_SPEED;
-        GameManager.Instance.EVENT_HIDE_COMMON_CARD_PANEL.AddListener(OnHideSelectCardPanel);
+        GameManager.Instance.EVENT_HIDE_COMMON_CARD_PANEL.AddListener(HideCardSelectPanel);
         commonCardsContainer.SetActive(false);
     }
 
@@ -28,12 +29,6 @@ public class CardPanelBase : MonoBehaviour
         }
     }
     
-    private void OnHideSelectCardPanel()
-    {
-        commonCardsContainer.SetActive(false);
-        DestroyCards();
-    }
-
     public void ShowCards(List<Card> cards)
     {
         DestroyCards();
@@ -54,8 +49,9 @@ public class CardPanelBase : MonoBehaviour
         }
     }
 
-    public void HideCards()
+    public void HideCardSelectPanel()
     {
+        gridLayout.cellSize = new Vector2(250, 350);
         commonCardsContainer.SetActive(false);
         DestroyCards();
     }

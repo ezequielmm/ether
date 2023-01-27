@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -137,6 +138,9 @@ public class SWSM_Parser
                 break;
             case "show_card_dialog":
                 ProcessShowCardDialog(data);
+                break;
+            case "spawn_enemies":
+                ProcessSpawnEnemies(data);
                 break;
             default:
                 Debug.LogWarning($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
@@ -343,6 +347,7 @@ public class SWSM_Parser
                 GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(updatedRewardsData);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.show_map):
+                // Change to Loader Scene which will load the Map Scene
                 GameManager.Instance.LoadScene(inGameScenes.Expedition);
                 break;
             default:
@@ -398,6 +403,12 @@ public class SWSM_Parser
         GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCards.data.data.cards,
             panelOptions,
             (selectedCards) => { GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards); });
+    }
+
+    private static void ProcessSpawnEnemies(string data)
+    {
+        SWSM_Enemies enemiesData = JsonUtility.FromJson<SWSM_Enemies>(data);
+        GameManager.Instance.EVENT_ADD_ENEMIES.Invoke(enemiesData.data);
     }
 
     private static void UpdateEnergy(string data)
@@ -588,7 +599,10 @@ public class SWSM_Parser
                 GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCardData.data.data.cards, panelOptions,
                     (selectedCards) => { GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards); });
                 break;
-
+            case "select_trinkets":
+                SWSM_SelectTrinketData trinketData = JsonUtility.FromJson<SWSM_SelectTrinketData>(data);
+                GameManager.Instance.EVENT_SHOW_SELECT_TRINKET_PANEL.Invoke(trinketData);
+                break;
             case "finish_encounter":
                 //  GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
                 break;

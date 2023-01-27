@@ -189,7 +189,8 @@ public enum EnemyTypes
     swampGoblin2,
     thornWolf,
     trapelican,
-    treant
+    treant,
+    thornWolfPup
 }
 
 public enum EntityType
@@ -350,7 +351,9 @@ public enum ConsoleCommands
     enable_node,
     enable_injured_idle,
     disable_injured_idle,
-    reset_all
+    reset_all,
+    use_nft,
+    get_score
 }
 
 [Serializable]
@@ -369,4 +372,22 @@ public enum MusicTypes
     Ambient,
     Boss,
     Music
+}
+
+[Serializable]
+public enum TraitTypes
+{
+    Breastplate,
+    Helmet,
+    Weapon,
+    Gauntlet,
+    Padding,
+    Crest,
+    Shield,
+    Pauldrons,
+    Sigil,
+    Vambrace,
+    Boots,
+    Legguard,
+    Shadow
 }

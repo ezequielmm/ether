@@ -30,6 +30,12 @@ public class HandManager : MonoBehaviour
     int cardsDrawn = 0;
     bool audioRunning = false;
 
+    private bool gameOver;
+    
+    private bool requestTimerIsRunning;
+    private bool requestAgain;
+    private Coroutine requestTimer;
+
     private void OnCardDestroyed(string cardId)
     {
         Debug.Log("[HandManager] Removing card " + cardId + " from hand");
@@ -53,6 +59,8 @@ public class HandManager : MonoBehaviour
         GameManager.Instance.EVENT_CARD_DISABLED.AddListener(OnCardDestroyed);
         // if we're adding a card to the hand that isn't a draw
         GameManager.Instance.EVENT_REARRANGE_HAND.AddListener(OnRearrangeHand);
+        // if the game is over, don't try to draw more cards
+        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(OnGameOver);
     }
 
     private void Start()
@@ -65,6 +73,14 @@ public class HandManager : MonoBehaviour
         //Debug.Log($"[Hand Pile] Card Drawn.");
         cardsDrawn++;
         StartCoroutine(DrawCardSFX());
+    }
+
+    private void OnGameOver(GameStatuses gameStatus)
+    {
+        if (gameStatus == GameStatuses.GameOver)
+        {
+            gameOver = true;
+        }
     }
 
     private IEnumerator DrawCardSFX()
@@ -117,24 +133,29 @@ public class HandManager : MonoBehaviour
 
     private void OnDrawCards()
     {
+        // if the game is over stop asking for cards
+        if (gameOver)
+        {
+            requestAgain = false;
+            return;
+        }
         Debug.Log("[HandManager]------------------------------------------------>[OnDrawCards]");
         if (cardPilesData == null)
         {
-            Debug.Log("[HandManager] No cards data at all. Retrieving");
-            GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-            Invoke("OnDrawCards", 0.2f);//0.2f
+            Debug.Log("[HandManager] No cards data at all. Requesting Card Piles");
+            RequestCardsPilesData();
             return;
         }
         else if (cardPilesData.data.hand.Count < 1)
         {
-            Debug.Log("[HandManager] No hands cards data. Retrieving");
-            GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-            Invoke("OnDrawCards", 0.2f);//0.2f
+            Debug.Log("[HandManager] No hands cards data. Requesting Card Piles");
+            RequestCardsPilesData();
             return;
         }
 
         Debug.Log(
-            $"[HandManager] draw.count: {cardPilesData.data.draw.Count} | hand.count: {cardPilesData.data.hand.Count} | discard.count: {cardPilesData.data.discard.Count} | exhaust.count: {cardPilesData.data.exhausted.Count}");
+            $"[HandManager] Card Piles Retrieved. draw.count: {cardPilesData.data.draw.Count} | hand.count: {cardPilesData.data.hand.Count} | discard.count: {cardPilesData.data.discard.Count} | exhaust.count: {cardPilesData.data.exhausted.Count}");
+        requestAgain = false;
 
         //Generate cards hand
         handDeck = new Deck();
@@ -206,6 +227,39 @@ public class HandManager : MonoBehaviour
         // Debug.Log("[HandManager] listOfCardsOnHand.Count:" + listOfCardsOnHand.Count);
 
         StartCoroutine(RelocateCards(true));
+    }
+
+    private void RequestCardsPilesData()
+    {
+        if (!requestTimerIsRunning)
+        {
+            // if theres not a request running, start the coroutine
+            requestTimer = StartCoroutine(WaitToRequestCardPiles());
+        }
+        else if (requestTimerIsRunning)
+        {
+            // if there is a request running, tell it to check again
+            requestAgain = true;
+        }
+    }
+
+    private IEnumerator WaitToRequestCardPiles()
+    {
+        do
+        {
+            Debug.Log("[HandManager] Card Pile Request Sent");
+            // flag that the timer is running
+            requestTimerIsRunning = true;
+            // then make the request
+            GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+            //if this fails, it will tell this function to check again
+            Invoke(nameof(OnDrawCards), 0.2f);
+            yield return new WaitForSeconds(1);
+            // if there are still no cards after a second, make another request
+        } while (requestAgain);
+        
+        // if the request was made, drop out
+        requestTimerIsRunning = false;
     }
 
     /// <summary>

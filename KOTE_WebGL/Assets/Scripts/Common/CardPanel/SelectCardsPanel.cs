@@ -189,8 +189,8 @@ public class SelectCardsPanel : CardPanelBase
 
     public void HidePanel()
     {
-        commonCardsContainer.SetActive(false);
         ClearSelectList();
+        HideCardSelectPanel();
     }
 
     private void ClearSelectList()
