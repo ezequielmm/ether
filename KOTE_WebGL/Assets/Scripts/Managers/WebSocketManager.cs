@@ -54,6 +54,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     private bool doNotResuscitate = false;
     private bool SocketHealthy => manager.State == SocketManager.States.Open && rootSocket.IsOpen;
     private float socketOpenTimeGameSeconds = -1;
+    private float socketDeathTimeGameSeconds = -1;
 
     protected override void Awake()
     {
@@ -115,19 +116,32 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             // Actions
             switch (manager.State)
             {
+                case SocketManager.States.Reconnecting:
+                    socketDeathTimeGameSeconds = Time.time;
+                    break;
                 case SocketManager.States.Closed:
                     if (!doNotResuscitate)
                     {
+                        socketDeathTimeGameSeconds = Time.time;
                         ConnectSocket();
                         break;
                     }
                     break;
                 case SocketManager.States.Open:
                     socketOpenTimeGameSeconds = Time.time;
+                    socketDeathTimeGameSeconds = -1;
                     break;
             }
             // Update Unity UI
             SocketStatus = manager.State.ToString();
+        }
+
+        if (!SocketHealthy && socketDeathTimeGameSeconds != -1 && Time.time - socketDeathTimeGameSeconds > GameSettings.MAX_TIMEOUT_SECONDS) 
+        {
+            // After some seconds of closed connection, return to main menu.
+            Debug.LogError($"[WebSocketManager] Disconnected for {Mathf.Round(Time.time - socketDeathTimeGameSeconds)} seconds Connection could not be salvaged. Returning to Main Menu.");
+            GameManager.Instance.LoadScene(inGameScenes.MainMenu);
+            Destroy(gameObject);
         }
 
         if (SocketHealthy && EmissionQueue.Count > 0 && Time.time - socketOpenTimeGameSeconds > 1) 
