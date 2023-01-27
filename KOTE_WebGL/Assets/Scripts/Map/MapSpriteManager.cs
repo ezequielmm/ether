@@ -336,10 +336,16 @@ namespace map
         void GenerateMap(SWSM_MapData expeditionMapData)
         {
             Debug.Log("[MapSpriteManager | OnMapNodesDataUpdated] " + expeditionMapData);
-
-            DetermineTilesToUse(expeditionMapData);
+            
+            if (!mapContainer.activeSelf)
+            {
+                Debug.LogError($"[MapSpriteManager] The map is not currently being shown. Can not generate.");
+                return;
+            }
 
             ClearMap();
+
+            DetermineTilesToUse(expeditionMapData);
 
             // Set Seed
             GenerateMapSeeds(expeditionMapData.data.seed);
