@@ -92,5 +92,10 @@ public class ToolTipValues
             title = "Potion Slot",
             description = "Use potions durring combat to gain bonuses or to hinder enemies."
         }});
+        GenericToolTips.Add("gear", new List<Tooltip>() { new Tooltip()
+        {
+            title = "Armory",
+            description = "View your current gear."
+        }});
     }
 }
