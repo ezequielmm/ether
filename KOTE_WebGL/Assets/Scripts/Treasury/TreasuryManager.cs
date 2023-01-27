@@ -27,6 +27,7 @@ public class TreasuryManager : MonoBehaviour
 
         GameManager.Instance.EVENT_TREASURYPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerTreasuryPanel);
         GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(SetNftPanelContent);
+        GameManager.Instance.EVENT_REQUEST_NFT_METADATA.AddListener(OnMetadataRequested);
         Button firstCharacterButton = characterList.transform.GetChild(0)?.GetComponent<Button>();
         if (firstCharacterButton != null) firstCharacterButton.onClick?.Invoke();
     }
@@ -40,6 +41,15 @@ public class TreasuryManager : MonoBehaviour
         SetPowerPanelContent();
         SetArmorPanelContent();
     }
+    // when a new wallet is received clear the panel
+    private void OnMetadataRequested(int[] ids)
+    {
+        for (int i = 0; i < nftPanel.transform.childCount; i++)
+        {
+            Destroy(nftPanel.transform.GetChild(i).gameObject);
+        }
+    }
+    
     
     private void SetNftPanelContent(NftData heldNftData)
     {
