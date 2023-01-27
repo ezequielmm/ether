@@ -390,5 +390,6 @@ public enum TraitTypes
     Vambrace,
     Boots,
     Legguard,
-    Shadow
+    Shadow,
+    Base
 }
