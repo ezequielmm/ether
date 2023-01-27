@@ -37,6 +37,12 @@ public abstract class SingleTon<T> : MonoBehaviour where T : Component
         }
     }
 
+    protected static void DestroyInstance() 
+    {
+        Destroy(instance);
+        instance = null;
+    }
+
     /// <summary>
     /// checks if an instance of this object has been created
     /// </summary>
