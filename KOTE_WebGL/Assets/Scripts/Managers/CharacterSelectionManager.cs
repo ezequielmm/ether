@@ -19,6 +19,7 @@ public class CharacterSelectionManager : MonoBehaviour
     {
         //GameManager.Instance.webRequester.RequestCharacterList();// we are not requesting the list until we have more than one type so for the moment only knight
 
+        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.AddListener(OnWalletReceived);
         GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.AddListener(
             ActivateInnerCharacterSelectionPanel);
         GameManager.Instance.EVENT_EXPEDITION_CONFIRMED.AddListener(OnExpeditionConfirmed);
@@ -30,6 +31,15 @@ public class CharacterSelectionManager : MonoBehaviour
     private void ActivateInnerCharacterSelectionPanel(bool activate)
     {
         characterSelectionContainer.SetActive(activate);
+    }
+
+    // when a new wallet is received clear the panel
+    private void OnWalletReceived(string address)
+    {
+        for (int i = 0; i < nftSelectionLayout.transform.childCount; i++)
+        {
+            Destroy(nftSelectionLayout.transform.GetChild(i).gameObject);
+        }
     }
 
     private void PopulateNftPanel(NftData heldNftData)

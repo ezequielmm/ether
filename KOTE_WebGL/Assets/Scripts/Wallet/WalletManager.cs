@@ -11,6 +11,9 @@ public class WalletManager : MonoBehaviour
 
     private WalletItem walletItem;
 
+    // store the current wallet id so we don't request the data more than once
+    private string curWallet = "";
+    
     // we need to store the list of ids to verify owned nfts
     private List<int> nftIds;
 
@@ -39,7 +42,11 @@ public class WalletManager : MonoBehaviour
 
     public void OnWalletAddressReceived(string walletAddress)
     {
+        //if we've already requested the wallet, don't ask again.
+        if (walletAddress == curWallet) return;
+        
         walletItem.SetWalletAddress(walletAddress);
+        curWallet = walletAddress;
 
         GameManager.Instance.EVENT_REQUEST_WALLET_CONTENTS.Invoke(walletAddress);
     }
