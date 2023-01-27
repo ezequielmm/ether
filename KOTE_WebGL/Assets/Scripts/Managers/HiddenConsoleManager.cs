@@ -251,6 +251,9 @@ public class HiddenConsoleManager : SingleTon<HiddenConsoleManager>
             case ConsoleCommands.use_nft:
                 PublicLog("NFT Number must be provided. Example usage: use_nft 0128");
                 break;
+            case ConsoleCommands.commit:
+                PublicLog($"commit {CommitLabel.CommitHash}");
+                break;
             default:
                 PublicLog("Unknown Command.");
                 break;
