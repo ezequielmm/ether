@@ -76,37 +76,21 @@ public static class GameSettings
     // Player Skin Defaults
     public static TraitSprite[] DEFAULT_SKIN_DATA = new[]
     {
-        new TraitSprite{skinName ="Boots/Boots_Medici",
-        traitType = nameof(TraitTypes.Boots)
-        },
-        new TraitSprite{skinName ="Gauntlet/Gauntlet_Medici",
-        traitType = nameof(TraitTypes.Gauntlet)
-        },
-        new TraitSprite{skinName ="Weapon/Weapon_Medici",
-        traitType = nameof(TraitTypes.Weapon)
-        },
         new TraitSprite{skinName ="Padding/Padding_Brown",
         traitType = nameof(TraitTypes.Padding)
         },
-        new TraitSprite{skinName ="Helmet/Helmet_Medici",
+        new TraitSprite{skinName ="Helmet/Helmet_Bucket",
         traitType = nameof(TraitTypes.Helmet)
-        },
-        new TraitSprite{skinName ="Shield/Shield_Medici",
-        traitType = nameof(TraitTypes.Shield)
-        },
-        new TraitSprite{skinName ="Breastplate/Breastplate_Medici",
-        traitType = nameof(TraitTypes.Breastplate)
-        },
-        new TraitSprite{skinName ="Pauldrons/Pauldrons_Medici",
-        traitType = nameof(TraitTypes.Pauldrons)
-        },
-        new TraitSprite{skinName ="Legguard/Legguard_Medici",
-        traitType = nameof(TraitTypes.Legguard)
         },
         new TraitSprite
         {
             skinName = "character_shadow",
             traitType = nameof(TraitTypes.Shadow)
+        },
+        new TraitSprite
+        {
+        skinName = "character-nude",
+        traitType = nameof(TraitTypes.Base)
         }
     };
 
