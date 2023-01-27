@@ -87,8 +87,9 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         if (currentMetadata.Exists(x => x.trait_type == nameof(TraitTypes.Sigil)))
         {
             Trait shield = currentMetadata.Find(x => x.trait_type == nameof(TraitTypes.Shield));
-           // default to circle shields until we get more info from art team
-            shieldType = "CShield";
+           if(shield.value.Contains("Circle")) shieldType = "CShield";
+           else if(shield.value.Contains("Triangle")) shieldType = "TShield";
+           else Debug.LogWarning($"Warning! Invalid Shield/Sigil combination for nft #{nftMetaData.token_id}");
         }
 
 
