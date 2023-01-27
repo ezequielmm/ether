@@ -52,7 +52,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     [SerializeField] private string SocketStatus = "Unknown";
     private bool doNotResuscitate = false;
-    private bool SocketHealthy => manager.State == SocketManager.States.Open && rootSocket.IsOpen;
+    private bool SocketHealthy => manager.State == SocketManager.States.Open && rootSocket.IsOpen && Time.time - socketOpenTimeGameSeconds > 1;
     private float socketOpenTimeGameSeconds = -1;
     private float socketDeathTimeGameSeconds = -1;
 
@@ -85,6 +85,8 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             GameManager.Instance.EVENT_START_COMBAT_ENCOUNTER.AddListener(OnStartCombatEncounter);
             GameManager.Instance.EVENT_SKIP_NODE.AddListener(OnSkipNode);
             GameManager.Instance.EVENT_TRINKETS_SELECTED.AddListener(OnTrinketsSelected);
+
+            GameManager.Instance.EVENT_SCENE_LOADED.AddListener(OnSceneChange);
         }
     }
 
@@ -94,6 +96,14 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         {
             options = new SocketOptions();
             ConnectSocket();
+        }
+    }
+
+    private void OnSceneChange(inGameScenes scene) 
+    {
+        if (scene == inGameScenes.MainMenu) 
+        {
+            DestroyInstance();
         }
     }
 
