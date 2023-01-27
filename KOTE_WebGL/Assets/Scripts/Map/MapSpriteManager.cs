@@ -27,10 +27,7 @@ namespace map
 
         // tilemap references
         public Tilemap MapGrid;
-        public Tile[] grassTiles;
-        public Tile[] lakeTiles;
-        public Tile[] mountainTiles;
-        public Tile[] forestTiles;
+        public MapTileList[] actTileLists;
 
         public Vector3Int startPoint;
         public int startX;
@@ -69,6 +66,7 @@ namespace map
         // keep track of this so the map doesn't move if it's not bigger than the visible area
         private float halfScreenWidth;
 
+        private MapTileList currentActTiles;
         private List<int> MapSeeds;
         private Dictionary<Vector3Int, MapTilePath> mapPaths;
         List<Vector3Int> blockedTiles = new List<Vector3Int>();
@@ -330,6 +328,7 @@ namespace map
             {
                 yield return new WaitForSeconds(0.5f);
             }
+
             ScrollBackToPlayerIcon();
         }
 
@@ -337,8 +336,16 @@ namespace map
         void GenerateMap(SWSM_MapData expeditionMapData)
         {
             Debug.Log("[MapSpriteManager | OnMapNodesDataUpdated] " + expeditionMapData);
+            
+            if (!mapContainer.activeSelf)
+            {
+                Debug.LogError($"[MapSpriteManager] The map is not currently being shown. Can not generate.");
+                return;
+            }
 
             ClearMap();
+
+            DetermineTilesToUse(expeditionMapData);
 
             // Set Seed
             GenerateMapSeeds(expeditionMapData.data.seed);
@@ -363,6 +370,20 @@ namespace map
 
             // Generate Map Images
             //StartCoroutine(GenerateMapImages());
+        }
+
+        private void DetermineTilesToUse(SWSM_MapData expeditionData)
+        {
+            int currentMapAct = expeditionData.data.data[0].act;
+
+            // if the current act of the map is not act 0 and we have a tile list for that act, use it
+            if (currentMapAct > 0 && currentMapAct - 1 < actTileLists.Length)
+            {
+                currentActTiles = actTileLists[currentMapAct - 1];
+                return;
+            }
+            // else default to the act 1 tiles
+            currentActTiles = actTileLists[0];
         }
 
         #region generateMap
@@ -581,8 +602,9 @@ namespace map
                             }
 
                             playerIcon.transform.localPosition = knightPos;
-                            GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.Invoke(nodeData.act, nodeData.step);
-                          //  GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(nodeData.act, nodeData.step);
+                            GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.Invoke(nodeData.act,
+                                nodeData.step);
+                            //  GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(nodeData.act, nodeData.step);
                         }
 
                         // if the node is an available royal house, turn royal house mode on
@@ -786,14 +808,14 @@ namespace map
                         // pick a random tile of whatever type was selected
                         if (randomType == 0)
                         {
-                            int randomTile = Random.Range(0, mountainTiles.Length);
-                            MapGrid.SetTile(tilePos, mountainTiles[randomTile]);
+                            int randomTile = Random.Range(0, currentActTiles.mountainTiles.Length);
+                            MapGrid.SetTile(tilePos, currentActTiles.mountainTiles[randomTile]);
                         }
 
                         if (randomType == 1)
                         {
-                            int randomTile = Random.Range(0, forestTiles.Length);
-                            MapGrid.SetTile(tilePos, forestTiles[randomTile]);
+                            int randomTile = Random.Range(0, currentActTiles.forestTiles.Length);
+                            MapGrid.SetTile(tilePos, currentActTiles.forestTiles[randomTile]);
                         }
                     }
                     else
@@ -848,13 +870,13 @@ namespace map
             int lakeCheck = Random.Range(0, 10);
             if (lakeCheck == 9)
             {
-                int randomLakeTile = Random.Range(0, lakeTiles.Length);
-                MapGrid.SetTile(node, lakeTiles[randomLakeTile]);
+                int randomLakeTile = Random.Range(0, currentActTiles.lakeTiles.Length);
+                MapGrid.SetTile(node, currentActTiles.lakeTiles[randomLakeTile]);
                 return;
             }
 
-            int randomTile = Random.Range(0, grassTiles.Length);
-            MapGrid.SetTile(node, grassTiles[randomTile]);
+            int randomTile = Random.Range(0, currentActTiles.grassTiles.Length);
+            MapGrid.SetTile(node, currentActTiles.grassTiles[randomTile]);
         }
 
 
@@ -1176,6 +1198,7 @@ namespace map
                     GameSettings.MAP_SCROLL_ANIMATION_DURATION));
                 return;
             }
+
             ScrollBackToPlayerIcon();
         }
 

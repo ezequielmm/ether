@@ -50,6 +50,12 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     private const string WS_MESSAGE_CONTINUE_EXPEDITION = "ContinueExpedition";
     private const string WS_MESSAGE_NODE_SKIP = "NodeSkipped";
 
+    [SerializeField] private string SocketStatus = "Unknown";
+    private bool doNotResuscitate = false;
+    private bool SocketHealthy => manager.State == SocketManager.States.Open && rootSocket.IsOpen && Time.time - socketOpenTimeGameSeconds > 1;
+    private float socketOpenTimeGameSeconds = -1;
+    private float socketDeathTimeGameSeconds = -1;
+
     protected override void Awake()
     {
         base.Awake();
@@ -58,6 +64,29 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             Debug.Log($"[WebSocketManager] Socket manager Awake");
             // Turns off non-exception logging when outside of development enviroments
             HiddenConsoleManager.DisableOnBuild();
+
+            // Connect Events
+            GameManager.Instance.EVENT_EXPEDITION_SYNC.AddListener(OnRequestSync);
+            GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnNodeClicked);
+            GameManager.Instance.EVENT_CARD_PLAYED.AddListener(OnCardPlayed);
+            GameManager.Instance.EVENT_END_TURN_CLICKED.AddListener(OnEndTurn);
+            GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener(OnGenericWSDataRequest);
+            GameManager.Instance.EVENT_REWARD_SELECTED.AddListener(OnRewardSelected);
+            GameManager.Instance.EVENT_CONTINUE_EXPEDITION.AddListener(OnContinueExpedition);
+            GameManager.Instance.EVENT_GET_UPGRADE_PAIR.AddListener(OnShowUpgradePair);
+            GameManager.Instance.EVENT_USER_CONFIRMATION_UPGRADE_CARD.AddListener(OnCardUpgradeConfirmed);
+            GameManager.Instance.EVENT_CAMP_HEAL.AddListener(OnCampHealSelected);
+            GameManager.Instance.EVENT_CARDS_SELECTED.AddListener(OnCardsSelected);
+            GameManager.Instance.EVENT_POTION_USED.AddListener(OnPotionUsed);
+            GameManager.Instance.EVENT_POTION_DISCARDED.AddListener(OnPotionDiscarded);
+            GameManager.Instance.EVENT_TREASURE_OPEN_CHEST.AddListener(OnTreasureOpened);
+            GameManager.Instance.EVENT_MERCHANT_BUY.AddListener(OnBuyItem);
+            GameManager.Instance.EVENT_ENCOUNTER_OPTION_SELECTED.AddListener(OnEncounterOptionSelected);
+            GameManager.Instance.EVENT_START_COMBAT_ENCOUNTER.AddListener(OnStartCombatEncounter);
+            GameManager.Instance.EVENT_SKIP_NODE.AddListener(OnSkipNode);
+            GameManager.Instance.EVENT_TRINKETS_SELECTED.AddListener(OnTrinketsSelected);
+
+            GameManager.Instance.EVENT_SCENE_LOADED.AddListener(OnSceneChange);
         }
     }
 
@@ -70,8 +99,71 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         }
     }
 
+    private void OnSceneChange(inGameScenes scene) 
+    {
+        if (scene == inGameScenes.MainMenu) 
+        {
+            DestroyInstance();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        string newSocketState = manager.State.ToString();
+        if(SocketStatus != newSocketState) 
+        {
+            // Logs
+            switch (manager.State)
+            {
+                case SocketManager.States.Closed:
+                case SocketManager.States.Reconnecting:
+                    Debug.LogWarning($"[WebSocketManager] New Socket State: {manager.State}.");
+                    break;
+                default:
+                    Debug.Log($"[WebSocketManager] New Socket State: {manager.State}.");
+                    break;
+            }
+            // Actions
+            switch (manager.State)
+            {
+                case SocketManager.States.Reconnecting:
+                    socketDeathTimeGameSeconds = Time.time;
+                    break;
+                case SocketManager.States.Closed:
+                    if (!doNotResuscitate)
+                    {
+                        socketDeathTimeGameSeconds = Time.time;
+                        ConnectSocket();
+                        break;
+                    }
+                    break;
+                case SocketManager.States.Open:
+                    socketOpenTimeGameSeconds = Time.time;
+                    socketDeathTimeGameSeconds = -1;
+                    break;
+            }
+            // Update Unity UI
+            SocketStatus = manager.State.ToString();
+        }
+
+        if (!SocketHealthy && socketDeathTimeGameSeconds != -1 && Time.time - socketDeathTimeGameSeconds > GameSettings.MAX_TIMEOUT_SECONDS) 
+        {
+            // After some seconds of closed connection, return to main menu.
+            Debug.LogError($"[WebSocketManager] Disconnected for {Mathf.Round(Time.time - socketDeathTimeGameSeconds)} seconds Connection could not be salvaged. Returning to Main Menu.");
+            GameManager.Instance.LoadScene(inGameScenes.MainMenu);
+            Destroy(gameObject);
+        }
+
+        if (SocketHealthy && EmissionQueue.Count > 0 && Time.time - socketOpenTimeGameSeconds > 1) 
+        {
+            EmissionQueue.Peek().Invoke();
+            EmissionQueue.Dequeue();
+        } 
+    }
+
     void OnDestroy()
     {
+        doNotResuscitate = true;
         if (rootSocket != null)
         {
             Debug.Log("[WebSocket Manager] socket disconnected");
@@ -164,6 +256,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         rootSocket.On<ConnectResponse>(SocketIOEventTypes.Connect, OnConnected);
 
         //customNamespace.On<string>("ExpeditionMap", (arg1) => Debug.Log("Data from ReceiveExpeditionStatus:" + arg1));
+
         rootSocket.On<string>(WS_MESSAGE_EXPEDITION_MAP, GenericParser);
         rootSocket.On<string>(WS_MESSAGE_PLAYER_STATE, GenericParser);
         rootSocket.On<string>(WS_MESSAGE_INIT_COMBAT, GenericParser);
@@ -184,28 +277,8 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     void OnConnected(ConnectResponse resp)
     {
-        Debug.Log("Websocket Connected sucessfully! Setting listeners");
-        //events
-        GameManager.Instance.EVENT_EXPEDITION_SYNC.AddListener(OnRequestSync);
-        GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnNodeClicked);
-        GameManager.Instance.EVENT_CARD_PLAYED.AddListener(OnCardPlayed);
-        GameManager.Instance.EVENT_END_TURN_CLICKED.AddListener(OnEndTurn);
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener(OnGenericWSDataRequest);
-        GameManager.Instance.EVENT_REWARD_SELECTED.AddListener(OnRewardSelected);
-        GameManager.Instance.EVENT_CONTINUE_EXPEDITION.AddListener(OnContinueExpedition);
-        GameManager.Instance.EVENT_GET_UPGRADE_PAIR.AddListener(OnShowUpgradePair);
-        GameManager.Instance.EVENT_USER_CONFIRMATION_UPGRADE_CARD.AddListener(OnCardUpgradeConfirmed);
-        GameManager.Instance.EVENT_CAMP_HEAL.AddListener(OnCampHealSelected);
-        GameManager.Instance.EVENT_CARDS_SELECTED.AddListener(OnCardsSelected);
-        GameManager.Instance.EVENT_POTION_USED.AddListener(OnPotionUsed);
-        GameManager.Instance.EVENT_POTION_DISCARDED.AddListener(OnPotionDiscarded);
-        GameManager.Instance.EVENT_TREASURE_OPEN_CHEST.AddListener(OnTreasureOpened);
-        GameManager.Instance.EVENT_MERCHANT_BUY.AddListener(OnBuyItem);
-        GameManager.Instance.EVENT_ENCOUNTER_OPTION_SELECTED.AddListener(OnEncounterOptionSelected);
-        GameManager.Instance.EVENT_START_COMBAT_ENCOUNTER.AddListener(OnStartCombatEncounter);
-        GameManager.Instance.EVENT_SKIP_NODE.AddListener(OnSkipNode);
-        GameManager.Instance.EVENT_TRINKETS_SELECTED.AddListener(OnTrinketsSelected);
-
+        Debug.Log("Websocket Connected sucessfully!");
+        
         GameManager.Instance.EVENT_WS_CONNECTED.Invoke();
     }
 
@@ -220,8 +293,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void OnRequestSync()
     {
-        LogEmission(WS_MESSAGE_GAME_SYNC);
-        rootSocket.Emit(WS_MESSAGE_GAME_SYNC);
+        Emit(WS_MESSAGE_GAME_SYNC);
     }
 
     /// <summary>
@@ -235,7 +307,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         //customNamespace.Emit("NodeSelected",nodeId);
 
         LogEmission(WS_MESSAGE_NODE_SELECTED, nodeId);
-        rootSocket.ExpectAcknowledgement<string>(OnNodeClickedAnswer).Emit(WS_MESSAGE_NODE_SELECTED, nodeId);
+        EmitWithResponse(OnNodeClickedAnswer, WS_MESSAGE_NODE_SELECTED, nodeId);
     }
 
 
@@ -279,7 +351,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         string data = JsonUtility.ToJson(cardData).ToString();
         //Debug.Log("[WebSocket Manager] OnCardPlayed data: " + data);
 
-        //rootSocket.ExpectAcknowledgement<string>(OnCardPlayedAnswer).Emit(WS_MESSAGE_CARD_PLAYED, data);
+        //EmitWithResponse(OnCardPlayedAnswer, WS_MESSAGE_CARD_PLAYED, data);
         Emit(WS_MESSAGE_CARD_PLAYED, data);
     }
     private void OnCardsSelected(List<string> cardIds)
@@ -287,14 +359,14 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         CardsSelectedList cardList = new CardsSelectedList { cardsToTake = cardIds };
         string data = JsonUtility.ToJson(cardList);
         Debug.Log("[WebSocket Manager] OnCardsSelected data: " + data);
-        rootSocket.Emit(WS_MESSAGE_MOVE_SELECTED_CARDS, data);
+        Emit(WS_MESSAGE_MOVE_SELECTED_CARDS, data);
     }
 
     private void OnTrinketsSelected(List<string> trinketIds)
     {
         string data = JsonUtility.ToJson(trinketIds);
         Debug.Log("[WebSocket Manager] OnTrinketsSelected data: " + data);
-        rootSocket.Emit(WS_MESSAGE_TRINKETS_SELECTED, data);
+        Emit(WS_MESSAGE_TRINKETS_SELECTED, data);
     }
     
     private void OnBuyItem(string type, string id)
@@ -378,7 +450,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     private void OnEndTurn()
     {
         LogEmission(WS_MESSAGE_END_TURN);
-        rootSocket.ExpectAcknowledgement<string>(OnEndOfTurnAnswer).Emit(WS_MESSAGE_END_TURN);
+        EmitWithResponse(OnEndOfTurnAnswer, WS_MESSAGE_END_TURN);
     }
 
     private void OnEndOfTurnAnswer(string nodeData)
@@ -403,17 +475,51 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         EmitWithResponse(WS_MESSAGE_GET_DATA, dataType.ToString());
     }
 
+    private Queue<Action> EmissionQueue = new Queue<Action>();
+
     private void Emit(string eventName, params object[] variables) 
     {
+        if (!SocketHealthy) 
+        {
+            EmissionQueue.Enqueue(() => 
+            {
+                Emit(eventName, variables);
+            });
+            Debug.LogWarning($"[WebSocketManager] Socket is Unhealthy. Queuing Emission ({eventName}) for Later.");
+            return;
+        }
         LogEmission(eventName, variables);
         rootSocket.Emit(eventName, variables);
     }
     private void EmitWithResponse(string eventName, params object[] variables)
     {
-        LogEmission(eventName, variables);
-        rootSocket.ExpectAcknowledgement<string>(GenericParser).Emit(eventName, variables);
+        EmitWithResponse(GenericParser, eventName, variables);
 
     }
+
+    private void EmitWithResponse(Action<string> parser, string eventName, params object[] variables)
+    {
+        if (!SocketHealthy)
+        {
+            EmissionQueue.Enqueue(() =>
+            {
+                EmitWithResponse(parser, eventName, variables);
+            });
+            Debug.LogWarning($"[WebSocketManager] Socket is Unhealthy. Queuing Emission with Response ({eventName}) for Later.");
+            return;
+        }
+        LogEmission(eventName, variables);
+        rootSocket.ExpectAcknowledgement<string>(parser).Emit(eventName, variables);
+
+    }
+
+
+#if UNITY_EDITOR
+    public void ForceEmit(string eventName, params object[] variables) 
+    {
+        EmitWithResponse(eventName, variables);
+    }
+#endif
 
     private void LogEmission(string eventName, params object[] variables) 
     {
