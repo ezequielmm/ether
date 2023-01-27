@@ -107,8 +107,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
                 skinName = trait.trait_type + "_" + string.Join('_', traitSplit);
             }
 
-            Skin traitSkin = knightSkeletonData.Skins.Find(x =>
-                x.Name.Contains(trait.trait_type + "_" + string.Join('_', traitSplit)));
+            Skin traitSkin = knightSkeletonData.Skins.Find(x => x.Name.Contains(skinName));
             if (traitSkin == null)
             {
                 Debug.LogWarning($"[PlayerSpriteManager] {trait.trait_type} Skin not found for {trait.value}");
