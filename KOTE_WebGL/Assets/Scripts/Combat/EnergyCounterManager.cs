@@ -41,11 +41,11 @@ public class EnergyCounterManager : MonoBehaviour, IPointerEnterHandler, IPointe
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Vector3 anchorPoint = new Vector3(transform.position.x + (rectTransform.rect.width/2 * rectTransform.lossyScale.x),
-            transform.position.y + ((rectTransform.rect.height * rectTransform.lossyScale.y)), 0);
+        Vector3 anchorPoint = new Vector3(transform.position.x + (rectTransform.rect.width * rectTransform.lossyScale.x),
+            transform.position.y + ((rectTransform.rect.height / 2 * rectTransform.lossyScale.y)), 0);
         anchorPoint = Camera.main.ScreenToWorldPoint(anchorPoint);
         // Tooltip On
-        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(ToolTipValues.Instance.EnergyCounterTooltips, TooltipController.Anchor.BottomLeft, anchorPoint, null);
+        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(ToolTipValues.Instance.EnergyCounterTooltips, TooltipController.Anchor.MiddleLeft, anchorPoint, null);
     }
 
     public void OnPointerExit(PointerEventData eventData)

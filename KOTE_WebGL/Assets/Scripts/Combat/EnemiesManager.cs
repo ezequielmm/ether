@@ -13,6 +13,10 @@ public class EnemiesManager : MonoBehaviour
     public float extent = 4.44f;
     public float floor = -1.5f;
     public float spawnX = 5;
+    [Range(1f, 8f)]
+    public float sampleEnemyWidth = 4.44f;
+    [Range(1,5)]
+    public int sampleEnemyCount = 3;
     List<GameObject> enemies = new List<GameObject>();
     Vector3 spawnPos => new Vector3(spawnX, floor, 0);
 
@@ -157,27 +161,30 @@ public class EnemiesManager : MonoBehaviour
 
     private void PositionEnemies() 
     {
+        // Total enemy width
         float width = 0;
         foreach (var enemyObj in enemies) 
         {
             var enemy = enemyObj.GetComponent<EnemyManager>();
             width += GetSize(enemy.EnemyData.size); // enemy.collider.bounds.size.x;
         }
+
+        // Amount of space enemies take out outside of set aside spacing
         float spillOver = Mathf.Max(0, width - (extent * 2));
-        float spacing = Mathf.Max(0, (extent * 2) - width) / (enemies.Count);
-        float leftEdge = transform.position.x + -(width / 2f) + -spillOver + -spacing/2;
+        // The space between enemies (should be 0 if no space)
+        float spacing = Mathf.Max(0, (extent * 2) - width / enemies.Count);
+        // The left edge that enemies will start spawning at
+        float leftEdge = transform.position.x + -extent + (-spillOver) + (spacing / 2f);
+
         StringBuilder sb = new StringBuilder();
 
+        // Add all the enemies
         foreach (var enemyObj in enemies)
         {
             var enemy = enemyObj.GetComponent<EnemyManager>();
             sb.Append($"[{enemy.EnemyData.enemyId} | {enemy.EnemyData.id}], ");
             float size = GetSize(enemy.EnemyData.size); //enemy.collider.bounds.size.x;
             float xPos = leftEdge + size / 2;
-            if (enemies.Count <= 1)
-            {
-                xPos = transform.position.x;
-            }
             Vector3 desiredPosition = new Vector3(xPos, transform.position.y + floor, transform.position.z);
             enemy.transform.DOMove(desiredPosition, 1);
             leftEdge += size + spacing;
@@ -187,10 +194,49 @@ public class EnemiesManager : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Bounds b = new Bounds(transform.position, new Vector3(extent * 2, 5, 0));
+        Vector3 bound = new Vector3(extent * 2, 5, 0);
+        Bounds b = new Bounds(transform.position, bound);
         Gizmos.color = Color.green;
         GizmoExtensions.DrawBox(b);
         Gizmos.color = Color.magenta;
-        Gizmos.DrawLine(new Vector3(transform.position.x - 4, transform.position.y + floor, 0), new Vector3(transform.position.x + 4, transform.position.y + floor, 0));
+        Gizmos.DrawLine(new Vector3(transform.position.x - (bound.x/2 * 0.9f), transform.position.y + floor, 0), new Vector3(transform.position.x + (bound.x/2 * 0.9f), transform.position.y + floor, 0));
+
+        Gizmos.color = Color.red;
+        float totalWidth = sampleEnemyWidth * sampleEnemyCount;
+
+        // Amount of space enemies take out outside of set aside spacing
+        float spillOver = Mathf.Max(0, totalWidth - (extent * 2));
+        // The space between enemies (should be 0 if no space)
+        float spacing = Mathf.Max(0, (extent * 2) - totalWidth) / sampleEnemyCount;
+        // The left edge that enemies will start spawning at
+        float leftEdge = transform.position.x + -extent + (-spillOver) + (spacing/2f);
+
+        if (spacing > 0)
+        {
+            Gizmos.color = Color.red;
+            GizmoExtensions.DrawBoxWithX(spacing / 2, bound.y / 4f, new Vector3(leftEdge - (spacing / 4f), transform.position.y + floor + bound.y / 4, 0));
+        }
+
+        for (int i = 0; i < sampleEnemyCount; i++) 
+        {
+            float size = sampleEnemyWidth;
+            float xPos = leftEdge + size / 2;
+            Vector3 desiredPosition = new Vector3(xPos, transform.position.y + floor + bound.y / 4, 0);
+            leftEdge += size + spacing;
+
+            Gizmos.color = Color.blue;
+            GizmoExtensions.DrawBoxWithX(size, bound.y/2, desiredPosition);
+
+            Gizmos.color = Color.red;
+            if (i != sampleEnemyCount - 1 && spacing > 0)
+            {
+                GizmoExtensions.DrawBoxWithX(spacing, bound.y / 4f, new Vector3(leftEdge - (spacing / 2f), transform.position.y + floor + bound.y / 4, 0));
+            }
+        }
+        if (spacing > 0)
+        {
+            Gizmos.color = Color.red;
+            GizmoExtensions.DrawBoxWithX(spacing / 2, bound.y / 4f, new Vector3(leftEdge - (spacing * 3 / 4f), transform.position.y + floor + bound.y / 4, 0));
+        }
     }
 }

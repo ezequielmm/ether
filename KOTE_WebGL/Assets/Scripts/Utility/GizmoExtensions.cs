@@ -30,4 +30,30 @@ public static class GizmoExtensions
         Gizmos.DrawLine(BottomRight, BottomLeft);
         Gizmos.DrawLine(BottomLeft, TopLeft);
     }
+
+    public static void DrawBoxWithX(Bounds bounds, Vector3 offset = default(Vector3))
+    {
+        offset += new Vector3(bounds.center.x, bounds.center.y, 0);
+        DrawBoxWithX(
+            new Vector3(bounds.extents.x + offset.x, bounds.extents.y + offset.y, offset.z),
+            new Vector3(-bounds.extents.x + offset.x, bounds.extents.y + offset.y, offset.z),
+            new Vector3(bounds.extents.x + offset.x, -bounds.extents.y + offset.y, offset.z),
+            new Vector3(-bounds.extents.x + offset.x, -bounds.extents.y + offset.y, offset.z));
+    }
+
+    public static void DrawBoxWithX(float width, float height, Vector3 offset = default(Vector3))
+    {
+        DrawBoxWithX(
+            new Vector3((width / 2) + offset.x, (height / 2) + offset.y, offset.z),
+            new Vector3(-(width / 2) + offset.x, (height / 2) + offset.y, offset.z),
+            new Vector3((width / 2) + offset.x, -(height / 2) + offset.y, offset.z),
+            new Vector3(-(width / 2) + offset.x, -(height / 2) + offset.y, offset.z));
+    }
+
+    public static void DrawBoxWithX(Vector3 TopLeft, Vector3 TopRight, Vector3 BottomLeft, Vector3 BottomRight)
+    {
+        DrawBox(TopLeft, TopRight, BottomLeft, BottomRight);
+        Gizmos.DrawLine(TopLeft, BottomRight);
+        Gizmos.DrawLine(TopRight, BottomLeft);
+    }
 }

@@ -12,6 +12,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
     public SpineAnimationsManagement spineAnimationsManagement;
     public DefenseController defenseController;
     public TMP_Text healthTF;
+    public TMP_Text nameTextField;
     public Slider healthBar;
 
     new private Collider2D collider;
@@ -39,6 +40,8 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         GameManager.Instance.EVENT_ENCOUNTER_DAMAGE.AddListener(OnEncounterDamage);
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
 
+        GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetNameFromProfile);
+        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(SetNameFromUpdate);
 
         collider = GetComponent<Collider2D>();
         playerBounds = collider.bounds;
@@ -46,6 +49,8 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
 
         GameManager.Instance.EVENT_ACTIVATE_POINTER.AddListener(ActivateCollider);
         GameManager.Instance.EVENT_DEACTIVATE_POINTER.AddListener(DeactivateCollider);
+
+        nameTextField.text = FindObjectOfType<TopBarManager>()?.nameText?.text ?? string.Empty;
 
         if (statusManager == null)
             statusManager = GetComponentInChildren<StatusManager>();
@@ -61,6 +66,16 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         }
         spineAnimationsManagement.PlayAnimationSequence("Idle");
     }
+
+    public void SetNameFromProfile(ProfileData profileData)
+    {
+        SetName(profileData.data.name);
+    }
+    public void SetNameFromUpdate(PlayerStateData playerState)
+    {
+        SetName(playerState.data.playerState.playerName);
+    }
+
 
     private void ActivateCollider(PointerData _)
     {
@@ -288,6 +303,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
 
         SetDefense(current.defense);
         SetHealth(current.hpCurrent, current.hpMax);
+        SetName(current.playerName);
 
         return current;
     }
@@ -341,6 +357,12 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         OnHit();
         // the math here is due to only receiving the damage dealt, but the backend applies it to the player state
         SetHealth(playerData.hpCurrent - damageTaken);
+    }
+
+    private void SetName(string name)
+    {
+        Debug.Log($"NAME SET {name}");
+        nameTextField.text = name;
     }
 
     private void SetDefense(int? value = null)
