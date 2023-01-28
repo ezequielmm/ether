@@ -34,11 +34,6 @@ public class WalletManager : MonoBehaviour
         //create an instance of the current connected wallet, in case we need to add the ability to display more
         GameObject currentRow = Instantiate(walletDataPrefab, informationContent.transform);
         walletItem = currentRow.GetComponent<WalletItem>();
-
-        // hardcoded wallet data for testing, metamask doesn't exist in editor so we have to send a wallet id manually
-#if UNITY_EDITOR
-        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke("0xA10f15B66a2e05c4e376F8bfC35aE662438153Be");
-#endif
     }
 
     public void OnWalletAddressReceived(string walletAddress)

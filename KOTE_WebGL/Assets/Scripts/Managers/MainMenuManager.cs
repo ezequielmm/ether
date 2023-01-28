@@ -114,12 +114,14 @@ public class MainMenuManager : MonoBehaviour
     {
         _hasWallet = true;
         connectWalletButton.gameObject.SetActive(!_hasWallet);
+        VerifyResumeExpedition();
     }
 
     private void OnWalletDisconnected()
     {
         _hasWallet = false;
         connectWalletButton.gameObject.SetActive(!_hasWallet);
+        VerifyResumeExpedition();
     }
 
     private void OnCurrentNftDataReceived(NftData nftData)
@@ -195,8 +197,11 @@ public class MainMenuManager : MonoBehaviour
     {
         nameText.text = name;
         moneyText.text = $"{fief} $fief";
-
         DeactivateMenuButtons();
+        // hardcoded wallet data for testing, metamask doesn't exist in editor so we have to send a wallet id manually
+#if UNITY_EDITOR
+        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke("0xA10f15B66a2e05c4e376F8bfC35aE662438153Be");
+#endif
     }
 
     public void OnLogoutSuccessful(string message)
@@ -264,6 +269,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnPlayButton()
     {
+        Debug.Log($"Has expedition: {_hasExpedition} is Whitelisted: {_isWhitelisted} Owns nft {_ownsNft} Ownership Confrimed {_ownershipChecked}");
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         //check if we are playing a new expedition or resuming
         if (_hasExpedition)
@@ -289,7 +295,7 @@ public class MainMenuManager : MonoBehaviour
             }
 
             // else open the armory panel
-            GameManager.Instance.EVENT_ARMORYPANEL_ACTIVATION_REQUEST.Invoke(true);
+            GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
         }
     }
 
