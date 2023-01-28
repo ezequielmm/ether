@@ -27,6 +27,7 @@ public class WalletManager : MonoBehaviour
         GameManager.Instance.EVENT_DISCONNECT_WALLET_PANEL_ACTIVATION_REQUEST.AddListener(
             ActivateInnerDisconnectWalletConfirmPanel);
         GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.AddListener(OnWalletAddressReceived);
+        GameManager.Instance.EVENT_WALLET_DISCONNECTED.AddListener(OnWalletDisconnected);
         GameManager.Instance.EVENT_WALLET_CONTENTS_RECEIVED.AddListener(OnWalletContentsReceived);
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(OnExpeditionStatus);
 
@@ -49,6 +50,13 @@ public class WalletManager : MonoBehaviour
         curWallet = walletAddress;
 
         GameManager.Instance.EVENT_REQUEST_WALLET_CONTENTS.Invoke(walletAddress);
+    }
+
+    private void OnWalletDisconnected()
+    {
+        curWallet = "";
+        walletItem.SetKnightCount(0);
+        walletItem.SetWalletAddress("");
     }
 
     private void OnWalletContentsReceived(WalletKnightIds knightIds)

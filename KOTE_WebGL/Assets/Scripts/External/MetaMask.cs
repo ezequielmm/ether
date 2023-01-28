@@ -224,8 +224,11 @@ public class MetaMask : MonoBehaviour
 
     private void AccountChanged(string account)
     {
-        account = account.Trim('[');
-        account = account.Trim(']');
+        account = account.TrimStart('[').TrimEnd(']');
+        if (string.IsNullOrEmpty(account))
+        {
+            GameManager.Instance.EVENT_WALLET_DISCONNECTED.Invoke();
+        }
         account = account.Trim('"');
         Debug.LogError("Account Change Received, new account data: " + account);
         GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke(account);
