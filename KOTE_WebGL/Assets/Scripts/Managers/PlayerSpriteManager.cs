@@ -87,8 +87,9 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         if (currentMetadata.Exists(x => x.trait_type == nameof(TraitTypes.Sigil)))
         {
             Trait shield = currentMetadata.Find(x => x.trait_type == nameof(TraitTypes.Shield));
-           // default to circle shields until we get more info from art team
-            shieldType = "CShield";
+           if(shield.value.Contains("Circle")) shieldType = "CShield";
+           else if(shield.value.Contains("Triangle")) shieldType = "TShield";
+           else Debug.LogWarning($"Warning! Invalid Shield/Sigil combination for nft #{nftMetaData.token_id}");
         }
 
 
@@ -106,8 +107,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
                 skinName = trait.trait_type + "_" + string.Join('_', traitSplit);
             }
 
-            Skin traitSkin = knightSkeletonData.Skins.Find(x =>
-                x.Name.Contains(trait.trait_type + "_" + string.Join('_', traitSplit)));
+            Skin traitSkin = knightSkeletonData.Skins.Find(x => x.Name.Contains(skinName));
             if (traitSkin == null)
             {
                 Debug.LogWarning($"[PlayerSpriteManager] {trait.trait_type} Skin not found for {trait.value}");

@@ -46,6 +46,7 @@ public class WebRequesterManager : MonoBehaviour
         if (hostName.IndexOf("alpha") > -1)
         {
             baseUrl = "https://gateway.alpha.knightsoftheether.com";
+            skinUrl = "https://s3.amazonaws.com/koteskins.knightsoftheether.com/";
         }
         if (hostName.IndexOf("stage") > -1)
         {
