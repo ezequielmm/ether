@@ -227,7 +227,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         {
             if (target.defenseDelta < 0 || target.healthDelta < 0)
             {
-                Debug.LogWarning("Commented out sending an event from a PlaySpund method??");
+                Debug.LogWarning("Commented out sending an event from a PlaySound method??");
                // GameManager.Instance.EVENT_DAMAGE.Invoke(target);
             }
 

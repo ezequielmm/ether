@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
+using System.Security.Cryptography;
 
 public class EnemyManager : MonoBehaviour, ITooltipSetter
 {
@@ -39,6 +40,16 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     {
         set { enemyData = ProcessNewData(enemyData, value); }
         get { return enemyData; }
+    }
+
+    public void SetEnemeyData(EnemyData data) 
+    {
+        if (enemyData != null) 
+        {
+            Debug.LogWarning($"[EnemyManager] Overwriting exisiting Enemy Data.");
+        }
+        enemyData = data;
+        ProcessNewData(null, enemyData);
     }
 
 
@@ -308,7 +319,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
     private void OnUpdateEnemy(EnemyData newEnemyData)
     {
-        if (newEnemyData.enemyId == enemyData.enemyId)
+        if (newEnemyData.id == enemyData.id)
         {
             // healthBar.DOValue(newEnemyData.hpMin, 1);
             EnemyData = newEnemyData;

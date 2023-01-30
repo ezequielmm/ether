@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,6 @@ public class DamageAnimationManager : MonoBehaviour
     bool testRun;
 
     string entityId;
-    private int intEntityId;
 
 
     private void Update()
@@ -26,7 +26,6 @@ public class DamageAnimationManager : MonoBehaviour
     void Start()
     {
         entityId = Utils.FindEntityId(gameObject);
-        intEntityId = Utils.FindIntEntityId(gameObject);
 
         if (entityId == "unknown")
         {
@@ -40,14 +39,12 @@ public class DamageAnimationManager : MonoBehaviour
     {
         yield return null;
         entityId = Utils.FindEntityId(gameObject);
-        intEntityId = Utils.FindIntEntityId(gameObject);
         for (int i = 0; i < 20; i++)
         {
             if (entityId == "unknown")
             {
                 yield return null;
                 entityId = Utils.FindEntityId(gameObject);
-                intEntityId = Utils.FindIntEntityId(gameObject);
             }
             else
             {
@@ -63,7 +60,7 @@ public class DamageAnimationManager : MonoBehaviour
     void onDamage(CombatTurnData.Target data)
     {
         // Check if me
-        if (entityId != data.targetId && intEntityId.ToString() != data.targetId) return;
+        if (entityId != data.targetId) return;
 
        /* Debug.Log("[onDamage]" + data);
         // Check if me
