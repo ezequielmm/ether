@@ -116,7 +116,7 @@
       if(typeof window.ethereum !== 'undefined') {
         ethereum.on('accountsChanged', function (accounts) {
           if(unity != null) {
-            unity.SendMessage("MetaMask", "AccountChanged", JSON.stringify(accounts))
+            unity.SendMessage("MetaMask", "AccountChanged", UTF8ToString(accounts))
           }
         })
       }
