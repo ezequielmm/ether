@@ -162,17 +162,17 @@ public class EnemiesManager : MonoBehaviour
     private void PositionEnemies() 
     {
         // Total enemy width
-        float width = 0;
+        float totalWidth = 0;
         foreach (var enemyObj in enemies) 
         {
             var enemy = enemyObj.GetComponent<EnemyManager>();
-            width += GetSize(enemy.EnemyData.size); // enemy.collider.bounds.size.x;
+            totalWidth += GetSize(enemy.EnemyData.size); // enemy.collider.bounds.size.x;
         }
 
         // Amount of space enemies take out outside of set aside spacing
-        float spillOver = Mathf.Max(0, width - (extent * 2));
+        float spillOver = Mathf.Max(0, totalWidth - (extent * 2));
         // The space between enemies (should be 0 if no space)
-        float spacing = Mathf.Max(0, (extent * 2) - width / enemies.Count);
+        float spacing = Mathf.Max(0, ((extent * 2) - totalWidth) / enemies.Count);
         // The left edge that enemies will start spawning at
         float leftEdge = transform.position.x + -extent + (-spillOver) + (spacing / 2f);
 
@@ -184,7 +184,7 @@ public class EnemiesManager : MonoBehaviour
             var enemy = enemyObj.GetComponent<EnemyManager>();
             sb.Append($"[{enemy.EnemyData.enemyId} | {enemy.EnemyData.id}], ");
             float size = GetSize(enemy.EnemyData.size); //enemy.collider.bounds.size.x;
-            float xPos = leftEdge + size / 2;
+            float xPos = leftEdge + (size / 2);
             Vector3 desiredPosition = new Vector3(xPos, transform.position.y + floor, transform.position.z);
             enemy.transform.DOMove(desiredPosition, 1);
             leftEdge += size + spacing;
@@ -203,11 +203,22 @@ public class EnemiesManager : MonoBehaviour
 
         Gizmos.color = Color.red;
         float totalWidth = sampleEnemyWidth * sampleEnemyCount;
+        int enemyCount = sampleEnemyCount;
+        if (Application.isPlaying) 
+        {
+            totalWidth = 0;
+            foreach (var enemyObj in enemies)
+            {
+                var enemy = enemyObj.GetComponent<EnemyManager>();
+                totalWidth += GetSize(enemy.EnemyData.size);
+            }
+            enemyCount = enemies.Count;
+        }
 
         // Amount of space enemies take out outside of set aside spacing
         float spillOver = Mathf.Max(0, totalWidth - (extent * 2));
         // The space between enemies (should be 0 if no space)
-        float spacing = Mathf.Max(0, (extent * 2) - totalWidth) / sampleEnemyCount;
+        float spacing = Mathf.Max(0, (extent * 2) - totalWidth) / enemyCount;
         // The left edge that enemies will start spawning at
         float leftEdge = transform.position.x + -extent + (-spillOver) + (spacing/2f);
 
@@ -217,18 +228,27 @@ public class EnemiesManager : MonoBehaviour
             GizmoExtensions.DrawBoxWithX(spacing / 2, bound.y / 4f, new Vector3(leftEdge - (spacing / 4f), transform.position.y + floor + bound.y / 4, 0));
         }
 
-        for (int i = 0; i < sampleEnemyCount; i++) 
+        for (int i = 0; i < enemyCount; i++) 
         {
             float size = sampleEnemyWidth;
-            float xPos = leftEdge + size / 2;
+            if (Application.isPlaying)
+            {
+                var enemy = enemies[i].GetComponent<EnemyManager>();
+                size = GetSize(enemy.EnemyData.size);
+            }
+            float xPos = leftEdge + (size / 2);
             Vector3 desiredPosition = new Vector3(xPos, transform.position.y + floor + bound.y / 4, 0);
             leftEdge += size + spacing;
 
             Gizmos.color = Color.blue;
+            if (Application.isPlaying)
+            {
+                Gizmos.color = Color.cyan;
+            }
             GizmoExtensions.DrawBoxWithX(size, bound.y/2, desiredPosition);
 
             Gizmos.color = Color.red;
-            if (i != sampleEnemyCount - 1 && spacing > 0)
+            if (i != enemyCount - 1 && spacing > 0)
             {
                 GizmoExtensions.DrawBoxWithX(spacing, bound.y / 4f, new Vector3(leftEdge - (spacing / 2f), transform.position.y + floor + bound.y / 4, 0));
             }
