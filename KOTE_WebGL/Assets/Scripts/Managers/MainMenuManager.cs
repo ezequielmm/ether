@@ -18,7 +18,8 @@ public class MainMenuManager : MonoBehaviour
         loginButton,
         nameButton,
         fiefButton,
-        settingButton;
+        settingButton,
+        connectWalletButton;
 
     private bool _hasWallet;
     private int _selectedNft = -1;
@@ -46,6 +47,9 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(OnExpeditionUpdate);
         GameManager.Instance.EVENT_OWNS_CURRENT_EXPEDITION_NFT.AddListener(OnCurrentNftConfirmed);
        
+        // listen for the wallet address to come in so we know if a wallet is connected/disconnected
+        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.AddListener(OnWalletAddressReceived);
+        GameManager.Instance.EVENT_WALLET_DISCONNECTED.AddListener(OnWalletDisconnected);
         // Listen for the metadata for the selected NFT so it can be sent on resume
         GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(OnCurrentNftDataReceived);
         
@@ -103,6 +107,20 @@ public class MainMenuManager : MonoBehaviour
     {
         _ownsNft = ownsNft;
         _ownershipChecked = true;
+        VerifyResumeExpedition();
+    }
+
+    private void OnWalletAddressReceived(string address)
+    {
+        _hasWallet = true;
+        connectWalletButton.gameObject.SetActive(!_hasWallet);
+        VerifyResumeExpedition();
+    }
+
+    private void OnWalletDisconnected()
+    {
+        _hasWallet = false;
+        connectWalletButton.gameObject.SetActive(!_hasWallet);
         VerifyResumeExpedition();
     }
 
@@ -179,8 +197,11 @@ public class MainMenuManager : MonoBehaviour
     {
         nameText.text = name;
         moneyText.text = $"{fief} $fief";
-
         DeactivateMenuButtons();
+        // hardcoded wallet data for testing, metamask doesn't exist in editor so we have to send a wallet id manually
+#if UNITY_EDITOR
+        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke("0xA10f15B66a2e05c4e376F8bfC35aE662438153Be");
+#endif
     }
 
     public void OnLogoutSuccessful(string message)
@@ -202,6 +223,7 @@ public class MainMenuManager : MonoBehaviour
         nameButton.gameObject.SetActive(!preLoginStatus);
         fiefButton.gameObject.SetActive(!preLoginStatus);
         settingButton.gameObject.SetActive(!preLoginStatus);
+        connectWalletButton.gameObject.SetActive(!preLoginStatus);
     }
 
     private void DeactivateMenuButtons()
@@ -210,6 +232,7 @@ public class MainMenuManager : MonoBehaviour
         newExpeditionButton.gameObject.SetActive(false);
         registerButton.gameObject.SetActive(false);
         loginButton.gameObject.SetActive(false);
+        connectWalletButton.gameObject.SetActive(!_hasWallet);
     }
 
     public void OnRegisterButton()
@@ -236,8 +259,17 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_TREASURYPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
+    public void OnWalletConnectButton()
+    {
+        if (MetaMaskAdapter.Instance.HasMetamask())
+        {
+            MetaMaskAdapter.Instance.RequestWallet();
+        }
+    }
+
     public void OnPlayButton()
     {
+        Debug.Log($"Has expedition: {_hasExpedition} is Whitelisted: {_isWhitelisted} Owns nft {_ownsNft} Ownership Confrimed {_ownershipChecked}");
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         //check if we are playing a new expedition or resuming
         if (_hasExpedition)
@@ -252,37 +284,19 @@ public class MainMenuManager : MonoBehaviour
         else
         {
             // if there's no wallet, ask if they want to connect one
-            if (!CheckForWallet())
+            if (!_hasWallet)
             {
                 GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(
                     "No Wallet connected, would you like to add one?",
-                    //() => { GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.Invoke(true); },                    
-                    () =>
-                    {
-                        GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
-                    }, //TODO:this button was disabled for the client Demo Sept 3 2022
+                    () => { MetaMaskAdapter.Instance.RequestWallet(); }, //TODO:this button was disabled for the client Demo Sept 3 2022
                     () => { GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true); },
                     new[] { "Manage Wallet", "Play Without Wallet" });
                 return;
             }
 
             // else open the armory panel
-            GameManager.Instance.EVENT_ARMORYPANEL_ACTIVATION_REQUEST.Invoke(true);
+            GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
         }
-    }
-
-    private bool CheckForWallet()
-    {
-        //TODO add functionality to check if there's a wallet attached to the account
-
-        // this will return false once so that the functionality can be shown off, this is just for mockup purposes
-        if (!_hasWallet)
-        {
-            _hasWallet = true;
-            return false;
-        }
-
-        return true;
     }
 
     public void OnNewExpeditionButton()

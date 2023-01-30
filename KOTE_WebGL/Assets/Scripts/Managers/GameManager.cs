@@ -47,6 +47,7 @@ public class GameManager : SingleTon<GameManager>
         new UnityEvent<bool, GameObject>();
     // data requests
     [HideInInspector] public UnityEvent<string> EVENT_WALLET_ADDRESS_RECEIVED = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent EVENT_WALLET_DISCONNECTED = new UnityEvent();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_WALLET_CONTENTS = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<WalletKnightIds> EVENT_WALLET_CONTENTS_RECEIVED = new UnityEvent<WalletKnightIds>();
     [HideInInspector] public UnityEvent<string> EVENT_MESSAGE_SIGN = new UnityEvent<string>();

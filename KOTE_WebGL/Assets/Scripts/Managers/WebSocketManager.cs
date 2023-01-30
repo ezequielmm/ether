@@ -52,7 +52,20 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     [SerializeField] private string SocketStatus = "Unknown";
     private bool doNotResuscitate = false;
-    private bool SocketHealthy => manager.State == SocketManager.States.Open && rootSocket.IsOpen && Time.time - socketOpenTimeGameSeconds > 1;
+    private bool SocketHealthy
+    {
+        get
+        {
+            if (manager != null && rootSocket != null)
+            {
+                return manager.State == SocketManager.States.Open && rootSocket != null && rootSocket.IsOpen &&
+                       Time.time - socketOpenTimeGameSeconds > 1;
+            }
+
+            return false;
+        }
+    }
+
     private float socketOpenTimeGameSeconds = -1;
     private float socketDeathTimeGameSeconds = -1;
 

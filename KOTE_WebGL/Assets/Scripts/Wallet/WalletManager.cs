@@ -27,17 +27,13 @@ public class WalletManager : MonoBehaviour
         GameManager.Instance.EVENT_DISCONNECT_WALLET_PANEL_ACTIVATION_REQUEST.AddListener(
             ActivateInnerDisconnectWalletConfirmPanel);
         GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.AddListener(OnWalletAddressReceived);
+        GameManager.Instance.EVENT_WALLET_DISCONNECTED.AddListener(OnWalletDisconnected);
         GameManager.Instance.EVENT_WALLET_CONTENTS_RECEIVED.AddListener(OnWalletContentsReceived);
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(OnExpeditionStatus);
 
         //create an instance of the current connected wallet, in case we need to add the ability to display more
         GameObject currentRow = Instantiate(walletDataPrefab, informationContent.transform);
         walletItem = currentRow.GetComponent<WalletItem>();
-
-        // hardcoded wallet data for testing, metamask doesn't exist in editor so we have to send a wallet id manually
-#if UNITY_EDITOR
-        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke("0xA10f15B66a2e05c4e376F8bfC35aE662438153Be");
-#endif
     }
 
     public void OnWalletAddressReceived(string walletAddress)
@@ -49,6 +45,13 @@ public class WalletManager : MonoBehaviour
         curWallet = walletAddress;
 
         GameManager.Instance.EVENT_REQUEST_WALLET_CONTENTS.Invoke(walletAddress);
+    }
+
+    private void OnWalletDisconnected()
+    {
+        curWallet = "";
+        walletItem.SetKnightCount(0);
+        walletItem.SetWalletAddress("");
     }
 
     private void OnWalletContentsReceived(WalletKnightIds knightIds)
