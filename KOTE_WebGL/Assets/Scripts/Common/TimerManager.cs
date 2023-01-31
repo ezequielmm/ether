@@ -8,7 +8,7 @@ public class TimerManager : MonoBehaviour
     ClockManager clock;
 
     private float startTime = 0;
-    private float previousTime = 0;
+    private static float previousTime = 0;
 
     private float timePassed
     {
@@ -28,7 +28,12 @@ public class TimerManager : MonoBehaviour
         startTime = Time.time;
     }
 
-    
+    private void OnDestroy()
+    {
+        previousTime = timePassed;
+    }
+
+
     void Update()
     {
         timePassed = (Time.time - startTime) + previousTime;
