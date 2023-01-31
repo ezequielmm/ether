@@ -247,7 +247,6 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<CombatTurnData> EVENT_COMBAT_TURN_ENQUEUE = new UnityEvent<CombatTurnData>();
     [HideInInspector] public UnityEvent EVENT_COMBAT_FORCE_CLEAR = new UnityEvent();
     [HideInInspector] public UnityEvent<Guid> EVENT_COMBAT_TURN_END = new UnityEvent<Guid>();
-    [HideInInspector] public UnityEvent EVENT_CLEAR_COMBAT_QUEUE = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_COMBAT_QUEUE_EMPTY = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_COMBAT_ORIGIN_CHANGE = new UnityEvent();
     [HideInInspector] public UnityEvent<StatusData> EVENT_UPDATE_STATUS_EFFECTS = new UnityEvent<StatusData>();

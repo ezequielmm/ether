@@ -37,7 +37,7 @@ public class EndTurnManager : MonoBehaviour
             {
                 Debug.LogWarning($"[EndTurnManager] Enemy Turn Empty Queue Timelimit (3s). No attack present?");
                 GameManager.Instance.EVENT_END_TURN_CLICKED.Invoke();
-                GameManager.Instance.EVENT_CLEAR_COMBAT_QUEUE.Invoke();
+                GameManager.Instance.EVENT_COMBAT_FORCE_CLEAR.Invoke();
                 timeLimit = 0;
             }
         }
