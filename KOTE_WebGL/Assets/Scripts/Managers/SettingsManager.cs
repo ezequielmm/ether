@@ -33,7 +33,7 @@ public class SettingsManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_LOGOUT_ERROR.AddListener(OnLogoutError);
         GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
 
-        logoutHyperlink.interactable = false;
+        logoutHyperlink.interactable = true;
                
         volumeSlider.value = PlayerPrefs.GetFloat("settings_volume", 1);
         sfxSlider.value = PlayerPrefs.GetFloat("sfx_volume", 1);
