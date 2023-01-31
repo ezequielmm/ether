@@ -167,6 +167,7 @@ public class MetaMask : MonoBehaviour
     private void AccountSuccess(string wallet)
     {
         awaitingAccountDetails = false;
+        Debug.Log($"[MetaMask | {gameObject.name}] Account Selected: {wallet}");
         account = wallet;
         accountFail = null;
         if (accountSuccess != null)
@@ -230,7 +231,9 @@ public class MetaMask : MonoBehaviour
             GameManager.Instance.EVENT_WALLET_DISCONNECTED.Invoke();
         }
         account = account.Trim('"');
-        Debug.LogError("Account Change Received, new account data: " + account);
+        Debug.Log("[MetaMask] Account Change Received, new account data: " + account);
+
+        AccountSuccess(account);
         GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke(account);
     }
     #endregion

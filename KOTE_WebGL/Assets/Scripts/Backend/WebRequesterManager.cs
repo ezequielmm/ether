@@ -19,7 +19,7 @@ public class WebRequesterManager : MonoBehaviour
     private readonly string urlLogout = "/auth/v1/logout";
     private readonly string urlProfile = "/gsrv/v1/profile";
     private readonly string urlWalletData = "/gsrv/v1/wallets";
-    private readonly string urlKoteWhitelist = "/gsrv/v1/verifyknights";
+    private readonly string urlKoteWhitelist = "/gsrv/v1/tokens/verify";
     private readonly string urlCharactersList = "/gsrv/v1/characters";
     private readonly string urlExpeditionStatus = "/gsrv/v1/expeditions/status";
     private readonly string urlExpeditionRequest = "/gsrv/v1/expeditions";
