@@ -14,7 +14,7 @@ public class CommitLabel : MonoBehaviour
         {
             hashText = GetComponent<TMP_Text>();
         }
-        hashText.text = CommitHash.Substring(0,6);
+        hashText.text = CommitHash.Substring(0,7);
     }
 
     public static string CommitHash 
