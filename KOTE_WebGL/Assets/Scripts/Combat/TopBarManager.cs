@@ -63,13 +63,13 @@ public class TopBarManager : MonoBehaviour
 
     public void SetCoinsText(int coins)
     {
+        Debug.Log($"[TopBarManager] Coins: {coins}");
         coinsText.text = coins.ToString();
     }
 
     public void SetProfileInfo(ProfileData profileData)
     {
         SetNameText(profileData.data.name);
-        SetCoinsText(profileData.data.coins);
     }
 
     public void OnPlayerAttacked(CombatTurnData combatTurnData) 
