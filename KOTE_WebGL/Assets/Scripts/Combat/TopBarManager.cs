@@ -22,12 +22,6 @@ public class TopBarManager : MonoBehaviour
     private int maxHealth;
     private void Start()
     {
-        GameManager.Instance.EVENT_REQUEST_PROFILE.Invoke(PlayerPrefs.GetString("session_token"));
-
-        //currentClass = PlayerPrefs.GetString("class_selected");
-        
-        
-        GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusupdate);
 
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.AddListener(OnToggleMapIcon);
@@ -63,13 +57,8 @@ public class TopBarManager : MonoBehaviour
 
     public void SetCoinsText(int coins)
     {
+        Debug.Log($"[TopBarManager] Coins: {coins}");
         coinsText.text = coins.ToString();
-    }
-
-    public void SetProfileInfo(ProfileData profileData)
-    {
-        SetNameText(profileData.data.name);
-        SetCoinsText(profileData.data.coins);
     }
 
     public void OnPlayerAttacked(CombatTurnData combatTurnData) 
