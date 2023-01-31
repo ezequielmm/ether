@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using static UnityEngine.Networking.UnityWebRequest;
 using Random = UnityEngine.Random;
 
 public class WalletManager : MonoBehaviour
@@ -24,8 +25,8 @@ public class WalletManager : MonoBehaviour
     private int _selectedNft;
 
     // store data for checking if the wallet is whitelisted
-    private float expires;
-    private float entropy;
+    private float signRequest;
+    private string message;
 
     private void Start()
     {
@@ -55,24 +56,23 @@ public class WalletManager : MonoBehaviour
         CheckWhitelist();
     }
 
+
     private void CheckWhitelist()
     {
 #if UNITY_EDITOR
         GameManager.Instance.EVENT_WHITELIST_CHECK_RECEIVED.Invoke(true);
         return;
 #endif
-        expires = Mathf.Floor(DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);
-        entropy = Mathf.Floor(Random.value * 5000000000.23f);
-
-        //string hash = $"Hello, welcome to Knights of the Ether.\nPlease sign this message to verify your wallet.\nThis action will not cost you any transaction fee.\n\n\nAction: Login\nEntropy: {entropy}\nExpires: {expires}";
-        string hash = $"KOTE\nAction: Login\nEntropy: {entropy}\nExpires: {expires}";
-        MetaMaskAdapter.Instance.SignMessage(hash);
+        signRequest = DateTimeOffset.Now.ToUnixTimeSeconds();
+        message = $"Hello, welcome to Knights of the Ether.\nPlease sign this message to verify your wallet.\nThis action will not cost you any transaction fee.\n\n\nSecret Code: {Guid.NewGuid()}";
+        Debug.Log($"[WalletManager] Sign Message:\n{message}");
+        MetaMaskAdapter.Instance.SignMessage(message);
     }
 
     private void OnSignReceived(string result)
     {
-        Debug.Log($"sign result: {result}");
-        GameManager.Instance.EVENT_REQUEST_WHITELIST_CHECK.Invoke(expires, entropy, result, curWallet);
+        Debug.Log($"[WalletManager] Sign Result: {result}");
+        GameManager.Instance.EVENT_REQUEST_WHITELIST_CHECK.Invoke(signRequest, message, result, curWallet);
     }
 
     private void OnWalletDisconnected()

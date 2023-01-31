@@ -47,13 +47,13 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<bool, GameObject> EVENT_DISCONNECT_WALLET_PANEL_ACTIVATION_REQUEST =
         new UnityEvent<bool, GameObject>();
     // data requests
-    [HideInInspector] public UnityEvent<string> EVENT_WALLET_ADDRESS_RECEIVED = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<string> EVENT_WALLET_ADDRESS_RECEIVED { get; } = new UnityEvent<string>();
     [HideInInspector] public UnityEvent EVENT_WALLET_DISCONNECTED = new UnityEvent();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_WALLET_CONTENTS = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<WalletKnightIds> EVENT_WALLET_CONTENTS_RECEIVED = new UnityEvent<WalletKnightIds>();
     [HideInInspector] public UnityEvent<string> EVENT_MESSAGE_SIGN = new UnityEvent<string>();
-    [HideInInspector] public UnityEvent<float, float, string, string> EVENT_REQUEST_WHITELIST_CHECK = new UnityEvent<float, float, string, string>();
-    [HideInInspector] public UnityEvent<bool> EVENT_WHITELIST_CHECK_RECEIVED = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<float, string, string, string> EVENT_REQUEST_WHITELIST_CHECK { get; } = new UnityEvent<float, string, string, string>();
+    [HideInInspector] public UnityEvent<bool> EVENT_WHITELIST_CHECK_RECEIVED { get; } = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<bool> EVENT_DISCONNECT_WALLET_CONFIRMED = new UnityEvent<bool>();
 
     //GAME OVER EVENTS

@@ -128,9 +128,9 @@ public class WebRequesterManager : MonoBehaviour
         StartCoroutine(CancelOngoingExpedition());
     }
 
-    public void RequestWhitelistStatus(float expires, float entropy, string message, string wallet)
+    public void RequestWhitelistStatus(float expires, string message, string signature, string wallet)
     {
-        StartCoroutine(WhitelistStatus(expires, entropy, message, wallet));
+        StartCoroutine(WhitelistStatus(expires, message, signature, wallet));
     }
     
     public void SetKnightNft(int tokenId)
@@ -479,13 +479,13 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_WALLET_CONTENTS_RECEIVED.Invoke(walletKnightIds);
     }
 
-    public IEnumerator WhitelistStatus(float expires, float entropy, string message, string wallet)
+    public IEnumerator WhitelistStatus(float signRequest, string message, string signature, string wallet)
     {
         WWWForm form = new WWWForm();
-        form.AddField("sig", message);
-        form.AddField("wallet", wallet);
-        form.AddField("expires", (int)expires);
-        form.AddField("entropy", (int)entropy);
+        form.AddField("sig", signature); // The 0x signature string
+        form.AddField("wallet", wallet); // The 0x wallet string
+        form.AddField("created", (int)signRequest); // Unix Timestamp
+        form.AddField("message", message); // String of what was signed
         string fullUrl = baseUrl + urlKoteWhitelist;
         UnityWebRequest request = UnityWebRequest.Post(fullUrl, form);
         yield return request.SendWebRequest();
