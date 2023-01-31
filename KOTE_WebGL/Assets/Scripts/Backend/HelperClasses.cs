@@ -832,6 +832,26 @@ public class CardToMoveData
     public Card card;
 }
 
+[Serializable]
+public class SWSM_CardAdd
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public List<AddCardData> data;
+    }
+}
+
+[Serializable]
+public class AddCardData
+{
+    public string destination;
+    public string id;
+    public Card card;
+}
+
 public class SWSM_ChangeTurn
 {
     public Data data;
@@ -952,4 +972,26 @@ public struct TraitSprite
     public string imageName;
     public Sprite sprite;
     public bool isDefault;
+}
+
+[Serializable]
+public class SWSM_ScoreboardData
+{
+    public ScoreboardData data;
+
+    [Serializable]
+    public class ScoreboardData
+    {
+        public string outcome;
+        public string expeditionType;
+        public int totalScore;
+        public Achievement[] achievements;
+    }
+}
+
+[Serializable]
+public class Achievement
+{
+    public string name;
+    public int score;
 }

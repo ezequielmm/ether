@@ -24,6 +24,12 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
     // Start is called before the first frame update
     void Start()
     {
+        GameManager.Instance.EVENT_UPDATE_PLAYER_SKIN.AddListener(SkinReset);
+        SkinReset();
+    }
+
+    private void SkinReset() 
+    {
         equipsSkin = new Skin("Equips");
         skeletonAnimation.Skeleton.SetSkin(equipsSkin);
 

@@ -22,7 +22,7 @@ MonoBehaviour:
     applyAdditiveMaterial: 1
     additiveMaterials:
     - pageName: Knight.png
-      material: {fileID: 2100000, guid: c8ac7c796af34064cb705debcfc23ccc, type: 2}
+      material: {fileID: 2100000, guid: 5afea09f0212c97498a7e402911d23d1, type: 2}
     multiplyMaterials: []
     screenMaterials: []
   skeletonDataModifiers: []

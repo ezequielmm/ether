@@ -48,6 +48,7 @@ public static class GameSettings
     public static float CARD_SFX_MIN_RATE = 0.1f; // Time in seconds between SFX of cards
     public static float CARD_DRAW_SHOW_TIME = 0.5f;
     public static float EXHAUST_EFFECT_DURATION = 0.6f;
+    public static float SHOW_NEW_CARD_DURATION = 1;
 
     // COMBAT
     public const float COMBAT_ANIMATION_DELAY = 0.5f;
@@ -72,6 +73,9 @@ public static class GameSettings
     // UI
     public const float PANEL_SCROLL_SPEED = 30f;
     public const int ENCOUNTER_TEXT_BOX_CHARACTER_COUNT = 500;
+
+    // Connection
+    public const float MAX_TIMEOUT_SECONDS = 15;
 
     // Player Skin Defaults
     public static TraitSprite[] DEFAULT_SKIN_DATA = new[]
@@ -105,7 +109,7 @@ public static class GameSettings
         },
         new TraitSprite
         {
-            skinName = "character-shadow",
+            skinName = "character_shadow",
             traitType = nameof(TraitTypes.Shadow)
         }
     };

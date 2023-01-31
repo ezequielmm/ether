@@ -19,6 +19,9 @@ public class HealthBarController : MonoBehaviour
     [SerializeField]
     private RectTransform healthBar;
 
+    [SerializeField]
+    private Size defaultSize = Size.medium;
+
     public float widthAdjustment = -39;
 
     [System.Serializable]
@@ -37,7 +40,7 @@ public class HealthBarController : MonoBehaviour
 
     private void Start()
     {
-        SetSize(Size.medium);
+        SetSize(defaultSize);
     }
 
     public void SetSize(Size newSize)

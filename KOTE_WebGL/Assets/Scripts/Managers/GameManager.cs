@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -47,6 +48,7 @@ public class GameManager : SingleTon<GameManager>
         new UnityEvent<bool, GameObject>();
     // data requests
     [HideInInspector] public UnityEvent<string> EVENT_WALLET_ADDRESS_RECEIVED = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent EVENT_WALLET_DISCONNECTED = new UnityEvent();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_WALLET_CONTENTS = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<WalletKnightIds> EVENT_WALLET_CONTENTS_RECEIVED = new UnityEvent<WalletKnightIds>();
     [HideInInspector] public UnityEvent<string> EVENT_MESSAGE_SIGN = new UnityEvent<string>();
@@ -54,6 +56,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<bool> EVENT_WHITELIST_CHECK_RECEIVED = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<bool> EVENT_DISCONNECT_WALLET_CONFIRMED = new UnityEvent<bool>();
 
+    //GAME OVER EVENTS
+    [HideInInspector] public UnityEvent<SWSM_ScoreboardData> EVENT_SHOW_SCOREBOARD = new UnityEvent<SWSM_ScoreboardData>();
+    
     //TREASURY EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_TREASURYPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
@@ -131,10 +136,12 @@ public class GameManager : SingleTon<GameManager>
    
 
     //EXPEDITION EVENTS
+    [HideInInspector] public UnityEvent EVENT_EXPEDITION_SYNC = new UnityEvent();
     [HideInInspector] public UnityEvent<bool, int> EVENT_EXPEDITION_STATUS_UPDATE = new UnityEvent<bool, int>();
     [HideInInspector] public UnityEvent EVENT_EXPEDITION_CONFIRMED = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_REQUEST_EXPEDITION_CANCEL = new UnityEvent();
-
+    [HideInInspector] public UnityEvent EVENT_REQUEST_EXPEDITON_SCORE = new UnityEvent();
+    
     //MAP EVENTS
     [HideInInspector]
     public UnityEvent<NodeStateData, WS_QUERY_TYPE> EVENT_NODE_DATA_UPDATE =
@@ -179,8 +186,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<NftData> EVENT_NFT_METADATA_RECEIVED = new UnityEvent<NftData>();
     [HideInInspector] public UnityEvent<NftMetaData> EVENT_NFT_SELECTED = new UnityEvent<NftMetaData>();
     [HideInInspector] public UnityEvent<NftMetaData[]> EVENT_REQUEST_NFT_IMAGE = new UnityEvent<NftMetaData[]>();
+    [HideInInspector] public UnityEvent<int> EVENT_REQUEST_NFT_SET_SKIN = new UnityEvent<int>();
     [HideInInspector] public UnityEvent<string, Sprite> EVENT_NFT_IMAGE_RECEIVED = new UnityEvent<string, Sprite>();
-    [HideInInspector] public UnityEvent<TraitSprite> EVENT_REQUEST_NFT_SKIN_SPRITE = new UnityEvent<TraitSprite>();
+    [HideInInspector] public UnityEvent<TraitSprite> EVENT_REQUEST_NFT_SKIN_SPRITE  = new UnityEvent<TraitSprite>();
     [HideInInspector] public UnityEvent<TraitSprite> EVENT_NFT_SKIN_SPRITE_RECEIVED = new UnityEvent<TraitSprite>();
     [HideInInspector] public UnityEvent EVENT_NFT_SKIN_SPRITE_FAILED = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_UPDATE_PLAYER_SKIN = new UnityEvent();
@@ -206,7 +214,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_CARD_MOUSE_EXIT = new UnityEvent<string>();
     [HideInInspector] public UnityEvent EVENT_CARD_DRAW_CARDS = new UnityEvent();
     [HideInInspector] public UnityEvent<CardPiles> EVENT_CARDS_PILES_UPDATED = new UnityEvent<CardPiles>();
-    [HideInInspector] public UnityEvent<CardToMoveData, float> EVENT_MOVE_CARD = new UnityEvent<CardToMoveData, float>();
+    //[HideInInspector] public UnityEvent<CardToMoveData, float> EVENT_MOVE_CARD = new UnityEvent<CardToMoveData, float>();
+    [HideInInspector]
+    public UnityEvent<List<(CardToMoveData, float)>> EVENT_MOVE_CARDS = new UnityEvent<List<(CardToMoveData, float)>>();
     [HideInInspector] public UnityEvent EVENT_REARRANGE_HAND = new UnityEvent();
 
     [HideInInspector]
@@ -217,7 +227,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_CARD_DISCARD = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CARD_EXHAUST { get; } = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CARD_SHUFFLE = new UnityEvent();
-    [HideInInspector] public UnityEvent<string> EVENT_CARD_CREATE = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<AddCardData> EVENT_CARD_ADD = new UnityEvent<AddCardData>();
 
     //Gameplay events
     [HideInInspector] public UnityEvent<GameStatuses> EVENT_PREPARE_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
@@ -280,10 +290,14 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_SHOW_CONSOLE = new UnityEvent();
     [HideInInspector] public UnityEvent<int> EVENT_SKIP_NODE = new UnityEvent<int>();
 
-   
+    // Scene Events
+    [HideInInspector] public UnityEvent<inGameScenes> EVENT_SCENE_LOADED = new UnityEvent<inGameScenes>();
+
+
 
     public inGameScenes
-        nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
+        nextSceneToLoad
+    { get; set; } // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
 
     public WebRequesterManager webRequester;
 
@@ -293,6 +307,7 @@ public class GameManager : SingleTon<GameManager>
     {
         EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogout);
         EVENT_REQUEST_LOGOUT_ERROR.AddListener(OnLogout);
+        EVENT_SCENE_LOADED.AddListener(OnSceneLoad);
         SceneManager.activeSceneChanged += UpdateSoundVolume;
         //EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ReturnToMainMenu);
     }
@@ -300,11 +315,25 @@ public class GameManager : SingleTon<GameManager>
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene
     {
         nextSceneToLoad = scene;
+        if(scene== inGameScenes.Expedition)
+        {
+            RequestExpeditionSync();
+        }
         if (scene == inGameScenes.MainMenu)
         {
             EVENT_STOP_MUSIC.Invoke();
         }
         SceneManager.LoadScene(inGameScenes.Loader.ToString());
+    }
+
+    private void RequestExpeditionSync()
+    {
+        // Queue a map update for later
+        EnqueueActionForSceneLoad(() => 
+            {
+                EVENT_EXPEDITION_SYNC.Invoke();
+            }, 
+            inGameScenes.Expedition);
     }
 
     private void OnLogout(string message)
@@ -317,5 +346,25 @@ public class GameManager : SingleTon<GameManager>
     {
         float volumeSetting = PlayerPrefs.GetFloat("settings_volume");
         AudioListener.volume = volumeSetting;
+    }
+
+    List<(Action, inGameScenes)> SceneLoadsActions = new List<(Action, inGameScenes)>();
+    public void EnqueueActionForSceneLoad(Action action, inGameScenes sceneName) 
+    {
+        SceneLoadsActions.Add((action, sceneName));
+    }
+
+    private void OnSceneLoad(inGameScenes scene) 
+    {
+        Debug.Log($"[GameManager] Scene Loaded: {scene}");
+        for(int i = SceneLoadsActions.Count - 1; i >= 0; i--) 
+        {
+            (Action, inGameScenes) action = SceneLoadsActions[i];
+            if (action.Item2 == scene) 
+            {
+                action.Item1.Invoke();
+                SceneLoadsActions.RemoveAt(i);
+            }
+        }
     }
 }

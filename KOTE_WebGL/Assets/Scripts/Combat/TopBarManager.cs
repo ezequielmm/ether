@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TopBarManager : MonoBehaviour
 {    
@@ -7,9 +8,13 @@ public class TopBarManager : MonoBehaviour
     public int currentHealth;
 
     public TMP_Text nameText;
-    public TMP_Text healthText;
     public TMP_Text coinsText;
     public TMP_Text stageText;
+    public TMP_Text healthBarText;
+
+
+    [SerializeField]
+    Slider healthBar;
 
     public GameObject classIcon, className, showmapbutton;
 
@@ -17,13 +22,8 @@ public class TopBarManager : MonoBehaviour
     private int maxHealth;
     private void Start()
     {
-        GameManager.Instance.EVENT_REQUEST_PROFILE.Invoke(PlayerPrefs.GetString("session_token"));
-
-        //currentClass = PlayerPrefs.GetString("class_selected");
-        
-        
-        GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusupdate);
+
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.AddListener(OnToggleMapIcon);
         GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.AddListener(UpdateStageText);
         GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnPlayerAttacked);
@@ -43,13 +43,6 @@ public class TopBarManager : MonoBehaviour
         stageText.SetText("STAGE " + act + "-" + (step + 1));
     }
 
-    public void SetTextValues(string nameText, int health, int coins)
-    {
-        this.nameText.text = nameText;
-        healthText.text = $"{health} health";
-        coinsText.text = $"{coins} coins";
-    }
-
     public void SetNameText(string nameText)
     {
         this.nameText.text = nameText;
@@ -58,18 +51,14 @@ public class TopBarManager : MonoBehaviour
 
     public void SetHealthText(int health)
     {
-        healthText.text = health + "/" + maxHealth;
+        healthBar.value = (float)(health) / maxHealth;
+        healthBarText.text = $"{health}/{maxHealth}";
     }
 
     public void SetCoinsText(int coins)
     {
+        Debug.Log($"[TopBarManager] Coins: {coins}");
         coinsText.text = coins.ToString();
-    }
-
-    public void SetProfileInfo(ProfileData profileData)
-    {
-        SetNameText(profileData.data.name);
-        SetCoinsText(profileData.data.coins);
     }
 
     public void OnPlayerAttacked(CombatTurnData combatTurnData) 
