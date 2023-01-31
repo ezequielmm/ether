@@ -1307,24 +1307,24 @@ SHIELD/shields_triangle_black
 bounds:4381,7794,319,396
 SHIELD/shields_triangle_silver
 bounds:4060,7794,319,396
-VAMBRACES/Vambraces_Darkened_L_01
+VAMBRACES/Vambraces_Darkened_L_A
 bounds:7986,6278,87,73
-VAMBRACES/Vambraces_Darkened_L_02
+VAMBRACES/Vambraces_Darkened_L_B
 bounds:657,6257,71,79
 rotate:90
-VAMBRACES/Vambraces_Darkened_R_01
+VAMBRACES/Vambraces_Darkened_R_A
 bounds:2931,6411,102,115
 rotate:90
-VAMBRACES/Vambraces_Darkened_R_02
+VAMBRACES/Vambraces_Darkened_R_B
 bounds:2049,6279,91,76
-VAMBRACES/Vambraces_Gold_Polished_L_01
+VAMBRACES/Vambraces_Gold_Polished_L_A
 bounds:293,6292,82,95
 rotate:90
-VAMBRACES/Vambraces_Gold_Polished_L_02
+VAMBRACES/Vambraces_Gold_Polished_L_B
 bounds:2515,6258,79,72
-VAMBRACES/Vambraces_Gold_Polished_R_01
+VAMBRACES/Vambraces_Gold_Polished_R_A
 bounds:5005,6536,101,150
-VAMBRACES/Vambraces_Gold_Polished_R_02
+VAMBRACES/Vambraces_Gold_Polished_R_B
 bounds:1640,6289,92,89
 VAMBRACES/Vambraces_Gothic_L
 bounds:6433,6291,89,92
@@ -1332,38 +1332,38 @@ rotate:90
 VAMBRACES/Vambraces_Gothic_R
 bounds:885,6376,99,110
 rotate:90
-VAMBRACES/Vambraces_Leather_Blue_L 1
+VAMBRACES/Vambraces_Leather_Blue_L_A
 bounds:6981,7986,35,55
-VAMBRACES/Vambraces_Leather_Blue_L 2
+VAMBRACES/Vambraces_Leather_Blue_L_B
 bounds:3759,6347,98,100
-VAMBRACES/Vambraces_Leather_Blue_R 1
+VAMBRACES/Vambraces_Leather_Blue_R_A
 bounds:4649,6258,76,77
 rotate:90
-VAMBRACES/Vambraces_Leather_Blue_R 2
+VAMBRACES/Vambraces_Leather_Blue_R_B
 bounds:7294,6400,108,106
-VAMBRACES/Vambraces_Leather_Brown_L 1
+VAMBRACES/Vambraces_Leather_Brown_L_A
 bounds:3087,8017,35,58
-VAMBRACES/Vambraces_Leather_Brown_L 2
+VAMBRACES/Vambraces_Leather_Brown_L_B
 bounds:2563,6332,98,99
 rotate:90
-VAMBRACES/Vambraces_Leather_Brown_R 1
+VAMBRACES/Vambraces_Leather_Brown_R_A
 bounds:2142,6262,76,78
 rotate:90
-VAMBRACES/Vambraces_Leather_Brown_R 2
+VAMBRACES/Vambraces_Leather_Brown_R_B
 bounds:8081,6664,108,106
 VAMBRACES/Vambraces_Pointed_L
 bounds:5968,7043,57,69
 VAMBRACES/Vambraces_Pointed_R
 bounds:997,6378,97,111
 rotate:90
-VAMBRACES/Vambraces_Silver_Polished_L_01
+VAMBRACES/Vambraces_Silver_Polished_L_A
 bounds:6373,6572,82,95
-VAMBRACES/Vambraces_Silver_Polished_L_02
+VAMBRACES/Vambraces_Silver_Polished_L_B
 bounds:5546,6258,79,72
-VAMBRACES/Vambraces_Silver_Polished_R_01
+VAMBRACES/Vambraces_Silver_Polished_R_A
 bounds:2060,6357,101,105
 rotate:90
-VAMBRACES/Vambraces_Silver_Polished_R_02
+VAMBRACES/Vambraces_Silver_Polished_R_B
 bounds:5158,6287,91,89
 VAMBRACES/vambraces_forearm_Blue_L
 bounds:3511,6280,87,83
@@ -1377,24 +1377,24 @@ VAMBRACES/vambraces_forearm_Red_L
 bounds:7540,6280,87,83
 VAMBRACES/vambraces_forearm_Red_R
 bounds:103,6397,100,115
-VAMBRACES/vambraces_strappedelbow_gold_elbow-L-1
+VAMBRACES/vambraces_strappedelbow_gold_elbow-L-A
 bounds:4480,6371,81,128
 rotate:90
-VAMBRACES/vambraces_strappedelbow_gold_elbow-L-2
+VAMBRACES/vambraces_strappedelbow_gold_elbow-L-B
 bounds:1483,6678,75,102
-VAMBRACES/vambraces_strappedelbow_gold_elbow-R-1
+VAMBRACES/vambraces_strappedelbow_gold_elbow-R-A
 bounds:2931,6315,94,100
 rotate:90
-VAMBRACES/vambraces_strappedelbow_gold_elbow-R-2
+VAMBRACES/vambraces_strappedelbow_gold_elbow-R-B
 bounds:997,6287,89,91
 rotate:90
-VAMBRACES/vambraces_strappedelbow_silver_elbow-L-1
+VAMBRACES/vambraces_strappedelbow_silver_elbow-L-A
 bounds:1968,6402,90,127
-VAMBRACES/vambraces_strappedelbow_silver_elbow-L-2
+VAMBRACES/vambraces_strappedelbow_silver_elbow-L-B
 bounds:7090,7741,59,76
-VAMBRACES/vambraces_strappedelbow_silver_elbow-R-1
+VAMBRACES/vambraces_strappedelbow_silver_elbow-R-A
 bounds:2929,6645,94,100
-VAMBRACES/vambraces_strappedelbow_silver_elbow-R-2
+VAMBRACES/vambraces_strappedelbow_silver_elbow-R-B
 bounds:7396,6288,89,91
 rotate:90
 WEAPONS/Weapons_BlueFlamingSword
