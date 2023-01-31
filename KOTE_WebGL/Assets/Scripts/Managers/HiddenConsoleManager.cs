@@ -5,10 +5,19 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class HiddenConsoleManager : MonoBehaviour
+public class HiddenConsoleManager : SingleTon<HiddenConsoleManager>
 {
     public GameObject consoleContainer;
     public TMP_InputField consoleInput;
+    public static bool DebugEnabled { get; private set; } = false;
+
+    protected override void Awake()
+    {
+        base.Awake();
+#if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
+            DisableDebug();
+#endif
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -23,9 +32,17 @@ public class HiddenConsoleManager : MonoBehaviour
     /// </summary>
     public static void DisableOnBuild()
     {
+        if (!DebugEnabled)
+        {
 #if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
             DisableDebug();
 #endif
+            Debug.Log($"[Console] Debugs Disabled.");
+        }
+        else 
+        {
+            Debug.Log($"[Console] Cannot disable logs. User force enabled.");
+        }
     }
 
     /// <summary>
@@ -64,6 +81,7 @@ public class HiddenConsoleManager : MonoBehaviour
 
     public void OnTextInput(string input)
     {
+        PublicLog($"> {input}");
         input = input.Trim().ToLower();
         consoleInput.text = "";
         string[] inputSplit = input.Split();
@@ -100,6 +118,11 @@ public class HiddenConsoleManager : MonoBehaviour
                 GameManager.Instance.EVENT_SKIP_NODE.Invoke(nodeId);
                 PublicLog($"Skipping to node {nodeId}");
                 GameManager.Instance.LoadScene(inGameScenes.Expedition);
+                break;
+            case ConsoleCommands.use_nft:
+                int nftNum = int.Parse(args[0]);
+                PublicLog($"Setting skin to #{nftNum}.");
+                GameManager.Instance.EVENT_REQUEST_NFT_SET_SKIN.Invoke(nftNum);
                 break;
         }
     }
@@ -139,10 +162,12 @@ public class HiddenConsoleManager : MonoBehaviour
                 consoleContainer.SetActive(false);
                 break;
             case ConsoleCommands.enable_debug:
+                DebugEnabled = true;
                 EnableDebug();
                 PublicLog("Console Enabled.");
                 break;
             case ConsoleCommands.disable_debug:
+                DebugEnabled = false;
                 DisableDebug();
                 PublicLog("Console Disabled.");
                 break;
@@ -222,6 +247,12 @@ public class HiddenConsoleManager : MonoBehaviour
                 PlayerPrefs.SetInt("enable_injured_idle", 0);
                 GameSettings.SHOW_PLAYER_INJURED_IDLE = false;
                 PublicLog("All console modified settings reset");
+                break;
+            case ConsoleCommands.use_nft:
+                PublicLog("NFT Number must be provided. Example usage: use_nft 0128");
+                break;
+            case ConsoleCommands.commit:
+                PublicLog($"commit {CommitLabel.CommitHash}");
                 break;
             default:
                 PublicLog("Unknown Command.");

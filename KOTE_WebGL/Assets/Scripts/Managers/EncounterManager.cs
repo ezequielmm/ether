@@ -135,7 +135,7 @@ public class EncounterManager : MonoBehaviour
         // if there's no text sent, show the continue option and hide the rest of the buttons
         optionButtons[0].onClick.RemoveAllListeners();
         optionButtons[0].onClick.AddListener(() => GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke());
-        buttonTexts[0].text = "<color=#E1D5A4> <size=120%>A: <color=#FAB919><size=100%>Continue";
+        buttonTexts[0].text = "<color=#FAB919><size=100%>Click Here To Continue";
         optionButtons[0].interactable = true;
         optionButtons[0].gameObject.SetActive(true);
 

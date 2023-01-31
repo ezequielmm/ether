@@ -7,6 +7,7 @@ public class RightButtonsTooltips : MonoBehaviour, IPointerEnterHandler, IPointe
 {
     public string tooltipName;
     RectTransform rectTransform;
+    public float heightLimit = 4.3f;
 
 
     void Start()
@@ -17,8 +18,15 @@ public class RightButtonsTooltips : MonoBehaviour, IPointerEnterHandler, IPointe
     public void OnPointerEnter(PointerEventData eventData)
     {
         Vector3 anchorPoint = new Vector3(Screen.width,
-            (Screen.height * -0.03f) + transform.position.y + rectTransform.rect.center.y - ((rectTransform.rect.height * rectTransform.lossyScale.y) / 2), 0);
+            Screen.height + transform.position.y + rectTransform.rect.center.y - ((rectTransform.rect.height * rectTransform.lossyScale.y) / 2), 0);
         anchorPoint = Camera.main.ScreenToWorldPoint(anchorPoint);
+        if (anchorPoint.y > heightLimit) 
+        {
+            anchorPoint.y = heightLimit;
+        } else if (anchorPoint.y < -heightLimit)
+        {
+            anchorPoint.y = -heightLimit;
+        }
         // Tooltip On
         GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(ToolTipValues.Instance.GetTooltips(tooltipName), TooltipController.Anchor.TopRight, anchorPoint, null);
     }

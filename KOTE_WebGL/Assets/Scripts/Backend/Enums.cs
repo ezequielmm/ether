@@ -292,7 +292,8 @@ public enum WS_MESSAGE_ACTIONS
     player_defeated,
     show_rewards,
     select_another_reward,
-    show_map
+    show_map,
+    show_score
 }
 
 [Serializable]
@@ -353,7 +354,9 @@ public enum ConsoleCommands
     enable_injured_idle,
     disable_injured_idle,
     reset_all,
-    get_score
+    use_nft,
+    get_score,
+    commit
 }
 
 [Serializable]
@@ -389,5 +392,6 @@ public enum TraitTypes
     Vambrace,
     Boots,
     Legguard,
-    Shadow
+    Shadow,
+    Base
 }

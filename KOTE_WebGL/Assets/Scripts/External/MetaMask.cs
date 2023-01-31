@@ -222,6 +222,17 @@ public class MetaMask : MonoBehaviour
         currentlySigningMessage = false;
     }
 
+    private void AccountChanged(string account)
+    {
+        account = account.TrimStart('[').TrimEnd(']');
+        if (string.IsNullOrEmpty(account))
+        {
+            GameManager.Instance.EVENT_WALLET_DISCONNECTED.Invoke();
+        }
+        account = account.Trim('"');
+        Debug.LogError("Account Change Received, new account data: " + account);
+        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke(account);
+    }
     #endregion
 
     private bool hasMetaMask()

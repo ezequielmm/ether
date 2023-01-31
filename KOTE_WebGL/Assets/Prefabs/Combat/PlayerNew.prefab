@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 9032002354893603803}
   - component: {fileID: 9032002354893603801}
   - component: {fileID: 9032002354893603797}
+  - component: {fileID: 5810527289466403425}
   m_Layer: 6
   m_Name: PlayerNew
   m_TagString: Player
@@ -188,8 +189,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: 0833cefecbb1e774184077143e73eb05, type: 2}
-  initialSkinName: character-shadow
+  skeletonDataAsset: {fileID: 0}
+  initialSkinName: character-nude
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
   initialFlipY: 0
@@ -214,3 +215,14 @@ MonoBehaviour:
   _animationName: idle0
   loop: 1
   timeScale: 1
+--- !u!210 &5810527289466403425
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9032002354893603805}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0

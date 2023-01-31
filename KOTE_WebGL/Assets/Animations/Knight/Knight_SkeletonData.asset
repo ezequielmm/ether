@@ -18,11 +18,9 @@ MonoBehaviour:
   skeletonJSON: {fileID: 4900000, guid: 5fa14dfdac046c24b9d0674e57e10c4a, type: 3}
   isUpgradingBlendModeMaterials: 0
   blendModeMaterials:
-    requiresBlendModeMaterials: 1
+    requiresBlendModeMaterials: 0
     applyAdditiveMaterial: 1
-    additiveMaterials:
-    - pageName: Knight.png
-      material: {fileID: 2100000, guid: c8ac7c796af34064cb705debcfc23ccc, type: 2}
+    additiveMaterials: []
     multiplyMaterials: []
     screenMaterials: []
   skeletonDataModifiers: []

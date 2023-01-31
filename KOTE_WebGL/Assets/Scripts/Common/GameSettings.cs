@@ -74,6 +74,9 @@ public static class GameSettings
     public const float PANEL_SCROLL_SPEED = 30f;
     public const int ENCOUNTER_TEXT_BOX_CHARACTER_COUNT = 500;
 
+    // Connection
+    public const float MAX_TIMEOUT_SECONDS = 15;
+
     // Player Skin Defaults
     public static TraitSprite[] DEFAULT_SKIN_DATA = new[]
     {
@@ -106,7 +109,7 @@ public static class GameSettings
         },
         new TraitSprite
         {
-            skinName = "character-shadow",
+            skinName = "character_shadow",
             traitType = nameof(TraitTypes.Shadow)
         }
     };

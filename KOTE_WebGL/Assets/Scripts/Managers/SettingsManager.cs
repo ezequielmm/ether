@@ -73,7 +73,6 @@ public class SettingsManager : MonoBehaviour
         string volumeAmount = volumePercent.ToString("F0");
         sliderText.text = (volumeAmount);
         PlayerPrefs.SetFloat(volumeType, changedSlider.value);
-        Debug.LogError($"new volume: {changedSlider.value}");
         PlayerPrefs.Save();
         GameManager.Instance.EVENT_VOLUME_CHANGED.Invoke();
     }

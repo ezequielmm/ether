@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -126,7 +127,6 @@ public class SWSM_Parser
         switch (action)
         {
             case "begin_combat":
-
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Combat);
                 break;
             case "update_statuses":
@@ -345,7 +345,11 @@ public class SWSM_Parser
                 GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(updatedRewardsData);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.show_map):
+                // Change to Loader Scene which will load the Map Scene
                 GameManager.Instance.LoadScene(inGameScenes.Expedition);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.show_score):
+                GameManager.Instance.EVENT_REQUEST_EXPEDITON_SCORE.Invoke();
                 break;
             default:
                 Debug.LogWarning("[ProcessEndCombat] unknown action: " + action + " , data: " + data);
