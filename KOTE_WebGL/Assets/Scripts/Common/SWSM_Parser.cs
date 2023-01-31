@@ -279,9 +279,8 @@ public class SWSM_Parser
             case nameof(WS_MESSAGE_ACTIONS.update_player):
                 ProcessUpdatePlayer(data);
                 break;
-            case nameof(WS_MESSAGE_ACTIONS.create_card):
-                ProcessCreateCard(data);
-                // ProcessMoveCard(data);
+            case nameof(WS_MESSAGE_ACTIONS.add_card):
+                ProcessAddCard(data);
                 break;
             default:
                 Debug.LogWarning("[ProcessPlayerAffected] unknown action: " + action + " , data: " + data);
@@ -508,13 +507,15 @@ public class SWSM_Parser
         SWSM_CardMove cardMoveData = JsonUtility.FromJson<SWSM_CardMove>(rawData);
         Debug.Log($"[SWSM Parser] ProcessMoveCard [{cardMoveData.data.data.Length}]");
         int i = 0;
+        List<(CardToMoveData, float)> cardMoveList = new List<(CardToMoveData, float)>();
         for (int y = cardMoveData.data.data.Length - 1; y >= 0; y--)
         {
-            GameManager.Instance.EVENT_MOVE_CARD.Invoke(cardMoveData.data.data[y], i);
+            cardMoveList.Add((cardMoveData.data.data[y], i));
             i++;
         }
 
-        //GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+        GameManager.Instance.EVENT_MOVE_CARDS.Invoke(cardMoveList);
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
     }
 
     private static void ProcessDrawCards(string data)
@@ -523,18 +524,14 @@ public class SWSM_Parser
         GameManager.Instance.EVENT_CARD_DRAW_CARDS.Invoke();
     }
 
-    private static void ProcessCreateCard(string data)
+    private static void ProcessAddCard(string data)
     {
-        Debug.Log("[ProcessCreateCard] data:" + data);
-        SWSM_CardMove cardMoveData = JsonUtility.FromJson<SWSM_CardMove>(data);
-        // GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-
-        foreach (CardToMoveData cardData in cardMoveData.data.data)
+        SWSM_CardAdd cardAddData = JsonUtility.FromJson<SWSM_CardAdd>(data);
+        foreach(AddCardData addCardData in cardAddData.data.data)
         {
-            GameManager.Instance.EVENT_CARD_CREATE.Invoke(cardData.id);
+            GameManager.Instance.EVENT_CARD_ADD.Invoke(addCardData);
         }
     }
-
     private static void ProcessChangeTurn(string data)
     {
         SWSM_ChangeTurn who = JsonUtility.FromJson<SWSM_ChangeTurn>(data);
