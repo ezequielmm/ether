@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class WalletManager : MonoBehaviour
 {
@@ -21,12 +23,17 @@ public class WalletManager : MonoBehaviour
     private bool RunNftDataCheck;
     private int _selectedNft;
 
+    // store data for checking if the wallet is whitelisted
+    private float expires;
+    private float entropy;
+
     private void Start()
     {
         GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerWalletsPanel);
         GameManager.Instance.EVENT_DISCONNECT_WALLET_PANEL_ACTIVATION_REQUEST.AddListener(
             ActivateInnerDisconnectWalletConfirmPanel);
         GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.AddListener(OnWalletAddressReceived);
+        GameManager.Instance.EVENT_MESSAGE_SIGN.AddListener(OnSignReceived);
         GameManager.Instance.EVENT_WALLET_DISCONNECTED.AddListener(OnWalletDisconnected);
         GameManager.Instance.EVENT_WALLET_CONTENTS_RECEIVED.AddListener(OnWalletContentsReceived);
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(OnExpeditionStatus);
@@ -45,6 +52,27 @@ public class WalletManager : MonoBehaviour
         curWallet = walletAddress;
 
         GameManager.Instance.EVENT_REQUEST_WALLET_CONTENTS.Invoke(walletAddress);
+        CheckWhitelist();
+    }
+
+    private void CheckWhitelist()
+    {
+#if UNITY_EDITOR
+        GameManager.Instance.EVENT_WHITELIST_CHECK_RECEIVED.Invoke(true);
+        return;
+#endif
+        expires = Mathf.Floor(DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);
+        entropy = Mathf.Floor(Random.value * 5000000000.23f);
+
+        //string hash = $"Hello, welcome to Knights of the Ether.\nPlease sign this message to verify your wallet.\nThis action will not cost you any transaction fee.\n\n\nAction: Login\nEntropy: {entropy}\nExpires: {expires}";
+        string hash = $"KOTE\nAction: Login\nEntropy: {entropy}\nExpires: {expires}";
+        MetaMaskAdapter.Instance.SignMessage(hash);
+    }
+
+    private void OnSignReceived(string result)
+    {
+        Debug.Log($"sign result: {result}");
+        GameManager.Instance.EVENT_REQUEST_WHITELIST_CHECK.Invoke(expires, entropy, result, curWallet);
     }
 
     private void OnWalletDisconnected()
@@ -74,7 +102,7 @@ public class WalletManager : MonoBehaviour
             RunNftDataCheck = true;
             return;
         }
-        
+
         // if there's no expedition, default to requesting all the data
         if (!hasExpedition)
         {
@@ -108,6 +136,7 @@ public class WalletManager : MonoBehaviour
             GameManager.Instance.EVENT_REQUEST_NFT_METADATA.Invoke(new int[] { _selectedNft} );
             return;
         }
+
         GameManager.Instance.EVENT_REQUEST_NFT_METADATA.Invoke(nftIds.ToArray());
     }
 

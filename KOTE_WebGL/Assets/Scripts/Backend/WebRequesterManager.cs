@@ -19,12 +19,15 @@ public class WebRequesterManager : MonoBehaviour
     private readonly string urlLogout = "/auth/v1/logout";
     private readonly string urlProfile = "/gsrv/v1/profile";
     private readonly string urlWalletData = "/gsrv/v1/wallets";
+    private readonly string urlKoteWhitelist = "/gsrv/v1/verifyknights";
     private readonly string urlCharactersList = "/gsrv/v1/characters";
     private readonly string urlExpeditionStatus = "/gsrv/v1/expeditions/status";
     private readonly string urlExpeditionRequest = "/gsrv/v1/expeditions";
     private readonly string urlExpeditionCancel = "/gsrv/v1/expeditions/cancel";
     private readonly string urlExpeditionScore = "/gsrv/v1/expeditions/score";
     private readonly string urlNftSkinSprites = "/client/v1/skinassets/";
+    
+
 
     private readonly string urlOpenSea = "https://api.opensea.io/api/v1/assets?xxxx&asset_contract_address=0x32A322C7C77840c383961B8aB503c9f45440c81f&format=json";
 
@@ -84,6 +87,7 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_NFT_SKIN_SPRITE.AddListener(RequestNftSkinElement);
         GameManager.Instance.EVENT_REQUEST_NFT_SET_SKIN.AddListener(SetKnightNft);
         GameManager.Instance.EVENT_REQUEST_EXPEDITON_SCORE.AddListener(RequestExpeditionScore);
+        GameManager.Instance.EVENT_REQUEST_WHITELIST_CHECK.AddListener(RequestWhitelistStatus);
     }
 
     private void Start()
@@ -124,6 +128,11 @@ public class WebRequesterManager : MonoBehaviour
         StartCoroutine(CancelOngoingExpedition());
     }
 
+    public void RequestWhitelistStatus(float expires, float entropy, string message, string wallet)
+    {
+        StartCoroutine(WhitelistStatus(expires, entropy, message, wallet));
+    }
+    
     public void SetKnightNft(int tokenId)
     {
         StartCoroutine(GetSingleNft(tokenId));
@@ -470,6 +479,30 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_WALLET_CONTENTS_RECEIVED.Invoke(walletKnightIds);
     }
 
+    public IEnumerator WhitelistStatus(float expires, float entropy, string message, string wallet)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("sig", message);
+        form.AddField("wallet", wallet);
+        form.AddField("expires", (int)expires);
+        form.AddField("entropy", (int)entropy);
+        string fullUrl = baseUrl + urlKoteWhitelist;
+        UnityWebRequest request = UnityWebRequest.Post(fullUrl, form);
+        yield return request.SendWebRequest();
+        
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("[WhitelistStatus] Error getting white list status: " + request.error);
+            yield break;
+        }
+        
+        Debug.Log($"Whitelist status retrieved: {request.downloadHandler.text}");
+        WhitelistResponse whitelistResponse = JsonUtility.FromJson<WhitelistResponse>(request.downloadHandler.text);
+        GameManager.Instance.EVENT_WHITELIST_CHECK_RECEIVED.Invoke(whitelistResponse.data.isValid);
+        
+    }
+    
     public IEnumerator GetNftData(int[] tokenIds)
     {
         List<int[]> splitTokenLists = new List<int[]>();

@@ -32,12 +32,12 @@ public class MetaMaskAdapter : SingleTon<MetaMaskAdapter>
     public void SignMessage(string message) 
     {
         UnityEvent requestFail = new UnityEvent();
-        requestFail.AddListener(GetWalletFail);
+        requestFail.AddListener(SignFail);
 
         UnityEvent<string> requestSuccess = new UnityEvent<string>();
-        requestSuccess.AddListener(GetWalletSuccess);
+        requestSuccess.AddListener(SignSuccess);
 
-        mm.GetAccount(requestSuccess, requestFail);
+        mm.SignMessage(message, requestSuccess, requestFail);
     }
 
     private void GetWalletFail()

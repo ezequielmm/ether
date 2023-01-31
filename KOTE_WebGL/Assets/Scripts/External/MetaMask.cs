@@ -99,20 +99,7 @@ public class MetaMask : MonoBehaviour
         awaitingAccountDetails = true;
         accountSuccess = OnSuccess;
         accountFail = OnError;
-        OnSuccess?.AddListener(OnWalletResponseSuccess);
-        OnError?.AddListener(OnWalletResponseFailure);
         MetamaskSelectedAccount("AccountSuccess", "AccountError", gameObject.name);
-    }
-
-    // callbacks to clear the awaiting account details blocker
-    private void OnWalletResponseSuccess(string data)
-    {
-        awaitingAccountDetails = false;
-    }
-
-    private void OnWalletResponseFailure()
-    {
-        awaitingAccountDetails = false;
     }
 
     /// <summary>
@@ -158,6 +145,17 @@ public class MetaMask : MonoBehaviour
         MetamaskPersonalSign(Account, message, "MessageSuccess", "MessageError", gameObject.name);
     }
 
+    
+    // callbacks to clear the awaiting account details blocker
+    private void OnSignSuccess(string data)
+    {
+        currentlySigningMessage = false;
+    }
+
+    private void OnSignFailure()
+    {
+        currentlySigningMessage = false;
+    }
     #endregion
 
     #region JS Callbacks
@@ -168,6 +166,7 @@ public class MetaMask : MonoBehaviour
     /// <param name="wallet">The account address</param>
     private void AccountSuccess(string wallet)
     {
+        awaitingAccountDetails = false;
         account = wallet;
         accountFail = null;
         if (accountSuccess != null)
@@ -183,6 +182,7 @@ public class MetaMask : MonoBehaviour
     /// <param name="json">The related error</param>
     private void AccountError(string json)
     {
+        awaitingAccountDetails = false;
         account = null;
         var error = GetRequestError(json);
         Debug.LogError($"[MetaMask] {error.ToString()}");
