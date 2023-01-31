@@ -29,6 +29,7 @@ public class MainMenuManager : MonoBehaviour
     private bool _hasExpedition;
     private bool _expeditionStatusReceived;
     private bool _ownershipChecked;
+    private bool _whitelistStatusReceived;
 
     // verification that the player still owns the continuing nft
     private bool _ownsNft;
@@ -144,6 +145,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void OnWalletWhitelisted(bool isWhitelisted)
     {
+        _whitelistStatusReceived = true;
         _isWhitelisted = isWhitelisted;
         VerifyResumeExpedition();
     }
@@ -152,8 +154,9 @@ public class MainMenuManager : MonoBehaviour
     // this is designed to be called whenever a callback is triggered, due to not knowing when all the responses will come in
     private void VerifyResumeExpedition()
     {
+        
         // if the player isn't whitelisted, never show the play button
-        if (!_isWhitelisted)
+        if (!_isWhitelisted || !_whitelistStatusReceived)
         {
             // if no routes are available, lock the player out of the game
             playButton.gameObject.SetActive(false);

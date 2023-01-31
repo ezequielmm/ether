@@ -995,3 +995,15 @@ public class Achievement
     public string name;
     public int score;
 }
+
+[Serializable]
+public class WhitelistResponse
+{
+    public WhitelistData data;
+
+    [Serializable]
+    public class WhitelistData
+    {
+        public bool isValid;
+    }
+}

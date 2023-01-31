@@ -26,7 +26,6 @@ public class WalletManager : MonoBehaviour
     // store data for checking if the wallet is whitelisted
     private float expires;
     private float entropy;
-    private string curWallet = "";
 
     private void Start()
     {
@@ -65,7 +64,8 @@ public class WalletManager : MonoBehaviour
         expires = Mathf.Floor(DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);
         entropy = Mathf.Floor(Random.value * 5000000000.23f);
 
-        string hash = $"KOTE\n Action: Login\nEntropy: {entropy}\nExpires: {expires}";
+        //string hash = $"Hello, welcome to Knights of the Ether.\nPlease sign this message to verify your wallet.\nThis action will not cost you any transaction fee.\n\n\nAction: Login\nEntropy: {entropy}\nExpires: {expires}";
+        string hash = $"KOTE\nAction: Login\nEntropy: {entropy}\nExpires: {expires}";
         MetaMaskAdapter.Instance.SignMessage(hash);
     }
 
