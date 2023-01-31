@@ -95,10 +95,16 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 
         foreach (Trait trait in currentMetadata)
         {
-            string[] traitSplit = trait.value.Split();
+            List<string> traitSplit = trait.value.Split().ToList();
+            
+            for(int i = 0; i < traitSplit.Count; i++)
+            {
+                traitSplit[i] = traitSplit[i].Replace('-', '_');
+            }
+            
             string skinName;
             
-            if (trait.trait_type == nameof(TraitTypes.Sigil))
+                if (trait.trait_type == nameof(TraitTypes.Sigil))
             {
                 skinName = trait.trait_type + "_" + shieldType + "_" + string.Join('_', traitSplit);
             }
