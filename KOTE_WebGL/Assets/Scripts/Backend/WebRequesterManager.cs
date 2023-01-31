@@ -372,7 +372,7 @@ public class WebRequesterManager : MonoBehaviour
 
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(data.GetHasExpedition(), data.data.nftId);
 
-        Debug.Log("answer from expedition status " + request.downloadHandler.text);
+        Debug.Log("[WebRequestManager] Expedition status " + request.downloadHandler.text);
     }
 
     IEnumerator GetExpeditionScore()
@@ -434,21 +434,39 @@ public class WebRequesterManager : MonoBehaviour
     public IEnumerator GetWalletContents(string walletAddress)
     {
         string fullUrl = $"{baseUrl}{urlWalletData}/{walletAddress}";
+        int maxTry = 10;
+        var tryDelay = new WaitForSeconds(3);
 
-        UnityWebRequest request = UnityWebRequest.Get($"{fullUrl}");
+        UnityWebRequest request = null;
 
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.ConnectionError ||
-            request.result == UnityWebRequest.Result.ProtocolError)
+        for (int tryCount = 0; tryCount < maxTry; tryCount++)
         {
-            Debug.LogError("[Error getting Wallet Contents] " + request.error + " from " + fullUrl);
+            Debug.Log($"[WebRequestManager] Getting Wallet Contents...");
+            request = UnityWebRequest.Get($"{fullUrl}");
+            yield return request.SendWebRequest();
 
-            yield break;
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                yield return new WaitForEndOfFrame();
+                break;
+            }
+
+            Debug.LogError($"[WebRequestManager] Error Getting Wallet Contents {request.error} from {fullUrl}");
+
+            if (request.error != "500" || tryCount + 1 < maxTry)
+            {
+                Debug.Log($"[WebRequestManager] Will not try for wallet content again.");
+                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("ERROR: Could not gather wallet contents. Please try again later.", () => { });
+                yield break;
+            }
+            else
+            {
+                Debug.Log($"[WebRequestManager] Retrying to get wallet contents...");
+                yield return tryDelay;
+            }
         }
-
-        Debug.Log("Wallet contents retrieved: " + request.downloadHandler.text);
-        WalletKnightIds walletKnightIds = JsonUtility.FromJson<WalletKnightIds>(request.downloadHandler.text);
+        Debug.Log($"[WebRequestManager] Wallet Contents Retrieved: {request?.downloadHandler.text}");
+        WalletKnightIds walletKnightIds = JsonUtility.FromJson<WalletKnightIds>(request?.downloadHandler.text);
         GameManager.Instance.EVENT_WALLET_CONTENTS_RECEIVED.Invoke(walletKnightIds);
     }
 

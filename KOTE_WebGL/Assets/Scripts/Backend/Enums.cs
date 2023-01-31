@@ -286,6 +286,7 @@ public enum WS_MESSAGE_ACTIONS
     update_player,
     change_turn,
     create_card,
+    add_card,
     enemies_defeated,
     players_defeated,
     player_defeated,

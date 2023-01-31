@@ -48,6 +48,7 @@ public static class GameSettings
     public static float CARD_SFX_MIN_RATE = 0.1f; // Time in seconds between SFX of cards
     public static float CARD_DRAW_SHOW_TIME = 0.5f;
     public static float EXHAUST_EFFECT_DURATION = 0.6f;
+    public static float SHOW_NEW_CARD_DURATION = 1;
 
     // COMBAT
     public const float COMBAT_ANIMATION_DELAY = 0.5f;
