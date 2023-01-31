@@ -1,5 +1,41 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3365044596031153331
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3791669486150361893}
+  m_Layer: 5
+  m_Name: Disabled Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3791669486150361893
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3365044596031153331}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7988996470574398252}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 84, y: 0}
+  m_SizeDelta: {x: 155.9657, y: 80.98576}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4306190477332267972
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,8 +47,8 @@ GameObject:
   - component: {fileID: 3855397232675067862}
   - component: {fileID: 8599498423060795631}
   - component: {fileID: 5895128975405931449}
-  - component: {fileID: 1648554489675283135}
   - component: {fileID: 6143968926910012723}
+  - component: {fileID: 8165305181930107463}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -30,14 +66,15 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7988996470574398252}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 156, y: 81}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -80, y: 0}
+  m_SizeDelta: {x: 155.9657, y: 80.985756}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8599498423060795631
 CanvasRenderer:
@@ -72,7 +109,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -91,7 +128,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1648554489675283135}
+      - m_Target: {fileID: 7147534094152068989}
         m_TargetAssemblyTypeName: EndTurnManager, Assembly-CSharp
         m_MethodName: EndTurn
         m_Mode: 1
@@ -103,19 +140,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1648554489675283135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4306190477332267972}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 685a99856d6c19d4393e944c2775a883, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  desiredLocation: {fileID: 7988996470574398252}
 --- !u!114 &6143968926910012723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,6 +170,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8165305181930107463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4306190477332267972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29fbc42dae08eda42822376fa586f0c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  desiredLocation: {fileID: 7988996470574398252}
 --- !u!1 &4939006037289632092
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,6 +193,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7988996470574398252}
   - component: {fileID: 1294891281793263159}
+  - component: {fileID: 346343608410134679}
+  - component: {fileID: 7147534094152068989}
   m_Layer: 5
   m_Name: EndTurnButtonContainer
   m_TagString: Untagged
@@ -173,8 +212,11 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3855397232675067862}
+  - {fileID: 2738000537667525329}
+  - {fileID: 3791669486150361893}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -200,13 +242,80 @@ MonoBehaviour:
     AnimationTime: 1
     ShrinkToDie: 0
     MoveToDie: 1
-    MoveBy: {x: 1, y: 0, z: 0}
+    MoveBy: {x: 2, y: 0, z: 0}
     MoveMultipleOfSelf: 1
     UnParent: 0
+    DisableNotDestroy: 0
   - StatusToListenTo: 7
     AnimationTime: 1
     ShrinkToDie: 0
     MoveToDie: 1
-    MoveBy: {x: 1, y: 0, z: 0}
+    MoveBy: {x: 2, y: 0, z: 0}
     MoveMultipleOfSelf: 1
     UnParent: 0
+    DisableNotDestroy: 0
+--- !u!114 &346343608410134679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4939006037289632092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28677e7783944484b9316f11fcb41d8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnabledPoint: {fileID: 2738000537667525329}
+  DisabledPoint: {fileID: 3791669486150361893}
+  ButtonObject: {fileID: 5895128975405931449}
+  _enabled: 1
+--- !u!114 &7147534094152068989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4939006037289632092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 685a99856d6c19d4393e944c2775a883, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endTurnButtonManager: {fileID: 346343608410134679}
+--- !u!1 &5185903391038968851
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2738000537667525329}
+  m_Layer: 5
+  m_Name: Enabled Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2738000537667525329
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5185903391038968851}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7988996470574398252}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -80, y: 0}
+  m_SizeDelta: {x: 155.9657, y: 80.98576}
+  m_Pivot: {x: 0.5, y: 0.5}
