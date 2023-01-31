@@ -1662,12 +1662,12 @@ PrefabInstance:
     - target: {fileID: 8166762712218201961, guid: ccb3a1b1a192e0146902efb6d1e11071,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 919.9999
+      value: 917
       objectReference: {fileID: 0}
     - target: {fileID: 8166762712218201961, guid: ccb3a1b1a192e0146902efb6d1e11071,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -526.5
+      value: -512.6
       objectReference: {fileID: 0}
     - target: {fileID: 8166762712218201961, guid: ccb3a1b1a192e0146902efb6d1e11071,
         type: 3}
@@ -3495,7 +3495,7 @@ MonoBehaviour:
   EVENT_CARDS_PILES_UPDATED:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_MOVE_CARD:
+  EVENT_MOVE_CARDS:
     m_PersistentCalls:
       m_Calls: []
   EVENT_REARRANGE_HAND:
@@ -3516,7 +3516,7 @@ MonoBehaviour:
   EVENT_CARD_SHUFFLE:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_CARD_CREATE:
+  EVENT_CARD_ADD:
     m_PersistentCalls:
       m_Calls: []
   EVENT_PREPARE_GAME_STATUS_CHANGE:
