@@ -291,7 +291,8 @@ public enum WS_MESSAGE_ACTIONS
     player_defeated,
     show_rewards,
     select_another_reward,
-    show_map
+    show_map,
+    show_score
 }
 
 [Serializable]

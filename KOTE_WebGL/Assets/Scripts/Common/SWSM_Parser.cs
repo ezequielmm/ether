@@ -349,6 +349,9 @@ public class SWSM_Parser
                 // Change to Loader Scene which will load the Map Scene
                 GameManager.Instance.LoadScene(inGameScenes.Expedition);
                 break;
+            case nameof(WS_MESSAGE_ACTIONS.show_score):
+                GameManager.Instance.EVENT_REQUEST_EXPEDITON_SCORE.Invoke();
+                break;
             default:
                 Debug.LogWarning("[ProcessEndCombat] unknown action: " + action + " , data: " + data);
                 break;
@@ -511,7 +514,7 @@ public class SWSM_Parser
             i++;
         }
 
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+        //GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
     }
 
     private static void ProcessDrawCards(string data)
