@@ -421,6 +421,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         {
             // Tell game that a player is dying
             GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), nameof(PlayerState.dying));
+            GameManager.Instance.EVENT_COMBAT_FORCE_CLEAR.Invoke();
 
             // Play animation
             RunAfterTime(OnDeath(), () =>
