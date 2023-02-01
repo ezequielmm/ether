@@ -97,7 +97,7 @@ public class RegisterPanelManager : MonoBehaviour
     {
         DeactivateAllErrorLabels();
 
-        CheckIfRegisterButtonIsEnabled();
+        //CheckIfRegisterButtonIsEnabled();
 
         GameManager.Instance.EVENT_REQUEST_NAME.Invoke("");
     }
@@ -177,14 +177,7 @@ public class RegisterPanelManager : MonoBehaviour
         confirmEmailInputField.text = "";
         passwordInputField.text = "";
         confirmPasswordInputField.text = "";
-        int enableRegistration = PlayerPrefs.GetInt("enable_registration");
-        if (enableRegistration == 1)
-        {
-            registerContainer.SetActive(activate);
-            return;
-        }
-
-        registerContainer.SetActive(false);
+        registerContainer.SetActive(activate);
     }
 
     public void CheckIfCanActivateRegisterButton()
