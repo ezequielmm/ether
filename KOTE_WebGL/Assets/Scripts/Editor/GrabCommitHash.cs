@@ -47,7 +47,7 @@ public class GrabCommitHash : IPreprocessBuildWithReport
             {
                 UnityEngine.Debug.Log("[GrabCommitHash] Creating new GitHash Asset.");
                 gitHash = ScriptableObject.CreateInstance<GitHash>();
-                AssetDatabase.CreateAsset(gitHash, $"Assets\\Resources\\{gitHashFileName}.asset");
+                AssetDatabase.CreateAsset(gitHash, Path.Combine("Assets","Resources",$"{gitHashFileName}.asset"));
             }
             else
             {
