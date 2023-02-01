@@ -230,6 +230,7 @@ public class WebRequesterManager : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("name", nameText);
         form.AddField("email", email);
+        form.AddField("email_confirmation", email);
         form.AddField("password", password);
         form.AddField("password_confirmation", password);
 
