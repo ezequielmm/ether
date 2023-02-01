@@ -12,7 +12,6 @@
     <div id="unity-container" class="unity-desktop">
       <canvas id="unity-canvas"></canvas>
     </div>
-    <div id="unity-fullscreen-button" style="display: none;"></div>
     <div id="progress-container">
       <img id="loading-logo" src="logo.png" alt="Knights Of The Ether Logo">
       <div id="progress-bar-border">
@@ -41,7 +40,6 @@
 
       const container = document.querySelector("#unity-container");
       const canvas = document.querySelector("#unity-canvas");
-      const fullscreenButton = document.querySelector("#unity-fullscreen-button");
       const progressBar = document.querySelector("#progress-bar");
       const progressContainer = document.querySelector("#progress-container");
 
@@ -91,14 +89,6 @@
         progressContainer.style.display = 'none';
         container.style.display = '';
         unity = unityInstance;
-        if (canFullscreen) {
-          if (!hideFullScreenButton) {
-            fullscreenButton.style.display = "";
-          }
-          fullscreenButton.onclick = () => {
-            unityInstance.SetFullscreen(1);
-          };
-        }
       }
       function AfkCheck() {
           document.onmousemove = SendAfkUpdate;
