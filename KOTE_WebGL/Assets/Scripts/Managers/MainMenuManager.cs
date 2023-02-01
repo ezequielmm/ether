@@ -57,7 +57,7 @@ public class MainMenuManager : MonoBehaviour
         // Listen for the metadata for the selected NFT so it can be sent on resume
         GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(OnCurrentNftDataReceived);
         
-        CheckIfRegisterButtonIsEnabled();
+        //CheckIfRegisterButtonIsEnabled();
         CheckIfArmoryButtonIsEnabled();
 
         TogglePreLoginStatus(true);
