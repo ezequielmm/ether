@@ -124,7 +124,7 @@ public class PointerCollisionChecker : MonoBehaviour
             if (player != null)
             {
                 // TODO: Change to string based ID
-                id = $"{player.PlayerData.playerId}";
+                id = $"{player.PlayerData.id}";
             }
         }
         return id;
