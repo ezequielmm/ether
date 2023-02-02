@@ -18,6 +18,7 @@ public class EndTurnManager : MonoBehaviour
         GameManager.Instance.EVENT_CHANGE_TURN.AddListener(onTurnChange);
         GameManager.Instance.EVENT_COMBAT_QUEUE_EMPTY.AddListener(onQueueEmpty);
         GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.AddListener(onQueueActionEnqueue);
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.AddListener(OnCombatEnd);
     }
 
     void onQueueEmpty() {
@@ -74,5 +75,11 @@ public class EndTurnManager : MonoBehaviour
         }
     }
 
-    
+    private void OnCombatEnd(GameStatuses gameStatus)
+    {
+        if (gameStatus == GameStatuses.RewardsPanel || gameStatus == GameStatuses.GameOver)
+        {
+            endTurnButtonManager.Disable();
+        }
+    }
 }
