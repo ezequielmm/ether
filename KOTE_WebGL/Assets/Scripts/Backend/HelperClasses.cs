@@ -211,7 +211,7 @@ public class PlayerData
     /// <summary>
     /// Index of Player
     /// </summary>
-    [Obsolete("Int IDs will be phased out")]
+    [Obsolete("Int IDs are phased out.")]
     public int playerId;
 
     public string id;
@@ -789,9 +789,8 @@ public class EnemyData
     /// <summary>
     /// Index of enemy
     /// </summary>
-    [Obsolete("Int IDs will be phased out")]
+    [Obsolete("Int IDs are phased out.")]
     public int enemyId;
-
     public int defense;
     public int hpCurrent; //current
     public int hpMax;

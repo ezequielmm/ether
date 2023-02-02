@@ -33,7 +33,7 @@ public class EnemiesManager : MonoBehaviour
         GameObject newEnemy = Instantiate(enemyPrefab, this.transform);
         newEnemy.transform.localPosition = spawnPos;
         EnemyManager em = newEnemy.GetComponent<EnemyManager>();
-        em.EnemyData = enemyData;
+        em.SetEnemeyData(enemyData);
         return em;
     }
 
@@ -97,7 +97,6 @@ public class EnemiesManager : MonoBehaviour
             }
             if (enemyExists)
             {
-                
                 enemyManager.EnemyData = data;
                 newEnemyList.Add(enemyManager.gameObject);
             }
@@ -182,7 +181,7 @@ public class EnemiesManager : MonoBehaviour
         foreach (var enemyObj in enemies)
         {
             var enemy = enemyObj.GetComponent<EnemyManager>();
-            sb.Append($"[{enemy.EnemyData.enemyId} | {enemy.EnemyData.id}], ");
+            sb.Append($"[{enemy.EnemyData.id}], ");
             float size = GetSize(enemy.EnemyData.size); //enemy.collider.bounds.size.x;
             float xPos = leftEdge + (size / 2);
             Vector3 desiredPosition = new Vector3(xPos, transform.position.y + floor, transform.position.z);

@@ -25,7 +25,7 @@ public class StatusManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     Dictionary<string, GameObject> statusIconList = new Dictionary<string, GameObject>();
 
     string entityType => (enemyManager == null ? "player" : "enemy");
-    string entityID => enemyManager?.EnemyData.id ?? playerManager?.PlayerData.id ?? "-1";
+    string entityID => enemyManager?.EnemyData?.id ?? playerManager?.PlayerData?.id ?? "-1";
 
     static bool askedForStatus = false;
     bool statusSet = false;

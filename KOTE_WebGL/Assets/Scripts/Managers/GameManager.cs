@@ -244,7 +244,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_SHOW_PLAYER_CHARACTER = new UnityEvent();
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_ENERGY = new UnityEvent<int, int>();//current energy, max energy 
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_PLAYER_HEALTH = new UnityEvent<int, int>();//current health, max health
-    [HideInInspector] public UnityEvent<CombatTurnData> EVENT_ATTACK_REQUEST = new UnityEvent<CombatTurnData>();
+    [HideInInspector] public UnityEvent<CombatTurnData> EVENT_ATTACK_REQUEST { get; } = new UnityEvent<CombatTurnData>();
     [HideInInspector] public UnityEvent<CombatTurnData> EVENT_ATTACK_RESPONSE = new UnityEvent<CombatTurnData>();
     [HideInInspector] public UnityEvent<CombatTurnData> EVENT_COMBAT_TURN_ENQUEUE = new UnityEvent<CombatTurnData>();
     [HideInInspector] public UnityEvent EVENT_COMBAT_FORCE_CLEAR = new UnityEvent();
@@ -273,7 +273,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_CHANGE_TURN = new UnityEvent<string>();
 
     //Enemies events
-    [HideInInspector] public UnityEvent<EnemiesData> EVENT_UPDATE_ENEMIES = new UnityEvent<EnemiesData>();
+    [HideInInspector] public UnityEvent<EnemiesData> EVENT_UPDATE_ENEMIES { get; } = new UnityEvent<EnemiesData>();
     [HideInInspector] public UnityEvent<EnemiesData> EVENT_ADD_ENEMIES = new UnityEvent<EnemiesData>();
     [HideInInspector] public UnityEvent<EnemyData> EVENT_UPDATE_ENEMY = new UnityEvent<EnemyData>();
     [HideInInspector] public UnityEvent<EnemyIntent> EVENT_UPDATE_INTENT = new UnityEvent<EnemyIntent>();
