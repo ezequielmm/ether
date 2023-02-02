@@ -35,6 +35,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         for (int i = 0; i < GameSettings.DEFAULT_SKIN_DATA.Length; i++)
         {
             TraitSprite trait = GameSettings.DEFAULT_SKIN_DATA[i];
+            if (DefaultSprites.Exists(x => x.skinName == trait.skinName)) continue;
             Skin traitSkin = knightSkeletonData.Skins.Find(x => x.Name == trait.skinName);
             foreach (Skin.SkinEntry skinEntry in traitSkin.Attachments)
             {
@@ -65,6 +66,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     private void OnNftSelected(NftMetaData nftMetaData)
     {
         currentMetadata.Clear();
+        SkinSprites.Clear();
         currentMetadata.AddRange(nftMetaData.traits);
 
         // ===============TEMP CODE FOR BOTTOMS HANDLING=====================================
