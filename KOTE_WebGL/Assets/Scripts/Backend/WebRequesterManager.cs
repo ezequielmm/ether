@@ -463,7 +463,7 @@ public class WebRequesterManager : MonoBehaviour
 
             Debug.LogError($"[WebRequestManager] Error Getting Wallet Contents {request.error} from {fullUrl}");
 
-            if (request.error != "500" || tryCount + 1 == maxTry)
+            if (tryCount + 1 >= maxTry)
             {
                 Debug.Log($"[WebRequestManager] Will not try for wallet content again.");
                 GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("ERROR: Could not gather wallet contents. Please try again later.", () => { });
