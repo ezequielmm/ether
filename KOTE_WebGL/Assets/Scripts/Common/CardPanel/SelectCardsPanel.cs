@@ -128,7 +128,11 @@ public class SelectCardsPanel : CardPanelBase
             else selectButton.gameObject.SetActive(false);
 
             UpdateSelectButton();
-            cardManager.DetermineToggleColor();
+            // only show the selection frame if it's not in the center
+            if (!selectOptions.ShowCardInCenter)
+            {
+                cardManager.DetermineToggleColor();
+            }
         });
     }
 
