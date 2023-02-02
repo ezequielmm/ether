@@ -228,7 +228,9 @@ public class MetaMask : MonoBehaviour
         account = account.TrimStart('[').TrimEnd(']');
         if (string.IsNullOrEmpty(account))
         {
+            Debug.Log("[MetaMask] Account Change Received, no account found. Received account data: " + account);
             GameManager.Instance.EVENT_WALLET_DISCONNECTED.Invoke();
+            return;
         }
         account = account.Trim('"');
         Debug.Log("[MetaMask] Account Change Received, new account data: " + account);

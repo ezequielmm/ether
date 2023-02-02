@@ -84,6 +84,10 @@ public class WalletManager : MonoBehaviour
 
     private void OnWalletContentsReceived(WalletKnightIds knightIds)
     {
+        if (knightIds.data == null || knightIds.data.Length == 0)
+        {
+            GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("No Knights found in connected wallet\n, please try a different wallet.", () => {});
+        }
         walletItem.SetKnightCount(knightIds.data.Length);
         nftIds = new List<int>();
         nftIds.AddRange(knightIds.data);
