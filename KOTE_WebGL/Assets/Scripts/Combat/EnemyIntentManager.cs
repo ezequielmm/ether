@@ -18,7 +18,7 @@ public class EnemyIntentManager : MonoBehaviour
     static bool askedForIntent;
     bool intentSet;
 
-    string enemyId => enemyManager?.EnemyData?.id ?? "";
+    string enemyId => enemyManager?.EnemyData?.id ?? string.Empty;
 
     void Start()
     {
@@ -92,6 +92,10 @@ public class EnemyIntentManager : MonoBehaviour
 
     private void askForIntent() 
     {
+        if (enemyId == string.Empty) 
+        {
+            return;
+        }
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.EnemyIntents);
         askedForIntent = true;
     }

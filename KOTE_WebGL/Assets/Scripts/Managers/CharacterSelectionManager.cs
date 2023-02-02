@@ -1,77 +1,139 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CharacterSelectionManager : MonoBehaviour
 {
     public Button startExpeditionButton;
-
-    public List<GameObject> characterBorders;
     public GameObject characterSelectionContainer;
 
-    private GameObject currentCharacter;
+    [Space] [Header("Class Select")] public List<GameObject> characterBorders;
+
+    [Space] [Header("NFT Select")] public GameObject nftSelectionLayout;
+    public GameObject nftSelectItemPrefab;
+
+    private GameObject currentClass;
+    private SelectableNftManager selectedNft;
 
     private void Start()
     {
         //GameManager.Instance.webRequester.RequestCharacterList();// we are not requesting the list until we have more than one type so for the moment only knight
 
-        GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerCharacterSelectionPanel);
+        GameManager.Instance.EVENT_WALLET_DISCONNECTED.AddListener(OnWalletDisconnected);
+        GameManager.Instance.EVENT_REQUEST_NFT_METADATA.AddListener(OnMetadataRequest);
+        GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.AddListener(
+            ActivateInnerCharacterSelectionPanel);
         GameManager.Instance.EVENT_EXPEDITION_CONFIRMED.AddListener(OnExpeditionConfirmed);
+        GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(PopulateNftPanel);
 
         startExpeditionButton.interactable = false;
-        
-        //--------------------------AUTOMATICALLY SELECT KNIGHT ON START----------------------
-        OnCharacterSelected(characterBorders[0]);
-        //--------------------------DELETE ONCE OTHER CHARACTERS ARE ADDED--------------------
     }
 
-    private void OnExpeditionConfirmed()
+    private void ActivateInnerCharacterSelectionPanel(bool activate)
     {
-        GameManager.Instance.LoadScene(inGameScenes.Expedition);
+        characterSelectionContainer.SetActive(activate);
     }
 
-    public void OnArmoryButton()
+    private void OnWalletDisconnected()
     {
-        GameManager.Instance.EVENT_ARMORYPANEL_ACTIVATION_REQUEST.Invoke(true);
-        ActivateInnerCharacterSelectionPanel(false);
+        ClearNfts();
     }
 
-    public void OnCharacterSelected(GameObject currentCharacterBorder)
+    // when a new wallet is received clear the panel
+    private void OnMetadataRequest(int[] ids)
     {
-        startExpeditionButton.interactable = true;
+        ClearNfts();
+    }
 
-        foreach (GameObject characterBorder in characterBorders)
+    private void ClearNfts()
+    {
+        for (int i = 0; i < nftSelectionLayout.transform.childCount; i++)
         {
-            characterBorder.SetActive(characterBorder == currentCharacterBorder);
+            Destroy(nftSelectionLayout.transform.GetChild(i).gameObject);
         }
     }
 
-    public void SetSelectedCharacter(GameObject selectedCharacter)
+    private void PopulateNftPanel(NftData heldNftData)
     {
-        currentCharacter = selectedCharacter;
+        foreach (NftMetaData metaData in heldNftData.assets)
+        {
+            GameObject localObject = Instantiate(nftSelectItemPrefab, nftSelectionLayout.transform);
+            SelectableNftManager currentNft = localObject.GetComponent<SelectableNftManager>();
+            currentNft.Populate(metaData, (isOn) =>
+            {
+                if (!currentNft.isSelected)
+                {
+                    if (selectedNft == null)
+                    {
+                        selectedNft = currentNft;
+                        startExpeditionButton.interactable = true;
+                        currentNft.isSelected = true;
+                    }
+                    else if (selectedNft != currentNft)
+                    {
+                        // clear the previous selected nft
+                        selectedNft.isSelected = false;
+                        selectedNft.DetermineToggleColor();
+                        // and set the current nft as the new one
+                        selectedNft = currentNft;
+                        startExpeditionButton.interactable = true;
+                        currentNft.isSelected = true;
+                    }
+                }
+                else if (currentNft.isSelected && selectedNft == currentNft)
+                {
+                    selectedNft = null;
+                    startExpeditionButton.interactable = false;
+                    currentNft.isSelected = false;
+                }
+
+                currentNft.DetermineToggleColor();
+            });
+        }
     }
 
     public void OnStartExpedition()
     {
         startExpeditionButton.enabled = false;
-
-        GameManager.Instance.webRequester.RequestStartExpedition("knight");//for the moment this is harcoded
-
-        //TO DO: implement API call expedition passing the character id selected
-        /* GameManager.Instance.LoadScene(inGameScenes.Expedition);
-
-         string classSelected = currentCharacter.name.Replace("BT", string.Empty);
-         GameManager.Instance.EVENT_CHARACTERSELECTED.Invoke(classSelected);
-         PlayerPrefs.SetString("class_selected", classSelected);
-         PlayerPrefs.Save();*/
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
+        GameManager.Instance.EVENT_NFT_SELECTED.Invoke(selectedNft.internalPrefab.metaData);
+        GameManager.Instance.webRequester.RequestStartExpedition("knight", selectedNft.internalPrefab.metaData.token_id); //for the moment this is hardcoded
     }
 
-    public void ActivateInnerCharacterSelectionPanel(bool activate)
+    private void OnExpeditionConfirmed()
     {
-        characterSelectionContainer.SetActive(activate);
+        // play the correct music depending on where the player is
+        GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Music, 1);
+        GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Ambient, 1);
+        GameManager.Instance.LoadScene(inGameScenes.Expedition);
     }
+
+    public void OnArmoryButton()
+    {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
+        GameManager.Instance.EVENT_ARMORYPANEL_ACTIVATION_REQUEST.Invoke(true);
+        ActivateInnerCharacterSelectionPanel(false);
+    }
+
+    // Leaving this so we still have it when we need to do class selections
+
+    #region ClassSelect
+
+    public void OnCharacterSelected(GameObject currentClassBorder)
+    {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
+        startExpeditionButton.interactable = true;
+
+        foreach (GameObject classBorder in characterBorders)
+        {
+            classBorder.SetActive(classBorder == currentClassBorder);
+        }
+    }
+
+    public void SetSelectedCharacter(GameObject selectedClass)
+    {
+        currentClass = selectedClass;
+    }
+
+    #endregion
 }

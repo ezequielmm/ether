@@ -93,6 +93,7 @@ public class ExpeditionStatusData
     public class Data
     {
         public string hasExpedition;
+        public int nftId;
     }
 }
 
@@ -210,8 +211,8 @@ public class PlayerData
     /// <summary>
     /// Index of Player
     /// </summary>
-    [Obsolete("Int IDs will be phased out")]
-    public int playerId { get; set; } = 1; // This will be static for now. We'll need this when we have multiple players
+    [Obsolete("Int IDs are phased out.")]
+    public int playerId;
 
     public string id;
     public int hpCurrent;
@@ -527,6 +528,34 @@ public class TrappedResult
 }
 
 [Serializable]
+public class SWSM_EncounterData
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public EncounterData data;
+
+        [Serializable]
+        public class EncounterData
+        {
+            public string encounterName;
+            public string imageId;
+            public string displayText;
+            public List<ButtonData> buttons;
+        }
+    }
+}
+
+[Serializable]
+public class ButtonData
+{
+    public string text;
+    public bool enabled;
+}
+
+[Serializable]
 public class SWSM_PlayerDeckData
 {
     public Data data;
@@ -679,6 +708,7 @@ public class showCardData
 {
     public List<Card> cards;
     public int cardsToTake;
+    public string kind;
 }
 
 
@@ -759,9 +789,8 @@ public class EnemyData
     /// <summary>
     /// Index of enemy
     /// </summary>
-    [Obsolete("Int IDs will be phased out")]
+    [Obsolete("Int IDs are phased out.")]
     public int enemyId;
-
     public int defense;
     public int hpCurrent; //current
     public int hpMax;
@@ -799,6 +828,27 @@ public class CardToMoveData
     public string source;
     public string destination;
     public string id;
+    public Card card;
+}
+
+[Serializable]
+public class SWSM_CardAdd
+{
+    public Data data;
+
+    [Serializable]
+    public class Data
+    {
+        public List<AddCardData> data;
+    }
+}
+
+[Serializable]
+public class AddCardData
+{
+    public string destination;
+    public string id;
+    public Card card;
 }
 
 public class SWSM_ChangeTurn
@@ -864,5 +914,95 @@ public class SWSM_HealData
         {
             public int healed;
         }
+    }
+}
+
+[Serializable]
+public class SWSM_SelectTrinketData
+{
+    public SelectTrinketData data;
+
+    [Serializable]
+    public class SelectTrinketData
+    {
+        public TrinketData data;
+    }
+}
+
+[Serializable]
+public class TrinketData
+{
+    public List<Trinket> trinkets;
+}
+public class NftData
+{
+    public NftMetaData[] assets;
+    
+}
+
+[Serializable]
+public class NftMetaData
+{
+    public string token_id;
+    public string image_url;
+    public Trait[] traits;
+}
+
+[Serializable]
+public class Trait
+{
+    public string trait_type;
+    public string value;
+}
+
+[Serializable]
+public class WalletKnightIds
+{
+    public int[] data;
+}
+
+// this is to pass along data needed for each individual skin image downloaded from the server
+[Serializable]
+public struct TraitSprite
+{
+    public string skinName;
+    public string traitType;
+    public int attachmentIndex;
+    public string imageName;
+    public Sprite sprite;
+    public bool isDefault;
+}
+
+[Serializable]
+public class SWSM_ScoreboardData
+{
+    public ScoreboardData data;
+
+    [Serializable]
+    public class ScoreboardData
+    {
+        public string outcome;
+        public string expeditionType;
+        public int totalScore;
+        public Achievement[] achievements;
+    }
+}
+
+[Serializable]
+public class Achievement
+{
+    public string name;
+    public int score;
+}
+
+[Serializable]
+public class WhitelistResponse
+{
+    public WhitelistData data;
+
+    [Serializable]
+    public class WhitelistData
+    {
+        public bool isValid;
     }
 }

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1417018532818955714}
   - component: {fileID: 3225541268993982703}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: camp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 4731376357032864765}
   - component: {fileID: 6103250879578358511}
   - component: {fileID: 2645682501440922271}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,7 +267,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8778656666356794414}
   - component: {fileID: 4600067655945755749}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: encounter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -351,7 +351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6592600696463555445}
   - component: {fileID: 6335373438141109412}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: royal_house_brightflame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -435,7 +435,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2166693126285442724}
   - component: {fileID: 5888197181822944799}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: combat_boss (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -519,7 +519,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1531194614834649611}
   - component: {fileID: 4126853575172436128}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: combat_regular
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -605,7 +605,7 @@ GameObject:
   - component: {fileID: 4296749518308982002}
   - component: {fileID: 7539280582271187376}
   - component: {fileID: 4224079623877127732}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PortalActivateParticleSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5427,7 +5427,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2121900557288488943}
   - component: {fileID: 3521226033381921567}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: merchant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5511,7 +5511,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2018840658124690368}
   - component: {fileID: 3259812801208828610}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: royal_house_medici
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5595,7 +5595,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6756145957370662757}
   - component: {fileID: 1373872749556835724}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: royal_house_Rhunn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5679,7 +5679,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7900150294183601214}
   - component: {fileID: 2758987970846117254}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: royal_house_cynthienne
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5763,7 +5763,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6550850153563623516}
   - component: {fileID: 8228862097703288741}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: combat_boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5847,7 +5847,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7980313784216687053}
   - component: {fileID: 4158674512591226806}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: treasure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5930,7 +5930,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2977210948727453543}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NodeArt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5978,7 +5978,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2059199599441710641}
   - component: {fileID: 5996690701688858561}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: combat_elite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6064,7 +6064,7 @@ GameObject:
   - component: {fileID: 4278458617687280834}
   - component: {fileID: 670735619424540061}
   - component: {fileID: 3945012001363438485}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: AvailableParticleSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10886,7 +10886,7 @@ GameObject:
   m_Component:
   - component: {fileID: 350751825983305441}
   - component: {fileID: 7399051368103674370}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: portal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10971,7 +10971,7 @@ GameObject:
   - component: {fileID: 1309285089828103493}
   - component: {fileID: 2251033355349061168}
   - component: {fileID: 5730114510743785768}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NodeTemPrefabSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11078,4 +11078,3 @@ MonoBehaviour:
   spriteShapePrefab: {fileID: 166793866925265225, guid: e9df6b78fba15624eaf4e961880a4ce4,
     type: 3}
   NodeArt: {fileID: 5971962843985705620}
-  tooltipManager: {fileID: 0}

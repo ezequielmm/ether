@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 using UnityEngine.U2D;
 
@@ -20,19 +18,14 @@ namespace map
 
         // we need a list of the path spriteshapes to use with the background grid
         private List<PathManager> pathManagers = new List<PathManager>();
-
-        private bool royal_houses_mode_on = false;
-
+        
         public GameObject playerIcon;
         public ParticleSystem portalAnimation;
         public GameObject nodesHolder;
 
         // tilemap references
         public Tilemap MapGrid;
-        public Tile[] grassTiles;
-        public Tile[] lakeTiles;
-        public Tile[] mountainTiles;
-        public Tile[] forestTiles;
+        public MapTileList[] actTileLists;
 
         public Vector3Int startPoint;
         public int startX;
@@ -71,6 +64,7 @@ namespace map
         // keep track of this so the map doesn't move if it's not bigger than the visible area
         private float halfScreenWidth;
 
+        private MapTileList currentActTiles;
         private List<int> MapSeeds;
         private Dictionary<Vector3Int, MapTilePath> mapPaths;
         List<Vector3Int> blockedTiles = new List<Vector3Int>();
@@ -78,7 +72,6 @@ namespace map
         Dictionary<Vector3Int, TileSplineRef> tileSplineRef = new Dictionary<Vector3Int, TileSplineRef>();
         Dictionary<Vector3Int, GameObject> nodeMapRef = new Dictionary<Vector3Int, GameObject>();
         private Vector3 playerIconOffset = new Vector3(-0.25f, -0.25f, 0);
-
 
         private class SplinePoint
         {
@@ -134,14 +127,14 @@ namespace map
 
         void Start()
         {
-            GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.AddListener(OnMapNodesDataUpdated);
+            GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.AddListener(OnMapNodesDataUpdated); // Gen Map
             GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.AddListener(OnToggleMap);
             GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnMapIconClicked);
             GameManager.Instance.EVENT_MAP_SCROLL_CLICK.AddListener(OnScrollButtonClicked);
             GameManager.Instance.EVENT_MAP_SCROLL_DRAG.AddListener(OnMapScrollDragged);
             GameManager.Instance.EVENT_MAP_MASK_DOUBLECLICK.AddListener(OnMaskDoubleClick);
             GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.AddListener(OnPortalActivated);
-            GameManager.Instance.EVENT_MAP_REVEAL.AddListener(OnRevealMap);
+            GameManager.Instance.EVENT_MAP_REVEAL.AddListener(OnRevealMap); // Gen Map
             GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnNodeSelected);
 
             playerIcon.SetActive(false);
@@ -299,11 +292,13 @@ namespace map
             if (mapContainer.activeSelf)
             {
                 mapContainer.SetActive(false);
+                GameManager.Instance.EVENT_TOGGLE_COMBAT_UI.Invoke();
                 GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
             }
             else
             {
                 mapContainer.SetActive(true);
+                GameManager.Instance.EVENT_TOGGLE_COMBAT_UI.Invoke();
                 GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(true);
             }
         }
@@ -327,7 +322,11 @@ namespace map
 
         IEnumerator Scroll()
         {
-            yield return new WaitForSeconds(0.5f);
+            if (GameSettings.MAP_AUTO_SCROLL_ACTIVE)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+
             ScrollBackToPlayerIcon();
         }
 
@@ -335,8 +334,16 @@ namespace map
         void GenerateMap(SWSM_MapData expeditionMapData)
         {
             Debug.Log("[MapSpriteManager | OnMapNodesDataUpdated] " + expeditionMapData);
+            
+            if (!mapContainer.activeSelf)
+            {
+                Debug.LogError($"[MapSpriteManager] The map is not currently being shown. Can not generate.");
+                return;
+            }
 
             ClearMap();
+
+            DetermineTilesToUse(expeditionMapData);
 
             // Set Seed
             GenerateMapSeeds(expeditionMapData.data.seed);
@@ -361,6 +368,20 @@ namespace map
 
             // Generate Map Images
             //StartCoroutine(GenerateMapImages());
+        }
+
+        private void DetermineTilesToUse(SWSM_MapData expeditionData)
+        {
+            int currentMapAct = expeditionData.data.data[0].act;
+
+            // if the current act of the map is not act 0 and we have a tile list for that act, use it
+            if (currentMapAct > 0 && currentMapAct - 1 < actTileLists.Length)
+            {
+                currentActTiles = actTileLists[currentMapAct - 1];
+                return;
+            }
+            // else default to the act 1 tiles
+            currentActTiles = actTileLists[0];
         }
 
         #region generateMap
@@ -560,7 +581,6 @@ namespace map
                         // Record node
                         nodeMapRef.Add(mapPos, newNode.gameObject);
 
-
                         newNode.GetComponent<NodeData>().Populate(nodeData);
 
                         // if the node is active or the last completed node, move the player icon there
@@ -580,12 +600,10 @@ namespace map
                             }
 
                             playerIcon.transform.localPosition = knightPos;
-                            GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(nodeData.act, nodeData.step);
+                            GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.Invoke(nodeData.act,
+                                nodeData.step);
+                            //  GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(nodeData.act, nodeData.step);
                         }
-
-                        // if the node is an available royal house, turn royal house mode on
-                        if (nodeData.status == NODE_STATUS.available.ToString() &&
-                            nodeData.type == NODE_TYPES.royal_house.ToString()) royal_houses_mode_on = true;
                     }
 
                     //move next step (vertical group of nodes)
@@ -647,11 +665,9 @@ namespace map
                 {
                     Vector3 newPos = splineRef.MasterSpline.Position;
                     newPos.z = GameSettings.MAP_SPRITE_ELEMENTS_Z;
-                    
+
                     // adjust the player icon to the new position if needed
                     AdjustPlayerIcon(newPos, nodeMapRef[splineRef.Position].transform.position);
-
-                    nodeMapRef[splineRef.Position].transform.position = newPos;
                 }
             }
         }
@@ -665,7 +681,7 @@ namespace map
                 playerIcon.transform.position = newPos += playerIconOffset;
             }
 
-            if (xDifference.Equals(0.25f)&& Mathf.Abs(yDifference).Equals(0.25f))
+            if (xDifference.Equals(0.25f) && Mathf.Abs(yDifference).Equals(0.25f))
             {
                 playerIcon.transform.localPosition = new Vector3(newPos.x - playerIconOffset.x,
                     newPos.y + playerIconOffset.y, newPos.z);
@@ -786,14 +802,14 @@ namespace map
                         // pick a random tile of whatever type was selected
                         if (randomType == 0)
                         {
-                            int randomTile = Random.Range(0, mountainTiles.Length);
-                            MapGrid.SetTile(tilePos, mountainTiles[randomTile]);
+                            int randomTile = Random.Range(0, currentActTiles.mountainTiles.Length);
+                            MapGrid.SetTile(tilePos, currentActTiles.mountainTiles[randomTile]);
                         }
 
                         if (randomType == 1)
                         {
-                            int randomTile = Random.Range(0, forestTiles.Length);
-                            MapGrid.SetTile(tilePos, forestTiles[randomTile]);
+                            int randomTile = Random.Range(0, currentActTiles.forestTiles.Length);
+                            MapGrid.SetTile(tilePos, currentActTiles.forestTiles[randomTile]);
                         }
                     }
                     else
@@ -848,13 +864,13 @@ namespace map
             int lakeCheck = Random.Range(0, 10);
             if (lakeCheck == 9)
             {
-                int randomLakeTile = Random.Range(0, lakeTiles.Length);
-                MapGrid.SetTile(node, lakeTiles[randomLakeTile]);
+                int randomLakeTile = Random.Range(0, currentActTiles.lakeTiles.Length);
+                MapGrid.SetTile(node, currentActTiles.lakeTiles[randomLakeTile]);
                 return;
             }
 
-            int randomTile = Random.Range(0, grassTiles.Length);
-            MapGrid.SetTile(node, grassTiles[randomTile]);
+            int randomTile = Random.Range(0, currentActTiles.grassTiles.Length);
+            MapGrid.SetTile(node, currentActTiles.grassTiles[randomTile]);
         }
 
 
@@ -865,6 +881,9 @@ namespace map
             end.z = 0;
             Spline spline = path.pathController.spline;
 
+            // we need the full path from one node to the next for the dotted line
+            List<Vector3Int> linePath = new List<Vector3Int>();
+
             // Generate path first
             var tilePath = FindPath(start, end);
             int startIndex = 0;
@@ -873,7 +892,7 @@ namespace map
             for (int i = 0; i < tilePath.Count(); i++)
             {
                 var currentTile = tilePath[i];
-
+                linePath.Add(currentTile);
                 if (allTiles.ContainsKey(currentTile))
                 {
                     // Look for last good starting point in path (Leaving First Path)
@@ -981,143 +1000,64 @@ namespace map
                 }
             }
 
-            // Set dashed lines to follow full path created
-            splineIndex = 0;
-            spline = path.lineController.spline;
-            Vector3Int current = start;
-            bool lastnode = false;
-            while (!lastnode)
+            // get the path in reverse to confirm that we have the correct path
+            List<Vector3Int> checkPath = new List<Vector3Int>();
+            if (allTiles.TryGetValue(end, out MapTilePath curTile) &&
+                !allTiles[start].Connections.Exists(x => x.TargetNode == end))
             {
-                lastnode = current == end;
-                if (tileSplineRef.ContainsKey(current))
+                checkPath.Add(curTile.Position);
+                while (curTile.Position != start)
                 {
-                    tileSplineRef[current].AddChildSpline(new SplineData(spline, splineIndex, path.transform));
-                }
-                else
-                {
-                    tileSplineRef.Add(current,
-                        new TileSplineRef(current, new SplineData(spline, splineIndex, path.transform)));
-                }
-
-                // Set spline to path
-                Vector3 localTileCenter = path.transform.InverseTransformPoint(MapGrid.CellToWorld(current));
-                bool lastSplineKnot = splineIndex == spline.GetPointCount() - 1;
-                bool addNode = lastSplineKnot && !lastnode;
-
-                if (addNode)
-                {
-                    spline.InsertPointAt(splineIndex, localTileCenter);
-                }
-                else
-                {
-                    spline.SetPosition(splineIndex, localTileCenter);
-                }
-
-                splineIndex++;
-
-                // Find next tile
-                Vector3Int nextNode = default(Vector3Int);
-                if (allTiles.ContainsKey(current))
-                {
-                    foreach (var connection in allTiles[current].Connections)
+                    if (curTile.Connections.Exists(x => x.TargetNode == start))
                     {
-                        if (connection.TargetNode == end)
-                        {
-                            nextNode = connection.NextNode;
-                            break;
-                        }
-                    }
-                }
-
-                if (nextNode == current)
-                {
-                    lastnode = true;
-                }
-                else
-                {
-                    current = nextNode;
-                }
-            }
-        }
-
-        private void GenerateNodeBackground()
-        {
-            foreach (NodeData node in nodes)
-            {
-                Vector3 nodePos = nodesHolder.transform.TransformPoint(node.transform.position);
-                Vector3Int nodeCelPos = MapGrid.layoutGrid.WorldToCell(nodePos);
-                MapGrid.SetTile(nodeCelPos, grassTiles[0]);
-                Debug.Log("[MapSpriteManager] nodePos: " + nodePos + " nodeCelPos: " + MapGrid.CellToWorld(nodeCelPos));
-                // now we need to know where the node is in relation to the cell
-                Vector3 cellPosition = MapGrid.CellToWorld(nodeCelPos);
-                // we need to determine if it's in the center of the cell
-                if (cellPosition.y - 0.2f < nodePos.y && nodePos.y < cellPosition.y + 0.2f)
-                {
-                    if (nodePos.x < cellPosition.x)
-                    {
-                        // node is on the left side, so color relevant tiles
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y + 1, nodeCelPos.z),
-                            grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y - 1, nodeCelPos.z),
-                            grassTiles[0]);
-                    }
-
-                    if (nodePos.x > cellPosition.x)
-                    {
-                        // node is on the right side, so color those tiles
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y + 1, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y - 1, nodeCelPos.z), grassTiles[0]);
+                        MapTilePath.Connection connection = curTile.Connections.Find(x => x.TargetNode == start);
+                        checkPath.Insert(0, connection.NextNode);
+                        curTile = allTiles[connection.NextNode];
                     }
                     else
                     {
-                        // node is in the center, so color those tiles
+                        checkPath.Clear();
+                        break;
                     }
                 }
+            }
 
-                // or if it's in the top section
-                if (nodePos.y > cellPosition.y + 0.2f)
+            // if there is a different path, use that
+            if (checkPath.Count > 0)
+            {
+                linePath = checkPath;
+            }
+
+
+            // Set dashed lines to follow full path created
+            spline = path.lineController.spline;
+
+            // assign each point of the dotted line to that path
+            for (int i = 0; i < linePath.Count; i++)
+            {
+                Vector3Int currentTile = linePath[i];
+                if (tileSplineRef.ContainsKey(currentTile))
                 {
-                    if (nodePos.x <= cellPosition.x)
-                    {
-                        // node is on the left side, so color relevant tiles
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y + 1, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y + 1, nodeCelPos.z),
-                            grassTiles[0]);
-                    }
-
-                    if (nodePos.x > cellPosition.x)
-                    {
-                        // node is on the right side, so color those tiles
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y + 1, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y + 1, nodeCelPos.z),
-                            grassTiles[0]);
-                    }
+                    tileSplineRef[currentTile].AddChildSpline(new SplineData(spline, i, path.transform));
+                }
+                else
+                {
+                    tileSplineRef.Add(currentTile,
+                        new TileSplineRef(currentTile, new SplineData(spline, i, path.transform)));
                 }
 
-                // or if it's in the bottom section
-                if (nodePos.y < cellPosition.y - 0.2f)
-                {
-                    if (nodePos.x <= cellPosition.x)
-                    {
-                        // node is on the left side, so color relevant tiles
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x - 1, nodeCelPos.y, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y - 1, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y - 1, nodeCelPos.z),
-                            grassTiles[0]);
-                    }
+                // Set spline to path
+                Vector3 localTileCenter = path.transform.InverseTransformPoint(MapGrid.CellToWorld(currentTile));
+                bool lastSplineKnot = (i == (spline.GetPointCount() - 1));
+                bool addNode = lastSplineKnot && i != tilePath.Count - 1;
 
-                    if (nodePos.x > cellPosition.x)
-                    {
-                        // node is on the right side, so color those tiles
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x, nodeCelPos.y - 1, nodeCelPos.z), grassTiles[0]);
-                        MapGrid.SetTile(new Vector3Int(nodeCelPos.x + 1, nodeCelPos.y - 1, nodeCelPos.z),
-                            grassTiles[0]);
-                    }
+                if (addNode)
+                {
+                    spline.InsertPointAt(i, localTileCenter);
+                }
+                else
+                {
+                    spline.SetPosition(i, localTileCenter);
                 }
             }
         }
@@ -1217,7 +1157,15 @@ namespace map
 
             if ((mapBounds.max.x < halfScreenWidth * 2) == false)
             {
-                activeTween = nodesHolder.transform.DOLocalMoveX(targetx, scrollTime);
+                if (GameSettings.MAP_AUTO_SCROLL_ACTIVE)
+                {
+                    activeTween = nodesHolder.transform.DOLocalMoveX(targetx, scrollTime);
+                }
+                else
+                {
+                    nodesHolder.transform.localPosition = new Vector3(targetx, nodesHolder.transform.localPosition.y,
+                        nodesHolder.transform.localPosition.z);
+                }
             }
         }
 
@@ -1238,8 +1186,14 @@ namespace map
 
             StartCoroutine(RevealMapThenReturnToPlayer(nodesHolder.transform.localPosition, numberOfSteps));
             */
-            StartCoroutine(RevealMapThenReturnToPlayer(nodesHolder.transform.localPosition,
-                GameSettings.MAP_SCROLL_ANIMATION_DURATION));
+            if (GameSettings.SHOW_MAP_REVEAL_ON_PORTAL)
+            {
+                StartCoroutine(RevealMapThenReturnToPlayer(nodesHolder.transform.localPosition,
+                    GameSettings.MAP_SCROLL_ANIMATION_DURATION));
+                return;
+            }
+
+            ScrollBackToPlayerIcon();
         }
 
         private IEnumerator RevealMapThenReturnToPlayer(Vector3 mapPos, float animDuration)

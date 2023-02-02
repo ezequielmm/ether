@@ -90,6 +90,7 @@ public class RewardsPanelManager : MonoBehaviour
         newCard.cardSelectorToggle.onValueChanged.AddListener((isOn) =>
         {
             GameManager.Instance.EVENT_REWARD_SELECTED.Invoke(reward.id);
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Reward");
             ActivateCardSelectPanel(false);
         });
         _cardRewards.Add(newCard);
@@ -153,7 +154,10 @@ public class RewardsPanelManager : MonoBehaviour
         {
             case RewardItemType.gold:
                 goldEffect.Play();
-                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Coin Reward");
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Coin Reward");
+                break;
+            default:
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
                 break;
         }
     }

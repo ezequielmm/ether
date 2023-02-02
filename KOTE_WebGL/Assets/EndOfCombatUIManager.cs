@@ -67,8 +67,7 @@ public class EndOfCombatUIManager : MonoBehaviour
     void OnGameOverComplete()
     {
         DeactivateLabels();
-        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke("Defeat", LoadMainMenu,
-            LoadMainMenu, new string[] { "Continue", "" });
+       GameManager.Instance.EVENT_REQUEST_EXPEDITON_SCORE.Invoke();
     }
 
     void OnVictoryComplete()

@@ -33,6 +33,7 @@ public class CombatTurnQueue : MonoBehaviour
         GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.AddListener(QueueAttack);
         GameManager.Instance.EVENT_COMBAT_TURN_END.AddListener(OnTurnUnblock);
         GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnResponseCall);
+        GameManager.Instance.EVENT_COMBAT_FORCE_CLEAR.AddListener(ClearCombatQueue);
         queueState = QueueState.idle;
     }
 
@@ -93,6 +94,7 @@ public class CombatTurnQueue : MonoBehaviour
     private void ClearCombatQueue() 
     {
         awaitToContinue = false;
+        Debug.Log($"[CombatQueue] Cleared with [{queue.Count}] animations left.");
         queue.Clear();
         queueState = QueueState.idle;
     }

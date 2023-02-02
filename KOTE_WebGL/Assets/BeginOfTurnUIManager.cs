@@ -1,16 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using DG.Tweening;
 using TMPro;
-using System;
+using UnityEngine;
 
 public class BeginOfTurnUIManager : MonoBehaviour
 {
     public TextMeshProUGUI playerLabel;
     public TextMeshProUGUI enemyLabel;
 
-    bool firstPlay = true;
     string lastTurn;
     bool inAnimation = false;
     bool animationInterrupted = false;

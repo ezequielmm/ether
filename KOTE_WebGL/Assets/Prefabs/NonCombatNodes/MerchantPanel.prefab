@@ -1515,7 +1515,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 22
+  m_text: ...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 498f6c917a308a24f9808660f1e0b631, type: 2}
   m_sharedMaterial: {fileID: -8945685614816413018, guid: 498f6c917a308a24f9808660f1e0b631,
@@ -2512,7 +2512,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.8374109}
-  m_AnchoredPosition: {x: 0.14569092, y: -0.78393555}
+  m_AnchoredPosition: {x: 0.14575195, y: -0.78393555}
   m_SizeDelta: {x: -0.29103756, y: -1.5678372}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5776423260325641175
@@ -3332,6 +3332,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5587173521213615958}
     m_Modifications:
+    - target: {fileID: 902047205667501318, guid: d70a85a2e42ea4540b500ab28ec9ecbd,
+        type: 3}
+      propertyPath: m_ScrollSensitivity
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 902047205774541834, guid: d70a85a2e42ea4540b500ab28ec9ecbd,
         type: 3}
       propertyPath: m_SizeDelta.y
@@ -3645,7 +3650,7 @@ PrefabInstance:
     - target: {fileID: 902047207203648268, guid: d70a85a2e42ea4540b500ab28ec9ecbd,
         type: 3}
       propertyPath: m_Value
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 902047207386941235, guid: d70a85a2e42ea4540b500ab28ec9ecbd,
         type: 3}
@@ -3824,6 +3829,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 5873167926407546892}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6702790262385413176 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 902047205774541876, guid: d70a85a2e42ea4540b500ab28ec9ecbd,
+    type: 3}
+  m_PrefabInstance: {fileID: 5873167926407546892}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6702790262385413125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6702790262492282121 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 902047205667501317, guid: d70a85a2e42ea4540b500ab28ec9ecbd,
@@ -3852,6 +3869,7 @@ MonoBehaviour:
     type: 3}
   commonCardsContainer: {fileID: 6702790263718957633}
   gridCardsContainer: {fileID: 6702790262385413125}
+  gridLayout: {fileID: 6702790262385413176}
   scaleOnHover: 1
   useBackgroundImage: 0
   OnCardClick:

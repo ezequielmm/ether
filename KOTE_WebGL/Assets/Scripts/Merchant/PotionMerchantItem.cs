@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class PotionMerchantItem : MerchantItem<MerchantData.Merchant<PotionData>>
 {
-    [SerializeField]
-    PotionManager potionManager;
+    [SerializeField] PotionManager potionManager;
+
     public override void Populate(MerchantData.Merchant<PotionData> data)
     {
         potionManager.enabled = true;
         base.Populate(data);
         potionManager.Populate(data.item);
-        potionManager.GetComponent<TooltipAtCursor>().enabled = false;
+        TooltipAtCursor tooltipManager = potionManager.GetComponent<TooltipAtCursor>();
+        tooltipManager.limit = -Vector2.one;
+        tooltipManager.anchor = TooltipController.Anchor.TopLeft;
         potionManager.enabled = false;
     }
 }

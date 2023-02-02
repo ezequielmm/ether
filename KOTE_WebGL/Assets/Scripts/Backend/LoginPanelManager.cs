@@ -28,10 +28,6 @@ public class LoginPanelManager : MonoBehaviour
     [Space(20)]
     public GameObject loginContainer;
 
-    [Space(20)]
-    [SerializeField]
-    private MetaMask metaMask;
-
     private bool validEmail;
     private bool validLogin;
 
@@ -61,12 +57,14 @@ public class LoginPanelManager : MonoBehaviour
 
     public void OnShowPassword()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         passwordInputField.contentType = showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
         passwordInputField.ForceLabelUpdate();
     }
 
     public void OnRegisterButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         ActivateInnerLoginPanel(false);
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
@@ -82,10 +80,15 @@ public class LoginPanelManager : MonoBehaviour
 
         ActivateInnerLoginPanel(false);
 
-        if (metaMask.HasMetamask)
+        if (MetaMaskAdapter.Instance.HasMetamask())
         {
-            metaMask.GetAccount();
+            MetaMaskAdapter.Instance.RequestWallet();
         }
+        
+        // hardcoded wallet data for testing, metamask doesn't exist in editor so we have to send a wallet id manually
+#if UNITY_EDITOR
+        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke("0xA10f15B66a2e05c4e376F8bfC35aE662438153Be");
+#endif
     }
 
     private void OnLoginError(string errorMessage)
@@ -107,11 +110,6 @@ public class LoginPanelManager : MonoBehaviour
         validLoginPassword.gameObject.SetActive(false);
 
         loginButton.interactable = false;
-
-        if (metaMask == null) 
-        {
-            metaMask = FindObjectOfType<MetaMask>();
-        }
     }
 
     private void Update()
@@ -129,6 +127,7 @@ public class LoginPanelManager : MonoBehaviour
 
     public void OnLogin()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         validLoginEmail.gameObject.SetActive(false);
         validLoginPassword.gameObject.SetActive(false);
 

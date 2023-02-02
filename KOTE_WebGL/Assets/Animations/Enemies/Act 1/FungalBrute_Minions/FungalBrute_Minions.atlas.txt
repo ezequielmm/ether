@@ -1,0 +1,62 @@
+FungalBrute_Minions.png
+size:1024,1024
+filter:Linear,Linear
+pma:true
+scale:0.73
+Body C
+bounds:580,571,93,91
+offsets:0,14,93,105
+rotate:270
+Head + LEG(M) D
+bounds:185,542,186,217
+rotate:180
+Head A
+bounds:342,522,150,237
+Head B
+bounds:2,560,234,199
+Head C
+bounds:460,515,153,59
+LEG (L) F B
+bounds:460,486,68,27
+LEG (R) F B
+bounds:529,486,58,27
+LEG - L C
+bounds:681,565,182,76
+rotate:90
+LEG - L D
+bounds:549,619,162,140
+LEG - M(L) C
+bounds:289,501,66,88
+LEG - M(R) C
+bounds:144,674,64,85
+rotate:180
+LEG - R(M) C
+bounds:621,507,138,61
+LEG - R(R) C
+bounds:147,488,91,62
+rotate:180
+LEG -R D
+bounds:357,488,101,50
+rotate:180
+Leg (L) B
+bounds:675,487,74,37
+Leg (M) B
+bounds:159,647,26,42
+rotate:90
+Leg (R) B
+bounds:2,615,62,41
+rotate:90
+Leg - left A
+bounds:2,491,72,43
+Legs - front A
+bounds:241,485,53,51
+offsets:0,0,55,51
+rotate:270
+Legs - right A
+bounds:590,485,31,28
+Tail A
+bounds:2,507,96,144
+rotate:90
+shadow
+bounds:480,626,100,98
+rotate:90

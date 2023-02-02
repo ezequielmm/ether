@@ -1,7 +1,7 @@
 using UnityEngine;
 
-public static class GameSettings 
-{   
+public static class GameSettings
+{
     //MAP
     public const float COMPLETED_NODE_SCALE = 0.9f;
     public const bool COLOR_UNAVAILABLE_MAP_NODES = true;
@@ -23,7 +23,9 @@ public static class GameSettings
     public static float PORTAL_ACTIVATION_ANIMATION_TIME = 2;
     public static float MAP_STRETCH_LIMIT = 2f;
     public const float ACTIVE_NODE_PULSE_TIME = 1f;
-    
+    public const bool MAP_AUTO_SCROLL_ACTIVE = false;
+    public const bool SHOW_MAP_REVEAL_ON_PORTAL = false;
+
     /// <summary>
     /// Negitive to go to the left, positive for the right. Between -1 and 1. -1 is left edge, 1 is right edge, and 0 is center.
     /// This affects where the knight is attepted to be put on the screen when focused.
@@ -46,6 +48,7 @@ public static class GameSettings
     public static float CARD_SFX_MIN_RATE = 0.1f; // Time in seconds between SFX of cards
     public static float CARD_DRAW_SHOW_TIME = 0.5f;
     public static float EXHAUST_EFFECT_DURATION = 0.6f;
+    public static float SHOW_NEW_CARD_DURATION = 1;
 
     // COMBAT
     public const float COMBAT_ANIMATION_DELAY = 0.5f;
@@ -57,6 +60,7 @@ public static class GameSettings
     public static float INTENT_MAX_HEIGHT = 3.2f;
     public static float INTENT_HEIGHT = 1.1f;
     public static float HEALTH_HEIGHT = 0.9f;
+    public static bool SHOW_PLAYER_INJURED_IDLE = false;
 
     // Text Effects
     public static Color DEFAUT_TEXTEFFECT_COLOR = Color.green;
@@ -66,12 +70,43 @@ public static class GameSettings
     public const float DEFAUT_TEXTEFFECT_X_SPREAD = 1f;
     public const int DEFAUT_TEXTEFFECT_POOL_SIZE = 10;
 
+    // UI
+    public const float PANEL_SCROLL_SPEED = 30f;
+    public const int ENCOUNTER_TEXT_BOX_CHARACTER_COUNT = 500;
 
+    // Connection
+    public const float MAX_TIMEOUT_SECONDS = 15;
 
-    /*//////////////  
-    ///Debug
-    //*/
-    public const bool DEBUG_MODE_ON = true;
+    // Player Skin Defaults
+    public static TraitSprite[] DEFAULT_SKIN_DATA = new[]
+    {
+        new TraitSprite{skinName ="Padding/Padding_Brown",
+        traitType = nameof(TraitTypes.Padding)
+        },
+        new TraitSprite{skinName ="Helmet/Helmet_Bucket",
+        traitType = nameof(TraitTypes.Helmet)
+        },
+        new TraitSprite
+        {
+            skinName = "Weapon/Weapon_Rusty_Sword",
+            traitType =  nameof(TraitTypes.Weapon)
+        },
+        new TraitSprite
+        {
+            skinName = "character_shadow",
+            traitType = nameof(TraitTypes.Shadow)
+        },
+        new TraitSprite
+        {
+            skinName = "character-nude",
+            traitType = nameof(TraitTypes.Base)
+        }
+    };
+
+/*//////////////  
+///Debug
+//*/
+    public const bool DEBUG_MODE_ON = false;
 
     
 }

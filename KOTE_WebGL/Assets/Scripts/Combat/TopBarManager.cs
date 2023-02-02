@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
-using UnityEditor;
-using Random = UnityEngine.Random;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class TopBarManager : MonoBehaviour
 {    
@@ -12,9 +8,13 @@ public class TopBarManager : MonoBehaviour
     public int currentHealth;
 
     public TMP_Text nameText;
-    public TMP_Text healthText;
     public TMP_Text coinsText;
     public TMP_Text stageText;
+    public TMP_Text healthBarText;
+
+
+    [SerializeField]
+    Slider healthBar;
 
     public GameObject classIcon, className, showmapbutton;
 
@@ -22,20 +22,10 @@ public class TopBarManager : MonoBehaviour
     private int maxHealth;
     private void Start()
     {
-        //TODO : Now, all this will be implemented after the websocket is connected
-        //GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
-        //GameManager.Instance.EVENT_CHARACTERSELECTED.AddListener(SetClassSelected);
+        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusupdate);
 
-        GameManager.Instance.EVENT_REQUEST_PROFILE.Invoke(PlayerPrefs.GetString("session_token"));
-
-        //currentClass = PlayerPrefs.GetString("class_selected");
-        //SetClassText(currentClass);
-        //SetHealth(Random.Range(30, 81));
-
-        GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetProfileInfo);
-        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStateUpdate);
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.AddListener(OnToggleMapIcon);
-        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.AddListener(UpdateStageText);
+        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.AddListener(UpdateStageText);
         GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnPlayerAttacked);
 
         // this has to be set here, as it is not visible in the inspector
@@ -61,18 +51,14 @@ public class TopBarManager : MonoBehaviour
 
     public void SetHealthText(int health)
     {
-        healthText.text = health + "/" + maxHealth;
+        healthBar.value = (float)(health) / maxHealth;
+        healthBarText.text = $"{health}/{maxHealth}";
     }
 
     public void SetCoinsText(int coins)
     {
+        Debug.Log($"[TopBarManager] Coins: {coins}");
         coinsText.text = coins.ToString();
-    }
-
-    public void SetProfileInfo(ProfileData profileData)
-    {
-        SetNameText(profileData.data.name);
-        SetCoinsText(profileData.data.coins);
     }
 
     public void OnPlayerAttacked(CombatTurnData combatTurnData) 
@@ -86,7 +72,7 @@ public class TopBarManager : MonoBehaviour
         }
     }
     
-    public void OnPlayerStateUpdate(PlayerStateData playerState) 
+    public void OnPlayerStatusupdate(PlayerStateData playerState) 
     {        
         SetNameText(playerState.data.playerState.playerName);
         maxHealth = playerState.data.playerState.hpMax;
@@ -99,18 +85,32 @@ public class TopBarManager : MonoBehaviour
         currentClass = classSelected;
     }
 
+    public void SetHealth(int health)
+    {
+        currentHealth = health;
+        //SetHealthText(currentHealth);
+    }
+    
     public void OnMapButtonClicked()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Top Bar Click");
         GameManager.Instance.EVENT_MAP_ICON_CLICKED.Invoke();
     }
 
     public void OnSettingsButton()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Top Bar Click");
         GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
-    public void OnDeckButtonClicked()
+    public void OnDeskButtonClicked()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Top Bar Click");
         GameManager.Instance.EVENT_CARD_PILE_CLICKED.Invoke(PileTypes.Deck);
+    }
+
+    public void OnGearButtonClicked()
+    {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Top Bar Click");
     }
 }

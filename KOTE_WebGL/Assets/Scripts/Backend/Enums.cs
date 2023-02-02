@@ -15,6 +15,7 @@ public enum PileTypes
     Exhausted,
     Discarded
 }
+
 [Serializable]
 public enum GameStatuses
 {
@@ -31,7 +32,7 @@ public enum GameStatuses
 }
 
 [Serializable]
-public enum PlayerState 
+public enum PlayerState
 {
     dying,
     dead
@@ -45,7 +46,7 @@ public enum EnemyState
 }
 
 [Serializable]
-public enum Size 
+public enum Size
 {
     medium = 0,
     tiny,
@@ -99,10 +100,9 @@ public enum NODE_STATUS
     active,
     available,
     disabled
-    
 }
 
-public enum ENEMY_INTENT 
+public enum ENEMY_INTENT
 {
     unknown = 0,
 
@@ -162,7 +162,7 @@ public enum STATUS
     blinded,
     blighted,
     oiled,
-    trapping,
+    trapped,
     mimic,
     moldy,
     squishy,
@@ -174,7 +174,7 @@ public enum STATUS
 }
 
 [Serializable]
-public enum EnemyTypes 
+public enum EnemyTypes
 {
     sporeMonger = 0,
     ancientOne,
@@ -189,7 +189,8 @@ public enum EnemyTypes
     swampGoblin2,
     thornWolf,
     trapelican,
-    treant
+    treant,
+    thornWolfPup
 }
 
 public enum EntityType
@@ -198,7 +199,7 @@ public enum EntityType
     Enemy
 }
 
-public enum PointerOrigin 
+public enum PointerOrigin
 {
     potion,
     card
@@ -207,10 +208,10 @@ public enum PointerOrigin
 [Serializable]
 public enum WS_DATA_REQUEST_TYPES
 {
-    Energy,//done
+    Energy, //done
     Health,
     Players,
-    CardsPiles,//done
+    CardsPiles, //done
     Enemies,
     EnemyIntents,
     Potions,
@@ -222,7 +223,9 @@ public enum WS_DATA_REQUEST_TYPES
     UpgradablePair,
     UpgradeCard,
     MerchantData,
-    TreasureData
+    TreasureData,
+    EncounterData,
+    Rewards
 }
 
 [Serializable]
@@ -242,6 +245,7 @@ public enum WS_MESSAGE_TYPES
     camp_update,
     combat_update,
     treasure_update,
+    end_treasure,
     enemy_intents,
     player_state_update,
     error,
@@ -259,7 +263,7 @@ public enum WS_MESSAGE_TYPES
 }
 
 [Serializable]
-public enum WS_COMBAT_ACTIONS 
+public enum WS_COMBAT_ACTIONS
 {
     begin_combat,
     update_statuses,
@@ -269,7 +273,8 @@ public enum WS_COMBAT_ACTIONS
 [Serializable]
 public enum WS_TREASURE_ACTIONS
 {
-    begin_treasure
+    begin_treasure,
+    continue_treasure
 }
 
 [Serializable]
@@ -281,11 +286,14 @@ public enum WS_MESSAGE_ACTIONS
     update_player,
     change_turn,
     create_card,
+    add_card,
     enemies_defeated,
     players_defeated,
     player_defeated,
+    show_rewards,
     select_another_reward,
-    show_map
+    show_map,
+    show_score
 }
 
 [Serializable]
@@ -341,6 +349,49 @@ public enum ConsoleCommands
     disable_register_panel,
     disable_armory_panel,
     disable_royal_houses_panel,
-    disable_node_numbers
+    disable_node_numbers,
+    enable_node,
+    enable_injured_idle,
+    disable_injured_idle,
+    reset_all,
+    use_nft,
+    get_score,
+    commit
 }
 
+[Serializable]
+public enum SoundTypes
+{
+    Card,
+    EnemyOffensive,
+    EnemyDefensive,
+    Knight,
+    UI
+}
+
+[Serializable]
+public enum MusicTypes
+{
+    Ambient,
+    Boss,
+    Music
+}
+
+[Serializable]
+public enum TraitTypes
+{
+    Breastplate,
+    Helmet,
+    Weapon,
+    Gauntlet,
+    Padding,
+    Crest,
+    Shield,
+    Pauldrons,
+    Sigil,
+    Vambrace,
+    Boots,
+    Legguard,
+    Shadow,
+    Base
+}

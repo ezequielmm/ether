@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5237346165803081541}
   - component: {fileID: 5237346165803081531}
   - component: {fileID: 5237346165803081540}
-  m_Layer: 3
+  m_Layer: 5
   m_Name: MapGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5237346165936166370}
   - component: {fileID: 5237346165936166369}
-  m_Layer: 3
+  m_Layer: 5
   m_Name: MapTiles
   m_TagString: MapPath
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5758494260201197930}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MapContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5758494260307054459}
   - component: {fileID: 5758494260307054458}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MapElements
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -303,49 +303,9 @@ MonoBehaviour:
   portalAnimation: {fileID: 5758494261437137035}
   nodesHolder: {fileID: 5758494260706819151}
   MapGrid: {fileID: 5237346165803081531}
-  grassTiles:
-  - {fileID: 11400000, guid: fe61cb737d5011946b46ef239cd16311, type: 2}
-  - {fileID: 11400000, guid: c80589c72f92d924ea07fe0e344f94e5, type: 2}
-  - {fileID: 11400000, guid: f4ee64a0fa1969948a8220bcfec91656, type: 2}
-  - {fileID: 11400000, guid: 8cb4268d615e0b7428dcd315ddd0e9a5, type: 2}
-  - {fileID: 11400000, guid: d009ce0cace00764387eb8870c187d17, type: 2}
-  - {fileID: 11400000, guid: 97107f64d75e94c498d9d54a9606abd1, type: 2}
-  - {fileID: 11400000, guid: 1c9cf543ffde5f94eb8065d1aff19032, type: 2}
-  lakeTiles:
-  - {fileID: 11400000, guid: 64f098f93d9e08341b95936e59ac1c7a, type: 2}
-  - {fileID: 11400000, guid: d28e95efe4b474a4688479c0ee2b352f, type: 2}
-  - {fileID: 11400000, guid: 4f785e97efdea47408448bdc9bdab87f, type: 2}
-  - {fileID: 11400000, guid: 8de0b825e33c0a846a4183a19f557c8d, type: 2}
-  - {fileID: 11400000, guid: 74f0b6b4fa2aca04297c1e905f04cc80, type: 2}
-  - {fileID: 11400000, guid: 54943c864c000a845ba542c7db2074e0, type: 2}
-  mountainTiles:
-  - {fileID: 11400000, guid: b0dd8cd644c1cfc4d80f282a0d8bd1c4, type: 2}
-  - {fileID: 11400000, guid: 8da42fe50ecaa6442b4852d3b15929ca, type: 2}
-  - {fileID: 11400000, guid: e143bbe9ba3df7644b66bbcb61ffce5a, type: 2}
-  - {fileID: 11400000, guid: e4153d6f0337b474eb941165c2224b93, type: 2}
-  - {fileID: 11400000, guid: 88c8217db914bc5479523a0bb5e04063, type: 2}
-  - {fileID: 11400000, guid: 5b2bdff46b7e6e246a0822db2a88bd17, type: 2}
-  - {fileID: 11400000, guid: 5a07784cce8756e4da48d3287229488b, type: 2}
-  - {fileID: 11400000, guid: ff80873bc6e28e34fa0390fa9728fc88, type: 2}
-  - {fileID: 11400000, guid: 887a015b58ca9de47a1d9c88ba53b016, type: 2}
-  - {fileID: 11400000, guid: e73d3ef291b6d75408de84916107d8fe, type: 2}
-  - {fileID: 11400000, guid: 7a3843cb2b3b4ef4e89d4ed7eabaa047, type: 2}
-  - {fileID: 11400000, guid: 982c672ea49901649b3b93ff1568f223, type: 2}
-  - {fileID: 11400000, guid: 24398e25c40b4a74f9d58c5a2220fb9f, type: 2}
-  - {fileID: 11400000, guid: 1d6f7f21a09a3454594874bed841a130, type: 2}
-  - {fileID: 11400000, guid: e6dc373cd4ef1e6408cb599e8624e579, type: 2}
-  - {fileID: 11400000, guid: 8a03666b0057ab8498764c47ee59a1ed, type: 2}
-  - {fileID: 11400000, guid: 3c66d54d07c635941977d882a2a400da, type: 2}
-  - {fileID: 11400000, guid: b6736fc225dbd4e47a66958b7d523d67, type: 2}
-  - {fileID: 11400000, guid: a4dba352ec27a78498d570c12f929fb8, type: 2}
-  forestTiles:
-  - {fileID: 11400000, guid: 69675d86ec723a642aadced6c9d38ca3, type: 2}
-  - {fileID: 11400000, guid: 7717e52aaed6fd44ca2b4b728b1f36bd, type: 2}
-  - {fileID: 11400000, guid: c193cd5766f1f3947bd86dac3ce79d2a, type: 2}
-  - {fileID: 11400000, guid: 6a2194c838d09594db159202f277b8e2, type: 2}
-  - {fileID: 11400000, guid: a95839de4e580b74cb6a3e4a6a013c9f, type: 2}
-  - {fileID: 11400000, guid: c9383c8f40334fb4fb5c116500e61b01, type: 2}
-  - {fileID: 11400000, guid: d48cff574e51faf4482e769c41bc4826, type: 2}
+  actTileLists:
+  - {fileID: 11400000, guid: defc2e235d7d3c049a83cf2e7643bab2, type: 2}
+  - {fileID: 11400000, guid: f1213198e0c4fc645b4c8a0c7def3d61, type: 2}
   startPoint: {x: 0, y: -4, z: 0}
   startX: 0
   startY: 4
@@ -353,8 +313,8 @@ MonoBehaviour:
   endY: 4
   LeftButton: {fileID: 5758494260838671926}
   RightScrollButton: {fileID: 5758494260742172184}
-  pathCurveStrengthRange: {x: 0.3, y: 0.7}
-  angleFuzziness: {x: -30, y: 30}
+  pathCurveStrengthRange: {x: 1.5, y: 2}
+  angleFuzziness: {x: -10, y: 10}
   pathPositionFuzziness: 0.25
   columnFuzziness: {x: 0, y: 2.25}
   mapCamera: {fileID: 0}
@@ -370,7 +330,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5758494260706819150}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: NodesHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -407,7 +367,7 @@ GameObject:
   - component: {fileID: 5758494260742172186}
   - component: {fileID: 5758494260742172197}
   - component: {fileID: 5758494260742172196}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: rightScrollBt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -532,7 +492,7 @@ GameObject:
   - component: {fileID: 5758494260838671920}
   - component: {fileID: 5758494260838671923}
   - component: {fileID: 5758494260838671922}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: leftScrollBt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -657,7 +617,7 @@ GameObject:
   - component: {fileID: 5758494260882502598}
   - component: {fileID: 5758494260882502592}
   - component: {fileID: 5758494260882502593}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Sprite Mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -785,7 +745,7 @@ GameObject:
   - component: {fileID: 5758494261437137033}
   - component: {fileID: 5758494261437137035}
   - component: {fileID: 5758494261437137032}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PortalAnimation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5596,7 +5556,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5758494261547567398}
   - component: {fileID: 5758494261547567393}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MapBg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5680,7 +5640,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5758494261910173601}
   - component: {fileID: 5758494261910173600}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: knight 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

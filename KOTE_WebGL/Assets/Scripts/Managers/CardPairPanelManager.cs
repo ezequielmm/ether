@@ -8,7 +8,7 @@ public class CardPairPanelManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.EVENT_UPGRADE_SHOW_UPGRADE_PAIR.AddListener(OnShowUpgradePair);
+        GameManager.Instance.EVENT_SHOW_UPGRADE_PAIR.AddListener(OnShowUpgradePair);
         GameManager.Instance.EVENT_UPGRADE_CONFIRMED.AddListener(OnUpgradeConfirmed);
         cardPairPanel.SetActive(false);
     }
@@ -40,14 +40,16 @@ public class CardPairPanelManager : MonoBehaviour
 
     public void OnPairUpgradeConfirm()
     {
-        GameManager.Instance.EVENT_CAMP_UPGRADE_CARD.Invoke(uiCardPair[0].id);
+        GameManager.Instance.EVENT_USER_CONFIRMATION_UPGRADE_CARD.Invoke(uiCardPair[0].id);
     }
 
     public void OnUpgradeConfirmed(SWSM_ConfirmUpgrade upgradeData)
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Upgrade");
         uiCardPair[0].gameObject.transform.DOScale(Vector3.zero, 1)
             .OnComplete(() =>
             {
+                
                 cardPairPanel.SetActive(false);
                 GameManager.Instance.EVENT_HIDE_COMMON_CARD_PANEL.Invoke();
             });

@@ -200,7 +200,7 @@ public class MerchantNodeManager : MonoBehaviour
         buyButtonText.text = "BUY";
         selectedCard = null;
         upgradeCard = false;
-        serviceCardPanel.HideCards();
+        serviceCardPanel.HideCardSelectPanel();
         cardPairPanel.HidePairPannel();
     }
 
@@ -222,11 +222,13 @@ public class MerchantNodeManager : MonoBehaviour
         // Item Purchase
         if (selectedItem != null)
         {
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Confirm Purchase");
             GameManager.Instance.EVENT_MERCHANT_BUY.Invoke(selectedItem.Type.ToLower(), selectedItem.Id);
         }
         // Service Purchase
         else if (selectedCard != null) 
         {
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Confirm Purchase");
             GameManager.Instance.EVENT_MERCHANT_BUY.Invoke(upgradeCard ? "upgrade" : "remove", selectedCard.id);
         }
     }
@@ -234,6 +236,7 @@ public class MerchantNodeManager : MonoBehaviour
     bool upgradeCard = false;
     public void UpgradeCard() 
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         ResetItems();
         // Run upgrade card pannel
         ShowCardPanel(merchantData.upgradeableCards);
@@ -243,6 +246,7 @@ public class MerchantNodeManager : MonoBehaviour
 
     public void RemoveCard() 
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         ResetItems();
         // Run remove card pannel
         ShowCardPanel(merchantData.playerCards);
@@ -313,6 +317,7 @@ public class MerchantNodeManager : MonoBehaviour
     public void CloseMerchantPanel()
     {
         ToggleVisibility(false);
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
     }
 }

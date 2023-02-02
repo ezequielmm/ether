@@ -43,7 +43,7 @@ public class SelectCardsPanel : CardPanelBase
         GameManager.Instance.EVENT_SHOW_DIRECT_SELECT_CARD_PANEL.AddListener(OnShowDirectSelectPanel);
         hideCardOverlay.gameObject.SetActive(false);
     }
-
+    
     private void OnShowSelectCardPanel(List<Card> selectableCards, SelectPanelOptions selectOptions,
         Action<List<string>> onFinishedSelection)
     {
@@ -104,7 +104,10 @@ public class SelectCardsPanel : CardPanelBase
                 selectedCards++;
                 selectedCardIds.Add(cardManager.GetId());
                 cardManager.isSelected = true;
-                ShowCardInCenter(cardManager.gameObject, cardManager);
+                if (selectOptions.ShowCardInCenter)
+                {
+                    ShowCardInCenter(cardManager.gameObject, cardManager);
+                }
             }
             else if (cardManager.isSelected)
             {
@@ -125,7 +128,11 @@ public class SelectCardsPanel : CardPanelBase
             else selectButton.gameObject.SetActive(false);
 
             UpdateSelectButton();
-            cardManager.DetermineToggleColor();
+            // only show the selection frame if it's not in the center
+            if (!selectOptions.ShowCardInCenter)
+            {
+                cardManager.DetermineToggleColor();
+            }
         });
     }
 
@@ -179,14 +186,15 @@ public class SelectCardsPanel : CardPanelBase
     {
         cardManager.cardSelectorToggle.onValueChanged.AddListener((isOn) =>
         {
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             selectAction.Invoke(cardManager.GetId());
         });
     }
 
     public void HidePanel()
     {
-        commonCardsContainer.SetActive(false);
         ClearSelectList();
+        HideCardSelectPanel();
     }
 
     private void ClearSelectList()

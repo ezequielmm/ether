@@ -4,23 +4,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EndTurnManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class EndTurnManager : MonoBehaviour
 {
+    [SerializeField]
+    EndTurnButtonManager endTurnButtonManager;
+
     bool listenForEmptyQueue = false;
     float timeLimit;
     bool isPlayersTurn = true;
-    float originalPos => desiredLocation.position.x;
-    RectTransform rectTransform;
-
-    public Transform desiredLocation;
 
     void Start()
     {
-        this.transform.position = desiredLocation.position;
-        rectTransform = transform as RectTransform;
         GameManager.Instance.EVENT_CHANGE_TURN.AddListener(onTurnChange);
         GameManager.Instance.EVENT_COMBAT_QUEUE_EMPTY.AddListener(onQueueEmpty);
         GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.AddListener(onQueueActionEnqueue);
+        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.AddListener(OnCombatEnd);
     }
 
     void onQueueEmpty() {
@@ -40,7 +38,7 @@ public class EndTurnManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             {
                 Debug.LogWarning($"[EndTurnManager] Enemy Turn Empty Queue Timelimit (3s). No attack present?");
                 GameManager.Instance.EVENT_END_TURN_CLICKED.Invoke();
-                GameManager.Instance.EVENT_CLEAR_COMBAT_QUEUE.Invoke();
+                GameManager.Instance.EVENT_COMBAT_FORCE_CLEAR.Invoke();
                 timeLimit = 0;
             }
         }
@@ -55,13 +53,13 @@ public class EndTurnManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if (who == "player")
         {
-            transform.DOMoveX(originalPos, 0.5f).SetDelay(4);
+            endTurnButtonManager.Enable();
             listenForEmptyQueue = false;
             isPlayersTurn = true;
         }
         else if(who == "enemy")
         {
-            transform.DOMoveX(originalPos + Screen.width * 0.15f, 0.5f);
+            endTurnButtonManager.Disable();
             listenForEmptyQueue = true;
             timeLimit += 3; // This is only because sometimes the enemy does nothing
             isPlayersTurn = false;
@@ -72,22 +70,16 @@ public class EndTurnManager : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if (isPlayersTurn)
         {
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             GameManager.Instance.EVENT_END_TURN_CLICKED.Invoke();
         }
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    private void OnCombatEnd(GameStatuses gameStatus)
     {
-        Vector3 anchorPoint = new Vector3(desiredLocation.position.x - ((rectTransform.rect.width * rectTransform.lossyScale.x) * 0.5f),
-            desiredLocation.position.y - ((rectTransform.rect.height * rectTransform.lossyScale.y) * 0.5f), 0);
-        anchorPoint = Camera.main.ScreenToWorldPoint(anchorPoint);
-        // Tooltip On
-        GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(ToolTipValues.Instance.EndTurnButtonTooltips, TooltipController.Anchor.BottomRight, anchorPoint, null);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        // Tooltip Off
-        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
+        if (gameStatus == GameStatuses.RewardsPanel || gameStatus == GameStatuses.GameOver)
+        {
+            endTurnButtonManager.Disable();
+        }
     }
 }

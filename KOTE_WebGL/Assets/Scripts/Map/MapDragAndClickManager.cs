@@ -16,7 +16,7 @@ public class MapDragAndClickManager : MonoBehaviour
         {
             if (Time.fixedTime - lastTimeClick < GameSettings.DOUBLE_CLICK_TIME_DELTA)
             {
-                Debug.Log("Double click!");
+                //Debug.Log("Double click!");
                 lastTimeClick = 0;
                 isDoubleClick = true;
                 StartCoroutine(TemporailyBlockDrag());
@@ -24,13 +24,13 @@ public class MapDragAndClickManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("click!");
+                //Debug.Log("click!");
                 lastTimeClick = Time.fixedTime;
             }
         }
         else
         {
-            Debug.Log("First click!");
+            //Debug.Log("First click!");
             lastTimeClick = Time.fixedTime;
         }
 

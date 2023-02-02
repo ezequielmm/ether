@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,10 +22,12 @@ public class TreasureManager : MonoBehaviour
     public void OpenChest()
     {
         GameManager.Instance.EVENT_TREASURE_OPEN_CHEST.Invoke();
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Open Chest");
     }
 
     public void OnTreasureDone()
     {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
     }
 
@@ -72,7 +75,7 @@ public class TreasureManager : MonoBehaviour
                 OnDamageTrap(chestResult);
                 break;
             default:
-                ShowRewardsPanel(chestResult.data.data.rewards);
+                ShowRewardsPanel();
                 break;
         }
     }
@@ -91,17 +94,7 @@ public class TreasureManager : MonoBehaviour
 
     private void OnDamageTrap(SWSM_ChestResult chestResult)
     {
-        GameManager.Instance.EVENT_DAMAGE.Invoke(new CombatTurnData.Target
-        {
-            defenseDelta = 0,
-            finalDefense = 0,
-            effectType = "damage",
-            finalHealth = 0,
-            healthDelta = chestResult.data.data.trapped.damage,
-            statuses = new List<StatusData.Status>(),
-            targetId = "player",
-            targetType = "player"
-        });
+        GameManager.Instance.EVENT_ENCOUNTER_DAMAGE.Invoke(chestResult.data.data.trapped.damage);
         ShowTrappedMessage(chestResult);
     }
 
@@ -109,22 +102,13 @@ public class TreasureManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_SHOW_COMBAT_OVERLAY_TEXT_WITH_ON_COMPLETE.Invoke(
             chestResult.data.data.trapped.trappedText,
-            () => { ShowRewardsPanel(chestResult.data.data.rewards); });
+            ShowRewardsPanel);
     }
 
-    private void ShowRewardsPanel(List<RewardItemData> rewardsData)
+    private void ShowRewardsPanel()
     {
         // have to package the rewards in a SWSM_RewardsData to send it
-        GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(new SWSM_RewardsData
-        {
-            data = new SWSM_RewardsData.Data
-            {
-                data = new SWSM_RewardsData.Data.RewardsData
-                {
-                    rewards = rewardsData
-                }
-            }
-        });
+        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Rewards);
         GameManager.Instance.EVENT_SHOW_REWARDS_PANEL.Invoke(true);
     }
 }

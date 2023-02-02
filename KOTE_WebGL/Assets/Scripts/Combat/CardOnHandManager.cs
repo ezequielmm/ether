@@ -1,11 +1,9 @@
-using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
 public class CardOnHandManager : MonoBehaviour
 {
@@ -68,11 +66,13 @@ public class CardOnHandManager : MonoBehaviour
     [Header("Movement")] public ParticleSystem movePs;
 
     public Card thisCardValues;
+    private bool hasUnplayableKeyword;
     private bool activateCardAfterMove;
     private bool cardIsShowingUp;
     private bool pointerIsActive;
     private bool cardIsDisplaced;
     private bool discardAfterMove;
+    private bool cardBeingDragged;
 
     private int currentPlayerEnergy;
 
@@ -110,10 +110,8 @@ public class CardOnHandManager : MonoBehaviour
         collider = GetComponent<Collider2D>();
         mySequence = DOTween.Sequence();
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
-        GameManager.Instance.EVENT_MOVE_CARD.AddListener(OnCardToMove);
         GameManager.Instance.EVENT_CARD_SHOWING_UP.AddListener(OnCardMouseShowingUp);
         GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);
-        GameManager.Instance.EVENT_CARD_CREATE.AddListener(OnCreateCard);
         var death = gameObject.AddComponent<DestroyOnGameStatus>();
         death.causesOfDeath.Add(new DestroyOnGameStatus.CauseOfDeath()
         {
@@ -130,25 +128,18 @@ public class CardOnHandManager : MonoBehaviour
         };
     }
 
-    private void OnCreateCard(string cardID)
-    {
-        if (cardID == thisCardValues.id)
-        {
-           MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, true);
-        }
-    }
-
     private void OnCardMouseExit(string cardId)
     {
         if (cardId != thisCardValues.id && !cardIsShowingUp)
         {
+            // Debug.Log("[OnCardMouseExit]");
             ResetCardPosition();
         }
     }
 
     private void OnCardMouseShowingUp(string cardId, Vector3 cardPos)
     {
-        if (cardId != thisCardValues.id)
+        if (cardId != thisCardValues.id && cardActive)
         {
             // Debug.Log("Check mouse is left or right "+ TransformMouseToOrtho().x+"/"+this.transform.position.x);            
 
@@ -160,50 +151,6 @@ public class CardOnHandManager : MonoBehaviour
 
     static float delay;
 
-    private void OnCardToMove(CardToMoveData data, float delayIndex)
-    {
-        if (thisCardValues.id == data.id)
-        {
-            System.Enum.TryParse(data.source, out CARDS_POSITIONS_TYPES origin);
-            System.Enum.TryParse(data.destination, out CARDS_POSITIONS_TYPES destination);
-            if (origin == CARDS_POSITIONS_TYPES.discard)
-            {
-                delay += 0.1f;
-            }
-
-            if (!(origin == CARDS_POSITIONS_TYPES.draw && destination == CARDS_POSITIONS_TYPES.hand))
-            {
-                delayIndex = 0;
-            }
-
-            float internalDelay = 0;
-            if (delayIndex > 0)
-            {
-                internalDelay += 1;
-            }
-
-            if (inTransit)
-            {
-                delay += 1.1f;
-            }
-
-            if (delay > 0 || delayIndex > 0)
-            {
-                StartCoroutine(MoveAfterTime(delay + (delayIndex * GameSettings.CARD_DRAW_SHOW_TIME) + internalDelay,
-                    origin, destination));
-            }
-            else
-            {
-                MoveCard(origin, destination);
-            }
-        }
-    }
-
-    private IEnumerator MoveAfterTime(float delay, CARDS_POSITIONS_TYPES origin, CARDS_POSITIONS_TYPES destination)
-    {
-        yield return new WaitForSeconds(delay);
-        MoveCard(origin, destination);
-    }
 
     private void OnUpdateEnergy(int currentEnergy, int maxEnergy)
     {
@@ -215,7 +162,7 @@ public class CardOnHandManager : MonoBehaviour
         }
     }
 
-    public void Populate(Card card, int energy)
+    internal void Populate(Card card, int energy)
     {
         //Debug.Log(card);
         //cardidTF.SetText(card.id);
@@ -242,6 +189,7 @@ public class CardOnHandManager : MonoBehaviour
         {
             frameSprite.sprite = cardAssetManager.GetFrame(card.pool);
         }
+
         bannerSprite.sprite = cardAssetManager.GetBanner(card.rarity);
         cardImage.sprite = cardAssetManager.GetCardImage(card.cardId);
         /* this.id = card.id;
@@ -270,11 +218,95 @@ public class CardOnHandManager : MonoBehaviour
             }
         }
 
+        if (card.keywords != null && card.keywords.Contains("unplayable"))
+        {
+            hasUnplayableKeyword = true;
+        }
 
         UpdateCardBasedOnEnergy(energy);
     }
 
-    public bool MoveCardIfClose(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType)
+    private void UpdateCardEnergyText(int energy)
+    {
+        string cardEnergy = Mathf.Max(energy, 0).ToString();
+        if (energy < 0)
+        {
+            cardEnergy = "X";
+        }
+
+        energyTF.text = cardEnergy;
+        thisCardValues.energy = energy;
+        UpdateCardBasedOnEnergy(currentPlayerEnergy);
+    }
+
+    public void ShowAddedCard(AddCardData addCardData)
+    {
+        GameManager.Instance.EVENT_MOVE_CARDS.Invoke(new List<(CardToMoveData, float)>
+        {
+            (new CardToMoveData
+            {
+                destination = addCardData.destination,
+                id = addCardData.card.id,
+                source = "none"
+            }, GameSettings.SHOW_NEW_CARD_DURATION)
+        });
+    }
+
+    public Sequence OnCardToMove(CardToMoveData data, float delayIndex)
+    {
+        Sequence returnSequence = null;
+        if (thisCardValues.id == data.id)
+        {
+            Enum.TryParse(data.source, out CARDS_POSITIONS_TYPES origin);
+            Enum.TryParse(data.destination, out CARDS_POSITIONS_TYPES destination);
+            if (origin == CARDS_POSITIONS_TYPES.discard)
+            {
+                delay += 0.1f;
+            }
+
+            if (!(origin == CARDS_POSITIONS_TYPES.draw && destination == CARDS_POSITIONS_TYPES.hand) &&
+                origin != CARDS_POSITIONS_TYPES.none)
+            {
+                delayIndex = 0;
+            }
+
+            float internalDelay = 0;
+            if (delayIndex > 0)
+            {
+                internalDelay += 1;
+            }
+
+            if (inTransit)
+            {
+                delay += 1.1f;
+            }
+
+            if (delay > 0 || delayIndex > 0)
+            {
+                returnSequence = MoveAfterTime(delay + (delayIndex * GameSettings.CARD_DRAW_SHOW_TIME) + internalDelay,
+                    origin, destination);
+            }
+            else
+            {
+                returnSequence = MoveCard(origin, destination);
+            }
+
+            if (data.card != null && data.card.name != null) UpdateCardEnergyText(data.card.energy);
+        }
+
+        return returnSequence;
+    }
+
+    private Sequence MoveAfterTime(float delay, CARDS_POSITIONS_TYPES origin, CARDS_POSITIONS_TYPES destination)
+    {
+        Sequence sequence = DOTween.Sequence();
+        sequence.Rewind();
+        sequence.PrependInterval(delay);
+        return MoveCard(origin, destination, sequence: sequence, sequenceStartPoint: delay);
+    }
+
+    public bool TryMoveCardIfClose(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType,
+        out Sequence sequence)
     {
         Vector3 origin = new Vector3();
         switch (originType)
@@ -295,23 +327,32 @@ public class CardOnHandManager : MonoBehaviour
 
         if (Mathf.Abs((this.transform.position - origin).magnitude) <= 0.1f)
         {
-            MoveCard(originType, destinationType);
+            sequence = MoveCard(originType, destinationType);
             return true;
         }
         else
         {
+            sequence = null;
             // Debug.Log($"[CardOnHandManager] Card {thisCardValues.id} is not from {originType} and will not be moved to {destinationType}.");
             return false;
         }
     }
 
-    public void MoveCard(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType,
-        bool activateCard = false, Vector3 pos = default(Vector3), float delay = 0)
+
+    public Sequence MoveCard(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType,
+        Vector3 pos = default(Vector3), float moveDelay = 0, Sequence sequence = null, float sequenceStartPoint = 0)
     {
-        //  Debug.Log("[CardOnHandManager] MoveCard = " + originType + " to " + destinationType + "........card id: " +                  thisCardValues.id);
+        if (sequence == null)
+        {
+            sequence = DOTween.Sequence();
+            sequence.Rewind();
+        }
+
+        Debug.Log("[CardOnHandManager] MoveCard = " + originType + " to " + destinationType + "........card id: " +
+                  thisCardValues.id);
         movePs.Play();
 
-        Debug.Log("[CardOnHandManager] Card Is Now Moving");
+        //   Debug.Log("[CardOnHandManager] Card Is Now Moving");
 
         Vector3 origin = new Vector3();
         Vector3 destination = new Vector3();
@@ -333,10 +374,13 @@ public class CardOnHandManager : MonoBehaviour
                 origin = exhaustPileOrthoPosition;
                 transform.localScale = Vector3.one * 0.2f;
                 break;
+            case CARDS_POSITIONS_TYPES.none:
+                origin = Vector3.zero;
+                break;
         }
 
         activateCardAfterMove = false;
-        
+
         currentPosition = destinationType;
 
         if (pos.magnitude > 0)
@@ -396,38 +440,37 @@ public class CardOnHandManager : MonoBehaviour
         cardActive = false;
         cardcontent.SetActive(true);
 
-        if (delay > 0)
+        if (moveDelay > 0)
         {
             inTransit = true;
-            transform.DOMove(destination, 1f).SetDelay(delay, true).SetEase(Ease.InCirc).From(origin).OnComplete(() =>
-            {
-                GameManager.Instance.EVENT_REARRANGE_HAND.Invoke();
-            });
+            sequence.Insert(sequenceStartPoint,
+                transform.DOMove(destination, 1f).SetDelay(moveDelay, true).SetEase(Ease.InCirc).From(origin));
             if (destinationType == CARDS_POSITIONS_TYPES.hand)
             {
                 transform.localScale = Vector3.zero;
-                transform.DOScale(Vector3.one, 1f).SetDelay(delay, true).SetEase(Ease.OutElastic)
-                    .OnComplete(OnMoveCompleted);
+                sequence.Insert(sequenceStartPoint, transform.DOScale(Vector3.one, 1f).SetDelay(moveDelay, true)
+                    .SetEase(Ease.OutElastic)
+                    .OnComplete(OnMoveCompleted));
             }
             else
             {
-                transform.DOScale(Vector3.zero, 1f).SetDelay(delay, true).SetEase(Ease.InElastic)
-                    .OnComplete(HideAndDeactivateCard);
+                sequence.Insert(sequenceStartPoint, transform.DOScale(Vector3.zero, 1f).SetDelay(moveDelay, true)
+                    .SetEase(Ease.InElastic)
+                    .OnComplete(HideAndDeactivateCard));
             }
         }
         else
         {
             inTransit = true;
-            transform.DOMove(destination, 1f).From(origin).SetEase(Ease.OutCirc).OnComplete(() =>
-            {
-                GameManager.Instance.EVENT_REARRANGE_HAND.Invoke();
-            });
+            sequence.Insert(sequenceStartPoint,
+                transform.DOMove(destination, 1f).From(origin).SetEase(Ease.OutCirc));
             if (destinationType == CARDS_POSITIONS_TYPES.hand)
             {
                 Debug.Log("[CardOnHandManager] Draw new card to hand.");
                 transform.localScale = Vector3.zero;
-                transform.DORotate(Vector3.zero, 1f);
-                transform.DOScale(Vector3.one * 1.5f, 1f).SetEase(Ease.OutElastic).OnComplete(OnMoveCompleted);
+                sequence.Insert(sequenceStartPoint, transform.DORotate(Vector3.zero, 1f));
+                sequence.Insert(sequenceStartPoint,
+                    transform.DOScale(Vector3.one * 1.5f, 1f).SetEase(Ease.OutElastic).OnComplete(OnMoveCompleted));
             }
             else
             {
@@ -435,15 +478,20 @@ public class CardOnHandManager : MonoBehaviour
                 {
                     movePs.Stop();
                     cardActive = false;
-                    transform.DOScale(Vector3.one * 1.5f, 1f).SetEase(Ease.InOutQuad).OnComplete(HideAndDeactivateCard);
-                    transform.DORotate(Vector3.zero, 1f).SetEase(Ease.InOutQuad);
+                    sequence.Insert(sequenceStartPoint,
+                        transform.DOScale(Vector3.one * 1.5f, 1f).SetEase(Ease.InOutQuad)
+                            .OnComplete(HideAndDeactivateCard));
+                    sequence.Insert(sequenceStartPoint, transform.DORotate(Vector3.zero, 1f).SetEase(Ease.InOutQuad));
                 }
                 else
                 {
-                    transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InElastic).OnComplete(HideAndDeactivateCard);
+                    sequence.Insert(sequenceStartPoint,
+                        transform.DOScale(Vector3.zero, 1f).SetEase(Ease.InElastic).OnComplete(HideAndDeactivateCard));
                 }
             }
         }
+
+        return sequence;
     }
 
     IEnumerator ResetAfterTime(float seconds)
@@ -501,11 +549,12 @@ public class CardOnHandManager : MonoBehaviour
 
     private void HideAndDeactivateCard()
     {
+        if (currentPosition == CARDS_POSITIONS_TYPES.hand) return;
         movePs.Stop();
 
         inTransit = false;
 
-        if (currentPosition == CARDS_POSITIONS_TYPES.exhaust) 
+        if (currentPosition == CARDS_POSITIONS_TYPES.exhaust)
         {
             StartCoroutine(ExhaustEffect());
             return;
@@ -527,16 +576,16 @@ public class CardOnHandManager : MonoBehaviour
         }
     }
 
-    private IEnumerator ExhaustEffect() 
+    private IEnumerator ExhaustEffect()
     {
         yield return null;
 
         // SFX
-        GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Exhaust");
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Exhaust");
         float effectLength = GameSettings.EXHAUST_EFFECT_DURATION;
 
         // Temp fade animation
-        foreach (var renderer in GetComponentsInChildren<SpriteRenderer>()) 
+        foreach (var renderer in GetComponentsInChildren<SpriteRenderer>())
         {
             renderer.DOFade(0, effectLength);
         }
@@ -559,7 +608,13 @@ public class CardOnHandManager : MonoBehaviour
 
     private void UpdateCardBasedOnEnergy(int energy)
     {
-        if (thisCardValues.energy <= energy)
+        if (hasUnplayableKeyword)
+        {
+            energyTF.text = "-";
+            outlineMaterial = greenOutlineMaterial;
+            card_can_be_played = false;
+        }
+        else if (thisCardValues.energy <= energy)
         {
             var main = auraPS.main;
             main.startColor = greenColor;
@@ -662,7 +717,7 @@ public class CardOnHandManager : MonoBehaviour
 
     private void ResetCardPosition()
     {
-        if (cardActive)
+        if (cardActive && !cardBeingDragged)
         {
             // Debug.Log("[ResetCardPosition]");
             if (auraPS.gameObject.activeSelf) auraPS.Stop();
@@ -691,7 +746,7 @@ public class CardOnHandManager : MonoBehaviour
             if (cardIsDisplaced)
             {
                 // Play Cancellation sound
-                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Cancel");
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Cancel");
             }
 
             if (!Input.GetMouseButton(0))
@@ -718,7 +773,7 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!card_can_be_played)
+        if (!card_can_be_played && !hasUnplayableKeyword)
         {
             GameManager.Instance.EVENT_CARD_NO_ENERGY.Invoke();
             return;
@@ -727,6 +782,7 @@ public class CardOnHandManager : MonoBehaviour
 
     private void OnMouseDrag()
     {
+        cardBeingDragged = true;
         if (!card_can_be_played)
         {
             //GameManager.Instance.EVENT_CARD_NO_ENERGY.Invoke();
@@ -779,6 +835,8 @@ public class CardOnHandManager : MonoBehaviour
             GameManager.Instance.EVENT_DEACTIVATE_POINTER.Invoke(thisCardValues.id);
         }
 
+        if (cardBeingDragged) cardBeingDragged = false;
+
         GameManager.Instance.EVENT_TOGGLE_TOOLTIPS.Invoke(true);
     }
 
@@ -789,6 +847,8 @@ public class CardOnHandManager : MonoBehaviour
             ResetCardPosition();
             pointerIsActive = false;
         }
+        
+        if (cardBeingDragged) cardBeingDragged = false;
 
         if (cardActive)
         {
@@ -796,6 +856,7 @@ public class CardOnHandManager : MonoBehaviour
             {
                 Debug.Log("card is on center");
                 // Get Player ID
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Play");
                 GameManager.Instance.EVENT_CARD_PLAYED.Invoke(thisCardValues.id, "-1");
                 cardActive = false;
             }

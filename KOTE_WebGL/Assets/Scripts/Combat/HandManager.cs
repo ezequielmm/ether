@@ -1,12 +1,14 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 
 public class HandManager : MonoBehaviour
 {
     public GameObject spriteCardPrefab;
+
+    // Hand Manager and CardMovementManager are one module, but are split for cleanlieness
+    public CardMovementManager cardMovementManager;
 
     //  public List<GameObject> listOfCardsOnHand;
     public Dictionary<string, GameObject>
@@ -30,6 +32,12 @@ public class HandManager : MonoBehaviour
     int cardsDrawn = 0;
     bool audioRunning = false;
 
+    private bool gameOver;
+    
+    private bool requestTimerIsRunning;
+    private bool requestAgain;
+    private Coroutine requestTimer;
+
     private void OnCardDestroyed(string cardId)
     {
         Debug.Log("[HandManager] Removing card " + cardId + " from hand");
@@ -49,10 +57,12 @@ public class HandManager : MonoBehaviour
         GameManager.Instance.EVENT_CARDS_PILES_UPDATED.AddListener(OnCardsPilesUpdated);
         GameManager.Instance.EVENT_CARD_DRAW_CARDS.AddListener(OnDrawCards);
         GameManager.Instance.EVENT_CARD_DRAW.AddListener(OnCardDraw); // SFX
-        GameManager.Instance.EVENT_CARD_CREATE.AddListener(CreateCard);
+        GameManager.Instance.EVENT_CARD_ADD.AddListener(OnCardAdd);
         GameManager.Instance.EVENT_CARD_DISABLED.AddListener(OnCardDestroyed);
         // if we're adding a card to the hand that isn't a draw
         GameManager.Instance.EVENT_REARRANGE_HAND.AddListener(OnRearrangeHand);
+        // if the game is over, don't try to draw more cards
+        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(OnGameOver);
     }
 
     private void Start()
@@ -67,45 +77,44 @@ public class HandManager : MonoBehaviour
         StartCoroutine(DrawCardSFX());
     }
 
+    private void OnGameOver(GameStatuses gameStatus)
+    {
+        if (gameStatus == GameStatuses.GameOver)
+        {
+            gameOver = true;
+        }
+    }
+
     private IEnumerator DrawCardSFX()
     {
         if (!audioRunning)
         {
             audioRunning = true;
-            for (; cardsDrawn >= 0; cardsDrawn--)
+
+            if (cardsDrawn == 1)
             {
-                GameManager.Instance.EVENT_PLAY_SFX.Invoke("Card Draw");
-                yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Draw Single");
+            }
+            else if (cardsDrawn > 1)
+            {
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Draw Multiple");
             }
 
-            if (cardsDrawn < 0)
-            {
-                cardsDrawn = 0;
-            }
+            yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
 
+            cardsDrawn = 0;
             audioRunning = false;
         }
     }
 
-    private void CreateCard(string cardID)
+    private void OnCardAdd(AddCardData addCardData)
     {
-        Debug.Log($"[HandManager] Moving card [{cardID}] from Draw to Hand");
-        var cardMoved = drawDeck.cards.Find(card => card.id == cardID);
-        if (cardMoved == null)
-        {
-            cardMoved = discardDeck.cards.Find(card => card.id == cardID);
-        }
-
-        if (cardMoved == null)
-        {
-            Debug.LogWarning($"[HandManager] Card [{cardID}] could not be found. No card has been created.");
-            return;
-        }
-
-        drawDeck.cards.Remove(cardMoved);
-        discardDeck.cards.Remove(cardMoved);
-
-        handDeck.cards.Add(cardMoved);
+        // create the new card in the middle of the screen
+        GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
+        listOfCardsOnHand.Add(addCardData.card.id, newCard);
+        CardOnHandManager cardManager = newCard.GetComponent<CardOnHandManager>();
+        cardManager.Populate(addCardData.card, cardPilesData.data.energy);
+        cardManager.ShowAddedCard(addCardData);
     }
 
     private void OnRearrangeHand()
@@ -115,23 +124,29 @@ public class HandManager : MonoBehaviour
 
     private void OnDrawCards()
     {
+        // if the game is over stop asking for cards
+        if (gameOver)
+        {
+            requestAgain = false;
+            return;
+        }
+        Debug.Log("[HandManager]------------------------------------------------>[OnDrawCards]");
         if (cardPilesData == null)
         {
-            Debug.Log("[HandManager] No cards data at all. Retrieving");
-            GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-            Invoke("OnDrawCards", 0.2f);
+            Debug.Log("[HandManager] No cards data at all. Requesting Card Piles");
+            RequestCardsPilesData();
             return;
         }
         else if (cardPilesData.data.hand.Count < 1)
         {
-            Debug.Log("[HandManager] No hands cards data. Retrieving");
-            GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-            Invoke("OnDrawCards", 0.2f);
+            Debug.Log("[HandManager] No hands cards data. Requesting Card Piles");
+            RequestCardsPilesData();
             return;
         }
 
         Debug.Log(
-            $"[HandManager] draw.count: {cardPilesData.data.draw.Count} | hand.count: {cardPilesData.data.hand.Count} | discard.count: {cardPilesData.data.discard.Count} | exhaust.count: {cardPilesData.data.exhausted.Count}");
+            $"[HandManager] Card Piles Retrieved. draw.count: {cardPilesData.data.draw.Count} | hand.count: {cardPilesData.data.hand.Count} | discard.count: {cardPilesData.data.discard.Count} | exhaust.count: {cardPilesData.data.exhausted.Count}");
+        requestAgain = false;
 
         //Generate cards hand
         handDeck = new Deck();
@@ -149,7 +164,6 @@ public class HandManager : MonoBehaviour
         Vector3 spawnPosition = GameSettings.HAND_CARDS_GENERATION_POINT;
 
         float counter = handDeck.cards.Count / -2;
-        float depth = GameSettings.HAND_CARD_SPRITE_Z;
         float delayStep = 0.1f;
         float delay = delayStep * handDeck.cards.Count;
 
@@ -205,6 +219,39 @@ public class HandManager : MonoBehaviour
         StartCoroutine(RelocateCards(true));
     }
 
+    private void RequestCardsPilesData()
+    {
+        if (!requestTimerIsRunning)
+        {
+            // if theres not a request running, start the coroutine
+            requestTimer = StartCoroutine(WaitToRequestCardPiles());
+        }
+        else if (requestTimerIsRunning)
+        {
+            // if there is a request running, tell it to check again
+            requestAgain = true;
+        }
+    }
+
+    private IEnumerator WaitToRequestCardPiles()
+    {
+        do
+        {
+            Debug.Log("[HandManager] Card Pile Request Sent");
+            // flag that the timer is running
+            requestTimerIsRunning = true;
+            // then make the request
+            GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
+            //if this fails, it will tell this function to check again
+            Invoke(nameof(OnDrawCards), 0.2f);
+            yield return new WaitForSeconds(1);
+            // if there are still no cards after a second, make another request
+        } while (requestAgain);
+
+        // if the request was made, drop out
+        requestTimerIsRunning = false;
+    }
+
     /// <summary>
     /// Relocates the cards in hands. If move is on, card movement is send to the cards themselves to be preformed.
     /// </summary>
@@ -234,8 +281,12 @@ public class HandManager : MonoBehaviour
                 if (listOfCardsOnHand.TryGetValue(cardData.id, out card))
                 {
                     var manager = card.GetComponent<CardOnHandManager>();
-                    if (manager.MoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw))
+
+                    if (manager.TryMoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw,
+                            out Sequence sequence))
                     {
+                        // we can adjust the card right away here as this function is cleanup after other movement
+                        if (sequence != null) sequence.Play();
                         yield return new WaitForSeconds(0.1f);
                         pause = true;
                     }
@@ -248,8 +299,11 @@ public class HandManager : MonoBehaviour
                 if (listOfCardsOnHand.TryGetValue(cardData.id, out card))
                 {
                     var manager = card.GetComponent<CardOnHandManager>();
-                    if (manager.MoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw))
+                    if (manager.TryMoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw,
+                            out Sequence sequence))
                     {
+                        // we can adjust the card right away here as this function is cleanup after other movement
+                        if (sequence != null) sequence.Play();
                         yield return new WaitForSeconds(0.1f);
                         pause = true;
                     }
@@ -264,28 +318,24 @@ public class HandManager : MonoBehaviour
 
         foreach (Card cardData in handDeck.cards)
         {
-            //  foreach (GameObject card in listOfCardsOnHand.Values)
-            //  {
             GameObject card;
             if (listOfCardsOnHand.TryGetValue(cardData.id, out card))
             {
+                var cardManager = card.GetComponent<CardOnHandManager>();
+
                 Vector3 pos = Vector3.zero;
                 pos.x = counter * GameSettings.HAND_CARD_GAP - halfWidth + offset;
                 pos.y = GameSettings.HAND_CARD_REST_Y;
-                // pos.y = Camera.main.orthographicSize * Mathf.Cos(pos.x);
                 pos.z = depth;
-                //card.transform.position = pos;
 
-                //var angle = (float)(counter * Mathf.PI * 2);                   
                 var angle = (float)(pos.x * Mathf.PI * 2);
                 pos.y += Mathf.Cos(pos.x * GameSettings.HAND_CARD_Y_CURVE);
 
 
-                //newCard.transform.position = pos;
                 Vector3 rot = card.transform.eulerAngles;
                 rot.z = angle / -2;
                 card.transform.eulerAngles = rot;
-                var cardManager = card.GetComponent<CardOnHandManager>();
+
                 cardManager.targetRotation = rot;
                 cardManager.targetPosition = pos;
                 card.transform.localScale = Vector3.one;
@@ -296,7 +346,8 @@ public class HandManager : MonoBehaviour
                 var manager = cardManager;
                 if (move)
                 {
-                    manager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, true, pos, delay);
+                    // we can adjust the card right away here as this function is cleanup after other movement
+                    manager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, pos, delay).Play();
                     delay -= delayStep;
                 }
                 else
@@ -306,7 +357,6 @@ public class HandManager : MonoBehaviour
             }
         }
     }
-
 
     private void OnCardsPilesUpdated(CardPiles data)
     {

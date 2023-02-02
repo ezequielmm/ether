@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -29,25 +30,35 @@ public class GameManager : SingleTon<GameManager>
     //PROFILE EVENTS
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_PROFILE = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_PROFILE_ERROR = new UnityEvent<string>();
-
     [HideInInspector] public UnityEvent<ProfileData> EVENT_REQUEST_PROFILE_SUCCESSFUL = new UnityEvent<ProfileData>();
-    //  [HideInInspector]
-    //  public UnityEvent<PlayerStateData> EVENT_REQUEST_PLAYERSTATE = new UnityEvent<PlayerStateData>();
-
+    
+    //PLAYER VERIFICATION EVENTS
+    [HideInInspector] public UnityEvent<bool> EVENT_OWNS_CURRENT_EXPEDITION_NFT = new UnityEvent<bool>();
+    
     //SETTINGS EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_SETTINGSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_LOGOUT = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_LOGOUT_SUCCESSFUL = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_LOGOUT_ERROR = new UnityEvent<string>();
 
-    //WALLETS EVENTS
+    //WALLET EVENTS
+    // Panel
     [HideInInspector] public UnityEvent<bool> EVENT_WALLETSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
-
-    [HideInInspector] public UnityEvent<bool, GameObject> EVENT_DISCONNECTWALLETPANEL_ACTIVATION_REQUEST =
+    [HideInInspector] public UnityEvent<bool, GameObject> EVENT_DISCONNECT_WALLET_PANEL_ACTIVATION_REQUEST =
         new UnityEvent<bool, GameObject>();
+    // data requests
+    [HideInInspector] public UnityEvent<string> EVENT_WALLET_ADDRESS_RECEIVED { get; } = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent EVENT_WALLET_DISCONNECTED = new UnityEvent();
+    [HideInInspector] public UnityEvent<string> EVENT_REQUEST_WALLET_CONTENTS = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<WalletKnightIds> EVENT_WALLET_CONTENTS_RECEIVED = new UnityEvent<WalletKnightIds>();
+    [HideInInspector] public UnityEvent<string> EVENT_MESSAGE_SIGN = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<float, string, string, string> EVENT_REQUEST_WHITELIST_CHECK { get; } = new UnityEvent<float, string, string, string>();
+    [HideInInspector] public UnityEvent<bool> EVENT_WHITELIST_CHECK_RECEIVED { get; } = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<bool> EVENT_DISCONNECT_WALLET_CONFIRMED = new UnityEvent<bool>();
 
-    [HideInInspector] public UnityEvent<bool> EVENT_DISCONNECTWALLET_CONFIRMED = new UnityEvent<bool>();
-
+    //GAME OVER EVENTS
+    [HideInInspector] public UnityEvent<SWSM_ScoreboardData> EVENT_SHOW_SCOREBOARD = new UnityEvent<SWSM_ScoreboardData>();
+    
     //TREASURY EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_TREASURYPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
@@ -64,6 +75,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector]
     public UnityEvent<string, Action, Action, string[]> EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL =
         new UnityEvent<string, Action, Action, string[]>();
+
+    [HideInInspector] public UnityEvent<string> EVENT_SHOW_WARNING_MESSAGE = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent EVENT_HIDE_WARNING_MESSAGE = new UnityEvent();
 
     //CHARACTER SELECTION EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
@@ -90,6 +104,8 @@ public class GameManager : SingleTon<GameManager>
 
     //ENCOUNTER EVENTS
     [HideInInspector] public UnityEvent EVENT_SHOW_ENCOUNTER_PANEL = new UnityEvent();
+    [HideInInspector] public UnityEvent<SWSM_EncounterData> EVENT_POPULATE_ENCOUNTER_PANEL = new UnityEvent<SWSM_EncounterData>();
+    [HideInInspector] public UnityEvent<int> EVENT_ENCOUNTER_OPTION_SELECTED = new UnityEvent<int>();
 
     //MERCHANT EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_TOGGLE_MERCHANT_PANEL = new UnityEvent<bool>();
@@ -100,9 +116,6 @@ public class GameManager : SingleTon<GameManager>
     //CAMP EVENTS
     [HideInInspector] public UnityEvent EVENT_CAMP_SHOW_PANEL = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CAMP_HEAL = new UnityEvent();
-    [HideInInspector] public UnityEvent<Deck> EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS = new UnityEvent<Deck>();
-    [HideInInspector] public UnityEvent<string> EVENT_CAMP_GET_UPGRADE_PAIR = new UnityEvent<string>();
-    [HideInInspector] public UnityEvent<string> EVENT_CAMP_UPGRADE_CARD = new UnityEvent<string>();
     [HideInInspector] public UnityEvent EVENT_CAMP_FINISH = new UnityEvent();
     
     //TREASURE EVENTS
@@ -110,17 +123,24 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<SWSM_TreasureData> EVENT_TREASURE_CHEST_SIZE = new UnityEvent<SWSM_TreasureData>();
     [HideInInspector] public UnityEvent EVENT_TREASURE_OPEN_CHEST = new UnityEvent();
     [HideInInspector] public UnityEvent<SWSM_ChestResult> EVENT_TREASURE_CHEST_RESULT = new UnityEvent<SWSM_ChestResult>();
+    [HideInInspector] public UnityEvent<int> EVENT_ENCOUNTER_DAMAGE = new UnityEvent<int>();
 
 
-    //UPGRADE EVENTS
-    [HideInInspector] public UnityEvent<Deck> EVENT_UPGRADE_SHOW_UPGRADE_PAIR = new UnityEvent<Deck>();
-    [HideInInspector] public UnityEvent<SWSM_ConfirmUpgrade> EVENT_UPGRADE_CONFIRMED = new UnityEvent<SWSM_ConfirmUpgrade>();
+    //UPGRADE CARDS EVENTS
+    [HideInInspector] public UnityEvent<Deck> EVENT_SHOW_UPGRADE_CARDS_PANEL = new UnityEvent<Deck>(); //event from the BE to show the upgradable cards panel
+    [HideInInspector] public UnityEvent<string> EVENT_GET_UPGRADE_PAIR = new UnityEvent<string>(); // when the user click a card, we need the show the upgraded card data. We send
+    [HideInInspector] public UnityEvent<Deck> EVENT_SHOW_UPGRADE_PAIR = new UnityEvent<Deck>();// BE sending us the 2 cards
+    [HideInInspector] public UnityEvent<string> EVENT_USER_CONFIRMATION_UPGRADE_CARD = new UnityEvent<string>();// the user confirmed to upgrade this card id. We send
+    [HideInInspector] public UnityEvent<SWSM_ConfirmUpgrade> EVENT_UPGRADE_CONFIRMED = new UnityEvent<SWSM_ConfirmUpgrade>();//from BE confirming. Can contain an error    
+   
 
     //EXPEDITION EVENTS
-    [HideInInspector] public UnityEvent<bool> EVENT_EXPEDITION_STATUS_UPDATE = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent EVENT_EXPEDITION_SYNC = new UnityEvent();
+    [HideInInspector] public UnityEvent<bool, int> EVENT_EXPEDITION_STATUS_UPDATE = new UnityEvent<bool, int>();
     [HideInInspector] public UnityEvent EVENT_EXPEDITION_CONFIRMED = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_REQUEST_EXPEDITION_CANCEL = new UnityEvent();
-
+    [HideInInspector] public UnityEvent EVENT_REQUEST_EXPEDITON_SCORE = new UnityEvent();
+    
     //MAP EVENTS
     [HideInInspector]
     public UnityEvent<NodeStateData, WS_QUERY_TYPE> EVENT_NODE_DATA_UPDATE =
@@ -159,19 +179,33 @@ public class GameManager : SingleTon<GameManager>
     //PLAYER DATA EVENTS
     [HideInInspector] public UnityEvent<PlayerStateData> EVENT_PLAYER_STATUS_UPDATE = new UnityEvent<PlayerStateData>();
     [HideInInspector] public UnityEvent<PlayerData> EVENT_UPDATE_PLAYER = new UnityEvent<PlayerData>();
-
+    
+    // NFT SKIN EVENTS
+    [HideInInspector] public UnityEvent<int[]> EVENT_REQUEST_NFT_METADATA = new UnityEvent<int[]>();
+    [HideInInspector] public UnityEvent<NftData> EVENT_NFT_METADATA_RECEIVED = new UnityEvent<NftData>();
+    [HideInInspector] public UnityEvent<NftMetaData> EVENT_NFT_SELECTED = new UnityEvent<NftMetaData>();
+    [HideInInspector] public UnityEvent<NftMetaData[]> EVENT_REQUEST_NFT_IMAGE = new UnityEvent<NftMetaData[]>();
+    [HideInInspector] public UnityEvent<int> EVENT_REQUEST_NFT_SET_SKIN = new UnityEvent<int>();
+    [HideInInspector] public UnityEvent<string, Sprite> EVENT_NFT_IMAGE_RECEIVED = new UnityEvent<string, Sprite>();
+    [HideInInspector] public UnityEvent<TraitSprite> EVENT_REQUEST_NFT_SKIN_SPRITE  = new UnityEvent<TraitSprite>();
+    [HideInInspector] public UnityEvent<TraitSprite> EVENT_NFT_SKIN_SPRITE_RECEIVED = new UnityEvent<TraitSprite>();
+    [HideInInspector] public UnityEvent EVENT_NFT_SKIN_SPRITE_FAILED = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_UPDATE_PLAYER_SKIN = new UnityEvent();
+    
     //TOP BAR EVENTS
     [HideInInspector] public UnityEvent EVENT_MAP_ICON_CLICKED = new UnityEvent();
     [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_TOPBAR_MAP_ICON = new UnityEvent<bool>();
-    [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_CURRENT_STEP_TEXT = new UnityEvent<int, int>();
+    [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_CURRENT_STEP_INFORMATION = new UnityEvent<int, int>();
 
-    //CARD PANEL EVENTS
+    //SELECT PANEL EVENTS
     [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>> EVENT_SHOW_SELECT_CARD_PANEL = new UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>>();
     [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<string>> EVENT_SHOW_DIRECT_SELECT_CARD_PANEL = new UnityEvent<List<Card>, SelectPanelOptions, Action<string>>();
     [HideInInspector] public UnityEvent<Deck> EVENT_CARD_PILE_SHOW_DECK = new UnityEvent<Deck>();
         [HideInInspector] public UnityEvent<List<string>> EVENT_CARDS_SELECTED = new UnityEvent<List<string>>();
     [HideInInspector] public UnityEvent EVENT_HIDE_COMMON_CARD_PANEL = new UnityEvent();
-
+    [HideInInspector] public UnityEvent<SWSM_SelectTrinketData> EVENT_SHOW_SELECT_TRINKET_PANEL = new UnityEvent<SWSM_SelectTrinketData>();
+    [HideInInspector] public UnityEvent<List<string>> EVENT_TRINKETS_SELECTED = new UnityEvent<List<string>>();
+    
     //CARDS EVENTS
     [HideInInspector] public UnityEvent<PileTypes> EVENT_CARD_PILE_CLICKED = new UnityEvent<PileTypes>();
     [HideInInspector] public UnityEvent<string> EVENT_CARD_MOUSE_ENTER = new UnityEvent<string>();
@@ -179,7 +213,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_CARD_MOUSE_EXIT = new UnityEvent<string>();
     [HideInInspector] public UnityEvent EVENT_CARD_DRAW_CARDS = new UnityEvent();
     [HideInInspector] public UnityEvent<CardPiles> EVENT_CARDS_PILES_UPDATED = new UnityEvent<CardPiles>();
-    [HideInInspector] public UnityEvent<CardToMoveData, float> EVENT_MOVE_CARD = new UnityEvent<CardToMoveData, float>();
+    //[HideInInspector] public UnityEvent<CardToMoveData, float> EVENT_MOVE_CARD = new UnityEvent<CardToMoveData, float>();
+    [HideInInspector]
+    public UnityEvent<List<(CardToMoveData, float)>> EVENT_MOVE_CARDS = new UnityEvent<List<(CardToMoveData, float)>>();
     [HideInInspector] public UnityEvent EVENT_REARRANGE_HAND = new UnityEvent();
 
     [HideInInspector]
@@ -190,7 +226,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_CARD_DISCARD = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CARD_EXHAUST { get; } = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CARD_SHUFFLE = new UnityEvent();
-    [HideInInspector] public UnityEvent<string> EVENT_CARD_CREATE = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<AddCardData> EVENT_CARD_ADD = new UnityEvent<AddCardData>();
 
     //Gameplay events
     [HideInInspector] public UnityEvent<GameStatuses> EVENT_PREPARE_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
@@ -203,14 +239,15 @@ public class GameManager : SingleTon<GameManager>
     //Combat events
     [HideInInspector] public UnityEvent EVENT_START_COMBAT_ENCOUNTER = new UnityEvent();
     [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent EVENT_TOGGLE_COMBAT_UI = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_SHOW_PLAYER_CHARACTER = new UnityEvent();
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_ENERGY = new UnityEvent<int, int>();//current energy, max energy 
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_PLAYER_HEALTH = new UnityEvent<int, int>();//current health, max health
-    [HideInInspector] public UnityEvent<CombatTurnData> EVENT_ATTACK_REQUEST = new UnityEvent<CombatTurnData>();
+    [HideInInspector] public UnityEvent<CombatTurnData> EVENT_ATTACK_REQUEST { get; } = new UnityEvent<CombatTurnData>();
     [HideInInspector] public UnityEvent<CombatTurnData> EVENT_ATTACK_RESPONSE = new UnityEvent<CombatTurnData>();
     [HideInInspector] public UnityEvent<CombatTurnData> EVENT_COMBAT_TURN_ENQUEUE = new UnityEvent<CombatTurnData>();
+    [HideInInspector] public UnityEvent EVENT_COMBAT_FORCE_CLEAR = new UnityEvent();
     [HideInInspector] public UnityEvent<Guid> EVENT_COMBAT_TURN_END = new UnityEvent<Guid>();
-    [HideInInspector] public UnityEvent EVENT_CLEAR_COMBAT_QUEUE = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_COMBAT_QUEUE_EMPTY = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_COMBAT_ORIGIN_CHANGE = new UnityEvent();
     [HideInInspector] public UnityEvent<StatusData> EVENT_UPDATE_STATUS_EFFECTS = new UnityEvent<StatusData>();
@@ -235,24 +272,31 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_CHANGE_TURN = new UnityEvent<string>();
 
     //Enemies events
-    [HideInInspector] public UnityEvent<EnemiesData> EVENT_UPDATE_ENEMIES = new UnityEvent<EnemiesData>();
+    [HideInInspector] public UnityEvent<EnemiesData> EVENT_UPDATE_ENEMIES { get; } = new UnityEvent<EnemiesData>();
+    [HideInInspector] public UnityEvent<EnemiesData> EVENT_ADD_ENEMIES = new UnityEvent<EnemiesData>();
     [HideInInspector] public UnityEvent<EnemyData> EVENT_UPDATE_ENEMY = new UnityEvent<EnemyData>();
     [HideInInspector] public UnityEvent<EnemyIntent> EVENT_UPDATE_INTENT = new UnityEvent<EnemyIntent>();
 
 
     // Audio Events
-    [HideInInspector] public UnityEvent<string> EVENT_PLAY_SFX = new UnityEvent<string>();
-    
+    [HideInInspector] public UnityEvent<SoundTypes, string> EVENT_PLAY_SFX = new UnityEvent<SoundTypes, string>();
+    [HideInInspector] public UnityEvent<MusicTypes, int> EVENT_PLAY_MUSIC = new UnityEvent<MusicTypes, int>();
+    [HideInInspector] public UnityEvent EVENT_VOLUME_CHANGED = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_STOP_MUSIC = new UnityEvent();
+
+
     //Console Events
     [HideInInspector] public UnityEvent EVENT_SHOW_CONSOLE = new UnityEvent();
+    [HideInInspector] public UnityEvent<int> EVENT_SKIP_NODE = new UnityEvent<int>();
 
-    // Wallet Events
-    [HideInInspector] public UnityEvent<string> EVENT_NEW_WALLET = new UnityEvent<string>();
-    [HideInInspector] public UnityEvent<string> EVENT_MESSAGE_SIGN = new UnityEvent<string>();
+    // Scene Events
+    [HideInInspector] public UnityEvent<inGameScenes> EVENT_SCENE_LOADED = new UnityEvent<inGameScenes>();
+
 
 
     public inGameScenes
-        nextSceneToLoad; // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
+        nextSceneToLoad
+    { get; set; } // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
 
     public WebRequesterManager webRequester;
 
@@ -260,7 +304,9 @@ public class GameManager : SingleTon<GameManager>
     // Start is called before the first frame update
     void Start()
     {
-        EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
+        EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogout);
+        EVENT_REQUEST_LOGOUT_ERROR.AddListener(OnLogout);
+        EVENT_SCENE_LOADED.AddListener(OnSceneLoad);
         SceneManager.activeSceneChanged += UpdateSoundVolume;
         //EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ReturnToMainMenu);
     }
@@ -268,10 +314,28 @@ public class GameManager : SingleTon<GameManager>
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene
     {
         nextSceneToLoad = scene;
+        if(scene== inGameScenes.Expedition)
+        {
+            RequestExpeditionSync();
+        }
+        if (scene == inGameScenes.MainMenu)
+        {
+            EVENT_STOP_MUSIC.Invoke();
+        }
         SceneManager.LoadScene(inGameScenes.Loader.ToString());
     }
 
-    private void OnLogoutSuccessful(string message)
+    private void RequestExpeditionSync()
+    {
+        // Queue a map update for later
+        EnqueueActionForSceneLoad(() => 
+            {
+                EVENT_EXPEDITION_SYNC.Invoke();
+            }, 
+            inGameScenes.Expedition);
+    }
+
+    private void OnLogout(string message)
     {
         LoadScene(inGameScenes.MainMenu);
     }
@@ -281,5 +345,25 @@ public class GameManager : SingleTon<GameManager>
     {
         float volumeSetting = PlayerPrefs.GetFloat("settings_volume");
         AudioListener.volume = volumeSetting;
+    }
+
+    List<(Action, inGameScenes)> SceneLoadsActions = new List<(Action, inGameScenes)>();
+    public void EnqueueActionForSceneLoad(Action action, inGameScenes sceneName) 
+    {
+        SceneLoadsActions.Add((action, sceneName));
+    }
+
+    private void OnSceneLoad(inGameScenes scene) 
+    {
+        Debug.Log($"[GameManager] Scene Loaded: {scene}");
+        for(int i = SceneLoadsActions.Count - 1; i >= 0; i--) 
+        {
+            (Action, inGameScenes) action = SceneLoadsActions[i];
+            if (action.Item2 == scene) 
+            {
+                action.Item1.Invoke();
+                SceneLoadsActions.RemoveAt(i);
+            }
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -59,11 +60,21 @@ public class DamageAnimationManager : MonoBehaviour
     void onDamage(CombatTurnData.Target data)
     {
         // Check if me
-        if (entityId != data.targetId && !(entityId == "player" && entityId == data.targetType)) return;
+        if (entityId != data.targetId) return;
 
+       /* Debug.Log("[onDamage]" + data);
+        // Check if me
+        if (entityId != data.targetId && !(entityId == "player" && entityId == data.targetType))
+        {
+            Debug.Log("[onDamage] it is NOT me");
+            return;
+        }*/
+      
         // Run Animation
         if (data.healthDelta < 0 || data.defenseDelta != 0) 
         {
+            Debug.Log("[onDamage] it is me and I am showing damage");
+
             StartCoroutine(Animation(data.healthDelta, data.defenseDelta, 
                 data.defenseDelta != 0 && data.finalDefense == 0));
         }

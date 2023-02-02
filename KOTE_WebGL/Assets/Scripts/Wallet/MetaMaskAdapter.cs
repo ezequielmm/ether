@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class MetaMaskAdapter : MonoBehaviour
+public class MetaMaskAdapter : SingleTon<MetaMaskAdapter>
 {
     private MetaMask mm;
 
@@ -17,6 +17,7 @@ public class MetaMaskAdapter : MonoBehaviour
         return mm.HasMetamask;
     }
 
+   
     public void RequestWallet() 
     {
         UnityEvent requestFail = new UnityEvent();
@@ -31,22 +32,22 @@ public class MetaMaskAdapter : MonoBehaviour
     public void SignMessage(string message) 
     {
         UnityEvent requestFail = new UnityEvent();
-        requestFail.AddListener(GetWalletFail);
+        requestFail.AddListener(SignFail);
 
         UnityEvent<string> requestSuccess = new UnityEvent<string>();
-        requestSuccess.AddListener(GetWalletSuccess);
+        requestSuccess.AddListener(SignSuccess);
 
-        mm.GetAccount(requestSuccess, requestFail);
+        mm.SignMessage(message, requestSuccess, requestFail);
     }
 
-    private void GetWalletFail() 
+    private void GetWalletFail()
     {
         Debug.LogError($"[MetaMaskAdapter] Could not get Wallet Address.");
     }
-    private void GetWalletSuccess(string wallet)
+    private void GetWalletSuccess(string walletAddress)
     {
-        Debug.Log($"[MetaMaskAdapter] Got Wallet. [{wallet}]");
-        GameManager.Instance.EVENT_NEW_WALLET.Invoke(wallet);
+        Debug.Log($"[MetaMaskAdapter] Got Wallet. [{walletAddress}]");
+        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke(walletAddress);
     }
 
     private void SignFail()
