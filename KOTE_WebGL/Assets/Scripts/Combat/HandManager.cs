@@ -164,7 +164,6 @@ public class HandManager : MonoBehaviour
         Vector3 spawnPosition = GameSettings.HAND_CARDS_GENERATION_POINT;
 
         float counter = handDeck.cards.Count / -2;
-        float depth = GameSettings.HAND_CARD_SPRITE_Z;
         float delayStep = 0.1f;
         float delay = delayStep * handDeck.cards.Count;
 
