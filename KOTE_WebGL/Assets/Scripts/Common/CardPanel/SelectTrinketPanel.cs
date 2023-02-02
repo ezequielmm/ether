@@ -18,7 +18,6 @@ public class SelectTrinketPanel : CardPanelBase
     // Start is called before the first frame update
     protected override void Start()
     {
-        base.Start();
         GameManager.Instance.EVENT_SHOW_SELECT_TRINKET_PANEL.AddListener(ShowTrinkets);
     }
 
