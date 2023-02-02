@@ -201,9 +201,9 @@ public class MainMenuManager : MonoBehaviour
         nameText.text = name;
         moneyText.text = $"{fief} $fief";
         DeactivateMenuButtons();
-        // hardcoded wallet data for testing, metamask doesn't exist in editor so we have to send a wallet id manually
+        // temp wallet data for testing, metamask doesn't exist in editor so we have to send a wallet id manually
 #if UNITY_EDITOR
-        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke("0xA10f15B66a2e05c4e376F8bfC35aE662438153Be");
+        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke(GameSettings.EDITOR_WALLET);
 #endif
     }
 
