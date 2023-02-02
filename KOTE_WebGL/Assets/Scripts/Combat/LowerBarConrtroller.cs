@@ -1,6 +1,4 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LowerBarConrtroller : MonoBehaviour
@@ -18,7 +16,6 @@ public class LowerBarConrtroller : MonoBehaviour
     public EntityType attachedEntity;
     public Size size = Size.medium;
     public bool run;
-    private bool set;
     private bool considerShield;
 
     private Vector3 healthCenter;
@@ -51,7 +48,6 @@ public class LowerBarConrtroller : MonoBehaviour
 
     private void OnEnable()
     {
-        set = false;
         considerShield = false;
         StartCoroutine(Utils.RunAfterTime(() => { run = true; }, 0.1f));
     }
@@ -117,7 +113,6 @@ public class LowerBarConrtroller : MonoBehaviour
         statusManager.position = new Vector3(leftEdge + defenseWidth,
             statusManager.position.y, statusManager.position.z);
         size = newSize;
-        set = true;
     }
 
     private void Update()

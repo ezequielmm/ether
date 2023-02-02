@@ -6,12 +6,12 @@ using UnityEngine;
 public class ShowConsole : MonoBehaviour
 {
     public int timesClicked;
-    private int timesNeeded = 10;
+    public int timesNeeded = 10;
 
     public void OnClicked()
     {
         timesClicked += 1;
-        if (timesClicked == 10)
+        if (timesClicked == timesNeeded)
         {
             GameManager.Instance.EVENT_SHOW_CONSOLE.Invoke();
             timesClicked = 0;

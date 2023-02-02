@@ -43,7 +43,7 @@ public class SelectCardsPanel : CardPanelBase
         GameManager.Instance.EVENT_SHOW_DIRECT_SELECT_CARD_PANEL.AddListener(OnShowDirectSelectPanel);
         hideCardOverlay.gameObject.SetActive(false);
     }
-
+    
     private void OnShowSelectCardPanel(List<Card> selectableCards, SelectPanelOptions selectOptions,
         Action<List<string>> onFinishedSelection)
     {

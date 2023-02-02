@@ -22,8 +22,6 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
 
     public TargetProfile targetProfile { get; private set; }
 
-    private float SizeOnHover = 1.3f;
-    private float originalY;
     private Camera mainCamera;
 
     private void Awake()
@@ -73,7 +71,6 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
             player = true,
             enemy = true
         };
-        originalY = 0;
     }
 
     private void PopulatePotion()
@@ -100,8 +97,6 @@ public class PotionManager : MonoBehaviour, IPointerClickHandler
                 targetProfile.player = true;
             }
         }
-
-        originalY = 0;
     }
 
     public void OnPointerClick(PointerEventData data)
