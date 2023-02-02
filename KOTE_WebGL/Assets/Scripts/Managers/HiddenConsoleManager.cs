@@ -5,15 +5,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class HiddenConsoleManager : SingleTon<HiddenConsoleManager>
+public class HiddenConsoleManager : MonoBehaviour
 {
     public GameObject consoleContainer;
     public TMP_InputField consoleInput;
-    public static bool DebugEnabled { get; private set; } = false;
+    public static bool DebugEnabled { get; private set; }
 
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
 #if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
             DisableDebug();
 #endif
