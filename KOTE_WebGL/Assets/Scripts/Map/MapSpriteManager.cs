@@ -18,9 +18,7 @@ namespace map
 
         // we need a list of the path spriteshapes to use with the background grid
         private List<PathManager> pathManagers = new List<PathManager>();
-
-        private bool royal_houses_mode_on = false;
-
+        
         public GameObject playerIcon;
         public ParticleSystem portalAnimation;
         public GameObject nodesHolder;
@@ -606,10 +604,6 @@ namespace map
                                 nodeData.step);
                             //  GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(nodeData.act, nodeData.step);
                         }
-
-                        // if the node is an available royal house, turn royal house mode on
-                        if (nodeData.status == NODE_STATUS.available.ToString() &&
-                            nodeData.type == NODE_TYPES.royal_house.ToString()) royal_houses_mode_on = true;
                     }
 
                     //move next step (vertical group of nodes)
