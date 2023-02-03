@@ -59,3 +59,6 @@ KOTE_WebGL/.idea/.idea.KOTE_WebGL/.idea/workspace.xml~
 KOTE_WebGL/CodeCoverage/
 KOTE_WebGL/Assets/Resources/GitCommitHash.asset
 KOTE_WebGL/Assets/Resources/GitCommitHash.asset.meta
+
+## Tests
+**/InitTestScene*
