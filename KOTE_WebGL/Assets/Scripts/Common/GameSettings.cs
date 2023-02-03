@@ -77,6 +77,10 @@ public static class GameSettings
     // Connection
     public const float MAX_TIMEOUT_SECONDS = 15;
 
+#if UNITY_EDITOR
+    public const string EDITOR_WALLET = "0x1Ef6Ccf27f778dbb37241e6fD86eD69f79300F84";
+#endif
+
     // Player Skin Defaults
     public static TraitSprite[] DEFAULT_SKIN_DATA = new[]
     {
