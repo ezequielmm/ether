@@ -42,7 +42,7 @@ public class DrawCardPileManagerTests : MonoBehaviour
     public void DoesShufflingCardsFireSFXEvent()
     {
         bool eventFired = false;
-        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data) => { eventFired = true; });
+        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) => { eventFired = true; });
         GameManager.Instance.EVENT_CARD_SHUFFLE.Invoke();
         Assert.True(eventFired);
     }
@@ -51,7 +51,7 @@ public class DrawCardPileManagerTests : MonoBehaviour
     public void DoesShufflingCardsFireCorrectSFX()
     {
         string sfxType = "";
-        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data) => { sfxType = data; });
+        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) => { sfxType = data2; });
         GameManager.Instance.EVENT_CARD_SHUFFLE.Invoke();
         Assert.AreEqual("Deck Shuffle", sfxType);
     }

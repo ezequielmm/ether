@@ -187,17 +187,6 @@ public class CardOnHandManagerTests : MonoBehaviour
     }
 
     [Test]
-    public void DoesOnCreateCardMoveCardIfCardExists()
-    {
-        cardManager.thisCardValues = new Card
-        {
-            id = "test"
-        };
-        GameManager.Instance.EVENT_CARD_CREATE.Invoke("test");
-        LogAssert.Expect(LogType.Log, "[CardOnHandManager] Card Is Now Moving");
-    }
-
-    [Test]
     public void DoesPopulateUpdateTextFields()
     {
         cardManager.Populate(testCard, 1);
@@ -355,7 +344,7 @@ public class CardOnHandManagerTests : MonoBehaviour
     public IEnumerator DoesMovingCardWithDelayWaitBeforeMoving()
     {
         Vector3 originPos = TransformUIToOrtho("DrawCardPile");
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.exhaust, delay: 0.5f);
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.exhaust, moveDelay: 0.5f);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(originPos.x, cardManager.transform.position.x, 0.01f);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(originPos.y, cardManager.transform.position.y, 0.01f);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(originPos.z, cardManager.transform.position.z, 0.01f);
@@ -369,7 +358,7 @@ public class CardOnHandManagerTests : MonoBehaviour
     public IEnumerator DoesMovingCardWithDelayMoveCardToDestination()
     {
         Vector3 FinalPos = TransformUIToOrtho("DiscardCardPile");
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.discard, delay: 0.5f);
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.discard, moveDelay: 0.5f);
         yield return new WaitForSeconds(0.501f);
         UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(FinalPos.x, cardManager.transform.position.x, 0.01f);
         UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(FinalPos.y, cardManager.transform.position.y, 0.01f);
@@ -383,7 +372,7 @@ public class CardOnHandManagerTests : MonoBehaviour
     [Test]
     public void DoesMovingCardWithDelayFromDrawToHandSetLocalScaleToZero()
     {
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, delay: 0.5f);
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, moveDelay: 0.5f);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(Vector3.zero.x, cardManager.transform.localScale.x);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(Vector3.zero.y, cardManager.transform.localScale.y);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(Vector3.zero.z, cardManager.transform.localScale.z);
@@ -392,7 +381,7 @@ public class CardOnHandManagerTests : MonoBehaviour
     [UnityTest]
     public IEnumerator DoesMovingCardWithDelayFromDrawToHandScaleUpFromZero()
     {
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, delay: 0.5f);
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, moveDelay: 0.5f);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(Vector3.zero.x, cardManager.transform.localScale.x);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(Vector3.zero.y, cardManager.transform.localScale.y);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(Vector3.zero.z, cardManager.transform.localScale.z);
@@ -407,7 +396,7 @@ public class CardOnHandManagerTests : MonoBehaviour
     public IEnumerator DoesMovingCardWithDelayScaleDownToZero()
     {
         Vector3 currentScale = cardManager.transform.localScale;
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.exhaust, delay: 0.5f);
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.exhaust, moveDelay: 0.5f);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.x);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.y);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.z);
@@ -514,7 +503,7 @@ public class CardOnHandManagerTests : MonoBehaviour
     {
         cardManager.Populate(testCard, 1);
         Assert.AreEqual(cardManager.redColor, cardManager.energyTF.color);
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, delay: 0.5f);
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, moveDelay: 0.5f);
         GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(3, 3);
         yield return new WaitForSeconds(1.6f);
         Assert.AreEqual(Color.black, cardManager.energyTF.color);
@@ -534,7 +523,7 @@ public class CardOnHandManagerTests : MonoBehaviour
     [UnityTest]
     public IEnumerator DoesMovingCardWithDelaProcessHideAndDeactivateCard()
     {
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.hand, delay: 0.5f);
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.hand, moveDelay: 0.5f);
         //TODO return to this once HideAndDeactivateCard tests are written
         yield break;
     }

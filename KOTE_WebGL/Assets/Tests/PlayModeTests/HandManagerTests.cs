@@ -92,7 +92,7 @@ public class HandManagerTests
     public void DoesDrawingACardFireSFXEvent()
     {
         bool eventFired = false;
-        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data) => { eventFired = true; });
+        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) => { eventFired = true; });
         GameManager.Instance.EVENT_CARD_DRAW.Invoke();
         Assert.True(eventFired);
     }
@@ -101,35 +101,9 @@ public class HandManagerTests
     public void DoesDrawingACardFireCorrectSFX()
     {
         string sfxType = "";
-        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data) => { sfxType = data; });
+        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) => { sfxType = data2; });
         GameManager.Instance.EVENT_CARD_DRAW.Invoke();
         Assert.AreEqual("Card Draw", sfxType);
-    }
-
-    [Test]
-    public void DoesCreatingACardLogCardCreation()
-    {
-        GameManager.Instance.EVENT_CARD_CREATE.Invoke("test");
-        LogAssert.Expect(LogType.Log, $"[HandManager] Moving card [test] from Draw to Hand");
-    }
-
-    [Test]
-    public void DoesCreatingACardWithoutADeckThrowAWarning()
-    {
-        GameManager.Instance.EVENT_CARD_CREATE.Invoke("test");
-        LogAssert.Expect(LogType.Warning, $"[HandManager] Card [test] could not be found. No card has been created.");
-    }
-
-    [Test]
-    public void DoesCreatingACardMoveItToHand()
-    {
-        _handManager.handDeck = handDeck;
-        _handManager.drawDeck = drawDeck;
-        _handManager.discardDeck = discardDeck;
-        GameManager.Instance.EVENT_CARD_CREATE.Invoke("drawTest");
-        Assert.True(_handManager.handDeck.cards.Exists(card => card.id == "drawTest"));
-        GameManager.Instance.EVENT_CARD_CREATE.Invoke("discardTest");
-        Assert.True(_handManager.handDeck.cards.Exists(card => card.id == "discardTest"));
     }
 
     [Test]

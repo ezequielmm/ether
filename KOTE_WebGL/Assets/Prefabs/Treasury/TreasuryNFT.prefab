@@ -169,5 +169,5 @@ MonoBehaviour:
   nftImage: {fileID: 8854309543504419940}
   metaData:
     token_id: 
-    image_original_url: 
+    image_url: 
     traits: []

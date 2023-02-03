@@ -77,7 +77,7 @@ public class DiscardedCardPileManagerTests : MonoBehaviour
     public void DoesDiscardingCardFirePlaySfxEvent()
     {
         bool eventFired = false;
-        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data) => { eventFired = true; });
+        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) => { eventFired = true; });
         GameManager.Instance.EVENT_CARD_DISCARD.Invoke();
         Assert.True(eventFired);
     }
@@ -86,7 +86,7 @@ public class DiscardedCardPileManagerTests : MonoBehaviour
     public void DoesDiscardingCardEventPlayCorrectSound()
     {
         string eventContent = "";
-        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data) => { eventContent = data; });
+        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) => { eventContent = data2; });
         GameManager.Instance.EVENT_CARD_DISCARD.Invoke();
         Assert.AreEqual("Card Discard", eventContent);
     }

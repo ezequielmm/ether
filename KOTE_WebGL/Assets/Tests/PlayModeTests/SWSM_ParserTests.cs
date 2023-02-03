@@ -354,7 +354,7 @@ public class SWSM_ParserTests
     public void DoesProcessGenericDataInvokeCampShowUpgradeableCardEvent()
     {
         bool eventFired = false;
-        GameManager.Instance.EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS.AddListener((data) => { eventFired = true; });
+        GameManager.Instance.EVENT_SHOW_UPGRADE_PAIR.AddListener((data) => { eventFired = true; });
         SWSM_Parser.ParseJSON(TestUtils.BuildTestUpgradeableCardData());
         Assert.AreEqual(true, eventFired);
     }
@@ -382,7 +382,7 @@ public class SWSM_ParserTests
         bool eventFired = false;
         bool wsDataEventFired = false;
         int eventCount = 0;
-        GameManager.Instance.EVENT_MOVE_CARD.AddListener((data, data2) =>
+        GameManager.Instance.EVENT_MOVE_CARDS.AddListener((data) =>
         {
             eventFired = true;
             eventCount++;
@@ -437,7 +437,7 @@ public class SWSM_ParserTests
         bool eventFired = false;
         bool wsDataEventFired = false;
         int eventCount = 0;
-        GameManager.Instance.EVENT_MOVE_CARD.AddListener((data, data2) =>
+        GameManager.Instance.EVENT_MOVE_CARDS.AddListener((data) =>
         {
             eventFired = true;
             eventCount++;
@@ -475,27 +475,6 @@ public class SWSM_ParserTests
     }
 
     [Test]
-    public void DoesProcessEnemyAffectedInvokeProcessCreateCardEvents()
-    {
-        bool eventFired = false;
-        int eventCount = 0;
-        GameManager.Instance.EVENT_CARD_CREATE.AddListener((data) =>
-        {
-            eventFired = true;
-            eventCount++;
-        });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestCardMoveData("player_affected", "create_card", 1));
-        Assert.AreEqual(true, eventFired);
-        Assert.AreEqual(1, eventCount);
-
-        eventFired = false;
-        eventCount = 0;
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestCardMoveData("player_affected", "create_card", 3));
-        Assert.AreEqual(true, eventFired);
-        Assert.AreEqual(3, eventCount);
-    }
-
-    [Test]
     public void DoesProcessEndOfTurnInvokeUpdateEnergyEvents()
     {
         bool eventFired = false;
@@ -510,7 +489,7 @@ public class SWSM_ParserTests
         bool eventFired = false;
         bool wsDataEventFired = false;
         int eventCount = 0;
-        GameManager.Instance.EVENT_MOVE_CARD.AddListener((data, data2) =>
+        GameManager.Instance.EVENT_MOVE_CARDS.AddListener((data) =>
         {
             eventFired = true;
             eventCount++;
@@ -713,7 +692,7 @@ public class SWSM_ParserTests
     public void DoesProcessCardUpgradeFireUpgradablePairEvent()
     {
         bool eventFired = false;
-        GameManager.Instance.EVENT_UPGRADE_SHOW_UPGRADE_PAIR.AddListener((data) => { eventFired = true; });
+        GameManager.Instance.EVENT_SHOW_UPGRADE_PAIR.AddListener((data) => { eventFired = true; });
         SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("card_upgrade", "upgradable_pair"));
         Assert.True(eventFired);
     }

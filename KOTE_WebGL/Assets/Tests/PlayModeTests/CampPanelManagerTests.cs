@@ -123,7 +123,7 @@ public class CampPanelManagerTests : MonoBehaviour
         {
             eventFired = true;
         });
-        GameManager.Instance.EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS.Invoke(new Deck { cards = new List<Card>() });
+        GameManager.Instance.EVENT_SHOW_UPGRADE_PAIR.Invoke(new Deck { cards = new List<Card>() });
         Assert.True(eventFired);
     }
 
@@ -141,7 +141,7 @@ public class CampPanelManagerTests : MonoBehaviour
             numberOfCardsToSelect = options.NumberOfCardsToSelect;
             if (options.FireSelectWhenCardClicked) fireSelectWhenCardClicked = 1;
         });
-        GameManager.Instance.EVENT_CAMP_SHOW_UPRGRADEABLE_CARDS.Invoke(new Deck { cards = new List<Card>() });
+        GameManager.Instance.EVENT_SHOW_UPGRADE_PAIR.Invoke(new Deck { cards = new List<Card>() });
         Assert.AreEqual(0, hideBackButton);
         Assert.AreEqual(1, mustSelectAllCards);
         Assert.AreEqual(1, numberOfCardsToSelect);

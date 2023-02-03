@@ -51,11 +51,11 @@ public class RegisterPanelManagerTests : MonoBehaviour
     public void DoesRequestNameUpdateNameText()
     {
         GameManager.Instance.EVENT_REQUEST_NAME_SUCESSFUL.Invoke("test");
-        Assert.AreEqual("test", registerPanel.nameText.text);
+        Assert.AreEqual("test", registerPanel.nameInputField.text);
         GameManager.Instance.EVENT_REQUEST_NAME_SUCESSFUL.Invoke("No One Can Stop The Ping Pong In The Bayou");
-        Assert.AreEqual("No One Can Stop The Ping Pong In The Bayou", registerPanel.nameText.text);
+        Assert.AreEqual("No One Can Stop The Ping Pong In The Bayou", registerPanel.nameInputField.text);
         GameManager.Instance.EVENT_REQUEST_NAME_SUCESSFUL.Invoke("yup, this be working");
-        Assert.AreEqual("yup, this be working", registerPanel.nameText.text);
+        Assert.AreEqual("yup, this be working", registerPanel.nameInputField.text);
     }
 
     [Test]
@@ -222,22 +222,6 @@ public class RegisterPanelManagerTests : MonoBehaviour
     }
 
     [Test]
-    public void DoesRequestingNewNameFireRequestNameEvent()
-    {
-        bool eventFired = false;
-        GameManager.Instance.EVENT_REQUEST_NAME.AddListener((data) => { eventFired = true; });
-        registerPanel.RequestNewName();
-        Assert.True(eventFired);
-    }
-
-    [Test]
-    public void DoesRequestingNewNameSetNameTextToLoading()
-    {
-        registerPanel.RequestNewName();
-        Assert.AreEqual("Loading...", registerPanel.nameText.text);
-    }
-
-    [Test]
     public void DoesClickingRegisterFireRequestRegisterEvent()
     {
         registerPanel.emailInputField.text = "test@gmail.com";
@@ -253,7 +237,7 @@ public class RegisterPanelManagerTests : MonoBehaviour
     [Test]
     public void DoesClickingRegisterSendCorrectInformation()
     {
-        registerPanel.nameText.text = "Gertrude";
+        registerPanel.nameInputField.text = "Gertrude";
         registerPanel.emailInputField.text = "test@gmail.com";
         registerPanel.confirmEmailInputField.text = "test@gmail.com";
         registerPanel.passwordInputField.text = "P@ssw0rd";

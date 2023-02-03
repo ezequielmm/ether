@@ -55,9 +55,9 @@ public class TopBarManagerTests : MonoBehaviour
     public void DoesUpdateCurrentStepChangeStepTest()
     {
         Assert.AreEqual("STAGE ?-?", _topBarManager.stageText.text);
-        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(1, 2);
+        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.Invoke(1, 2);
         Assert.AreEqual("STAGE " + 1 + "-" + 3, _topBarManager.stageText.text);
-        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(-1, 56342);
+        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.Invoke(-1, 56342);
         Assert.AreEqual("STAGE " + -1 + "-" + 56343, _topBarManager.stageText.text);
     }
 
@@ -74,11 +74,11 @@ public class TopBarManagerTests : MonoBehaviour
     public void DoesSetHealthTextUpdateHealthText()
     {
         _topBarManager.SetHealthText(0);
-        Assert.AreEqual("0/0", _topBarManager.healthText.text);
+        Assert.AreEqual("0/0", _topBarManager.healthBarText.text);
         _topBarManager.SetHealthText(55);
-        Assert.AreEqual("55/0", _topBarManager.healthText.text);
+        Assert.AreEqual("55/0", _topBarManager.healthBarText.text);
         _topBarManager.SetHealthText(-69);
-        Assert.AreEqual("-69/0", _topBarManager.healthText.text);
+        Assert.AreEqual("-69/0", _topBarManager.healthBarText.text);
     }
 
     [Test]
@@ -91,31 +91,7 @@ public class TopBarManagerTests : MonoBehaviour
         _topBarManager.SetCoinsText(-8008);
         Assert.AreEqual("-8008", _topBarManager.coinsText.text);
     }
-
-    [Test]
-    public void DoesSetProfileInfoUpdateNameText()
-    {
-        _topBarManager.SetProfileInfo(new ProfileData
-        {
-            data = new ProfileData.Data
-            {
-                name = "tester",
-                coins = 22
-            }
-        });
-        Assert.AreEqual("tester", _topBarManager.nameText.text);
-        Assert.AreEqual(22, int.Parse(_topBarManager.coinsText.text));
-        _topBarManager.SetProfileInfo(new ProfileData
-        {
-            data = new ProfileData.Data
-            {
-                name = "No One Can Stop the Ping Pong in the Bayou",
-                coins = 42069
-            }
-        });
-        Assert.AreEqual("No One Can Stop the Ping Pong in the Bayou", _topBarManager.nameText.text);
-        Assert.AreEqual(42069, int.Parse(_topBarManager.coinsText.text));
-    }
+    
 
     [Test]
     public void DoesOnPlayerAttackUpdatePlayerHealthIfPlayerIsTheTarget()
@@ -137,7 +113,7 @@ public class TopBarManagerTests : MonoBehaviour
                 }
             }
         });
-        Assert.AreEqual("12/0", _topBarManager.healthText.text);
+        Assert.AreEqual("12/0", _topBarManager.healthBarText.text);
     }
 
     [Test]
@@ -161,7 +137,7 @@ public class TopBarManagerTests : MonoBehaviour
                 }
             }
         });
-        Assert.AreEqual("1/0", _topBarManager.healthText.text);
+        Assert.AreEqual("1/0", _topBarManager.healthBarText.text);
     }
 
     [Test]
@@ -184,13 +160,13 @@ public class TopBarManagerTests : MonoBehaviour
                 }
             }
         });
-        Assert.AreEqual("69/0", _topBarManager.healthText.text);
+        Assert.AreEqual("69/0", _topBarManager.healthBarText.text);
     }
 
     [Test]
     public void DoesPlayerStateUpdateUpdateNameText()
     {
-        _topBarManager.OnPlayerStateUpdate(new PlayerStateData
+        _topBarManager.OnPlayerStatusUpdate(new PlayerStateData
         {
             data = new PlayerStateData.Data
             {
@@ -209,7 +185,7 @@ public class TopBarManagerTests : MonoBehaviour
     [Test]
     public void DoesPlayerStateUpdateUpdateCurrentAndMaxHealth()
     {
-        _topBarManager.OnPlayerStateUpdate(new PlayerStateData
+        _topBarManager.OnPlayerStatusUpdate(new PlayerStateData
         {
             data = new PlayerStateData.Data
             {
@@ -222,13 +198,13 @@ public class TopBarManagerTests : MonoBehaviour
                 }
             }
         });
-        Assert.AreEqual("89/100", _topBarManager.healthText.text);
+        Assert.AreEqual("89/100", _topBarManager.healthBarText.text);
     }
 
     [Test]
     public void DoesPlayerStateUpdateUpdateCurrentGold()
     {
-        _topBarManager.OnPlayerStateUpdate(new PlayerStateData
+        _topBarManager.OnPlayerStatusUpdate(new PlayerStateData
         {
             data = new PlayerStateData.Data
             {
@@ -262,7 +238,7 @@ public class TopBarManagerTests : MonoBehaviour
             }
         });
         Assert.AreEqual("Boyo", _topBarManager.nameText.text);
-        Assert.AreEqual("12/80", _topBarManager.healthText.text);
+        Assert.AreEqual("12/80", _topBarManager.healthBarText.text);
         Assert.AreEqual("75", _topBarManager.coinsText.text);
     }
 

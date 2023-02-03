@@ -7,48 +7,48 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.TestTools;
 
-public class DebugManagerTests : MonoBehaviour
+public class HiddenConsoleManagerTests : MonoBehaviour
 {
-    private DebugManager debugManager;
+    private HiddenConsoleManager HiddenConsoleManager;
 
     [UnitySetUp]
     public IEnumerator Setup()
     {
         GameObject hiddenConsolePrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Common/Console.prefab");
-        GameObject debugManagerInstance = Instantiate(hiddenConsolePrefab);
-        debugManager = debugManagerInstance.GetComponent<DebugManager>();
-        debugManagerInstance.SetActive(true);
+        GameObject HiddenConsoleManagerInstance = Instantiate(hiddenConsolePrefab);
+        HiddenConsoleManager = HiddenConsoleManagerInstance.GetComponent<HiddenConsoleManager>();
+        HiddenConsoleManagerInstance.SetActive(true);
         yield return null;
     }
 
     [UnityTearDown]
     public IEnumerator TearDown()
     {
-        Destroy(debugManager.gameObject);
+        Destroy(HiddenConsoleManager.gameObject);
         yield return null;
     }
 
     [Test]
     public void DoesStartDeactivateConsole()
     {
-        Assert.False(debugManager.consoleContainer.activeSelf);
+        Assert.False(HiddenConsoleManager.consoleContainer.activeSelf);
     }
 
     [Test]
     public void DoesDisableDebugSwitchFilterLogTypeToException()
     {
         Assert.AreEqual(LogType.Log, Debug.unityLogger.filterLogType);
-        DebugManager.DisableDebug();
+        HiddenConsoleManager.DisableDebug();
         Assert.AreEqual(LogType.Exception, Debug.unityLogger.filterLogType);
     }
 
     [Test]
     public void DoesEnableDebugSwitchFilterLogTypeToLog()
     {
-        DebugManager.DisableDebug();
+        HiddenConsoleManager.DisableDebug();
         Assert.AreEqual(LogType.Exception, Debug.unityLogger.filterLogType);
-        DebugManager.EnableDebug();
+        HiddenConsoleManager.EnableDebug();
         Assert.AreEqual(LogType.Log, Debug.unityLogger.filterLogType);
     }
 
@@ -56,20 +56,20 @@ public class DebugManagerTests : MonoBehaviour
     public void DoesShowConsoleActivateConsole()
     {
         GameManager.Instance.EVENT_SHOW_CONSOLE.Invoke();
-        Assert.True(debugManager.consoleContainer.activeSelf);
+        Assert.True(HiddenConsoleManager.consoleContainer.activeSelf);
     }
 
     [Test]
     public void DoesPublicLogLogMessage()
     {
-        DebugManager.PublicLog("this is a log");
+        HiddenConsoleManager.PublicLog("this is a log");
         LogAssert.Expect(LogType.Log, "this is a log");
     }
 
     [Test]
     public void DoesSendingUnknownCommandLogTheProblem()
     {
-        debugManager.OnTextInput("test");
+        HiddenConsoleManager.OnTextInput("test");
         LogAssert.Expect(LogType.Log, "Unknown Command.");
     }
 
@@ -77,7 +77,7 @@ public class DebugManagerTests : MonoBehaviour
     public void DoesSendingWsUrlCommandLogUrl()
     {
         PlayerPrefs.SetString("ws_url", "testurl");
-        debugManager.OnTextInput("ws_url");
+        HiddenConsoleManager.OnTextInput("ws_url");
         LogAssert.Expect(LogType.Log, "testurl");
     }
 
@@ -85,7 +85,7 @@ public class DebugManagerTests : MonoBehaviour
     public void DoesSendingWsUrlCommandLogNotConnectedIfEmptyUrl()
     {
         PlayerPrefs.SetString("ws_url", "");
-        debugManager.OnTextInput("ws_url");
+        HiddenConsoleManager.OnTextInput("ws_url");
         LogAssert.Expect(LogType.Log, "Websocket not yet connected.");
     }
 
@@ -93,7 +93,7 @@ public class DebugManagerTests : MonoBehaviour
     public void DoesSendingApiUrlCommandLogApiUrl()
     {
         PlayerPrefs.SetString("api_url", "urlTest");
-        debugManager.OnTextInput("api_url");
+        HiddenConsoleManager.OnTextInput("api_url");
         LogAssert.Expect(LogType.Log, "urlTest");
     }
 
@@ -101,7 +101,7 @@ public class DebugManagerTests : MonoBehaviour
     public void DoesSendingApiUrlCommandLogNotConnectedIfEmptyUrl()
     {
         PlayerPrefs.SetString("api_url", "");
-        debugManager.OnTextInput("api_url");
+        HiddenConsoleManager.OnTextInput("api_url");
         LogAssert.Expect(LogType.Log, "No API URL found.");
     }
 
@@ -109,7 +109,7 @@ public class DebugManagerTests : MonoBehaviour
     public void DoesSendingApisUrlCommandLogApiUrl()
     {
         PlayerPrefs.SetString("api_url", "urlTest");
-        debugManager.OnTextInput("apis_url");
+        HiddenConsoleManager.OnTextInput("apis_url");
         LogAssert.Expect(LogType.Log, "urlTest");
     }
 
@@ -117,7 +117,7 @@ public class DebugManagerTests : MonoBehaviour
     public void DoesSendingApisUrlCommandLogNotConnectedIfEmptyUrl()
     {
         PlayerPrefs.SetString("api_url", "");
-        debugManager.OnTextInput("apis_url");
+        HiddenConsoleManager.OnTextInput("apis_url");
         LogAssert.Expect(LogType.Log, "No API URL found.");
     }
 
@@ -125,7 +125,7 @@ public class DebugManagerTests : MonoBehaviour
     public void DoesSendingPlayerTokenCommandLogPlayerToken()
     {
         PlayerPrefs.SetString("session_token", "ArandomToken");
-        debugManager.OnTextInput("player_token");
+        HiddenConsoleManager.OnTextInput("player_token");
         LogAssert.Expect(LogType.Log, "ArandomToken");
     }
 
@@ -133,7 +133,7 @@ public class DebugManagerTests : MonoBehaviour
     public void DoesSendingPlayerTokenCommandLogNoTokenGenerated()
     {
         PlayerPrefs.SetString("session_token", "");
-        debugManager.OnTextInput("player_token");
+        HiddenConsoleManager.OnTextInput("player_token");
         LogAssert.Expect(LogType.Log, "No token has been generated yet.");
     }
 
@@ -141,39 +141,39 @@ public class DebugManagerTests : MonoBehaviour
     public void DoesSendingQuitCloseHiddenConsole()
     {
         GameManager.Instance.EVENT_SHOW_CONSOLE.Invoke();
-        debugManager.OnTextInput("quit");
-        Assert.False(debugManager.consoleContainer.activeSelf);
+        HiddenConsoleManager.OnTextInput("quit");
+        Assert.False(HiddenConsoleManager.consoleContainer.activeSelf);
     }
 
     [Test]
     public void DoesSendingExitCloseHiddenConsole()
     {
         GameManager.Instance.EVENT_SHOW_CONSOLE.Invoke();
-        debugManager.OnTextInput("exit");
-        Assert.False(debugManager.consoleContainer.activeSelf);
+        HiddenConsoleManager.OnTextInput("exit");
+        Assert.False(HiddenConsoleManager.consoleContainer.activeSelf);
     }
 
     [Test]
     public void DoesSendingCloseCloseHiddenConsole()
     {
         GameManager.Instance.EVENT_SHOW_CONSOLE.Invoke();
-        debugManager.OnTextInput("close");
-        Assert.False(debugManager.consoleContainer.activeSelf);
+        HiddenConsoleManager.OnTextInput("close");
+        Assert.False(HiddenConsoleManager.consoleContainer.activeSelf);
     }
 
     [Test]
     public void DoesSendingCloseConsoleCloseHiddenConsole()
     {
         GameManager.Instance.EVENT_SHOW_CONSOLE.Invoke();
-        debugManager.OnTextInput("close_console");
-        Assert.False(debugManager.consoleContainer.activeSelf);
+        HiddenConsoleManager.OnTextInput("close_console");
+        Assert.False(HiddenConsoleManager.consoleContainer.activeSelf);
     }
 
     [Test]
     public void DoesSendingDisableDebugDisableDebug()
     {
-        DebugManager.EnableDebug();
-        debugManager.OnTextInput("disable_debug");
+        HiddenConsoleManager.EnableDebug();
+        HiddenConsoleManager.OnTextInput("disable_debug");
         Assert.AreEqual(LogType.Exception, Debug.unityLogger.filterLogType);
         LogAssert.Expect(LogType.Log, "Console Disabled.");
     }
@@ -181,8 +181,8 @@ public class DebugManagerTests : MonoBehaviour
     [Test]
     public void DoesSendingEnableDebugEnableDebug()
     {
-        DebugManager.DisableDebug();
-        debugManager.OnTextInput("enable_debug");
+        HiddenConsoleManager.DisableDebug();
+        HiddenConsoleManager.OnTextInput("enable_debug");
         Assert.AreEqual(LogType.Log, Debug.unityLogger.filterLogType);
         LogAssert.Expect(LogType.Log, "Console Enabled.");
     }
@@ -190,14 +190,14 @@ public class DebugManagerTests : MonoBehaviour
     [Test]
     public void DoesSendingVersionLogCurrentVersion()
     {
-        debugManager.OnTextInput("version");
+        HiddenConsoleManager.OnTextInput("version");
         LogAssert.Expect(LogType.Log, $"{Application.version}");
     }
 
     [Test]
     public void DoesSendingShowCommandsShowAllCommands()
     {
-        debugManager.OnTextInput("show_commands");
+        HiddenConsoleManager.OnTextInput("show_commands");
         LogAssert.Expect(LogType.Log,
             "Available commands: ws_url, apis_url, api_url, player_token, quit, exit, close, close_console," +
             " enable_debug, disable_debug, version, show_commands, help, enable_all_functionality, " +

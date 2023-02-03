@@ -248,7 +248,7 @@ public class RewardsPanelManagerTests : MonoBehaviour
     public IEnumerator DoesClickingCoinRewardFirePlaySFXEvent()
     {
         bool eventFired = false;
-        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data) => { eventFired = true;});
+        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) => { eventFired = true;});
         GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(_coinRewardData);
         RewardItem coinReward = _rewardsPanelManager.rewardsPanel.GetComponentsInChildren<RewardItem>()[0];
         coinReward.OnRewardClaimed();

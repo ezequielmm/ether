@@ -60,22 +60,22 @@ public class MapSpriteManagerEditModeTests
     [Test]
     public void DoGrassTilesExist()
     {
-        Assert.IsNotNull(_mapSpriteManager.grassTiles);
-        Assert.AreNotEqual(0, _mapSpriteManager.grassTiles.Length);
+        Assert.IsNotNull(_mapSpriteManager.actTileLists[0].grassTiles);
+        Assert.AreNotEqual(0, _mapSpriteManager.actTileLists[0].grassTiles.Length);
     }
 
     [Test]
     public void DoMountianTilesExist()
     {
-        Assert.IsNotNull(_mapSpriteManager.mountainTiles);
-        Assert.AreNotEqual(0, _mapSpriteManager.mountainTiles.Length);
+        Assert.IsNotNull(_mapSpriteManager.actTileLists[0].mountainTiles);
+        Assert.AreNotEqual(0, _mapSpriteManager.actTileLists[0].mountainTiles.Length);
     }
 
     [Test]
     public void DoForestTilesExist()
     {
-        Assert.IsNotNull(_mapSpriteManager.forestTiles);
-        Assert.AreNotEqual(0, _mapSpriteManager.forestTiles.Length);
+        Assert.IsNotNull(_mapSpriteManager.actTileLists[0].forestTiles);
+        Assert.AreNotEqual(0, _mapSpriteManager.actTileLists[0].forestTiles.Length);
     }
 
     [Test]

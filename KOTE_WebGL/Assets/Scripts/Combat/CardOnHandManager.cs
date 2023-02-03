@@ -162,7 +162,7 @@ public class CardOnHandManager : MonoBehaviour
         }
     }
 
-    internal void Populate(Card card, int energy)
+    public void Populate(Card card, int energy)
     {
         //Debug.Log(card);
         //cardidTF.SetText(card.id);
