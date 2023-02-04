@@ -15,7 +15,8 @@ public class WalletManager : MonoBehaviour
     private WalletItem walletItem;
 
     // store the current wallet id so we don't request the data more than once
-    private string curWallet = "";
+    private static string curWallet = "";
+    private static int curKnightCount;
     
     // we need to store the list of ids to verify owned nfts
     private List<int> nftIds;
@@ -42,6 +43,13 @@ public class WalletManager : MonoBehaviour
         //create an instance of the current connected wallet, in case we need to add the ability to display more
         GameObject currentRow = Instantiate(walletDataPrefab, informationContent.transform);
         walletItem = currentRow.GetComponent<WalletItem>();
+        
+        // if there's a wallet connected, show it on the panel 
+        if (!string.IsNullOrEmpty(curWallet))
+        {
+            walletItem.SetKnightCount(curKnightCount);
+            walletItem.SetWalletAddress(curWallet);
+        }
     }
 
     public void OnWalletAddressReceived(string walletAddress)
@@ -78,6 +86,7 @@ public class WalletManager : MonoBehaviour
     private void OnWalletDisconnected()
     {
         curWallet = "";
+        curKnightCount = 0;
         walletItem.SetKnightCount(0);
         walletItem.SetWalletAddress("");
     }
@@ -88,6 +97,8 @@ public class WalletManager : MonoBehaviour
         {
             GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("No Knights found in connected wallet\n, please try a different wallet.", () => {});
         }
+
+        curKnightCount = knightIds.data.Length;
         walletItem.SetKnightCount(knightIds.data.Length);
         nftIds = new List<int>();
         nftIds.AddRange(knightIds.data);
