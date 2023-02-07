@@ -295,10 +295,28 @@ public class GameManager : SingleTon<GameManager>
 
 
     public inGameScenes
-        nextSceneToLoad
-    { get; set; } // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
+        nextSceneToLoad { get; set; } // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
 
     public WebRequesterManager webRequester;
+
+    // get the unique identifier for this instance of the client
+    public static string ClientId
+    {
+        get
+        {
+            string clientId = PlayerPrefs.GetString("client_id");
+            // if the client id doesn't exist, create one and save it
+            if (string.IsNullOrEmpty(clientId))
+            {
+                Guid newId = Guid.NewGuid();
+                clientId = newId.ToString();
+                PlayerPrefs.SetString("client_id", newId.ToString());
+            }
+
+            return clientId;
+        }
+        
+    }
 
 
     // Start is called before the first frame update
