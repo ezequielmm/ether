@@ -88,7 +88,7 @@ namespace Papertrail
             // Load settings
             m_isReady = false;
             m_settings = PapertrailSettings.LoadSettings();
-            m_settings.systemName = m_settings.systemName + "_" + GameManager.ClientId;
+            m_settings.systemName = "KOTE_Client_WebGL_" + GameManager.ClientId;
             // Store app information
             m_processName = Application.identifier.Replace(" ", string.Empty);
             m_platform = Application.platform.ToString().ToLowerInvariant();
