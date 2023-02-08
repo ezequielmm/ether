@@ -21,17 +21,14 @@ public class PapertrailLogHandler : ILogHandler
             }
         }
         
-        // pull the stack trace
-        string stackTrace = StackTraceUtility.ExtractStackTrace();
-        
         // if there is a log message send it to papertrail
         if (!string.IsNullOrEmpty(message))
         {
-            PapertrailLogger.Instance.Application_LogMessageReceived(message, stackTrace, logType);
+            PapertrailLogger.Instance.Application_LogMessageReceived(message, logType);
         }
         
         // only log to console if debugging is enabled
-        if (IsLogTypeAllowed(GameSettings.FilterLogType))
+        if (IsLogTypeAllowed(logType))
         {
             defaultLogHandler.LogFormat(logType, context, format, args);
         }
@@ -40,7 +37,7 @@ public class PapertrailLogHandler : ILogHandler
 
     public void LogException(Exception exception, Object context)
     {
-        PapertrailLogger.Instance.Application_LogMessageReceived(exception.Message, StackTraceUtility.ExtractStackTrace(), LogType.Exception);
+        PapertrailLogger.Instance.Application_LogMessageReceived(exception.Message,  LogType.Exception);
         
         defaultLogHandler.LogException(exception, context);
     }

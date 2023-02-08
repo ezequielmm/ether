@@ -20,15 +20,6 @@ namespace Papertrail
         // Format for messages that use a tag
         private const string s_logFormatNoStack = "{0}";
 
-        // Format for messages that use a tag
-        private const string s_taggedLogFormat = "tag=[{0}] {1} stacktrace={2}";
-
-        // Format for messsage without a tag
-        private const string s_logFormat = "{0} stacktrace={1}";
-
-        // Additional formatting for logging the client ip address
-        private const string s_ipPrefixFormat = "ip=[{0}] {1}";
-
         // Singleton instance of the PapertrailLogger
         public static PapertrailLogger Instance
         {
@@ -47,16 +38,10 @@ namespace Papertrail
         private static PapertrailLogger s_instance;
 
         // Papertrail logging settings
-        private PapertrailSettings m_settings;
+        //private PapertrailSettings m_settings;
 
         // Builds messages with minimal garbage allocations
         private StringBuilder m_stringBuilder = new StringBuilder();
-
-        // Name of the running application
-        private string m_processName;
-
-        // Platform the app is running on
-        private string m_platform;
 
         // The clients external IP address
         private string m_localIp;
@@ -78,6 +63,12 @@ namespace Papertrail
         
         // Active Expedition Id
         private string m_expeditionId = "";
+        
+        //minimum logging level
+        private Severity minimumLoggingLevel = Severity.Debug;
+        
+        // Default facility tag to use for logs.
+        private Facility facility = Facility.local7;
 
         /// <summary>
         /// Initializes the logging instance as soon as the app starts
@@ -111,10 +102,6 @@ namespace Papertrail
 
             // Load settings
             m_isReady = false;
-            m_settings = PapertrailSettings.LoadSettings();
-            // Store app information
-            m_processName = Application.identifier.Replace(" ", string.Empty);
-            m_platform = Application.platform.ToString().ToLowerInvariant();
             m_localIp = "Ip not retrieved";
             if (SceneManager.GetActiveScene().isLoaded) m_isLoaded = true;
             SceneManager.sceneLoaded += OnSceneLoaded;
@@ -125,11 +112,6 @@ namespace Papertrail
             GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(OnPlayerProfileReceived);
             GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogout);
             StartCoroutine(GetExternalIP());
-        }
-
-        private void Start()
-        {
-            
         }
 
         private void OnPlayerProfileReceived(ProfileData profile)
@@ -212,7 +194,7 @@ namespace Papertrail
         /// <summary>
         /// Callback for the Unity logging system. Happens off of the main thread.
         /// </summary>
-        public void Application_LogMessageReceived(string condition, string stackTrace, LogType type)
+        public void Application_LogMessageReceived(string condition, LogType type)
         {
             // Set the severity type based on the Unity's log level
             Severity severity = Severity.Debug;
@@ -235,31 +217,15 @@ namespace Papertrail
 
             try
             {
-                if (severity > m_settings.minimumLoggingLevel)
+                if (severity > minimumLoggingLevel)
                     return;
                 if (!string.IsNullOrEmpty(m_tag))
                 {
-                    // Log the message with the set tag
-                    if (m_settings.logStackTrace)
-                    {
-                        Log(severity, string.Format(s_taggedLogFormat, m_tag, condition, stackTrace));
-                    }
-                    else
-                    {
-                        Log(severity, string.Format(s_taggedNoStack, m_tag, condition));
-                    }
+                    Log(severity, string.Format(s_taggedNoStack, m_tag, condition));
                 }
                 else
                 {
-                    // Log the message without a tag
-                    if (m_settings.logStackTrace)
-                    {
-                        Log(severity, string.Format(s_logFormat, condition, stackTrace));
-                    }
-                    else
-                    {
-                        Log(severity, string.Format(s_logFormatNoStack, condition));
-                    }
+                    Log(severity, string.Format(s_logFormatNoStack, condition));
                 }
             }
             catch (Exception ex)
@@ -312,7 +278,7 @@ namespace Papertrail
         /// </summary>
         private void LogInternal(string msg)
         {
-            Log(m_settings.facility, Severity.Debug, msg);
+            Log(facility, Severity.Debug, msg);
         }
 
         /// <summary>
@@ -320,7 +286,7 @@ namespace Papertrail
         /// </summary>
         private void LogInternal(Severity severity, string msg)
         {
-            Log(m_settings.facility, severity, msg);
+            Log(facility, severity, msg);
         }
 
         /// <summary>
@@ -329,7 +295,7 @@ namespace Papertrail
         private void LogInternal(Facility facility, Severity severity, string msg)
         {
             // Early out if the client's logging level is lower than the log message
-            if (string.IsNullOrEmpty(msg) || severity > m_settings.minimumLoggingLevel)
+            if (string.IsNullOrEmpty(msg) || severity > minimumLoggingLevel)
                 return;
             // Calculate the message severity (facility * 8 + severity)
             int severityValue = ((int)facility) * 8 + (int)severity;
