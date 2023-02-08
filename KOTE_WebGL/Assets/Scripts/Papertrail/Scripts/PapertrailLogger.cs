@@ -324,13 +324,13 @@ namespace Papertrail
                 //User account
                 if (!string.IsNullOrEmpty(m_userAccount))
                 {
-                    m_stringBuilder.Append($"[Acct={m_userAccount}");
+                    m_stringBuilder.Append($"[Acct={m_userAccount}] ");
                 }
 
                 // Expedition ID
                 if (!string.IsNullOrEmpty(m_expeditionId))
                 {
-                    m_stringBuilder.Append($"[ExId={m_expeditionId}");
+                    m_stringBuilder.Append($"[ExId={m_expeditionId}] ");
                 }
 
                 //Context and message (context is part of log message)
