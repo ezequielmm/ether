@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6ec96c9b21e68846996c27d60dc4227, type: 3}
   m_Name: PapertrailSettings
   m_EditorClassIdentifier: 
-  hostname: logs2.papertrailapp.com
-  port: 20624
-  systemName: KOTE_Client_WebGL
+  hostname: localhost
+  port: 514
+  systemName: com.DefaultCompany.2DProject
   minimumLoggingLevel: 7
   facility: 23
   logStackTrace: 1

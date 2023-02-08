@@ -290,6 +290,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<int> EVENT_SKIP_NODE = new UnityEvent<int>();
 
     // Scene Events
+    [HideInInspector] public UnityEvent EVENT_SCENE_LOADING = new UnityEvent();
     [HideInInspector] public UnityEvent<inGameScenes> EVENT_SCENE_LOADED = new UnityEvent<inGameScenes>();
 
 
@@ -318,7 +319,6 @@ public class GameManager : SingleTon<GameManager>
         
     }
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -331,6 +331,7 @@ public class GameManager : SingleTon<GameManager>
 
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene
     {
+        EVENT_SCENE_LOADING.Invoke();
         nextSceneToLoad = scene;
         if(scene== inGameScenes.Expedition)
         {

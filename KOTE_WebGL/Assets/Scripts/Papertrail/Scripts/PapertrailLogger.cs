@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 namespace Papertrail
 {
@@ -15,16 +16,21 @@ namespace Papertrail
     {
         // Format for messages that use a tag
         private const string s_taggedNoStack = "tag=[{0}] message=[{1}]";
+
         // Format for messages that use a tag
         private const string s_logFormatNoStack = "message=[{0}]";
+
         // Format for messages that use a tag
         private const string s_taggedLogFormat = "tag=[{0}] message=[{1}] stacktrace=[{2}]";
+
         // Format for messsage without a tag
         private const string s_logFormat = "message=[{0}] stacktrace=[{1}]";
+
         // Additional formatting for logging the client ip address
         private const string s_ipPrefixFormat = "ip=[{0}] {1}";
+
         // Singleton instance of the PapertrailLogger
-        private static PapertrailLogger Instance
+        public static PapertrailLogger Instance
         {
             get
             {
@@ -32,28 +38,38 @@ namespace Papertrail
                 {
                     Initialize();
                 }
+
                 return s_instance;
             }
         }
+
         // Private singleton instnace storage
         private static PapertrailLogger s_instance;
 
         // Papertrail logging settings
         private PapertrailSettings m_settings;
-        // UDP client for sending messages
-        private UdpClient m_udpClient = null;
+
         // Builds messages with minimal garbage allocations
         private StringBuilder m_stringBuilder = new StringBuilder();
+
         // Name of the running application
         private string m_processName;
+
         // Platform the app is running on
         private string m_platform;
+
         // The clients external IP address
         private string m_localIp;
+
         // Flag set when the client is connected and ready to being logging
         private bool m_isReady;
+        
+        // Flag set when any scene is being loaded so there is an active thread
+        private bool m_isLoaded;
+
         // Log messages are queued up until the client is ready to log
         private Queue<string> m_queuedMessages = new Queue<string>();
+
         // User set tag for log messages
         private string m_tag;
 
@@ -70,6 +86,7 @@ namespace Papertrail
                 {
                     s_instance = new GameObject("PapertrailLogger").AddComponent<PapertrailLogger>();
                 }
+
                 DontDestroyOnLoad(s_instance.gameObject);
             }
         }
@@ -85,62 +102,35 @@ namespace Papertrail
                 Destroy(this);
                 return;
             }
+
             // Load settings
             m_isReady = false;
             m_settings = PapertrailSettings.LoadSettings();
-            m_settings.systemName = "KOTE_Client_WebGL_" + GameManager.ClientId;
             // Store app information
             m_processName = Application.identifier.Replace(" ", string.Empty);
             m_platform = Application.platform.ToString().ToLowerInvariant();
             m_localIp = "Ip not retrieved";
-
-            if (!string.IsNullOrEmpty(m_settings.hostname) && m_settings.port > 0)
-            {
-                try
-                {
-                    // Create the udp client
-                    m_udpClient = new UdpClient(m_settings.hostname, m_settings.port);
-                    // Hook into Unity's logging system
-                    Application.logMessageReceivedThreaded += Application_LogMessageReceived;
-                    // Begin looking for a connection
-                    StartCoroutine(GetExternalIP());
-                }
-                catch (Exception ex)
-                {
-                    m_udpClient = null;
-                    Debug.LogException(ex);
-                }
-            }
-            else
-            {
-                m_udpClient = null;
-            }
+            if (SceneManager.GetActiveScene().isLoaded) m_isLoaded = true;
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            Debug.unityLogger.logHandler = new PapertrailLogHandler();
+            GameManager.Instance.EVENT_SCENE_LOADING.AddListener(OnLoadScene);
+            StartCoroutine(GetExternalIP());
         }
 
-        /// <summary>
-        /// Called when the instance is destroyed and closes the client
-        /// </summary>
-        private void OnDestroy()
+        private void OnLoadScene()
         {
-            // Unhook from Unity's logging system
-            Application.logMessageReceivedThreaded -= Application_LogMessageReceived;
-            // Close the UDP client
-            Close();
+            m_isLoaded = false;
         }
 
-        /// <summary>
-        /// Closes the connected UDP client
-        /// </summary>
-        private void Close()
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            // Close the UDP client
-            if (m_udpClient != null)
+            if (scene.name != "MainMenu" || scene.name == "Expedition")
             {
-                m_udpClient.Close();
-                m_udpClient = null;
+                m_isLoaded = true;
+                if (m_isReady) SendQueuedMessages();
             }
         }
-        
+
         /// <summary>
         /// Retrieves the external IP address of the client to append to log messages.
         /// Waits until an internet connection can be established before starting logs.
@@ -152,6 +142,7 @@ namespace Papertrail
             {
                 yield return new WaitForSeconds(1);
             }
+
             while (true)
             {
                 // Find the client's external IP address
@@ -162,11 +153,19 @@ namespace Papertrail
                     m_localIp = webRequest.downloadHandler.text;
                     break;
                 }
+
                 yield return new WaitForSeconds(1);
             }
+
             // Set the logger as ready to send messages
             m_isReady = true;
             Debug.Log("Papertrail Logger Initialized");
+
+            if(m_isLoaded) StartCoroutine(SendQueuedMessages());
+        }
+
+        private IEnumerator SendQueuedMessages()
+        {
             // Send all messages that were waiting for initialization
             while (m_queuedMessages.Count > 0)
             {
@@ -178,7 +177,7 @@ namespace Papertrail
         /// <summary>
         /// Callback for the Unity logging system. Happens off of the main thread.
         /// </summary>
-        private void Application_LogMessageReceived(string condition, string stackTrace, LogType type)
+        public void Application_LogMessageReceived(string condition, string stackTrace, LogType type)
         {
             // Set the severity type based on the Unity's log level
             Severity severity = Severity.Debug;
@@ -232,49 +231,43 @@ namespace Papertrail
                 Debug.LogException(ex);
             }
         }
-        
+
         /// <summary>
         /// Begin sending a message asynchrously on the UDP client
         /// </summary>
         private void BeginSend(string msg)
         {
             if (string.IsNullOrEmpty(msg)) return;
-            if (!m_isReady)
+            if (!m_isReady || !m_isLoaded)
             {
                 // Enqueue messages if the logger isn't fully initialized
                 m_queuedMessages.Enqueue(msg);
                 return;
             }
-            if (m_udpClient != null)
-            {
-                // Get message bytes
-                byte[] data = Encoding.UTF8.GetBytes(msg);
-                try
-                {
-                    // Send over the udp socket
-                    m_udpClient.BeginSend(data, data.Length, OnEndSend, m_udpClient);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogException(e);
-                }
-            }
+
+            StartCoroutine(LogWebRequest(msg));
         }
-        
+
         /// <summary>
-        /// Callback to finish sending the UDP message
+        /// sends off the message to papertrail. This is fire-and-forget, so we don't need to have it in a coroutine
         /// </summary>
-        private void OnEndSend(IAsyncResult result)
+        /// <param name="msg">message to be logged</param>
+        private IEnumerator LogWebRequest(string msg)
         {
-            try
+            using (UnityWebRequest request =
+                   new UnityWebRequest("https://logs.collector.solarwinds.com/v1/log", "POST"))
             {
-                // Complete the UDP send
-                UdpClient udpClient = (UdpClient)result.AsyncState;
-                udpClient.EndSend(result);
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
+                request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(msg));
+                request.downloadHandler = new DownloadHandlerBuffer();
+                request.SetRequestHeader("Content-Type", "application/json");
+                request.SetRequestHeader("Authorization", "Basic OnBvMWtBNjNrZktTT1ptejNYYTNHT1RQTDdXbzY=");
+                yield return request.SendWebRequest();
+                
+                if (request.result == UnityWebRequest.Result.ConnectionError ||
+                    request.result == UnityWebRequest.Result.ProtocolError)
+                {
+                    Debug.LogError("Logging data failed " + request.error);
+                }
             }
         }
 
@@ -300,7 +293,7 @@ namespace Papertrail
         private void LogInternal(Facility facility, Severity severity, string msg)
         {
             // Early out if the client's logging level is lower than the log message
-            if (string.IsNullOrEmpty(msg) || severity > m_settings.minimumLoggingLevel || m_udpClient == null)
+            if (string.IsNullOrEmpty(msg) || severity > m_settings.minimumLoggingLevel)
                 return;
             // Calculate the message severity (facility * 8 + severity)
             int severityValue = ((int)facility) * 8 + (int)severity;
@@ -310,28 +303,32 @@ namespace Papertrail
             {
                 // Reset the string builder
                 m_stringBuilder.Length = 0;
-                // Severity
-                m_stringBuilder.Append('<');
-                m_stringBuilder.Append(severityValue);
-                m_stringBuilder.Append('>');
-                // Version 1
-                m_stringBuilder.Append('1');
-                m_stringBuilder.Append(' ');
+                
                 // Date time stamp in RFC3339 format
                 m_stringBuilder.Append(Rfc3339DateTime.ToString(DateTime.UtcNow));
                 m_stringBuilder.Append(' ');
+                
+                // Severity
+                m_stringBuilder.Append('<');
+                m_stringBuilder.Append(severity.ToString());
+                m_stringBuilder.Append('>');
+                m_stringBuilder.Append(' ');
+
                 // The application that is logging
                 string systemName = m_settings.systemName;
                 if (string.IsNullOrEmpty(systemName))
                     systemName = "unity-client";
                 m_stringBuilder.Append(systemName);
                 m_stringBuilder.Append(' ');
+                
                 // Process name that is logging
                 m_stringBuilder.Append(m_processName);
                 m_stringBuilder.Append(' ');
+                
                 // Platform the client is running on
                 m_stringBuilder.Append(m_platform);
                 m_stringBuilder.Append(' ');
+                
                 // The log message with the client IP
                 if (m_settings.logClientIPAdress)
                 {
@@ -341,8 +338,10 @@ namespace Papertrail
                 {
                     m_stringBuilder.Append(msg);
                 }
+
                 message = m_stringBuilder.ToString();
             }
+
             // Send the completed message
             BeginSend(message);
         }
