@@ -15,16 +15,16 @@ namespace Papertrail
     public class PapertrailLogger : MonoBehaviour
     {
         // Format for messages that use a tag
-        private const string s_taggedNoStack = "tag=[{0}] message=[{1}]";
+        private const string s_taggedNoStack = "tag=[{0}] {1}";
 
         // Format for messages that use a tag
-        private const string s_logFormatNoStack = "message=[{0}]";
+        private const string s_logFormatNoStack = "{0}";
 
         // Format for messages that use a tag
-        private const string s_taggedLogFormat = "tag=[{0}] message=[{1}] stacktrace=[{2}]";
+        private const string s_taggedLogFormat = "tag=[{0}] {1} stacktrace={2}";
 
         // Format for messsage without a tag
-        private const string s_logFormat = "message=[{0}] stacktrace=[{1}]";
+        private const string s_logFormat = "{0} stacktrace={1}";
 
         // Additional formatting for logging the client ip address
         private const string s_ipPrefixFormat = "ip=[{0}] {1}";
@@ -63,7 +63,7 @@ namespace Papertrail
 
         // Flag set when the client is connected and ready to being logging
         private bool m_isReady;
-        
+
         // Flag set when any scene is being loaded so there is an active thread
         private bool m_isLoaded;
 
@@ -72,6 +72,12 @@ namespace Papertrail
 
         // User set tag for log messages
         private string m_tag;
+        
+        // Active User account email
+        private string m_userAccount = "";
+        
+        // Active Expedition Id
+        private string m_expeditionId = "";
 
         /// <summary>
         /// Initializes the logging instance as soon as the app starts
@@ -113,10 +119,35 @@ namespace Papertrail
             if (SceneManager.GetActiveScene().isLoaded) m_isLoaded = true;
             SceneManager.sceneLoaded += OnSceneLoaded;
             Debug.unityLogger.logHandler = new PapertrailLogHandler();
+           
             GameManager.Instance.EVENT_SCENE_LOADING.AddListener(OnLoadScene);
+            GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnExpeditionUpdate);
+            GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(OnPlayerProfileReceived);
+            GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogout);
             StartCoroutine(GetExternalIP());
         }
 
+        private void Start()
+        {
+            
+        }
+
+        private void OnPlayerProfileReceived(ProfileData profile)
+        {
+            m_userAccount = profile.data.email;
+        }
+
+        private void OnLogout(string data)
+        {
+            m_userAccount = "";
+        }
+
+        private void OnExpeditionUpdate(PlayerStateData playerState)
+        {
+            m_expeditionId = playerState.data.expeditionId;
+        }
+        
+        // so the message are queued to not send when a scene is loading
         private void OnLoadScene()
         {
             m_isLoaded = false;
@@ -124,7 +155,11 @@ namespace Papertrail
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            if (scene.name != "MainMenu" || scene.name == "Expedition")
+            if (scene.name == "MainMenu")
+            {
+                m_expeditionId = "";
+            }
+            if (scene.name == "MainMenu" || scene.name == "Expedition")
             {
                 m_isLoaded = true;
                 if (m_isReady) SendQueuedMessages();
@@ -161,7 +196,7 @@ namespace Papertrail
             m_isReady = true;
             Debug.Log("Papertrail Logger Initialized");
 
-            if(m_isLoaded) StartCoroutine(SendQueuedMessages());
+            if (m_isLoaded) StartCoroutine(SendQueuedMessages());
         }
 
         private IEnumerator SendQueuedMessages()
@@ -197,6 +232,7 @@ namespace Papertrail
                     severity = Severity.Warning;
                     break;
             }
+
             try
             {
                 if (severity > m_settings.minimumLoggingLevel)
@@ -262,7 +298,7 @@ namespace Papertrail
                 request.SetRequestHeader("Content-Type", "application/json");
                 request.SetRequestHeader("Authorization", "Basic OnBvMWtBNjNrZktTT1ptejNYYTNHT1RQTDdXbzY=");
                 yield return request.SendWebRequest();
-                
+
                 if (request.result == UnityWebRequest.Result.ConnectionError ||
                     request.result == UnityWebRequest.Result.ProtocolError)
                 {
@@ -303,42 +339,37 @@ namespace Papertrail
             {
                 // Reset the string builder
                 m_stringBuilder.Length = 0;
-                
-                // Date time stamp in RFC3339 format
-                m_stringBuilder.Append(Rfc3339DateTime.ToString(DateTime.UtcNow));
-                m_stringBuilder.Append(' ');
-                
-                // Severity
-                m_stringBuilder.Append('<');
-                m_stringBuilder.Append(severity.ToString());
-                m_stringBuilder.Append('>');
-                m_stringBuilder.Append(' ');
 
-                // The application that is logging
-                string systemName = m_settings.systemName;
-                if (string.IsNullOrEmpty(systemName))
-                    systemName = "unity-client";
-                m_stringBuilder.Append(systemName);
-                m_stringBuilder.Append(' ');
+                // Client Environment
+                if(!string.IsNullOrEmpty(GameManager.ClientEnvironment)) m_stringBuilder.Append($"[Env={GameManager.ClientEnvironment}] ");
                 
-                // Process name that is logging
-                m_stringBuilder.Append(m_processName);
-                m_stringBuilder.Append(' ');
-                
-                // Platform the client is running on
-                m_stringBuilder.Append(m_platform);
-                m_stringBuilder.Append(' ');
-                
-                // The log message with the client IP
-                if (m_settings.logClientIPAdress)
+                // Log level (int?)
+                m_stringBuilder.Append($"[Lev={severity.ToString()}] ");
+
+                //Is frontend
+                m_stringBuilder.Append("[Serv=Frontend] ");
+
+                //IP
+                m_stringBuilder.Append($"[Ip={m_localIp}] ");
+
+                //Client id
+                m_stringBuilder.Append($"[cid={GameManager.ClientId}] ");
+
+                //User account
+                if (!string.IsNullOrEmpty(m_userAccount))
                 {
-                    m_stringBuilder.Append(string.Format(s_ipPrefixFormat, m_localIp, msg));
-                }
-                else
-                {
-                    m_stringBuilder.Append(msg);
+                    m_stringBuilder.Append($"[Acct={m_userAccount}");
                 }
 
+                // Expedition ID
+                if (!string.IsNullOrEmpty(m_expeditionId))
+                {
+                    m_stringBuilder.Append($"[ExId={m_expeditionId}");
+                }
+
+                //Context and message (context is part of log message)
+                m_stringBuilder.Append(msg);
+                
                 message = m_stringBuilder.ToString();
             }
 

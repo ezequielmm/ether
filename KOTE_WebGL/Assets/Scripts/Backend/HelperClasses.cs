@@ -198,6 +198,7 @@ public class PlayerStateData
     [Serializable]
     public class Data
     {
+        public string expeditionId;
         public PlayerData playerState;
     }
 }

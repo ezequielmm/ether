@@ -300,6 +300,8 @@ public class GameManager : SingleTon<GameManager>
 
     public WebRequesterManager webRequester;
 
+    public static string ClientEnvironment = "";
+    
     // get the unique identifier for this instance of the client
     public static string ClientId
     {
@@ -316,7 +318,6 @@ public class GameManager : SingleTon<GameManager>
 
             return clientId;
         }
-        
     }
 
     // Start is called before the first frame update
