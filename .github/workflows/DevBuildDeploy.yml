@@ -100,10 +100,10 @@ jobs:
           name: build-WebGL
           path: build/WebGL
   
-  deploy:
+  deployToDev:
     name: Deploy to dev
     runs-on: ubuntu-latest
-    needs: build
+    needs: buildWebGL
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
