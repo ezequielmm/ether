@@ -212,6 +212,52 @@ public class CardOnHandManagerTests : MonoBehaviour
     }
 
     [Test]
+    public void DoesUpdateCardTextUpdateDescriptionField()
+    {
+        cardManager.Populate(testCard, 1);
+        testCard.description = "new description";
+        GameManager.Instance.EVENT_CARD_UPDATE_TEXT.Invoke(testCard);
+        Assert.AreEqual(testCard.description, cardManager.descriptionTF.text);
+    }
+    
+    [Test]
+    public void DoesUpdateCardTextUpdateNameField()
+    {
+        cardManager.Populate(testCard, 1);
+        testCard.name = "Brace";
+        GameManager.Instance.EVENT_CARD_UPDATE_TEXT.Invoke(testCard);
+        Assert.AreEqual(testCard.name, cardManager.nameTF.text);
+    }
+    
+    [Test]
+    public void DoesUpdateCardTextUpdateRarityField()
+    {
+        cardManager.Populate(testCard, 1);
+        testCard.rarity = "TestRarity";
+        GameManager.Instance.EVENT_CARD_UPDATE_TEXT.Invoke(testCard);
+        Assert.AreEqual(testCard.rarity, cardManager.rarityTF.text);
+    }
+    
+    [Test]
+    public void DoesUpdateCardChangeEnergyToXIfLessThanZero()
+    {
+        testCard.energy = 1;
+        cardManager.Populate(testCard, 1);
+        testCard.energy = -1;
+        GameManager.Instance.EVENT_CARD_UPDATE_TEXT.Invoke(testCard);
+        Assert.AreEqual("X", cardManager.energyTF.text);
+    }
+    
+    [Test]
+    public void DoesUpdateCardTextUpdateEnergyField()
+    {
+        cardManager.Populate(testCard, 1);
+        testCard.energy = 0;
+        GameManager.Instance.EVENT_CARD_UPDATE_TEXT.Invoke(testCard);
+        Assert.AreEqual(testCard.energy.ToString(), cardManager.energyTF.text);
+    }
+
+    [Test]
     public void DoesPopulateSelectCorrectSprites()
     {
         cardManager.Populate(testCard, 1);

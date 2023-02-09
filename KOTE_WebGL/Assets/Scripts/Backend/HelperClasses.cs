@@ -711,6 +711,24 @@ public class showCardData
     public string kind;
 }
 
+[Serializable]
+public class SWSM_CardUpdateData
+{
+    public CardUpdateData data;
+    
+    [Serializable]
+    public class CardUpdateData
+    {
+        public UpdateCardData data;
+        [Serializable]
+        public class UpdateCardData
+        {
+            public Card card;
+            public string pile;
+        }
+    }
+}
+
 
 [Serializable]
 public class SWSM_ErrorData

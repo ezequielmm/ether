@@ -227,7 +227,8 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_CARD_EXHAUST { get; } = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CARD_SHUFFLE = new UnityEvent();
     [HideInInspector] public UnityEvent<AddCardData> EVENT_CARD_ADD = new UnityEvent<AddCardData>();
-
+    [HideInInspector] public UnityEvent<Card> EVENT_CARD_UPDATE_TEXT = new UnityEvent<Card>();
+    
     //Gameplay events
     [HideInInspector] public UnityEvent<GameStatuses> EVENT_PREPARE_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
     [HideInInspector] public UnityEvent<GameStatuses> EVENT_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
