@@ -300,47 +300,54 @@ namespace Papertrail
             // Calculate the message severity (facility * 8 + severity)
             int severityValue = ((int)facility) * 8 + (int)severity;
             string message = string.Empty;
-            // Build the syslog message format
-            lock (m_stringBuilder)
-            {
-                // Reset the string builder
-                m_stringBuilder.Length = 0;
 
-                // Client Environment
-                if(!string.IsNullOrEmpty(GameManager.ClientEnvironment)) m_stringBuilder.Append($"[Env={GameManager.ClientEnvironment}] ");
-                
-                // Log level (int?)
-                m_stringBuilder.Append($"[Lev={severity.ToString()}] ");
-
-                //Is frontend
-                m_stringBuilder.Append("[Serv=Frontend] ");
-
-                //IP
-                m_stringBuilder.Append($"[Ip={m_localIp}] ");
-
-                //Client id
-                m_stringBuilder.Append($"[cid={GameManager.ClientId}] ");
-
-                //User account
-                if (!string.IsNullOrEmpty(m_userAccount))
-                {
-                    m_stringBuilder.Append($"[Acct={m_userAccount}] ");
-                }
-
-                // Expedition ID
-                if (!string.IsNullOrEmpty(m_expeditionId))
-                {
-                    m_stringBuilder.Append($"[ExId={m_expeditionId}] ");
-                }
-
-                //Context and message (context is part of log message)
-                m_stringBuilder.Append(msg);
-                
-                message = m_stringBuilder.ToString();
-            }
+            PapertrailLogData logData = BuildLogData(severityValue, msg);
+            message = JsonUtility.ToJson(logData);
 
             // Send the completed message
             BeginSend(message);
+        }
+
+        private PapertrailLogData BuildLogData(int severityValue, string message)
+        {
+            PapertrailLogData logData = new PapertrailLogData();
+            // Environment data
+            if (!string.IsNullOrEmpty(GameManager.ClientEnvironment))
+            {
+                logData.env =GameManager.ClientEnvironment;
+            }
+            // Log level (int?)
+            logData.level = severityValue;
+            // Is frontend
+            logData.service = "Frontend";
+            // IP
+            logData.ip = m_localIp;
+            //Client Id
+            logData.cid = GameManager.ClientId;
+            //User account
+            if (!string.IsNullOrEmpty(m_userAccount))
+            {
+                logData.account = m_userAccount;
+            }
+            // Expedition ID
+            if (!string.IsNullOrEmpty(m_expeditionId))
+            {
+                logData.expeditionId = m_expeditionId;
+            }
+            
+            //format message data
+            if (message.StartsWith('['))
+            {
+                int contextEndIndex = message.IndexOf(']');
+                logData.context = message.Substring(1, contextEndIndex - 1);
+                logData.message = message.Substring(contextEndIndex + 1);
+            }
+            else
+            {
+                logData.message = message;
+            }
+
+            return logData;
         }
 
         /// <summary>

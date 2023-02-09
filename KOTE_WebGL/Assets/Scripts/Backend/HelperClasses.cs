@@ -1007,3 +1007,17 @@ public class WhitelistResponse
         public bool isValid;
     }
 }
+
+[Serializable]
+public class PapertrailLogData
+{
+    public string env;
+    public int level;
+    public string service;
+    public string ip;
+    public string cid;
+    public string account;
+    public string expeditionId;
+    public string context;
+    public string message;
+}
