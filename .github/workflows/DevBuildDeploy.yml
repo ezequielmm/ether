@@ -66,6 +66,7 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: WebGL
+          projectPath: ${{ var.PROJECT_PATH }}
 
       # Output
       - uses: actions/upload-artifact@v2
