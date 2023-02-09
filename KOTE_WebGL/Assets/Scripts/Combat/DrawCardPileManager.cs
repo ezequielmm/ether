@@ -34,7 +34,7 @@ public class DrawCardPileManager : MonoBehaviour, IPointerEnterHandler, IPointer
             audioRunning = true;
             for (; cardsShuffled >= 0; cardsShuffled--)
             {
-                if(cardsShuffled > 1){ GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Shuffle");}
+                if(cardsShuffled >= 1){ GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Shuffle");}
                 yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
                 cardsShuffled = 0; // Forces this to only run once
             }

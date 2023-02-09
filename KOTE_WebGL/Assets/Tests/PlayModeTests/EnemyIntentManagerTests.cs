@@ -94,12 +94,13 @@ public class EnemyIntentManagerTests : MonoBehaviour
         LogAssert.Expect(LogType.Error, "[EnemyIntentManager] Manager does not belong to an enemy.");
     }
 
-    [Test]
-    public void DoesOnMouseEnterSetTooltips()
+    [UnityTest]
+    public IEnumerator DoesOnMouseEnterSetTooltips()
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_SET_TOOLTIPS.AddListener(((arg0, anchor, vector3, arg3) => { eventFired = true; }));
         _intentManager.CallUnityPrivateMethod("OnMouseEnter");
+        yield return null;
         Assert.True(eventFired);
     }
 
