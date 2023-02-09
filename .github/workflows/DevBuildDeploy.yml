@@ -33,6 +33,7 @@ jobs:
           git lfs pull
           git add .
           git reset --hard
+
       - name: Restore Library cache
         uses: actions/cache@v2
         with:
@@ -41,6 +42,7 @@ jobs:
           restore-keys: |
             Library-test-project-
             Library-
+
       - name: Run tests
         uses: game-ci/unity-test-runner@v2
         id: testRunner
@@ -48,6 +50,7 @@ jobs:
           testMode: ${{ matrix.testMode }}
           checkName: ${{ matrix.testMode }} test results
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+          projectPath: ${{ vars.PROJECT_PATH }}
 
       - uses: actions/upload-artifact@v2
         with:
@@ -88,7 +91,7 @@ jobs:
 
       - uses: game-ci/unity-builder@v2
         env: 
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
