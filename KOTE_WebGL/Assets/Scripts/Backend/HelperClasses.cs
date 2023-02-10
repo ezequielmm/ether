@@ -1015,7 +1015,7 @@ public class PapertrailLogData
     public int level;
     public string service;
     public string ip;
-    public string cid;
+    public string clientId;
     public string account;
     public string expeditionId;
     public string context;
