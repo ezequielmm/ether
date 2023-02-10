@@ -101,7 +101,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: build-WebGL
-          path: builds/WebGL
+          path: build/WebGL
 
       - name: Determine deploy environment
         id: branch-check
