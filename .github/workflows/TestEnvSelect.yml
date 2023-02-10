@@ -5,7 +5,7 @@ jobs:
     name: Select Name based on branch
     runs-on: ubuntu-latest
     outputs:
-      deployEnv: ${{ steps.branch_check.outputs.deployEnv }}
+      deployEnv: ${{ steps.branchCheck.outputs.deployEnv }}
     steps:
       - id: branchCheck
         run: |
