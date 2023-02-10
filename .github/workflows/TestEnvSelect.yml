@@ -5,9 +5,9 @@ jobs:
     name: Select Name based on branch
     runs-on: ubuntu-latest
     outputs:
-      deploy_env: ${{ steps.branch_check.outputs.deploy_env }}
+      deploy_env: ${{ steps.step1.outputs.deploy_env }}
     steps:
-      - id: branch-check
+      - id: step1
         run: |
           if [ "${{ github.ref }}" == "refs/heads/releases/dev" ]; then
             echo "Develop Selected"
