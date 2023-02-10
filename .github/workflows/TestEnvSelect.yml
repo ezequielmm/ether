@@ -24,7 +24,7 @@ jobs:
           fi
 
       - name: Use variable setup in previous step
-        run: echo "I'm using variable ${{ steps.branchCheck.outputs.env_name }}"
+        run: echo "I'm using variable ${{ steps.branchCheck.outputs.deployEnv }}"
 
   displayEnvName:
     name: Display Environment Name
