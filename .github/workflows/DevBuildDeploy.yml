@@ -101,7 +101,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: build-WebGL
-          path: build/WebGL
+          path: builds/WebGL
 
       - name: Determine deploy environment
         id: branch-check
@@ -145,6 +145,6 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key : ${{ secrets.SSH_PRIV_KEY }}
-        source: "build/WebGL"
+        source: "build/WebGL/build/WebGL/WebGL"
         target: "/home/forge/client.dev.kote.robotseamonster.com/testBuild"
         overwrite: true
