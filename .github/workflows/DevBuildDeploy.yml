@@ -122,6 +122,8 @@ jobs:
         with:
           targetPlatform: WebGL
           projectPath: ${{ vars.PROJECT_PATH }}
+          buildsPath: build
+          buildName: WebGL
 
       - uses: actions/upload-artifact@v2
         with:
@@ -143,7 +145,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: build-WebGL
-        path: build/WebGL
+        path: builds
 
     - name: Deploy to server
       uses: appleboy/scp-action@master
@@ -151,6 +153,6 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key : ${{ secrets.SSH_PRIV_KEY }}
-        source: "build/WebGL/build/WebGL/WebGL"
+        source: "builds"
         target: "/home/forge/client.dev.kote.robotseamonster.com/testBuild"
         overwrite: true
