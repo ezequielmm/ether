@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: selectEnvName
     steps:
-      - run: echo echo "I got ${{ needs.branchCheck.outputs.deployEnv }}"
+      - run: echo echo "I got ${{ needs.selectEnvName.outputs.deployEnv }}"
     
   job1:
     runs-on: ubuntu-latest
