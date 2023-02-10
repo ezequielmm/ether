@@ -4,6 +4,8 @@ jobs:
   selectEnvName:
     name: Select Name based on branch
     runs-on: ubuntu-latest
+    outputs:
+      env_name: ${{ steps.branch_check.outputs.env_name }}
     steps:
       - name: Determine deploy environment
         id: branch-check
@@ -20,5 +22,11 @@ jobs:
         
       - name: Use variable setup in previous step
         run: echo "I'm using variable ${{ steps.branch_check.outputs.env_name }}"
-    outputs:
-      env_name: ${{ steps.branch_check.outputs.env_name}}
+
+  displayEnvName:
+    name: Display Environment Name
+    runs-on: ubuntu-latest
+    needs: selectEnvName
+    steps:
+      - run: echo echo "I got ${{ needs.selectEnvName.branch_check.outputs.env_name }}"
+    
