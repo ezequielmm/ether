@@ -323,7 +323,7 @@ namespace Papertrail
             // IP
             logData.ip = m_localIp;
             //Client Id
-            logData.cid = GameManager.ClientId;
+            logData.clientId = GameManager.ClientId;
             //User account
             if (!string.IsNullOrEmpty(m_userAccount))
             {
