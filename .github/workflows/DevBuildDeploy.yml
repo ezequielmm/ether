@@ -106,14 +106,14 @@ jobs:
       - name: Determine deploy environment
         id: branch-check
         run: |
-              if [ "${{ github.ref }}" = "refs/heads/releases/dev"]; then
-                echo "::set-output name=env_name::develop"
-              elif [ "${{ github.ref }}" = "refs/heads/releases/stage"]; then
-                echo "::set-output name=env_name::stage"
-              elif [ "${{ github.ref }}" = "refs/heads/releases/alpha"]; then
-                echo "::set-output name=env_name::alpha"
+              if [ "${{ github.ref }}" = "refs/heads/releases/dev" ]; then
+                echo "env_name=develop" >> $GITHUB_OUTPUT
+              elif [ "${{ github.ref }}" = "refs/heads/releases/stage" ]; then
+                echo "env_name=stage" >> $GITHUB_OUTPUT
+              elif [ "${{ github.ref }}" = "refs/heads/releases/alpha" ]; then
+                echo "env_name=alpha" >> $GITHUB_OUTPUT
               else
-                echo "::set-output name=env_name::develop"
+                echo "env_name=develop" >> $GITHUB_OUTPUT
               fi
       
       - name: Use variable setup in previous step
