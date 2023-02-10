@@ -5,25 +5,6 @@ on:
     - 'releases/dev'
   
 jobs:
-  envCheck:
-    name: Check Environment
-    runs-on: ubuntu-latest
-    steps:
-      - name: Determine deploy environment
-        id: branch-check
-        run: |
-              if [ "${{ github.ref }}" == "refs/heads/releases/dev" ]; then
-                echo "env_name=develop" >> $GITHUB_OUTPUT
-              elif [ "${{ github.ref }}" == "refs/heads/releases/stage" ]; then
-                echo "env_name=stage" >> $GITHUB_OUTPUT
-              elif [ "${{ github.ref }}" == "refs/heads/releases/alpha" ]; then
-                echo "env_name=alpha" >> $GITHUB_OUTPUT
-              else
-                echo "env_name=develop" >> $GITHUB_OUTPUT
-              fi
-      
-      - name: Use variable setup in previous step
-        run: echo "I'm using variable ${{ steps.branch_check.outputs.env_name }}"
   testRunner:
     name: Test in ${{ matrix.testMode }} ✨
     runs-on: ubuntu-latest
@@ -122,29 +103,12 @@ jobs:
           name: build-WebGL
           path: build/WebGL
 
-      - name: Determine deploy environment
-        id: branch-check
-        run: |
-              if [ "${{ github.ref }}" == "refs/heads/releases/dev" ]; then
-                echo "env_name=develop" >> $GITHUB_OUTPUT
-              elif [ "${{ github.ref }}" == "refs/heads/releases/stage" ]; then
-                echo "env_name=stage" >> $GITHUB_OUTPUT
-              elif [ "${{ github.ref }}" == "refs/heads/releases/alpha" ]; then
-                echo "env_name=alpha" >> $GITHUB_OUTPUT
-              else
-                echo "env_name=develop" >> $GITHUB_OUTPUT
-              fi
-      
       - name: Use variable setup in previous step
         run: echo "I'm using variable ${{ steps.branch_check.outputs.env_name }}"
-        
-    outputs:
-      env_name: ${{ steps.branch_check.outputs.env_name}}
 
   deployToDev:
     name: Deploy to dev
-    environment: 
-      name: ${{ needs.buildWebGL.outputs.env_name }}
+    environment: develop
     runs-on: ubuntu-latest
     needs: buildWebGL
     steps:
