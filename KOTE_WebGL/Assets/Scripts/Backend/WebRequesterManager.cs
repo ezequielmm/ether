@@ -45,10 +45,17 @@ public class WebRequesterManager : MonoBehaviour
         baseUrl = "https://gateway.dev.kote.robotseamonster.com"; //make sure if anything fails we use DEV
         // baseUrl = "https://gateway.alpha.knightsoftheether.com";//make sure if anything fails we use DEV
 
-        if (hostName.IndexOf("alpha") > -1)
+        if (hostName.IndexOf("alpha") > -1 && hostName.IndexOf("knight") > -1)
         {
             baseUrl = "https://gateway.alpha.knightsoftheether.com";
             skinUrl = "https://s3.amazonaws.com/koteskins.knightsoftheether.com/";
+            GameManager.ClientEnvironment = "Alpha";
+        }
+        
+        if (hostName.IndexOf("alpha") > -1 && hostName.IndexOf("robot") > -1)
+        {
+            baseUrl = "https://gateway.alpha.kote.robotseamonster.com";
+            skinUrl = "https://koteskins.robotseamonster.com/";
             GameManager.ClientEnvironment = "Alpha";
         }
 
