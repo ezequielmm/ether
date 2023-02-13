@@ -198,6 +198,7 @@ public class PlayerStateData
     [Serializable]
     public class Data
     {
+        public string expeditionId;
         public PlayerData playerState;
     }
 }
@@ -1005,4 +1006,18 @@ public class WhitelistResponse
     {
         public bool isValid;
     }
+}
+
+[Serializable]
+public class PapertrailLogData
+{
+    public string env;
+    public int level;
+    public string service;
+    public string ip;
+    public string clientId;
+    public string account;
+    public string expeditionId;
+    public string context;
+    public string message;
 }

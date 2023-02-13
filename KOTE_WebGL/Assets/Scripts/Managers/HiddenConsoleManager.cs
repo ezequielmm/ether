@@ -49,7 +49,7 @@ public class HiddenConsoleManager : MonoBehaviour
     /// </summary>
     public static void EnableDebug()
     {
-        Debug.unityLogger.filterLogType = LogType.Log;
+        GameSettings.FilterLogType = LogType.Log;
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ public class HiddenConsoleManager : MonoBehaviour
     /// </summary>
     public static void DisableDebug()
     {
-        Debug.unityLogger.filterLogType = LogType.Exception;
+        GameSettings.FilterLogType = LogType.Exception;
     }
 
     /// <summary>

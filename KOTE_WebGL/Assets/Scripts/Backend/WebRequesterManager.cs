@@ -49,18 +49,21 @@ public class WebRequesterManager : MonoBehaviour
         {
             baseUrl = "https://gateway.alpha.knightsoftheether.com";
             skinUrl = "https://s3.amazonaws.com/koteskins.knightsoftheether.com/";
+            GameManager.ClientEnvironment = "Alpha";
         }
 
         if (hostName.IndexOf("stage") > -1)
         {
             baseUrl = "https://gateway.stage.kote.robotseamonster.com";
             skinUrl = "https://koteskins.robotseamonster.com/";
+            GameManager.ClientEnvironment = "Stage";
         }
 
         if (hostName.IndexOf("dev") > -1)
         {
             baseUrl = "https://gateway.dev.kote.robotseamonster.com";
             skinUrl = "https://koteskins.robotseamonster.com/";
+            GameManager.ClientEnvironment = "Dev";
         }
 
 
@@ -68,6 +71,7 @@ public class WebRequesterManager : MonoBehaviour
 #if UNITY_EDITOR
         baseUrl = "https://gateway.dev.kote.robotseamonster.com";
         skinUrl = "https://koteskins.robotseamonster.com/";
+        GameManager.ClientEnvironment = "Unity";
 #endif
 
         PlayerPrefs.SetString("api_url", baseUrl);

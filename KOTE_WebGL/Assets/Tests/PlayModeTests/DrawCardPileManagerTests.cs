@@ -38,22 +38,28 @@ public class DrawCardPileManagerTests : MonoBehaviour
         yield return null;
     }
 
-    [Test]
-    public void DoesShufflingCardsFireSFXEvent()
+    [UnityTest]
+    public IEnumerator DoesShufflingMoreThanOneCardFireSFXEvent()
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) => { eventFired = true; });
         GameManager.Instance.EVENT_CARD_SHUFFLE.Invoke();
+        yield return new WaitForSeconds(0.3f);
         Assert.True(eventFired);
     }
 
-    [Test]
-    public void DoesShufflingCardsFireCorrectSFX()
+    [UnityTest]
+    public IEnumerator DoesShufflingMoreThanOneCardFireCorrectSFX()
     {
+        SoundTypes soundType = SoundTypes.EnemyOffensive;
         string sfxType = "";
-        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) => { sfxType = data2; });
+        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) =>
+        {
+            soundType = data; sfxType = data2; });
         GameManager.Instance.EVENT_CARD_SHUFFLE.Invoke();
-        Assert.AreEqual("Deck Shuffle", sfxType);
+        yield return new WaitForSeconds(0.3f);
+        Assert.AreEqual(SoundTypes.Card, soundType);
+        Assert.AreEqual("Shuffle", sfxType);
     }
 
     [Test]
