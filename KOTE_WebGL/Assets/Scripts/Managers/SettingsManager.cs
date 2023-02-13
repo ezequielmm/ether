@@ -13,7 +13,7 @@ public class SettingsManager : MonoBehaviour
     public TMP_Text sfxVolumeText;
     public TMP_Dropdown languageDropdown;
     public GameObject settingsContainer;
-    public GameObject logoutConfirmContainer;
+    public GameObject feedbackPanel;
     public Button logoutHyperlink, manageWallets;
 
     private bool settingsInitalized;
@@ -87,6 +87,11 @@ public class SettingsManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.Invoke(true);
+    }
+
+    public void OnFeedbackButton()
+    {
+        feedbackPanel.SetActive(true);
     }
 
     public void ActivateInnerSettingsPanel(bool activate)
