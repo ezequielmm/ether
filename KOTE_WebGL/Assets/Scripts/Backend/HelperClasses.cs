@@ -1006,3 +1006,28 @@ public class WhitelistResponse
         public bool isValid;
     }
 }
+
+[Serializable]
+public class BugReportData
+{
+    public Guid reportId;
+    public string environment;
+    public string service = "Frontend";
+    public Guid clientId;
+    public string account;
+    public int knightId;
+    public string expeditionId;
+    public string userDescription;
+    public string userTitle;
+    public string screenshot;
+    public string frontendVersion = Application.version;
+    public List<LogItem> messageLog;
+}
+
+[Serializable]
+public class LogItem
+{
+    public string timestamp;
+    public string direction;
+    public string data;
+}

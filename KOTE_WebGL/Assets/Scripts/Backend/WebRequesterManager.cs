@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using BestHTTP.JSON;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -25,6 +23,7 @@ public class WebRequesterManager : MonoBehaviour
     private readonly string urlExpeditionRequest = "/gsrv/v1/expeditions";
     private readonly string urlExpeditionCancel = "/gsrv/v1/expeditions/cancel";
     private readonly string urlExpeditionScore = "/gsrv/v1/expeditions/score";
+    private readonly string urlBugReport = "/gsrv/v1/bugreport";
     
     
     private readonly string urlOpenSea = "https://api.opensea.io/api/v1/assets?xxxx&asset_contract_address=0x32A322C7C77840c383961B8aB503c9f45440c81f&format=json";
@@ -186,6 +185,11 @@ public class WebRequesterManager : MonoBehaviour
     public void RequestCharacterList()
     {
         StartCoroutine(GetCharacterList());
+    }
+
+    public void SendBugReport()
+    {
+        StartCoroutine(PushBugReport());
     }
 
     public IEnumerator GetRandomName(string lastName)
@@ -685,5 +689,19 @@ public class WebRequesterManager : MonoBehaviour
 
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false, -1);
         Debug.Log("answer from cancel expedition " + request.downloadHandler.text);
+    }
+
+    private IEnumerator PushBugReport()
+    {
+        string fullUrl = $"{baseUrl}{urlBugReport}";
+        UnityWebRequest request = UnityWebRequest.Post(fullUrl, "");
+        yield return request.SendWebRequest();
+        
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.Log("[Error canceling expedition]");
+            yield break;
+        }
     }
 }
