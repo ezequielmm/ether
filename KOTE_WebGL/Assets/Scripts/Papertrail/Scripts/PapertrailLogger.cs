@@ -102,7 +102,7 @@ namespace Papertrail
 
             // Load settings
             m_isReady = false;
-            m_localIp = "Ip not retrieved";
+            m_localIp = "0.0.0.0";
             if (SceneManager.GetActiveScene().isLoaded) m_isLoaded = true;
             SceneManager.sceneLoaded += OnSceneLoaded;
             Debug.unityLogger.logHandler = new PapertrailLogHandler();
@@ -203,8 +203,10 @@ namespace Papertrail
                 case LogType.Assert:
                     severity = Severity.Alert;
                     break;
-                case LogType.Error:
                 case LogType.Exception:
+                    severity = Severity.Critical;
+                    break;
+                case LogType.Error:
                     severity = Severity.Error;
                     break;
                 case LogType.Log:
@@ -314,7 +316,7 @@ namespace Papertrail
             // Environment data
             if (!string.IsNullOrEmpty(GameManager.ClientEnvironment))
             {
-                logData.env =GameManager.ClientEnvironment;
+                logData.env = GameManager.ClientEnvironment;
             }
             // Log level (int?)
             logData.level = severityValue;

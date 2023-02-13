@@ -300,7 +300,7 @@ public class GameManager : SingleTon<GameManager>
 
     public WebRequesterManager webRequester;
 
-    public static string ClientEnvironment = "";
+    public static string ClientEnvironment = "Unknown";
     
     // get the unique identifier for this instance of the client
     public static string ClientId
