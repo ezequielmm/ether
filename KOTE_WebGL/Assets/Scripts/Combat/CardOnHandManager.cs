@@ -112,6 +112,7 @@ public class CardOnHandManager : MonoBehaviour
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener(OnUpdateEnergy);
         GameManager.Instance.EVENT_CARD_SHOWING_UP.AddListener(OnCardMouseShowingUp);
         GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);
+        GameManager.Instance.EVENT_CARD_UPDATE_TEXT.AddListener(UpdateCardText);
         var death = gameObject.AddComponent<DestroyOnGameStatus>();
         death.causesOfDeath.Add(new DestroyOnGameStatus.CauseOfDeath()
         {
@@ -162,23 +163,13 @@ public class CardOnHandManager : MonoBehaviour
         }
     }
 
-    internal void Populate(Card card, int energy)
+    public void Populate(Card card, int energy)
     {
+        thisCardValues = card;
         //Debug.Log(card);
         //cardidTF.SetText(card.id);
-        string cardEnergy = Mathf.Max(card.energy, 0).ToString();
-        if (card.energy < 0)
-        {
-            cardEnergy = "X";
-        }
-
-        energyTF.SetText(cardEnergy);
-        nameTF.SetText(card.name);
-        rarityTF.SetText(card.rarity);
-        descriptionTF.SetText(card.description);
+        
         // we've got to check if the card is upgraded when picking the gem, hence the extra variable
-        string cardType = card.cardType;
-        // if (card.isUpgraded) cardType += "+";
         CardAssetManager cardAssetManager = CardAssetManager.Instance;
         gemSprite.sprite = cardAssetManager.GetGem(card.cardType, card.isUpgraded);
         if (card.cardType == "curse" || card.cardType == "status")
@@ -189,41 +180,56 @@ public class CardOnHandManager : MonoBehaviour
         {
             frameSprite.sprite = cardAssetManager.GetFrame(card.pool);
         }
-
         bannerSprite.sprite = cardAssetManager.GetBanner(card.rarity);
         cardImage.sprite = cardAssetManager.GetCardImage(card.cardId);
-        /* this.id = card.id;
-          card_energy_cost = card.energy;*/
-        thisCardValues = card;
-
+        
         currentPlayerEnergy = energy;
+        UpdateCardText(card);
+    }
 
-        if (card.properties.statuses != null)
+    private void UpdateCardText(Card card)
+    {
+        if (card.id == thisCardValues.id)
         {
-            foreach (var status in card.properties.statuses)
+            thisCardValues = card;
+            string cardEnergy = Mathf.Max(card.energy, 0).ToString();
+            if (card.energy < 0)
             {
-                if (!string.IsNullOrEmpty(status.tooltip.title))
+                cardEnergy = "X";
+            }
+
+            energyTF.SetText(cardEnergy);
+            nameTF.SetText(card.name);
+            rarityTF.SetText(card.rarity);
+            descriptionTF.SetText(card.description);
+            
+            if (card.properties.statuses != null)
+            {
+                foreach (var status in card.properties.statuses)
                 {
-                    tooltips.Add(status.tooltip);
-                }
-                else
-                {
-                    var description = status.args.description ?? "TODO // Add Description";
-                    tooltips.Add(new Tooltip()
+                    if (!string.IsNullOrEmpty(status.tooltip.title))
                     {
-                        title = Utils.PrettyText(status.name),
-                        description = description
-                    });
+                        tooltips.Add(status.tooltip);
+                    }
+                    else
+                    {
+                        var description = status.args.description ?? "TODO // Add Description";
+                        tooltips.Add(new Tooltip()
+                        {
+                            title = Utils.PrettyText(status.name),
+                            description = description
+                        });
+                    }
                 }
             }
-        }
 
-        if (card.keywords != null && card.keywords.Contains("unplayable"))
-        {
-            hasUnplayableKeyword = true;
-        }
+            if (card.keywords != null && card.keywords.Contains("unplayable"))
+            {
+                hasUnplayableKeyword = true;
+            }
 
-        UpdateCardBasedOnEnergy(energy);
+            UpdateCardBasedOnEnergy(currentPlayerEnergy);
+        }
     }
 
     private void UpdateCardEnergyText(int energy)

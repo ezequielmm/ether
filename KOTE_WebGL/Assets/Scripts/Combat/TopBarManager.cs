@@ -22,7 +22,7 @@ public class TopBarManager : MonoBehaviour
     private int maxHealth;
     private void Start()
     {
-        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusupdate);
+        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusUpdate);
 
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.AddListener(OnToggleMapIcon);
         GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.AddListener(UpdateStageText);
@@ -72,7 +72,7 @@ public class TopBarManager : MonoBehaviour
         }
     }
     
-    public void OnPlayerStatusupdate(PlayerStateData playerState) 
+    public void OnPlayerStatusUpdate(PlayerStateData playerState) 
     {        
         SetNameText(playerState.data.playerState.playerName);
         maxHealth = playerState.data.playerState.hpMax;
@@ -103,7 +103,7 @@ public class TopBarManager : MonoBehaviour
         GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
-    public void OnDeskButtonClicked()
+    public void OnDeckButtonClicked()
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Top Bar Click");
         GameManager.Instance.EVENT_CARD_PILE_CLICKED.Invoke(PileTypes.Deck);

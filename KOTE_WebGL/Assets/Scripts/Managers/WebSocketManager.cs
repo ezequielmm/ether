@@ -214,9 +214,16 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         string uriStr = "https://api.dev.kote.robotseamonster.com";
         //string uriStr = "https://api.alpha.knightsoftheether.com:443";
 
-        if (hostName.IndexOf("alpha") > -1)
+        
+        if (hostName.IndexOf("alpha") > -1 && hostName.IndexOf("knight") > -1)
         {
             uriStr = "https://api.alpha.knightsoftheether.com:443";
+        }
+        
+        if (hostName.IndexOf("alpha") > -1 && hostName.IndexOf("robot") > -1)
+        {
+            uriStr = "https://api.alpha.kote.robotseamonster.com";
+
         }
 
         if (hostName.IndexOf("stage") > -1)

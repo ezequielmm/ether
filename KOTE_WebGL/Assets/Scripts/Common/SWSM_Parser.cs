@@ -81,12 +81,13 @@ public class SWSM_Parser
             case nameof(WS_MESSAGE_TYPES.end_combat):
                 ProcessEndCombat(swsm.data.action, data);
                 break;
+            case nameof(WS_MESSAGE_TYPES.card_updated):
+                ProcessCardUpdated(swsm.data.action, data);
+                break;
             default:
                 Debug.LogWarning("[SWSM Parser] Unknown message_type: " + swsm.data.message_type + " , data:" + data);
                 break;
         }
-
-        ;
     }
 
     #region WS_MESSAGE_TYPES_processors
@@ -353,6 +354,20 @@ public class SWSM_Parser
                 break;
             default:
                 Debug.LogWarning("[ProcessEndCombat] unknown action: " + action + " , data: " + data);
+                break;
+        }
+    }
+
+    private static void ProcessCardUpdated(string action, string data)
+    {
+        switch (action)
+        {
+            case nameof(WS_MESSAGE_ACTIONS.update_card_description):
+                SWSM_CardUpdateData updateData = JsonUtility.FromJson<SWSM_CardUpdateData>(data);
+                GameManager.Instance.EVENT_CARD_UPDATE_TEXT.Invoke(updateData.data.data.card);
+                break;
+            default:
+                Debug.LogWarning("[ProcessCardUpdated] unknown action: " + action + " , data: " + data);
                 break;
         }
     }

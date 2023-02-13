@@ -259,7 +259,8 @@ public enum WS_MESSAGE_TYPES
     card_upgrade,
     add_potion,
     use_potion,
-    add_trinket
+    add_trinket,
+    card_updated
 }
 
 [Serializable]
@@ -293,7 +294,8 @@ public enum WS_MESSAGE_ACTIONS
     show_rewards,
     select_another_reward,
     show_map,
-    show_score
+    show_score,
+    update_card_description
 }
 
 [Serializable]
