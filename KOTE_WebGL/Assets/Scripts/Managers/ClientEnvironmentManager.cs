@@ -18,27 +18,35 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
         }
     }
 
+#if UNITY_EDITOR
+    public bool InUnity = false;
+#endif
     public string WebRequestURL { get; private set; }
     public string SkinURL { get; private set; }
     public string WebSocketURL { get; private set; }
     public string OpenSeasURL { get; private set; } =
         "https://api.opensea.io/api/v1/assets?xxxx&asset_contract_address=0x32A322C7C77840c383961B8aB503c9f45440c81f&format=json";
-    private Environments environment = Environments.Unknown;
-    public string EnvironmentName => environment.ToString();
+    public Environments Environment { get; private set; } = Environments.Unknown;
+    public string EnvironmentName => Environment.ToString();
 
     private ClientEnvironmentManager()
     {
-        environment = DetermineEnvironment(Application.absoluteURL);
-        UpdateUrls(environment);
+#if UNITY_EDITOR
+        InUnity = true;
+#endif
+        Environment = DetermineEnvironment(Application.absoluteURL);
+        UpdateUrls(Environment);
         Debug.Log($"Now running on Environment: {EnvironmentName}");
     }
 
-    private Environments DetermineEnvironment(string applicationURL)
+    public Environments DetermineEnvironment(string applicationURL)
     {
         string hostName = applicationURL.ToLower();
-
 #if UNITY_EDITOR
-        return Environments.Unity;
+        if (InUnity == true)
+        {
+            return Environments.Unity;
+        }
 #endif
         if (hostName.Contains("dev"))
         {
@@ -63,7 +71,6 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
     {
         switch(currentEnvironment) 
         {
-
             case Environments.Stage:
                 WebRequestURL = $"https://gateway.stage.kote.robotseamonster.com";
                 SkinURL = $"https://koteskins.robotseamonster.com/";
@@ -97,7 +104,7 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
         instance = null;
     }
 
-    private enum Environments 
+    public enum Environments 
     {
         Unknown,
 #if UNITY_EDITOR
