@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,6 +35,14 @@ public abstract class SingleTon<T> : MonoBehaviour where T : Component
                 }
             }
             return instance;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (instance == this)
+        {
+            DestroyInstance();
         }
     }
 

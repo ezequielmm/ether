@@ -198,6 +198,7 @@ public class PlayerStateData
     [Serializable]
     public class Data
     {
+        public string expeditionId;
         public PlayerData playerState;
     }
 }
@@ -711,6 +712,24 @@ public class showCardData
     public string kind;
 }
 
+[Serializable]
+public class SWSM_CardUpdateData
+{
+    public CardUpdateData data;
+    
+    [Serializable]
+    public class CardUpdateData
+    {
+        public UpdateCardData data;
+        [Serializable]
+        public class UpdateCardData
+        {
+            public Card card;
+            public string pile;
+        }
+    }
+}
+
 
 [Serializable]
 public class SWSM_ErrorData
@@ -1030,4 +1049,16 @@ public class LogItem
     public string timestamp;
     public string direction;
     public string data;
+}
+public class PapertrailLogData
+{
+    public string env;
+    public int level;
+    public string service;
+    public string ip;
+    public string clientId;
+    public string account;
+    public string expeditionId;
+    public string context;
+    public string message;
 }

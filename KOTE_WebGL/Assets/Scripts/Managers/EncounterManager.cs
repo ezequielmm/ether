@@ -153,10 +153,21 @@ public class EncounterManager : MonoBehaviour
     /// <returns>the formatted button text</returns>
     private string FormatEnabledButtonText(string text)
     {
+        int charIndex;
         // add in the color changes for the different options
-        text = text.Insert(0, "<color=#E1D5A4> <size=120%>");
-        int charIndex = text.IndexOf(':');
-        text = text.Insert(charIndex + 1, "<color=#FAB919> <size=100%>");
+        // if there's a letter at the beginning
+        if (text.Contains(':'))
+        {
+            text = text.Insert(0, "<color=#E1D5A4> <size=120%>");
+            charIndex = text.IndexOf(':');
+            text = text.Insert(charIndex + 1, "<color=#FAB919> <size=100%>");
+        }
+        // if there's not
+        else
+        {
+            text = text.Insert(0, "<color=#FAB919> <size=100%>");
+        }
+
         charIndex = text.IndexOf('[');
         if (charIndex != -1)
         {
@@ -173,9 +184,17 @@ public class EncounterManager : MonoBehaviour
     /// <returns>the formatted text</returns>
     private string FormatDisabledButtonText(string text)
     {
-        text = text.Insert(0, "<color=#999999> <size=120%>");
-        int charIndex = text.IndexOf(':');
-        text = text.Insert(charIndex + 1, "<size=100%>");
+        string startingText;
+        if (text.Contains(':'))
+        {
+            startingText = "<color=#999999> <size=120%>";
+            int charIndex = text.IndexOf(':');
+            text = text.Insert(charIndex + 1, "<size=100%>");
+        }
+        else startingText = "<color=#999999>";
+        
+        text = text.Insert(0, startingText);
+        
         return text;
     }
 

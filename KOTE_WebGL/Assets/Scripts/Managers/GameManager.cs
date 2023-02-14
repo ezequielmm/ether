@@ -227,7 +227,8 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_CARD_EXHAUST { get; } = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_CARD_SHUFFLE = new UnityEvent();
     [HideInInspector] public UnityEvent<AddCardData> EVENT_CARD_ADD = new UnityEvent<AddCardData>();
-
+    [HideInInspector] public UnityEvent<Card> EVENT_CARD_UPDATE_TEXT = new UnityEvent<Card>();
+    
     //Gameplay events
     [HideInInspector] public UnityEvent<GameStatuses> EVENT_PREPARE_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
     [HideInInspector] public UnityEvent<GameStatuses> EVENT_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
@@ -290,16 +291,35 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<int> EVENT_SKIP_NODE = new UnityEvent<int>();
 
     // Scene Events
+    [HideInInspector] public UnityEvent EVENT_SCENE_LOADING = new UnityEvent();
     [HideInInspector] public UnityEvent<inGameScenes> EVENT_SCENE_LOADED = new UnityEvent<inGameScenes>();
 
 
 
     public inGameScenes
-        nextSceneToLoad
-    { get; set; } // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
+        nextSceneToLoad { get; set; } // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
 
     public WebRequesterManager webRequester;
 
+    public static string ClientEnvironment = "Unknown";
+    
+    // get the unique identifier for this instance of the client
+    public static string ClientId
+    {
+        get
+        {
+            string clientId = PlayerPrefs.GetString("client_id");
+            // if the client id doesn't exist, create one and save it
+            if (string.IsNullOrEmpty(clientId))
+            {
+                Guid newId = Guid.NewGuid();
+                clientId = newId.ToString();
+                PlayerPrefs.SetString("client_id", newId.ToString());
+            }
+
+            return clientId;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -313,6 +333,7 @@ public class GameManager : SingleTon<GameManager>
 
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene
     {
+        EVENT_SCENE_LOADING.Invoke();
         nextSceneToLoad = scene;
         if(scene== inGameScenes.Expedition)
         {

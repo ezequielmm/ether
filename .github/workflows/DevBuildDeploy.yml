@@ -128,7 +128,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: build-WebGL
-          path: build/WebGL
+          path: build/WebGL/WebGL
 
 
   deployToDev:
@@ -145,7 +145,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: build-WebGL
-        path: builds
+        path: testBuild
 
     - name: Deploy to server
       uses: appleboy/scp-action@master
@@ -153,6 +153,6 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key : ${{ secrets.SSH_PRIV_KEY }}
-        source: "builds"
-        target: "/home/forge/client.dev.kote.robotseamonster.com/testBuild"
+        source: "testBuild"
+        target: "/home/forge/client.dev.kote.robotseamonster.com"
         overwrite: true
