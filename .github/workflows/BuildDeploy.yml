@@ -3,6 +3,8 @@ on:
   push:
     branches:
     - 'releases/dev'
+    - 'releases/stage'
+    - 'releases/alpha'
   
 jobs:
   selectEnvName:
@@ -18,7 +20,7 @@ jobs:
             echo "deployEnv=develop" >> $GITHUB_OUTPUT
           elif [ "${{ github.ref }}" == "refs/heads/releases/stage" ]; then
             echo "Stage Selected"
-            echo "deployEnv=stage" >> $GITHUB_OUTPUT
+            echo "deployEnv=staging" >> $GITHUB_OUTPUT
           elif [ "${{ github.ref }}" == "refs/heads/releases/alpha" ]; then
             echo "Alpha Selected"
             echo "deployEnv=alpha" >> $GITHUB_OUTPUT
