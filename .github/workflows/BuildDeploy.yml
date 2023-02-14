@@ -35,6 +35,7 @@ jobs:
   testRunner:
     name: Test in ${{ matrix.testMode }} ✨
     runs-on: ubuntu-latest
+    needs: [selectEnvName]
     strategy:
       fail-fast: false
       matrix:
@@ -81,6 +82,15 @@ jobs:
         with:
           name: Test results (${{ matrix.testMode }})
           path: ${{ steps.testRunner.outputs.artifactsPath }}
+
+      - name: Notify Test Failure
+        uses: indiesdev/curl@v1.1
+        if: failure()
+        with:
+          url: ${{ secrets.SLACK_WEBHOOK }}
+          method: "POST"
+          headers: '{ "Content-type": "application/json" }'
+          body: '{ "text": "GitHub Action: Test [${{ matrix.testMode }}] in environment ${{ needs.selectEnvName.outputs.deployEnv }} has failed." }'
 
   buildWebGL:
     name: Build Project
@@ -133,6 +143,24 @@ jobs:
           buildsPath: build
           buildName: WebGL
 
+      - name: Notify Build Success
+        uses: indiesdev/curl@v1.1
+        if: success()
+        with:
+          url: ${{ secrets.SLACK_WEBHOOK }}
+          method: "POST"
+          headers: '{ "Content-type": "application/json" }'
+          body: '{ "text": "GitHub Action: Build for ${{ needs.selectEnvName.outputs.deployEnv }} was successful." }'
+
+      - name: Notify Build Failure
+        uses: indiesdev/curl@v1.1
+        if: failure()
+        with:
+          url: ${{ secrets.SLACK_WEBHOOK }}
+          method: "POST"
+          headers: '{ "Content-type": "application/json" }'
+          body: '{ "text": "GitHub Action: Build for ${{ needs.selectEnvName.outputs.deployEnv }} has failed. Please visit the GitHub Repository for more information." }'
+
       - uses: actions/upload-artifact@v2
         with:
           name: build-WebGL
@@ -173,10 +201,20 @@ jobs:
         target: "${{ vars.PUBLISH_PATH }}"
         overwrite: true
 
-    - name: Notify Push Finished
+    - name: Notify Push Success
       uses: indiesdev/curl@v1.1
+      if: success()
       with:
         url: ${{ secrets.SLACK_WEBHOOK }}
         method: "POST"
         headers: '{ "Content-type": "application/json" }'
-        body: '{ "text": "GitHub Action: Push to ${{ needs.selectEnvName.outputs.deployEnv }} is finished." }'
+        body: '{ "text": "GitHub Action: Push to ${{ needs.selectEnvName.outputs.deployEnv }} is successful." }'
+      
+    - name: Notify Push Failure
+    uses: indiesdev/curl@v1.1
+    if: failure()
+    with:
+      url: ${{ secrets.SLACK_WEBHOOK }}
+      method: "POST"
+      headers: '{ "Content-type": "application/json" }'
+      body: '{ "text": "GitHub Action: Push to ${{ needs.selectEnvName.outputs.deployEnv }} has failed. Please vist the GitHub Repository for more information." }'
