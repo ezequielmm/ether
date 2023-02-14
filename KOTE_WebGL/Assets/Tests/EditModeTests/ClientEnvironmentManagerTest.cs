@@ -148,4 +148,53 @@ public class ClientEnvironmentManagerTest
         Assert.AreEqual(result, ClientEnvironmentManager.Environments.Alpha);
     }
 
+    [Test]
+    public void VariableSet_WebRequestURL()
+    {
+        // Arrange
+        // Act
+        ClientEnvironmentManager env = ClientEnvironmentManager.Instance;
+        // Assert
+        Assert.IsFalse(string.IsNullOrWhiteSpace(env.WebRequestURL));
+    }
+
+    [Test]
+    public void VariableSet_SkinURL()
+    {
+        // Arrange
+        // Act
+        ClientEnvironmentManager env = ClientEnvironmentManager.Instance;
+        // Assert
+        Assert.IsFalse(string.IsNullOrWhiteSpace(env.SkinURL));
+    }
+
+    [Test]
+    public void VariableSet_WebSocketURL()
+    {
+        // Arrange
+        // Act
+        ClientEnvironmentManager env = ClientEnvironmentManager.Instance;
+        // Assert
+        Assert.IsFalse(string.IsNullOrWhiteSpace(env.WebSocketURL));
+    }
+
+    [Test]
+    public void VariableSet_OpenSeasURL()
+    {
+        // Arrange
+        // Act
+        ClientEnvironmentManager env = ClientEnvironmentManager.Instance;
+        // Assert
+        Assert.IsFalse(string.IsNullOrWhiteSpace(env.OpenSeasURL));
+    }
+
+    [Test]
+    public void VariableSet_EnvironmentName()
+    {
+        // Arrange
+        // Act
+        ClientEnvironmentManager env = ClientEnvironmentManager.Instance;
+        // Assert
+        Assert.IsFalse(string.IsNullOrWhiteSpace(env.EnvironmentName));
+    }
 }
