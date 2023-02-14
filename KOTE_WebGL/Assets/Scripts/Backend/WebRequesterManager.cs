@@ -11,8 +11,8 @@ using UnityEngine.Networking;
 /// </summary>
 public class WebRequesterManager : MonoBehaviour
 {
-    private string baseUrl;
-    private string skinUrl;
+    private string baseUrl => ClientEnvironmentManager.Instance.WebRequestURL;
+    private string skinUrl => ClientEnvironmentManager.Instance.SkinURL;
     private readonly string urlRandomName = "/auth/v1/generate/username";
     private readonly string urlRegister = "/auth/v1/register";
     private readonly string urlLogin = "/auth/v1/login";
@@ -27,8 +27,7 @@ public class WebRequesterManager : MonoBehaviour
     private readonly string urlExpeditionScore = "/gsrv/v1/expeditions/score";
 
 
-    private readonly string urlOpenSea =
-        "https://api.opensea.io/api/v1/assets?xxxx&asset_contract_address=0x32A322C7C77840c383961B8aB503c9f45440c81f&format=json";
+    private string urlOpenSea => ClientEnvironmentManager.Instance.OpenSeasURL;
 
     // we have to queue the requested nft images due to rate limiting
     private Queue<(string, string)> requestedNftImages = new Queue<(string, string)>();
@@ -37,49 +36,6 @@ public class WebRequesterManager : MonoBehaviour
     private void Awake()
     {
         HiddenConsoleManager.DisableOnBuild();
-
-        // determine the correct server the client is running on
-        string hostName = Application.absoluteURL;
-        Debug.Log("hostName:" + hostName);
-
-        baseUrl = "https://gateway.dev.kote.robotseamonster.com"; //make sure if anything fails we use DEV
-        // baseUrl = "https://gateway.alpha.knightsoftheether.com";//make sure if anything fails we use DEV
-
-        if (hostName.IndexOf("alpha") > -1 && hostName.IndexOf("knight") > -1)
-        {
-            baseUrl = "https://gateway.alpha.knightsoftheether.com";
-            skinUrl = "https://s3.amazonaws.com/koteskins.knightsoftheether.com/";
-            GameManager.ClientEnvironment = "Alpha";
-        }
-        
-        if (hostName.IndexOf("alpha") > -1 && hostName.IndexOf("robot") > -1)
-        {
-            baseUrl = "https://gateway.alpha.kote.robotseamonster.com";
-            skinUrl = "https://koteskins.robotseamonster.com/";
-            GameManager.ClientEnvironment = "Alpha";
-        }
-
-        if (hostName.IndexOf("stage") > -1)
-        {
-            baseUrl = "https://gateway.stage.kote.robotseamonster.com";
-            skinUrl = "https://koteskins.robotseamonster.com/";
-            GameManager.ClientEnvironment = "Stage";
-        }
-
-        if (hostName.IndexOf("dev") > -1)
-        {
-            baseUrl = "https://gateway.dev.kote.robotseamonster.com";
-            skinUrl = "https://koteskins.robotseamonster.com/";
-            GameManager.ClientEnvironment = "Dev";
-        }
-
-
-        // default to the stage server if we're in the editor
-#if UNITY_EDITOR
-        baseUrl = "https://gateway.dev.kote.robotseamonster.com";
-        skinUrl = "https://koteskins.robotseamonster.com/";
-        GameManager.ClientEnvironment = "Unity";
-#endif
 
         PlayerPrefs.SetString("api_url", baseUrl);
 
