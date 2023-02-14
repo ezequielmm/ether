@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 3 Knights
+  m_text: 0 Knights
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 27865366dee15994f99e24d4dc4dd546, type: 2}
   m_sharedMaterial: {fileID: -958227966914600390, guid: 27865366dee15994f99e24d4dc4dd546,
@@ -460,7 +460,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0x2F2CF39D0325A9792f0C9E0de73cdc0820C5c65e
+  m_text: No Wallet Connected
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 27865366dee15994f99e24d4dc4dd546, type: 2}
   m_sharedMaterial: {fileID: -958227966914600390, guid: 27865366dee15994f99e24d4dc4dd546,

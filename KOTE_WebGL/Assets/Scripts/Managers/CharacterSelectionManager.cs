@@ -115,6 +115,12 @@ public class CharacterSelectionManager : MonoBehaviour
         ActivateInnerCharacterSelectionPanel(false);
     }
 
+    public void OnBackButton()
+    {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
+        ActivateInnerCharacterSelectionPanel(false);
+    }
+
     // Leaving this so we still have it when we need to do class selections
 
     #region ClassSelect

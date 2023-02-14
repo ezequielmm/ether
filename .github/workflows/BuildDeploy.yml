@@ -1,0 +1,220 @@
+on: 
+  workflow_dispatch:
+  push:
+    branches:
+    - 'releases/dev'
+    - 'releases/stage'
+    - 'releases/alpha'
+  
+jobs:
+  selectEnvName:
+    name: Select Name based on branch
+    runs-on: ubuntu-latest
+    outputs:
+      deployEnv: ${{ steps.branchCheck.outputs.deployEnv }}
+    steps:
+      - id: branchCheck
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/releases/dev" ]; then
+            echo "Develop Selected"
+            echo "deployEnv=develop" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref }}" == "refs/heads/releases/stage" ]; then
+            echo "Stage Selected"
+            echo "deployEnv=staging" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref }}" == "refs/heads/releases/alpha" ]; then
+            echo "Alpha Selected"
+            echo "deployEnv=alpha" >> $GITHUB_OUTPUT
+          else
+            echo "Else Fired, Manual run of workflow goes to develop"
+            echo "deployEnv=develop" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Use variable setup in previous step
+        run: echo "I'm using variable ${{ steps.branchCheck.outputs.deployEnv }}"
+
+  testRunner:
+    name: Test in ${{ matrix.testMode }} ✨
+    runs-on: ubuntu-latest
+    needs: [selectEnvName]
+    strategy:
+      fail-fast: false
+      matrix:
+        testMode:
+          - EditMode
+          - PlayMode
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create LFS file list
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+
+      - name: Restore LFS cache
+        uses: actions/cache@v2
+        id: lfs-cache
+        with:
+          path: .git/lfs
+          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+
+      - name: Git LFS Pull
+        run: |
+          git lfs pull
+          git add .
+          git reset --hard
+      - name: Restore Library cache
+        uses: actions/cache@v2
+        with:
+          path: Library
+          key: Library-test-project-${{ matrix.targetPlatform }}
+          restore-keys: |
+            Library-test-project-
+            Library-
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v2
+        id: testRunner
+        with:
+          testMode: ${{ matrix.testMode }}
+          checkName: ${{ matrix.testMode }} test results
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          projectPath: ${{ vars.PROJECT_PATH }}
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Test results (${{ matrix.testMode }})
+          path: ${{ steps.testRunner.outputs.artifactsPath }}
+
+      - name: Notify Test Failure
+        uses: indiesdev/curl@v1.1
+        if: failure()
+        with:
+          url: ${{ secrets.SLACK_WEBHOOK }}
+          method: "POST"
+          headers: '{ "Content-type": "application/json" }'
+          body: '{ "text": "GitHub Action: Test [${{ matrix.testMode }}] in environment ${{ needs.selectEnvName.outputs.deployEnv }} has failed." }'
+
+  buildWebGL:
+    name: Build Project
+    runs-on: ubuntu-latest
+    needs: [selectEnvName]
+    # needs: testRunner
+    steps:
+      - name: Notify Build Starting
+        uses: indiesdev/curl@v1.1
+        with:
+          url: ${{ secrets.SLACK_WEBHOOK }}
+          method: "POST"
+          headers: '{ "Content-type": "application/json" }'
+          body: '{ "text": "GitHub Action: Now building for ${{ needs.selectEnvName.outputs.deployEnv }}. This process may take several minutes." }'
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create LFS file list
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+
+      - name: Restore LFS cache
+        uses: actions/cache@v2
+        id: lfs-cache
+        with:
+          path: .git/lfs
+          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+
+      - name: Git LFS Pull
+        run: |
+          git lfs pull
+          git add .
+          git reset --hard
+      - name: Restore Library cache
+        uses: actions/cache@v2
+        with:
+          path: Library
+          key: Library-build-WebGL
+          restore-keys: |
+            Library-build-
+            Library-
+      - uses: game-ci/unity-builder@v2
+        env: 
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: WebGL
+          projectPath: ${{ vars.PROJECT_PATH }}
+          buildsPath: build
+          buildName: WebGL
+
+      - name: Notify Build Success
+        uses: indiesdev/curl@v1.1
+        if: success()
+        with:
+          url: ${{ secrets.SLACK_WEBHOOK }}
+          method: "POST"
+          headers: '{ "Content-type": "application/json" }'
+          body: '{ "text": "GitHub Action: Build for ${{ needs.selectEnvName.outputs.deployEnv }} was successful." }'
+
+      - name: Notify Build Failure
+        uses: indiesdev/curl@v1.1
+        if: failure()
+        with:
+          url: ${{ secrets.SLACK_WEBHOOK }}
+          method: "POST"
+          headers: '{ "Content-type": "application/json" }'
+          body: '{ "text": "GitHub Action: Build for ${{ needs.selectEnvName.outputs.deployEnv }} has failed. Please visit the GitHub Repository for more information." }'
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build-WebGL
+          path: build/WebGL/WebGL
+
+
+  deployToDev:
+    name: Deploy to dev
+    needs: [buildWebGL, selectEnvName]
+    environment: ${{ needs.selectEnvName.outputs.deployEnv }}
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Download WebGL Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: build-WebGL
+        path: "${{ vars.BUILD_DIRECTORY }}"
+
+    - name: Notify Push to Server
+      uses: indiesdev/curl@v1.1
+      with:
+        url: ${{ secrets.SLACK_WEBHOOK }}
+        method: "POST"
+        headers: '{ "Content-type": "application/json" }'
+        body: '{ "text": "GitHub Action: Now pushing to ${{ needs.selectEnvName.outputs.deployEnv }}. The server may be down for upto 5 minutes." }'
+
+    - name: Deploy to server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key : ${{ secrets.SSH_PRIV_KEY }}
+        source: "${{ vars.BUILD_DIRECTORY }}"
+        target: "${{ vars.PUBLISH_PATH }}"
+        overwrite: true
+
+    - name: Notify Push Success
+      uses: indiesdev/curl@v1.1
+      if: success()
+      with:
+        url: ${{ secrets.SLACK_WEBHOOK }}
+        method: "POST"
+        headers: '{ "Content-type": "application/json" }'
+        body: '{ "text": "GitHub Action: Push to ${{ needs.selectEnvName.outputs.deployEnv }} is successful." }'
+      
+    - name: Notify Push Failure
+      uses: indiesdev/curl@v1.1
+      if: failure()
+      with:
+        url: ${{ secrets.SLACK_WEBHOOK }}
+        method: "POST"
+        headers: '{ "Content-type": "application/json" }'
+        body: '{ "text": "GitHub Action: Push to ${{ needs.selectEnvName.outputs.deployEnv }} has failed. Please vist the GitHub Repository for more information." }'
