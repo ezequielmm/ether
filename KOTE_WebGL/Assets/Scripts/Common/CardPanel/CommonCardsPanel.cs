@@ -5,6 +5,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+/// <summary>
+/// Used for just displaying cards
+/// </summary>
 public class CommonCardsPanel : CardPanelBase
 {
     private Deck playerDeck;

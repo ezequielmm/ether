@@ -37,9 +37,7 @@ public class MerchantNodeManager : MonoBehaviour
 
     [Header("Services")]
     [SerializeField]
-    private MerchantCardPanel serviceCardPanel;
-    [SerializeField]
-    private CardPairPanelManager cardPairPanel;
+    private SelectCardsPanel serviceCardPanel;
 
     [Header("Service Buttons")]
     [SerializeField]
@@ -52,7 +50,7 @@ public class MerchantNodeManager : MonoBehaviour
     private List<MerchantItem<MerchantData.Merchant<Trinket>>> trinketItems = new List<MerchantItem<MerchantData.Merchant<Trinket>>>();
 
     private MerchantData.IMerchant selectedItem;
-    private UICardPrefabManager selectedCard = null;
+    private string selectedCard = string.Empty;
 
     private int gold => merchantData.coins;
 
@@ -62,7 +60,6 @@ public class MerchantNodeManager : MonoBehaviour
         GameManager.Instance.EVENT_TOGGLE_MERCHANT_PANEL.AddListener(ToggleVisibility);
         GameManager.Instance.EVENT_MERCHANT_PURCHASE_SUCCESS.AddListener(OnPurchaseResponse);
         ClearMerchandise();
-        serviceCardPanel.OnCardClick.AddListener(OnCardSelection);
     }
 
     public void ToggleVisibility(bool toggle)
@@ -170,7 +167,7 @@ public class MerchantNodeManager : MonoBehaviour
 
         selectedItem = null;
         buyButton.interactable = false;
-        selectedCard = null;
+        selectedCard = string.Empty;
     }
 
     private void ResetItems() 
@@ -198,10 +195,9 @@ public class MerchantNodeManager : MonoBehaviour
         selectedItem = null;
         buyButton.interactable = false;
         buyButtonText.text = "BUY";
-        selectedCard = null;
+        selectedCard = string.Empty;
         upgradeCard = false;
-        serviceCardPanel.HideCardSelectPanel();
-        cardPairPanel.HidePairPannel();
+        serviceCardPanel.HidePanel();
     }
 
     private void PrepareBuy(int cost, MerchantData.IMerchant item) 
@@ -226,10 +222,10 @@ public class MerchantNodeManager : MonoBehaviour
             GameManager.Instance.EVENT_MERCHANT_BUY.Invoke(selectedItem.Type.ToLower(), selectedItem.Id);
         }
         // Service Purchase
-        else if (selectedCard != null) 
+        else if (!string.IsNullOrWhiteSpace(selectedCard)) 
         {
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Confirm Purchase");
-            GameManager.Instance.EVENT_MERCHANT_BUY.Invoke(upgradeCard ? "upgrade" : "remove", selectedCard.id);
+            GameManager.Instance.EVENT_MERCHANT_BUY.Invoke(upgradeCard ? "upgrade" : "remove", selectedCard);
         }
     }
 
@@ -239,7 +235,19 @@ public class MerchantNodeManager : MonoBehaviour
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         ResetItems();
         // Run upgrade card pannel
-        ShowCardPanel(merchantData.upgradeableCards);
+        ShowCardPanel(merchantData.upgradeableCards, new SelectPanelOptions 
+        {
+            MustSelectAllCards = false,
+            HideBackButton = false,
+            FireSelectWhenCardClicked = false,
+            NumberOfCardsToSelect = 1,
+            ShowCardInCenter = false
+        },
+        (List<string> selected) => 
+        {
+            selectedCard = selected[0];
+            OnCardSelection(selectedCard);
+        });
         buyButtonText.text = "UPGRADE";
         upgradeCard = true;
     }
@@ -249,16 +257,26 @@ public class MerchantNodeManager : MonoBehaviour
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         ResetItems();
         // Run remove card pannel
-        ShowCardPanel(merchantData.playerCards);
+        ShowCardPanel(merchantData.playerCards, new SelectPanelOptions
+        {
+            MustSelectAllCards = false,
+            HideBackButton = false,
+            FireSelectWhenCardClicked = false,
+            NumberOfCardsToSelect = 1,
+            ShowCardInCenter = false
+        },
+        (List<string> selected) =>
+        {
+            selectedCard = selected[0];
+            OnCardSelection(selectedCard);
+        });
         buyButtonText.text = "REMOVE";
     }
 
-    public void OnCardSelection(string cardId, UICardPrefabManager card) 
+    public void OnCardSelection(string cardId) 
     {
-        card.Select();
         buyButton.interactable = true;
         DeselectCard();
-        selectedCard = card;
         if (upgradeCard)
         {
             totalText.text = $"{merchantData.upgradeCost}";
@@ -272,15 +290,21 @@ public class MerchantNodeManager : MonoBehaviour
 
     public void ShowCardComparison(string cardId) 
     {
-        Card originalCardData = merchantData.upgradeableCards.Find(x => x.id == cardId);
-        Card upgradedCardData = merchantData.upgradedCards.Find(x => x.id == cardId);
+        GameManager.Instance.EVENT_GET_UPGRADE_PAIR.Invoke(cardId);
+        GameManager.Instance.EVENT_USER_CONFIRMATION_UPGRADE_CARD.AddListener(UpgradeCardConfirmation);
+    }
 
-        cardPairPanel.ShowUpgrade(originalCardData, upgradedCardData);
+    public void UpgradeCardConfirmation(string cardId)
+    {
+        GameManager.Instance.EVENT_USER_CONFIRMATION_UPGRADE_CARD.RemoveListener(UpgradeCardConfirmation);
+        if (cardId == selectedCard) 
+        {
+            BuyItem();
+        }
     }
 
     public void HideCardComparison() 
     {
-        cardPairPanel.HidePairPannel();
         DeselectCard();
         totalText.text = "0";
         buyButton.interactable = false;
@@ -288,23 +312,16 @@ public class MerchantNodeManager : MonoBehaviour
 
     private void DeselectCard() 
     {
-        if (selectedCard != null) 
-        {
-            selectedCard.Deselect();
-        }
+        serviceCardPanel.ClearSelectList();
+        HideCardComparison();
     }
 
-    private void ShowCardPanel(List<Card> cards) 
+    private void ShowCardPanel(List<Card> cards, SelectPanelOptions selectOptions,
+        Action<List<string>> onFinishedSelection = null, Action<string> onSelect = null) 
     {
         serviceCardPanel.useBackgroundImage = true;
         serviceCardPanel.scaleOnHover = false;
-        serviceCardPanel.ShowCards(cards);
-
-    }
-
-    public void CloseCardPanel() 
-    {
-        ResetItems();
+        serviceCardPanel.PopulatePanel(cards, selectOptions, onFinishedSelection, onSelect);
     }
 
     public void SetSpeachBubble(string text) 
@@ -312,7 +329,6 @@ public class MerchantNodeManager : MonoBehaviour
         SpeachBubbleContainer.SetActive(!string.IsNullOrEmpty(text));
         SpeachBubbleText.text = text;
     }
-
 
     public void CloseMerchantPanel()
     {

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+[System.Obsolete]
 public class MerchantCardPanel : CardPanelBase
 {
     public UnityEvent<string, UICardPrefabManager> OnCardClick = new UnityEvent<string, UICardPrefabManager>();

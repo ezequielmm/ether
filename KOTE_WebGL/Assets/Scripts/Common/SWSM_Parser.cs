@@ -489,7 +489,6 @@ public class SWSM_Parser
     private static void ProcessMerchantData(string data)
     {
         SWSM_MerchantData merchant = JsonUtility.FromJson<SWSM_MerchantData>(data);
-        Debug.Log(data);
         GameManager.Instance.EVENT_POPULATE_MERCHANT_PANEL.Invoke(merchant.data.data);
     }
 

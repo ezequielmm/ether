@@ -49,7 +49,6 @@ public class CardPairPanelManager : MonoBehaviour
         uiCardPair[0].gameObject.transform.DOScale(Vector3.zero, 1)
             .OnComplete(() =>
             {
-                
                 cardPairPanel.SetActive(false);
                 GameManager.Instance.EVENT_HIDE_COMMON_CARD_PANEL.Invoke();
             });

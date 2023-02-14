@@ -8,6 +8,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+/// <summary>
+/// Used to display and select cards from a pannel. Can also be used to compare and select an upgraded card.
+/// </summary>
 public class SelectCardsPanel : CardPanelBase
 {
     public GameObject selectCardPrefab;
@@ -61,7 +64,7 @@ public class SelectCardsPanel : CardPanelBase
     }
 
 
-    private void PopulatePanel(List<Card> selectableCards, SelectPanelOptions selectOptions,
+    public void PopulatePanel(List<Card> selectableCards, SelectPanelOptions selectOptions,
         Action<List<string>> onFinishedSelection = null, Action<string> onSelect = null)
     {
         selectedCardIds.Clear();
@@ -197,7 +200,7 @@ public class SelectCardsPanel : CardPanelBase
         HideCardSelectPanel();
     }
 
-    private void ClearSelectList()
+    public void ClearSelectList()
     {
         selectedCards = 0;
         selectedCardIds.Clear();
