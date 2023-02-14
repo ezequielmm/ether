@@ -554,5 +554,6 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             }
         }
         Debug.Log(sb.ToString());
+        ServerCommunicationLogger.Instance.LogCommunication(sb.ToString(), CommunicationDirection.Outgoing);
     }
 }
