@@ -1029,22 +1029,22 @@ public class WhitelistResponse
 [Serializable]
 public class BugReportData
 {
-    public Guid reportId;
+    public string reportId;
     public string environment;
-    public string service = "Frontend";
-    public Guid clientId;
+    public const string service = "Frontend";
+    public string clientId;
     public string account;
-    public int knightId;
+    public string knightId;
     public string expeditionId;
     public string userDescription;
     public string userTitle;
     public string screenshot;
     public string frontendVersion = Application.version;
-    public List<LogItem> messageLog;
+    public List<ServerCommunicationLogItem> messageLog;
 }
 
 [Serializable]
-public class LogItem
+public class ServerCommunicationLogItem
 {
     public string timestamp;
     public string direction;

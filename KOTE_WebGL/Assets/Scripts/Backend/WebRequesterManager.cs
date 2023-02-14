@@ -85,6 +85,7 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_NFT_SET_SKIN.AddListener(SetKnightNft);
         GameManager.Instance.EVENT_REQUEST_EXPEDITON_SCORE.AddListener(RequestExpeditionScore);
         GameManager.Instance.EVENT_REQUEST_WHITELIST_CHECK.AddListener(RequestWhitelistStatus);
+        GameManager.Instance.EVENT_SEND_BUG_FEEDBACK.AddListener(SendBugReport);
     }
 
     private void Start()
@@ -188,9 +189,9 @@ public class WebRequesterManager : MonoBehaviour
         StartCoroutine(GetCharacterList());
     }
 
-    public void SendBugReport()
+    public void SendBugReport(string title, string description)
     {
-        StartCoroutine(PushBugReport());
+        StartCoroutine(PushBugReport(title, description));
     }
 
     public IEnumerator GetRandomName(string lastName)
@@ -730,23 +731,32 @@ public class WebRequesterManager : MonoBehaviour
             }
         }
         
-    private IEnumerator PushBugReport()
+    private IEnumerator PushBugReport(string title, string description)
     {
         string fullUrl = $"{baseUrl}{urlBugReport}";
-        UnityWebRequest request = UnityWebRequest.Post(fullUrl, "");
-
-        BugReportData data = new BugReportData
-        {
-            reportId = Guid.NewGuid(),
-            environment = UserDataManager.Instance.ClientEnvironment.ToString()
-        };
         
+
+        BugReportData reportData = new BugReportData
+        {
+            reportId = Guid.NewGuid().ToString(),
+            environment = UserDataManager.Instance.ClientEnvironment.ToString(),
+            clientId = UserDataManager.Instance.ClientId,
+            account = UserDataManager.Instance.UserAccount,
+            knightId = UserDataManager.Instance.activeNft,
+            expeditionId = UserDataManager.Instance.ExpeditionId,
+            userTitle = title,
+            userDescription = description,
+            frontendVersion = Application.version,
+            messageLog = ServerCommunicationLogger.Instance.GetCommunicationLog()
+        };
+        string data = JsonUtility.ToJson(reportData);
+        UnityWebRequest request = UnityWebRequest.Post(fullUrl, data);
         yield return request.SendWebRequest();
         
         if (request.result == UnityWebRequest.Result.ConnectionError ||
             request.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log("[Error canceling expedition]");
+            Debug.Log("[Error sending bug report]");
             yield break;
         }
     }

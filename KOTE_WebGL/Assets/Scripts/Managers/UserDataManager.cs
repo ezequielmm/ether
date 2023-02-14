@@ -12,6 +12,8 @@ public class UserDataManager : SingleTon<UserDataManager>
     [HideInInspector]
     // Active Expedition Id
     public string ExpeditionId = "";
+    [HideInInspector] 
+    public string activeNft = "";
     [HideInInspector]
     public ClientEnvironmentType ClientEnvironment = ClientEnvironmentType.Unknown;
 
@@ -26,7 +28,7 @@ public class UserDataManager : SingleTon<UserDataManager>
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnExpeditionUpdate);
         GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(OnPlayerProfileReceived);
         GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogout);
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(OnExpeditionStatus);
     }
 
     // get the unique identifier for this instance of the client
@@ -46,6 +48,11 @@ public class UserDataManager : SingleTon<UserDataManager>
             return clientId;
         }
     }
+
+    private void OnExpeditionStatus(bool hasExpedtion, int nftId)
+    {
+        activeNft = nftId.ToString();
+    }
     
     private void OnPlayerProfileReceived(ProfileData profile)
     {
@@ -60,14 +67,6 @@ public class UserDataManager : SingleTon<UserDataManager>
     private void OnExpeditionUpdate(PlayerStateData playerState)
     {
         ExpeditionId = playerState.data.expeditionId;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == "MainMenu")
-        {
-            ExpeditionId = "";
-        }
     }
 
     private void DetermineClientEnvironment()

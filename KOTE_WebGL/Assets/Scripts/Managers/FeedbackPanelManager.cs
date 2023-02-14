@@ -15,9 +15,24 @@ public class FeedbackPanelManager : MonoBehaviour
      feedbackContainer.SetActive(false);   
     }
 
+    private void OnShowFeedbackPanel()
+    {
+        feedbackContainer.SetActive(true);
+        // TODO add screenshot capabilities
+    }
+
+    public void OnBackPressed()
+    {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
+        feedbackContainer.SetActive(false);
+    }
+
     public void OnSubmitPressed()
     {
-        string title = titleInput.text;
-        string detail = detailInput.text;
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
+        GameManager.Instance.EVENT_SEND_BUG_FEEDBACK.Invoke(titleInput.text, detailInput.text);
+        feedbackContainer.SetActive(false);
+        titleInput.text = "";
+        detailInput.text = "";
     }
 }

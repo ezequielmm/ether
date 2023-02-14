@@ -294,6 +294,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_SCENE_LOADING = new UnityEvent();
     [HideInInspector] public UnityEvent<inGameScenes> EVENT_SCENE_LOADED = new UnityEvent<inGameScenes>();
 
+    // Feedback Reporting Events
+    [HideInInspector] public UnityEvent EVENT_SHOW_FEEDBACK_PANEL = new UnityEvent();
+    [HideInInspector] public UnityEvent<string, string> EVENT_SEND_BUG_FEEDBACK = new UnityEvent<string, string>();
 
 
     public inGameScenes
