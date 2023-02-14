@@ -211,10 +211,10 @@ jobs:
         body: '{ "text": "GitHub Action: Push to ${{ needs.selectEnvName.outputs.deployEnv }} is successful." }'
       
     - name: Notify Push Failure
-    uses: indiesdev/curl@v1.1
-    if: failure()
-    with:
-      url: ${{ secrets.SLACK_WEBHOOK }}
-      method: "POST"
-      headers: '{ "Content-type": "application/json" }'
-      body: '{ "text": "GitHub Action: Push to ${{ needs.selectEnvName.outputs.deployEnv }} has failed. Please vist the GitHub Repository for more information." }'
+      uses: indiesdev/curl@v1.1
+      if: failure()
+      with:
+        url: ${{ secrets.SLACK_WEBHOOK }}
+        method: "POST"
+        headers: '{ "Content-type": "application/json" }'
+        body: '{ "text": "GitHub Action: Push to ${{ needs.selectEnvName.outputs.deployEnv }} has failed. Please vist the GitHub Repository for more information." }'
