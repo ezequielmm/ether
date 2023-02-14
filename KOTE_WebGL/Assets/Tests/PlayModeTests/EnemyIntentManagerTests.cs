@@ -18,6 +18,7 @@ public class EnemyIntentManagerTests : MonoBehaviour
     [UnitySetUp]
     public IEnumerator Setup()
     {
+        yield return null;
         go = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/Enemies/EnemyBase.prefab");
         go = Instantiate(go);
         EnemyManager enemyManager = go.GetComponent<EnemyManager>();
@@ -42,8 +43,10 @@ public class EnemyIntentManagerTests : MonoBehaviour
     [UnityTearDown]
     public IEnumerator TearDown()
     {
+        yield return null;
         Destroy(_intentManager.gameObject);
         Destroy(go);
+        Destroy(GameManager.Instance.gameObject);
         yield return null;
     }
 
@@ -94,12 +97,13 @@ public class EnemyIntentManagerTests : MonoBehaviour
         LogAssert.Expect(LogType.Error, "[EnemyIntentManager] Manager does not belong to an enemy.");
     }
 
-    [Test]
-    public void DoesOnMouseEnterSetTooltips()
+    [UnityTest]
+    public IEnumerator DoesOnMouseEnterSetTooltips()
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_SET_TOOLTIPS.AddListener(((arg0, anchor, vector3, arg3) => { eventFired = true; }));
         _intentManager.CallUnityPrivateMethod("OnMouseEnter");
+        yield return null;
         Assert.True(eventFired);
     }
 
