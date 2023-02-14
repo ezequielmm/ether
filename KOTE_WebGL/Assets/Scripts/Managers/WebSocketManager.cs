@@ -116,7 +116,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     {
         if (scene == inGameScenes.MainMenu) 
         {
-            DestroyInstance();
+            this.DestroyInstance();
         }
     }
 

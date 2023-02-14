@@ -3,18 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClientEnvironmentManager
+public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
 {
-    private static ClientEnvironmentManager _instance;
+    private static ClientEnvironmentManager instance;
     public static ClientEnvironmentManager Instance
     {
         get
         {
-            if (_instance == null)
+            if (instance == null)
             {
-                _instance = new ClientEnvironmentManager();
+                instance = new ClientEnvironmentManager();
             }
-            return _instance;
+            return instance;
         }
     }
 
@@ -90,6 +90,11 @@ public class ClientEnvironmentManager
                 WebSocketURL = $"https://api.dev.kote.robotseamonster.com";
                 break;
         }
+    }
+
+    public void DestroyInstance()
+    {
+        instance = null;
     }
 
     private enum Environments 
