@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,6 +14,15 @@ public class FeedbackPanelManager : MonoBehaviour
     void Start()
     {
      feedbackContainer.SetActive(false);   
+     GameManager.Instance.EVENT_SHOW_FEEDBACK_PANEL.AddListener(OnShowFeedbackPanel);
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.F8))
+        {
+            OnShowFeedbackPanel();
+        }
     }
 
     private void OnShowFeedbackPanel()
