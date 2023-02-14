@@ -12,6 +12,6 @@ public class VersionLabelManager : MonoBehaviour
     void Start()
     {
         versionText.text = "V " + Application.version;
-        clientIdText.text = GameManager.ClientId;
+        clientIdText.text = UserDataManager.Instance.ClientId;
     }
 }

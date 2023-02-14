@@ -6,22 +6,18 @@ using UnityEngine.UI;
 
 public class FeedbackPanelManager : MonoBehaviour
 {
+    public GameObject feedbackContainer;
     public TMP_InputField titleInput, detailInput;
     
     // Start is called before the first frame update
     void Start()
     {
-     gameObject.SetActive(false);   
+     feedbackContainer.SetActive(false);   
     }
 
     public void OnSubmitPressed()
     {
         string title = titleInput.text;
         string detail = detailInput.text;
-    }
-
-    public void OnDebugButtonPressed()
-    {
-        
     }
 }

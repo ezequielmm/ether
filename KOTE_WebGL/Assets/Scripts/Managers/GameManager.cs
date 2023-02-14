@@ -301,25 +301,7 @@ public class GameManager : SingleTon<GameManager>
 
     public WebRequesterManager webRequester;
 
-    public static string ClientEnvironment = "Unknown";
     
-    // get the unique identifier for this instance of the client
-    public static string ClientId
-    {
-        get
-        {
-            string clientId = PlayerPrefs.GetString("client_id");
-            // if the client id doesn't exist, create one and save it
-            if (string.IsNullOrEmpty(clientId))
-            {
-                Guid newId = Guid.NewGuid();
-                clientId = newId.ToString();
-                PlayerPrefs.SetString("client_id", newId.ToString());
-            }
-
-            return clientId;
-        }
-    }
 
     // Start is called before the first frame update
     void Start()

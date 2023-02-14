@@ -43,41 +43,28 @@ public class WebRequesterManager : MonoBehaviour
         baseUrl = "https://gateway.dev.kote.robotseamonster.com"; //make sure if anything fails we use DEV
         // baseUrl = "https://gateway.alpha.knightsoftheether.com";//make sure if anything fails we use DEV
 
-        if (hostName.IndexOf("alpha") > -1 && hostName.IndexOf("knight") > -1)
+        switch (UserDataManager.Instance.ClientEnvironment)
         {
-            baseUrl = "https://gateway.alpha.knightsoftheether.com";
-            skinUrl = "https://s3.amazonaws.com/koteskins.knightsoftheether.com/";
-            GameManager.ClientEnvironment = "Alpha";
+            case ClientEnvironmentType.Alpha:
+                baseUrl = "https://gateway.alpha.knightsoftheether.com";
+                skinUrl = "https://s3.amazonaws.com/koteskins.knightsoftheether.com/";
+                break;
+            case ClientEnvironmentType.InternalAlpha:
+                baseUrl = "https://gateway.alpha.kote.robotseamonster.com";
+                skinUrl = "https://koteskins.robotseamonster.com/";
+                break;
+            case ClientEnvironmentType.Stage:
+                baseUrl = "https://gateway.stage.kote.robotseamonster.com";
+                skinUrl = "https://koteskins.robotseamonster.com/";
+                break;
+            case ClientEnvironmentType.Dev:
+            case ClientEnvironmentType.Unity:
+                baseUrl = "https://gateway.dev.kote.robotseamonster.com";
+                skinUrl = "https://koteskins.robotseamonster.com/";
+                break;
+            default:
+                break;
         }
-        
-        if (hostName.IndexOf("alpha") > -1 && hostName.IndexOf("robot") > -1)
-        {
-            baseUrl = "https://gateway.alpha.kote.robotseamonster.com";
-            skinUrl = "https://koteskins.robotseamonster.com/";
-            GameManager.ClientEnvironment = "Alpha";
-        }
-
-        if (hostName.IndexOf("stage") > -1)
-        {
-            baseUrl = "https://gateway.stage.kote.robotseamonster.com";
-            skinUrl = "https://koteskins.robotseamonster.com/";
-            GameManager.ClientEnvironment = "Stage";
-        }
-
-        if (hostName.IndexOf("dev") > -1)
-        {
-            baseUrl = "https://gateway.dev.kote.robotseamonster.com";
-            skinUrl = "https://koteskins.robotseamonster.com/";
-            GameManager.ClientEnvironment = "Dev";
-        }
-
-
-        // default to the stage server if we're in the editor
-#if UNITY_EDITOR
-        baseUrl = "https://gateway.dev.kote.robotseamonster.com";
-        skinUrl = "https://koteskins.robotseamonster.com/";
-        GameManager.ClientEnvironment = "Unity";
-#endif
 
         PlayerPrefs.SetString("api_url", baseUrl);
 
@@ -747,6 +734,13 @@ public class WebRequesterManager : MonoBehaviour
     {
         string fullUrl = $"{baseUrl}{urlBugReport}";
         UnityWebRequest request = UnityWebRequest.Post(fullUrl, "");
+
+        BugReportData data = new BugReportData
+        {
+            reportId = Guid.NewGuid(),
+            environment = UserDataManager.Instance.ClientEnvironment.ToString()
+        };
+        
         yield return request.SendWebRequest();
         
         if (request.result == UnityWebRequest.Result.ConnectionError ||
