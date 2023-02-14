@@ -18,6 +18,7 @@ public class EnemyIntentManagerTests : MonoBehaviour
     [UnitySetUp]
     public IEnumerator Setup()
     {
+        yield return null;
         go = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/Enemies/EnemyBase.prefab");
         go = Instantiate(go);
         EnemyManager enemyManager = go.GetComponent<EnemyManager>();
@@ -42,8 +43,10 @@ public class EnemyIntentManagerTests : MonoBehaviour
     [UnityTearDown]
     public IEnumerator TearDown()
     {
+        yield return null;
         Destroy(_intentManager.gameObject);
         Destroy(go);
+        Destroy(GameManager.Instance.gameObject);
         yield return null;
     }
 

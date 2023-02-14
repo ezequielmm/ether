@@ -3,6 +3,8 @@ on:
   push:
     branches:
     - 'releases/dev'
+    - 'releases/stage'
+    - 'releases/alpha'
   
 jobs:
   selectEnvName:
@@ -18,7 +20,7 @@ jobs:
             echo "deployEnv=develop" >> $GITHUB_OUTPUT
           elif [ "${{ github.ref }}" == "refs/heads/releases/stage" ]; then
             echo "Stage Selected"
-            echo "deployEnv=stage" >> $GITHUB_OUTPUT
+            echo "deployEnv=staging" >> $GITHUB_OUTPUT
           elif [ "${{ github.ref }}" == "refs/heads/releases/alpha" ]; then
             echo "Alpha Selected"
             echo "deployEnv=alpha" >> $GITHUB_OUTPUT
@@ -33,6 +35,7 @@ jobs:
   testRunner:
     name: Test in ${{ matrix.testMode }} ✨
     runs-on: ubuntu-latest
+    needs: [selectEnvName]
     strategy:
       fail-fast: false
       matrix:
@@ -58,7 +61,6 @@ jobs:
           git lfs pull
           git add .
           git reset --hard
-
       - name: Restore Library cache
         uses: actions/cache@v2
         with:
@@ -67,7 +69,6 @@ jobs:
           restore-keys: |
             Library-test-project-
             Library-
-
       - name: Run tests
         uses: game-ci/unity-test-runner@v2
         id: testRunner
@@ -82,11 +83,29 @@ jobs:
           name: Test results (${{ matrix.testMode }})
           path: ${{ steps.testRunner.outputs.artifactsPath }}
 
+      - name: Notify Test Failure
+        uses: indiesdev/curl@v1.1
+        if: failure()
+        with:
+          url: ${{ secrets.SLACK_WEBHOOK }}
+          method: "POST"
+          headers: '{ "Content-type": "application/json" }'
+          body: '{ "text": "GitHub Action: Test [${{ matrix.testMode }}] in environment ${{ needs.selectEnvName.outputs.deployEnv }} has failed." }'
+
   buildWebGL:
     name: Build Project
     runs-on: ubuntu-latest
+    needs: [selectEnvName]
     # needs: testRunner
     steps:
+      - name: Notify Build Starting
+        uses: indiesdev/curl@v1.1
+        with:
+          url: ${{ secrets.SLACK_WEBHOOK }}
+          method: "POST"
+          headers: '{ "Content-type": "application/json" }'
+          body: '{ "text": "GitHub Action: Now building for ${{ needs.selectEnvName.outputs.deployEnv }}. This process may take several minutes." }'
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -113,7 +132,6 @@ jobs:
           restore-keys: |
             Library-build-
             Library-
-
       - uses: game-ci/unity-builder@v2
         env: 
           UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
@@ -125,10 +143,28 @@ jobs:
           buildsPath: build
           buildName: WebGL
 
+      - name: Notify Build Success
+        uses: indiesdev/curl@v1.1
+        if: success()
+        with:
+          url: ${{ secrets.SLACK_WEBHOOK }}
+          method: "POST"
+          headers: '{ "Content-type": "application/json" }'
+          body: '{ "text": "GitHub Action: Build for ${{ needs.selectEnvName.outputs.deployEnv }} was successful." }'
+
+      - name: Notify Build Failure
+        uses: indiesdev/curl@v1.1
+        if: failure()
+        with:
+          url: ${{ secrets.SLACK_WEBHOOK }}
+          method: "POST"
+          headers: '{ "Content-type": "application/json" }'
+          body: '{ "text": "GitHub Action: Build for ${{ needs.selectEnvName.outputs.deployEnv }} has failed. Please visit the GitHub Repository for more information." }'
+
       - uses: actions/upload-artifact@v2
         with:
           name: build-WebGL
-          path: build/WebGL
+          path: build/WebGL/WebGL
 
 
   deployToDev:
@@ -145,7 +181,15 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: build-WebGL
-        path: builds
+        path: "${{ vars.BUILD_DIRECTORY }}"
+
+    - name: Notify Push to Server
+      uses: indiesdev/curl@v1.1
+      with:
+        url: ${{ secrets.SLACK_WEBHOOK }}
+        method: "POST"
+        headers: '{ "Content-type": "application/json" }'
+        body: '{ "text": "GitHub Action: Now pushing to ${{ needs.selectEnvName.outputs.deployEnv }}. The server may be down for upto 5 minutes." }'
 
     - name: Deploy to server
       uses: appleboy/scp-action@master
@@ -153,6 +197,24 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key : ${{ secrets.SSH_PRIV_KEY }}
-        source: "builds"
-        target: "/home/forge/client.dev.kote.robotseamonster.com/testBuild"
+        source: "${{ vars.BUILD_DIRECTORY }}"
+        target: "${{ vars.PUBLISH_PATH }}"
         overwrite: true
+
+    - name: Notify Push Success
+      uses: indiesdev/curl@v1.1
+      if: success()
+      with:
+        url: ${{ secrets.SLACK_WEBHOOK }}
+        method: "POST"
+        headers: '{ "Content-type": "application/json" }'
+        body: '{ "text": "GitHub Action: Push to ${{ needs.selectEnvName.outputs.deployEnv }} is successful." }'
+      
+    - name: Notify Push Failure
+      uses: indiesdev/curl@v1.1
+      if: failure()
+      with:
+        url: ${{ secrets.SLACK_WEBHOOK }}
+        method: "POST"
+        headers: '{ "Content-type": "application/json" }'
+        body: '{ "text": "GitHub Action: Push to ${{ needs.selectEnvName.outputs.deployEnv }} has failed. Please vist the GitHub Repository for more information." }'
