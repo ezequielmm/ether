@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -57,12 +58,11 @@ namespace Papertrail
 
         // User set tag for log messages
         private string m_tag;
-        
-        
-        
+
+
         //minimum logging level
         private Severity minimumLoggingLevel = Severity.Debug;
-        
+
         // Default facility tag to use for logs.
         private Facility facility = Facility.local7;
 
@@ -103,12 +103,11 @@ namespace Papertrail
             SceneManager.sceneLoaded += OnSceneLoaded;
             Debug.unityLogger.logHandler = new PapertrailLogHandler();
             GameManager.Instance.EVENT_SCENE_LOADING.AddListener(OnLoadScene);
-            
+
             StartCoroutine(GetExternalIP());
         }
 
-        
-        
+
         // so the message are queued to not send when a scene is loading
         private void OnLoadScene()
         {
@@ -304,23 +303,26 @@ namespace Papertrail
             {
                 logData.account = UserDataManager.Instance.UserAccount;
             }
+
             // Expedition ID
             if (!string.IsNullOrEmpty(UserDataManager.Instance.ExpeditionId))
             {
                 logData.expeditionId = UserDataManager.Instance.ExpeditionId;
             }
-            
-            //format message data
-            if (message.StartsWith('['))
+
+            MethodBase method = new System.Diagnostics.StackTrace().GetFrame(9).GetMethod();
+            Type declaringType = method.DeclaringType;
+            if (declaringType == null)
             {
-                int contextEndIndex = message.IndexOf(']');
-                logData.context = message.Substring(1, contextEndIndex - 1);
-                logData.message = message.Substring(contextEndIndex + 1);
+                logData.context = method.Name;
             }
             else
             {
-                logData.message = message;
+                logData.context = declaringType.FullName;
             }
+
+            logData.message = message;
+
 
             return logData;
         }
