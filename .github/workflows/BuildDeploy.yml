@@ -89,12 +89,12 @@ jobs:
     # needs: testRunner
     steps:
       - name: Notify Build Starting
-      uses: indiesdev/curl@v1.1
-      with:
-        url: ${{ secrets.SLACK_WEBHOOK }}
-        method: "POST"
-        headers: '{ "Content-type": "application/json" }'
-        body: '{ "text": "GitHub Action: Now building for ${{ needs.selectEnvName.outputs.deployEnv }}. This process may take several minutes." }'
+        uses: indiesdev/curl@v1.1
+        with:
+          url: ${{ secrets.SLACK_WEBHOOK }}
+          method: "POST"
+          headers: '{ "Content-type": "application/json" }'
+          body: '{ "text": "GitHub Action: Now building for ${{ needs.selectEnvName.outputs.deployEnv }}. This process may take several minutes." }'
 
       - name: Checkout code
         uses: actions/checkout@v2
@@ -172,3 +172,11 @@ jobs:
         source: "${{ vars.BUILD_DIRECTORY }}"
         target: "${{ vars.PUBLISH_PATH }}"
         overwrite: true
+
+    - name: Notify Push Finished
+      uses: indiesdev/curl@v1.1
+      with:
+        url: ${{ secrets.SLACK_WEBHOOK }}
+        method: "POST"
+        headers: '{ "Content-type": "application/json" }'
+        body: '{ "text": "GitHub Action: Push to ${{ needs.selectEnvName.outputs.deployEnv }} is finished." }'
