@@ -85,8 +85,17 @@ jobs:
   buildWebGL:
     name: Build Project
     runs-on: ubuntu-latest
+    needs: [selectEnvName]
     # needs: testRunner
     steps:
+      - name: Notify Build Starting
+      uses: indiesdev/curl@v1.1
+      with:
+        url: ${{ secrets.SLACK_WEBHOOK }}
+        method: "POST"
+        headers: '{ "Content-type": "application/json" }'
+        body: '{ "text": "GitHub Action: Now building for ${{ needs.selectEnvName.outputs.deployEnv }}. This process may take several minutes." }'
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -145,6 +154,14 @@ jobs:
       with:
         name: build-WebGL
         path: "${{ vars.BUILD_DIRECTORY }}"
+
+    - name: Notify Push to Server
+      uses: indiesdev/curl@v1.1
+      with:
+        url: ${{ secrets.SLACK_WEBHOOK }}
+        method: "POST"
+        headers: '{ "Content-type": "application/json" }'
+        body: '{ "text": "GitHub Action: Now pushing to ${{ needs.selectEnvName.outputs.deployEnv }}. The server may be down for upto 5 minutes." }'
 
     - name: Deploy to server
       uses: appleboy/scp-action@master
