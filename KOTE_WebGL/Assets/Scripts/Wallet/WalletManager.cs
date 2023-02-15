@@ -96,6 +96,7 @@ public class WalletManager : MonoBehaviour
         if (knightIds.data == null || knightIds.data.Length == 0)
         {
             GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("No Knights found in connected wallet\n, please try a different wallet.", () => {});
+            return;
         }
 
         curKnightCount = knightIds.data.Length;

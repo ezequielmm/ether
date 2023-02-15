@@ -155,8 +155,8 @@ public class MainMenuManager : MonoBehaviour
     private void VerifyResumeExpedition()
     {
         
-        // if the player isn't whitelisted, never show the play button
-        if (!_isWhitelisted || !_whitelistStatusReceived)
+        // if the player isn't whitelisted or doesn't have a wallet connected, never show the play button
+        if (!_isWhitelisted || !_whitelistStatusReceived || !_hasWallet)
         {
             // if no routes are available, lock the player out of the game
             playButton.gameObject.SetActive(false);
@@ -267,12 +267,14 @@ public class MainMenuManager : MonoBehaviour
         if (MetaMaskAdapter.Instance.HasMetamask())
         {
             MetaMaskAdapter.Instance.RequestWallet();
+            GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Please check MetaMask to finish connecting your wallet",
+                () => { });
         }
     }
 
     public void OnPlayButton()
     {
-        Debug.Log($"Has expedition: {_hasExpedition} is Whitelisted: {_isWhitelisted} Owns nft {_ownsNft} Ownership Confrimed {_ownershipChecked}");
+        Debug.Log($"Has expedition: {_hasExpedition} is Whitelisted: {_isWhitelisted} Owns nft {_ownsNft} Ownership Confirmed {_ownershipChecked}");
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         //check if we are playing a new expedition or resuming
         if (_hasExpedition)

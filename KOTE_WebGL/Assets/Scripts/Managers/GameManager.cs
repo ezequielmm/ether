@@ -54,6 +54,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_MESSAGE_SIGN = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<float, string, string, string> EVENT_REQUEST_WHITELIST_CHECK { get; } = new UnityEvent<float, string, string, string>();
     [HideInInspector] public UnityEvent<bool> EVENT_WHITELIST_CHECK_RECEIVED { get; } = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent EVENT_NO_TOKENS_OWNED = new UnityEvent();
     [HideInInspector] public UnityEvent<bool> EVENT_DISCONNECT_WALLET_CONFIRMED = new UnityEvent<bool>();
 
     //GAME OVER EVENTS
