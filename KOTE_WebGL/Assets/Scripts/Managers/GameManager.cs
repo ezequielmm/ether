@@ -296,7 +296,7 @@ public class GameManager : SingleTon<GameManager>
 
     // Feedback Reporting Events
     [HideInInspector] public UnityEvent EVENT_SHOW_FEEDBACK_PANEL = new UnityEvent();
-    [HideInInspector] public UnityEvent<string, string> EVENT_SEND_BUG_FEEDBACK = new UnityEvent<string, string>();
+    [HideInInspector] public UnityEvent<string, string, string> EVENT_SEND_BUG_FEEDBACK = new UnityEvent<string, string, string>();
 
 
     public inGameScenes

@@ -9,6 +9,9 @@ public class FeedbackPanelManager : MonoBehaviour
 {
     public GameObject feedbackContainer;
     public TMP_InputField titleInput, detailInput;
+    public Image screenshot;
+    public Camera screenshotCam;
+    private string screenshotData;
     
     // Start is called before the first frame update
     void Start()
@@ -28,7 +31,24 @@ public class FeedbackPanelManager : MonoBehaviour
     private void OnShowFeedbackPanel()
     {
         feedbackContainer.SetActive(true);
-        // TODO add screenshot capabilities
+        StartCoroutine(SaveCameraView());
+    }
+    
+    IEnumerator SaveCameraView()
+    {
+        RenderTexture screenTexture = new RenderTexture(Screen.width, Screen.height, 16);
+         screenshotCam.targetTexture = screenTexture;
+        RenderTexture.active = screenTexture;
+        yield return new WaitForEndOfFrame();
+        screenshotCam.Render();
+        Texture2D renderedTexture = new Texture2D(Screen.width, Screen.height);
+        renderedTexture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
+        RenderTexture.active = null;
+        renderedTexture.Apply();
+        screenshot.sprite =  Sprite.Create(renderedTexture, new Rect(0, 0, renderedTexture.width, renderedTexture.height),
+            Vector2.zero);
+        byte[] byteArray = renderedTexture.EncodeToPNG();
+        screenshotData = Convert.ToBase64String(byteArray);
     }
 
     public void OnBackPressed()
@@ -40,7 +60,7 @@ public class FeedbackPanelManager : MonoBehaviour
     public void OnSubmitPressed()
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-        GameManager.Instance.EVENT_SEND_BUG_FEEDBACK.Invoke(titleInput.text, detailInput.text);
+        GameManager.Instance.EVENT_SEND_BUG_FEEDBACK.Invoke(titleInput.text, detailInput.text, screenshotData);
         feedbackContainer.SetActive(false);
         titleInput.text = "";
         detailInput.text = "";

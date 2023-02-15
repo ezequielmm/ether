@@ -190,9 +190,9 @@ public class WebRequesterManager : MonoBehaviour
         StartCoroutine(GetCharacterList());
     }
 
-    public void SendBugReport(string title, string description)
+    public void SendBugReport(string title, string description, string base64Image)
     {
-        StartCoroutine(PushBugReport(title, description));
+        StartCoroutine(PushBugReport(title, description, base64Image));
     }
 
     public IEnumerator GetRandomName(string lastName)
@@ -830,7 +830,7 @@ public class WebRequesterManager : MonoBehaviour
         }
     }
 
-    private IEnumerator PushBugReport(string title, string description)
+    private IEnumerator PushBugReport(string title, string description,  string base64Image)
     {
         string fullUrl = $"{baseUrl}{urlBugReport}";
 
@@ -844,6 +844,7 @@ public class WebRequesterManager : MonoBehaviour
             expeditionId = UserDataManager.Instance.ExpeditionId,
             userTitle = title,
             userDescription = description,
+            screenshot = base64Image,
             frontendVersion = Application.version,
             messageLog = ServerCommunicationLogger.Instance.GetCommunicationLog()
         };
