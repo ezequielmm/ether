@@ -242,12 +242,12 @@ public class MerchantNodeManager : MonoBehaviour
         // Run upgrade card pannel
         ShowCardPanel(merchantData.upgradeableCards, new SelectPanelOptions 
         {
-            MustSelectAllCards = true,
+            MustSelectAllCards = false,
             HideBackButton = false,
             FireSelectWhenCardClicked = true,
             NumberOfCardsToSelect = 1,
             ShowCardInCenter = false,
-            NoSelectButton = true
+            NoSelectButton = false
         }, null,
         (string selected) => 
         {
