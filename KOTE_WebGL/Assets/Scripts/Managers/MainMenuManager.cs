@@ -32,7 +32,10 @@ public class MainMenuManager : MonoBehaviour
     private bool _whitelistStatusReceived;
 
     // verification that the player still owns the continuing nft
-    private bool _ownsNft;
+    private bool _ownsSavedNft;
+    
+    // verification that the connected wallet contains at least one knight
+    private bool _ownsAnyNft;
 
     // verification that the player is whitelisted to play/owns an nft
     private bool _isWhitelisted;
@@ -56,6 +59,7 @@ public class MainMenuManager : MonoBehaviour
         
         // Listen for the metadata for the selected NFT so it can be sent on resume
         GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(OnCurrentNftDataReceived);
+        GameManager.Instance.EVENT_WALLET_TOKENS_OWNED.AddListener(OnTokensChecked);
         
         //CheckIfRegisterButtonIsEnabled();
         CheckIfArmoryButtonIsEnabled();
@@ -104,9 +108,15 @@ public class MainMenuManager : MonoBehaviour
         VerifyResumeExpedition();
     }
 
+    private void OnTokensChecked(bool hasTokens)
+    {
+        _ownsAnyNft = hasTokens;
+        VerifyResumeExpedition();
+    }
+
     private void OnCurrentNftConfirmed(bool ownsNft)
     {
-        _ownsNft = ownsNft;
+        _ownsSavedNft = ownsNft;
         _ownershipChecked = true;
         VerifyResumeExpedition();
     }
@@ -155,8 +165,8 @@ public class MainMenuManager : MonoBehaviour
     private void VerifyResumeExpedition()
     {
         
-        // if the player isn't whitelisted, never show the play button
-        if (!_isWhitelisted || !_whitelistStatusReceived)
+        // if the player isn't whitelisted, doesn't have a wallet connected, or doesn't own a knight, never show the play button
+        if (!_isWhitelisted || !_whitelistStatusReceived || !_hasWallet || !_ownsAnyNft)
         {
             // if no routes are available, lock the player out of the game
             playButton.gameObject.SetActive(false);
@@ -174,14 +184,14 @@ public class MainMenuManager : MonoBehaviour
         // if there is an expedition, we need wait to check if the player owns the nft
         if (!_ownershipChecked) return;
 
-        if (_hasExpedition && _ownsNft)
+        if (_hasExpedition && _ownsSavedNft)
         {
             UpdatePlayButtonText();
             playButton.gameObject.SetActive(true);
             newExpeditionButton.gameObject.SetActive(true);
         }
         // if the player no longer owns the nft, clear the expedition
-        else if (_hasExpedition && !_ownsNft)
+        else if (_hasExpedition && !_ownsSavedNft)
         {
             _selectedNft = -1;
             _hasExpedition = false;
@@ -267,12 +277,14 @@ public class MainMenuManager : MonoBehaviour
         if (MetaMaskAdapter.Instance.HasMetamask())
         {
             MetaMaskAdapter.Instance.RequestWallet();
+            GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Please check MetaMask to finish connecting your wallet",
+                () => { });
         }
     }
 
     public void OnPlayButton()
     {
-        Debug.Log($"Has expedition: {_hasExpedition} is Whitelisted: {_isWhitelisted} Owns nft {_ownsNft} Ownership Confrimed {_ownershipChecked}");
+        Debug.Log($"Has expedition: {_hasExpedition} is Whitelisted: {_isWhitelisted} Owns nft {_ownsSavedNft} Ownership Confirmed {_ownershipChecked}");
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         //check if we are playing a new expedition or resuming
         if (_hasExpedition)
