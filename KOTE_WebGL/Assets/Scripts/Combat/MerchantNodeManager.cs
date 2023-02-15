@@ -84,6 +84,7 @@ public class MerchantNodeManager : MonoBehaviour
         if (success) 
         {
             // Run Effects
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Confirm Purchase");
         }
         // Update the merch node
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.MerchantData);
@@ -223,13 +224,11 @@ public class MerchantNodeManager : MonoBehaviour
         // Item Purchase
         if (selectedItem != null)
         {
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Confirm Purchase");
             GameManager.Instance.EVENT_MERCHANT_BUY.Invoke(selectedItem.Type.ToLower(), selectedItem.Id);
         }
         // Service Purchase
         else if (!string.IsNullOrWhiteSpace(selectedCard)) 
         {
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Confirm Purchase");
             GameManager.Instance.EVENT_MERCHANT_BUY.Invoke(upgradeCard ? "upgrade" : "remove", selectedCard);
         }
     }
