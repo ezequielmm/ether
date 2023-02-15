@@ -10,8 +10,11 @@ public class VersionManager : MonoBehaviour
 
     public static string ClientVersion => Application.version;
     public static string ClientCommitHash => GitCommitHash.CommitHash;
+    /// <summary>
+    /// Client Version number plus commit hash if avalible
+    /// </summary>
     public static string ClientVersionFormatted => $"{ClientVersion}{(string.IsNullOrEmpty(ClientCommitHash) ? "" : $"+{ClientCommitHash.Substring(0, 7)}")}";
-    public static string ServerVersion => GameManager.ServerVersion;
+    public static string ServerVersion => GameManager.ServerVersion ?? string.Empty;
     public static string ClientId => GameManager.ClientId;
     public static string Environment => GameManager.ClientEnvironment;
 

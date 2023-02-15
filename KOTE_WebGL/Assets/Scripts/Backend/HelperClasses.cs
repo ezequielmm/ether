@@ -1044,4 +1044,6 @@ public class PapertrailLogData
     public string expeditionId;
     public string context;
     public string message;
+    public string serverVersion;
+    public string clientVersion;
 }
