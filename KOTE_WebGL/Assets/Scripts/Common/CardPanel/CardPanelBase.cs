@@ -14,7 +14,6 @@ public class CardPanelBase : MonoBehaviour
     public bool scaleOnHover = true;
     public bool useBackgroundImage = false;
 
-    public List<UICardPrefabManager> DisplayedCards = new();
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -29,7 +28,6 @@ public class CardPanelBase : MonoBehaviour
         {
             Destroy(gridCardsContainer.transform.GetChild(i).gameObject);
         }
-        DisplayedCards.Clear();
     }
     
     public void ShowCards(List<Card> cards)
@@ -45,7 +43,6 @@ public class CardPanelBase : MonoBehaviour
         {
             GameObject newCard = Instantiate(uiCardPrefab, gridCardsContainer.transform);
             var uiCard = newCard.GetComponent<UICardPrefabManager>();
-            DisplayedCards.Add(uiCard);
             uiCard.useBackgroundImage = useBackgroundImage;
             uiCard.scaleCardOnHover = scaleOnHover;
             uiCard = OnGenerateCard(uiCard);
