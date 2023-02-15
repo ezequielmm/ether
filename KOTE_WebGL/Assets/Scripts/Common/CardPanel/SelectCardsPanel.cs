@@ -21,7 +21,7 @@ public class SelectCardsPanel : CardPanelBase
     public Button hideCardOverlay;
     private int cardsToSelect;
     private int totalCardsSelected;
-    [SerializeField] private int selectedCards;
+    [SerializeField] private int selectedCards => selectedCardIds.Count;
     [SerializeField] private List<string> selectedCardIds = new List<string>();
 
     private SelectPanelOptions currentSettings;
@@ -36,6 +36,8 @@ public class SelectCardsPanel : CardPanelBase
 
     // variables to control showing the card in the center
     private int selectedCardGridIndex;
+
+    public UnityEvent OnBackButton = new UnityEvent();
 
 
     // Start is called before the first frame update
@@ -79,7 +81,10 @@ public class SelectCardsPanel : CardPanelBase
             if (selectOptions.FireSelectWhenCardClicked)
             {
                 SetCardToFireOnClick(cardManager, onSelect);
-                continue;
+                if (!selectOptions.NoSelectButton)
+                {
+                    continue;
+                }
             }
 
             SetCardToBeToggled(cardManager, selectOptions);
@@ -91,11 +96,10 @@ public class SelectCardsPanel : CardPanelBase
         cardsToSelect = selectOptions.NumberOfCardsToSelect;
         this.onFinishedSelection = onFinishedSelection;
         UpdateSelectButton();
-        selectButton.gameObject.SetActive(!selectOptions.MustSelectAllCards);
+        selectButton.gameObject.SetActive(!selectOptions.MustSelectAllCards && !selectOptions.NoSelectButton);
         backButton.gameObject.SetActive(!selectOptions.HideBackButton);
         commonCardsContainer.SetActive(true);
     }
-
 
     private void SetCardToBeToggled(SelectableUiCardManager cardManager, SelectPanelOptions selectOptions)
     {
@@ -104,7 +108,6 @@ public class SelectCardsPanel : CardPanelBase
         {
             if (cardManager.isSelected == false && selectedCards != cardsToSelect)
             {
-                selectedCards++;
                 selectedCardIds.Add(cardManager.GetId());
                 cardManager.isSelected = true;
                 if (selectOptions.ShowCardInCenter)
@@ -120,17 +123,20 @@ public class SelectCardsPanel : CardPanelBase
                 }
                 else
                 {
-                    selectedCards--;
                     selectedCardIds.Remove(cardManager.GetId());
                     cardManager.isSelected = false;
                 }
             }
 
-            if (selectedCards == cardsToSelect || !selectOptions.MustSelectAllCards)
-                selectButton.gameObject.SetActive(true);
-            else selectButton.gameObject.SetActive(false);
+            if (!selectOptions.NoSelectButton)
+            {
+                if (selectedCards == cardsToSelect || !selectOptions.MustSelectAllCards)
+                    selectButton.gameObject.SetActive(true);
+                else selectButton.gameObject.SetActive(false);
 
-            UpdateSelectButton();
+                UpdateSelectButton();
+            }
+            
             // only show the selection frame if it's not in the center
             if (!selectOptions.ShowCardInCenter)
             {
@@ -174,7 +180,6 @@ public class SelectCardsPanel : CardPanelBase
             placeholderObject.SetActive(false);
             currentSelectedCard.cardObject.transform.SetSiblingIndex(selectedCardGridIndex);
             // update the selected card
-            selectedCards--;
             selectedCardIds.Remove(currentSelectedCard.cardManager.GetId());
             currentSelectedCard.cardManager.isSelected = false;
             // and clear the active selected card
@@ -189,9 +194,16 @@ public class SelectCardsPanel : CardPanelBase
     {
         cardManager.cardSelectorToggle.onValueChanged.AddListener((isOn) =>
         {
+
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-            selectAction.Invoke(cardManager.GetId());
+            selectAction?.Invoke(cardManager.GetId());
         });
+    }
+
+    public void BackButtonPressed() 
+    {
+        OnBackButton.Invoke();
+        HidePanel();
     }
 
     public void HidePanel()
@@ -202,7 +214,6 @@ public class SelectCardsPanel : CardPanelBase
 
     public void ClearSelectList()
     {
-        selectedCards = 0;
         selectedCardIds.Clear();
     }
 
@@ -254,6 +265,7 @@ public class SelectPanelOptions
 {
     public bool MustSelectAllCards;
     public bool HideBackButton;
+    public bool NoSelectButton;
     public bool FireSelectWhenCardClicked;
     public int NumberOfCardsToSelect;
     public bool ShowCardInCenter;

@@ -127,11 +127,11 @@ public class GameManager : SingleTon<GameManager>
 
 
     //UPGRADE CARDS EVENTS
-    [HideInInspector] public UnityEvent<Deck> EVENT_SHOW_UPGRADE_CARDS_PANEL = new UnityEvent<Deck>(); //event from the BE to show the upgradable cards panel
+    [HideInInspector] public UnityEvent<Deck> EVENT_SHOW_UPGRADE_CARDS_PANEL { get; } = new UnityEvent<Deck>(); //event from the BE to show the upgradable cards panel
     [HideInInspector] public UnityEvent<string> EVENT_GET_UPGRADE_PAIR = new UnityEvent<string>(); // when the user click a card, we need the show the upgraded card data. We send
-    [HideInInspector] public UnityEvent<Deck> EVENT_SHOW_UPGRADE_PAIR = new UnityEvent<Deck>();// BE sending us the 2 cards
+    [HideInInspector] public UnityEvent<Deck> EVENT_SHOW_UPGRADE_PAIR { get; } = new UnityEvent<Deck>();// BE sending us the 2 cards
     [HideInInspector] public UnityEvent<string> EVENT_USER_CONFIRMATION_UPGRADE_CARD = new UnityEvent<string>();// the user confirmed to upgrade this card id. We send
-    [HideInInspector] public UnityEvent<SWSM_ConfirmUpgrade> EVENT_UPGRADE_CONFIRMED = new UnityEvent<SWSM_ConfirmUpgrade>();//from BE confirming. Can contain an error    
+    [HideInInspector] public UnityEvent<SWSM_ConfirmUpgrade> EVENT_UPGRADE_CONFIRMED { get; } = new UnityEvent<SWSM_ConfirmUpgrade>();//from BE confirming. Can contain an error    
    
 
     //EXPEDITION EVENTS

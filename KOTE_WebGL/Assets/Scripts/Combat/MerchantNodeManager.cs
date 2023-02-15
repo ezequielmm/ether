@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,6 +39,8 @@ public class MerchantNodeManager : MonoBehaviour
     [Header("Services")]
     [SerializeField]
     private SelectCardsPanel serviceCardPanel;
+    [SerializeField]
+    private CardPairPanelManager cardPairPanel;
 
     [Header("Service Buttons")]
     [SerializeField]
@@ -59,6 +62,7 @@ public class MerchantNodeManager : MonoBehaviour
         GameManager.Instance.EVENT_POPULATE_MERCHANT_PANEL.AddListener(PopulateMerchantNode);
         GameManager.Instance.EVENT_TOGGLE_MERCHANT_PANEL.AddListener(ToggleVisibility);
         GameManager.Instance.EVENT_MERCHANT_PURCHASE_SUCCESS.AddListener(OnPurchaseResponse);
+        serviceCardPanel.OnBackButton.AddListener(ResetItems);
         ClearMerchandise();
     }
 
@@ -168,6 +172,7 @@ public class MerchantNodeManager : MonoBehaviour
         selectedItem = null;
         buyButton.interactable = false;
         selectedCard = string.Empty;
+        serviceCardPanel.HidePanel();
     }
 
     private void ResetItems() 
@@ -197,7 +202,7 @@ public class MerchantNodeManager : MonoBehaviour
         buyButtonText.text = "BUY";
         selectedCard = string.Empty;
         upgradeCard = false;
-        serviceCardPanel.HidePanel();
+        serviceCardPanel.ClearSelectList();
     }
 
     private void PrepareBuy(int cost, MerchantData.IMerchant item) 
@@ -237,19 +242,20 @@ public class MerchantNodeManager : MonoBehaviour
         // Run upgrade card pannel
         ShowCardPanel(merchantData.upgradeableCards, new SelectPanelOptions 
         {
-            MustSelectAllCards = false,
+            MustSelectAllCards = true,
             HideBackButton = false,
-            FireSelectWhenCardClicked = false,
+            FireSelectWhenCardClicked = true,
             NumberOfCardsToSelect = 1,
-            ShowCardInCenter = false
-        },
-        (List<string> selected) => 
+            ShowCardInCenter = false,
+            NoSelectButton = true
+        }, null,
+        (string selected) => 
         {
-            selectedCard = selected[0];
+            upgradeCard = true;
+            selectedCard = selected;
             OnCardSelection(selectedCard);
         });
         buyButtonText.text = "UPGRADE";
-        upgradeCard = true;
     }
 
     public void RemoveCard() 
@@ -259,15 +265,17 @@ public class MerchantNodeManager : MonoBehaviour
         // Run remove card pannel
         ShowCardPanel(merchantData.playerCards, new SelectPanelOptions
         {
-            MustSelectAllCards = false,
+            MustSelectAllCards = true,
             HideBackButton = false,
-            FireSelectWhenCardClicked = false,
+            FireSelectWhenCardClicked = true,
             NumberOfCardsToSelect = 1,
-            ShowCardInCenter = false
-        },
-        (List<string> selected) =>
+            ShowCardInCenter = false,
+            NoSelectButton = true
+        },null,
+        (string selected) =>
         {
-            selectedCard = selected[0];
+            upgradeCard = false;
+            selectedCard = selected;
             OnCardSelection(selectedCard);
         });
         buyButtonText.text = "REMOVE";
@@ -276,7 +284,6 @@ public class MerchantNodeManager : MonoBehaviour
     public void OnCardSelection(string cardId) 
     {
         buyButton.interactable = true;
-        DeselectCard();
         if (upgradeCard)
         {
             totalText.text = $"{merchantData.upgradeCost}";
@@ -290,30 +297,24 @@ public class MerchantNodeManager : MonoBehaviour
 
     public void ShowCardComparison(string cardId) 
     {
-        GameManager.Instance.EVENT_GET_UPGRADE_PAIR.Invoke(cardId);
-        GameManager.Instance.EVENT_USER_CONFIRMATION_UPGRADE_CARD.AddListener(UpgradeCardConfirmation);
-    }
+        // Find Card
+        Card card = merchantData.upgradeableCards.FirstOrDefault<Card>(c => c.id == cardId || c.cardId.ToString() == cardId);
 
-    public void UpgradeCardConfirmation(string cardId)
-    {
-        GameManager.Instance.EVENT_USER_CONFIRMATION_UPGRADE_CARD.RemoveListener(UpgradeCardConfirmation);
-        if (cardId == selectedCard) 
+        if (card == null) 
         {
-            BuyItem();
+            Debug.LogError($"[MerchantNodeManager] Could not find card of id [{cardId}]. Does it exist?");
+            return;
         }
-    }
 
-    public void HideCardComparison() 
-    {
-        DeselectCard();
-        totalText.text = "0";
-        buyButton.interactable = false;
-    }
-
-    private void DeselectCard() 
-    {
-        serviceCardPanel.ClearSelectList();
-        HideCardComparison();
+        cardPairPanel.ShowCardAndUpgrade(card, () => 
+        {
+            // On Confirm
+            BuyItem();
+        }, () => 
+        {
+            // On Back
+            ResetItems();
+        });
     }
 
     private void ShowCardPanel(List<Card> cards, SelectPanelOptions selectOptions,
