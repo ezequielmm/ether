@@ -639,6 +639,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06a86a70f65420f4796a8a6dfd201f79, type: 3}
+--- !u!1 &544024442 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7986825379624671960, guid: 06a86a70f65420f4796a8a6dfd201f79,
+    type: 3}
+  m_PrefabInstance: {fileID: 544024441}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &562427909 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6236000115748684406, guid: 782bc08c131109d4e8854f9a70b61752,
@@ -1500,6 +1506,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FeedbackPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 6101787829824612125, guid: ede9b641055c8404991cf3aac08396f3,
+        type: 3}
+      propertyPath: SettingsPanel
+      value: 
+      objectReference: {fileID: 544024442}
     - target: {fileID: 8074468674759996024, guid: ede9b641055c8404991cf3aac08396f3,
         type: 3}
       propertyPath: m_hasFontAssetChanged
@@ -1588,7 +1599,7 @@ PrefabInstance:
     - target: {fileID: 8364282293955151295, guid: ede9b641055c8404991cf3aac08396f3,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 150
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8364282293955151295, guid: ede9b641055c8404991cf3aac08396f3,
         type: 3}

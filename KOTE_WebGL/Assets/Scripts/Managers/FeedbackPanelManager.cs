@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class FeedbackPanelManager : MonoBehaviour
 {
     public GameObject feedbackContainer;
+    public GameObject SettingsPanel;
     public TMP_InputField titleInput, detailInput;
     public Image screenshot;
     public Camera screenshotCam;
@@ -30,12 +31,15 @@ public class FeedbackPanelManager : MonoBehaviour
 
     private void OnShowFeedbackPanel()
     {
-        feedbackContainer.SetActive(true);
-        StartCoroutine(SaveCameraView());
+        StartCoroutine(ScreenshotBeforeOpenPanel());
     }
     
-    IEnumerator SaveCameraView()
+    IEnumerator ScreenshotBeforeOpenPanel()
     {
+        if (SettingsPanel != null)
+        {
+            SettingsPanel.SetActive(false);
+        }
         RenderTexture screenTexture = new RenderTexture(Screen.width, Screen.height, 16);
          screenshotCam.targetTexture = screenTexture;
         RenderTexture.active = screenTexture;
@@ -49,6 +53,11 @@ public class FeedbackPanelManager : MonoBehaviour
             Vector2.zero);
         byte[] byteArray = renderedTexture.EncodeToPNG();
         screenshotData = Convert.ToBase64String(byteArray);
+        if (SettingsPanel != null)
+        {
+            SettingsPanel.SetActive(true);
+        }
+        feedbackContainer.SetActive(true);
     }
 
     public void OnBackPressed()
