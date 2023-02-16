@@ -1039,7 +1039,8 @@ public class BugReportData
     public string userDescription;
     public string userTitle;
     public string screenshot;
-    public string frontendVersion = Application.version;
+    public string frontendVersion;
+    public string backendVersion = "???";
     public List<ServerCommunicationLogItem> messageLog;
 }
 
