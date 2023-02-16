@@ -289,7 +289,7 @@ namespace Papertrail
         {
             PapertrailLogData logData = new PapertrailLogData();
             // Environment data
-            logData.env = UserDataManager.Instance.ClientEnvironment.ToString();
+            logData.env = ClientEnvironmentManager.Instance.Environment.ToString();
             // Log level (int?)
             logData.level = severityValue;
             // Is frontend

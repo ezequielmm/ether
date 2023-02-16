@@ -15,8 +15,7 @@ public class VersionManager : MonoBehaviour
     /// </summary>
     public static string ClientVersionFormatted => $"{ClientVersion}{(string.IsNullOrEmpty(ClientCommitHash) ? "" : $"+{ClientCommitHash.Substring(0, 7)}")}";
     public static string ServerVersion => GameManager.ServerVersion ?? string.Empty;
-    public static string ClientId => GameManager.ClientId;
-    public static string Environment => GameManager.ClientEnvironment;
+   
 
 
     // Start is called before the first frame update
@@ -31,9 +30,9 @@ public class VersionManager : MonoBehaviour
         StringBuilder sb = new StringBuilder();
         sb.Append($"Server Version: v{ServerVersion}");
         sb.AppendLine(System.Environment.NewLine);
-        sb.Append($"Client Version: {Environment.Substring(0, 3).ToLower()}{ClientVersionFormatted}");
+        sb.Append($"Client Version: {ClientEnvironmentManager.Instance.Environment.ToString().Substring(0, 3).ToLower()}{ClientVersionFormatted}");
         sb.AppendLine(System.Environment.NewLine);
-        sb.Append($"Client Id: {ClientId}");
+        sb.Append($"Client Id: {UserDataManager.Instance.ClientId}");
 
         clientInfo.text = sb.ToString();
     }

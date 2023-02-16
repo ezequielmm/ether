@@ -405,14 +405,3 @@ public enum CommunicationDirection
     Incoming,
     Outgoing
 }
-
-[Serializable]
-public enum ClientEnvironmentType
-{
-    Alpha,
-    InternalAlpha,
-    Stage,
-    Dev,
-    Unity,
-    Unknown
-}

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using PlasticGui.Gluon.WorkspaceWindow;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -165,7 +166,7 @@ public class WebRequesterManager : MonoBehaviour
     {
         StartCoroutine(PushBugReport(title, description, base64Image));
     }
-    
+
     public void RequestServerVersion(Action<string> resultCallback)
     {
         StartCoroutine(GetServerVersion(resultCallback));
@@ -174,13 +175,16 @@ public class WebRequesterManager : MonoBehaviour
     public IEnumerator GetServerVersion(Action<string> resultCallback)
     {
         string serverVersionUrl = $"{baseUrl}{urlServerVersion}";
+        ServerCommunicationLogger.Instance.LogCommunication("Server version request", CommunicationDirection.Outgoing);
 
-        using (UnityWebRequest request = UnityWebRequest.Get(serverVersionUrl)) 
+        using (UnityWebRequest request = UnityWebRequest.Get(serverVersionUrl))
         {
             yield return request.SendWebRequest();
             if (request.result != UnityWebRequest.Result.Success)
             {
                 Debug.LogError($"{request.error}");
+                ServerCommunicationLogger.Instance.LogCommunication($"Server version error: {request.error}",
+                    CommunicationDirection.Incoming);
                 yield break;
             }
 
@@ -188,6 +192,9 @@ public class WebRequesterManager : MonoBehaviour
             string serverVersion = serverVersionObj.data;
 
             Debug.Log($"Server Version: [{serverVersion}]");
+            ServerCommunicationLogger.Instance.LogCommunication(
+                $"Server version success: {request.downloadHandler.text}", CommunicationDirection.Incoming);
+
 
             resultCallback.Invoke(serverVersion);
         }
@@ -425,7 +432,8 @@ public class WebRequesterManager : MonoBehaviour
             GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(data.GetHasExpedition(), data.data.nftId);
 
             Debug.Log("[WebRequestManager] Expedition status " + request.downloadHandler.text);
-            ServerCommunicationLogger.Instance.LogCommunication($"Expedition status success: {request.downloadHandler.text}",
+            ServerCommunicationLogger.Instance.LogCommunication(
+                $"Expedition status success: {request.downloadHandler.text}",
                 CommunicationDirection.Incoming);
         }
     }
@@ -617,7 +625,8 @@ public class WebRequesterManager : MonoBehaviour
         foreach (int[] idChunk in splitTokenLists)
         {
             UnityWebRequest openSeaRequest = NftRequest(idChunk);
-            ServerCommunicationLogger.Instance.LogCommunication($"Metadata request: {openSeaRequest.url}", CommunicationDirection.Outgoing);
+            ServerCommunicationLogger.Instance.LogCommunication($"Metadata request: {openSeaRequest.url}",
+                CommunicationDirection.Outgoing);
             using (openSeaRequest)
             {
                 yield return openSeaRequest.SendWebRequest();
@@ -731,7 +740,8 @@ public class WebRequesterManager : MonoBehaviour
         string spriteName = spriteToPopulate.imageName + ".png";
         string spriteUrl = skinUrl + spriteName;
 
-        ServerCommunicationLogger.Instance.LogCommunication($"Skin image request: sprite: {spriteName} url: {spriteUrl}",
+        ServerCommunicationLogger.Instance.LogCommunication(
+            $"Skin image request: sprite: {spriteName} url: {spriteUrl}",
             CommunicationDirection.Outgoing);
         using (UnityWebRequest nftSpriteRequest = UnityWebRequestTexture.GetTexture(spriteUrl))
         {
@@ -742,7 +752,8 @@ public class WebRequesterManager : MonoBehaviour
             {
                 Debug.LogWarning(
                     $"Error getting nft skin sprite {spriteName} at url {spriteUrl} from server: {nftSpriteRequest.error}");
-                ServerCommunicationLogger.Instance.LogCommunication($"Skin image error: {nftSpriteRequest.error}", CommunicationDirection.Incoming);
+                ServerCommunicationLogger.Instance.LogCommunication($"Skin image error: {nftSpriteRequest.error}",
+                    CommunicationDirection.Incoming);
                 // keep track of failures so the player knows when to update
                 GameManager.Instance.EVENT_NFT_SKIN_SPRITE_FAILED.Invoke();
                 yield break;
@@ -780,7 +791,8 @@ public class WebRequesterManager : MonoBehaviour
                 request.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.Log("Request new expedition error: " + $"{request.error}");
-                ServerCommunicationLogger.Instance.LogCommunication($"new expedition error: {request.error}", CommunicationDirection.Incoming);
+                ServerCommunicationLogger.Instance.LogCommunication($"new expedition error: {request.error}",
+                    CommunicationDirection.Incoming);
                 yield break;
             }
 
@@ -805,7 +817,7 @@ public class WebRequesterManager : MonoBehaviour
         string fullURL = $"{baseUrl}{urlExpeditionCancel}";
         string token = PlayerPrefs.GetString("session_token");
 
-        ServerCommunicationLogger.Instance.LogCommunication($"Expedtion cancel request. token: {token}",
+        ServerCommunicationLogger.Instance.LogCommunication($"Expedition cancel request. token: {token}",
             CommunicationDirection.Outgoing);
 
         using (UnityWebRequest request = UnityWebRequest.Post(fullURL, ""))
@@ -818,7 +830,8 @@ public class WebRequesterManager : MonoBehaviour
                 request.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.Log("[Error canceling expedition]");
-                ServerCommunicationLogger.Instance.LogCommunication("Expedition cancel error: " + request.error, CommunicationDirection.Outgoing);
+                ServerCommunicationLogger.Instance.LogCommunication("Expedition cancel error: " + request.error,
+                    CommunicationDirection.Outgoing);
                 yield break;
             }
 
@@ -829,17 +842,17 @@ public class WebRequesterManager : MonoBehaviour
         }
     }
 
-    private IEnumerator PushBugReport(string title, string description,  string base64Image)
+    private IEnumerator PushBugReport(string title, string description, string base64Image)
     {
         string fullUrl = $"{baseUrl}{urlBugReport}";
 
         BugReportData reportData = new BugReportData
         {
             reportId = Guid.NewGuid().ToString(),
-            environment = UserDataManager.Instance.ClientEnvironment.ToString(),
+            environment = ClientEnvironmentManager.Instance.Environment.ToString(),
             clientId = UserDataManager.Instance.ClientId,
             account = UserDataManager.Instance.UserAccount,
-            knightId = UserDataManager.Instance.activeNft,
+            knightId = UserDataManager.Instance.ActiveNft,
             expeditionId = UserDataManager.Instance.ExpeditionId,
             userTitle = title,
             userDescription = description,
@@ -859,28 +872,4 @@ public class WebRequesterManager : MonoBehaviour
             }
         }
     }
-    
-    private IEnumerator CancelOngoingExpedition()
-    {
-        string fullURL = $"{baseUrl}{urlExpeditionCancel}";
-        string token = PlayerPrefs.GetString("session_token");
-
-        using (UnityWebRequest request = UnityWebRequest.Post(fullURL, ""))
-        {
-            request.SetRequestHeader("Authorization", $"Bearer {token}");
-
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.ConnectionError ||
-                request.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.Log("[Error canceling expedition]");
-                yield break;
-            }
-
-            GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false, -1);
-            Debug.Log("answer from cancel expedition " + request.downloadHandler.text);
-        }
-    }
 }
-    
