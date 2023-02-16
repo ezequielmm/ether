@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
   <body class="{{{ SPLASH_SCREEN_STYLE.toLowerCase() }}}">
+    <div id="productVersion">
+      <p>{{{ PRODUCT_VERSION }}}</p>
+    </div>
     <div id="unity-container" class="unity-desktop">
       <canvas id="unity-canvas"></canvas>
     </div>
@@ -22,16 +25,17 @@
     <script>
       const hideFullScreenButton = "{{{ HIDE_FULL_SCREEN_BUTTON }}}";
       const buildUrl = "Build";
-      const loaderUrl = buildUrl + "/{{{ LOADER_FILENAME }}}";
+      const discriminatorQuery = "?v=" + encodeURIComponent("{{{ PRODUCT_VERSION }}}");
+      const loaderUrl = buildUrl + "/{{{ LOADER_FILENAME }}}" + discriminatorQuery;
       const config = {
-        dataUrl: buildUrl + "/{{{ DATA_FILENAME }}}",
-        frameworkUrl: buildUrl + "/{{{ FRAMEWORK_FILENAME }}}",
-        codeUrl: buildUrl + "/{{{ CODE_FILENAME }}}",
+        dataUrl: buildUrl + "/{{{ DATA_FILENAME }}}" + discriminatorQuery,
+        frameworkUrl: buildUrl + "/{{{ FRAMEWORK_FILENAME }}}" + discriminatorQuery,
+        codeUrl: buildUrl + "/{{{ CODE_FILENAME }}}" + discriminatorQuery,
 #if MEMORY_FILENAME
-        memoryUrl: buildUrl + "/{{{ MEMORY_FILENAME }}}",
+        memoryUrl: buildUrl + "/{{{ MEMORY_FILENAME }}}" + discriminatorQuery,
 #endif
 #if SYMBOLS_FILENAME
-        symbolsUrl: buildUrl + "/{{{ SYMBOLS_FILENAME }}}",
+        symbolsUrl: buildUrl + "/{{{ SYMBOLS_FILENAME }}}" + discriminatorQuery,
 #endif
         streamingAssetsUrl: "StreamingAssets",
         companyName: "{{{ COMPANY_NAME }}}",

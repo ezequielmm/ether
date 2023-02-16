@@ -9,8 +9,8 @@ using UnityEngine.Networking;
 /// </summary>
 public class WebRequesterManager : MonoBehaviour
 {
-    private string baseUrl;
-    private string skinUrl;
+    private string baseUrl => ClientEnvironmentManager.Instance.WebRequestURL;
+    private string skinUrl => ClientEnvironmentManager.Instance.SkinURL;
     private readonly string urlRandomName = "/auth/v1/generate/username";
     private readonly string urlRegister = "/auth/v1/register";
     private readonly string urlLogin = "/auth/v1/login";
@@ -24,10 +24,10 @@ public class WebRequesterManager : MonoBehaviour
     private readonly string urlExpeditionCancel = "/gsrv/v1/expeditions/cancel";
     private readonly string urlExpeditionScore = "/gsrv/v1/expeditions/score";
     private readonly string urlBugReport = "/gsrv/v1/bugreport";
+    private readonly string urlServerVersion = "/v1/showVersion";
 
 
-    private readonly string urlOpenSea =
-        "https://api.opensea.io/api/v1/assets?xxxx&asset_contract_address=0x32A322C7C77840c383961B8aB503c9f45440c81f&format=json";
+    private string urlOpenSea => ClientEnvironmentManager.Instance.OpenSeasURL;
 
     // we have to queue the requested nft images due to rate limiting
     private Queue<(string, string)> requestedNftImages = new Queue<(string, string)>();
@@ -36,36 +36,6 @@ public class WebRequesterManager : MonoBehaviour
     private void Awake()
     {
         HiddenConsoleManager.DisableOnBuild();
-
-        // determine the correct server the client is running on
-        string hostName = Application.absoluteURL;
-        Debug.Log("hostName:" + hostName);
-
-        baseUrl = "https://gateway.dev.kote.robotseamonster.com"; //make sure if anything fails we use DEV
-        // baseUrl = "https://gateway.alpha.knightsoftheether.com";//make sure if anything fails we use DEV
-
-        switch (UserDataManager.Instance.ClientEnvironment)
-        {
-            case ClientEnvironmentType.Alpha:
-                baseUrl = "https://gateway.alpha.knightsoftheether.com";
-                skinUrl = "https://s3.amazonaws.com/koteskins.knightsoftheether.com/";
-                break;
-            case ClientEnvironmentType.InternalAlpha:
-                baseUrl = "https://gateway.alpha.kote.robotseamonster.com";
-                skinUrl = "https://koteskins.robotseamonster.com/";
-                break;
-            case ClientEnvironmentType.Stage:
-                baseUrl = "https://gateway.stage.kote.robotseamonster.com";
-                skinUrl = "https://koteskins.robotseamonster.com/";
-                break;
-            case ClientEnvironmentType.Dev:
-            case ClientEnvironmentType.Unity:
-                baseUrl = "https://gateway.dev.kote.robotseamonster.com";
-                skinUrl = "https://koteskins.robotseamonster.com/";
-                break;
-            default:
-                break;
-        }
 
         PlayerPrefs.SetString("api_url", baseUrl);
 
@@ -87,6 +57,7 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_EXPEDITON_SCORE.AddListener(RequestExpeditionScore);
         GameManager.Instance.EVENT_REQUEST_WHITELIST_CHECK.AddListener(RequestWhitelistStatus);
         GameManager.Instance.EVENT_SEND_BUG_FEEDBACK.AddListener(SendBugReport);
+        GameManager.Instance.EVENT_REQUEST_SERVER_VERSION.AddListener(RequestServerVersion);
     }
 
     private void Start()
@@ -193,6 +164,33 @@ public class WebRequesterManager : MonoBehaviour
     public void SendBugReport(string title, string description, string base64Image)
     {
         StartCoroutine(PushBugReport(title, description, base64Image));
+    }
+    
+    public void RequestServerVersion(Action<string> resultCallback)
+    {
+        StartCoroutine(GetServerVersion(resultCallback));
+    }
+
+    public IEnumerator GetServerVersion(Action<string> resultCallback)
+    {
+        string serverVersionUrl = $"{baseUrl}{urlServerVersion}";
+
+        using (UnityWebRequest request = UnityWebRequest.Get(serverVersionUrl)) 
+        {
+            yield return request.SendWebRequest();
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError($"{request.error}");
+                yield break;
+            }
+
+            ServerVersionText serverVersionObj = JsonUtility.FromJson<ServerVersionText>(request.downloadHandler.text);
+            string serverVersion = serverVersionObj.data;
+
+            Debug.Log($"Server Version: [{serverVersion}]");
+
+            resultCallback.Invoke(serverVersion);
+        }
     }
 
     public IEnumerator GetRandomName(string lastName)
@@ -861,4 +859,28 @@ public class WebRequesterManager : MonoBehaviour
             }
         }
     }
+    
+    private IEnumerator CancelOngoingExpedition()
+    {
+        string fullURL = $"{baseUrl}{urlExpeditionCancel}";
+        string token = PlayerPrefs.GetString("session_token");
+
+        using (UnityWebRequest request = UnityWebRequest.Post(fullURL, ""))
+        {
+            request.SetRequestHeader("Authorization", $"Bearer {token}");
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.ConnectionError ||
+                request.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.Log("[Error canceling expedition]");
+                yield break;
+            }
+
+            GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false, -1);
+            Debug.Log("answer from cancel expedition " + request.downloadHandler.text);
+        }
+    }
 }
+    

@@ -309,9 +309,13 @@ namespace Papertrail
             {
                 logData.expeditionId = UserDataManager.Instance.ExpeditionId;
             }
-
+            // server versions
+            logData.serverVersion = VersionManager.ServerVersion;
+            logData.clientVersion = VersionManager.ClientVersionFormatted;
+            
             MethodBase method = new System.Diagnostics.StackTrace().GetFrame(9).GetMethod();
             Type declaringType = method.DeclaringType;
+
             if (declaringType == null)
             {
                 logData.context = method.Name;

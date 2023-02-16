@@ -3131,12 +3131,12 @@ PrefabInstance:
     - target: {fileID: 8166762712218201961, guid: ccb3a1b1a192e0146902efb6d1e11071,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 200
+      value: 1920
       objectReference: {fileID: 0}
     - target: {fileID: 8166762712218201961, guid: ccb3a1b1a192e0146902efb6d1e11071,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 27
+      value: 1079.8
       objectReference: {fileID: 0}
     - target: {fileID: 8166762712218201961, guid: ccb3a1b1a192e0146902efb6d1e11071,
         type: 3}
@@ -3176,12 +3176,12 @@ PrefabInstance:
     - target: {fileID: 8166762712218201961, guid: ccb3a1b1a192e0146902efb6d1e11071,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -110
+      value: -960
       objectReference: {fileID: 0}
     - target: {fileID: 8166762712218201961, guid: ccb3a1b1a192e0146902efb6d1e11071,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -481.1
+      value: -0.0022087
       objectReference: {fileID: 0}
     - target: {fileID: 8166762712218201961, guid: ccb3a1b1a192e0146902efb6d1e11071,
         type: 3}
@@ -3412,6 +3412,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   EVENT_REQUEST_LOGOUT_ERROR:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_REQUEST_SERVER_VERSION:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_VERSION_UPDATED:
     m_PersistentCalls:
       m_Calls: []
   EVENT_WALLETSPANEL_ACTIVATION_REQUEST:
@@ -3882,7 +3888,7 @@ PrefabInstance:
     - target: {fileID: 5156654230933921872, guid: 6bcf56bfcd0ab9e41833fbc52beb33c2,
         type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 5156654230933921872, guid: 6bcf56bfcd0ab9e41833fbc52beb33c2,
         type: 3}
@@ -4726,7 +4732,7 @@ PrefabInstance:
     - target: {fileID: 7827904886865857391, guid: e7eb62f99f006ab4fb0a75b1b0edb62a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 15
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 7827904886865857391, guid: e7eb62f99f006ab4fb0a75b1b0edb62a,
         type: 3}
@@ -5225,7 +5231,7 @@ PrefabInstance:
     - target: {fileID: 6413443757216341784, guid: cfde224b6c58c614eadd85e7c967e1a0,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 73.605
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6413443757216341784, guid: cfde224b6c58c614eadd85e7c967e1a0,
         type: 3}
