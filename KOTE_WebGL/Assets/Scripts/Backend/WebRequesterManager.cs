@@ -240,7 +240,7 @@ public class WebRequesterManager : MonoBehaviour
         form.AddField("password_confirmation", password);
 
         ServerCommunicationLogger.Instance.LogCommunication(
-            $"Registration requested with username {nameText} and email {email}", CommunicationDirection.Outgoing);
+            $"Registration requested. username: {nameText} email: {email}", CommunicationDirection.Outgoing);
 
         using (UnityWebRequest request = UnityWebRequest.Post(registerUrl, form))
         {
@@ -248,14 +248,14 @@ public class WebRequesterManager : MonoBehaviour
             if (request.result == UnityWebRequest.Result.ConnectionError ||
                 request.result == UnityWebRequest.Result.ProtocolError)
             {
-                ServerCommunicationLogger.Instance.LogCommunication($"Error Registering: {request.error}",
+                ServerCommunicationLogger.Instance.LogCommunication($"Register error: {request.error}",
                     CommunicationDirection.Incoming);
                 Debug.Log($"{request.error}");
                 yield break;
             }
 
             ServerCommunicationLogger.Instance.LogCommunication(
-                $"Registration Successful! {request.downloadHandler.text}", CommunicationDirection.Incoming);
+                $"Registration Success. {request.downloadHandler.text}", CommunicationDirection.Incoming);
             RegisterData registerData = JsonUtility.FromJson<RegisterData>(request.downloadHandler.text);
             string token = registerData.data.token;
 
@@ -280,7 +280,7 @@ public class WebRequesterManager : MonoBehaviour
         string loginUrl = $"{baseUrl}{urlLogin}";
 
         Debug.Log("Login url:" + loginUrl);
-        ServerCommunicationLogger.Instance.LogCommunication($"Login Requested for user {email}",
+        ServerCommunicationLogger.Instance.LogCommunication($"Login Requested. email: {email}",
             CommunicationDirection.Outgoing);
         WWWForm form = new WWWForm();
         form.AddField("email", email);
@@ -293,14 +293,14 @@ public class WebRequesterManager : MonoBehaviour
             if (request.result == UnityWebRequest.Result.ConnectionError ||
                 request.result == UnityWebRequest.Result.ProtocolError)
             {
-                ServerCommunicationLogger.Instance.LogCommunication($"Error logging in: {request.error}",
+                ServerCommunicationLogger.Instance.LogCommunication($"Login error: {request.error}",
                     CommunicationDirection.Incoming);
                 Debug.Log($"{request.error}");
                 GameManager.Instance.EVENT_REQUEST_LOGIN_ERROR.Invoke(request.error);
                 yield break;
             }
 
-            ServerCommunicationLogger.Instance.LogCommunication($"Login successful: {request.downloadHandler.text}",
+            ServerCommunicationLogger.Instance.LogCommunication($"Login success: {request.downloadHandler.text}",
                 CommunicationDirection.Incoming);
             LoginData loginData = JsonUtility.FromJson<LoginData>(request.downloadHandler.text);
             string token = loginData.data.token;
@@ -316,7 +316,7 @@ public class WebRequesterManager : MonoBehaviour
         // Debug.Log("Getting profile with token " + token);
 
         string profileUrl = $"{baseUrl}{urlProfile}";
-        ServerCommunicationLogger.Instance.LogCommunication("Getting profile with token " + token,
+        ServerCommunicationLogger.Instance.LogCommunication("Profile request. token: " + token,
             CommunicationDirection.Outgoing);
         //UnityWebRequest profileInfoRequest = UnityWebRequest.Get($"{profileUrl}?Authorization={Uri.EscapeDataString(token)}");
         using (UnityWebRequest
@@ -333,7 +333,7 @@ public class WebRequesterManager : MonoBehaviour
             {
                 Debug.Log("Error getting profile with token " + token);
                 ServerCommunicationLogger.Instance.LogCommunication(
-                    $"Error getting profile with token {token}. Error: {request.error}",
+                    $"Profile error. token: {token}, error: {request.error}",
                     CommunicationDirection.Incoming);
                 Debug.Log($"{request.error}");
                 yield break;
@@ -363,7 +363,7 @@ public class WebRequesterManager : MonoBehaviour
         string loginUrl = $"{baseUrl}{urlLogout}";
         WWWForm form = new WWWForm();
 
-        ServerCommunicationLogger.Instance.LogCommunication($"Logout requested with token {token}",
+        ServerCommunicationLogger.Instance.LogCommunication($"Logout request. token: {token}",
             CommunicationDirection.Outgoing);
         using (UnityWebRequest request = UnityWebRequest.Post(loginUrl, form))
         {
@@ -380,7 +380,7 @@ public class WebRequesterManager : MonoBehaviour
                 yield break;
             }
 
-            ServerCommunicationLogger.Instance.LogCommunication($"Logout Successful: {request.downloadHandler.text}",
+            ServerCommunicationLogger.Instance.LogCommunication($"Logout Success: {request.downloadHandler.text}",
                 CommunicationDirection.Incoming);
             LogoutData logoutData = JsonUtility.FromJson<LogoutData>(request.downloadHandler.text);
             string message = logoutData.data.message;
@@ -399,7 +399,7 @@ public class WebRequesterManager : MonoBehaviour
 
         string fullUrl = $"{baseUrl}{urlExpeditionStatus}";
         WWWForm form = new WWWForm();
-        ServerCommunicationLogger.Instance.LogCommunication($"Expedition Status requested with token {token}",
+        ServerCommunicationLogger.Instance.LogCommunication($"Expedition Status request. token: {token}",
             CommunicationDirection.Outgoing);
         using (UnityWebRequest request = UnityWebRequest.Get(fullUrl))
         {
@@ -414,7 +414,7 @@ public class WebRequesterManager : MonoBehaviour
             if (request.result == UnityWebRequest.Result.ConnectionError ||
                 request.result == UnityWebRequest.Result.ProtocolError)
             {
-                ServerCommunicationLogger.Instance.LogCommunication($"Error getting Expedition status: {request.error}",
+                ServerCommunicationLogger.Instance.LogCommunication($"Expedition status error: {request.error}",
                     CommunicationDirection.Incoming);
 
                 Debug.Log("[Error getting expedition status] " + request.error);
@@ -427,7 +427,7 @@ public class WebRequesterManager : MonoBehaviour
             GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(data.GetHasExpedition(), data.data.nftId);
 
             Debug.Log("[WebRequestManager] Expedition status " + request.downloadHandler.text);
-            ServerCommunicationLogger.Instance.LogCommunication($"Expedition status {request.downloadHandler.text}",
+            ServerCommunicationLogger.Instance.LogCommunication($"Expedition status success: {request.downloadHandler.text}",
                 CommunicationDirection.Incoming);
         }
     }
@@ -438,7 +438,7 @@ public class WebRequesterManager : MonoBehaviour
 
         string fullUrl = $"{baseUrl}{urlExpeditionScore}";
 
-        ServerCommunicationLogger.Instance.LogCommunication($"Expedition score requested with token {token}",
+        ServerCommunicationLogger.Instance.LogCommunication($"Expedition score request. token: {token}",
             CommunicationDirection.Outgoing);
 
         using (UnityWebRequest request = UnityWebRequest.Get(fullUrl))
@@ -451,7 +451,7 @@ public class WebRequesterManager : MonoBehaviour
                 request.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError("[Error getting expedition score] " + request.error);
-                ServerCommunicationLogger.Instance.LogCommunication($"Error getting Expedition score: {request.error}",
+                ServerCommunicationLogger.Instance.LogCommunication($"Expedition score error: {request.error}",
                     CommunicationDirection.Incoming);
 
                 GameManager.Instance.EVENT_SHOW_SCOREBOARD.Invoke(null);
@@ -462,7 +462,7 @@ public class WebRequesterManager : MonoBehaviour
                 JsonUtility.FromJson<SWSM_ScoreboardData>(request.downloadHandler.text);
             Debug.Log("answer from expedition score " + request.downloadHandler.text);
             ServerCommunicationLogger.Instance.LogCommunication(
-                "answer from expedition score " + request.downloadHandler.text, CommunicationDirection.Incoming);
+                "Expedition score success: " + request.downloadHandler.text, CommunicationDirection.Incoming);
             GameManager.Instance.EVENT_SHOW_SCOREBOARD.Invoke(scoreboardData);
         }
     }
@@ -472,7 +472,7 @@ public class WebRequesterManager : MonoBehaviour
         string token = PlayerPrefs.GetString("session_token");
 
         Debug.Log("[GetCharacterList] with token " + token);
-        ServerCommunicationLogger.Instance.LogCommunication("[GetCharacterList] with token " + token,
+        ServerCommunicationLogger.Instance.LogCommunication("Character list request. token: " + token,
             CommunicationDirection.Outgoing);
 
         string fullUrl = $"{baseUrl}{urlCharactersList}";
@@ -490,14 +490,14 @@ public class WebRequesterManager : MonoBehaviour
             {
                 Debug.Log("[Error getting GetCharacterList status] " + request.error);
                 ServerCommunicationLogger.Instance.LogCommunication(
-                    "[Error getting GetCharacterList status] " + request.error, CommunicationDirection.Incoming);
+                    "Character list error: " + request.error, CommunicationDirection.Incoming);
 
                 yield break;
             }
 
             Debug.Log("answer from GetCharacterList status " + request.downloadHandler.text);
             ServerCommunicationLogger.Instance.LogCommunication(
-                "answer from GetCharacterList status " + request.downloadHandler.text, CommunicationDirection.Incoming);
+                "Character list success: " + request.downloadHandler.text, CommunicationDirection.Incoming);
 
 
             //LogoutData answerData = JsonUtility.FromJson<LogoutData>(request.downloadHandler.text);
@@ -520,7 +520,7 @@ public class WebRequesterManager : MonoBehaviour
         {
             Debug.Log($"[WebRequestManager] Getting Wallet Contents...");
             ServerCommunicationLogger.Instance.LogCommunication(
-                $"[WebRequestManager] Getting Wallet Contents with wallet {walletAddress}",
+                $"Wallet content request: wallet {walletAddress}",
                 CommunicationDirection.Outgoing);
             using (request = UnityWebRequest.Get($"{fullUrl}"))
             {
@@ -532,17 +532,17 @@ public class WebRequesterManager : MonoBehaviour
                     // moved this code inside the loop to encapsulate this in the using statement
                     Debug.Log($"[WebRequestManager] Wallet Contents Retrieved: {request?.downloadHandler.text}");
                     ServerCommunicationLogger.Instance.LogCommunication(
-                        $"[WebRequestManager] Wallet Contents Retrieved: {request?.downloadHandler.text}",
+                        $"Wallet Content success: {request.downloadHandler.text}",
                         CommunicationDirection.Incoming);
                     WalletKnightIds walletKnightIds =
-                        JsonUtility.FromJson<WalletKnightIds>(request?.downloadHandler.text);
+                        JsonUtility.FromJson<WalletKnightIds>(request.downloadHandler.text);
                     GameManager.Instance.EVENT_WALLET_CONTENTS_RECEIVED.Invoke(walletKnightIds);
                     yield break;
                 }
 
                 Debug.LogError($"[WebRequestManager] Error Getting Wallet Contents {request.error} from {fullUrl}");
                 ServerCommunicationLogger.Instance.LogCommunication(
-                    $"[WebRequestManager] Error Getting Wallet Contents {request.error} from {fullUrl}",
+                    $"Wallet content error: {request.error}",
                     CommunicationDirection.Incoming);
 
                 if (tryCount + 1 >= maxTry)
@@ -572,7 +572,7 @@ public class WebRequesterManager : MonoBehaviour
         form.AddField("message", message); // String of what was signed
         string fullUrl = baseUrl + urlKoteWhitelist;
         ServerCommunicationLogger.Instance.LogCommunication(
-            $"Requesting whitelist status for wallet {wallet}, form is {form.ToString()}",
+            $"Whitelist status request: {form}",
             CommunicationDirection.Outgoing);
         using (UnityWebRequest request = UnityWebRequest.Post(fullUrl, form))
         {
@@ -583,14 +583,14 @@ public class WebRequesterManager : MonoBehaviour
             {
                 Debug.LogError("[WhitelistStatus] Error getting white list status: " + request.error);
                 ServerCommunicationLogger.Instance.LogCommunication(
-                    "[WhitelistStatus] Error getting white list status: " + request.error,
+                    "Whitelist error: " + request.error,
                     CommunicationDirection.Incoming);
                 yield break;
             }
 
             Debug.Log($"Whitelist status retrieved: {request.downloadHandler.text}");
             ServerCommunicationLogger.Instance.LogCommunication(
-                $"Whitelist status retrieved: {request.downloadHandler.text}", CommunicationDirection.Incoming);
+                $"Whitelist success: {request.downloadHandler.text}", CommunicationDirection.Incoming);
             WhitelistResponse whitelistResponse =
                 JsonUtility.FromJson<WhitelistResponse>(request.downloadHandler.text);
             GameManager.Instance.EVENT_WHITELIST_CHECK_RECEIVED.Invoke(whitelistResponse.data.isValid);
@@ -619,6 +619,7 @@ public class WebRequesterManager : MonoBehaviour
         foreach (int[] idChunk in splitTokenLists)
         {
             UnityWebRequest openSeaRequest = NftRequest(idChunk);
+            ServerCommunicationLogger.Instance.LogCommunication($"Metadata request: {openSeaRequest.url}", CommunicationDirection.Outgoing);
             using (openSeaRequest)
             {
                 yield return openSeaRequest.SendWebRequest();
@@ -627,14 +628,14 @@ public class WebRequesterManager : MonoBehaviour
                 {
                     Debug.Log($"{openSeaRequest.error} {openSeaRequest.downloadHandler.text}");
                     ServerCommunicationLogger.Instance.LogCommunication(
-                        $"Error getting metadata {openSeaRequest.error} {openSeaRequest.downloadHandler.text}",
+                        $"Metadata error: {openSeaRequest.error} {openSeaRequest.downloadHandler.text}",
                         CommunicationDirection.Incoming);
                     yield break;
                 }
 
                 Debug.Log("Nft metadata received");
                 ServerCommunicationLogger.Instance.LogCommunication(
-                    $"Nft metadata received {openSeaRequest.downloadHandler.text}", CommunicationDirection.Incoming);
+                    $"Metadata success: {openSeaRequest.downloadHandler.text}", CommunicationDirection.Incoming);
                 NftData nftData = JsonUtility.FromJson<NftData>(openSeaRequest.downloadHandler.text);
                 GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.Invoke(nftData);
             }
@@ -646,8 +647,6 @@ public class WebRequesterManager : MonoBehaviour
         string nftUrl = urlOpenSea;
         nftUrl = nftUrl.Replace("xxxx", "token_ids=" + string.Join("&token_ids=", idChunk));
         Debug.Log("[WebRequesterManager] nft metadata url: " + nftUrl);
-        ServerCommunicationLogger.Instance.LogCommunication("[WebRequesterManager] nft metadata url: " + nftUrl,
-            CommunicationDirection.Outgoing);
         UnityWebRequest openSeaRequest = UnityWebRequest.Get(nftUrl);
         openSeaRequest.SetRequestHeader("User-Agent",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
@@ -656,31 +655,33 @@ public class WebRequesterManager : MonoBehaviour
 
     public IEnumerator GetSingleNft(int tokenId)
     {
-        UnityWebRequest openSeaRequest = NftRequest(new int[] { tokenId });
-        yield return openSeaRequest.SendWebRequest();
-        if (openSeaRequest.result == UnityWebRequest.Result.ConnectionError ||
-            openSeaRequest.result == UnityWebRequest.Result.ProtocolError)
+        using (UnityWebRequest openSeaRequest = NftRequest(new int[] { tokenId }))
         {
-            Debug.Log($"{openSeaRequest.error} {openSeaRequest.downloadHandler.text}");
+            yield return openSeaRequest.SendWebRequest();
+            if (openSeaRequest.result == UnityWebRequest.Result.ConnectionError ||
+                openSeaRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.Log($"{openSeaRequest.error} {openSeaRequest.downloadHandler.text}");
+                ServerCommunicationLogger.Instance.LogCommunication(
+                    $"Single metadata error: {openSeaRequest.error} {openSeaRequest.downloadHandler.text}",
+                    CommunicationDirection.Incoming);
+                yield break;
+            }
+
+            Debug.Log("Nft metadata received");
             ServerCommunicationLogger.Instance.LogCommunication(
-                $"error getting single nft metadata {openSeaRequest.error} {openSeaRequest.downloadHandler.text}",
-                CommunicationDirection.Incoming);
-            yield break;
-        }
+                $"Single metadata success: {openSeaRequest.downloadHandler.text}", CommunicationDirection.Incoming);
+            NftData nftData = JsonUtility.FromJson<NftData>(openSeaRequest.downloadHandler.text);
+            GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.Invoke(nftData);
 
-        Debug.Log("Nft metadata received");
-        ServerCommunicationLogger.Instance.LogCommunication(
-            $"Nft metadata received {openSeaRequest.downloadHandler.text}", CommunicationDirection.Incoming);
-        NftData nftData = JsonUtility.FromJson<NftData>(openSeaRequest.downloadHandler.text);
-        GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.Invoke(nftData);
-
-        if (nftData.assets.Length > 0)
-        {
-            GameManager.Instance.EVENT_NFT_SELECTED.Invoke(nftData.assets[0]);
-        }
-        else
-        {
-            Debug.Log($"[WebRequesterManager] nft {tokenId} could not be found.");
+            if (nftData.assets.Length > 0)
+            {
+                GameManager.Instance.EVENT_NFT_SELECTED.Invoke(nftData.assets[0]);
+            }
+            else
+            {
+                Debug.Log($"[WebRequesterManager] nft {tokenId} could not be found.");
+            }
         }
     }
 
@@ -695,7 +696,7 @@ public class WebRequesterManager : MonoBehaviour
             (string, string) requestData = requestedNftImages.Dequeue();
             UnityWebRequest nftImageRequest = UnityWebRequestTexture.GetTexture(requestData.Item2);
             requestsMade++;
-            ServerCommunicationLogger.Instance.LogCommunication($"requesting nft image for knight {requestData.Item1}",
+            ServerCommunicationLogger.Instance.LogCommunication($"nft image request. nftId: {requestData.Item1}",
                 CommunicationDirection.Outgoing);
 
             yield return nftImageRequest.SendWebRequest();
@@ -706,7 +707,7 @@ public class WebRequesterManager : MonoBehaviour
                 Debug.LogWarning(
                     $"[WebRequesterManager] [GetNftImages] Error getting nft image knight {requestData.Item1} at url {requestData.Item2}: {nftImageRequest.downloadHandler.text}");
                 ServerCommunicationLogger.Instance.LogCommunication(
-                    $"[WebRequesterManager] [GetNftImages] Error getting nft image knight {requestData.Item1} at url {requestData.Item2}: {nftImageRequest.downloadHandler.text}",
+                    $"nft image error: {nftImageRequest.error} {nftImageRequest.downloadHandler.text}",
                     CommunicationDirection.Incoming);
                 requestsFailed++;
                 continue;
@@ -716,7 +717,7 @@ public class WebRequesterManager : MonoBehaviour
             Sprite nftImage = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height),
                 Vector2.zero);
             nftImage.name = requestData.Item1;
-            ServerCommunicationLogger.Instance.LogCommunication($"NFT Image Request success for nft {requestData.Item1}",
+            ServerCommunicationLogger.Instance.LogCommunication($"nft image success. nftId: {requestData.Item1}",
                 CommunicationDirection.Incoming);
             GameManager.Instance.EVENT_NFT_IMAGE_RECEIVED.Invoke(requestData.Item1, nftImage);
             requestsSucceeded++;
@@ -732,7 +733,7 @@ public class WebRequesterManager : MonoBehaviour
         string spriteName = spriteToPopulate.imageName + ".png";
         string spriteUrl = skinUrl + spriteName;
 
-        ServerCommunicationLogger.Instance.LogCommunication($"Requesting skin image {spriteName} from {spriteUrl}",
+        ServerCommunicationLogger.Instance.LogCommunication($"Skin image request: sprite: {spriteName} url: {spriteUrl}",
             CommunicationDirection.Outgoing);
         using (UnityWebRequest nftSpriteRequest = UnityWebRequestTexture.GetTexture(spriteUrl))
         {
@@ -743,7 +744,7 @@ public class WebRequesterManager : MonoBehaviour
             {
                 Debug.LogWarning(
                     $"Error getting nft skin sprite {spriteName} at url {spriteUrl} from server: {nftSpriteRequest.error}");
-                ServerCommunicationLogger.Instance.LogCommunication($"Error getting nft skin sprite {spriteName} at url {spriteUrl} from server: {nftSpriteRequest.error}", CommunicationDirection.Incoming);
+                ServerCommunicationLogger.Instance.LogCommunication($"Skin image error: {nftSpriteRequest.error}", CommunicationDirection.Incoming);
                 // keep track of failures so the player knows when to update
                 GameManager.Instance.EVENT_NFT_SKIN_SPRITE_FAILED.Invoke();
                 yield break;
@@ -754,7 +755,7 @@ public class WebRequesterManager : MonoBehaviour
                 Vector2.zero);
             nftSkinElement.name = spriteName;
             spriteToPopulate.sprite = nftSkinElement;
-            ServerCommunicationLogger.Instance.LogCommunication($"Skin image {spriteName} sucessfully downloaded",
+            ServerCommunicationLogger.Instance.LogCommunication($"Skin image success. image: {spriteName}",
                 CommunicationDirection.Incoming);
             GameManager.Instance.EVENT_NFT_SKIN_SPRITE_RECEIVED.Invoke(spriteToPopulate);
         }
@@ -769,7 +770,7 @@ public class WebRequesterManager : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("class", characterType);
         form.AddField("nftId", selectedNft);
-        ServerCommunicationLogger.Instance.LogCommunication($"Requesting new Expedition: {form.ToString()}",
+        ServerCommunicationLogger.Instance.LogCommunication($"New expedition request: {form}",
             CommunicationDirection.Outgoing);
 
         using (UnityWebRequest request = UnityWebRequest.Post(fullURL, form))
@@ -781,12 +782,12 @@ public class WebRequesterManager : MonoBehaviour
                 request.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.Log("Request new expedition error: " + $"{request.error}");
-                ServerCommunicationLogger.Instance.LogCommunication("Request new expedition error: " + $"{request.error}", CommunicationDirection.Incoming);
+                ServerCommunicationLogger.Instance.LogCommunication($"new expedition error: {request.error}", CommunicationDirection.Incoming);
                 yield break;
             }
 
             ServerCommunicationLogger.Instance.LogCommunication(
-                $"Request new expedition success: {request.downloadHandler.text}", CommunicationDirection.Incoming);
+                $"New expedition success: {request.downloadHandler.text}", CommunicationDirection.Incoming);
             ExpeditionRequestData data = JsonUtility.FromJson<ExpeditionRequestData>(request.downloadHandler.text);
 
             if (data.GetExpeditionStarted())
@@ -806,7 +807,7 @@ public class WebRequesterManager : MonoBehaviour
         string fullURL = $"{baseUrl}{urlExpeditionCancel}";
         string token = PlayerPrefs.GetString("session_token");
 
-        ServerCommunicationLogger.Instance.LogCommunication($"Canceling expedition with token {token}",
+        ServerCommunicationLogger.Instance.LogCommunication($"Expedtion cancel request. token: {token}",
             CommunicationDirection.Outgoing);
 
         using (UnityWebRequest request = UnityWebRequest.Post(fullURL, ""))
@@ -819,14 +820,14 @@ public class WebRequesterManager : MonoBehaviour
                 request.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.Log("[Error canceling expedition]");
-                ServerCommunicationLogger.Instance.LogCommunication("[Error canceling expedition]", CommunicationDirection.Outgoing);
+                ServerCommunicationLogger.Instance.LogCommunication("Expedition cancel error: " + request.error, CommunicationDirection.Outgoing);
                 yield break;
             }
 
             GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false, -1);
             Debug.Log("answer from cancel expedition " + request.downloadHandler.text);
             ServerCommunicationLogger.Instance.LogCommunication(
-                "answer from cancel expedition " + request.downloadHandler.text, CommunicationDirection.Outgoing);
+                "cancel expedition success: " + request.downloadHandler.text, CommunicationDirection.Outgoing);
         }
     }
 
@@ -849,14 +850,15 @@ public class WebRequesterManager : MonoBehaviour
             messageLog = ServerCommunicationLogger.Instance.GetCommunicationLog()
         };
         string data = JsonUtility.ToJson(reportData);
-        UnityWebRequest request = UnityWebRequest.Post(fullUrl, data);
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.ConnectionError ||
-            request.result == UnityWebRequest.Result.ProtocolError)
+        using (UnityWebRequest request = UnityWebRequest.Post(fullUrl, data))
         {
-            Debug.Log("[Error sending bug report]");
-            yield break;
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.ConnectionError ||
+                request.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.Log("[Error sending bug report]");
+            }
         }
     }
 }

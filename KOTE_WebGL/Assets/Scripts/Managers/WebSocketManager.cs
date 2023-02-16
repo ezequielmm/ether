@@ -544,16 +544,21 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     private void LogEmission(string eventName, params object[] variables) 
     {
         StringBuilder sb = new StringBuilder();
+        StringBuilder cb = new StringBuilder();
         sb.Append($"[WebSocketManager] EMISSION >> Message: {eventName}");
+        cb.Append($"Socket Emit: {eventName}");
         if (variables != null && variables.Length >= 1)
         {
             sb.Append($" | Action: {variables[0]}");
+            cb.Append($" Paramaters: {variables[0]}");
             for (int i = 1; i < variables.Length; i++)
             {
                 sb.Append($" | Param [{i}]: {variables[i]}");
+                cb.Append($", {variables[i]}");
             }
         }
         Debug.Log(sb.ToString());
-        ServerCommunicationLogger.Instance.LogCommunication(sb.ToString(), CommunicationDirection.Outgoing);
+        
+        ServerCommunicationLogger.Instance.LogCommunication(cb.ToString(), CommunicationDirection.Outgoing);
     }
 }
