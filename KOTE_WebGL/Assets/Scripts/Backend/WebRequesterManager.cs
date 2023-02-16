@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using PlasticGui.Gluon.WorkspaceWindow;
 using UnityEngine;
 using UnityEngine.Networking;
 
