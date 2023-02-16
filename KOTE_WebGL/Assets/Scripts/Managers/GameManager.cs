@@ -298,32 +298,15 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_SCENE_LOADING = new UnityEvent();
     [HideInInspector] public UnityEvent<inGameScenes> EVENT_SCENE_LOADED = new UnityEvent<inGameScenes>();
 
+    // Feedback Reporting Events
+    [HideInInspector] public UnityEvent EVENT_SHOW_FEEDBACK_PANEL = new UnityEvent();
+    [HideInInspector] public UnityEvent<string, string, string> EVENT_SEND_BUG_FEEDBACK = new UnityEvent<string, string, string>();
 
 
     public inGameScenes
         nextSceneToLoad { get; set; } // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
 
     public WebRequesterManager webRequester;
-
-    public static string ClientEnvironment => ClientEnvironmentManager.Instance.EnvironmentName;
-    
-    // get the unique identifier for this instance of the client
-    public static string ClientId
-    {
-        get
-        {
-            string clientId = PlayerPrefs.GetString("client_id");
-            // if the client id doesn't exist, create one and save it
-            if (string.IsNullOrEmpty(clientId))
-            {
-                Guid newId = Guid.NewGuid();
-                clientId = newId.ToString();
-                PlayerPrefs.SetString("client_id", newId.ToString());
-            }
-
-            return clientId;
-        }
-    }
 
     public static string ServerVersion { get; private set; }
 

@@ -1033,6 +1033,22 @@ public class WhitelistResponse
 }
 
 [Serializable]
+public class BugReportData
+{
+    public string reportId;
+    public string environment;
+    public const string service = "Frontend";
+    public string clientId;
+    public string account;
+    public string knightId;
+    public string expeditionId;
+    public string userDescription;
+    public string userTitle;
+    public string screenshot;
+    public string frontendVersion;
+    public string backendVersion = "???";
+    public List<ServerCommunicationLogger.ServerCommunicationLog> messageLog;
+}
 public class PapertrailLogData
 {
     public string env;

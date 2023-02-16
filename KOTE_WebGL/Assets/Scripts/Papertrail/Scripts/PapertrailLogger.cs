@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -57,16 +58,11 @@ namespace Papertrail
 
         // User set tag for log messages
         private string m_tag;
-        
-        // Active User account email
-        private string m_userAccount = "";
-        
-        // Active Expedition Id
-        private string m_expeditionId = "";
-        
+
+
         //minimum logging level
         private Severity minimumLoggingLevel = Severity.Debug;
-        
+
         // Default facility tag to use for logs.
         private Facility facility = Facility.local7;
 
@@ -106,29 +102,12 @@ namespace Papertrail
             if (SceneManager.GetActiveScene().isLoaded) m_isLoaded = true;
             SceneManager.sceneLoaded += OnSceneLoaded;
             Debug.unityLogger.logHandler = new PapertrailLogHandler();
-           
             GameManager.Instance.EVENT_SCENE_LOADING.AddListener(OnLoadScene);
-            GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnExpeditionUpdate);
-            GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(OnPlayerProfileReceived);
-            GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogout);
+
             StartCoroutine(GetExternalIP());
         }
 
-        private void OnPlayerProfileReceived(ProfileData profile)
-        {
-            m_userAccount = profile.data.email;
-        }
 
-        private void OnLogout(string data)
-        {
-            m_userAccount = "";
-        }
-
-        private void OnExpeditionUpdate(PlayerStateData playerState)
-        {
-            m_expeditionId = playerState.data.expeditionId;
-        }
-        
         // so the message are queued to not send when a scene is loading
         private void OnLoadScene()
         {
@@ -137,10 +116,6 @@ namespace Papertrail
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            if (scene.name == "MainMenu")
-            {
-                m_expeditionId = "";
-            }
             if (scene.name == "MainMenu" || scene.name == "Expedition")
             {
                 m_isLoaded = true;
@@ -314,10 +289,7 @@ namespace Papertrail
         {
             PapertrailLogData logData = new PapertrailLogData();
             // Environment data
-            if (!string.IsNullOrEmpty(GameManager.ClientEnvironment))
-            {
-                logData.env = GameManager.ClientEnvironment;
-            }
+            logData.env = ClientEnvironmentManager.Instance.Environment.ToString();
             // Log level (int?)
             logData.level = severityValue;
             // Is frontend
@@ -325,32 +297,36 @@ namespace Papertrail
             // IP
             logData.ip = m_localIp;
             //Client Id
-            logData.clientId = GameManager.ClientId;
+            logData.clientId = UserDataManager.Instance.ClientId;
             //User account
-            if (!string.IsNullOrEmpty(m_userAccount))
+            if (!string.IsNullOrEmpty(UserDataManager.Instance.UserAccount))
             {
-                logData.account = m_userAccount;
+                logData.account = UserDataManager.Instance.UserAccount;
             }
+
             // Expedition ID
-            if (!string.IsNullOrEmpty(m_expeditionId))
+            if (!string.IsNullOrEmpty(UserDataManager.Instance.ExpeditionId))
             {
-                logData.expeditionId = m_expeditionId;
+                logData.expeditionId = UserDataManager.Instance.ExpeditionId;
             }
+            // server versions
             logData.serverVersion = VersionManager.ServerVersion;
-            logData.clientVersion = VersionManager.ClientVersionFormatted;
+            logData.clientVersion = VersionManager.ClientVersionWithCommit;
+            
+            MethodBase method = new System.Diagnostics.StackTrace().GetFrame(9).GetMethod();
+            Type declaringType = method.DeclaringType;
 
-
-            //format message data
-            if (message.StartsWith('['))
+            if (declaringType == null)
             {
-                int contextEndIndex = message.IndexOf(']');
-                logData.context = message.Substring(1, contextEndIndex - 1);
-                logData.message = message.Substring(contextEndIndex + 1);
+                logData.context = method.Name;
             }
             else
             {
-                logData.message = message;
+                logData.context = declaringType.FullName;
             }
+
+            logData.message = message;
+
 
             return logData;
         }

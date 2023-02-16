@@ -398,3 +398,10 @@ public enum TraitTypes
     Shadow,
     Base
 }
+
+[Serializable]
+public enum CommunicationDirection
+{
+    Incoming,
+    Outgoing
+}

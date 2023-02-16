@@ -13,10 +13,11 @@ public class VersionManager : MonoBehaviour
     /// <summary>
     /// Client Version number plus commit hash if avalible
     /// </summary>
-    public static string ClientVersionFormatted => $"{ClientVersion}{(string.IsNullOrEmpty(ClientCommitHash) ? "" : $"+{ClientCommitHash.Substring(0, 7)}")}";
+    public static string ClientVersionWithCommit => $"{ClientVersion}{(string.IsNullOrEmpty(ClientCommitHash) ? "" : $"+{ClientCommitHash.Substring(0, 7)}")}";
     public static string ServerVersion => GameManager.ServerVersion ?? string.Empty;
-    public static string ClientId => GameManager.ClientId;
-    public static string Environment => GameManager.ClientEnvironment;
+    private string ClientId => UserDataManager.Instance.ClientId;
+    private string Environment => ClientEnvironmentManager.Instance.Environment.ToString().Substring(0, 3).ToLower();
+
 
 
     // Start is called before the first frame update
@@ -31,7 +32,7 @@ public class VersionManager : MonoBehaviour
         StringBuilder sb = new StringBuilder();
         sb.Append($"Server Version: v{ServerVersion}");
         sb.AppendLine(System.Environment.NewLine);
-        sb.Append($"Client Version: {Environment.Substring(0, 3).ToLower()}{ClientVersionFormatted}");
+        sb.Append($"Client Version: {Environment}{ClientVersionWithCommit}");
         sb.AppendLine(System.Environment.NewLine);
         sb.Append($"Client Id: {ClientId}");
 
