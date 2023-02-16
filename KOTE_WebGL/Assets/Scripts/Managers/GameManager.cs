@@ -41,6 +41,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_LOGOUT_SUCCESSFUL = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_LOGOUT_ERROR = new UnityEvent<string>();
 
+    [HideInInspector] public UnityEvent<Action<string>> EVENT_REQUEST_SERVER_VERSION = new();
+    [HideInInspector] public UnityEvent EVENT_VERSION_UPDATED = new();
+
     //WALLET EVENTS
     // Panel
     [HideInInspector] public UnityEvent<bool> EVENT_WALLETSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
@@ -322,6 +325,8 @@ public class GameManager : SingleTon<GameManager>
         }
     }
 
+    public static string ServerVersion { get; private set; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -330,6 +335,15 @@ public class GameManager : SingleTon<GameManager>
         EVENT_SCENE_LOADED.AddListener(OnSceneLoad);
         SceneManager.activeSceneChanged += UpdateSoundVolume;
         //EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ReturnToMainMenu);
+        GetServerVersion();
+    }
+
+    private void GetServerVersion() 
+    {
+        EVENT_REQUEST_SERVER_VERSION.Invoke((serverVersion) => {
+            ServerVersion = serverVersion;
+            EVENT_VERSION_UPDATED.Invoke();
+        });
     }
 
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene

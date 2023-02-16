@@ -139,6 +139,12 @@ public class RegisterData
 }
 
 [Serializable]
+public class ServerVersionText
+{
+    public string data;
+}
+
+[Serializable]
 public class LoginData
 {
     public Data data;
@@ -1038,4 +1044,6 @@ public class PapertrailLogData
     public string expeditionId;
     public string context;
     public string message;
+    public string serverVersion;
+    public string clientVersion;
 }

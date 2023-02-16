@@ -25,6 +25,7 @@ public class WebRequesterManager : MonoBehaviour
     private readonly string urlExpeditionRequest = "/gsrv/v1/expeditions";
     private readonly string urlExpeditionCancel = "/gsrv/v1/expeditions/cancel";
     private readonly string urlExpeditionScore = "/gsrv/v1/expeditions/score";
+    private readonly string urlServerVersion = "/v1/showVersion";
 
 
     private readonly string urlOpenSea =
@@ -100,6 +101,7 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_NFT_SET_SKIN.AddListener(SetKnightNft);
         GameManager.Instance.EVENT_REQUEST_EXPEDITON_SCORE.AddListener(RequestExpeditionScore);
         GameManager.Instance.EVENT_REQUEST_WHITELIST_CHECK.AddListener(RequestWhitelistStatus);
+        GameManager.Instance.EVENT_REQUEST_SERVER_VERSION.AddListener(RequestServerVersion);
     }
 
     private void Start()
@@ -201,6 +203,33 @@ public class WebRequesterManager : MonoBehaviour
     public void RequestCharacterList()
     {
         StartCoroutine(GetCharacterList());
+    }
+
+    public void RequestServerVersion(Action<string> resultCallback)
+    {
+        StartCoroutine(GetServerVersion(resultCallback));
+    }
+
+    public IEnumerator GetServerVersion(Action<string> resultCallback)
+    {
+        string serverVersionUrl = $"{baseUrl}{urlServerVersion}";
+
+        using (UnityWebRequest request = UnityWebRequest.Get(serverVersionUrl)) 
+        {
+            yield return request.SendWebRequest();
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError($"{request.error}");
+                yield break;
+            }
+
+            ServerVersionText serverVersionObj = JsonUtility.FromJson<ServerVersionText>(request.downloadHandler.text);
+            string serverVersion = serverVersionObj.data;
+
+            Debug.Log($"Server Version: [{serverVersion}]");
+
+            resultCallback.Invoke(serverVersion);
+        }
     }
 
     public IEnumerator GetRandomName(string lastName)

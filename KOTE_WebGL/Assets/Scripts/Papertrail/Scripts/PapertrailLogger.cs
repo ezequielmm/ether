@@ -336,7 +336,10 @@ namespace Papertrail
             {
                 logData.expeditionId = m_expeditionId;
             }
-            
+            logData.serverVersion = VersionManager.ServerVersion;
+            logData.clientVersion = VersionManager.ClientVersionFormatted;
+
+
             //format message data
             if (message.StartsWith('['))
             {

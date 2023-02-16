@@ -251,7 +251,7 @@ public class HiddenConsoleManager : MonoBehaviour
                 PublicLog("NFT Number must be provided. Example usage: use_nft 0128");
                 break;
             case ConsoleCommands.commit:
-                PublicLog($"commit {CommitLabel.CommitHash}");
+                PublicLog($"commit {GitCommitHash.CommitHash}");
                 break;
             default:
                 PublicLog("Unknown Command.");
