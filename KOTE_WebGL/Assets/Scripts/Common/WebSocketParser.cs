@@ -16,7 +16,7 @@ public class WebSocketParser
         SWSM_Base swsm = JsonUtility.FromJson<SWSM_Base>(data);
 
         Debug.Log($"[WebSocketParser] <<< [MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}\n{data}");
-        ServerCommunicationLogger.Instance.LogCommunication(data, CommunicationDirection.Incoming);
+        ServerCommunicationLogger.Instance.LogCommunication($"[MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}", CommunicationDirection.Incoming, data);
 
         switch (swsm.data.message_type)
         {

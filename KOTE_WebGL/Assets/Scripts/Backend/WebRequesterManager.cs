@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using PlasticGui.Gluon.WorkspaceWindow;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -860,7 +861,7 @@ public class WebRequesterManager : MonoBehaviour
             frontendVersion = Application.version,
             messageLog = ServerCommunicationLogger.Instance.GetCommunicationLog()
         };
-        string data = JsonUtility.ToJson(reportData);
+        string data = JsonConvert.SerializeObject(reportData);
         using (UnityWebRequest request = UnityWebRequest.Post(fullUrl, data))
         {
             yield return request.SendWebRequest();
