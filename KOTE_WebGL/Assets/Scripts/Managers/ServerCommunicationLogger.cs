@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class ServerCommunicationLogger : SingleTon<ServerCommunicationLogger>
 {
-   private List<ServerCommunicationLogItem> communicationLog = new List<ServerCommunicationLogItem>();
+   private List<ServerCommunicationLog> communicationLog = new List<ServerCommunicationLog>();
 
    public void LogCommunication(string message, CommunicationDirection direction)
    {
       DateTime currentTime = DateTime.UtcNow;
       long unixTime = ((DateTimeOffset)currentTime).ToUnixTimeSeconds();
-      ServerCommunicationLogItem newLog = new ServerCommunicationLogItem
+      ServerCommunicationLog newLog = new ServerCommunicationLog
       {
          data = message,
          direction = direction.ToString(),
@@ -20,8 +20,16 @@ public class ServerCommunicationLogger : SingleTon<ServerCommunicationLogger>
       communicationLog.Add(newLog);
    }
 
-   public List<ServerCommunicationLogItem> GetCommunicationLog()
+   public List<ServerCommunicationLog> GetCommunicationLog()
    {
       return communicationLog;
+   }
+   
+   [Serializable]
+   public class ServerCommunicationLog
+   {
+      public string timestamp;
+      public string direction;
+      public string data;
    }
 }

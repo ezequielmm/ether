@@ -1041,15 +1041,7 @@ public class BugReportData
     public string screenshot;
     public string frontendVersion;
     public string backendVersion = "???";
-    public List<ServerCommunicationLogItem> messageLog;
-}
-
-[Serializable]
-public class ServerCommunicationLogItem
-{
-    public string timestamp;
-    public string direction;
-    public string data;
+    public List<ServerCommunicationLogger.ServerCommunicationLog> messageLog;
 }
 public class PapertrailLogData
 {
