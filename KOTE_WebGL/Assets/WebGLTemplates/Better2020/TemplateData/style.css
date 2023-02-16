@@ -31,7 +31,7 @@ body {
 }
 #unity-fullscreen-button {
     position: absolute;
-    right: 10px;
+    left: 10px;
     bottom: 10px;
     width: 38px;
     height: 38px;
@@ -71,4 +71,18 @@ body {
     height: 2em;
     width: 0%;
     transition: width 0.2s;
+}
+
+#productVersion {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+#productVersion > p {
+    margin: 1%;
+    color:rgba(255, 255, 255, 0.3)
 }
