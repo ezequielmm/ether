@@ -11,25 +11,8 @@ public class ServerCommunicationLogger : SingleTon<ServerCommunicationLogger>
 
     public void LogCommunication(string message, CommunicationDirection direction, string rawJson = "")
     {
-        var newLog = BuildLog(message, direction, rawJson);
+        var newLog = new ServerCommunicationLog(message, direction, rawJson);
         communicationLog.Add(newLog);
-    }
-
-    private ServerCommunicationLog BuildLog(string message, CommunicationDirection direction, string rawJson = "") 
-    {
-        DateTime currentTime = DateTime.UtcNow;
-        long unixTime = ((DateTimeOffset)currentTime).ToUnixTimeSeconds();
-        ServerCommunicationLog newLog = new ServerCommunicationLog
-        {
-            Message = message,
-            Direction = direction.ToString(),
-            Timestamp = unixTime.ToString()
-        };
-        if (!string.IsNullOrEmpty(rawJson))
-        {
-            newLog.Raw = JObject.Parse(rawJson);
-        }
-        return newLog;
     }
 
     public List<ServerCommunicationLog> GetCommunicationLog()
@@ -48,5 +31,18 @@ public class ServerCommunicationLogger : SingleTon<ServerCommunicationLogger>
         public string Message;
         [JsonProperty("raw")]
         public JObject Raw = new JObject();
+
+        public ServerCommunicationLog(string message, CommunicationDirection direction, string rawJson = "") 
+        {
+            DateTime currentTime = DateTime.UtcNow;
+            long unixTime = ((DateTimeOffset)currentTime).ToUnixTimeSeconds();
+            Message = message;
+            Direction = direction.ToString();
+            Timestamp = unixTime.ToString();
+            if (!string.IsNullOrEmpty(rawJson))
+            {
+                Raw = JObject.Parse(rawJson);
+            }
+        }
     }
 }
