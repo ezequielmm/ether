@@ -7,14 +7,14 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-public class SWSM_ParserTests
+public class WebSocketParserTests
 {
     [Test]
     public void DoesUpdateMapActionPickerInvokeShowMapEvents()
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("map_update", "show_map"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("map_update", "show_map"));
 
         Assert.AreEqual(true, eventFired);
     }
@@ -26,7 +26,7 @@ public class SWSM_ParserTests
         bool mapUpdateFired = false;
         GameManager.Instance.EVENT_MAP_ACTIVATE_PORTAL.AddListener((data) => { portalFired = true; });
         GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.AddListener((data) => { mapUpdateFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("map_update", "activate_portal"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("map_update", "activate_portal"));
 
         Assert.AreEqual(true, portalFired && mapUpdateFired);
     }
@@ -36,7 +36,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_MAP_REVEAL.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("map_update", "extend_map"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("map_update", "extend_map"));
 
         Assert.AreEqual(true, eventFired);
     }
@@ -51,7 +51,7 @@ public class SWSM_ParserTests
             eventFired = true;
             newGameStatus = data;
         });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("encounter_update", "begin_encounter"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("encounter_update", "begin_encounter"));
 
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(GameStatuses.Encounter, newGameStatus);
@@ -67,7 +67,7 @@ public class SWSM_ParserTests
             eventFired = true;
             newGameStatus = data;
         });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("merchant_update", "begin_merchant"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("merchant_update", "begin_merchant"));
 
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(GameStatuses.Merchant, newGameStatus);
@@ -83,7 +83,7 @@ public class SWSM_ParserTests
             eventFired = true;
             newGameStatus = data;
         });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("camp_update", "begin_camp"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("camp_update", "begin_camp"));
 
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(GameStatuses.Camp, newGameStatus);
@@ -94,7 +94,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_HEAL.AddListener((location, amount) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestHealData("camp_update", "heal_amount", 1));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestHealData("camp_update", "heal_amount", 1));
         Assert.True(eventFired);
     }
 
@@ -103,11 +103,11 @@ public class SWSM_ParserTests
     {
         int healamount = -1;
         GameManager.Instance.EVENT_HEAL.AddListener((location, amount) => { healamount = amount; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestHealData("camp_update", "heal_amount", 1));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestHealData("camp_update", "heal_amount", 1));
         Assert.AreEqual(1, healamount);
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestHealData("camp_update", "heal_amount", 0));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestHealData("camp_update", "heal_amount", 0));
         Assert.AreEqual(0, healamount);
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestHealData("camp_update", "heal_amount", 6969));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestHealData("camp_update", "heal_amount", 6969));
         Assert.AreEqual(6969, healamount);
     }
 
@@ -116,7 +116,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_CAMP_FINISH.AddListener(() => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("camp_update", "finish_camp"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("camp_update", "finish_camp"));
         Assert.True(eventFired);
     }
 
@@ -130,7 +130,7 @@ public class SWSM_ParserTests
             eventFired = true;
             newGameStatus = data;
         });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("combat_update", "begin_combat"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("combat_update", "begin_combat"));
 
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(GameStatuses.Combat, newGameStatus);
@@ -146,7 +146,7 @@ public class SWSM_ParserTests
             eventFired = true;
             firedCount++;
         });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestStatusData("combat_update", "update_statuses", 1));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestStatusData("combat_update", "update_statuses", 1));
 
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(1, firedCount);
@@ -154,7 +154,7 @@ public class SWSM_ParserTests
         // test for multple statuses
         firedCount = 0;
         eventFired = false;
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestStatusData("combat_update", "update_statuses", 6));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestStatusData("combat_update", "update_statuses", 6));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(6, firedCount);
     }
@@ -169,7 +169,7 @@ public class SWSM_ParserTests
             eventFired = true;
             firedCount++;
         });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestCombatQueueData("combat_update", "combat_queue", 1));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestCombatQueueData("combat_update", "combat_queue", 1));
 
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(1, firedCount);
@@ -177,7 +177,7 @@ public class SWSM_ParserTests
         // test for multple statuses
         firedCount = 0;
         eventFired = false;
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestCombatQueueData("combat_update", "combat_queue", 15));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestCombatQueueData("combat_update", "combat_queue", 15));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(15, firedCount);
     }
@@ -186,7 +186,7 @@ public class SWSM_ParserTests
     public void DoesProcessCombatUpdateLogErrorIfBadAction()
     {
         string data = TestUtils.BuildTestSwsmData("combat_update", "test");
-        SWSM_Parser.ParseJSON(data);
+        WebSocketParser.ParseJSON(data);
         LogAssert.Expect(LogType.Log, $"[SWSM Parser][Combat Update] Unknown Action \"test\". Data = {data}");
     }
 
@@ -200,7 +200,7 @@ public class SWSM_ParserTests
             eventFired = true;
             newGameStatus = data;
         });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("treasure_update", "begin_treasure"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("treasure_update", "begin_treasure"));
 
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(GameStatuses.Treasure, newGameStatus);
@@ -209,7 +209,7 @@ public class SWSM_ParserTests
     [Test]
     public void DoesProcessTreasureUpdateLogWarningIfUnknownAction()
     {
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("treasure_update", "activate_portal"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("treasure_update", "activate_portal"));
 
         LogAssert.Expect(LogType.Warning,
             "[SWSM Parser][Treasure Update] Unknown Action \"activate_portal\". Data = {\"data\":{\"message_type\":\"treasure_update\",\"action\":\"activate_portal\",\"data\":[]}}");
@@ -218,7 +218,7 @@ public class SWSM_ParserTests
     [Test]
     public void DoesEnemyIntentsMessageLogWarning()
     {
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("enemy_intents", "activate_portal"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("enemy_intents", "activate_portal"));
 
         LogAssert.Expect(LogType.Warning, "[SWSM Parser] Enemy Intents are no longer listened for.");
     }
@@ -228,7 +228,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener((playerStateData) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestPlayerStateData("player_state_update", "activate_portal"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestPlayerStateData("player_state_update", "activate_portal"));
 
         Assert.AreEqual(true, eventFired);
     }
@@ -236,15 +236,15 @@ public class SWSM_ParserTests
     [Test]
     public void DoesProcessErrorActionLogCorrectWarning()
     {
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("error", "card_unplayable"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("error", "card_unplayable"));
 
         LogAssert.Expect(LogType.Log, "card_unplayable: ");
 
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("error", "invalid_card"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("error", "invalid_card"));
 
         LogAssert.Expect(LogType.Log, "invalid_card: ");
 
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("error", "insufficient_energy"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("error", "insufficient_energy"));
 
         // TODO THIS FAILS EVERY TIME FOR NO REASON
         // LogAssert.Expect(LogType.Log, new Regex("insufficient_energy: "));
@@ -255,7 +255,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener((data, data2) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestGenericEnergyData("generic_data", "Energy"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestGenericEnergyData("generic_data", "Energy"));
 
         Assert.AreEqual(true, eventFired);
     }
@@ -265,7 +265,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_CARDS_PILES_UPDATED.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestGenericCardPilesData("generic_data", "CardsPiles"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestGenericCardPilesData("generic_data", "CardsPiles"));
 
         Assert.AreEqual(true, eventFired);
     }
@@ -275,7 +275,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_UPDATE_ENEMIES.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("generic_data", "Enemies"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("generic_data", "Enemies"));
 
         Assert.AreEqual(true, eventFired);
     }
@@ -285,7 +285,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("generic_data", "Players"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("generic_data", "Players"));
 
         Assert.AreEqual(true, eventFired);
     }
@@ -300,12 +300,12 @@ public class SWSM_ParserTests
             eventFired = true;
             eventCount++;
         });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestEnemyIntentData("generic_data", "EnemyIntents", 1));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestEnemyIntentData("generic_data", "EnemyIntents", 1));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(1, eventCount);
         eventFired = false;
         eventCount = 0;
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestEnemyIntentData("generic_data", "EnemyIntents", 3));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestEnemyIntentData("generic_data", "EnemyIntents", 3));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(3, eventCount);
     }
@@ -315,7 +315,7 @@ public class SWSM_ParserTests
     {
         //TODO discuss this, as this cannot happen with the code the way it is.
         string data = TestUtils.BuildTestEnemyIntentData("generic_data", "EnemyIntents", 1);
-        SWSM_Parser.ParseJSON(data);
+        WebSocketParser.ParseJSON(data);
         LogAssert.Expect(LogType.Log, $"[SWSM Parser][Combat Update] Unknown Action \"test\". Data = {data}");
     }
 
@@ -330,13 +330,13 @@ public class SWSM_ParserTests
             eventFired = true;
             eventCount++;
         });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestStatusData("generic_data", "Statuses", 1));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestStatusData("generic_data", "Statuses", 1));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(1, eventCount);
 
         eventFired = false;
         eventCount = 0;
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestStatusData("generic_data", "Statuses", 7));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestStatusData("generic_data", "Statuses", 7));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(7, eventCount);
     }
@@ -346,7 +346,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_CARD_PILE_SHOW_DECK.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("generic_data", "PlayerDeck"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("generic_data", "PlayerDeck"));
         Assert.AreEqual(true, eventFired);
     }
 
@@ -355,7 +355,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_SHOW_UPGRADE_PAIR.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestUpgradeableCardData());
+        WebSocketParser.ParseJSON(TestUtils.BuildTestUpgradeableCardData());
         Assert.AreEqual(true, eventFired);
     }
 
@@ -363,7 +363,7 @@ public class SWSM_ParserTests
     public void DoesProcessGenericDataLogInvalidData()
     {
         string data = TestUtils.BuildTestSwsmData("generic_data", "test");
-        SWSM_Parser.ParseJSON(data);
+        WebSocketParser.ParseJSON(data);
         LogAssert.Expect(LogType.Log, $"[SWSM Parser] [Generic Data] Uncaught Action \"test\". Data = {data}");
     }
 
@@ -372,7 +372,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener((data, data2) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestGenericEnergyData("enemy_affected", "update_energy"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestGenericEnergyData("enemy_affected", "update_energy"));
         Assert.AreEqual(true, eventFired);
     }
 
@@ -388,7 +388,7 @@ public class SWSM_ParserTests
             eventCount++;
         });
         GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener((data) => { wsDataEventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestCardMoveData("enemy_affected", "move_card", 1));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestCardMoveData("enemy_affected", "move_card", 1));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(true, wsDataEventFired);
         Assert.AreEqual(1, eventCount);
@@ -396,7 +396,7 @@ public class SWSM_ParserTests
         eventFired = false;
         wsDataEventFired = false;
         eventCount = 0;
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestCardMoveData("enemy_affected", "move_card", 23));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestCardMoveData("enemy_affected", "move_card", 23));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(true, wsDataEventFired);
         Assert.AreEqual(23, eventCount);
@@ -409,7 +409,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_UPDATE_ENEMIES.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("enemy_affected", "update_enemy"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("enemy_affected", "update_enemy"));
         Assert.AreEqual(true, eventFired);
     }
 
@@ -418,7 +418,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("enemy_affected", "update_player"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("enemy_affected", "update_player"));
         Assert.AreEqual(true, eventFired);
     }
 
@@ -427,7 +427,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener((data, data2) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestGenericEnergyData("player_affected", "update_energy"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestGenericEnergyData("player_affected", "update_energy"));
         Assert.AreEqual(true, eventFired);
     }
 
@@ -443,14 +443,14 @@ public class SWSM_ParserTests
             eventCount++;
         });
         GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener((data) => { wsDataEventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestCardMoveData("player_affected", "move_card", 1));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestCardMoveData("player_affected", "move_card", 1));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(true, wsDataEventFired);
         Assert.AreEqual(1, eventCount);
 
         eventFired = false;
         eventCount = 0;
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestCardMoveData("player_affected", "move_card", 3));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestCardMoveData("player_affected", "move_card", 3));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(true, wsDataEventFired);
         Assert.AreEqual(3, eventCount);
@@ -461,7 +461,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_UPDATE_ENEMIES.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("player_affected", "update_enemy"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("player_affected", "update_enemy"));
         Assert.AreEqual(true, eventFired);
     }
 
@@ -470,7 +470,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("player_affected", "update_player"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("player_affected", "update_player"));
         Assert.AreEqual(true, eventFired);
     }
 
@@ -479,7 +479,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_UPDATE_ENERGY.AddListener((data, data2) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestGenericEnergyData("end_turn", "update_energy"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestGenericEnergyData("end_turn", "update_energy"));
         Assert.AreEqual(true, eventFired);
     }
 
@@ -495,14 +495,14 @@ public class SWSM_ParserTests
             eventCount++;
         });
         GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener((data) => { wsDataEventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestCardMoveData("end_turn", "move_card", 1));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestCardMoveData("end_turn", "move_card", 1));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(true, wsDataEventFired);
         Assert.AreEqual(1, eventCount);
 
         eventFired = false;
         eventCount = 0;
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestCardMoveData("end_turn", "move_card", 3));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestCardMoveData("end_turn", "move_card", 3));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(true, wsDataEventFired);
         Assert.AreEqual(3, eventCount);
@@ -513,7 +513,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_UPDATE_ENEMIES.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("end_turn", "update_enemy"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("end_turn", "update_enemy"));
         Assert.AreEqual(true, eventFired);
     }
 
@@ -522,7 +522,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("end_turn", "update_player"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("end_turn", "update_player"));
         Assert.AreEqual(true, eventFired);
     }
 
@@ -531,7 +531,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_CARD_DRAW_CARDS.AddListener(() => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("begin_turn", "move_card"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("begin_turn", "move_card"));
         Assert.AreEqual(true, eventFired);
     }
 
@@ -540,7 +540,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_CHANGE_TURN.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestChangeTurnData("begin_turn", "change_turn"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestChangeTurnData("begin_turn", "change_turn"));
         Assert.AreEqual(true, eventFired);
     }
 
@@ -556,7 +556,7 @@ public class SWSM_ParserTests
             returnStatus = data;
         });
         GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.AddListener((data) => { rewardPanelEventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("end_node", "enemies_defeated"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("end_node", "enemies_defeated"));
         Assert.AreEqual(true, statusChangeEventFired);
         Assert.AreEqual(true, rewardPanelEventFired);
     }
@@ -571,7 +571,7 @@ public class SWSM_ParserTests
             eventFired = true;
             returnStatus = data;
         });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestChangeTurnData("end_node", "player_defeated"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestChangeTurnData("end_node", "player_defeated"));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(GameStatuses.GameOver, returnStatus);
     }
@@ -586,7 +586,7 @@ public class SWSM_ParserTests
             eventFired = true;
             returnStatus = data;
         });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestChangeTurnData("end_node", "players_defeated"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestChangeTurnData("end_node", "players_defeated"));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(GameStatuses.GameOver, returnStatus);
     }
@@ -596,14 +596,14 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestChangeTurnData("end_node", "select_another_reward"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestChangeTurnData("end_node", "select_another_reward"));
         Assert.AreEqual(true, eventFired);
     }
 
     [UnityTest]
     public IEnumerator DoesCallingEndNodeShowMapLoadTheExpeditionScene()
     {
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("end_node", "show_map"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("end_node", "show_map"));
         yield return null;
         string sceneName = SceneManager.GetActiveScene().name;
         Assert.AreEqual("Loader", sceneName);
@@ -617,7 +617,7 @@ public class SWSM_ParserTests
         bool rewardPanelEventFired = false;
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.AddListener((data) => { statusChangeEventFired = true; });
         GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.AddListener((data) => { rewardPanelEventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("end_combat", "enemies_defeated"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("end_combat", "enemies_defeated"));
         Assert.AreEqual(true, statusChangeEventFired);
         Assert.AreEqual(true, rewardPanelEventFired);
     }
@@ -632,7 +632,7 @@ public class SWSM_ParserTests
             eventFired = true;
             returnStatus = data;
         });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestChangeTurnData("end_combat", "player_defeated"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestChangeTurnData("end_combat", "player_defeated"));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(GameStatuses.GameOver, returnStatus);
     }
@@ -647,7 +647,7 @@ public class SWSM_ParserTests
             eventFired = true;
             returnStatus = data;
         });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestChangeTurnData("end_combat", "players_defeated"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestChangeTurnData("end_combat", "players_defeated"));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(GameStatuses.GameOver, returnStatus);
     }
@@ -657,14 +657,14 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestChangeTurnData("end_combat", "select_another_reward"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestChangeTurnData("end_combat", "select_another_reward"));
         Assert.AreEqual(true, eventFired);
     }
 
     [UnityTest]
     public IEnumerator DoesCallingEndCombatShowMapLoadTheExpeditionScene()
     {
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("end_combat", "show_map"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("end_combat", "show_map"));
         yield return null;
         string sceneName = SceneManager.GetActiveScene().name;
         Assert.AreEqual("Loader", sceneName);
@@ -675,7 +675,7 @@ public class SWSM_ParserTests
     public void DoesParserThrowErrorWhenGivenBadMessageType()
     {
         string data = TestUtils.BuildTestSwsmData("failure", "nope");
-        SWSM_Parser.ParseJSON(data);
+        WebSocketParser.ParseJSON(data);
         LogAssert.Expect(LogType.Error, "[SWSM Parser] No message_type processed. Data Received: " + data);
     }
 
@@ -684,7 +684,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_POPULATE_MERCHANT_PANEL.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("generic_data", "MerchantData"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("generic_data", "MerchantData"));
         Assert.True(eventFired);
     }
 
@@ -693,7 +693,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_SHOW_UPGRADE_PAIR.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("card_upgrade", "upgradable_pair"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("card_upgrade", "upgradable_pair"));
         Assert.True(eventFired);
     }
 
@@ -702,7 +702,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_UPGRADE_CONFIRMED.AddListener((data) => { eventFired = true; });
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("card_upgrade", "confirm_upgrade"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("card_upgrade", "confirm_upgrade"));
         Assert.True(eventFired);
     }
 
@@ -711,13 +711,13 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_POTION_WARNING.AddListener((arg0 => { eventFired = true; }));
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("add_potion", "potion_not_found_in_database"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("add_potion", "potion_not_found_in_database"));
         Assert.True(eventFired);
         eventFired = false;
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("add_potion", "potion_not_in_inventory"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("add_potion", "potion_not_in_inventory"));
         Assert.True(eventFired);
         eventFired = false;
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("add_potion", "potion_max_count_reached"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("add_potion", "potion_max_count_reached"));
         Assert.True(eventFired);
     }
 
@@ -726,7 +726,7 @@ public class SWSM_ParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_POTION_WARNING.AddListener((arg0 => { eventFired = true; }));
-        SWSM_Parser.ParseJSON(TestUtils.BuildTestSwsmData("use_potion", "potion_not_usable_outside_combat"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("use_potion", "potion_not_usable_outside_combat"));
         Assert.True(eventFired);
     }
 }

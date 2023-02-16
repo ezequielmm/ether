@@ -240,7 +240,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void GenericParser(string data)
     {
-        SWSM_Parser.ParseJSON(data);
+        WebSocketParser.ParseJSON(data);
     }
 
     void OnConnected(ConnectResponse resp)
@@ -288,7 +288,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         //NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
         //GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState,WS_QUERY_TYPE.MAP_NODE_SELECTED);
 
-        SWSM_Parser.ParseJSON(data);
+        WebSocketParser.ParseJSON(data);
 
         //Debug.Log("OnNodeClickedAnswer: " + nodeState);
     }
@@ -307,7 +307,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 #endif
         //Debug.Log("Data from OnExpeditionMap: " + data);
         // GameManager.Instance.EVENT_MAP_NODES_UPDATE.Invoke(data);
-        SWSM_Parser.ParseJSON(data);
+        WebSocketParser.ParseJSON(data);
     }
 
     private void OnCardPlayed(string cardId, string id) //int enemyId)//TODO: enemyId will an array 

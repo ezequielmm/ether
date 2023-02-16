@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SWSM_Parser
+
+public class WebSocketParser
 {
-    static SWSM_Parser()
+    static WebSocketParser()
     {
         // Turns off non-exception logging when outside of development enviroment
         HiddenConsoleManager.DisableOnBuild();
@@ -14,7 +15,7 @@ public class SWSM_Parser
     {
         SWSM_Base swsm = JsonUtility.FromJson<SWSM_Base>(data);
 
-        Debug.Log($"[SWSM Parser] <<< [MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}\n{data}");
+        Debug.Log($"[WebSocketParser] <<< [MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}\n{data}");
         ServerCommunicationLogger.Instance.LogCommunication(data, CommunicationDirection.Incoming);
 
         switch (swsm.data.message_type)
