@@ -101,7 +101,7 @@ namespace Papertrail
             m_localIp = "0.0.0.0";
             if (SceneManager.GetActiveScene().isLoaded) m_isLoaded = true;
             SceneManager.sceneLoaded += OnSceneLoaded;
-            Debug.unityLogger.logHandler = new PapertrailLogHandler();
+            Debug.unityLogger.logHandler = new PapertrailLogHandler(Debug.unityLogger.logHandler);
             GameManager.Instance.EVENT_SCENE_LOADING.AddListener(OnLoadScene);
 
             StartCoroutine(GetExternalIP());

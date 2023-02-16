@@ -6,7 +6,12 @@ using Object = UnityEngine.Object;
 public class PapertrailLogHandler : ILogHandler
 {
 
-    private ILogHandler defaultLogHandler = Debug.unityLogger.logHandler;
+    private ILogHandler defaultLogHandler;
+
+    public PapertrailLogHandler(ILogHandler unityLogHandler) 
+    {
+        defaultLogHandler = unityLogHandler;
+    }
     
     public void LogFormat(LogType logType, Object context, string format, params object[] args)
     {
