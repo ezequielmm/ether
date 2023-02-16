@@ -116,7 +116,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     {
         if (scene == inGameScenes.MainMenu) 
         {
-            DestroyInstance();
+            this.DestroyInstance();
         }
     }
 
@@ -209,59 +209,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         //  options.AutoConnect = false;
         options.HTTPRequestCustomizationCallback = (manager, request) => { request.AddHeader("Authorization", token); };
 
-        // determine the correct server the client is running on
-        string hostName = Application.absoluteURL;
-        string uriStr = "https://api.dev.kote.robotseamonster.com";
-        //string uriStr = "https://api.alpha.knightsoftheether.com:443";
-
-        
-        if (hostName.IndexOf("alpha") > -1 && hostName.IndexOf("knight") > -1)
-        {
-            uriStr = "https://api.alpha.knightsoftheether.com:443";
-        }
-        
-        if (hostName.IndexOf("alpha") > -1 && hostName.IndexOf("robot") > -1)
-        {
-            uriStr = "https://api.alpha.kote.robotseamonster.com";
-
-        }
-
-        if (hostName.IndexOf("stage") > -1)
-        {
-            uriStr = "https://api.stage.kote.robotseamonster.com";
-        }
-
-        if (hostName.IndexOf("dev") > -1)
-        {
-            uriStr = "https://api.dev.kote.robotseamonster.com";
-        }
-
-
-        /*string[] splitURL = hostURL.Split('.');
-        string uriStr = "https://api.dev.kote.robotseamonster.com";
-        if ( splitURL.Length > 1)//this will fail for localhost
-        {
-            switch (splitURL[1])
-            {
-                case "dev":
-                    uriStr = "https://api.dev.kote.robotseamonster.com";
-                    break;
-                case "stage":
-                    uriStr = "https://api.stage.kote.robotseamonster.com";
-                    break;
-                case "alpha":
-                    uriStr = "https://api.alpha.knightsoftheether.com:443";
-                    break;
-                default:
-                    uriStr = "https://api.stage.kote.robotseamonster.com";
-                    break;
-            }
-        }*/
-
-        // default to the stage server if running from the unity editor
-#if UNITY_EDITOR
-        uriStr = "https://api.dev.kote.robotseamonster.com";
-#endif
+        string uriStr = ClientEnvironmentManager.Instance.WebSocketURL;
 
         PlayerPrefs.SetString("ws_url", uriStr);
         Debug.Log("[WebSocket Manager] Connecting to " + uriStr);
