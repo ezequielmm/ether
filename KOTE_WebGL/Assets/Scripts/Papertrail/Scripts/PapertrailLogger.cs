@@ -84,6 +84,14 @@ namespace Papertrail
             }
         }
 
+        private void OnDestroy()
+        {
+            if (Debug.unityLogger.logHandler.GetType() == typeof(PapertrailLogHandler)) 
+            {
+                ((PapertrailLogHandler)Debug.unityLogger.logHandler).Dispose();
+            }
+        }
+
         /// <summary>
         /// Called when the Instance is created. Gathers application information and creates the UDP client
         /// </summary>

@@ -3,16 +3,24 @@ using Papertrail;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-public class PapertrailLogHandler : ILogHandler
+public class PapertrailLogHandler : ILogHandler, IDisposable
 {
 
-    private ILogHandler defaultLogHandler;
+    private ILogHandler defaultLogHandler = null;
 
     public PapertrailLogHandler(ILogHandler unityLogHandler) 
     {
         defaultLogHandler = unityLogHandler;
     }
-    
+
+    public void Dispose()
+    {
+        if (defaultLogHandler != null && Debug.unityLogger.logHandler != defaultLogHandler) 
+        {
+            Debug.unityLogger.logHandler = defaultLogHandler;
+        }
+    }
+
     public void LogFormat(LogType logType, Object context, string format, params object[] args)
     {
         // format the log message into a single string
