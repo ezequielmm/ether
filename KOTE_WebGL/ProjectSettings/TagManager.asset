@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Card
+  - Pointer
+  - Enemy
+  - MapPath
+  - MapImage
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - MapPath
+  - Water
+  - UI
+  - Player
+  - Full Screen Mask
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Pointer
+    uniqueID: 982048211
+    locked: 0
+  - name: MapElements
+    uniqueID: 1449054989
+    locked: 0
+  - name: CombatElements
+    uniqueID: 499267637
+    locked: 0
+  - name: UI
+    uniqueID: 2001752889
+    locked: 0
