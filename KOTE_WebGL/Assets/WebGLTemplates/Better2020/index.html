@@ -9,14 +9,14 @@
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
   <body class="{{{ SPLASH_SCREEN_STYLE.toLowerCase() }}}">
-    <div id="productVersion">
-      <p>{{{ PRODUCT_VERSION }}}</p>
-    </div>
     <div id="unity-container" class="unity-desktop">
       <canvas id="unity-canvas"></canvas>
     </div>
     <div id="unity-fullscreen-button" style="display: none;"></div>
     <div id="progress-container">
+      <div id="productVersion">
+        <p>{{{ PRODUCT_VERSION }}}</p>
+      </div>
       <img id="loading-logo" src="logo.png" alt="Knights Of The Ether Logo">
       <div id="progress-bar-border">
         <div id="progress-bar"></div>
