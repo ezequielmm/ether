@@ -120,8 +120,6 @@ public class WebSocketParser
 
     private static void ProcessCombatUpdate(string action, string data)
     {
-        SWSM_NodeData nodeBase = JsonConvert.DeserializeObject<SWSM_NodeData>(data);
-        NodeStateData nodeState = nodeBase.data;
         switch (action)
         {
             case "begin_combat":
