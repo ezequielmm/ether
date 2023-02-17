@@ -9,6 +9,8 @@ jobs:
   testRunner:
     name: Test in ${{ matrix.testMode }} ✨
     runs-on: ubuntu-latest
+    outputs:
+      artifactsPath: ${{ steps.testRunner.outputs.artifactsPath }}
     strategy:
       fail-fast: false
       matrix:
@@ -52,6 +54,7 @@ jobs:
           projectPath: ${{ vars.PROJECT_PATH }}
 
       - uses: actions/upload-artifact@v2
+        if: always()
         with:
           name: Test results (${{ matrix.testMode }})
           path: ${{ steps.testRunner.outputs.artifactsPath }}
