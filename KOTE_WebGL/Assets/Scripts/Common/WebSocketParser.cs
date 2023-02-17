@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
 
 
 public class WebSocketParser
 {
     public static void ParseJSON(string data)
     {
-        SWSM_Base swsm = JsonUtility.FromJson<SWSM_Base>(data);
+        SWSM_Base swsm = JsonConvert.DeserializeObject<SWSM_Base>(data);
 
         Debug.Log($"[WebSocketParser] <<< [MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}\n{data}");
         ServerCommunicationLogger.Instance.LogCommunication($"[MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}", CommunicationDirection.Incoming, data);
@@ -97,7 +98,7 @@ public class WebSocketParser
         }
 #endif
 
-        SWSM_MapData mapData = JsonUtility.FromJson<SWSM_MapData>(data);
+        SWSM_MapData mapData = JsonConvert.DeserializeObject<SWSM_MapData>(data);
         switch (action)
         {
             case "show_map":
@@ -119,7 +120,7 @@ public class WebSocketParser
 
     private static void ProcessCombatUpdate(string action, string data)
     {
-        SWSM_NodeData nodeBase = JsonUtility.FromJson<SWSM_NodeData>(data);
+        SWSM_NodeData nodeBase = JsonConvert.DeserializeObject<SWSM_NodeData>(data);
         NodeStateData nodeState = nodeBase.data;
         switch (action)
         {
@@ -147,7 +148,7 @@ public class WebSocketParser
 
     private static void ProcessPlayerStateUpdate(string data)
     {
-        SWSM_PlayerState playerStateBase = JsonUtility.FromJson<SWSM_PlayerState>(data);
+        SWSM_PlayerState playerStateBase = JsonConvert.DeserializeObject<SWSM_PlayerState>(data);
 
         PlayerStateData playerState = playerStateBase.data;
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.Invoke(playerState);
@@ -161,15 +162,15 @@ public class WebSocketParser
         switch (action)
         {
             case nameof(WS_ERROR_TYPES.card_unplayable):
-                errorData = JsonUtility.FromJson<SWSM_ErrorData>(data);
+                errorData = JsonConvert.DeserializeObject<SWSM_ErrorData>(data);
                 Debug.Log(action + ": " + errorData.data);
                 break;
             case nameof(WS_ERROR_TYPES.invalid_card):
-                errorData = JsonUtility.FromJson<SWSM_ErrorData>(data);
+                errorData = JsonConvert.DeserializeObject<SWSM_ErrorData>(data);
                 Debug.Log(action + ": " + errorData.data);
                 break;
             case nameof(WS_ERROR_TYPES.insufficient_energy):
-                errorData = JsonUtility.FromJson<SWSM_ErrorData>(data);
+                errorData = JsonConvert.DeserializeObject<SWSM_ErrorData>(data);
                 Debug.Log(action + ": " + errorData.data);
                 break;
         }
@@ -189,7 +190,7 @@ public class WebSocketParser
                 break;
             case nameof(WS_DATA_REQUEST_TYPES.CardsPiles):
 
-                SWSM_CardsPiles deck = JsonUtility.FromJson<SWSM_CardsPiles>(data);
+                SWSM_CardsPiles deck = JsonConvert.DeserializeObject<SWSM_CardsPiles>(data);
                 Debug.Log($"[SWSM Parser] CardPiles data => {data}");
                 Debug.Log(
                     $"Cards Pile Counts: [Draw] {deck.data.data.draw.Count} | [Hand] {deck.data.data.hand.Count} " +
@@ -199,7 +200,7 @@ public class WebSocketParser
                 break;
             case nameof(WS_DATA_REQUEST_TYPES.Enemies):
 
-                // SWSM_Enemies enemies = JsonUtility.FromJson<SWSM_Enemies>(data);
+                // SWSM_Enemies enemies = JsonConvert.DeserializeObject<SWSM_Enemies>(data);
                 //   GameManager.Instance.EVENT_UPDATE_ENEMIES.Invoke(enemies.data);
                 ProcessUpdateEnemy(data);
                 break;
@@ -338,7 +339,7 @@ public class WebSocketParser
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.select_another_reward):
-                SWSM_RewardsData updatedRewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
+                SWSM_RewardsData updatedRewardsData = JsonConvert.DeserializeObject<SWSM_RewardsData>(data);
                 GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(updatedRewardsData);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.show_map):
@@ -359,7 +360,7 @@ public class WebSocketParser
         switch (action)
         {
             case nameof(WS_MESSAGE_ACTIONS.update_card_description):
-                SWSM_CardUpdateData updateData = JsonUtility.FromJson<SWSM_CardUpdateData>(data);
+                SWSM_CardUpdateData updateData = JsonConvert.DeserializeObject<SWSM_CardUpdateData>(data);
                 GameManager.Instance.EVENT_CARD_UPDATE_TEXT.Invoke(updateData.data.data.card);
                 break;
             default:
@@ -374,7 +375,7 @@ public class WebSocketParser
 
     private static void ProcessStatusUpdate(string data)
     {
-        SWSM_StatusData statusData = JsonUtility.FromJson<SWSM_StatusData>(data);
+        SWSM_StatusData statusData = JsonConvert.DeserializeObject<SWSM_StatusData>(data);
         Debug.Log(
             $"[SWSM_Parser][ProcessStatusUpdate] Source --> [ {statusData.data.message_type} | {statusData.data.action} ] {data}");
         List<StatusData> statuses = statusData.data.data;
@@ -387,7 +388,7 @@ public class WebSocketParser
 
     private static void ProcessCombatQueue(string data)
     {
-        SWSM_CombatAction combatAction = JsonUtility.FromJson<SWSM_CombatAction>(data);
+        SWSM_CombatAction combatAction = JsonConvert.DeserializeObject<SWSM_CombatAction>(data);
         Debug.Log($"[SWSM Parser] Combat Queue Data: {data}");
         foreach (CombatTurnData combatData in combatAction.data.data) // For when it's a list.
         {
@@ -397,7 +398,7 @@ public class WebSocketParser
 
     private static void ProcessShowCardDialog(string data)
     {
-        SWSM_ShowCardDialog showCards = JsonUtility.FromJson<SWSM_ShowCardDialog>(data);
+        SWSM_ShowCardDialog showCards = JsonConvert.DeserializeObject<SWSM_ShowCardDialog>(data);
         Debug.Log($"[SWSM Parser] [Show Card Dialog] data: {data}");
         if (showCards.data.data.cards == null || showCards.data.data.cards.Count == 0)
         {
@@ -419,27 +420,27 @@ public class WebSocketParser
 
     private static void ProcessSpawnEnemies(string data)
     {
-        SWSM_Enemies enemiesData = JsonUtility.FromJson<SWSM_Enemies>(data);
+        SWSM_Enemies enemiesData = JsonConvert.DeserializeObject<SWSM_Enemies>(data);
         GameManager.Instance.EVENT_ADD_ENEMIES.Invoke(enemiesData.data);
     }
 
     private static void UpdateEnergy(string data)
     {
-        SWSM_EnergyArray energyData = JsonUtility.FromJson<SWSM_EnergyArray>(data);
+        SWSM_EnergyArray energyData = JsonConvert.DeserializeObject<SWSM_EnergyArray>(data);
 //        Debug.Log(energyData);
         GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(energyData.data.data[0], energyData.data.data[1]);
     }
 
     private static void ProcessUpdateEnemy(string rawData)
     {
-        SWSM_Enemies enemiesData = JsonUtility.FromJson<SWSM_Enemies>(rawData);
+        SWSM_Enemies enemiesData = JsonConvert.DeserializeObject<SWSM_Enemies>(rawData);
 
         GameManager.Instance.EVENT_UPDATE_ENEMIES.Invoke(enemiesData.data);
     }
 
     private static void ProcessUpdatePlayer(string data)
     {
-        SWSM_Players playersData = JsonUtility.FromJson<SWSM_Players>(data);
+        SWSM_Players playersData = JsonConvert.DeserializeObject<SWSM_Players>(data);
         // foreach (PlayerData playerData in playersData.data)
         //  {
         GameManager.Instance.EVENT_UPDATE_PLAYER.Invoke(playersData.data.data);
@@ -449,7 +450,7 @@ public class WebSocketParser
     private static void ProcessEnemyIntents(string action, string data)
     {
         //Debug.Log($"[SWSM_Parser][ProcessEnemyIntents] data = {data}");
-        SWSM_IntentData swsm_intentData = JsonUtility.FromJson<SWSM_IntentData>(data);
+        SWSM_IntentData swsm_intentData = JsonConvert.DeserializeObject<SWSM_IntentData>(data);
         List<EnemyIntent> enemyIntents = swsm_intentData.data.data;
         switch (action)
         {
@@ -469,14 +470,14 @@ public class WebSocketParser
 
     private static void ProcessPlayerFullDeck(string data)
     {
-        SWSM_PlayerDeckData deckData = JsonUtility.FromJson<SWSM_PlayerDeckData>(data);
+        SWSM_PlayerDeckData deckData = JsonConvert.DeserializeObject<SWSM_PlayerDeckData>(data);
         Deck deck = new Deck() { cards = deckData.data.data };
         GameManager.Instance.EVENT_CARD_PILE_SHOW_DECK.Invoke(deck);
     }
 
     private static void ProcessUpgradeableCards(string data)
     {
-        SWSM_PlayerDeckData deckData = JsonUtility.FromJson<SWSM_PlayerDeckData>(data);
+        SWSM_PlayerDeckData deckData = JsonConvert.DeserializeObject<SWSM_PlayerDeckData>(data);
         Deck deck = new Deck() { cards = deckData.data.data };
         GameManager.Instance.EVENT_SHOW_UPGRADE_CARDS_PANEL.Invoke(deck);
     }
@@ -484,38 +485,38 @@ public class WebSocketParser
 
     private static void ProcessMerchantData(string data)
     {
-        SWSM_MerchantData merchant = JsonUtility.FromJson<SWSM_MerchantData>(data);
+        SWSM_MerchantData merchant = JsonConvert.DeserializeObject<SWSM_MerchantData>(data);
         Debug.Log(data);
         GameManager.Instance.EVENT_POPULATE_MERCHANT_PANEL.Invoke(merchant.data.data);
     }
 
     private static void ProcessTreasureData(string data)
     {
-        SWSM_TreasureData treasureData = JsonUtility.FromJson<SWSM_TreasureData>(data);
+        SWSM_TreasureData treasureData = JsonConvert.DeserializeObject<SWSM_TreasureData>(data);
         GameManager.Instance.EVENT_TREASURE_CHEST_SIZE.Invoke(treasureData);
     }
 
     private static void ProcessRewardsData(string data)
     {
-        SWSM_RewardsData rewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
+        SWSM_RewardsData rewardsData = JsonConvert.DeserializeObject<SWSM_RewardsData>(data);
         GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(rewardsData);
     }
 
     private static void ProcessChestResult(string data)
     {
-        SWSM_ChestResult chestResult = JsonUtility.FromJson<SWSM_ChestResult>(data);
+        SWSM_ChestResult chestResult = JsonConvert.DeserializeObject<SWSM_ChestResult>(data);
         GameManager.Instance.EVENT_TREASURE_CHEST_RESULT.Invoke(chestResult);
     }
 
     private static void ProcessEncounterData(string data)
     {
-        SWSM_EncounterData encounterData = JsonUtility.FromJson<SWSM_EncounterData>(data);
+        SWSM_EncounterData encounterData = JsonConvert.DeserializeObject<SWSM_EncounterData>(data);
         GameManager.Instance.EVENT_POPULATE_ENCOUNTER_PANEL.Invoke(encounterData);
     }
 
     private static void ProcessMoveCard(string rawData)
     {
-        SWSM_CardMove cardMoveData = JsonUtility.FromJson<SWSM_CardMove>(rawData);
+        SWSM_CardMove cardMoveData = JsonConvert.DeserializeObject<SWSM_CardMove>(rawData);
         Debug.Log($"[SWSM Parser] ProcessMoveCard [{cardMoveData.data.data.Length}]");
         int i = 0;
         List<(CardToMoveData, float)> cardMoveList = new List<(CardToMoveData, float)>();
@@ -537,7 +538,7 @@ public class WebSocketParser
 
     private static void ProcessAddCard(string data)
     {
-        SWSM_CardAdd cardAddData = JsonUtility.FromJson<SWSM_CardAdd>(data);
+        SWSM_CardAdd cardAddData = JsonConvert.DeserializeObject<SWSM_CardAdd>(data);
         foreach(AddCardData addCardData in cardAddData.data.data)
         {
             GameManager.Instance.EVENT_CARD_ADD.Invoke(addCardData);
@@ -545,7 +546,7 @@ public class WebSocketParser
     }
     private static void ProcessChangeTurn(string data)
     {
-        SWSM_ChangeTurn who = JsonUtility.FromJson<SWSM_ChangeTurn>(data);
+        SWSM_ChangeTurn who = JsonConvert.DeserializeObject<SWSM_ChangeTurn>(data);
 
         Debug.Log("[ProcessChangeTurn]data= " + data);
         Debug.Log("[ProcessChangeTurn]who.data= " + who.data);
@@ -577,7 +578,7 @@ public class WebSocketParser
         switch (action)
         {
             case nameof(WS_MESSAGE_ACTIONS.select_another_reward):
-                SWSM_RewardsData updatedRewardsData = JsonUtility.FromJson<SWSM_RewardsData>(data);
+                SWSM_RewardsData updatedRewardsData = JsonConvert.DeserializeObject<SWSM_RewardsData>(data);
                 GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(updatedRewardsData);
                 break;
         }
@@ -591,7 +592,7 @@ public class WebSocketParser
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Encounter);
                 break;
             case "show_cards":
-                SWSM_ShowCardDialog showCardData = JsonUtility.FromJson<SWSM_ShowCardDialog>(data);
+                SWSM_ShowCardDialog showCardData = JsonConvert.DeserializeObject<SWSM_ShowCardDialog>(data);
                 if (showCardData.data.data.kind == "upgrade")
                 {
                     GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.UpgradableCards);
@@ -610,7 +611,7 @@ public class WebSocketParser
                     (selectedCards) => { GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards); });
                 break;
             case "select_trinkets":
-                SWSM_SelectTrinketData trinketData = JsonUtility.FromJson<SWSM_SelectTrinketData>(data);
+                SWSM_SelectTrinketData trinketData = JsonConvert.DeserializeObject<SWSM_SelectTrinketData>(data);
                 GameManager.Instance.EVENT_SHOW_SELECT_TRINKET_PANEL.Invoke(trinketData);
                 break;
             case "finish_encounter":
@@ -643,7 +644,7 @@ public class WebSocketParser
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Camp);
                 break;
             case "heal_amount":
-                SWSM_HealData healData = JsonUtility.FromJson<SWSM_HealData>(data);
+                SWSM_HealData healData = JsonConvert.DeserializeObject<SWSM_HealData>(data);
                 GameManager.Instance.EVENT_HEAL.Invoke("camp", healData.data.data.healed);
                 break;
             case "finish_camp":
@@ -700,14 +701,14 @@ public class WebSocketParser
 
     private static void ProcessUpgradeablePair(string data)
     {
-        SWSM_DeckData deckData = JsonUtility.FromJson<SWSM_DeckData>(data);
+        SWSM_DeckData deckData = JsonConvert.DeserializeObject<SWSM_DeckData>(data);
         Deck deck = new Deck() { cards = deckData.data.data.deck };
         GameManager.Instance.EVENT_SHOW_UPGRADE_PAIR.Invoke(deck);
     }
 
     private static void ProcessConfirmUpgrade(string data)
     {
-        SWSM_ConfirmUpgrade confirmUpgradeData = JsonUtility.FromJson<SWSM_ConfirmUpgrade>(data);
+        SWSM_ConfirmUpgrade confirmUpgradeData = JsonConvert.DeserializeObject<SWSM_ConfirmUpgrade>(data);
         GameManager.Instance.EVENT_UPGRADE_CONFIRMED.Invoke(confirmUpgradeData);
     }
 }

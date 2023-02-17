@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Newtonsoft.Json;
 
 public class NodeCreator : MonoBehaviour
 {
@@ -54,7 +55,7 @@ public class NodeCreator : MonoBehaviour
     {       
         Debug.Log("[OnMapNodesDataUpdated] " + data);
 
-        //ExpeditionMapData expeditionMapData = JsonUtility.FromJson<ExpeditionMapData>("{\"data\":" + data + "}");
+        //ExpeditionMapData expeditionMapData = JsonConvert.DeserializeObject<ExpeditionMapData>("{\"data\":" + data + "}");
         ExpeditionMapData expeditionMapData = data.data;
 
         MapStructure mapStructure = new MapStructure();

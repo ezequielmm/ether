@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,7 @@ public static class MessageErrorValidator
     
     public static bool ValidateData(string jsonString)
     {
-        Errordata error = JsonUtility.FromJson<Errordata>(jsonString);
+        Errordata error = JsonConvert.DeserializeObject<Errordata>(jsonString);
 
         if ( error.data.message != null ) 
         {
