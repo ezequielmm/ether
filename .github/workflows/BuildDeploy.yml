@@ -68,7 +68,7 @@ jobs:
       - name: Restore Library cache
         uses: actions/cache@v2
         with:
-          path: Library
+          path: KOTE_WebGL/Library
           key: Library-test-project-${{ matrix.targetPlatform }}
           restore-keys: |
             Library-test-project-
@@ -131,14 +131,16 @@ jobs:
           git lfs pull
           git add .
           git reset --hard
+
       - name: Restore Library cache
         uses: actions/cache@v2
         with:
-          path: Library
+          path: KOTE_WebGL/Library
           key: Library-build-WebGL
           restore-keys: |
             Library-build-
             Library-
+
       - uses: game-ci/unity-builder@v2
         env: 
           UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}

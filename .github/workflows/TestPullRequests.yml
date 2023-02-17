@@ -1,7 +1,4 @@
 on: 
-  push:
-    branches:
-    - 'main'
   pull_request:
     types: [opened, reopened, synchronize]
   
@@ -36,14 +33,16 @@ jobs:
           git lfs pull
           git add .
           git reset --hard
+
       - name: Restore Library cache
         uses: actions/cache@v2
         with:
-          path: Library
+          path: KOTE_WebGL/Library
           key: Library-test-project-${{ matrix.targetPlatform }}
           restore-keys: |
             Library-test-project-
             Library-
+            
       - name: Run tests
         uses: game-ci/unity-test-runner@v2
         id: testRunner
