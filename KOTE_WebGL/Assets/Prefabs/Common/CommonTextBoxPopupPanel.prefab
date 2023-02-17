@@ -155,7 +155,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 229, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 400, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8075809392635955568
@@ -322,3 +322,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textBox: {fileID: 6777038344364412466}
   rootObject: {fileID: 1146410522377709368}
+  layoutGroup: {fileID: 8738495289710577583}

@@ -16,6 +16,7 @@ public class SocketUnhealthyWarning : MonoBehaviour
 
     void Start()
     {
+        socket = WebSocketManager.Instance;
         popupPanel.Disable();
         lastHealthyTimeInSeconds = Time.time;
     }
@@ -29,7 +30,7 @@ public class SocketUnhealthyWarning : MonoBehaviour
     {
         if(socket.IsSocketHealthy) 
         {
-            messageState = PopupMessageState.healthy;
+            SetMessageState(PopupMessageState.healthy);
             lastHealthyTimeInSeconds = Time.time;
             return;
         }
