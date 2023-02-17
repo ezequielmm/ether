@@ -25,9 +25,15 @@ public class VersionManager : MonoBehaviour
     {
         SetTMP();
         GameManager.Instance.EVENT_VERSION_UPDATED.AddListener(SetTMP);
+        Debug.Log(this.ToString());
     }
 
     private void SetTMP() 
+    {
+        clientInfo.text = this.ToString();
+    }
+
+    public override string ToString() 
     {
         StringBuilder sb = new StringBuilder();
         sb.Append($"Server Version: v{ServerVersion}");
@@ -36,6 +42,6 @@ public class VersionManager : MonoBehaviour
         sb.AppendLine(System.Environment.NewLine);
         sb.Append($"Client Id: {ClientId}");
 
-        clientInfo.text = sb.ToString();
+        return sb.ToString();
     }
 }

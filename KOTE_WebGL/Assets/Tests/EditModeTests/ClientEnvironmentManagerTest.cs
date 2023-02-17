@@ -195,6 +195,6 @@ public class ClientEnvironmentManagerTest
         // Act
         ClientEnvironmentManager env = ClientEnvironmentManager.Instance;
         // Assert
-        Assert.IsFalse(string.IsNullOrWhiteSpace(env.EnvironmentName));
+        Assert.IsFalse(string.IsNullOrWhiteSpace(env.Environment.ToString()));
     }
 }

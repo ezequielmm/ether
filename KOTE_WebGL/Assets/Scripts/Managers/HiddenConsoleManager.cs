@@ -254,7 +254,7 @@ public class HiddenConsoleManager : MonoBehaviour
                 PublicLog($"commit {GitCommitHash.CommitHash}");
                 break;
             case ConsoleCommands.environment:
-                PublicLog($"Environment: {ClientEnvironmentManager.Instance.EnvironmentName}");
+                PublicLog($"Environment: {ClientEnvironmentManager.Instance.Environment}");
                 break;
             default:
                 PublicLog("Unknown Command.");

@@ -27,7 +27,6 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
     public string OpenSeasURL { get; private set; } =
         "https://api.opensea.io/api/v1/assets?xxxx&asset_contract_address=0x32A322C7C77840c383961B8aB503c9f45440c81f&format=json";
     public Environments Environment { get; private set; } = Environments.Unknown;
-    public string EnvironmentName => Environment.ToString();
 
     private ClientEnvironmentManager()
     {
@@ -36,7 +35,6 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
 #endif
         Environment = DetermineEnvironment(Application.absoluteURL);
         UpdateUrls(Environment);
-        Debug.Log($"Now running on Environment: {EnvironmentName}");
     }
 
     public Environments DetermineEnvironment(string applicationURL)
