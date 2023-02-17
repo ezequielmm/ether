@@ -36,6 +36,7 @@ public class FeedbackPanelManager : MonoBehaviour
     
     IEnumerator ScreenshotBeforeOpenPanel()
     {
+        screenshotCam.gameObject.SetActive(true);
         if (SettingsPanel != null)
         {
             SettingsPanel.SetActive(false);
@@ -58,6 +59,8 @@ public class FeedbackPanelManager : MonoBehaviour
             SettingsPanel.SetActive(true);
         }
         feedbackContainer.SetActive(true);
+        screenshotCam.gameObject.SetActive(false);
+
     }
 
     public void OnBackPressed()
