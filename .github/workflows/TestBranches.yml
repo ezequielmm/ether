@@ -60,11 +60,13 @@ jobs:
           path: ${{ steps.testRunner.outputs.artifactsPath }}
 
       - name: Comment on PullRequest Upon Test Fail
-        uses: thollander/actions-comment-pull-request@v2
+        uses: peter-evans/create-or-update-comment@v2
         if: failure()
         with:
-          message: |
+          issue-number: ${{ github.event.number }}
+          body: |
             The test for [${{ matrix.testMode }}] has failed. Please investigate before merging.
+
   approvePullRequest:
     name: Pull Request Approved!
     needs: [testRunner]
@@ -72,6 +74,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Comment Success
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          issue-number: ${{ github.event.number }}
+          body: |
+            All tests were successful!
+          reactions: rocket
 
       - name: Approve Pull Request
         uses: juliangruber/approve-pull-request-action@v2.0.0
