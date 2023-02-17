@@ -73,6 +73,7 @@ jobs:
           restore-keys: |
             Library-test-project-
             Library-
+
       - name: Run tests
         uses: game-ci/unity-test-runner@v2
         id: testRunner
@@ -82,11 +83,19 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           projectPath: ${{ vars.PROJECT_PATH }}
 
-      - uses: actions/upload-artifact@v2
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v2
         if: always()
         with:
           name: Test results (${{ matrix.testMode }})
           path: ${{ steps.testRunner.outputs.artifactsPath }}
+      
+      - name: Upload Code Coverage Results
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: Coverage results (${{ matrix.testMode }})
+          path: ${{ steps.testRunner.outputs.coveragePath }}
 
       - name: Notify Test Failure
         uses: indiesdev/curl@v1.1
