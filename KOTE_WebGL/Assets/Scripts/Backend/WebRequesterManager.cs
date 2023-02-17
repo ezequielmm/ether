@@ -36,11 +36,8 @@ public class WebRequesterManager : MonoBehaviour
 
     private void Awake()
     {
-        HiddenConsoleManager.DisableOnBuild();
-
         PlayerPrefs.SetString("api_url", baseUrl);
 
-        Debug.Log("Base URL: " + baseUrl.ToString());
         PlayerPrefs.SetString("session_token", "");
         PlayerPrefs.Save();
 

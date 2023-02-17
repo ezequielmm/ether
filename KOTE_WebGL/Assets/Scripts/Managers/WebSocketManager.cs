@@ -75,8 +75,6 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         if (Instance == this)
         {
             Debug.Log($"[WebSocketManager] Socket manager Awake");
-            // Turns off non-exception logging when outside of development enviroments
-            HiddenConsoleManager.DisableOnBuild();
 
             // Connect Events
             GameManager.Instance.EVENT_EXPEDITION_SYNC.AddListener(OnRequestSync);

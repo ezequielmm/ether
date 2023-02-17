@@ -109,6 +109,7 @@ namespace Papertrail
             m_localIp = "0.0.0.0";
             if (SceneManager.GetActiveScene().isLoaded) m_isLoaded = true;
             SceneManager.sceneLoaded += OnSceneLoaded;
+            HiddenConsoleManager.DisableOnBuild();
             Debug.unityLogger.logHandler = new PapertrailLogHandler(Debug.unityLogger.logHandler);
             GameManager.Instance.EVENT_SCENE_LOADING.AddListener(OnLoadScene);
 
@@ -286,57 +287,11 @@ namespace Papertrail
             int severityValue = ((int)facility) * 8 + (int)severity;
             string message = string.Empty;
 
-            PapertrailLogData logData = BuildLogData(severityValue, msg);
+            PapertrailLogData logData = new PapertrailLogData(severityValue, msg);
             message = JsonUtility.ToJson(logData);
 
             // Send the completed message
             BeginSend(message);
-        }
-
-        private PapertrailLogData BuildLogData(int severityValue, string message)
-        {
-            PapertrailLogData logData = new PapertrailLogData();
-            // Environment data
-            logData.env = ClientEnvironmentManager.Instance.Environment.ToString();
-            // Log level (int?)
-            logData.level = severityValue;
-            // Is frontend
-            logData.service = "Frontend";
-            // IP
-            logData.ip = m_localIp;
-            //Client Id
-            logData.clientId = UserDataManager.Instance.ClientId;
-            //User account
-            if (!string.IsNullOrEmpty(UserDataManager.Instance.UserAccount))
-            {
-                logData.account = UserDataManager.Instance.UserAccount;
-            }
-
-            // Expedition ID
-            if (!string.IsNullOrEmpty(UserDataManager.Instance.ExpeditionId))
-            {
-                logData.expeditionId = UserDataManager.Instance.ExpeditionId;
-            }
-            // server versions
-            logData.serverVersion = VersionManager.ServerVersion;
-            logData.clientVersion = VersionManager.ClientVersionWithCommit;
-            
-            MethodBase method = new System.Diagnostics.StackTrace().GetFrame(9).GetMethod();
-            Type declaringType = method.DeclaringType;
-
-            if (declaringType == null)
-            {
-                logData.context = method.Name;
-            }
-            else
-            {
-                logData.context = declaringType.FullName;
-            }
-
-            logData.message = message;
-
-
-            return logData;
         }
 
         /// <summary>
@@ -377,5 +332,73 @@ namespace Papertrail
         {
             Instance.LogInternal(facility, severity, msg);
         }
+    }
+}
+
+public class PapertrailLogData
+{
+    public string env;
+    public int level;
+    public string service;
+    public string ip;
+    public string clientId;
+    public string account;
+    public string expeditionId;
+    public string context;
+    public string message;
+    public string serverVersion;
+    public string clientVersion;
+
+    public PapertrailLogData(int severityValue, string message)
+    {
+        // Environment data
+        env = ClientEnvironmentManager.Instance.Environment.ToString();
+        level = severityValue;
+        service = "Frontend";
+        //ip = m_localIp;
+        clientId = GetClientId();
+        account = GetAccount();
+        expeditionId = GetExpeditionId();
+        serverVersion = VersionManager.ServerVersion;
+        clientVersion = VersionManager.ClientVersionWithCommit;
+        context = GetContext();
+
+        this.message = message;
+    }
+
+    private string GetClientId()
+    {
+        return UserDataManager.Instance.ClientId;
+    }
+
+    private string GetAccount()
+    {
+        if (!string.IsNullOrEmpty(UserDataManager.Instance.UserAccount))
+        {
+            return UserDataManager.Instance.UserAccount;
+        }
+        return string.Empty;
+    }
+
+    private string GetExpeditionId()
+    {
+        if (!string.IsNullOrEmpty(UserDataManager.Instance.ExpeditionId))
+        {
+            return UserDataManager.Instance.ExpeditionId;
+        }
+        return string.Empty;
+    }
+
+    private const int FRAME_ROLLBACK = 10;
+    private string GetContext() 
+    {
+        //MethodBase method = new System.Diagnostics.StackTrace().GetFrame(FRAME_ROLLBACK).GetMethod();
+        //Type declaringType = method.DeclaringType;
+        //if (declaringType == null)
+        //{
+        //    return method.Name;
+        //}
+        //return declaringType.FullName;
+        return "unknown";
     }
 }

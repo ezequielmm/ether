@@ -5,12 +5,6 @@ using UnityEngine;
 
 public class WebSocketParser
 {
-    static WebSocketParser()
-    {
-        // Turns off non-exception logging when outside of development enviroment
-        HiddenConsoleManager.DisableOnBuild();
-    }
-
     public static void ParseJSON(string data)
     {
         SWSM_Base swsm = JsonUtility.FromJson<SWSM_Base>(data);

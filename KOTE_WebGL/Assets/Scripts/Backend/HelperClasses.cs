@@ -1049,17 +1049,3 @@ public class BugReportData
     public string backendVersion = "???";
     public List<ServerCommunicationLogger.ServerCommunicationLog> messageLog;
 }
-public class PapertrailLogData
-{
-    public string env;
-    public int level;
-    public string service;
-    public string ip;
-    public string clientId;
-    public string account;
-    public string expeditionId;
-    public string context;
-    public string message;
-    public string serverVersion;
-    public string clientVersion;
-}
