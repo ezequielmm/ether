@@ -255,7 +255,7 @@ namespace Papertrail
                 if (request.result == UnityWebRequest.Result.ConnectionError ||
                     request.result == UnityWebRequest.Result.ProtocolError)
                 {
-                    Debug.LogError("Logging data failed " + request.error);
+                    //Debug.LogError("Logging data failed " + request.error);
                 }
             }
         }

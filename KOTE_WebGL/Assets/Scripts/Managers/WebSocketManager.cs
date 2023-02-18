@@ -53,7 +53,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     [SerializeField] private string SocketStatus = "Unknown";
     private bool doNotResuscitate = false;
-    private bool SocketHealthy
+    public bool IsSocketHealthy
     {
         get
         {
@@ -158,7 +158,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             SocketStatus = manager.State.ToString();
         }
 
-        if (!SocketHealthy && socketDeathTimeGameSeconds != -1 && Time.time - socketDeathTimeGameSeconds > GameSettings.MAX_TIMEOUT_SECONDS) 
+        if (!IsSocketHealthy && socketDeathTimeGameSeconds != -1 && Time.time - socketDeathTimeGameSeconds > GameSettings.MAX_TIMEOUT_SECONDS) 
         {
             // After some seconds of closed connection, return to main menu.
             Debug.LogError($"[WebSocketManager] Disconnected for {Mathf.Round(Time.time - socketDeathTimeGameSeconds)} seconds Connection could not be salvaged. Returning to Main Menu.");
@@ -166,7 +166,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             Destroy(gameObject);
         }
 
-        if (SocketHealthy && EmissionQueue.Count > 0 && Time.time - socketOpenTimeGameSeconds > 1) 
+        if (IsSocketHealthy && EmissionQueue.Count > 0 && Time.time - socketOpenTimeGameSeconds > 1) 
         {
             EmissionQueue.Peek().Invoke();
             EmissionQueue.Dequeue();
@@ -446,7 +446,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void Emit(string eventName, params object[] variables) 
     {
-        if (!SocketHealthy) 
+        if (!IsSocketHealthy) 
         {
             EmissionQueue.Enqueue(() => 
             {
@@ -466,7 +466,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void EmitWithResponse(Action<string> parser, string eventName, params object[] variables)
     {
-        if (!SocketHealthy)
+        if (!IsSocketHealthy)
         {
             EmissionQueue.Enqueue(() =>
             {

@@ -1,7 +1,4 @@
 on: 
-  push:
-    branches:
-    - 'main'
   pull_request:
     types: [opened, reopened, synchronize]
   
@@ -9,6 +6,8 @@ jobs:
   testRunner:
     name: Test in ${{ matrix.testMode }} ✨
     runs-on: ubuntu-latest
+    outputs:
+      artifactsPath: ${{ steps.testRunner.outputs.artifactsPath }}
     strategy:
       fail-fast: false
       matrix:
@@ -34,14 +33,16 @@ jobs:
           git lfs pull
           git add .
           git reset --hard
+
       - name: Restore Library cache
         uses: actions/cache@v2
         with:
-          path: Library
+          path: KOTE_WebGL/Library
           key: Library-test-project-${{ matrix.targetPlatform }}
           restore-keys: |
             Library-test-project-
             Library-
+            
       - name: Run tests
         uses: game-ci/unity-test-runner@v2
         id: testRunner
@@ -52,16 +53,19 @@ jobs:
           projectPath: ${{ vars.PROJECT_PATH }}
 
       - uses: actions/upload-artifact@v2
+        if: always()
         with:
           name: Test results (${{ matrix.testMode }})
           path: ${{ steps.testRunner.outputs.artifactsPath }}
 
       - name: Comment on PullRequest Upon Test Fail
-        uses: thollander/actions-comment-pull-request@v2
+        uses: peter-evans/create-or-update-comment@v2
         if: failure()
         with:
-          message: |
+          issue-number: ${{ github.event.number }}
+          body: |
             The test for [${{ matrix.testMode }}] has failed. Please investigate before merging.
+
   approvePullRequest:
     name: Pull Request Approved!
     needs: [testRunner]
@@ -69,6 +73,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Comment Success
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          issue-number: ${{ github.event.number }}
+          body: |
+            All tests were successful!
+          reactions: rocket
 
       - name: Approve Pull Request
         uses: juliangruber/approve-pull-request-action@v2.0.0
