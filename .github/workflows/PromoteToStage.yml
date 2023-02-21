@@ -19,14 +19,14 @@ jobs:
         headers: '{ "Content-type": "application/json" }'
         body: '{ "text": "GitHub Action: Now pulling from Dev for promotion to Stage." }'
 
+    - run: mkdir /home/build
+
     - name: Download Build from Dev
       uses: alinz/ssh-scp-action@master
       with:
         host: ${{ secrets.HOST }}
         user: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_PRIV_KEY }}
-        ssh_before: |
-          mkdir /home/build
         scp: |
           -r ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ vars.PUBLISH_PATH }}/${{ vars.BUILD_DIRECTORY }} /home/build
 
