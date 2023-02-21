@@ -25,7 +25,7 @@ public class WebRequesterManager : MonoBehaviour
     private readonly string urlExpeditionCancel = "/gsrv/v1/expeditions/cancel";
     private readonly string urlExpeditionScore = "/gsrv/v1/expeditions/score";
     private readonly string urlBugReport = "/gsrv/v1/bugreport";
-    private readonly string urlServerVersion = "/v1/showVersion";
+    private readonly string urlServerVersion = "/gsrv/v1/showversion";
 
 
     private string urlOpenSea => ClientEnvironmentManager.Instance.OpenSeasURL;
