@@ -19,7 +19,7 @@ jobs:
         headers: '{ "Content-type": "application/json" }'
         body: '{ "text": "GitHub Action: Now pulling from Dev for promotion to Stage." }'
 
-    - run: mkdir /home/build
+    - run: mkdir ./build
 
     - name: Download Build from Dev
       uses: alinz/ssh-scp-action@master
@@ -28,13 +28,13 @@ jobs:
         user: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_PRIV_KEY }}
         scp: |
-          -r ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ vars.PUBLISH_PATH }}/${{ vars.BUILD_DIRECTORY }} /home/build
+          -r ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ vars.PUBLISH_PATH }}/${{ vars.BUILD_DIRECTORY }} ./build
 
     - name: Upload build as artifact
       uses: actions/upload-artifact@v2
       with:
         name: build-WebGL
-        path: /home/build
+        path: ./build
 
     - name: Notify Pull Success
       uses: indiesdev/curl@v1.1
