@@ -21,7 +21,7 @@ var plugin = {
         })
         .catch(function (errorMsg) {
             if(error) {
-                var json = JSON.stringify(errorMsg);
+                var json = UTF8ToString(errorMsg);
                 unity.SendMessage(gameobject, error, json);
             }
         });
@@ -43,7 +43,7 @@ var plugin = {
         })
         .catch(function (errorMsg) {
             if(error) {
-                var json = JSON.stringify(errorMsg);
+                var json = UTF8ToString(errorMsg);
                 unity.SendMessage(gameobject, error, json);
             }
         });

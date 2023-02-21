@@ -71,6 +71,7 @@ public class WalletManager : MonoBehaviour
         GameManager.Instance.EVENT_WHITELIST_CHECK_RECEIVED.Invoke(true);
         return;
 #endif
+        GameManager.Instance.EVENT_WHITELIST_CHECK_RECEIVED.Invoke(false);
         signRequest = DateTimeOffset.Now.ToUnixTimeSeconds();
         message = $"Hello, welcome to Knights of the Ether.\nPlease sign this message to verify your wallet.\nThis action will not cost you any transaction fee.\n\n\nSecret Code: {Guid.NewGuid()}";
         Debug.Log($"[WalletManager] Sign Message:\n{message}");
@@ -95,9 +96,12 @@ public class WalletManager : MonoBehaviour
     {
         if (knightIds.data == null || knightIds.data.Length == 0)
         {
-            GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("No Knights found in connected wallet,\n please try a different wallet.", () => {});
+            GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("No Knights found in connected wallet\n, please try a different wallet.", () => {});
+            GameManager.Instance.EVENT_WALLET_TOKENS_OWNED.Invoke(false);
+            return;
         }
 
+        GameManager.Instance.EVENT_WALLET_TOKENS_OWNED.Invoke(true);
         curKnightCount = knightIds.data.Length;
         walletItem.SetKnightCount(knightIds.data.Length);
         nftIds = new List<int>();

@@ -41,6 +41,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_LOGOUT_SUCCESSFUL = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_LOGOUT_ERROR = new UnityEvent<string>();
 
+    [HideInInspector] public UnityEvent<Action<string>> EVENT_REQUEST_SERVER_VERSION = new();
+    [HideInInspector] public UnityEvent EVENT_VERSION_UPDATED = new();
+
     //WALLET EVENTS
     // Panel
     [HideInInspector] public UnityEvent<bool> EVENT_WALLETSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
@@ -54,6 +57,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_MESSAGE_SIGN = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<float, string, string, string> EVENT_REQUEST_WHITELIST_CHECK { get; } = new UnityEvent<float, string, string, string>();
     [HideInInspector] public UnityEvent<bool> EVENT_WHITELIST_CHECK_RECEIVED { get; } = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<bool> EVENT_WALLET_TOKENS_OWNED = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<bool> EVENT_DISCONNECT_WALLET_CONFIRMED = new UnityEvent<bool>();
 
     //GAME OVER EVENTS
@@ -294,6 +298,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_SCENE_LOADING = new UnityEvent();
     [HideInInspector] public UnityEvent<inGameScenes> EVENT_SCENE_LOADED = new UnityEvent<inGameScenes>();
 
+    // Feedback Reporting Events
+    [HideInInspector] public UnityEvent EVENT_SHOW_FEEDBACK_PANEL = new UnityEvent();
+    [HideInInspector] public UnityEvent<string, string, string> EVENT_SEND_BUG_FEEDBACK = new UnityEvent<string, string, string>();
 
 
     public inGameScenes
@@ -301,25 +308,7 @@ public class GameManager : SingleTon<GameManager>
 
     public WebRequesterManager webRequester;
 
-    public static string ClientEnvironment = "Unknown";
-    
-    // get the unique identifier for this instance of the client
-    public static string ClientId
-    {
-        get
-        {
-            string clientId = PlayerPrefs.GetString("client_id");
-            // if the client id doesn't exist, create one and save it
-            if (string.IsNullOrEmpty(clientId))
-            {
-                Guid newId = Guid.NewGuid();
-                clientId = newId.ToString();
-                PlayerPrefs.SetString("client_id", newId.ToString());
-            }
-
-            return clientId;
-        }
-    }
+    public static string ServerVersion { get; private set; }
 
     // Start is called before the first frame update
     void Start()
@@ -329,6 +318,15 @@ public class GameManager : SingleTon<GameManager>
         EVENT_SCENE_LOADED.AddListener(OnSceneLoad);
         SceneManager.activeSceneChanged += UpdateSoundVolume;
         //EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ReturnToMainMenu);
+        GetServerVersion();
+    }
+
+    private void GetServerVersion() 
+    {
+        EVENT_REQUEST_SERVER_VERSION.Invoke((serverVersion) => {
+            ServerVersion = serverVersion;
+            EVENT_VERSION_UPDATED.Invoke();
+        });
     }
 
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene

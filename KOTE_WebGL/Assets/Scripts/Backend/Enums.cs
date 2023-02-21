@@ -358,7 +358,8 @@ public enum ConsoleCommands
     reset_all,
     use_nft,
     get_score,
-    commit
+    commit,
+    environment
 }
 
 [Serializable]
@@ -396,4 +397,11 @@ public enum TraitTypes
     Legguard,
     Shadow,
     Base
+}
+
+[Serializable]
+public enum CommunicationDirection
+{
+    Incoming,
+    Outgoing
 }

@@ -52,7 +52,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     [SerializeField] private string SocketStatus = "Unknown";
     private bool doNotResuscitate = false;
-    private bool SocketHealthy
+    public bool IsSocketHealthy
     {
         get
         {
@@ -75,8 +75,6 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         if (Instance == this)
         {
             Debug.Log($"[WebSocketManager] Socket manager Awake");
-            // Turns off non-exception logging when outside of development enviroments
-            HiddenConsoleManager.DisableOnBuild();
 
             // Connect Events
             GameManager.Instance.EVENT_EXPEDITION_SYNC.AddListener(OnRequestSync);
@@ -116,7 +114,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     {
         if (scene == inGameScenes.MainMenu) 
         {
-            DestroyInstance();
+            this.DestroyInstance();
         }
     }
 
@@ -159,7 +157,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             SocketStatus = manager.State.ToString();
         }
 
-        if (!SocketHealthy && socketDeathTimeGameSeconds != -1 && Time.time - socketDeathTimeGameSeconds > GameSettings.MAX_TIMEOUT_SECONDS) 
+        if (!IsSocketHealthy && socketDeathTimeGameSeconds != -1 && Time.time - socketDeathTimeGameSeconds > GameSettings.MAX_TIMEOUT_SECONDS) 
         {
             // After some seconds of closed connection, return to main menu.
             Debug.LogError($"[WebSocketManager] Disconnected for {Mathf.Round(Time.time - socketDeathTimeGameSeconds)} seconds Connection could not be salvaged. Returning to Main Menu.");
@@ -167,7 +165,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             Destroy(gameObject);
         }
 
-        if (SocketHealthy && EmissionQueue.Count > 0 && Time.time - socketOpenTimeGameSeconds > 1) 
+        if (IsSocketHealthy && EmissionQueue.Count > 0 && Time.time - socketOpenTimeGameSeconds > 1) 
         {
             EmissionQueue.Peek().Invoke();
             EmissionQueue.Dequeue();
@@ -209,59 +207,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         //  options.AutoConnect = false;
         options.HTTPRequestCustomizationCallback = (manager, request) => { request.AddHeader("Authorization", token); };
 
-        // determine the correct server the client is running on
-        string hostName = Application.absoluteURL;
-        string uriStr = "https://api.dev.kote.robotseamonster.com";
-        //string uriStr = "https://api.alpha.knightsoftheether.com:443";
-
-        
-        if (hostName.IndexOf("alpha") > -1 && hostName.IndexOf("knight") > -1)
-        {
-            uriStr = "https://api.alpha.knightsoftheether.com:443";
-        }
-        
-        if (hostName.IndexOf("alpha") > -1 && hostName.IndexOf("robot") > -1)
-        {
-            uriStr = "https://api.alpha.kote.robotseamonster.com";
-
-        }
-
-        if (hostName.IndexOf("stage") > -1)
-        {
-            uriStr = "https://api.stage.kote.robotseamonster.com";
-        }
-
-        if (hostName.IndexOf("dev") > -1)
-        {
-            uriStr = "https://api.dev.kote.robotseamonster.com";
-        }
-
-
-        /*string[] splitURL = hostURL.Split('.');
-        string uriStr = "https://api.dev.kote.robotseamonster.com";
-        if ( splitURL.Length > 1)//this will fail for localhost
-        {
-            switch (splitURL[1])
-            {
-                case "dev":
-                    uriStr = "https://api.dev.kote.robotseamonster.com";
-                    break;
-                case "stage":
-                    uriStr = "https://api.stage.kote.robotseamonster.com";
-                    break;
-                case "alpha":
-                    uriStr = "https://api.alpha.knightsoftheether.com:443";
-                    break;
-                default:
-                    uriStr = "https://api.stage.kote.robotseamonster.com";
-                    break;
-            }
-        }*/
-
-        // default to the stage server if running from the unity editor
-#if UNITY_EDITOR
-        uriStr = "https://api.dev.kote.robotseamonster.com";
-#endif
+        string uriStr = ClientEnvironmentManager.Instance.WebSocketURL;
 
         PlayerPrefs.SetString("ws_url", uriStr);
         Debug.Log("[WebSocket Manager] Connecting to " + uriStr);
@@ -292,7 +238,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void GenericParser(string data)
     {
-        SWSM_Parser.ParseJSON(data);
+        WebSocketParser.ParseJSON(data);
     }
 
     void OnConnected(ConnectResponse resp)
@@ -340,7 +286,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         //NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
         //GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState,WS_QUERY_TYPE.MAP_NODE_SELECTED);
 
-        SWSM_Parser.ParseJSON(data);
+        WebSocketParser.ParseJSON(data);
 
         //Debug.Log("OnNodeClickedAnswer: " + nodeState);
     }
@@ -359,7 +305,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 #endif
         //Debug.Log("Data from OnExpeditionMap: " + data);
         // GameManager.Instance.EVENT_MAP_NODES_UPDATE.Invoke(data);
-        SWSM_Parser.ParseJSON(data);
+        WebSocketParser.ParseJSON(data);
     }
 
     private void OnCardPlayed(string cardId, string id) //int enemyId)//TODO: enemyId will an array 
@@ -499,7 +445,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void Emit(string eventName, params object[] variables) 
     {
-        if (!SocketHealthy) 
+        if (!IsSocketHealthy) 
         {
             EmissionQueue.Enqueue(() => 
             {
@@ -519,7 +465,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void EmitWithResponse(Action<string> parser, string eventName, params object[] variables)
     {
-        if (!SocketHealthy)
+        if (!IsSocketHealthy)
         {
             EmissionQueue.Enqueue(() =>
             {
@@ -544,15 +490,21 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     private void LogEmission(string eventName, params object[] variables) 
     {
         StringBuilder sb = new StringBuilder();
+        StringBuilder cb = new StringBuilder();
         sb.Append($"[WebSocketManager] EMISSION >> Message: {eventName}");
+        cb.Append($"Socket Emit: {eventName}");
         if (variables != null && variables.Length >= 1)
         {
             sb.Append($" | Action: {variables[0]}");
+            cb.Append($" Paramaters: {variables[0]}");
             for (int i = 1; i < variables.Length; i++)
             {
                 sb.Append($" | Param [{i}]: {variables[i]}");
+                cb.Append($", {variables[i]}");
             }
         }
         Debug.Log(sb.ToString());
+        
+        ServerCommunicationLogger.Instance.LogCommunication(cb.ToString(), CommunicationDirection.Outgoing);
     }
 }

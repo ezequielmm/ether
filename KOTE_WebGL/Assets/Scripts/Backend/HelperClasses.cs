@@ -139,6 +139,12 @@ public class RegisterData
 }
 
 [Serializable]
+public class ServerVersionText
+{
+    public string data;
+}
+
+[Serializable]
 public class LoginData
 {
     public Data data;
@@ -1027,15 +1033,19 @@ public class WhitelistResponse
 }
 
 [Serializable]
-public class PapertrailLogData
+public class BugReportData
 {
-    public string env;
-    public int level;
-    public string service;
-    public string ip;
+    public string reportId;
+    public string environment;
+    public const string service = "Frontend";
     public string clientId;
     public string account;
+    public string knightId;
     public string expeditionId;
-    public string context;
-    public string message;
+    public string userDescription;
+    public string userTitle;
+    public string screenshot;
+    public string frontendVersion;
+    public string backendVersion = "???";
+    public List<ServerCommunicationLogger.ServerCommunicationLog> messageLog;
 }

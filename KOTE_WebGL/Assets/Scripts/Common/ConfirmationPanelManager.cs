@@ -62,8 +62,14 @@ public class ConfirmationPanelManager : MonoBehaviour
     private void ShowConfirmationPanelWIthFullControl(string displayText, Action onConfirmFunction,
         Action onCancelFunction, string[] buttonTexts)
     {
-        confirmButton.SetActive(true);
-        cancelButton.SetActive(true);
+        if(buttonTexts.Length != 2) 
+        {
+            Debug.LogError($"[ConfirmationPanelManager] ShowConfirmationPanelWIthFullControl: buttonTexts must have 2 items.");
+            return;
+        }
+
+        confirmButton.SetActive(!string.IsNullOrWhiteSpace(buttonTexts[0]));
+        cancelButton.SetActive(!string.IsNullOrWhiteSpace(buttonTexts[1]));
 
         titleText.text = displayText;
         // store and add the onClickFunction for the button to listen to.

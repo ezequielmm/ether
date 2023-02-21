@@ -25,6 +25,7 @@ public class TrinketItemManager : MonoBehaviour, IPointerClickHandler
     private void Start()
     {
         selectFrame.gameObject.SetActive(false);
+        counter.SetActive(false);
     }
 
     // uses string values for right now, will probably need to change once we parse trinket data
@@ -41,7 +42,6 @@ public class TrinketItemManager : MonoBehaviour, IPointerClickHandler
         tooltipController.SetTooltips(new List<Tooltip> { _tooltip });
         if (selectMode)
         {
-            counter.SetActive(false);
             enablePointerClick = true;
             onTrinketSelected = onSelected;
         }

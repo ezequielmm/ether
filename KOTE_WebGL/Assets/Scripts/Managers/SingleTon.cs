@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SingleTon<T> : MonoBehaviour where T : Component
+public abstract class SingleTon<T> : MonoBehaviour, ISingleton<T> where T : Component
 {
     #region Fields
 
@@ -46,7 +46,7 @@ public abstract class SingleTon<T> : MonoBehaviour where T : Component
         }
     }
 
-    protected static void DestroyInstance() 
+    public void DestroyInstance() 
     {
         Destroy(instance);
         instance = null;

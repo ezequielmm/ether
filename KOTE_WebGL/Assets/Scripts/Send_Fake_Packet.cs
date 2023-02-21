@@ -36,7 +36,7 @@ public class Send_Fake_Packet : MonoBehaviour
             {
                 yield return wait;
             }
-            SWSM_Parser.ParseJSON(packet);
+            WebSocketParser.ParseJSON(packet);
         }
         yield return null;
     }

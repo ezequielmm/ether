@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -57,16 +58,11 @@ namespace Papertrail
 
         // User set tag for log messages
         private string m_tag;
-        
-        // Active User account email
-        private string m_userAccount = "";
-        
-        // Active Expedition Id
-        private string m_expeditionId = "";
-        
+
+
         //minimum logging level
         private Severity minimumLoggingLevel = Severity.Debug;
-        
+
         // Default facility tag to use for logs.
         private Facility facility = Facility.local7;
 
@@ -88,6 +84,14 @@ namespace Papertrail
             }
         }
 
+        private void OnDestroy()
+        {
+            if (Debug.unityLogger.logHandler.GetType() == typeof(PapertrailLogHandler)) 
+            {
+                ((PapertrailLogHandler)Debug.unityLogger.logHandler).Dispose();
+            }
+        }
+
         /// <summary>
         /// Called when the Instance is created. Gathers application information and creates the UDP client
         /// </summary>
@@ -105,30 +109,14 @@ namespace Papertrail
             m_localIp = "0.0.0.0";
             if (SceneManager.GetActiveScene().isLoaded) m_isLoaded = true;
             SceneManager.sceneLoaded += OnSceneLoaded;
-            Debug.unityLogger.logHandler = new PapertrailLogHandler();
-           
+            HiddenConsoleManager.DisableOnBuild();
+            Debug.unityLogger.logHandler = new PapertrailLogHandler(Debug.unityLogger.logHandler);
             GameManager.Instance.EVENT_SCENE_LOADING.AddListener(OnLoadScene);
-            GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnExpeditionUpdate);
-            GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(OnPlayerProfileReceived);
-            GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogout);
+
             StartCoroutine(GetExternalIP());
         }
 
-        private void OnPlayerProfileReceived(ProfileData profile)
-        {
-            m_userAccount = profile.data.email;
-        }
 
-        private void OnLogout(string data)
-        {
-            m_userAccount = "";
-        }
-
-        private void OnExpeditionUpdate(PlayerStateData playerState)
-        {
-            m_expeditionId = playerState.data.expeditionId;
-        }
-        
         // so the message are queued to not send when a scene is loading
         private void OnLoadScene()
         {
@@ -137,10 +125,6 @@ namespace Papertrail
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            if (scene.name == "MainMenu")
-            {
-                m_expeditionId = "";
-            }
             if (scene.name == "MainMenu" || scene.name == "Expedition")
             {
                 m_isLoaded = true;
@@ -270,7 +254,7 @@ namespace Papertrail
                 if (request.result == UnityWebRequest.Result.ConnectionError ||
                     request.result == UnityWebRequest.Result.ProtocolError)
                 {
-                    Debug.LogError("Logging data failed " + request.error);
+                    //Debug.LogError("Logging data failed " + request.error);
                 }
             }
         }
@@ -303,53 +287,11 @@ namespace Papertrail
             int severityValue = ((int)facility) * 8 + (int)severity;
             string message = string.Empty;
 
-            PapertrailLogData logData = BuildLogData(severityValue, msg);
+            PapertrailLogData logData = new PapertrailLogData(severityValue, msg);
             message = JsonUtility.ToJson(logData);
 
             // Send the completed message
             BeginSend(message);
-        }
-
-        private PapertrailLogData BuildLogData(int severityValue, string message)
-        {
-            PapertrailLogData logData = new PapertrailLogData();
-            // Environment data
-            if (!string.IsNullOrEmpty(GameManager.ClientEnvironment))
-            {
-                logData.env = GameManager.ClientEnvironment;
-            }
-            // Log level (int?)
-            logData.level = severityValue;
-            // Is frontend
-            logData.service = "Frontend";
-            // IP
-            logData.ip = m_localIp;
-            //Client Id
-            logData.clientId = GameManager.ClientId;
-            //User account
-            if (!string.IsNullOrEmpty(m_userAccount))
-            {
-                logData.account = m_userAccount;
-            }
-            // Expedition ID
-            if (!string.IsNullOrEmpty(m_expeditionId))
-            {
-                logData.expeditionId = m_expeditionId;
-            }
-            
-            //format message data
-            if (message.StartsWith('['))
-            {
-                int contextEndIndex = message.IndexOf(']');
-                logData.context = message.Substring(1, contextEndIndex - 1);
-                logData.message = message.Substring(contextEndIndex + 1);
-            }
-            else
-            {
-                logData.message = message;
-            }
-
-            return logData;
         }
 
         /// <summary>
@@ -390,5 +332,73 @@ namespace Papertrail
         {
             Instance.LogInternal(facility, severity, msg);
         }
+    }
+}
+
+public class PapertrailLogData
+{
+    public string env;
+    public int level;
+    public string service;
+    public string ip;
+    public string clientId;
+    public string account;
+    public string expeditionId;
+    public string context;
+    public string message;
+    public string serverVersion;
+    public string clientVersion;
+
+    public PapertrailLogData(int severityValue, string message)
+    {
+        // Environment data
+        env = ClientEnvironmentManager.Instance.Environment.ToString();
+        level = severityValue;
+        service = "Frontend";
+        //ip = m_localIp;
+        clientId = GetClientId();
+        account = GetAccount();
+        expeditionId = GetExpeditionId();
+        serverVersion = VersionManager.ServerVersion;
+        clientVersion = VersionManager.ClientVersionWithCommit;
+        context = GetContext();
+
+        this.message = message;
+    }
+
+    private string GetClientId()
+    {
+        return UserDataManager.Instance.ClientId;
+    }
+
+    private string GetAccount()
+    {
+        if (!string.IsNullOrEmpty(UserDataManager.Instance.UserAccount))
+        {
+            return UserDataManager.Instance.UserAccount;
+        }
+        return string.Empty;
+    }
+
+    private string GetExpeditionId()
+    {
+        if (!string.IsNullOrEmpty(UserDataManager.Instance.ExpeditionId))
+        {
+            return UserDataManager.Instance.ExpeditionId;
+        }
+        return string.Empty;
+    }
+
+    private const int FRAME_ROLLBACK = 10;
+    private string GetContext() 
+    {
+        //MethodBase method = new System.Diagnostics.StackTrace().GetFrame(FRAME_ROLLBACK).GetMethod();
+        //Type declaringType = method.DeclaringType;
+        //if (declaringType == null)
+        //{
+        //    return method.Name;
+        //}
+        //return declaringType.FullName;
+        return "unknown";
     }
 }

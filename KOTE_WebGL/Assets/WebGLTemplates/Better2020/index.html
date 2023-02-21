@@ -14,6 +14,9 @@
     </div>
     <div id="unity-fullscreen-button" style="display: none;"></div>
     <div id="progress-container">
+      <div id="productVersion">
+        <p>{{{ PRODUCT_VERSION }}}</p>
+      </div>
       <img id="loading-logo" src="logo.png" alt="Knights Of The Ether Logo">
       <div id="progress-bar-border">
         <div id="progress-bar"></div>
@@ -22,16 +25,17 @@
     <script>
       const hideFullScreenButton = "{{{ HIDE_FULL_SCREEN_BUTTON }}}";
       const buildUrl = "Build";
-      const loaderUrl = buildUrl + "/{{{ LOADER_FILENAME }}}";
+      const discriminatorQuery = "?v=" + encodeURIComponent("{{{ PRODUCT_VERSION }}}");
+      const loaderUrl = buildUrl + "/{{{ LOADER_FILENAME }}}" + discriminatorQuery;
       const config = {
-        dataUrl: buildUrl + "/{{{ DATA_FILENAME }}}",
-        frameworkUrl: buildUrl + "/{{{ FRAMEWORK_FILENAME }}}",
-        codeUrl: buildUrl + "/{{{ CODE_FILENAME }}}",
+        dataUrl: buildUrl + "/{{{ DATA_FILENAME }}}" + discriminatorQuery,
+        frameworkUrl: buildUrl + "/{{{ FRAMEWORK_FILENAME }}}" + discriminatorQuery,
+        codeUrl: buildUrl + "/{{{ CODE_FILENAME }}}" + discriminatorQuery,
 #if MEMORY_FILENAME
-        memoryUrl: buildUrl + "/{{{ MEMORY_FILENAME }}}",
+        memoryUrl: buildUrl + "/{{{ MEMORY_FILENAME }}}" + discriminatorQuery,
 #endif
 #if SYMBOLS_FILENAME
-        symbolsUrl: buildUrl + "/{{{ SYMBOLS_FILENAME }}}",
+        symbolsUrl: buildUrl + "/{{{ SYMBOLS_FILENAME }}}" + discriminatorQuery,
 #endif
         streamingAssetsUrl: "StreamingAssets",
         companyName: "{{{ COMPANY_NAME }}}",
