@@ -170,6 +170,7 @@ public enum STATUS
     hidden,
     reactive,
     mysteriousFigure,
+    birdcage,
     emptyFade
 }
 
