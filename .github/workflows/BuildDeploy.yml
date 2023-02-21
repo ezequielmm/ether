@@ -213,7 +213,6 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key : ${{ secrets.SSH_PRIV_KEY }}
-        fingerprint: ${{ secrets.HOST_FINGERPRINT }}
         source: "${{ vars.BUILD_DIRECTORY }}"
         target: "${{ vars.PUBLISH_PATH }}"
         overwrite: true
