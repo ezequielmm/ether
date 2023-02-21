@@ -34,7 +34,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: build-WebGL
-        path: ./build
+        path: ./build/${{ vars.BUILD_DIRECTORY }}
 
     - name: Notify Pull Success
       uses: indiesdev/curl@v1.1
@@ -105,3 +105,9 @@ jobs:
         method: "POST"
         headers: '{ "Content-type": "application/json" }'
         body: '{ "text": "GitHub Action: Push to Stage has failed. Please vist the GitHub Repository for more information." }'
+
+    - name: Delete Artifacts
+      uses: geekyeggo/delete-artifact@v2
+      if: always()
+      with:
+        name: build-WebGL
