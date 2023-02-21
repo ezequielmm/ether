@@ -75,7 +75,9 @@ public static class GameSettings
     public const int ENCOUNTER_TEXT_BOX_CHARACTER_COUNT = 500;
 
     // Connection
-    public const float MAX_TIMEOUT_SECONDS = 15;
+    public const float UNSTABLE_CONNECTION_SECONDS = 2;
+    public const float DISCONNECTED_CONNECTION_SECONDS = UNSTABLE_CONNECTION_SECONDS + 5;
+    public const float MAX_TIMEOUT_SECONDS = DISCONNECTED_CONNECTION_SECONDS + 20;
     
     // Logging
     public static LogType FilterLogType = LogType.Log;

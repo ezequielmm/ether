@@ -46,6 +46,11 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public void populate(Card card)
     {
+        if (card == null) 
+        {
+            Debug.LogError($"[UICardPrefabManager] Card can not be Null!");
+            return;
+        }
         string cardEnergy = Mathf.Max(card.energy, 0).ToString();
         if (card.energy < 0)
         {
