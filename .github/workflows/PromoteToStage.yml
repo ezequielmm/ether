@@ -20,7 +20,7 @@ jobs:
         body: '{ "text": "GitHub Action: Now pulling from Dev for promotion to Stage." }'
 
     - name: Download Build from Dev
-      uses: nicklasfrahm/scp-action@main
+      uses: nicklasfrahm/scp-action@v1.0.1
       with:
         direction: download
         host: ${{ secrets.HOST }}
