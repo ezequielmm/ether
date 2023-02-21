@@ -13,6 +13,7 @@ public class CardPanelBase : MonoBehaviour
 
     public bool scaleOnHover = true;
     public bool useBackgroundImage = false;
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
