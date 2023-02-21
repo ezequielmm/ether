@@ -20,15 +20,15 @@ jobs:
         body: '{ "text": "GitHub Action: Now pulling from Dev for promotion to Stage." }'
 
     - name: Download Build from Dev
-      uses: nicklasfrahm/scp-action@v1.0.1
+      uses: alinz/ssh-scp-action@master
       with:
-        direction: download
         host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
+        user: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_PRIV_KEY }}
-        fingerprint: ${{ secrets.HOST_FINGERPRINT }}
-        source: "${{ vars.PUBLISH_PATH }}/${{ vars.BUILD_DIRECTORY }}"
-        target: "build"
+        ssh_before: |
+          touch /build
+        scp: |
+          -r ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ vars.PUBLISH_PATH }}/${{ vars.BUILD_DIRECTORY }} /build
 
     - name: Upload build as artifact
       uses: actions/upload-artifact@v2
