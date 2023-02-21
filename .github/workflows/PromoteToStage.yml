@@ -26,15 +26,15 @@ jobs:
         user: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_PRIV_KEY }}
         ssh_before: |
-          mkdir /etc/build
+          mkdir /home/build
         scp: |
-          -r ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ vars.PUBLISH_PATH }}/${{ vars.BUILD_DIRECTORY }} /etc/build
+          -r ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ vars.PUBLISH_PATH }}/${{ vars.BUILD_DIRECTORY }} /home/build
 
     - name: Upload build as artifact
       uses: actions/upload-artifact@v2
       with:
         name: build-WebGL
-        path: /etc/build
+        path: /home/build
 
     - name: Notify Pull Success
       uses: indiesdev/curl@v1.1
