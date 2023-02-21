@@ -21,7 +21,7 @@ public class SelectCardsPanel : CardPanelBase
     public Button hideCardOverlay;
     private int cardsToSelect;
     private int totalCardsSelected;
-    [SerializeField] private int selectedCards => selectedCardIds.Count;
+    private int selectedCards => selectedCardIds.Count;
     [SerializeField] private List<string> selectedCardIds = new List<string>();
 
     private SelectPanelOptions currentSettings;
