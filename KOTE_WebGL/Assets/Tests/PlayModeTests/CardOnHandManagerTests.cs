@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using CardManagement;
 using DG.Tweening;
 using NUnit.Framework;
 using UnityEditor;
@@ -271,7 +272,7 @@ public class CardOnHandManagerTests : MonoBehaviour
     public void DoesPopulateSaveCardData()
     {
         cardManager.Populate(testCard, 1);
-        Assert.AreEqual(testCard, cardManager.thisCardValues);
+        Assert.AreEqual(testCard, cardManager.cardData);
     }
 
     [Test]

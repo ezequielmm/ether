@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using CardManagement;
 using DG.Tweening;
 using UnityEngine;
 
 public class CardMovementManager : MonoBehaviour
 {
-    // Hand Manager and CardMovementManager are one module, but are split for cleanlieness
-    public HandManager handManager;
+    // CardPilesManager and CardMovementManager are one module, but are split for cleanlieness
+    public CardPilesManager handManager;
     private Queue<Sequence> movementQueue = new Queue<Sequence>();
     private Sequence activeSequence;
 
@@ -20,9 +21,9 @@ public class CardMovementManager : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
         foreach ((CardToMoveData, float) cardMove in cardMoveData)
         {
-            if (handManager.listOfCardsOnHand.ContainsKey(cardMove.Item1.id))
+            if (handManager.MasterCardList.ContainsKey(cardMove.Item1.id))
             {
-                Sequence movementSequence = handManager.listOfCardsOnHand[cardMove.Item1.id]
+                Sequence movementSequence = handManager.MasterCardList[cardMove.Item1.id]
                     .GetComponent<CardOnHandManager>()
                     .OnCardToMove(cardMove.Item1, cardMove.Item2);
 

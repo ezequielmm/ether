@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using CardManagement;
 using NUnit.Framework;
 using TMPro;
 using UnityEditor;
@@ -9,9 +10,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-public class DiscardedCardPileManagerTests : MonoBehaviour
+public class DiscardPileManagerTests : MonoBehaviour
 {
-    private DiscardedCardPileManager _discardManager;
+    private DiscardPileManager _discardManager;
     private GameObject cameraObject;
 
     [UnitySetUp]
@@ -25,7 +26,7 @@ public class DiscardedCardPileManagerTests : MonoBehaviour
         GameObject DiscardPilePrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/BattleUI/DiscardCardPile.prefab");
         GameObject discardPile = GameObject.Instantiate(DiscardPilePrefab);
-        _discardManager = discardPile.GetComponent<DiscardedCardPileManager>();
+        _discardManager = discardPile.GetComponent<DiscardPileManager>();
         discardPile.SetActive(true);
         EventSystem eventSystem = discardPile.AddComponent<EventSystem>();
         

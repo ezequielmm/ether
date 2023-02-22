@@ -1,12 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using UnityEngine.EventSystems;
+using CardManagement;
 using DG.Tweening;
+using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static CardOnHandManager;
 
 public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
