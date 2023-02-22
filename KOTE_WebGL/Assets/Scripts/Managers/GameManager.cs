@@ -313,12 +313,12 @@ public class GameManager : SingleTon<GameManager>
     // Start is called before the first frame update
     void Start()
     {
+        EnqueueActionForSceneLoad(GetServerVersion, inGameScenes.MainMenu);
         EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogout);
         EVENT_REQUEST_LOGOUT_ERROR.AddListener(OnLogout);
         EVENT_SCENE_LOADED.AddListener(OnSceneLoad);
         SceneManager.activeSceneChanged += UpdateSoundVolume;
         //EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ReturnToMainMenu);
-        GetServerVersion();
     }
 
     private void GetServerVersion() 
