@@ -10,10 +10,10 @@ namespace CardManagement
         [HideInInspector] public List<CardOnHandManager> handDeck = new();
 
         public GameObject explosionEffectPrefab;
-        
+
         int cardsDrawn = 0;
         bool audioRunning = false;
-        
+
         private void Awake()
         {
             GameManager.Instance.EVENT_CARD_DRAW.AddListener(OnCardDraw); // SFX
@@ -62,17 +62,17 @@ namespace CardManagement
             RelocateCards();
         }
 
-        internal void StartRelocateCards(bool move = false)
+        internal void StartRelocateCards(bool drawCards = false)
         {
-            RelocateCards(move);
+            RelocateCards(drawCards);
         }
 
 
         /// <summary>
         /// Relocates the cards in hand. If move is on, card movement is send to the cards themselves to be preformed.
         /// </summary>
-        /// <param name="move">True to do a draw animation to hand.</param>
-        private void RelocateCards(bool move = false)
+        /// <param name="drawCards">True to do a draw animation to hand.</param>
+        private void RelocateCards(bool drawCards = false)
         {
             float counter = 0;
             float depth = GameSettings.HAND_CARD_SPRITE_Z;
@@ -111,7 +111,7 @@ namespace CardManagement
                 counter++;
                 depth -= GameSettings.HAND_CARD_SPRITE_Z_INTERVAL;
 
-                if (move)
+                if (drawCards)
                 {
                     // we can adjust the card right away here as this function is cleanup after other movement
                     cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, pos, delay).Play();

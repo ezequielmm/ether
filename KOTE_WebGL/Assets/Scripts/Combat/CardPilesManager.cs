@@ -107,7 +107,7 @@ namespace CardManagement
         {
             if (!MasterCardList.ContainsKey(card.id))
             {
-               SpawnCard(cardPile, card);
+                SpawnCard(cardPile, card);
             }
             else
             {
@@ -120,6 +120,7 @@ namespace CardManagement
             // Debug.Log("[HandManager | Hand Deck] Instantiating card " + card.id);
             CardOnHandManager newCard = Instantiate(spriteCardPrefab, handManager.transform);
             newCard.Populate(card, cardPilesData.data.energy);
+            if (cardPile != handManager.handDeck) newCard.DisableCardContent();
             MasterCardList.Add(card.id, newCard);
             cardPile.Add(newCard);
         }
@@ -226,7 +227,6 @@ namespace CardManagement
             {
                 VerifyCardPosition(card, CARDS_POSITIONS_TYPES.exhaust, exhaustManager.exhaustDeck);
             }
-
         }
 
         private void VerifyCardPosition(Card card, CARDS_POSITIONS_TYPES position, List<CardOnHandManager> cardPile)
@@ -240,7 +240,7 @@ namespace CardManagement
                 else
                 {
                     CardOnHandManager curCard = MasterCardList[card.id];
-                    curCard.MoveCard(curCard.currentPosition, position);
+                    curCard.MoveCard(CARDS_POSITIONS_TYPES.draw, position);
                 }
             }
         }
