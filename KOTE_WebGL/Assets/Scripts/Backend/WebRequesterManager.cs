@@ -860,12 +860,13 @@ public class WebRequesterManager : MonoBehaviour
         string data = JsonConvert.SerializeObject(reportData);
         using (UnityWebRequest request = UnityWebRequest.Post(fullUrl, data))
         {
+            request.SetRequestHeader("Content-Type", $"application/json");
             yield return request.SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.ConnectionError ||
                 request.result == UnityWebRequest.Result.ProtocolError)
             {
-                Debug.Log("[Error sending bug report]");
+                Debug.Log($"[Error sending bug report]\n{request.error}");
             }
         }
     }
