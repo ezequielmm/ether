@@ -11,6 +11,8 @@ public class CampPanelManager : MonoBehaviour
     public Button smithButton;
     public TextMeshProUGUI skipButtonText;
 
+    [SerializeField]
+    private CardPairPanelManager upgradePanel;
     private bool continueActivated;
 
     private void Start()
@@ -67,8 +69,25 @@ public class CampPanelManager : MonoBehaviour
             NumberOfCardsToSelect = 1,
             FireSelectWhenCardClicked = true
         };
+
+
         GameManager.Instance.EVENT_SHOW_DIRECT_SELECT_CARD_PANEL.Invoke(deck.cards, selectOptions,
-            (cardId) => { GameManager.Instance.EVENT_GET_UPGRADE_PAIR.Invoke(cardId); });
+            PopulateUpgradePanel);
+    }
+
+    private void PopulateUpgradePanel(string cardId) 
+    {
+        upgradePanel.ShowCardAndUpgrade(cardId, 
+            () => 
+            {
+                // On Confirm
+
+            }, 
+            () => 
+            { 
+                // On Back
+
+            });
     }
 
     private void OnCampFinish()

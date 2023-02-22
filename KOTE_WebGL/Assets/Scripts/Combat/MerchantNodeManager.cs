@@ -296,16 +296,7 @@ public class MerchantNodeManager : MonoBehaviour
 
     public void ShowCardComparison(string cardId) 
     {
-        // Find Card
-        Card card = merchantData.upgradeableCards.FirstOrDefault<Card>(c => c.id == cardId || c.cardId.ToString() == cardId);
-
-        if (card == null) 
-        {
-            Debug.LogError($"[MerchantNodeManager] Could not find card of id [{cardId}]. Does it exist?");
-            return;
-        }
-
-        cardPairPanel.ShowCardAndUpgrade(card, () => 
+        cardPairPanel.ShowCardAndUpgrade(cardId, () => 
         {
             // On Confirm
             BuyItem();

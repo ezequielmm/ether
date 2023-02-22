@@ -29,12 +29,12 @@ public class CardPairPanelManager : MonoBehaviour
         cardPairPanel.SetActive(true);
     }
 
-    public void ShowCardAndUpgrade(Card card, Action onConfirm = null, Action onBack = null) 
+    public void ShowCardAndUpgrade(string cardId, Action onConfirm = null, Action onBack = null) 
     {
         OnConfirm = onConfirm;
         OnBack = onBack;
         // Get Upgraded Pair
-        GameManager.Instance.EVENT_GET_UPGRADE_PAIR.Invoke(card.id); // Will come back to OnShowUpgradePair
+        GameManager.Instance.EVENT_GET_UPGRADE_PAIR.Invoke(cardId); // Will come back to OnShowUpgradePair
     }
 
     public void HidePairPannel() 
@@ -49,14 +49,20 @@ public class CardPairPanelManager : MonoBehaviour
             OnPairUpgradeConfirm();
         }
         OnConfirm?.Invoke();
-        OnConfirm = null;
+        ClearActions();
     }
 
     public void OnPairBackButton()
     {
         cardPairPanel.SetActive(false);
         OnBack?.Invoke();
+        ClearActions();
+    }
+
+    private void ClearActions() 
+    {
         OnBack = null;
+        OnConfirm = null;
     }
 
     public void OnPairUpgradeConfirm()
