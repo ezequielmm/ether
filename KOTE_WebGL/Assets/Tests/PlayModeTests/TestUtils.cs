@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 
@@ -61,7 +62,7 @@ public static class TestUtils
                 }
             }
         };
-        string data = JsonUtility.ToJson(returnPiles.data.data);
+        string data = JsonConvert.SerializeObject(returnPiles.data.data);
         SWSM_TestBase baseJson = new SWSM_TestBase()
         {
             data = new SWSM_TestBase.SWSM_DataPayload
@@ -71,7 +72,7 @@ public static class TestUtils
                 data = data
             }
         };
-        return JsonUtility.ToJson(baseJson);
+        return JsonConvert.SerializeObject(baseJson);
     }
 
     public static string BuildTestEnemyIntentData(string messageType, string action, int numberOfIntents)
@@ -95,7 +96,7 @@ public static class TestUtils
             });
         }
 
-        return JsonUtility.ToJson(intentData);
+        return JsonConvert.SerializeObject(intentData);
     }
 
     public static string BuildTestStatusData(string messageType, string action, int numberOfStatuses)
@@ -119,12 +120,12 @@ public static class TestUtils
             });
         }
 
-        return JsonUtility.ToJson(statusData);
+        return JsonConvert.SerializeObject(statusData);
     }
 
     public static string BuildTestCardMoveData(string messageType, string action, int numberOfMoves)
     {
-        // had to do this with strings instead of objects because JsonUtility.ToJson didn't like this one
+        // had to do this with strings instead of objects because JsonConvert.SerializeObject didn't like this one
         string data = "{\"data\":{\"message_type\":\"" + messageType + "\",\"action\":\"" + action +
                       "\",\"data\":[";
         for (int i = 0; i < numberOfMoves; i++)
@@ -146,7 +147,7 @@ public static class TestUtils
                 data = ""
             }
         };
-        string data = JsonUtility.ToJson(turnData.data.data);
+        string data = JsonConvert.SerializeObject(turnData.data.data);
 
         SWSM_TestBase baseJson = new SWSM_TestBase
         {
@@ -157,7 +158,7 @@ public static class TestUtils
                 message_type = messageType
             }
         };
-        return JsonUtility.ToJson(baseJson);
+        return JsonConvert.SerializeObject(baseJson);
     }
 
     public static string BuildTestCombatQueueData(string messageType, string action, int numberOfActions)
@@ -183,7 +184,7 @@ public static class TestUtils
             });
         }
 
-        return JsonUtility.ToJson(actionData);
+        return JsonConvert.SerializeObject(actionData);
     }
 
     public static SWSM_MapData GenerateTestMap(int numberOfNodes, int activeNodeNumber)
@@ -273,10 +274,10 @@ public static class TestUtils
             {
                 message_type = "generic_data",
                 action = "UpgradableCards",
-                data = JsonUtility.ToJson(deckData)
+                data = JsonConvert.SerializeObject(deckData)
             }
         };
-        return JsonUtility.ToJson(testData);
+        return JsonConvert.SerializeObject(testData);
     }
 
     public static string BuildTestHealData(string messageType, string action, int healAmount)

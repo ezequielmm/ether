@@ -5,6 +5,7 @@ using UnityEngine;
 using BestHTTP.SocketIO3;
 using BestHTTP.SocketIO3.Events;
 using System.Text;
+using Newtonsoft.Json;
 
 public class WebSocketManager : SingleTon<WebSocketManager>
 {
@@ -294,7 +295,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     /// <param name="test"></param>
     private void OnNodeClickedAnswer(string data)
     {
-        //NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
+        //NodeStateData nodeState = JsonConvert.DeserializeObject<NodeStateData>(nodeData);
         //GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState,WS_QUERY_TYPE.MAP_NODE_SELECTED);
 
         WebSocketParser.ParseJSON(data);
@@ -325,7 +326,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         cardData.cardId = cardId;
         cardData.targetId = id;
 
-        string data = JsonUtility.ToJson(cardData).ToString();
+        string data = JsonConvert.SerializeObject(cardData).ToString();
         //Debug.Log("[WebSocket Manager] OnCardPlayed data: " + data);
 
         //EmitWithResponse(OnCardPlayedAnswer, WS_MESSAGE_CARD_PLAYED, data);
@@ -334,14 +335,14 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     private void OnCardsSelected(List<string> cardIds)
     {
         CardsSelectedList cardList = new CardsSelectedList { cardsToTake = cardIds };
-        string data = JsonUtility.ToJson(cardList);
+        string data = JsonConvert.SerializeObject(cardList);
         Debug.Log("[WebSocket Manager] OnCardsSelected data: " + data);
         Emit(WS_MESSAGE_MOVE_SELECTED_CARDS, data);
     }
 
     private void OnTrinketsSelected(List<string> trinketIds)
     {
-        string data = JsonUtility.ToJson(trinketIds);
+        string data = JsonConvert.SerializeObject(trinketIds);
         Debug.Log("[WebSocket Manager] OnTrinketsSelected data: " + data);
         Emit(WS_MESSAGE_TRINKETS_SELECTED, data);
     }
@@ -354,7 +355,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             targetId = id
         };
 
-        string data = JsonUtility.ToJson(purchase).ToString();
+        string data = JsonConvert.SerializeObject(purchase).ToString();
         //Debug.Log($"[WebSocket Manager] OnBuyItem data: {data}");
 
         Emit(WS_MESSAGE_MERCHANT_BUY, data);
@@ -368,7 +369,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             potionId = potionId,
             targetId = targetId
         };
-        string data = JsonUtility.ToJson(potionData);
+        string data = JsonConvert.SerializeObject(potionData);
         //Debug.Log("[WebSocket Manager] OnPotionUsed data: " + data);
 
         Emit(WS_MESSAGE_USE_POTION, data);
@@ -435,7 +436,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         Debug.Log("on end of turn answer:" + nodeData);
         if (MessageErrorValidator.ValidateData(nodeData))
         {
-            NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
+            NodeStateData nodeState = JsonConvert.DeserializeObject<NodeStateData>(nodeData);
             GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, WS_QUERY_TYPE.END_OF_TURN);
         }
     }

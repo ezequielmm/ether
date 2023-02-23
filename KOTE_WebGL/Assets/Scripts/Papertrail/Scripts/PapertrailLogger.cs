@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -288,7 +289,7 @@ namespace Papertrail
             string message = string.Empty;
 
             PapertrailLogData logData = new PapertrailLogData(severityValue, msg);
-            message = JsonUtility.ToJson(logData);
+            message = JsonConvert.SerializeObject(logData);
 
             // Send the completed message
             BeginSend(message);
