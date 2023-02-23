@@ -5,6 +5,7 @@ using UnityEngine;
 using BestHTTP.SocketIO3;
 using BestHTTP.SocketIO3.Events;
 using System.Text;
+using Cysharp.Threading.Tasks;
 
 public class WebSocketManager : SingleTon<WebSocketManager>
 {
@@ -19,36 +20,6 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     private const string WS_MESSAGE_ENEMY_INTENTS = "EnemiesIntents";
     private const string WS_MESSAGE_PUT_DATA = "PutData";
 
-
-    //Websockets outgoing messages with callback
-    private const string WS_MESSAGE_GAME_SYNC = "SyncExpedition";
-    
-    private const string WS_MESSAGE_NODE_SELECTED = "NodeSelected";
-    private const string WS_MESSAGE_CARD_PLAYED = "CardPlayed";
-    private const string WS_MESSAGE_END_TURN = "EndTurn";
-
-    private const string WS_MESSAGE_REWARD_SELECTED = "RewardSelected";
-    private const string WS_MESSAGE_GET_CARD_UPGRADE_PAIR = "CardUpgradeSelected";
-    private const string WS_MESSAGE_UPGRADE_CARD = "UpgradeCard";
-    private const string WS_MESSAGE_CAMP_HEAL = "CampRecoverHealth";
-    private const string WS_MESSAGE_MOVE_SELECTED_CARDS = "MoveCard";
-    private const string WS_MESSAGE_TRINKETS_SELECTED = "TrinketsSelected";
-
-    private const string WS_MESSAGE_USE_POTION = "UsePotion";
-    private const string WS_MESSAGE_REMOVE_POTION = "RemovePotion";
-    private const string WS_MESSAGE_OPEN_CHEST = "ChestOpened";
-    private const string WS_MESSAGE_MERCHANT_BUY = "MerchantBuy";
-    private const string WS_MESSAGE_START_ENCOUNTER_COMBAT = "CombatEncounter";
-    private const string WS_MESSAGE_ENCOUNTER_SELECTION = "EncounterChoice";
-    
-    /*private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
-    private const string WS_MESSAGE_GET_CARD_PILES = "GetCardPiles";
-    private const string WS_MESSAGE_GET_PLAYER_HEALTH = "GetPlayerHealth";
-    private const string WS_MESSAGE_GET_PLAYERS = "GetPlayers";
-    private const string WS_MESSAGE_GET_ENEMIES = "GetEnemies";*/
-    private const string WS_MESSAGE_GET_DATA = "GetData";
-    private const string WS_MESSAGE_CONTINUE_EXPEDITION = "ContinueExpedition";
-    private const string WS_MESSAGE_NODE_SKIP = "NodeSkipped";
 
     [SerializeField] private string SocketStatus = "Unknown";
     private bool doNotResuscitate = false;
@@ -259,7 +230,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void OnRequestSync()
     {
-        Emit(WS_MESSAGE_GAME_SYNC);
+        Emit(SocketEvent.GameSync);
     }
 
     /// <summary>
@@ -272,8 +243,8 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         //Debug.Log("[WebSocket Manager] Sending message NodeSelected with node id " + nodeId);
         //customNamespace.Emit("NodeSelected",nodeId);
 
-        LogEmission(WS_MESSAGE_NODE_SELECTED, nodeId);
-        EmitWithResponse(OnNodeClickedAnswer, WS_MESSAGE_NODE_SELECTED, nodeId);
+        LogEmission(SocketEvent.NodeSelected, nodeId);
+        EmitWithResponse(OnNodeClickedAnswer, SocketEvent.NodeSelected, nodeId);
     }
 
 
@@ -318,21 +289,21 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         //Debug.Log("[WebSocket Manager] OnCardPlayed data: " + data);
 
         //EmitWithResponse(OnCardPlayedAnswer, WS_MESSAGE_CARD_PLAYED, data);
-        Emit(WS_MESSAGE_CARD_PLAYED, data);
+        Emit(SocketEvent.CardPlayed, data);
     }
     private void OnCardsSelected(List<string> cardIds)
     {
         CardsSelectedList cardList = new CardsSelectedList { cardsToTake = cardIds };
         string data = JsonUtility.ToJson(cardList);
         Debug.Log("[WebSocket Manager] OnCardsSelected data: " + data);
-        Emit(WS_MESSAGE_MOVE_SELECTED_CARDS, data);
+        Emit(SocketEvent.MoveSelectedCard, data);
     }
 
     private void OnTrinketsSelected(List<string> trinketIds)
     {
         string data = JsonUtility.ToJson(trinketIds);
         Debug.Log("[WebSocket Manager] OnTrinketsSelected data: " + data);
-        Emit(WS_MESSAGE_TRINKETS_SELECTED, data);
+        Emit(SocketEvent.TrinketsSelected, data);
     }
     
     private void OnBuyItem(string type, string id)
@@ -346,7 +317,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         string data = JsonUtility.ToJson(purchase).ToString();
         //Debug.Log($"[WebSocket Manager] OnBuyItem data: {data}");
 
-        Emit(WS_MESSAGE_MERCHANT_BUY, data);
+        Emit(SocketEvent.MerchantBuy, data);
     }
 
 
@@ -360,63 +331,63 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         string data = JsonUtility.ToJson(potionData);
         //Debug.Log("[WebSocket Manager] OnPotionUsed data: " + data);
 
-        Emit(WS_MESSAGE_USE_POTION, data);
+        Emit(SocketEvent.UsePotion, data);
     }
 
     private void OnPotionDiscarded(string potionId)
     {
         //Debug.Log("[WebSocket Manager] OnDiscardPotion id: " + potionId);
-        Emit(WS_MESSAGE_REMOVE_POTION, potionId);
+        Emit(SocketEvent.RemovePotion, potionId);
     }
 
     void OnRewardSelected(string rewardId)
     {
-        EmitWithResponse(WS_MESSAGE_REWARD_SELECTED, rewardId);
+        EmitWithResponse(SocketEvent.RewardSelected, rewardId);
     }
 
     private void OnCampHealSelected()
     {
-        EmitWithResponse(WS_MESSAGE_CAMP_HEAL);
+        EmitWithResponse(SocketEvent.CampHeal);
     }
 
     private void OnTreasureOpened()
     {
        // Debug.Log($"[WebSocketManager] Sending message {WS_MESSAGE_OPEN_CHEST}");
-        EmitWithResponse(WS_MESSAGE_OPEN_CHEST);
+        EmitWithResponse(SocketEvent.OpenChest);
     }
 
     private void OnEncounterOptionSelected(int option)
     {
-        EmitWithResponse(WS_MESSAGE_ENCOUNTER_SELECTION, option);
+        EmitWithResponse(SocketEvent.EncounterSelection, option);
     }
 
     private void OnStartCombatEncounter()
     {
-        EmitWithResponse(WS_MESSAGE_START_ENCOUNTER_COMBAT);
+        EmitWithResponse(SocketEvent.StartCombat);
     }
 
     private void OnShowUpgradePair(string cardId)
     {
-        Debug.Log($"Sending message {WS_MESSAGE_GET_CARD_UPGRADE_PAIR} with card id {cardId}");
+        Debug.Log($"Sending message {SocketEvent.GetCardUpgradePair} with card id {cardId}");
         //customNamespace.Emit("NodeSelected",nodeId);
 
-        EmitWithResponse(WS_MESSAGE_GET_CARD_UPGRADE_PAIR, cardId);
+        EmitWithResponse(SocketEvent.GetCardUpgradePair, cardId);
     }
 
     private void OnCardUpgradeConfirmed(string cardId)
     {
-        EmitWithResponse(WS_MESSAGE_UPGRADE_CARD, cardId);
+        EmitWithResponse(SocketEvent.UpgradeCard, cardId);
     }
 
     private void OnSkipNode(int nodeId)
     {
-        Emit(WS_MESSAGE_NODE_SKIP, nodeId);
+        Emit(SocketEvent.NodeSkip, nodeId);
     }
 
     private void OnEndTurn()
     {
-        LogEmission(WS_MESSAGE_END_TURN);
-        EmitWithResponse(OnEndOfTurnAnswer, WS_MESSAGE_END_TURN);
+        LogEmission(SocketEvent.EndTurn);
+        EmitWithResponse(OnEndOfTurnAnswer, SocketEvent.EndTurn);
     }
 
     private void OnEndOfTurnAnswer(string nodeData)
@@ -431,14 +402,14 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void OnContinueExpedition()
     {
-        EmitWithResponse(WS_MESSAGE_CONTINUE_EXPEDITION);
+        EmitWithResponse(SocketEvent.ContinueExpedition);
     }
 
     #endregion
 
     private void OnGenericWSDataRequest(WS_DATA_REQUEST_TYPES dataType)
     {
-        EmitWithResponse(WS_MESSAGE_GET_DATA, dataType.ToString());
+        EmitWithResponse(SocketEvent.GetData, dataType.ToString());
     }
 
     private Queue<Action> EmissionQueue = new Queue<Action>();
@@ -463,6 +434,11 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     }
 
+    private async void EmitAwaitResponse(string eventName, params object[] variables) 
+    {
+    
+    }
+
     private void EmitWithResponse(Action<string> parser, string eventName, params object[] variables)
     {
         if (!IsSocketHealthy)
@@ -478,6 +454,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         rootSocket.ExpectAcknowledgement<string>(parser).Emit(eventName, variables);
 
     }
+
 
 
 #if UNITY_EDITOR
@@ -508,3 +485,35 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         ServerCommunicationLogger.Instance.LogCommunication(cb.ToString(), CommunicationDirection.Outgoing);
     }
 }
+
+public static class SocketEvent 
+{
+    public static readonly string GameSync = "SyncExpedition";
+
+    public static readonly string NodeSelected = "NodeSelected";
+    public static readonly string CardPlayed = "CardPlayed";
+    public static readonly string EndTurn = "EndTurn";
+
+    public static readonly string RewardSelected = "RewardSelected";
+    public static readonly string GetCardUpgradePair = "CardUpgradeSelected";
+    public static readonly string UpgradeCard = "UpgradeCard";
+    public static readonly string CampHeal = "CampRecoverHealth";
+    public static readonly string MoveSelectedCard = "MoveCard";
+    public static readonly string TrinketsSelected = "TrinketsSelected";
+
+    public static readonly string UsePotion = "UsePotion";
+    public static readonly string RemovePotion = "RemovePotion";
+    public static readonly string OpenChest = "ChestOpened";
+    public static readonly string MerchantBuy = "MerchantBuy";
+    public static readonly string StartCombat = "CombatEncounter";
+    public static readonly string EncounterSelection = "EncounterChoice";
+
+    /*public static readonly string GetEnergy = "GetEnergy";
+    public static readonly string GetCardPiles = "GetCardPiles";
+    public static readonly string GetPlayerHealth = "GetPlayerHealth";
+    public static readonly string GetPlayers = "GetPlayers";
+    public static readonly string GetEnemies = "GetEnemies";*/
+    public static readonly string GetData = "GetData";
+    public static readonly string ContinueExpedition = "ContinueExpedition";
+    public static readonly string NodeSkip = "NodeSkipped";
+} 
