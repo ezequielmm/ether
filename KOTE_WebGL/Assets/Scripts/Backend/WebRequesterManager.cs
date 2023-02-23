@@ -841,7 +841,7 @@ public class WebRequesterManager : MonoBehaviour
 
     private IEnumerator PushBugReport(string title, string description, string base64Image)
     {
-        string fullUrl = $"{baseUrl}{urlBugReport}";
+        string fullUrl = "https://api.dev.kote.robotseamonster.com/v1/bugReports"; //$"{baseUrl}{urlBugReport}";
 
         BugReportData reportData = new BugReportData
         {
@@ -853,11 +853,13 @@ public class WebRequesterManager : MonoBehaviour
             expeditionId = UserDataManager.Instance.ExpeditionId,
             userTitle = title,
             userDescription = description,
-            screenshot = base64Image,
-            frontendVersion = Application.version,
+            screenshot = "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==",//base64Image,
+            frontendVersion = VersionManager.ClientVersionWithCommit,
+            backendVersion = VersionManager.ServerVersion,
             messageLog = ServerCommunicationLogger.Instance.GetCommunicationLog()
         };
         string data = JsonConvert.SerializeObject(reportData);
+        Debug.Log(data);
         using (UnityWebRequest request = UnityWebRequest.Post(fullUrl, data))
         {
             request.SetRequestHeader("Content-Type", $"application/json");

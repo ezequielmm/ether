@@ -35,7 +35,7 @@ public class ServerCommunicationLogger : SingleTon<ServerCommunicationLogger>
         public ServerCommunicationLog(string message, CommunicationDirection direction, string rawJson = "") 
         {
             DateTime currentTime = DateTime.UtcNow;
-            long unixTime = ((DateTimeOffset)currentTime).ToUnixTimeSeconds();
+            long unixTime = ((DateTimeOffset)currentTime).ToUnixTimeMilliseconds();
             Message = message;
             Direction = direction.ToString();
             Timestamp = unixTime.ToString();
