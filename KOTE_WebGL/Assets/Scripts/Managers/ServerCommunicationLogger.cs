@@ -27,7 +27,7 @@ public class ServerCommunicationLogger : SingleTon<ServerCommunicationLogger>
         public string Timestamp;
         [JsonProperty("direction")]
         public string Direction;
-        [JsonProperty("message")]
+        [JsonIgnore] //[JsonProperty("message")]
         public string Message;
         [JsonProperty("raw")]
         public JObject Raw = new JObject();
