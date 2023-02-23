@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
-using CardManagement;
 using DG.Tweening;
+using KOTE.Expedition.Combat.Cards;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.TestTools;
 
-public class CardOnHandManagerTests : MonoBehaviour
+public class CardManagerTests : MonoBehaviour
 {
-    private CardOnHandManager cardManager;
+    private CardManager cardManager;
+    private CardVisualsManager _visualsManager;
     private GameObject drawPileManager;
     private GameObject discardPile;
     private GameObject exhaustPileManager;
@@ -112,7 +113,8 @@ public class CardOnHandManagerTests : MonoBehaviour
         GameObject spriteCardPrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Common/SpriteCardPrefab.prefab");
         spriteCardInstance = Instantiate(spriteCardPrefab);
-        cardManager = spriteCardInstance.GetComponent<CardOnHandManager>();
+        cardManager = spriteCardInstance.GetComponent<CardManager>();
+        _visualsManager = spriteCardInstance.GetComponent<CardVisualsManager>();
         spriteCardInstance.SetActive(true);
         yield return null;
     }
@@ -131,25 +133,6 @@ public class CardOnHandManagerTests : MonoBehaviour
     }
 
     [Test]
-    public void DoesCardStartAsPlayable()
-    {
-        Assert.True(cardManager.card_can_be_played);
-    }
-
-    [Test]
-    public void DoesCardStartAsInactive()
-    {
-        Assert.False(cardManager.cardActive);
-    }
-
-    [Test]
-    public void DoesSettingCardActiveUpdateActiveStatus()
-    {
-        cardManager.cardActive = true;
-        Assert.True(cardManager.cardActive);
-    }
-
-    [Test]
     public void DoesUpdatingCardActiveStateUpdateCardBasedOnCurrentEnergy()
     {
         //TODO write this once I understand how this works
@@ -158,16 +141,9 @@ public class CardOnHandManagerTests : MonoBehaviour
     [Test]
     public void DoesTooltipListGetCreatedDuringAwake()
     {
-        Assert.NotNull(cardManager.tooltips);
-        Assert.IsInstanceOf<List<Tooltip>>(cardManager.tooltips);
-        Assert.AreEqual(0, cardManager.tooltips.Count);
-    }
-
-    [Test]
-    public void DoesSequenceGetCreatedOnStart()
-    {
-        Assert.NotNull(cardManager.mySequence);
-        Assert.IsInstanceOf<Sequence>(cardManager.mySequence);
+        Assert.NotNull(_visualsManager.tooltips);
+        Assert.IsInstanceOf<List<Tooltip>>(_visualsManager.tooltips);
+        Assert.AreEqual(0, _visualsManager.tooltips.Count);
     }
 
     [Test]
@@ -191,17 +167,17 @@ public class CardOnHandManagerTests : MonoBehaviour
     public void DoesPopulateUpdateTextFields()
     {
         cardManager.Populate(testCard, 1);
-        Assert.AreEqual(testCard.energy.ToString(), cardManager.energyTF.text);
-        Assert.AreEqual(testCard.rarity, cardManager.rarityTF.text);
-        Assert.AreEqual(testCard.name, cardManager.nameTF.text);
-        Assert.AreEqual(testCard.description, cardManager.descriptionTF.text);
+        Assert.AreEqual(testCard.energy.ToString(), _visualsManager.energyTF.text);
+        Assert.AreEqual(testCard.rarity, _visualsManager.rarityTF.text);
+        Assert.AreEqual(testCard.name, _visualsManager.nameTF.text);
+        Assert.AreEqual(testCard.description, _visualsManager.descriptionTF.text);
     }
 
     [Test]
     public void DoesPopulateUpdateEnergyAmount()
     {
         cardManager.Populate(testCard, 1);
-        Assert.AreEqual(testCard.energy.ToString(), cardManager.energyTF.text);
+        Assert.AreEqual(testCard.energy.ToString(), _visualsManager.energyTF.text);
     }
 
     [Test]
@@ -209,7 +185,7 @@ public class CardOnHandManagerTests : MonoBehaviour
     {
         testCard.energy = -1;
         cardManager.Populate(testCard, 1);
-        Assert.AreEqual("X", cardManager.energyTF.text);
+        Assert.AreEqual("X", _visualsManager.energyTF.text);
     }
 
     [Test]
@@ -218,27 +194,27 @@ public class CardOnHandManagerTests : MonoBehaviour
         cardManager.Populate(testCard, 1);
         testCard.description = "new description";
         GameManager.Instance.EVENT_CARD_UPDATE_TEXT.Invoke(testCard);
-        Assert.AreEqual(testCard.description, cardManager.descriptionTF.text);
+        Assert.AreEqual(testCard.description, _visualsManager.descriptionTF.text);
     }
-    
+
     [Test]
     public void DoesUpdateCardTextUpdateNameField()
     {
         cardManager.Populate(testCard, 1);
         testCard.name = "Brace";
         GameManager.Instance.EVENT_CARD_UPDATE_TEXT.Invoke(testCard);
-        Assert.AreEqual(testCard.name, cardManager.nameTF.text);
+        Assert.AreEqual(testCard.name, _visualsManager.nameTF.text);
     }
-    
+
     [Test]
     public void DoesUpdateCardTextUpdateRarityField()
     {
         cardManager.Populate(testCard, 1);
         testCard.rarity = "TestRarity";
         GameManager.Instance.EVENT_CARD_UPDATE_TEXT.Invoke(testCard);
-        Assert.AreEqual(testCard.rarity, cardManager.rarityTF.text);
+        Assert.AreEqual(testCard.rarity, _visualsManager.rarityTF.text);
     }
-    
+
     [Test]
     public void DoesUpdateCardChangeEnergyToXIfLessThanZero()
     {
@@ -246,52 +222,51 @@ public class CardOnHandManagerTests : MonoBehaviour
         cardManager.Populate(testCard, 1);
         testCard.energy = -1;
         GameManager.Instance.EVENT_CARD_UPDATE_TEXT.Invoke(testCard);
-        Assert.AreEqual("X", cardManager.energyTF.text);
+        Assert.AreEqual("X", _visualsManager.energyTF.text);
     }
-    
+
     [Test]
     public void DoesUpdateCardTextUpdateEnergyField()
     {
         cardManager.Populate(testCard, 1);
         testCard.energy = 0;
         GameManager.Instance.EVENT_CARD_UPDATE_TEXT.Invoke(testCard);
-        Assert.AreEqual(testCard.energy.ToString(), cardManager.energyTF.text);
+        Assert.AreEqual(testCard.energy.ToString(), _visualsManager.energyTF.text);
     }
 
     [Test]
     public void DoesPopulateSelectCorrectSprites()
     {
         cardManager.Populate(testCard, 1);
-        Assert.AreEqual("KOTE_Asset_Gem_Attack", cardManager.gemSprite.sprite.name);
-        Assert.AreEqual("KOTE_Asset_Frame_Knight", cardManager.frameSprite.sprite.name);
-        Assert.AreEqual("Green", cardManager.bannerSprite.sprite.name);
-        Assert.AreEqual("1", cardManager.cardImage.sprite.name);
+        Assert.AreEqual("KOTE_Asset_Gem_Attack", _visualsManager.gemSprite.sprite.name);
+        Assert.AreEqual("KOTE_Asset_Frame_Knight", _visualsManager.frameSprite.sprite.name);
+        Assert.AreEqual("Green", _visualsManager.bannerSprite.sprite.name);
+        Assert.AreEqual("1", _visualsManager.cardImage.sprite.name);
     }
 
     [Test]
     public void DoesPopulateSaveCardData()
     {
         cardManager.Populate(testCard, 1);
-        Assert.AreEqual(testCard, cardManager.cardData);
+        Assert.AreEqual(testCard.id, cardManager.id);
     }
 
     [Test]
     public void DoesPopulateGenerateTooltips()
     {
         cardManager.Populate(testCard, 1);
-        Assert.AreEqual(2, cardManager.tooltips.Count);
-        Assert.AreEqual("ToolTip title", cardManager.tooltips[0].title);
-        Assert.AreEqual("Tooltip Description", cardManager.tooltips[0].description);
-        Assert.AreEqual("Status2", cardManager.tooltips[1].title);
-        Assert.AreEqual("description", cardManager.tooltips[1].description);
+        Assert.AreEqual(2, _visualsManager.tooltips.Count);
+        Assert.AreEqual("ToolTip title", _visualsManager.tooltips[0].title);
+        Assert.AreEqual("Tooltip Description", _visualsManager.tooltips[0].description);
+        Assert.AreEqual("Status2", _visualsManager.tooltips[1].title);
+        Assert.AreEqual("description", _visualsManager.tooltips[1].description);
     }
 
     [Test]
     public void DoesPopulateUpdateCardBasedOnEnergy()
     {
         cardManager.Populate(testCard, 1);
-        Assert.AreEqual(cardManager.redColor, cardManager.energyTF.color);
-        Assert.False(cardManager.card_can_be_played);
+        Assert.AreEqual(_visualsManager.redColor, _visualsManager.energyTF.color);
     }
 
     [Test]
@@ -374,17 +349,10 @@ public class CardOnHandManagerTests : MonoBehaviour
     }
 
     [Test]
-    public void DoesMovingSetCardInactive()
-    {
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.exhaust);
-        Assert.False(cardManager.cardActive);
-    }
-
-    [Test]
     public void DoesMovingCardActivateCardContent()
     {
         cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.exhaust);
-        Assert.True(cardManager.cardcontent.activeSelf);
+        Assert.True(_visualsManager.cardcontent.activeSelf);
     }
 
     [UnityTest]
@@ -520,8 +488,8 @@ public class CardOnHandManagerTests : MonoBehaviour
     {
         cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand);
         yield return new WaitForSeconds(1.01f);
-        Assert.False(cardManager.movePs.isPlaying);
-        Assert.True(cardManager.movePs.isStopped);
+        Assert.False(_visualsManager.movePs.isPlaying);
+        Assert.True(_visualsManager.movePs.isStopped);
     }
 
     [UnityTest]
@@ -538,33 +506,33 @@ public class CardOnHandManagerTests : MonoBehaviour
     public IEnumerator DoesOnMoveCompletedUpdateCardBasedOnEnergy()
     {
         cardManager.Populate(testCard, 1);
-        Assert.AreEqual(cardManager.redColor, cardManager.energyTF.color);
+        Assert.AreEqual(_visualsManager.redColor, _visualsManager.energyTF.color);
         cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand);
         GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(3, 3);
         yield return new WaitForSeconds(1.01f);
-        Assert.AreEqual(Color.black, cardManager.energyTF.color);
+        Assert.AreEqual(Color.black, _visualsManager.energyTF.color);
     }
 
     [UnityTest]
     public IEnumerator DoesMovingCardWithDelayFromDrawToHandProcessOnMoveCompleted()
     {
         cardManager.Populate(testCard, 1);
-        Assert.AreEqual(cardManager.redColor, cardManager.energyTF.color);
+        Assert.AreEqual(_visualsManager.redColor, _visualsManager.energyTF.color);
         cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, moveDelay: 0.5f);
         GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(3, 3);
         yield return new WaitForSeconds(1.6f);
-        Assert.AreEqual(Color.black, cardManager.energyTF.color);
+        Assert.AreEqual(Color.black, _visualsManager.energyTF.color);
     }
 
     [UnityTest]
     public IEnumerator DoesMovingCardFromDrawToHandProcessOnMoveCompleted()
     {
         cardManager.Populate(testCard, 1);
-        Assert.AreEqual(cardManager.redColor, cardManager.energyTF.color);
+        Assert.AreEqual(_visualsManager.redColor, _visualsManager.energyTF.color);
         cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand);
         GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(3, 3);
         yield return new WaitForSeconds(1.01f);
-        Assert.AreEqual(Color.black, cardManager.energyTF.color);
+        Assert.AreEqual(Color.black, _visualsManager.energyTF.color);
     }
 
     [UnityTest]

@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using CardManagement;
 using DG.Tweening;
+using KOTE.Expedition.Combat.Cards;
+using KOTE.Expedition.Combat.Cards.Piles;
 using UnityEngine;
 
-public class CardMovementManager : MonoBehaviour
+public class CardAnimationQueue : MonoBehaviour
 {
     // CardPilesManager and CardMovementManager are one module, but are split for cleanlieness
     public CardPilesManager handManager;
@@ -24,7 +25,7 @@ public class CardMovementManager : MonoBehaviour
             if (handManager.MasterCardList.ContainsKey(cardMove.Item1.id))
             {
                 Sequence movementSequence = handManager.MasterCardList[cardMove.Item1.id]
-                    .GetComponent<CardOnHandManager>()
+                    .GetComponent<CardManager>()
                     .OnCardToMove(cardMove.Item1, cardMove.Item2);
 
                 sequence.Insert(0, movementSequence);

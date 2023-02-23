@@ -1,16 +1,15 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace CardManagement
+namespace KOTE.Expedition.Combat.Cards.Piles
 {
     public class DiscardPileManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         public TextMeshProUGUI amountOfCardsTF;
-        public List<CardOnHandManager> discardDeck = new();
+        public List<CardManager> discardDeck = new();
         int cardsDiscarded = 0;
         bool audioRunning = false;
         RectTransform rectTransform;

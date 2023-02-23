@@ -940,6 +940,12 @@ PrefabInstance:
       propertyPath: exhaustManager
       value: 
       objectReference: {fileID: 2912087186517886850}
+    - target: {fileID: 2911898468448946926, guid: d9399d4f298b04544be9f442483a0ccd,
+        type: 3}
+      propertyPath: spriteCardVisualsPrefab
+      value: 
+      objectReference: {fileID: 771487587530092360, guid: 4912c08d2b3482c44800e4ee984fc359,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9399d4f298b04544be9f442483a0ccd, type: 3}
 --- !u!224 &5986692896754632263 stripped

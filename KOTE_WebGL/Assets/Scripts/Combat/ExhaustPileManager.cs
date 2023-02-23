@@ -3,13 +3,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace CardManagement
+namespace KOTE.Expedition.Combat.Cards.Piles
 {
     public class ExhaustPileManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         RectTransform rectTransform;
         public TextMeshProUGUI amountOfCardsTF;
-        public List<CardOnHandManager> exhaustDeck = new();
+        public List<CardManager> exhaustDeck = new();
 
         void Start()
         {

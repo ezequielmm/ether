@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-namespace CardManagement
+namespace KOTE.Expedition.Combat.Cards.Piles
 {
     public class CardPilesManager : MonoBehaviour
     {
-        public CardOnHandManager spriteCardPrefab;
+        public CardManager SpriteCardPrefab;
         public DiscardPileManager discardManager;
         public ExhaustPileManager exhaustManager;
         public HandManager handManager;
 
         public DrawPileManager drawManager;
 
-        internal Dictionary<string, CardOnHandManager>
-            MasterCardList = new Dictionary<string, CardOnHandManager>(); // CardID <--> Card Obj
+        internal Dictionary<string, CardManager>
+            MasterCardList = new Dictionary<string, CardManager>(); // CardID <--> Card Obj
 
         private CardPiles cardPilesData;
 
@@ -103,7 +103,7 @@ namespace CardManagement
             StartCoroutine(ValidateCardPositions());
         }
 
-        private void SpawnCardToPile(List<CardOnHandManager> cardPile, Card card)
+        private void SpawnCardToPile(List<CardManager> cardPile, Card card)
         {
             if (!MasterCardList.ContainsKey(card.id))
             {
@@ -115,23 +115,23 @@ namespace CardManagement
             }
         }
 
-        private void SpawnCard(List<CardOnHandManager> cardPile, Card card)
+        private void SpawnCard(List<CardManager> cardPile, Card card)
         {
             // Debug.Log("[HandManager | Hand Deck] Instantiating card " + card.id);
-            CardOnHandManager newCard = Instantiate(spriteCardPrefab, handManager.transform);
-            newCard.Populate(card, cardPilesData.data.energy);
-            if (cardPile != handManager.handDeck) newCard.DisableCardContent();
-            MasterCardList.Add(card.id, newCard);
-            cardPile.Add(newCard);
+            CardManager cardManager = Instantiate(SpriteCardPrefab, handManager.transform);
+            cardManager.Populate(card, cardPilesData.data.energy);
+            if (cardPile != handManager.handDeck) cardManager.DisableCardContent();
+            MasterCardList.Add(card.id, cardManager);
+            cardPile.Add(cardManager);
         }
 
         private IEnumerator ValidateCardPositions()
         {
             // Debug.Log("----------------------------Relocate cards offset=" + offset);
             bool pause = false;
-            foreach (CardOnHandManager cardData in drawManager.drawDeck)
+            foreach (CardManager cardManager in drawManager.drawDeck)
             {
-                if (cardData.TryMoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw,
+                if (cardManager.TryMoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw,
                         out Sequence sequence))
                 {
                     // we can adjust the card right away here as this function is cleanup after other movement
@@ -141,7 +141,7 @@ namespace CardManagement
                 }
             }
 
-            foreach (CardOnHandManager cardManager in handManager.handDeck)
+            foreach (CardManager cardManager in handManager.handDeck)
             {
                 if (cardManager.TryMoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw,
                         out Sequence sequence))
@@ -197,10 +197,19 @@ namespace CardManagement
         private void OnCardAdd(AddCardData addCardData)
         {
             // create the new card in the middle of the screen
-            CardOnHandManager newCard = Instantiate(spriteCardPrefab, this.transform);
-            MasterCardList.Add(addCardData.card.id, newCard);
-            newCard.Populate(addCardData.card, cardPilesData.data.energy);
-            newCard.ShowAddedCard(addCardData);
+            CardManager cardManager = Instantiate(SpriteCardPrefab, this.transform);
+            MasterCardList.Add(addCardData.card.id, cardManager);
+            cardManager.Populate(addCardData.card, cardPilesData.data.energy);
+
+            GameManager.Instance.EVENT_MOVE_CARDS.Invoke(new List<(CardToMoveData, float)>
+            {
+                (new CardToMoveData
+                {
+                    destination = addCardData.destination,
+                    id = addCardData.card.id,
+                    source = "none"
+                }, GameSettings.SHOW_NEW_CARD_DURATION)
+            });
         }
 
         private void OnCardsPilesUpdated(CardPiles data)
@@ -229,7 +238,7 @@ namespace CardManagement
             }
         }
 
-        private void VerifyCardPosition(Card card, CARDS_POSITIONS_TYPES position, List<CardOnHandManager> cardPile)
+        private void VerifyCardPosition(Card card, CARDS_POSITIONS_TYPES position, List<CardManager> cardPile)
         {
             if (!ConfirmCardIsInPile(card, position))
             {
@@ -239,8 +248,8 @@ namespace CardManagement
                 }
                 else
                 {
-                    CardOnHandManager curCard = MasterCardList[card.id];
-                    curCard.MoveCard(CARDS_POSITIONS_TYPES.draw, position);
+                    CardManager cardManager = MasterCardList[card.id];
+                    cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, position);
                 }
             }
         }

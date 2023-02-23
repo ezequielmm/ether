@@ -1,4 +1,3 @@
-using CardManagement;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -17,20 +16,16 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
     public Image bannerSprite;
     public Image cardImage;
 
-    public CardOnHandManager managerReference;
     public string id => card?.id;
 
     private Vector3 originalScale;
     public bool scaleCardOnHover = true;
     public float scaleOnHover = 2;
 
-    [SerializeField]
-    private Sprite cardBackground;
-    [SerializeField]
-    private Sprite cardSelectedBackground;
+    [SerializeField] private Sprite cardBackground;
+    [SerializeField] private Sprite cardSelectedBackground;
 
-    [SerializeField]
-    Image cardBackgroundImage;
+    [SerializeField] Image cardBackgroundImage;
 
     public bool useBackgroundImage = false;
 
@@ -43,16 +38,18 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public void populate(Card card)
     {
-        if (card == null) 
+        if (card == null)
         {
             Debug.LogError($"[UICardPrefabManager] Card can not be Null!");
             return;
         }
+
         string cardEnergy = Mathf.Max(card.energy, 0).ToString();
         if (card.energy < 0)
         {
             cardEnergy = "X";
         }
+
         energyTF.SetText(cardEnergy);
         nameTF.SetText(card.name);
         rarityTF.SetText(card.rarity);
@@ -72,13 +69,13 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
 
         bannerSprite.sprite = cardAssetManager.GetBanner(card.rarity);
         cardImage.sprite = cardAssetManager.GetCardImage(card.cardId);
-      
+
         this.card = card;
 
         Deselect();
     }
 
-    public void Select() 
+    public void Select()
     {
         if (useBackgroundImage)
         {
@@ -94,7 +91,7 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
             cardBackgroundImage.enabled = true;
             cardBackgroundImage.sprite = cardBackground;
         }
-        else 
+        else
         {
             cardBackgroundImage.sprite = null;
             cardBackgroundImage.enabled = false;

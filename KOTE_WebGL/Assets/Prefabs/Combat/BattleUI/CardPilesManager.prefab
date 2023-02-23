@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66c90e0f52e3ecf488b6660b5a1ea26b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteCardPrefab: {fileID: 8572111283056100763, guid: 4912c08d2b3482c44800e4ee984fc359,
+  SpriteCardPrefab: {fileID: 771487587530092360, guid: 4912c08d2b3482c44800e4ee984fc359,
     type: 3}
   discardManager: {fileID: 0}
   exhaustManager: {fileID: 0}

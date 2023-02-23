@@ -5,7 +5,7 @@ using TMPro;
 using System;
 using UnityEngine.EventSystems;
 
-namespace CardManagement
+namespace KOTE.Expedition.Combat.Cards.Piles
 {
     public class DrawPileManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
@@ -13,7 +13,7 @@ namespace CardManagement
         int cardsShuffled = 0;
         bool audioRunning = false;
         RectTransform rectTransform;
-        public List<CardOnHandManager> drawDeck = new();
+        public List<CardManager> drawDeck = new();
 
         void Start()
         {

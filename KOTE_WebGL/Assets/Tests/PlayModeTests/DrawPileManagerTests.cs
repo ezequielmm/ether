@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using CardManagement;
+using KOTE.Expedition.Combat.Cards.Piles;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -56,7 +56,9 @@ public class DrawPileManagerTests : MonoBehaviour
         string sfxType = "";
         GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) =>
         {
-            soundType = data; sfxType = data2; });
+            soundType = data;
+            sfxType = data2;
+        });
         GameManager.Instance.EVENT_CARD_SHUFFLE.Invoke();
         yield return new WaitForSeconds(0.3f);
         Assert.AreEqual(SoundTypes.Card, soundType);

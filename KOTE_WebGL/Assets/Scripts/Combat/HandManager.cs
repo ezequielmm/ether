@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-namespace CardManagement
+namespace KOTE.Expedition.Combat.Cards.Piles
 {
     public class HandManager : MonoBehaviour
     {
-        [HideInInspector] public List<CardOnHandManager> handDeck = new();
+        [HideInInspector] public List<CardManager> handDeck = new();
 
         public GameObject explosionEffectPrefab;
 
@@ -87,7 +87,7 @@ namespace CardManagement
             float delayStep = 0.1f;
             float delay = delayStep * handDeck.Count;
 
-            foreach (CardOnHandManager cardManager in handDeck)
+            foreach (CardManager cardManager in handDeck)
             {
                 GameObject card = cardManager.gameObject;
 
@@ -104,8 +104,7 @@ namespace CardManagement
                 rot.z = angle / -2;
                 card.transform.eulerAngles = rot;
 
-                cardManager.targetRotation = rot;
-                cardManager.targetPosition = pos;
+                cardManager.SetCardPosition(pos, rot);
                 card.transform.localScale = Vector3.one;
 
                 counter++;
