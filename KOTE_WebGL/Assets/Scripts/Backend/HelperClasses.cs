@@ -138,11 +138,7 @@ public class RegisterData
     }
 }
 
-[Serializable]
-public class ServerVersionText
-{
-    public string data;
-}
+
 
 [Serializable]
 public class LoginData

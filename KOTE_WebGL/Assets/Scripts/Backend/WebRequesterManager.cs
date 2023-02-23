@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
+using Cysharp.Threading.Tasks;
 
 /// <summary>
 /// Check HelperClasses.cs for the classes usaed to hold JSON data
@@ -40,7 +40,6 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_EXPEDITON_SCORE.AddListener(RequestExpeditionScore);
         GameManager.Instance.EVENT_REQUEST_WHITELIST_CHECK.AddListener(RequestWhitelistStatus);
         GameManager.Instance.EVENT_SEND_BUG_FEEDBACK.AddListener(SendBugReport);
-        GameManager.Instance.EVENT_REQUEST_SERVER_VERSION.AddListener(RequestServerVersion);
     }
 
     private void Start()
@@ -149,45 +148,20 @@ public class WebRequesterManager : MonoBehaviour
         StartCoroutine(PushBugReport(title, description, base64Image));
     }
 
-    public void RequestServerVersion(Action<string> resultCallback)
+    public async UniTask<string> MakeRequest(UnityWebRequest request) 
     {
-        StartCoroutine(GetServerVersion(resultCallback));
-    }
-
-    public IEnumerator GetServerVersion(Action<string> resultCallback)
-    {
-        string serverVersionUrl = $"{baseUrl}{RestEndpoint.ServerVersion}";
-        ServerCommunicationLogger.Instance.LogCommunication("Server version request", CommunicationDirection.Outgoing);
-
-        using (UnityWebRequest request = UnityWebRequest.Get(serverVersionUrl))
+        await request.SendWebRequest();
+        if (request.result != UnityWebRequest.Result.Success)
         {
-            yield return request.SendWebRequest();
-            if (request.result != UnityWebRequest.Result.Success)
-            {
-                Debug.LogError($"{request.error}");
-                ServerCommunicationLogger.Instance.LogCommunication($"Server version error: {request.error}",
-                    CommunicationDirection.Incoming);
-                yield break;
-            }
-
-            ServerVersionText serverVersionObj = JsonUtility.FromJson<ServerVersionText>(request.downloadHandler.text);
-            string serverVersion = serverVersionObj.data;
-
-            Debug.Log($"Server Version: [{serverVersion}]");
-            ServerCommunicationLogger.Instance.LogCommunication(
-                $"Server version success: {request.downloadHandler.text}", CommunicationDirection.Incoming);
-
-
-            resultCallback.Invoke(serverVersion);
+            Debug.LogError($"{request.error}");
+            ServerCommunicationLogger.Instance.LogCommunication($"[{request.uri}] Data Not Retrieved: {request.error}", CommunicationDirection.Incoming);
+            return null;
         }
-    }
-
-    public async string MakeRequest(UnityWebRequest request) 
-    {
-        var operation = request.SendWebRequest();
-        while (!operation.isDone)
+        else 
         {
-            await Task.Yield();
+            string rawJson = request.downloadHandler.text;
+            ServerCommunicationLogger.Instance.LogCommunication($"[{request.uri}] Data Successfully Retrieved", CommunicationDirection.Incoming, rawJson);
+            return rawJson;
         }
     }
 
@@ -862,6 +836,12 @@ public class WebRequesterManager : MonoBehaviour
                 Debug.Log("[Error sending bug report]");
             }
         }
+    }
+
+    public string ConstructUrl(string path) 
+    {
+        string host = ClientEnvironmentManager.Instance.WebRequestURL;
+        return $"{host}{path}";
     }
 }
 

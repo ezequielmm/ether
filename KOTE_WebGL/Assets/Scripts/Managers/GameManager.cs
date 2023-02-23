@@ -41,7 +41,6 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_LOGOUT_SUCCESSFUL = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_LOGOUT_ERROR = new UnityEvent<string>();
 
-    [HideInInspector] public UnityEvent<Action<string>> EVENT_REQUEST_SERVER_VERSION = new();
     [HideInInspector] public UnityEvent EVENT_VERSION_UPDATED = new();
 
     //WALLET EVENTS
@@ -296,7 +295,7 @@ public class GameManager : SingleTon<GameManager>
 
     // Scene Events
     [HideInInspector] public UnityEvent EVENT_SCENE_LOADING = new UnityEvent();
-    [HideInInspector] public UnityEvent<inGameScenes> EVENT_SCENE_LOADED = new UnityEvent<inGameScenes>();
+    [HideInInspector] public UnityEvent<inGameScenes> EVENT_SCENE_LOADED { get; } = new UnityEvent<inGameScenes>();
 
     // Feedback Reporting Events
     [HideInInspector] public UnityEvent EVENT_SHOW_FEEDBACK_PANEL = new UnityEvent();
@@ -305,6 +304,7 @@ public class GameManager : SingleTon<GameManager>
 
     public inGameScenes
         nextSceneToLoad { get; set; } // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
+    public inGameScenes CurrentScene { get; private set; } = inGameScenes.Loader;
 
     public WebRequesterManager webRequester;
 
@@ -321,12 +321,21 @@ public class GameManager : SingleTon<GameManager>
         //EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ReturnToMainMenu);
     }
 
-    private void GetServerVersion() 
+    private async void GetServerVersion()
     {
-        EVENT_REQUEST_SERVER_VERSION.Invoke((serverVersion) => {
-            ServerVersion = serverVersion;
-            EVENT_VERSION_UPDATED.Invoke();
-        });
+        ServerVersion = await FetchData.Instance.GetServerVersion();
+        EVENT_VERSION_UPDATED.Invoke();
+    }
+
+    public void SceneLoaded() 
+    {
+        if (CurrentScene == nextSceneToLoad) 
+        {
+            Debug.LogError($"[GameManager] SceneLoaded Called Twice. Not running Event Scene Loaded.");
+            return;
+        }
+        CurrentScene = nextSceneToLoad;
+        EVENT_SCENE_LOADED.Invoke(nextSceneToLoad);
     }
 
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene
@@ -342,6 +351,7 @@ public class GameManager : SingleTon<GameManager>
             EVENT_STOP_MUSIC.Invoke();
         }
         SceneManager.LoadScene(inGameScenes.Loader.ToString());
+        CurrentScene = inGameScenes.Loader;
     }
 
     private void RequestExpeditionSync()
@@ -375,7 +385,7 @@ public class GameManager : SingleTon<GameManager>
     private void OnSceneLoad(inGameScenes scene) 
     {
         Debug.Log($"[GameManager] Scene Loaded: {scene}");
-        for(int i = SceneLoadsActions.Count - 1; i >= 0; i--) 
+        for (int i = SceneLoadsActions.Count - 1; i >= 0; i--) 
         {
             (Action, inGameScenes) action = SceneLoadsActions[i];
             if (action.Item2 == scene) 

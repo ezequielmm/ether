@@ -36,8 +36,7 @@ public class LoadingManager : MonoBehaviour
             //Debug.Log(asyncLoad.progress);
             yield return null;
         }
-
-        GameManager.Instance.EVENT_SCENE_LOADED.Invoke(GameManager.Instance.nextSceneToLoad);
+        GameManager.Instance.SceneLoaded();
         Destroy(gameObject);
     }
 
