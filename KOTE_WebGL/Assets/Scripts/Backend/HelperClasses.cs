@@ -83,7 +83,7 @@ public class Tooltip
 [Serializable]
 public class ExpeditionStatusData
 {
-    public Data data;
+    public Data data = new();
 
     public bool GetHasExpedition()
     {
@@ -101,7 +101,7 @@ public class ExpeditionStatusData
 [Serializable]
 public class ExpeditionRequestData
 {
-    public Data data;
+    public Data data = new();
 
     public bool GetExpeditionStarted()
     {
@@ -118,7 +118,7 @@ public class ExpeditionRequestData
 [Serializable]
 public class RandomNameData
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
@@ -130,7 +130,7 @@ public class RandomNameData
 [Serializable]
 public class RegisterData
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
@@ -145,7 +145,7 @@ public class RegisterData
 [Serializable]
 public class LoginData
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
@@ -157,7 +157,7 @@ public class LoginData
 [Serializable]
 public class ProfileData
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
@@ -165,13 +165,13 @@ public class ProfileData
         public string id;
         public string name;
         public string email;
-        public List<string> wallets;
+        public List<string> wallets = new();
         public int coins;
         public int fief;
         public int experience;
         public int level;
         public int act;
-        public ActMap act_map;
+        public ActMap act_map = new();
 
         [Serializable]
         public class ActMap
@@ -185,7 +185,7 @@ public class ProfileData
 [Serializable]
 public class LogoutData
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
@@ -197,13 +197,13 @@ public class LogoutData
 [Serializable]
 public class PlayerStateData
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
     {
         public string expeditionId;
-        public PlayerData playerState;
+        public PlayerData playerState = new();
     }
 }
 
@@ -226,9 +226,9 @@ public class PlayerData
     public int energy;
     public int energyMax;
     public int defense;
-    public List<Card> cards;
-    public List<PotionData> potions;
-    public List<Trinket> trinkets;
+    public List<Card> cards = new();
+    public List<PotionData> potions = new();
+    public List<Trinket> trinkets = new();
 }
 
 [Serializable]
@@ -246,8 +246,8 @@ public class Card
 
     public string pool;
     public bool showPointer;
-    public Effects properties;
-    public List<string> keywords;
+    public Effects properties = new();
+    public List<string> keywords = new();
 }
 
 [Serializable]
@@ -258,7 +258,7 @@ public class Trinket
     public string name;
     public string rarity;
     public string description;
-    public Effects effects;
+    public Effects effects = new();
 }
 
 [Serializable]
@@ -270,7 +270,7 @@ public class PotionData
     public string rarity;
     public string description;
     public int cost;
-    public List<Effect> effects;
+    public List<Effect> effects = new();
     public bool usableOutsideCombat;
     public bool showPointer;
 }
@@ -278,16 +278,16 @@ public class PotionData
 [Serializable]
 public class Effects
 {
-    public List<Effect> effects;
-    public List<Statuses> statuses;
+    public List<Effect> effects = new();
+    public List<Statuses> statuses = new();
 }
 
 [Serializable]
 public class Statuses
 {
     public string name;
-    public Args args;
-    public Tooltip tooltip;
+    public Args args = new();
+    public Tooltip tooltip = new();
 
     [Serializable]
     public class Args
@@ -320,7 +320,7 @@ public class Deck
 [Serializable]
 public class CardPiles
 {
-    public Cards data;
+    public Cards data = new();
 }
 
 #region NODESTATE
@@ -328,7 +328,7 @@ public class CardPiles
 [Serializable]
 public class NodeStateData
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
@@ -336,7 +336,7 @@ public class NodeStateData
         public int node_id;
         public bool completed;
         public string node_type;
-        public Data1 data;
+        public Data1 data = new();
 
         [Serializable]
         public class Data1
@@ -344,7 +344,7 @@ public class NodeStateData
             public int round;
             public int action;
 
-            public PlayerData player;
+            public PlayerData player = new();
 
             [Serializable]
             public class PlayerData
@@ -353,7 +353,7 @@ public class NodeStateData
                 public int energy_max;
                 public int hand_size;
 
-                public Cards cards;
+                public Cards cards = new();
             }
         }
     }
@@ -362,10 +362,10 @@ public class NodeStateData
 [Serializable]
 public class Cards
 {
-    public List<Card> draw;
-    public List<Card> hand;
-    public List<Card> discard;
-    public List<Card> exhausted;
+    public List<Card> draw = new();
+    public List<Card> hand = new();
+    public List<Card> discard = new();
+    public List<Card> exhausted = new();
     public int energy;
     public int energy_max;
 }
@@ -389,7 +389,7 @@ public class PurchaseData //outgoing data
 [Serializable]
 public class CardsSelectedList
 {
-    public List<string> cardsToTake;
+    public List<string> cardsToTake = new();
 }
 
 [Serializable]
@@ -402,7 +402,7 @@ public class PotionUsedData
 [Serializable]
 public class Errordata
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
@@ -415,7 +415,7 @@ public class Errordata
 [Serializable]
 public class SWSM_Base
 {
-    public SWSM_CommonFields data;
+    public SWSM_CommonFields data = new();
 
     [Serializable]
     public class SWSM_CommonFields
@@ -476,20 +476,20 @@ public class MerchantData
 [Serializable]
 public class SWSM_MerchantData
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
     {
         public string message_type;
         public string action;
-        public MerchantData data;
+        public MerchantData data = new();
     }
 }
 [Serializable]
 public class SWSM_TreasureData
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
@@ -502,12 +502,12 @@ public class SWSM_TreasureData
 [Serializable]
 public class SWSM_ChestResult
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
     {
-        public ChestResult data;
+        public ChestResult data = new();
     }
 }
 
@@ -515,8 +515,8 @@ public class SWSM_ChestResult
 public class ChestResult
 {
     public string isOpen;
-    public List<RewardItemData> rewards;
-    public TrappedResult trapped;
+    public List<RewardItemData> rewards = new();
+    public TrappedResult trapped = new();
 }
 
 [Serializable]
@@ -526,18 +526,18 @@ public class TrappedResult
     public string trappedText;
     public string monster_type;
     public int damage;
-    public Card curse_card;
+    public Card curse_card = new();
 }
 
 [Serializable]
 public class SWSM_EncounterData
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
     {
-        public EncounterData data;
+        public EncounterData data = new();
 
         [Serializable]
         public class EncounterData
@@ -545,7 +545,7 @@ public class SWSM_EncounterData
             public string encounterName;
             public string imageId;
             public string displayText;
-            public List<ButtonData> buttons;
+            public List<ButtonData> buttons = new();
         }
     }
 }
@@ -560,33 +560,33 @@ public class ButtonData
 [Serializable]
 public class SWSM_PlayerDeckData
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
     {
         public string message_type;
         public string action;
-        public List<Card> data;
+        public List<Card> data = new();
     }
 }
 
 [Serializable]
 public class SWSM_DeckData
 {
-    public SWSM_Deck data;
+    public SWSM_Deck data = new();
 }
 
 [Serializable]
 public class SWSM_Deck
 {
-    public DeckData data;
+    public DeckData data = new();
 }
 
 [Serializable]
 public class DeckData
 {
-    public List<Card> deck;
+    public List<Card> deck = new();
 }
 
 [Serializable]
@@ -601,24 +601,24 @@ public class CardUpgrade
 [Serializable]
 public class SWSM_MapData
 {
-    public ExpeditionMapData data;
+    public ExpeditionMapData data = new();
 }
 
 [Serializable]
 public class SWSM_NodeData
 {
-    public NodeStateData data;
+    public NodeStateData data = new();
 }
 
 [Serializable]
 public class SWSM_IntentData
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
     {
-        public List<EnemyIntent> data;
+        public List<EnemyIntent> data = new();
         public string action;
         public string message_type;
     }
@@ -628,7 +628,7 @@ public class SWSM_IntentData
 public class EnemyIntent
 {
     public string id;
-    public List<Intent> intents;
+    public List<Intent> intents = new();
 
     [Serializable]
     public class Intent
@@ -642,28 +642,28 @@ public class EnemyIntent
 [Serializable]
 public class SWSM_StatusData
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
     {
         public string message_type;
         public string action;
-        public List<StatusData> data;
+        public List<StatusData> data = new();
     }
 }
 
 [Serializable]
 public class SWSM_CombatAction
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
     {
         public string message_type;
         public string action;
-        public List<CombatTurnData> data;
+        public List<CombatTurnData> data = new();
     }
 }
 
@@ -672,7 +672,7 @@ public class StatusData
 {
     public string targetEntity;
     public string id;
-    public List<Status> statuses;
+    public List<Status> statuses = new();
 
     [Serializable]
     public class Status
@@ -686,19 +686,19 @@ public class StatusData
 [Serializable]
 public class SWSM_ShowCardDialog
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
     {
-        public showCardData data;
+        public showCardData data = new();
     }
 }
 
 [Serializable]
 public class showCardData
 {
-    public List<Card> cards;
+    public List<Card> cards = new();
     public int cardsToTake;
     public string kind;
 }
@@ -706,12 +706,12 @@ public class showCardData
 [Serializable]
 public class SWSM_CardUpdateData
 {
-    public CardUpdateData data;
-    
+    public CardUpdateData data = new();
+
     [Serializable]
     public class CardUpdateData
     {
-        public UpdateCardData data;
+        public UpdateCardData data = new();
         [Serializable]
         public class UpdateCardData
         {
@@ -725,19 +725,19 @@ public class SWSM_CardUpdateData
 [Serializable]
 public class SWSM_ErrorData
 {
-    public String data;
+    public string data;
 }
 
 [Serializable]
 public class SWSM_PlayerState
 {
-    public PlayerStateData data;
+    public PlayerStateData data = new();
 }
 
 [Serializable]
 public class SWSM_EnergyArray
 {
-    public EnergyData data;
+    public EnergyData data = new();
 
     [Serializable]
     public class EnergyData
@@ -749,7 +749,7 @@ public class SWSM_EnergyArray
 [Serializable]
 public class SWSM_CurrentStep
 {
-    public StepData data;
+    public StepData data = new();
 
     [Serializable]
     public class StepData
@@ -758,7 +758,7 @@ public class SWSM_CurrentStep
         public string action;
 
         //public string data;
-        public CurrentStep data;
+        public CurrentStep data = new();
     }
 }
 
@@ -772,19 +772,19 @@ public class CurrentStep
 [Serializable]
 public class SWSM_CardsPiles
 {
-    public CardPiles data;
+    public CardPiles data = new();
 }
 
 [Serializable]
 public class SWSM_Enemies
 {
-    public EnemiesData data;
+    public EnemiesData data = new();
 }
 
 [Serializable]
 public class EnemiesData
 {
-    public List<EnemyData> data;
+    public List<EnemyData> data = new();
 }
 
 [Serializable]
@@ -812,19 +812,19 @@ public class EnemyData
 
 public class SWSM_Players
 {
-    public PlayersData data;
+    public PlayersData data = new();
 }
 
 [Serializable]
 public class PlayersData
 {
-    public PlayerData data; //future array when multiplayer
+    public PlayerData data = new(); //future array when multiplayer
 }
 
 
 public class SWSM_CardMove
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
@@ -839,7 +839,7 @@ public class CardToMoveData
     public string source;
     public string destination;
     public string id;
-    public Card card;
+    public Card card = new();
 }
 
 [Serializable]
@@ -850,7 +850,7 @@ public class SWSM_CardAdd
     [Serializable]
     public class Data
     {
-        public List<AddCardData> data;
+        public List<AddCardData> data = new();
     }
 }
 
@@ -859,13 +859,13 @@ public class AddCardData
 {
     public string destination;
     public string id;
-    public Card card;
+    public Card card = new();
 }
 
 [Serializable]
 public class SWSM_ChangeTurn
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
@@ -877,17 +877,17 @@ public class SWSM_ChangeTurn
 [Serializable]
 public class SWSM_RewardsData
 {
-    public Data data;
+    public Data data = new();
 
     [Serializable]
     public class Data
     {
-        public RewardsData data;
+        public RewardsData data = new();
 
         [Serializable]
         public class RewardsData
         {
-            public List<RewardItemData> rewards;
+            public List<RewardItemData> rewards = new();
         }
     }
 }
@@ -899,9 +899,9 @@ public class RewardItemData
     public string type;
     public int amount;
     public bool taken;
-    public PotionData potion;
-    public Card card;
-    public Trinket trinket;
+    public PotionData potion = new();
+    public Card card = new();
+    public Trinket trinket = new();
 }
 
 [Serializable]
@@ -915,12 +915,12 @@ public class RewardPotion
 [Serializable]
 public class SWSM_HealData
 {
-    public HealData data;
+    public HealData data = new();
 
     [Serializable]
     public class HealData
     {
-        public HealAmount data;
+        public HealAmount data = new();
 
         [Serializable]
         public class HealAmount
@@ -933,19 +933,19 @@ public class SWSM_HealData
 [Serializable]
 public class SWSM_SelectTrinketData
 {
-    public SelectTrinketData data;
+    public SelectTrinketData data = new();
 
     [Serializable]
     public class SelectTrinketData
     {
-        public TrinketData data;
+        public TrinketData data = new();
     }
 }
 
 [Serializable]
 public class TrinketData
 {
-    public List<Trinket> trinkets;
+    public List<Trinket> trinkets = new();
 }
 public class NftData
 {
@@ -1011,7 +1011,7 @@ public class Achievement
 [Serializable]
 public class WhitelistResponse
 {
-    public WhitelistData data;
+    public WhitelistData data = new();
 
     [Serializable]
     public class WhitelistData
@@ -1035,5 +1035,5 @@ public class BugReportData
     public string screenshot;
     public string frontendVersion;
     public string backendVersion = "???";
-    public List<ServerCommunicationLogger.ServerCommunicationLog> messageLog;
+    public List<ServerCommunicationLogger.ServerCommunicationLog> messageLog = new();
 }

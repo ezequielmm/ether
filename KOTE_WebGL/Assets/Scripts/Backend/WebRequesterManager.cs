@@ -185,7 +185,7 @@ public class WebRequesterManager : MonoBehaviour
         //TODO: check for errors here
 
         RandomNameData randomNameData =
-            JsonUtility.FromJson<RandomNameData>(randomNameInfoRequest.downloadHandler.text);
+            JsonConvert.DeserializeObject<RandomNameData>(randomNameInfoRequest.downloadHandler.text);
         string newName = randomNameData.data.username;
 
         GameManager.Instance.EVENT_REQUEST_NAME_SUCESSFUL.Invoke(string.IsNullOrEmpty(newName) ? "" : newName);
@@ -226,7 +226,7 @@ public class WebRequesterManager : MonoBehaviour
 
             ServerCommunicationLogger.Instance.LogCommunication(
                 $"Registration Success. {request.downloadHandler.text}", CommunicationDirection.Incoming);
-            RegisterData registerData = JsonUtility.FromJson<RegisterData>(request.downloadHandler.text);
+            RegisterData registerData = JsonConvert.DeserializeObject<RegisterData>(request.downloadHandler.text);
             string token = registerData.data.token;
 
             Debug.Log("Registration sucessful, token is " + token);
@@ -272,7 +272,7 @@ public class WebRequesterManager : MonoBehaviour
 
             ServerCommunicationLogger.Instance.LogCommunication($"Login success: {request.downloadHandler.text}",
                 CommunicationDirection.Incoming);
-            LoginData loginData = JsonUtility.FromJson<LoginData>(request.downloadHandler.text);
+            LoginData loginData = JsonConvert.DeserializeObject<LoginData>(request.downloadHandler.text);
             string token = loginData.data.token;
 
             //TODO: check for errors even on successful result
@@ -313,7 +313,7 @@ public class WebRequesterManager : MonoBehaviour
 
             ServerCommunicationLogger.Instance.LogCommunication(
                 $"Request profile successful: {request.downloadHandler.text}", CommunicationDirection.Incoming);
-            ProfileData profileData = JsonUtility.FromJson<ProfileData>(request.downloadHandler.text);
+            ProfileData profileData = JsonConvert.DeserializeObject<ProfileData>(request.downloadHandler.text);
             string name = profileData.data.name;
             int fief = profileData.data.fief;
 
@@ -352,7 +352,7 @@ public class WebRequesterManager : MonoBehaviour
 
             ServerCommunicationLogger.Instance.LogCommunication($"Logout Success: {request.downloadHandler.text}",
                 CommunicationDirection.Incoming);
-            LogoutData logoutData = JsonUtility.FromJson<LogoutData>(request.downloadHandler.text);
+            LogoutData logoutData = JsonConvert.DeserializeObject<LogoutData>(request.downloadHandler.text);
             string message = logoutData.data.message;
 
             //TODO: check for errors even on sucessful result
@@ -392,7 +392,7 @@ public class WebRequesterManager : MonoBehaviour
                 yield break;
             }
 
-            ExpeditionStatusData data = JsonUtility.FromJson<ExpeditionStatusData>(request.downloadHandler.text);
+            ExpeditionStatusData data = JsonConvert.DeserializeObject<ExpeditionStatusData>(request.downloadHandler.text);
 
             GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(data.GetHasExpedition(), data.data.nftId);
 
@@ -430,7 +430,7 @@ public class WebRequesterManager : MonoBehaviour
             }
 
             SWSM_ScoreboardData scoreboardData =
-                JsonUtility.FromJson<SWSM_ScoreboardData>(request.downloadHandler.text);
+                JsonConvert.DeserializeObject<SWSM_ScoreboardData>(request.downloadHandler.text);
             Debug.Log("answer from expedition score " + request.downloadHandler.text);
             ServerCommunicationLogger.Instance.LogCommunication(
                 "Expedition score success: " + request.downloadHandler.text, CommunicationDirection.Incoming);
@@ -471,7 +471,7 @@ public class WebRequesterManager : MonoBehaviour
                 "Character list success: " + request.downloadHandler.text, CommunicationDirection.Incoming);
 
 
-            //LogoutData answerData = JsonUtility.FromJson<LogoutData>(request.downloadHandler.text);
+            //LogoutData answerData = JsonConvert.DeserializeObject<LogoutData>(request.downloadHandler.text);
             //string message = logoutData.data.message;
 
             //TODO: check for errors even on sucessful result
@@ -506,7 +506,7 @@ public class WebRequesterManager : MonoBehaviour
                         $"Wallet Content success: {request.downloadHandler.text}",
                         CommunicationDirection.Incoming);
                     WalletKnightIds walletKnightIds =
-                        JsonUtility.FromJson<WalletKnightIds>(request.downloadHandler.text);
+                        JsonConvert.DeserializeObject<WalletKnightIds>(request.downloadHandler.text);
                     GameManager.Instance.EVENT_WALLET_CONTENTS_RECEIVED.Invoke(walletKnightIds);
                     yield break;
                 }
@@ -563,7 +563,7 @@ public class WebRequesterManager : MonoBehaviour
             ServerCommunicationLogger.Instance.LogCommunication(
                 $"Whitelist success: {request.downloadHandler.text}", CommunicationDirection.Incoming);
             WhitelistResponse whitelistResponse =
-                JsonUtility.FromJson<WhitelistResponse>(request.downloadHandler.text);
+                JsonConvert.DeserializeObject<WhitelistResponse>(request.downloadHandler.text);
             GameManager.Instance.EVENT_WHITELIST_CHECK_RECEIVED.Invoke(whitelistResponse.data.isValid);
         }
     }
@@ -608,7 +608,7 @@ public class WebRequesterManager : MonoBehaviour
                 Debug.Log("Nft metadata received");
                 ServerCommunicationLogger.Instance.LogCommunication(
                     $"Metadata success: {openSeaRequest.downloadHandler.text}", CommunicationDirection.Incoming);
-                NftData nftData = JsonUtility.FromJson<NftData>(openSeaRequest.downloadHandler.text);
+                NftData nftData = JsonConvert.DeserializeObject<NftData>(openSeaRequest.downloadHandler.text);
                 GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.Invoke(nftData);
             }
         }
@@ -643,7 +643,7 @@ public class WebRequesterManager : MonoBehaviour
             Debug.Log("Nft metadata received");
             ServerCommunicationLogger.Instance.LogCommunication(
                 $"Single metadata success: {openSeaRequest.downloadHandler.text}", CommunicationDirection.Incoming);
-            NftData nftData = JsonUtility.FromJson<NftData>(openSeaRequest.downloadHandler.text);
+            NftData nftData = JsonConvert.DeserializeObject<NftData>(openSeaRequest.downloadHandler.text);
             GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.Invoke(nftData);
 
             if (nftData.assets.Length > 0)
@@ -763,7 +763,7 @@ public class WebRequesterManager : MonoBehaviour
 
             ServerCommunicationLogger.Instance.LogCommunication(
                 $"New expedition success: {request.downloadHandler.text}", CommunicationDirection.Incoming);
-            ExpeditionRequestData data = JsonUtility.FromJson<ExpeditionRequestData>(request.downloadHandler.text);
+            ExpeditionRequestData data = JsonConvert.DeserializeObject<ExpeditionRequestData>(request.downloadHandler.text);
 
             if (data.GetExpeditionStarted())
             {

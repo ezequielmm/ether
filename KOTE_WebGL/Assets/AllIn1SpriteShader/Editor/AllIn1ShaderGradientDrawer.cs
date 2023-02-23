@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using UnityEditor;
@@ -111,7 +112,7 @@ namespace AllIn1SpriteShader
 		private string EncodeGradient(Gradient gradient)
 		{
 			if (gradient == null) return null;
-			return JsonUtility.ToJson(new GradientRepresentation(gradient));
+			return JsonConvert.SerializeObject(new GradientRepresentation(gradient));
 		}
 
 		private Gradient DecodeGradient(MaterialProperty prop, string name)
@@ -119,7 +120,7 @@ namespace AllIn1SpriteShader
 			string json = name.Substring(TextureName(prop).Length);
 			try
 			{
-				return JsonUtility.FromJson<GradientRepresentation>(json).ToGradient();
+				return JsonConvert.DeserializeObject<GradientRepresentation>(json).ToGradient();
 			}
 			catch (Exception)
 			{

@@ -207,7 +207,7 @@ public class CardOnHandManager : MonoBehaviour
             {
                 foreach (var status in card.properties.statuses)
                 {
-                    if (!string.IsNullOrEmpty(status.tooltip.title))
+                    if (!string.IsNullOrEmpty(status?.tooltip?.title))
                     {
                         tooltips.Add(status.tooltip);
                     }

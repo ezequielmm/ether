@@ -7,6 +7,7 @@ using BestHTTP.SocketIO3.Events;
 using System.Text;
 using Cysharp.Threading.Tasks;
 using UnityEditor;
+using Newtonsoft.Json;
 
 public class WebSocketManager : SingleTon<WebSocketManager>
 {
@@ -24,6 +25,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     [SerializeField] private string SocketStatus = "Unknown";
     private bool doNotResuscitate = false;
+    public bool SocketOpened { get; private set; } = false;
     public bool IsSocketHealthy
     {
         get
@@ -90,8 +92,34 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void FixedUpdate()
     {
+        UpdateSocketHealthStatus();
+        CheckTimedoutSocket();
+        ManageQueuedMessages();
+    }
+
+    void OnDestroy()
+    {
+        doNotResuscitate = true;
+        if (rootSocket != null)
+        {
+            Debug.Log("[WebSocket Manager] socket disconnected");
+            rootSocket.Disconnect();
+        }
+        if (Instance == this)
+        {
+            Debug.Log($"[WebSocketManager] Socket manager destroyed");
+        }
+    }
+
+    private void OnEnable()
+    {
+        Debug.Log("[WebSocketManager] Socket manager Enabled");
+    }
+
+    private void UpdateSocketHealthStatus() 
+    {
         string newSocketState = manager.State.ToString();
-        if(SocketStatus != newSocketState) 
+        if (SocketStatus != newSocketState)
         {
             // Logs
             switch (manager.State)
@@ -119,6 +147,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
                     }
                     break;
                 case SocketManager.States.Open:
+                    SocketOpened = true;
                     socketOpenTimeGameSeconds = Time.time;
                     socketDeathTimeGameSeconds = -1;
                     break;
@@ -126,45 +155,28 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             // Update Unity UI
             SocketStatus = manager.State.ToString();
         }
+    }
 
-        if (!IsSocketHealthy && socketDeathTimeGameSeconds != -1 && Time.time - socketDeathTimeGameSeconds > GameSettings.MAX_TIMEOUT_SECONDS) 
+    private void CheckTimedoutSocket() 
+    {
+        if (!IsSocketHealthy && socketDeathTimeGameSeconds != -1 && Time.time - socketDeathTimeGameSeconds > GameSettings.MAX_TIMEOUT_SECONDS)
         {
             // After some seconds of closed connection, return to main menu.
-            Debug.LogError($"[WebSocketManager] Disconnected for {Mathf.Round(Time.time - socketDeathTimeGameSeconds)} seconds Connection could not be salvaged. Returning to Main Menu.");
-            GameManager.Instance.LoadScene(inGameScenes.MainMenu);
+            Debug.LogError($"[WebSocketManager] Disconnected for {Mathf.Round(Time.time - socketDeathTimeGameSeconds)} seconds Connection could not be salvaged.");
             Destroy(gameObject);
         }
+    }
 
-        if (IsSocketHealthy && EmissionQueue.Count > 0 && Time.time - socketOpenTimeGameSeconds > 1) 
+    private void ManageQueuedMessages() 
+    {
+        if (IsSocketHealthy && EmissionQueue.Count > 0 && Time.time - socketOpenTimeGameSeconds > 1)
         {
             EmissionQueue.Peek().Invoke();
             EmissionQueue.Dequeue();
-        } 
-    }
-
-    void OnDestroy()
-    {
-        doNotResuscitate = true;
-        if (rootSocket != null)
-        {
-            Debug.Log("[WebSocket Manager] socket disconnected");
-            rootSocket.Disconnect();
-        }
-        if (Instance == this)
-        {
-            Debug.Log($"[WebSocketManager] Socket manager destroyed");
         }
     }
 
-    private void OnEnable()
-    {
-        Debug.Log("[WebSocketManager] Socket manager Enabled");
-    }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
+    
     void ConnectSocket()
     {
         //BestHTTP.HTTPManager.UseAlternateSSLDefaultValue = true; 
@@ -253,7 +265,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     /// <param name="test"></param>
     private void OnNodeClickedAnswer(string data)
     {
-        //NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
+        //NodeStateData nodeState = JsonConvert.DeserializeObject<NodeStateData>(nodeData);
         //GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState,WS_QUERY_TYPE.MAP_NODE_SELECTED);
 
         WebSocketParser.ParseJSON(data);
@@ -284,7 +296,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         cardData.cardId = cardId;
         cardData.targetId = id;
 
-        string data = JsonUtility.ToJson(cardData).ToString();
+        string data = JsonConvert.SerializeObject(cardData).ToString();
         //Debug.Log("[WebSocket Manager] OnCardPlayed data: " + data);
 
         //EmitWithResponse(OnCardPlayedAnswer, WS_MESSAGE_CARD_PLAYED, data);
@@ -293,14 +305,14 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     private void OnCardsSelected(List<string> cardIds)
     {
         CardsSelectedList cardList = new CardsSelectedList { cardsToTake = cardIds };
-        string data = JsonUtility.ToJson(cardList);
+        string data = JsonConvert.SerializeObject(cardList);
         Debug.Log("[WebSocket Manager] OnCardsSelected data: " + data);
         Emit(SocketEvent.MoveSelectedCard, data);
     }
 
     private void OnTrinketsSelected(List<string> trinketIds)
     {
-        string data = JsonUtility.ToJson(trinketIds);
+        string data = JsonConvert.SerializeObject(trinketIds);
         Debug.Log("[WebSocket Manager] OnTrinketsSelected data: " + data);
         Emit(SocketEvent.TrinketsSelected, data);
     }
@@ -313,7 +325,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             targetId = id
         };
 
-        string data = JsonUtility.ToJson(purchase).ToString();
+        string data = JsonConvert.SerializeObject(purchase).ToString();
         //Debug.Log($"[WebSocket Manager] OnBuyItem data: {data}");
 
         Emit(SocketEvent.MerchantBuy, data);
@@ -327,7 +339,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             potionId = potionId,
             targetId = targetId
         };
-        string data = JsonUtility.ToJson(potionData);
+        string data = JsonConvert.SerializeObject(potionData);
         //Debug.Log("[WebSocket Manager] OnPotionUsed data: " + data);
 
         Emit(SocketEvent.UsePotion, data);
@@ -381,7 +393,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         Debug.Log("on end of turn answer:" + nodeData);
         if (MessageErrorValidator.ValidateData(nodeData))
         {
-            NodeStateData nodeState = JsonUtility.FromJson<NodeStateData>(nodeData);
+            NodeStateData nodeState = JsonConvert.DeserializeObject<NodeStateData>(nodeData);
             GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState, WS_QUERY_TYPE.END_OF_TURN);
         }
     }

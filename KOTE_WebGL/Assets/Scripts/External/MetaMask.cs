@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -251,7 +252,7 @@ public class MetaMask : MonoBehaviour
 
     private static RequestError GetRequestError(string json)
     {
-        return (RequestError)JsonUtility.FromJson(json, typeof(RequestError));
+        return JsonConvert.DeserializeObject<RequestError>(json);
     }
 
     #region JavascriptServiceLayer
