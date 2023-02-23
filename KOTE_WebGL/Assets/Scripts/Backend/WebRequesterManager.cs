@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -12,22 +13,6 @@ public class WebRequesterManager : MonoBehaviour
 {
     private string baseUrl => ClientEnvironmentManager.Instance.WebRequestURL;
     private string skinUrl => ClientEnvironmentManager.Instance.SkinURL;
-    private readonly string urlRandomName = "/auth/v1/generate/username";
-    private readonly string urlRegister = "/auth/v1/register";
-    private readonly string urlLogin = "/auth/v1/login";
-    private readonly string urlLogout = "/auth/v1/logout";
-    private readonly string urlProfile = "/gsrv/v1/profile";
-    private readonly string urlWalletData = "/gsrv/v1/wallets";
-    private readonly string urlKoteWhitelist = "/gsrv/v1/tokens/verify";
-    private readonly string urlCharactersList = "/gsrv/v1/characters";
-    private readonly string urlExpeditionStatus = "/gsrv/v1/expeditions/status";
-    private readonly string urlExpeditionRequest = "/gsrv/v1/expeditions";
-    private readonly string urlExpeditionCancel = "/gsrv/v1/expeditions/cancel";
-    private readonly string urlExpeditionScore = "/gsrv/v1/expeditions/score";
-    private readonly string urlBugReport = "/gsrv/v1/bugreport";
-    private readonly string urlServerVersion = "/gsrv/v1/showversion";
-
-
     private string urlOpenSea => ClientEnvironmentManager.Instance.OpenSeasURL;
 
     // we have to queue the requested nft images due to rate limiting
@@ -171,7 +156,7 @@ public class WebRequesterManager : MonoBehaviour
 
     public IEnumerator GetServerVersion(Action<string> resultCallback)
     {
-        string serverVersionUrl = $"{baseUrl}{urlServerVersion}";
+        string serverVersionUrl = $"{baseUrl}{RestEndpoint.ServerVersion}";
         ServerCommunicationLogger.Instance.LogCommunication("Server version request", CommunicationDirection.Outgoing);
 
         using (UnityWebRequest request = UnityWebRequest.Get(serverVersionUrl))
@@ -197,9 +182,18 @@ public class WebRequesterManager : MonoBehaviour
         }
     }
 
+    public async string MakeRequest(UnityWebRequest request) 
+    {
+        var operation = request.SendWebRequest();
+        while (!operation.isDone)
+        {
+            await Task.Yield();
+        }
+    }
+
     public IEnumerator GetRandomName(string lastName)
     {
-        string randomNameUrl = $"{baseUrl}{urlRandomName}";
+        string randomNameUrl = $"{baseUrl}{RestEndpoint.RandomName}";
 
         UnityWebRequest randomNameInfoRequest;
 
@@ -233,7 +227,7 @@ public class WebRequesterManager : MonoBehaviour
     /// <returns></returns>
     public IEnumerator GetRegister(string nameText, string email, string password)
     {
-        string registerUrl = $"{baseUrl}{urlRegister}";
+        string registerUrl = $"{baseUrl}{RestEndpoint.Register}";
         WWWForm form = new WWWForm();
         form.AddField("name", nameText);
         form.AddField("email", email);
@@ -279,7 +273,7 @@ public class WebRequesterManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator GetLogin(string email, string password)
     {
-        string loginUrl = $"{baseUrl}{urlLogin}";
+        string loginUrl = $"{baseUrl}{RestEndpoint.Login}";
 
         Debug.Log("Login url:" + loginUrl);
         ServerCommunicationLogger.Instance.LogCommunication($"Login Requested. email: {email}",
@@ -317,7 +311,7 @@ public class WebRequesterManager : MonoBehaviour
     {
         // Debug.Log("Getting profile with token " + token);
 
-        string profileUrl = $"{baseUrl}{urlProfile}";
+        string profileUrl = $"{baseUrl}{RestEndpoint.Profile}";
         ServerCommunicationLogger.Instance.LogCommunication("Profile request. token: " + token,
             CommunicationDirection.Outgoing);
         //UnityWebRequest profileInfoRequest = UnityWebRequest.Get($"{profileUrl}?Authorization={Uri.EscapeDataString(token)}");
@@ -362,7 +356,7 @@ public class WebRequesterManager : MonoBehaviour
 
     IEnumerator GetLogout(string token)
     {
-        string loginUrl = $"{baseUrl}{urlLogout}";
+        string loginUrl = $"{baseUrl}{RestEndpoint.Logout}";
         WWWForm form = new WWWForm();
 
         ServerCommunicationLogger.Instance.LogCommunication($"Logout request. token: {token}",
@@ -399,7 +393,7 @@ public class WebRequesterManager : MonoBehaviour
 
         //Debug.Log("[RequestExpeditionStattus] with token " + token);
 
-        string fullUrl = $"{baseUrl}{urlExpeditionStatus}";
+        string fullUrl = $"{baseUrl}{RestEndpoint.ExpeditionStatus}";
         WWWForm form = new WWWForm();
         ServerCommunicationLogger.Instance.LogCommunication($"Expedition Status request. token: {token}",
             CommunicationDirection.Outgoing);
@@ -439,7 +433,7 @@ public class WebRequesterManager : MonoBehaviour
     {
         string token = PlayerPrefs.GetString("session_token");
 
-        string fullUrl = $"{baseUrl}{urlExpeditionScore}";
+        string fullUrl = $"{baseUrl}{RestEndpoint.ExpeditionScore}";
 
         ServerCommunicationLogger.Instance.LogCommunication($"Expedition score request. token: {token}",
             CommunicationDirection.Outgoing);
@@ -478,7 +472,7 @@ public class WebRequesterManager : MonoBehaviour
         ServerCommunicationLogger.Instance.LogCommunication("Character list request. token: " + token,
             CommunicationDirection.Outgoing);
 
-        string fullUrl = $"{baseUrl}{urlCharactersList}";
+        string fullUrl = $"{baseUrl}{RestEndpoint.CharactersList}";
         WWWForm form = new WWWForm();
 
         using (UnityWebRequest request = UnityWebRequest.Get($"{fullUrl}?Authorization={Uri.EscapeDataString(token)}"))
@@ -512,7 +506,7 @@ public class WebRequesterManager : MonoBehaviour
 
     public IEnumerator GetWalletContents(string walletAddress)
     {
-        string fullUrl = $"{baseUrl}{urlWalletData}/{walletAddress}";
+        string fullUrl = $"{baseUrl}{RestEndpoint.WalletData}/{walletAddress}";
         int maxTry = 10;
         var tryDelay = new WaitForSeconds(3);
 
@@ -573,7 +567,7 @@ public class WebRequesterManager : MonoBehaviour
         form.AddField("wallet", wallet); // The 0x wallet string
         form.AddField("created", (int)signRequest); // Unix Timestamp
         form.AddField("message", message); // String of what was signed
-        string fullUrl = baseUrl + urlKoteWhitelist;
+        string fullUrl = baseUrl + RestEndpoint.KoteWhitelist;
         ServerCommunicationLogger.Instance.LogCommunication(
             $"Whitelist status request: {form}",
             CommunicationDirection.Outgoing);
@@ -769,7 +763,7 @@ public class WebRequesterManager : MonoBehaviour
 
     public IEnumerator RequestNewExpedition(string characterType, string selectedNft)
     {
-        string fullURL = $"{baseUrl}{urlExpeditionRequest}";
+        string fullURL = $"{baseUrl}{RestEndpoint.ExpeditionRequest}";
 
         string token = PlayerPrefs.GetString("session_token");
 
@@ -811,7 +805,7 @@ public class WebRequesterManager : MonoBehaviour
 
     private IEnumerator CancelOngoingExpedition()
     {
-        string fullURL = $"{baseUrl}{urlExpeditionCancel}";
+        string fullURL = $"{baseUrl}{RestEndpoint.ExpeditionCancel}";
         string token = PlayerPrefs.GetString("session_token");
 
         ServerCommunicationLogger.Instance.LogCommunication($"Expedition cancel request. token: {token}",
@@ -841,7 +835,7 @@ public class WebRequesterManager : MonoBehaviour
 
     private IEnumerator PushBugReport(string title, string description, string base64Image)
     {
-        string fullUrl = $"{baseUrl}{urlBugReport}";
+        string fullUrl = $"{baseUrl}{RestEndpoint.BugReport}";
 
         BugReportData reportData = new BugReportData
         {
@@ -869,4 +863,22 @@ public class WebRequesterManager : MonoBehaviour
             }
         }
     }
+}
+
+public static class RestEndpoint 
+{
+    public static readonly string RandomName = "/auth/v1/generate/username";
+    public static readonly string Register = "/auth/v1/register";
+    public static readonly string Login = "/auth/v1/login";
+    public static readonly string Logout = "/auth/v1/logout";
+    public static readonly string Profile = "/gsrv/v1/profile";
+    public static readonly string WalletData = "/gsrv/v1/wallets";
+    public static readonly string KoteWhitelist = "/gsrv/v1/tokens/verify";
+    public static readonly string CharactersList = "/gsrv/v1/characters";
+    public static readonly string ExpeditionStatus = "/gsrv/v1/expeditions/status";
+    public static readonly string ExpeditionRequest = "/gsrv/v1/expeditions";
+    public static readonly string ExpeditionCancel = "/gsrv/v1/expeditions/cancel";
+    public static readonly string ExpeditionScore = "/gsrv/v1/expeditions/score";
+    public static readonly string BugReport = "/gsrv/v1/bugreport";
+    public static readonly string ServerVersion = "/gsrv/v1/showversion";
 }
