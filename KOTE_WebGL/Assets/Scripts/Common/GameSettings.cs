@@ -50,6 +50,7 @@ public static class GameSettings
     public static float CARD_DRAW_SHOW_TIME = 0.5f;
     public static float EXHAUST_EFFECT_DURATION = 0.6f;
     public static float SHOW_NEW_CARD_DURATION = 1;
+    public static float CARD_PLAYED_TIMEOUT_DELAY = 0.5f;
 
     // COMBAT
     public const float COMBAT_ANIMATION_DELAY = 0.5f;

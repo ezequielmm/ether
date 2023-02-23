@@ -104,7 +104,6 @@ namespace KOTE.Expedition.Combat.Cards
 
         internal void StartTimeout(string cardId, string enemyId)
         {
-            Debug.LogError($"card {cardId} played. Starting timout counter");
             if(id == cardId) StartCoroutine(CardTimeout());
         }
 
@@ -112,7 +111,6 @@ namespace KOTE.Expedition.Combat.Cards
         {
             if (timerRunning && cards.Exists(x => x.Item1.id == id))
             {
-                Debug.LogError($"play Response Received for card {id}");
                 playResponseReceived = true;
             }
         }
@@ -120,11 +118,11 @@ namespace KOTE.Expedition.Combat.Cards
         private IEnumerator CardTimeout()
         {
             timerRunning = true;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(GameSettings.CARD_PLAYED_TIMEOUT_DELAY);
 
             if (!playResponseReceived)
             {
-                Debug.LogError($"No play response received for card {id}, sending to discard");
+                Debug.LogWarning($"Warning! No move response after playing card {id}. Discarding card.");
                 cardMovement.MoveCard(currentPosition, CARDS_POSITIONS_TYPES.discard).Play();
             }
             timerRunning = false;
