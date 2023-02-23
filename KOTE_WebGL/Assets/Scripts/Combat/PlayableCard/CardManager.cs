@@ -104,19 +104,29 @@ namespace KOTE.Expedition.Combat.Cards
 
         internal void StartTimeout(string cardId, string enemyId)
         {
-            if(id == cardId) StartCoroutine(cardTimeout());
+            Debug.LogError($"card {cardId} played. Starting timout counter");
+            if(id == cardId) StartCoroutine(CardTimeout());
         }
 
         private void OnMoveCards(List<(CardToMoveData, float)> cards)
         {
-            if (timerRunning == true && cards.Exists(x => x.Item1.id == id)) playResponseReceived = true;
+            if (timerRunning && cards.Exists(x => x.Item1.id == id))
+            {
+                Debug.LogError($"play Response Received for card {id}");
+                playResponseReceived = true;
+            }
         }
 
-        private IEnumerator cardTimeout()
+        private IEnumerator CardTimeout()
         {
             timerRunning = true;
             yield return new WaitForSeconds(0.5f);
-            if (!playResponseReceived) cardMovement.MoveCard(currentPosition, CARDS_POSITIONS_TYPES.discard);
+
+            if (!playResponseReceived)
+            {
+                Debug.LogError($"No play response received for card {id}, sending to discard");
+                cardMovement.MoveCard(currentPosition, CARDS_POSITIONS_TYPES.discard).Play();
+            }
             timerRunning = false;
         }
     }
