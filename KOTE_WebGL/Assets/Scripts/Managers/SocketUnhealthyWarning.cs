@@ -28,24 +28,47 @@ public class SocketUnhealthyWarning : MonoBehaviour
 
     private void CheckSocketHealth() 
     {
-        if(socket.IsSocketHealthy) 
+        if (!socket.SocketOpened) 
         {
-            SetMessageState(PopupMessageState.healthy);
             lastHealthyTimeInSeconds = Time.time;
             return;
         }
-        if (Time.time - lastHealthyTimeInSeconds >= GameSettings.MAX_TIMEOUT_SECONDS) 
+
+        if (socket.IsSocketHealthy)
+        {
+            SetSocketHealthy();
+        }
+        else
+        {
+            SocketUnhealthy();
+        }
+    }
+
+    private void SetSocketHealthy() 
+    {
+        SetMessageState(PopupMessageState.healthy);
+        lastHealthyTimeInSeconds = Time.time;
+    }
+
+    private void SocketUnhealthy() 
+    {
+        if (UnhealthyFor(GameSettings.MAX_TIMEOUT_SECONDS))
         {
             SetMessageState(PopupMessageState.timeout);
         }
-        else if (Time.time - lastHealthyTimeInSeconds >= GameSettings.DISCONNECTED_CONNECTION_SECONDS)
+        else if (UnhealthyFor(GameSettings.DISCONNECTED_CONNECTION_SECONDS))
         {
             SetMessageState(PopupMessageState.disconnected);
         }
-        else if (Time.time - lastHealthyTimeInSeconds >= GameSettings.UNSTABLE_CONNECTION_SECONDS)
+        else if (UnhealthyFor(GameSettings.UNSTABLE_CONNECTION_SECONDS))
         {
             SetMessageState(PopupMessageState.unstable);
         }
+    }
+
+    private bool UnhealthyFor(float seconds) 
+    {
+        return Time.time - lastHealthyTimeInSeconds >= seconds;
     }
 
     private void SetMessageState(PopupMessageState state) 
@@ -61,33 +84,53 @@ public class SocketUnhealthyWarning : MonoBehaviour
         switch(state) 
         {
             case PopupMessageState.healthy:
-                popupPanel.Disable();
-                if(clickDisabled) 
-                {
-                    UIDisableGameWhenOpen.EnableClick();
-                }
+                OnSocketHealthy();
                 break;
             case PopupMessageState.unstable:
-                popupPanel.Popup("The Connection is Unstable...");
+                OnSocketUnstable();
                 break;
             case PopupMessageState.disconnected:
-                popupPanel.Popup("Disconnected. Trying to reconnect...");
-                if (!clickDisabled) 
-                {
-                    UIDisableGameWhenOpen.DisableClick();
-                }
-                clickDisabled = true;
+                OnSocketDisconnected();
                 break;
             case PopupMessageState.timeout:
-                popupPanel.Disable();
-                string pannelMessage = "Could not reconnect to server. Please try again later.";
-                string[] buttons = { "Return to Main Menu", string.Empty };
-                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(pannelMessage, () =>
-                {
-                    GameManager.Instance.LoadScene(inGameScenes.MainMenu);
-                }, null, buttons);
+                OnSocketTimeout();
                 break;
         }
+    }
+
+    private void OnSocketHealthy() 
+    {
+        popupPanel.Disable();
+        if (clickDisabled)
+        {
+            UIDisableGameWhenOpen.EnableClick();
+        }
+    }
+
+    private void OnSocketUnstable() 
+    {
+        popupPanel.Popup("The Connection is Unstable...");
+    }
+
+    private void OnSocketDisconnected()
+    {
+        popupPanel.Popup("Disconnected. Trying to reconnect...");
+        if (!clickDisabled)
+        {
+            UIDisableGameWhenOpen.DisableClick();
+        }
+        clickDisabled = true;
+    }
+
+    private void OnSocketTimeout() 
+    {
+        popupPanel.Disable();
+        string pannelMessage = "Could not reconnect to server. Please try again later.";
+        string[] buttons = { "Return to Main Menu", string.Empty };
+        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(pannelMessage, () =>
+        {
+            GameManager.Instance.LoadScene(inGameScenes.MainMenu);
+        }, null, buttons);
     }
 
     private void OnDestroy()
