@@ -44,7 +44,7 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
         originalScale = transform.localScale;
     }
 
-    public void populate(Card card)
+    public void Populate(Card card)
     {
         if (card == null) 
         {

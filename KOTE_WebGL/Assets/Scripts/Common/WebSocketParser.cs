@@ -27,7 +27,7 @@ public class WebSocketParser
                 ProcessCampUpdate(swsm.data.action, data);
                 break;
             case nameof(WS_MESSAGE_TYPES.card_upgrade):
-                ProcessCardUpgrade(swsm.data.action, data);
+                throw new NotImplementedException();
                 break;
             case nameof(WS_MESSAGE_TYPES.add_potion):
                 ProcessAddPotion(swsm.data.action, data);
@@ -216,8 +216,7 @@ public class WebSocketParser
                 ProcessPlayerFullDeck(data);
                 break;
             case nameof(WS_DATA_REQUEST_TYPES.UpgradableCards):
-                ProcessUpgradeableCards(data);
-                break;
+                throw new NotImplementedException();
             case nameof(WS_DATA_REQUEST_TYPES.MerchantData):
                 ProcessMerchantData(data);
                 break;
@@ -474,13 +473,6 @@ public class WebSocketParser
         GameManager.Instance.EVENT_CARD_PILE_SHOW_DECK.Invoke(deck);
     }
 
-    private static void ProcessUpgradeableCards(string data)
-    {
-        SWSM_PlayerDeckData deckData = JsonUtility.FromJson<SWSM_PlayerDeckData>(data);
-        Deck deck = new Deck() { cards = deckData.data.data };
-        GameManager.Instance.EVENT_SHOW_UPGRADE_CARDS_PANEL.Invoke(deck);
-    }
-
 
     private static void ProcessMerchantData(string data)
     {
@@ -651,19 +643,6 @@ public class WebSocketParser
         }
     }
 
-    private static void ProcessCardUpgrade(string action, string data)
-    {
-        switch (action)
-        {
-            case "upgradable_pair":
-                ProcessUpgradeablePair(data);
-                break;
-            case "confirm_upgrade":
-                ProcessConfirmUpgrade(data);
-                break;
-        }
-    }
-
     private static void ProcessAddPotion(string action, string data)
     {
         //TODO possibly switch effects for different warnings
@@ -695,18 +674,5 @@ public class WebSocketParser
                 Debug.LogError("Selected trinket not found in database");
                 break;
         }
-    }
-
-    private static void ProcessUpgradeablePair(string data)
-    {
-        SWSM_DeckData deckData = JsonUtility.FromJson<SWSM_DeckData>(data);
-        Deck deck = new Deck() { cards = deckData.data.data.deck };
-        GameManager.Instance.EVENT_SHOW_UPGRADE_PAIR.Invoke(deck);
-    }
-
-    private static void ProcessConfirmUpgrade(string data)
-    {
-        SWSM_ConfirmUpgrade confirmUpgradeData = JsonUtility.FromJson<SWSM_ConfirmUpgrade>(data);
-        GameManager.Instance.EVENT_UPGRADE_CONFIRMED.Invoke(confirmUpgradeData);
     }
 }

@@ -4,27 +4,28 @@ using UnityEngine;
 
 public class CardPairPanelManager : MonoBehaviour
 {
-    public GameObject cardPairPanel;
+    [SerializeField]
+    private GameObject cardPairPanel;
     public UICardPrefabManager[] uiCardPair;
 
-    [SerializeField]
-    private bool manual = false;
+    public Card OriginalCard { get; private set; }
+    public Card NewCard { get; private set; }
+
     private Action OnConfirm;
     private Action OnBack;
 
     private void Start()
     {
-        if (!manual)
-        {
-            GameManager.Instance.EVENT_UPGRADE_CONFIRMED.AddListener(OnUpgradeConfirmed);
-        }
         cardPairPanel.SetActive(false);
     }
 
     private void OnShowUpgradePair(Deck deck)
     {
-        uiCardPair[0].populate(deck.cards[0]);
-        uiCardPair[1].populate(deck.cards[1]);
+        OriginalCard = deck.cards[0];
+        NewCard = deck.cards[1];
+
+        uiCardPair[0].Populate(OriginalCard);
+        uiCardPair[1].Populate(NewCard);
         cardPairPanel.SetActive(true);
     }
 
@@ -43,17 +44,13 @@ public class CardPairPanelManager : MonoBehaviour
 
     public void OnConfirmButton() 
     {
-        if (!manual) 
-        {
-            OnPairUpgradeConfirm();
-        }
         OnConfirm?.Invoke();
         ClearActions();
     }
 
     public void OnPairBackButton()
     {
-        cardPairPanel.SetActive(false);
+        HidePairPannel();
         OnBack?.Invoke();
         ClearActions();
     }
@@ -62,21 +59,5 @@ public class CardPairPanelManager : MonoBehaviour
     {
         OnBack = null;
         OnConfirm = null;
-    }
-
-    public void OnPairUpgradeConfirm()
-    {
-        GameManager.Instance.EVENT_USER_CONFIRMATION_UPGRADE_CARD.Invoke(uiCardPair[0].id);
-    }
-
-    public void OnUpgradeConfirmed(SWSM_ConfirmUpgrade upgradeData)
-    {
-        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Upgrade");
-        uiCardPair[0].gameObject.transform.DOScale(Vector3.zero, 1)
-            .OnComplete(() =>
-            {
-                cardPairPanel.SetActive(false);
-                GameManager.Instance.EVENT_HIDE_COMMON_CARD_PANEL.Invoke();
-            });
     }
 }

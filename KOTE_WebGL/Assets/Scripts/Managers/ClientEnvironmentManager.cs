@@ -56,7 +56,7 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
         }
         else if (hostName.Contains("alpha") && hostName.Contains("robotseamonster"))
         {
-            return Environments.AlphaTest;
+            return Environments.TestAlpha;
         }
         else if (hostName.Contains("alpha"))
         {
@@ -74,7 +74,7 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
                 SkinURL = $"https://koteskins.robotseamonster.com/";
                 WebSocketURL = $"https://api.stage.kote.robotseamonster.com";
                 break;
-            case Environments.AlphaTest:
+            case Environments.TestAlpha:
                 WebRequestURL = $"https://gateway.alpha.kote.robotseamonster.com";
                 SkinURL = $"https://koteskins.robotseamonster.com/";
                 WebSocketURL = $"https://api.alpha.kote.robotseamonster.com";
@@ -110,7 +110,7 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
 #endif
         Dev,
         Stage,
-        AlphaTest,
+        TestAlpha,
         Alpha
     }
 }

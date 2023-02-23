@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,12 +14,13 @@ public class CampPanelManager : MonoBehaviour
 
     [SerializeField]
     private CardPairPanelManager upgradePanel;
+    [SerializeField]
+    private SelectCardsPanel cardPanel;
     private bool continueActivated;
 
     private void Start()
     {
         GameManager.Instance.EVENT_CAMP_SHOW_PANEL.AddListener(ShowCampPanel);
-        GameManager.Instance.EVENT_SHOW_UPGRADE_CARDS_PANEL.AddListener(OnShowCardUpgradePanel);
         GameManager.Instance.EVENT_CAMP_FINISH.AddListener(OnCampFinish);
         campContainer.SetActive(false);
     }
@@ -39,7 +41,7 @@ public class CampPanelManager : MonoBehaviour
     public void OnSmithSelected()
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.UpgradableCards);
+        OpenAndPopulatUpgradeCards();
     }
 
     private void DeactivateButtons()
@@ -60,7 +62,7 @@ public class CampPanelManager : MonoBehaviour
         campContainer.SetActive(false);
     }
 
-    private void OnShowCardUpgradePanel(Deck deck)
+    private void ShowUpgradePanel(Deck deck)
     {
         SelectPanelOptions selectOptions = new SelectPanelOptions
         {
@@ -69,30 +71,46 @@ public class CampPanelManager : MonoBehaviour
             NumberOfCardsToSelect = 1,
             FireSelectWhenCardClicked = true
         };
+        upgradePanel.HidePairPannel();
 
-
-        GameManager.Instance.EVENT_SHOW_DIRECT_SELECT_CARD_PANEL.Invoke(deck.cards, selectOptions,
-            PopulateUpgradePanel);
+        cardPanel.ClearSelectList();
+        cardPanel.PopulatePanel(deck.cards, selectOptions, null, PopulatePairPanel);
     }
 
-    private void PopulateUpgradePanel(string cardId) 
+    private void PopulatePairPanel(string cardId) 
     {
-        upgradePanel.ShowCardAndUpgrade(cardId, 
-            () => 
-            {
-                // On Confirm
+        upgradePanel.ShowCardAndUpgrade(cardId, UpgradeCard, ClosePairPanel);
+    }
 
-            }, 
-            () => 
-            { 
-                // On Back
+    private async void UpgradeCard() 
+    {
+        CardUpgrade upgradeData = await FetchData.Instance.CampUpgradeCard(upgradePanel.OriginalCard.id);
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Upgrade");
+        upgradePanel.uiCardPair[0].gameObject.transform.DOScale(Vector3.zero, 1)
+        .OnComplete(() => CloseUpgradePanels());
+    }
 
-            });
+    private async void OpenAndPopulatUpgradeCards()
+    {
+        Deck deck = await FetchData.Instance.GetUpgradeableCards();
+        ShowUpgradePanel(deck);
+    }
+
+    private void CloseUpgradePanels() 
+    {
+        cardPanel.HidePanel();
+        ClosePairPanel();
+    }
+
+    private void ClosePairPanel() 
+    {
+        upgradePanel.HidePairPannel();
     }
 
     private void OnCampFinish()
     {
         DeactivateButtons();
+        CloseUpgradePanels();
         SwitchToContinueButton();
     }
 }

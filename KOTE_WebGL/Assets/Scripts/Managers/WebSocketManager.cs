@@ -56,8 +56,6 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener(OnGenericWSDataRequest);
             GameManager.Instance.EVENT_REWARD_SELECTED.AddListener(OnRewardSelected);
             GameManager.Instance.EVENT_CONTINUE_EXPEDITION.AddListener(OnContinueExpedition);
-            GameManager.Instance.EVENT_GET_UPGRADE_PAIR.AddListener(OnShowUpgradePair);
-            GameManager.Instance.EVENT_USER_CONFIRMATION_UPGRADE_CARD.AddListener(OnCardUpgradeConfirmed);
             GameManager.Instance.EVENT_CAMP_HEAL.AddListener(OnCampHealSelected);
             GameManager.Instance.EVENT_CARDS_SELECTED.AddListener(OnCardsSelected);
             GameManager.Instance.EVENT_POTION_USED.AddListener(OnPotionUsed);
@@ -367,19 +365,6 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         EmitWithResponse(SocketEvent.StartCombat);
     }
 
-    private void OnShowUpgradePair(string cardId)
-    {
-        Debug.Log($"Sending message {SocketEvent.GetCardUpgradePair} with card id {cardId}");
-        //customNamespace.Emit("NodeSelected",nodeId);
-
-        EmitWithResponse(SocketEvent.GetCardUpgradePair, cardId);
-    }
-
-    private void OnCardUpgradeConfirmed(string cardId)
-    {
-        EmitWithResponse(SocketEvent.UpgradeCard, cardId);
-    }
-
     private void OnSkipNode(int nodeId)
     {
         Emit(SocketEvent.NodeSkip, nodeId);
@@ -461,6 +446,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             Debug.LogWarning($"[WebSocketManager] Socket is Unhealthy. Queuing Emission with Response ({eventName}) for Later.");
         }
         await UniTask.WaitUntil(() => promise.Completed);
+        Debug.Log($"[WebSocketManager] RESPONSE <<< {promise.Json}");
         ServerCommunicationLogger.Instance.LogCommunication($"[WebSocketManager] RESPONSE <<<", CommunicationDirection.Incoming, promise.Json);
         return promise.Json;
     }

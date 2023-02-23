@@ -116,39 +116,6 @@ public class CampPanelManagerTests : MonoBehaviour
     }
 
     [Test]
-    public void DoesOnShowCardUpgradePanelFireShowDirectSelectCardEvent()
-    {
-        bool eventFired = false;
-        GameManager.Instance.EVENT_SHOW_DIRECT_SELECT_CARD_PANEL.AddListener((deck, options, select) =>
-        {
-            eventFired = true;
-        });
-        GameManager.Instance.EVENT_SHOW_UPGRADE_CARDS_PANEL.Invoke(new Deck { cards = new List<Card>() });
-        Assert.True(eventFired);
-    }
-
-    [Test]
-    public void DoesOnShowCardUpgradePanelSendCorrectSelectOptions()
-    {
-        int hideBackButton = -1;
-        int mustSelectAllCards = -1;
-        int numberOfCardsToSelect = -1;
-        int fireSelectWhenCardClicked = -1;
-        GameManager.Instance.EVENT_SHOW_DIRECT_SELECT_CARD_PANEL.AddListener((deck, options, select) =>
-        {
-            if (options.HideBackButton == false) hideBackButton = 0;
-            if (options.MustSelectAllCards == true) mustSelectAllCards = 1;
-            numberOfCardsToSelect = options.NumberOfCardsToSelect;
-            if (options.FireSelectWhenCardClicked) fireSelectWhenCardClicked = 1;
-        });
-        GameManager.Instance.EVENT_SHOW_UPGRADE_CARDS_PANEL.Invoke(new Deck { cards = new List<Card>() });
-        Assert.AreEqual(0, hideBackButton);
-        Assert.AreEqual(1, mustSelectAllCards);
-        Assert.AreEqual(1, numberOfCardsToSelect);
-        Assert.AreEqual(1, fireSelectWhenCardClicked);
-    }
-
-    [Test]
     public void DoesCampFinishEventDeactivateCampButtons()
     {
         Assert.True(_campPanelManager.restButton.interactable);

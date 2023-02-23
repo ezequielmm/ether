@@ -127,14 +127,6 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_TREASURE_OPEN_CHEST = new UnityEvent();
     [HideInInspector] public UnityEvent<SWSM_ChestResult> EVENT_TREASURE_CHEST_RESULT = new UnityEvent<SWSM_ChestResult>();
     [HideInInspector] public UnityEvent<int> EVENT_ENCOUNTER_DAMAGE = new UnityEvent<int>();
-
-
-    //UPGRADE CARDS EVENTS
-    [System.Obsolete][HideInInspector] public UnityEvent<Deck> EVENT_SHOW_UPGRADE_CARDS_PANEL { get; } = new UnityEvent<Deck>(); //event from the BE to show the upgradable cards panel
-    [System.Obsolete][HideInInspector] public UnityEvent<string> EVENT_GET_UPGRADE_PAIR { get; } = new UnityEvent<string>(); // when the user click a card, we need the show the upgraded card data. We send
-    [HideInInspector] public UnityEvent<Deck> EVENT_SHOW_UPGRADE_PAIR { get; } = new UnityEvent<Deck>();// BE sending us the 2 cards
-    [HideInInspector] public UnityEvent<string> EVENT_USER_CONFIRMATION_UPGRADE_CARD { get; } = new UnityEvent<string>();// the user confirmed to upgrade this card id. We send
-    [HideInInspector] public UnityEvent<SWSM_ConfirmUpgrade> EVENT_UPGRADE_CONFIRMED { get; } = new UnityEvent<SWSM_ConfirmUpgrade>();//from BE confirming. Can contain an error    
    
 
     //EXPEDITION EVENTS
@@ -201,10 +193,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_CURRENT_STEP_INFORMATION = new UnityEvent<int, int>();
 
     //SELECT PANEL EVENTS
-    [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>> EVENT_SHOW_SELECT_CARD_PANEL = new UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>>();
-    [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<string>> EVENT_SHOW_DIRECT_SELECT_CARD_PANEL = new UnityEvent<List<Card>, SelectPanelOptions, Action<string>>();
+    [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>> EVENT_SHOW_SELECT_CARD_PANEL { get; } = new UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>>();
     [HideInInspector] public UnityEvent<Deck> EVENT_CARD_PILE_SHOW_DECK = new UnityEvent<Deck>();
-        [HideInInspector] public UnityEvent<List<string>> EVENT_CARDS_SELECTED = new UnityEvent<List<string>>();
+    [HideInInspector] public UnityEvent<List<string>> EVENT_CARDS_SELECTED = new UnityEvent<List<string>>();
     [HideInInspector] public UnityEvent EVENT_HIDE_COMMON_CARD_PANEL = new UnityEvent();
     [HideInInspector] public UnityEvent<SWSM_SelectTrinketData> EVENT_SHOW_SELECT_TRINKET_PANEL = new UnityEvent<SWSM_SelectTrinketData>();
     [HideInInspector] public UnityEvent<List<string>> EVENT_TRINKETS_SELECTED = new UnityEvent<List<string>>();
@@ -270,7 +261,7 @@ public class GameManager : SingleTon<GameManager>
 
     //Common events
     [HideInInspector]
-    public UnityEvent<WS_DATA_REQUEST_TYPES> EVENT_GENERIC_WS_DATA = new UnityEvent<WS_DATA_REQUEST_TYPES>();
+    public UnityEvent<WS_DATA_REQUEST_TYPES> EVENT_GENERIC_WS_DATA { get; } = new UnityEvent<WS_DATA_REQUEST_TYPES>();
 
     [HideInInspector] public UnityEvent EVENT_WS_CONNECTED = new UnityEvent();
     [HideInInspector] public UnityEvent<string> EVENT_CHANGE_TURN = new UnityEvent<string>();

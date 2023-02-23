@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -97,6 +98,7 @@ public class ExpeditionStatusData
     }
 }
 
+[Serializable]
 public class ExpeditionRequestData
 {
     public Data data;
@@ -299,22 +301,19 @@ public class Statuses
 [Serializable]
 public class Effect
 {
-    public string effect;
     public string target;
-    public EffectArgs args;
 }
 
-
-[Serializable]
-public class EffectArgs
-{
-    public int value;
-}
 
 [Serializable]
 public class Deck
 {
-    public List<Card> cards;
+    public Deck() { }
+    public Deck(List<Card> cards) 
+    {
+        this.cards = cards;
+    }
+    public List<Card> cards = new();
 }
 
 
@@ -591,22 +590,12 @@ public class DeckData
 }
 
 [Serializable]
-public class SWSM_ConfirmUpgrade
+public class CardUpgrade
 {
-    public SWSM_UpgradeData data;
-
-    [Serializable]
-    public class SWSM_UpgradeData
-    {
-        public UpgradeData data;
-
-        [Serializable]
-        public class UpgradeData
-        {
-            public string cardIdToDelete;
-            public Card newCard;
-        }
-    }
+    [JsonProperty("cardIdToDelete")]
+    public string CardIdToDelete;
+    [JsonProperty("newCard")]
+    public Card NewCard;
 }
 
 [Serializable]
@@ -739,6 +728,7 @@ public class SWSM_ErrorData
     public String data;
 }
 
+[Serializable]
 public class SWSM_PlayerState
 {
     public PlayerStateData data;
@@ -872,6 +862,7 @@ public class AddCardData
     public Card card;
 }
 
+[Serializable]
 public class SWSM_ChangeTurn
 {
     public Data data;
@@ -883,6 +874,7 @@ public class SWSM_ChangeTurn
     }
 }
 
+[Serializable]
 public class SWSM_RewardsData
 {
     public Data data;

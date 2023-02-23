@@ -130,7 +130,7 @@ public class ClientEnvironmentManagerTest
         // Act
         var result = env.DetermineEnvironment(testUrl);
         // Assert
-        Assert.AreEqual(result, ClientEnvironmentManager.Environments.AlphaTest);
+        Assert.AreEqual(result, ClientEnvironmentManager.Environments.TestAlpha);
     }
 
     [Test]

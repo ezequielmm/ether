@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -74,5 +75,21 @@ public class FetchData : ISingleton<FetchData>, IDisposable
         SWSM_DeckData deckData = JsonConvert.DeserializeObject<SWSM_DeckData>(json);
         Deck deck = new Deck() { cards = deckData.data.data.deck };
         return deck;
+    }
+
+    public async UniTask<CardUpgrade> CampUpgradeCard(string cardId)
+    {
+        string rawJson = await socketRequest.EmitAwaitResponse(SocketEvent.UpgradeCard, cardId);
+        JObject json = JObject.Parse(rawJson);
+        CardUpgrade data = json.SelectToken("data.data").ToObject<CardUpgrade>();
+        return data;
+    }
+
+    public async UniTask<Deck> GetUpgradeableCards()
+    {
+        string rawJson = await socketRequest.EmitAwaitResponse(SocketEvent.GetData, WS_DATA_REQUEST_TYPES.UpgradableCards.ToString());
+        JObject json = JObject.Parse(rawJson);
+        Deck data = new Deck(json.SelectToken("data.data").ToObject<List<Card>>());
+        return data;
     }
 }

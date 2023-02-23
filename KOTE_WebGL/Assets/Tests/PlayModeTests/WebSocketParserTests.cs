@@ -351,15 +351,6 @@ public class WebSocketParserTests
     }
 
     [Test]
-    public void DoesProcessGenericDataInvokeCampShowUpgradeableCardEvent()
-    {
-        bool eventFired = false;
-        GameManager.Instance.EVENT_SHOW_UPGRADE_PAIR.AddListener((data) => { eventFired = true; });
-        WebSocketParser.ParseJSON(TestUtils.BuildTestUpgradeableCardData());
-        Assert.AreEqual(true, eventFired);
-    }
-
-    [Test]
     public void DoesProcessGenericDataLogInvalidData()
     {
         string data = TestUtils.BuildTestSwsmData("generic_data", "test");
@@ -685,24 +676,6 @@ public class WebSocketParserTests
         bool eventFired = false;
         GameManager.Instance.EVENT_POPULATE_MERCHANT_PANEL.AddListener((data) => { eventFired = true; });
         WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("generic_data", "MerchantData"));
-        Assert.True(eventFired);
-    }
-
-    [Test]
-    public void DoesProcessCardUpgradeFireUpgradablePairEvent()
-    {
-        bool eventFired = false;
-        GameManager.Instance.EVENT_SHOW_UPGRADE_PAIR.AddListener((data) => { eventFired = true; });
-        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("card_upgrade", "upgradable_pair"));
-        Assert.True(eventFired);
-    }
-
-    [Test]
-    public void DoesProcessCardUpgradeFireConfirmUpgradeEvent()
-    {
-        bool eventFired = false;
-        GameManager.Instance.EVENT_UPGRADE_CONFIRMED.AddListener((data) => { eventFired = true; });
-        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("card_upgrade", "confirm_upgrade"));
         Assert.True(eventFired);
     }
 
