@@ -53,6 +53,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     [SerializeField] private string SocketStatus = "Unknown";
     private bool doNotResuscitate = false;
+    public bool SocketOpened { get; private set; } = false;
     public bool IsSocketHealthy
     {
         get
@@ -121,8 +122,34 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void FixedUpdate()
     {
+        UpdateSocketHealthStatus();
+        CheckTimedoutSocket();
+        ManageQueuedMessages();
+    }
+
+    void OnDestroy()
+    {
+        doNotResuscitate = true;
+        if (rootSocket != null)
+        {
+            Debug.Log("[WebSocket Manager] socket disconnected");
+            rootSocket.Disconnect();
+        }
+        if (Instance == this)
+        {
+            Debug.Log($"[WebSocketManager] Socket manager destroyed");
+        }
+    }
+
+    private void OnEnable()
+    {
+        Debug.Log("[WebSocketManager] Socket manager Enabled");
+    }
+
+    private void UpdateSocketHealthStatus() 
+    {
         string newSocketState = manager.State.ToString();
-        if(SocketStatus != newSocketState) 
+        if (SocketStatus != newSocketState)
         {
             // Logs
             switch (manager.State)
@@ -150,6 +177,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
                     }
                     break;
                 case SocketManager.States.Open:
+                    SocketOpened = true;
                     socketOpenTimeGameSeconds = Time.time;
                     socketDeathTimeGameSeconds = -1;
                     break;
@@ -157,45 +185,28 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             // Update Unity UI
             SocketStatus = manager.State.ToString();
         }
+    }
 
-        if (!IsSocketHealthy && socketDeathTimeGameSeconds != -1 && Time.time - socketDeathTimeGameSeconds > GameSettings.MAX_TIMEOUT_SECONDS) 
+    private void CheckTimedoutSocket() 
+    {
+        if (!IsSocketHealthy && socketDeathTimeGameSeconds != -1 && Time.time - socketDeathTimeGameSeconds > GameSettings.MAX_TIMEOUT_SECONDS)
         {
             // After some seconds of closed connection, return to main menu.
-            Debug.LogError($"[WebSocketManager] Disconnected for {Mathf.Round(Time.time - socketDeathTimeGameSeconds)} seconds Connection could not be salvaged. Returning to Main Menu.");
-            GameManager.Instance.LoadScene(inGameScenes.MainMenu);
+            Debug.LogError($"[WebSocketManager] Disconnected for {Mathf.Round(Time.time - socketDeathTimeGameSeconds)} seconds Connection could not be salvaged.");
             Destroy(gameObject);
         }
+    }
 
-        if (IsSocketHealthy && EmissionQueue.Count > 0 && Time.time - socketOpenTimeGameSeconds > 1) 
+    private void ManageQueuedMessages() 
+    {
+        if (IsSocketHealthy && EmissionQueue.Count > 0 && Time.time - socketOpenTimeGameSeconds > 1)
         {
             EmissionQueue.Peek().Invoke();
             EmissionQueue.Dequeue();
-        } 
-    }
-
-    void OnDestroy()
-    {
-        doNotResuscitate = true;
-        if (rootSocket != null)
-        {
-            Debug.Log("[WebSocket Manager] socket disconnected");
-            rootSocket.Disconnect();
-        }
-        if (Instance == this)
-        {
-            Debug.Log($"[WebSocketManager] Socket manager destroyed");
         }
     }
 
-    private void OnEnable()
-    {
-        Debug.Log("[WebSocketManager] Socket manager Enabled");
-    }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
+    
     void ConnectSocket()
     {
         //BestHTTP.HTTPManager.UseAlternateSSLDefaultValue = true; 
