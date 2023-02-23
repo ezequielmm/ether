@@ -68,5 +68,11 @@ public class FetchData : ISingleton<FetchData>, IDisposable
         public string Version;
     }
 
-
+    public async UniTask<Deck> GetCardUpgradePair(string cardId) 
+    {
+        string json = await socketRequest.EmitAwaitResponse(SocketEvent.GetCardUpgradePair, cardId);
+        SWSM_DeckData deckData = JsonConvert.DeserializeObject<SWSM_DeckData>(json);
+        Deck deck = new Deck() { cards = deckData.data.data.deck };
+        return deck;
+    }
 }

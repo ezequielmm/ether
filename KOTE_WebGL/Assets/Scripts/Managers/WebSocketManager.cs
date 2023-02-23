@@ -6,6 +6,7 @@ using BestHTTP.SocketIO3;
 using BestHTTP.SocketIO3.Events;
 using System.Text;
 using Cysharp.Threading.Tasks;
+using UnityEditor;
 
 public class WebSocketManager : SingleTon<WebSocketManager>
 {
@@ -414,6 +415,16 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private Queue<Action> EmissionQueue = new Queue<Action>();
 
+    private void ResolvePromise(string json, SocketPromise promise) 
+    {
+        promise.FulfillRequest(json);
+    }
+    private SocketPromise CreatePromise() 
+    {
+        SocketPromise promise = new SocketPromise();
+        return promise;
+    }
+
     private void Emit(string eventName, params object[] variables) 
     {
         if (!IsSocketHealthy) 
@@ -434,9 +445,31 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     }
 
-    private async void EmitAwaitResponse(string eventName, params object[] variables) 
+    public async UniTask<string> EmitAwaitResponse(string eventName, params object[] variables) 
     {
-    
+        SocketPromise promise = CreatePromise();
+        if (IsSocketHealthy)
+        {
+            EmitPromise(promise, eventName, variables);
+        }
+        else
+        {
+            EmissionQueue.Enqueue(() =>
+            {
+                EmitPromise(promise, eventName, variables);
+            });
+            Debug.LogWarning($"[WebSocketManager] Socket is Unhealthy. Queuing Emission with Response ({eventName}) for Later.");
+        }
+        await UniTask.WaitUntil(() => promise.Completed);
+        ServerCommunicationLogger.Instance.LogCommunication($"[WebSocketManager] RESPONSE <<<", CommunicationDirection.Incoming, promise.Json);
+        return promise.Json;
+    }
+
+    private void EmitPromise(SocketPromise promise, string eventName, params object[] variables) 
+    {
+        LogEmission(eventName, variables);
+        rootSocket.ExpectAcknowledgement<string>((json) => { ResolvePromise(json, promise); })
+                  .Emit(eventName, variables);
     }
 
     private void EmitWithResponse(Action<string> parser, string eventName, params object[] variables)
@@ -452,7 +485,6 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         }
         LogEmission(eventName, variables);
         rootSocket.ExpectAcknowledgement<string>(parser).Emit(eventName, variables);
-
     }
 
 
@@ -483,6 +515,25 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         Debug.Log(sb.ToString());
         
         ServerCommunicationLogger.Instance.LogCommunication(cb.ToString(), CommunicationDirection.Outgoing);
+    }
+
+    private class SocketPromise
+    {
+        public bool Completed { get; private set; }
+        public Guid Id { get; private set; }
+        public string Json { get; private set; } = null;
+
+        public SocketPromise()
+        {
+            Id = Guid.NewGuid();
+            Completed = false;
+        }
+
+        public void FulfillRequest(string data)
+        {
+            Json = data;
+            Completed = true;
+        }
     }
 }
 

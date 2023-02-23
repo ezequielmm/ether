@@ -14,7 +14,6 @@ public class CardPairPanelManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.EVENT_SHOW_UPGRADE_PAIR.AddListener(OnShowUpgradePair);
         if (!manual)
         {
             GameManager.Instance.EVENT_UPGRADE_CONFIRMED.AddListener(OnUpgradeConfirmed);
@@ -29,12 +28,12 @@ public class CardPairPanelManager : MonoBehaviour
         cardPairPanel.SetActive(true);
     }
 
-    public void ShowCardAndUpgrade(string cardId, Action onConfirm = null, Action onBack = null) 
+    public async void ShowCardAndUpgrade(string cardId, Action onConfirm = null, Action onBack = null) 
     {
         OnConfirm = onConfirm;
         OnBack = onBack;
-        // Get Upgraded Pair
-        GameManager.Instance.EVENT_GET_UPGRADE_PAIR.Invoke(cardId); // Will come back to OnShowUpgradePair
+        Deck cardPairs = await FetchData.Instance.GetCardUpgradePair(cardId);
+        OnShowUpgradePair(cardPairs);
     }
 
     public void HidePairPannel() 
