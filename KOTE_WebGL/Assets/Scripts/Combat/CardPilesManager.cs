@@ -119,6 +119,7 @@ namespace KOTE.Expedition.Combat.Cards.Piles
         {
             // Debug.Log("[HandManager | Hand Deck] Instantiating card " + card.id);
             CardManager cardManager = Instantiate(SpriteCardPrefab, handManager.transform);
+            cardManager.gameObject.name = card.name + " "+ card.id;
             cardManager.Populate(card, cardPilesData.data.energy);
             if (cardPile != handManager.handDeck) cardManager.DisableCardContent();
             MasterCardList.Add(card.id, cardManager);
@@ -197,7 +198,8 @@ namespace KOTE.Expedition.Combat.Cards.Piles
         private void OnCardAdd(AddCardData addCardData)
         {
             // create the new card in the middle of the screen
-            CardManager cardManager = Instantiate(SpriteCardPrefab, this.transform);
+            CardManager cardManager = Instantiate(SpriteCardPrefab, handManager.transform);
+            cardManager.gameObject.name = addCardData.card.name + " " + addCardData.card.id;
             MasterCardList.Add(addCardData.card.id, cardManager);
             cardManager.Populate(addCardData.card, cardPilesData.data.energy);
 
