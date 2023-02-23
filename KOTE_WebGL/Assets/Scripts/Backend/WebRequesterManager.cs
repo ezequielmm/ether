@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -860,9 +861,12 @@ public class WebRequesterManager : MonoBehaviour
         };
         string data = JsonConvert.SerializeObject(reportData);
         Debug.Log(data);
-        using (UnityWebRequest request = UnityWebRequest.Post(fullUrl, data))
+        byte[] utf8String = Encoding.Default.GetBytes(data);
+        using (UnityWebRequest request = new UnityWebRequest(fullUrl, "POST"))
         {
-            request.SetRequestHeader("Content-Type", $"application/json");
+            var uploadHandler = new UploadHandlerRaw(utf8String);
+            uploadHandler.contentType = $"application/json";
+            request.uploadHandler = uploadHandler;
             yield return request.SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.ConnectionError ||
@@ -870,6 +874,7 @@ public class WebRequesterManager : MonoBehaviour
             {
                 Debug.Log($"[Error sending bug report]\n{request.error}");
             }
+            uploadHandler.Dispose();
         }
     }
 }
