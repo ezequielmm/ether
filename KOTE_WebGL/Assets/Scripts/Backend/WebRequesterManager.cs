@@ -144,11 +144,6 @@ public class WebRequesterManager : MonoBehaviour
         StartCoroutine(GetCharacterList());
     }
 
-    public void SendBugReport(string title, string description, string base64Image)
-    {
-        StartCoroutine(PushBugReport(title, description, base64Image));
-    }
-
     public async UniTask<string> MakeRequest(UnityWebRequest request) 
     {
         await request.SendWebRequest();
@@ -808,7 +803,7 @@ public class WebRequesterManager : MonoBehaviour
         }
     }
 
-    private IEnumerator PushBugReport(string title, string description, string base64Image)
+    private async void SendBugReport(string title, string description, string base64Image)
     {
         string fullUrl = $"{ClientEnvironmentManager.Instance.WebSocketURL}{RestEndpoint.BugReport}";
 
@@ -835,13 +830,7 @@ public class WebRequesterManager : MonoBehaviour
             var uploadHandler = new UploadHandlerRaw(utf8String);
             uploadHandler.contentType = $"application/json";
             request.uploadHandler = uploadHandler;
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.ConnectionError ||
-                request.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.Log($"[Error sending bug report]\n{request.error}");
-            }
+            await MakeRequest(request);
             uploadHandler.Dispose();
         }
     }
