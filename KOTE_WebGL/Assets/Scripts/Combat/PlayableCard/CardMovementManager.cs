@@ -270,7 +270,7 @@ namespace KOTE.Expedition.Combat.Cards
                     transform.localScale = Vector3.zero;
                     sequence.Insert(sequenceStartPoint, transform.DOScale(Vector3.one, 1f).SetDelay(moveDelay, true)
                         .SetEase(Ease.OutElastic)
-                        .OnComplete(OnMoveCompleted));
+                        .OnComplete(OnMovingToHandCompleted));
                 }
                 else
                 {
@@ -290,7 +290,7 @@ namespace KOTE.Expedition.Combat.Cards
                     transform.localScale = Vector3.zero;
                     sequence.Insert(sequenceStartPoint, transform.DORotate(Vector3.zero, 1f));
                     sequence.Insert(sequenceStartPoint,
-                        transform.DOScale(Vector3.one * 1.5f, 1f).SetEase(Ease.OutElastic).OnComplete(OnMoveCompleted));
+                        transform.DOScale(Vector3.one * 1.5f, 1f).SetEase(Ease.OutElastic).OnComplete(OnMovingToHandCompleted));
                 }
                 else
                 {
@@ -316,17 +316,11 @@ namespace KOTE.Expedition.Combat.Cards
             return sequence;
         }
 
-        private void OnMoveCompleted()
+        private void OnMovingToHandCompleted()
         {
             inTransit = false;
             cardManager.cardActive = activateCardAfterMove;
             visualsManager.StopCardParticles(CARD_PARTICLE_TYPES.Move);
-            if (discardAfterMove)
-            {
-                discardAfterMove = false;
-                GameManager.Instance.EVENT_CARD_DISABLED.Invoke(cardManager.cardData.id);
-            }
-
 
             if (cardManager.cardActive && ((Vector2)transform.position).magnitude < 0.5f)
                 // if in the center of the screen
