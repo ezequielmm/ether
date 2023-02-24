@@ -1,11 +1,12 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
+using System.Text;
 using BestHTTP.SocketIO3;
 using BestHTTP.SocketIO3.Events;
-using System.Text;
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using UnityEngine;
 
 public class WebSocketManager : SingleTon<WebSocketManager>
 {
@@ -21,39 +22,10 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     private const string WS_MESSAGE_PUT_DATA = "PutData";
 
 
-    //Websockets outgoing messages with callback
-    private const string WS_MESSAGE_GAME_SYNC = "SyncExpedition";
-    
-    private const string WS_MESSAGE_NODE_SELECTED = "NodeSelected";
-    private const string WS_MESSAGE_CARD_PLAYED = "CardPlayed";
-    private const string WS_MESSAGE_END_TURN = "EndTurn";
-
-    private const string WS_MESSAGE_REWARD_SELECTED = "RewardSelected";
-    private const string WS_MESSAGE_GET_CARD_UPGRADE_PAIR = "CardUpgradeSelected";
-    private const string WS_MESSAGE_UPGRADE_CARD = "UpgradeCard";
-    private const string WS_MESSAGE_CAMP_HEAL = "CampRecoverHealth";
-    private const string WS_MESSAGE_MOVE_SELECTED_CARDS = "MoveCard";
-    private const string WS_MESSAGE_TRINKETS_SELECTED = "TrinketsSelected";
-
-    private const string WS_MESSAGE_USE_POTION = "UsePotion";
-    private const string WS_MESSAGE_REMOVE_POTION = "RemovePotion";
-    private const string WS_MESSAGE_OPEN_CHEST = "ChestOpened";
-    private const string WS_MESSAGE_MERCHANT_BUY = "MerchantBuy";
-    private const string WS_MESSAGE_START_ENCOUNTER_COMBAT = "CombatEncounter";
-    private const string WS_MESSAGE_ENCOUNTER_SELECTION = "EncounterChoice";
-    
-    /*private const string WS_MESSAGE_GET_ENERGY = "GetEnergy";
-    private const string WS_MESSAGE_GET_CARD_PILES = "GetCardPiles";
-    private const string WS_MESSAGE_GET_PLAYER_HEALTH = "GetPlayerHealth";
-    private const string WS_MESSAGE_GET_PLAYERS = "GetPlayers";
-    private const string WS_MESSAGE_GET_ENEMIES = "GetEnemies";*/
-    private const string WS_MESSAGE_GET_DATA = "GetData";
-    private const string WS_MESSAGE_CONTINUE_EXPEDITION = "ContinueExpedition";
-    private const string WS_MESSAGE_NODE_SKIP = "NodeSkipped";
-
     [SerializeField] private string SocketStatus = "Unknown";
     private bool doNotResuscitate = false;
     public bool SocketOpened { get; private set; } = false;
+
     public bool IsSocketHealthy
     {
         get
@@ -86,15 +58,11 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener(OnGenericWSDataRequest);
             GameManager.Instance.EVENT_REWARD_SELECTED.AddListener(OnRewardSelected);
             GameManager.Instance.EVENT_CONTINUE_EXPEDITION.AddListener(OnContinueExpedition);
-            GameManager.Instance.EVENT_GET_UPGRADE_PAIR.AddListener(OnShowUpgradePair);
-            GameManager.Instance.EVENT_USER_CONFIRMATION_UPGRADE_CARD.AddListener(OnCardUpgradeConfirmed);
             GameManager.Instance.EVENT_CAMP_HEAL.AddListener(OnCampHealSelected);
-            GameManager.Instance.EVENT_CARDS_SELECTED.AddListener(OnCardsSelected);
             GameManager.Instance.EVENT_POTION_USED.AddListener(OnPotionUsed);
             GameManager.Instance.EVENT_POTION_DISCARDED.AddListener(OnPotionDiscarded);
             GameManager.Instance.EVENT_TREASURE_OPEN_CHEST.AddListener(OnTreasureOpened);
             GameManager.Instance.EVENT_MERCHANT_BUY.AddListener(OnBuyItem);
-            GameManager.Instance.EVENT_ENCOUNTER_OPTION_SELECTED.AddListener(OnEncounterOptionSelected);
             GameManager.Instance.EVENT_START_COMBAT_ENCOUNTER.AddListener(OnStartCombatEncounter);
             GameManager.Instance.EVENT_SKIP_NODE.AddListener(OnSkipNode);
             GameManager.Instance.EVENT_TRINKETS_SELECTED.AddListener(OnTrinketsSelected);
@@ -112,9 +80,9 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         }
     }
 
-    private void OnSceneChange(inGameScenes scene) 
+    private void OnSceneChange(inGameScenes scene)
     {
-        if (scene == inGameScenes.MainMenu) 
+        if (scene == inGameScenes.MainMenu)
         {
             this.DestroyInstance();
         }
@@ -135,6 +103,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             Debug.Log("[WebSocket Manager] socket disconnected");
             rootSocket.Disconnect();
         }
+
         if (Instance == this)
         {
             Debug.Log($"[WebSocketManager] Socket manager destroyed");
@@ -146,7 +115,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         Debug.Log("[WebSocketManager] Socket manager Enabled");
     }
 
-    private void UpdateSocketHealthStatus() 
+    private void UpdateSocketHealthStatus()
     {
         string newSocketState = manager.State.ToString();
         if (SocketStatus != newSocketState)
@@ -162,6 +131,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
                     Debug.Log($"[WebSocketManager] New Socket State: {manager.State}.");
                     break;
             }
+
             // Actions
             switch (manager.State)
             {
@@ -182,22 +152,25 @@ public class WebSocketManager : SingleTon<WebSocketManager>
                     socketDeathTimeGameSeconds = -1;
                     break;
             }
+
             // Update Unity UI
             SocketStatus = manager.State.ToString();
         }
     }
 
-    private void CheckTimedoutSocket() 
+    private void CheckTimedoutSocket()
     {
-        if (!IsSocketHealthy && socketDeathTimeGameSeconds != -1 && Time.time - socketDeathTimeGameSeconds > GameSettings.MAX_TIMEOUT_SECONDS)
+        if (!IsSocketHealthy && socketDeathTimeGameSeconds != -1 &&
+            Time.time - socketDeathTimeGameSeconds > GameSettings.MAX_TIMEOUT_SECONDS)
         {
             // After some seconds of closed connection, return to main menu.
-            Debug.LogError($"[WebSocketManager] Disconnected for {Mathf.Round(Time.time - socketDeathTimeGameSeconds)} seconds Connection could not be salvaged.");
+            Debug.LogError(
+                $"[WebSocketManager] Disconnected for {Mathf.Round(Time.time - socketDeathTimeGameSeconds)} seconds Connection could not be salvaged.");
             Destroy(gameObject);
         }
     }
 
-    private void ManageQueuedMessages() 
+    private void ManageQueuedMessages()
     {
         if (IsSocketHealthy && EmissionQueue.Count > 0 && Time.time - socketOpenTimeGameSeconds > 1)
         {
@@ -206,7 +179,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         }
     }
 
-    
+
     void ConnectSocket()
     {
         //BestHTTP.HTTPManager.UseAlternateSSLDefaultValue = true; 
@@ -250,13 +223,20 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void GenericParser(string data)
     {
-        WebSocketParser.ParseJSON(data);
+        try
+        {
+            WebSocketParser.ParseJSON(data);
+        } 
+        catch(Exception e) 
+        {
+            Debug.LogException(e);
+        }
     }
 
     void OnConnected(ConnectResponse resp)
     {
         Debug.Log("Websocket Connected sucessfully!");
-        
+
         GameManager.Instance.EVENT_WS_CONNECTED.Invoke();
     }
 
@@ -271,7 +251,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void OnRequestSync()
     {
-        Emit(WS_MESSAGE_GAME_SYNC);
+        Emit(SocketEvent.GameSync);
     }
 
     /// <summary>
@@ -284,8 +264,8 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         //Debug.Log("[WebSocket Manager] Sending message NodeSelected with node id " + nodeId);
         //customNamespace.Emit("NodeSelected",nodeId);
 
-        LogEmission(WS_MESSAGE_NODE_SELECTED, nodeId);
-        EmitWithResponse(OnNodeClickedAnswer, WS_MESSAGE_NODE_SELECTED, nodeId);
+        LogEmission(SocketEvent.NodeSelected, nodeId);
+        EmitWithResponse(OnNodeClickedAnswer, SocketEvent.NodeSelected, nodeId);
     }
 
 
@@ -298,7 +278,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         //NodeStateData nodeState = JsonConvert.DeserializeObject<NodeStateData>(nodeData);
         //GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState,WS_QUERY_TYPE.MAP_NODE_SELECTED);
 
-        WebSocketParser.ParseJSON(data);
+        GenericParser(data);
 
         //Debug.Log("OnNodeClickedAnswer: " + nodeState);
     }
@@ -317,7 +297,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 #endif
         //Debug.Log("Data from OnExpeditionMap: " + data);
         // GameManager.Instance.EVENT_MAP_NODES_UPDATE.Invoke(data);
-        WebSocketParser.ParseJSON(data);
+        GenericParser(data);
     }
 
     private void OnCardPlayed(string cardId, string id) //int enemyId)//TODO: enemyId will an array 
@@ -330,26 +310,19 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         //Debug.Log("[WebSocket Manager] OnCardPlayed data: " + data);
 
         //EmitWithResponse(OnCardPlayedAnswer, WS_MESSAGE_CARD_PLAYED, data);
-        Emit(WS_MESSAGE_CARD_PLAYED, data);
-    }
-    private void OnCardsSelected(List<string> cardIds)
-    {
-        CardsSelectedList cardList = new CardsSelectedList { cardsToTake = cardIds };
-        string data = JsonConvert.SerializeObject(cardList);
-        Debug.Log("[WebSocket Manager] OnCardsSelected data: " + data);
-        Emit(WS_MESSAGE_MOVE_SELECTED_CARDS, data);
+        Emit(SocketEvent.CardPlayed, data);
     }
 
     private void OnTrinketsSelected(List<string> trinketIds)
     {
         string data = JsonConvert.SerializeObject(trinketIds);
         Debug.Log("[WebSocket Manager] OnTrinketsSelected data: " + data);
-        Emit(WS_MESSAGE_TRINKETS_SELECTED, data);
+        Emit(SocketEvent.TrinketsSelected, data);
     }
-    
+
     private void OnBuyItem(string type, string id)
     {
-        PurchaseData purchase = new PurchaseData() 
+        PurchaseData purchase = new PurchaseData()
         {
             type = type,
             targetId = id
@@ -358,7 +331,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         string data = JsonConvert.SerializeObject(purchase).ToString();
         //Debug.Log($"[WebSocket Manager] OnBuyItem data: {data}");
 
-        Emit(WS_MESSAGE_MERCHANT_BUY, data);
+        Emit(SocketEvent.MerchantBuy, data);
     }
 
 
@@ -372,63 +345,45 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         string data = JsonConvert.SerializeObject(potionData);
         //Debug.Log("[WebSocket Manager] OnPotionUsed data: " + data);
 
-        Emit(WS_MESSAGE_USE_POTION, data);
+        Emit(SocketEvent.UsePotion, data);
     }
 
     private void OnPotionDiscarded(string potionId)
     {
         //Debug.Log("[WebSocket Manager] OnDiscardPotion id: " + potionId);
-        Emit(WS_MESSAGE_REMOVE_POTION, potionId);
+        Emit(SocketEvent.RemovePotion, potionId);
     }
 
     void OnRewardSelected(string rewardId)
     {
-        EmitWithResponse(WS_MESSAGE_REWARD_SELECTED, rewardId);
+        EmitWithResponse(SocketEvent.RewardSelected, rewardId);
     }
 
     private void OnCampHealSelected()
     {
-        EmitWithResponse(WS_MESSAGE_CAMP_HEAL);
+        EmitWithResponse(SocketEvent.CampHeal);
     }
 
     private void OnTreasureOpened()
     {
-       // Debug.Log($"[WebSocketManager] Sending message {WS_MESSAGE_OPEN_CHEST}");
-        EmitWithResponse(WS_MESSAGE_OPEN_CHEST);
-    }
-
-    private void OnEncounterOptionSelected(int option)
-    {
-        EmitWithResponse(WS_MESSAGE_ENCOUNTER_SELECTION, option);
+        // Debug.Log($"[WebSocketManager] Sending message {WS_MESSAGE_OPEN_CHEST}");
+        EmitWithResponse(SocketEvent.OpenChest);
     }
 
     private void OnStartCombatEncounter()
     {
-        EmitWithResponse(WS_MESSAGE_START_ENCOUNTER_COMBAT);
-    }
-
-    private void OnShowUpgradePair(string cardId)
-    {
-        Debug.Log($"Sending message {WS_MESSAGE_GET_CARD_UPGRADE_PAIR} with card id {cardId}");
-        //customNamespace.Emit("NodeSelected",nodeId);
-
-        EmitWithResponse(WS_MESSAGE_GET_CARD_UPGRADE_PAIR, cardId);
-    }
-
-    private void OnCardUpgradeConfirmed(string cardId)
-    {
-        EmitWithResponse(WS_MESSAGE_UPGRADE_CARD, cardId);
+        EmitWithResponse(SocketEvent.StartCombat);
     }
 
     private void OnSkipNode(int nodeId)
     {
-        Emit(WS_MESSAGE_NODE_SKIP, nodeId);
+        Emit(SocketEvent.NodeSkip, nodeId);
     }
 
     private void OnEndTurn()
     {
-        LogEmission(WS_MESSAGE_END_TURN);
-        EmitWithResponse(OnEndOfTurnAnswer, WS_MESSAGE_END_TURN);
+        LogEmission(SocketEvent.EndTurn);
+        EmitWithResponse(OnEndOfTurnAnswer, SocketEvent.EndTurn);
     }
 
     private void OnEndOfTurnAnswer(string nodeData)
@@ -443,80 +398,206 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void OnContinueExpedition()
     {
-        EmitWithResponse(WS_MESSAGE_CONTINUE_EXPEDITION);
+        EmitWithResponse(SocketEvent.ContinueExpedition);
     }
 
     #endregion
 
     private void OnGenericWSDataRequest(WS_DATA_REQUEST_TYPES dataType)
     {
-        EmitWithResponse(WS_MESSAGE_GET_DATA, dataType.ToString());
+        EmitWithResponse(SocketEvent.GetData, dataType.ToString());
     }
 
     private Queue<Action> EmissionQueue = new Queue<Action>();
 
-    private void Emit(string eventName, params object[] variables) 
+    private void ResolvePromise(string json, SocketPromise promise)
     {
-        if (!IsSocketHealthy) 
+        promise.FulfillRequest(json);
+    }
+
+    private SocketPromise CreatePromise()
+    {
+        SocketPromise promise = new SocketPromise();
+        return promise;
+    }
+
+    public void SendData(string eventName, object message) 
+    {
+        string rawJson = JsonConvert.SerializeObject(message);
+        Emit(eventName, rawJson);
+    }
+
+    private void Emit(string eventName, params object[] variables)
+    {
+        if (!IsSocketHealthy)
         {
-            EmissionQueue.Enqueue(() => 
-            {
-                Emit(eventName, variables);
-            });
+            EmissionQueue.Enqueue(() => { Emit(eventName, variables); });
             Debug.LogWarning($"[WebSocketManager] Socket is Unhealthy. Queuing Emission ({eventName}) for Later.");
             return;
         }
+
         LogEmission(eventName, variables);
         rootSocket.Emit(eventName, variables);
     }
+
     private void EmitWithResponse(string eventName, params object[] variables)
     {
         EmitWithResponse(GenericParser, eventName, variables);
+    }
 
+    public async UniTask<string> EmitAwaitResponse(string eventName, params object[] variables)
+    {
+        SocketPromise promise = CreatePromise();
+        if (IsSocketHealthy)
+        {
+            EmitPromise(promise, eventName, variables);
+        }
+        else
+        {
+            EmissionQueue.Enqueue(() => { EmitPromise(promise, eventName, variables); });
+            Debug.LogWarning(
+                $"[WebSocketManager] Socket is Unhealthy. Queuing Emission with Response ({eventName}) for Later.");
+        }
+
+        await UniTask.WaitUntil(() => promise.Completed);
+        Debug.Log($"[WebSocketManager] RESPONSE [{promise.Id.ToString().Substring(0,4)}] <<< {promise.Json}");
+        ServerCommunicationLogger.Instance.LogCommunication($"[WebSocketManager] RESPONSE [{promise.Id.ToString().Substring(0, 4)}] <<<",
+            CommunicationDirection.Incoming, promise.Json);
+        return promise.Json;
+    }
+
+    private void EmitPromise(SocketPromise promise, string eventName, params object[] variables)
+    {
+        LogEmissionExpectingResponse(promise.Id, eventName, variables);
+        rootSocket.ExpectAcknowledgement<string>((json) => { ResolvePromise(json, promise); })
+            .Emit(eventName, variables);
     }
 
     private void EmitWithResponse(Action<string> parser, string eventName, params object[] variables)
     {
         if (!IsSocketHealthy)
         {
-            EmissionQueue.Enqueue(() =>
-            {
-                EmitWithResponse(parser, eventName, variables);
-            });
-            Debug.LogWarning($"[WebSocketManager] Socket is Unhealthy. Queuing Emission with Response ({eventName}) for Later.");
+            EmissionQueue.Enqueue(() => { EmitWithResponse(parser, eventName, variables); });
+            Debug.LogWarning(
+                $"[WebSocketManager] Socket is Unhealthy. Queuing Emission with Response ({eventName}) for Later.");
             return;
         }
-        LogEmission(eventName, variables);
-        rootSocket.ExpectAcknowledgement<string>(parser).Emit(eventName, variables);
 
+        LogEmissionExpectingResponse(Guid.NewGuid(), eventName, variables);
+        rootSocket.ExpectAcknowledgement<string>(parser).Emit(eventName, variables);
     }
 
 
 #if UNITY_EDITOR
-    public void ForceEmit(string eventName, params object[] variables) 
+    public void ForceEmit(string eventName, params object[] variables)
     {
         EmitWithResponse(eventName, variables);
     }
 #endif
 
-    private void LogEmission(string eventName, params object[] variables) 
+    private void LogEmission(params object[] variables)
+    {
+        SendCommunicationLogs($"[WebSocketManager] Socket Emit >>> {VariablesToHumanReadable(variables)}", VariablesToJson(variables));
+    }
+
+    private void LogEmissionExpectingResponse(Guid pairingId, params object[] variables)
+    {
+        string messageId = pairingId.ToString().Substring(0, 4);
+        SendCommunicationLogs($"[WebSocketManager] Socket Emit [{messageId}] >>> {VariablesToHumanReadable(variables)}", VariablesToJson(variables));
+    }
+
+    private void SendCommunicationLogs(string stringLog, string rawJson) 
+    {
+        Debug.Log($"{stringLog}\n{rawJson}");
+        ServerCommunicationLogger.Instance.LogCommunication(stringLog, CommunicationDirection.Outgoing, rawJson);
+    }
+
+    private class OutgoingMessage 
+    {
+        public object eventName;
+        public List<object> variables = new();
+    }
+
+    private string VariablesToHumanReadable(params object[] variables) 
     {
         StringBuilder sb = new StringBuilder();
-        StringBuilder cb = new StringBuilder();
-        sb.Append($"[WebSocketManager] EMISSION >> Message: {eventName}");
-        cb.Append($"Socket Emit: {eventName}");
         if (variables != null && variables.Length >= 1)
         {
-            sb.Append($" | Action: {variables[0]}");
-            cb.Append($" Paramaters: {variables[0]}");
+            sb.Append($"Event: {variables[0]}");
             for (int i = 1; i < variables.Length; i++)
             {
                 sb.Append($" | Param [{i}]: {variables[i]}");
-                cb.Append($", {variables[i]}");
             }
         }
-        Debug.Log(sb.ToString());
-        
-        ServerCommunicationLogger.Instance.LogCommunication(cb.ToString(), CommunicationDirection.Outgoing);
+        return sb.ToString();
     }
+
+    private string VariablesToJson(params object[] variables) 
+    {
+        OutgoingMessage temporaryContainer = new OutgoingMessage();
+
+        if(variables.Length >= 1) 
+        {
+            temporaryContainer.eventName = variables[0];
+        }
+
+        temporaryContainer.variables = variables.ToList();
+        if (temporaryContainer.variables.Count >= 1)
+        { 
+            temporaryContainer.variables.RemoveAt(0);
+        }
+
+        return JsonConvert.SerializeObject(temporaryContainer);
+    }
+
+    private class SocketPromise
+    {
+        public bool Completed { get; private set; }
+        public Guid Id { get; private set; }
+        public string Json { get; private set; } = null;
+
+        public SocketPromise()
+        {
+            Id = Guid.NewGuid();
+            Completed = false;
+        }
+
+        public void FulfillRequest(string data)
+        {
+            Json = data;
+            Completed = true;
+        }
+    }
+}
+
+public static class SocketEvent
+{
+    public static readonly string GameSync = "SyncExpedition";
+
+    public static readonly string NodeSelected = "NodeSelected";
+    public static readonly string CardPlayed = "CardPlayed";
+    public static readonly string EndTurn = "EndTurn";
+
+    public static readonly string RewardSelected = "RewardSelected";
+    public static readonly string GetCardUpgradePair = "CardUpgradeSelected";
+    public static readonly string UpgradeCard = "UpgradeCard";
+    public static readonly string CampHeal = "CampRecoverHealth";
+    public static readonly string MoveSelectedCard = "MoveCard";
+    public static readonly string TrinketsSelected = "TrinketsSelected";
+
+    public static readonly string UsePotion = "UsePotion";
+    public static readonly string RemovePotion = "RemovePotion";
+    public static readonly string OpenChest = "ChestOpened";
+    public static readonly string MerchantBuy = "MerchantBuy";
+    public static readonly string StartCombat = "CombatEncounter";
+    public static readonly string EncounterSelection = "EncounterChoice";
+
+    /*public static readonly string GetEnergy = "GetEnergy";
+    public static readonly string GetCardPiles = "GetCardPiles";
+    public static readonly string GetPlayerHealth = "GetPlayerHealth";
+    public static readonly string GetPlayers = "GetPlayers";
+    public static readonly string GetEnemies = "GetEnemies";*/
+    public static readonly string GetData = "GetData";
+    public static readonly string ContinueExpedition = "ContinueExpedition";
+    public static readonly string NodeSkip = "NodeSkipped";
 }

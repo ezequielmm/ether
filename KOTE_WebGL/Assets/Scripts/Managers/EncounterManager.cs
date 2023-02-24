@@ -1,8 +1,12 @@
+using DG.Tweening;
+using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static EncounterData;
 
 public class EncounterManager : MonoBehaviour
 {
@@ -15,20 +19,120 @@ public class EncounterManager : MonoBehaviour
     public GameObject rightTextPanel;
     public Image creatureImage;
 
+    [SerializeField]
+    private SelectCardsPanel cardPanel;
+    [SerializeField]
+    private CardPairPanelManager cardPairPanel;
+
     private void Start()
     {
         EncounterContainer.SetActive(false);
         ClearPanel();
-        GameManager.Instance.EVENT_SHOW_ENCOUNTER_PANEL.AddListener(ShowEncounterPanel);
-        GameManager.Instance.EVENT_POPULATE_ENCOUNTER_PANEL.AddListener(OnPopulateEncounter);
+        GameManager.Instance.EVENT_SHOW_ENCOUNTER_PANEL.AddListener(ShowAndPopulate);
     }
 
-    public void ShowEncounterPanel()
+    public async void ShowAndPopulate()
     {
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.EncounterData);
+        EncounterData encounterData = await FetchData.Instance.GetEncounterData();
+        Populate(encounterData);
+        Show();
     }
 
-    // clear the panel so it doesn't show anything while waiting to be populated
+    public async void SelectOptionAndPopulate(int option)
+    {
+        // TODO: Work with backend to update this.
+        // We will want the selection to tell us what to do next.
+        // Not update encounter data (As it dose now).
+        EncounterData encounterData = await FetchData.Instance.SelectEncounterOption(option);
+        ShowAndPopulate();
+    }
+
+    public void Show()
+    {
+        creatureImage.gameObject.SetActive(true);
+        EncounterContainer.SetActive(true);
+    }
+
+    /* Called directly from Backend. Typically as a 2nd response for
+     * a Card Upgrade/Delete option. We will want one response per request.
+     * TODO: Work with Backend to refactor.
+     */
+    public void ShowCardSelectionPanel(EncounterSelectionData selectionData)
+    {
+        switch (selectionData.Type)
+        {
+            case "upgrade":
+                ShowUpgradeCardsPanel();
+                break;
+            default:
+                ShowDeleteCardsPanel(selectionData);
+                break;
+        }
+    }
+
+    private async void ShowUpgradeCardsPanel() 
+    {
+        List<Card> upgradeableCards = await FetchData.Instance.GetUpgradeableCards();
+        ShowCardPanel(upgradeableCards, new SelectPanelOptions
+        {
+            MustSelectAllCards = false,
+            HideBackButton = true,
+            FireSelectWhenCardClicked = true,
+            NumberOfCardsToSelect = 1,
+            ShowCardInCenter = false,
+            NoSelectButton = false
+        }, null,
+        (string cardId) =>
+        {
+            ShowCardComparison(cardId);
+        });
+    }
+    private void ShowCardComparison(string cardId)
+    {
+        cardPairPanel.ShowCardAndUpgrade(cardId, UpgradeCard, ClosePairPanel);
+    }
+    private async void UpgradeCard() 
+    {
+        CardUpgrade upgradeData = await FetchData.Instance.CampUpgradeCard(cardPairPanel.OriginalCard.id);
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Upgrade");
+        cardPairPanel.uiCardPair[0].gameObject.transform.DOScale(Vector3.zero, 1)
+            .OnComplete(() => {
+                CloseChildPanels();
+                ShowAndPopulate();
+            });
+    }
+    private void ClosePairPanel()
+    {
+        cardPairPanel.HidePairPannel();
+    }
+
+    private void ShowDeleteCardsPanel(EncounterSelectionData selectionData)
+    {
+        SelectPanelOptions panelOptions = new SelectPanelOptions
+        {
+            FireSelectWhenCardClicked = false,
+            HideBackButton = true,
+            MustSelectAllCards = true,
+            NumberOfCardsToSelect = selectionData.NumberOfCardsToSelect,
+            ShowCardInCenter = false
+        };
+        ShowCardPanel(selectionData.Cards, panelOptions, 
+        (List<string> selectedCards) =>
+        {
+            SendData.Instance.SendCardsSelected(selectedCards);
+            CloseChildPanels();
+            ShowAndPopulate();
+        }, null);
+    }
+
+    private void ShowCardPanel(List<Card> cards, SelectPanelOptions selectOptions,
+        Action<List<string>> onFinishedSelection = null, Action<string> onSelect = null)
+    {
+        cardPanel.useBackgroundImage = true;
+        cardPanel.scaleOnHover = false;
+        cardPanel.PopulatePanel(cards, selectOptions, onFinishedSelection, onSelect);
+    }
+
     private void ClearPanel()
     {
         creatureImage.gameObject.SetActive(false);
@@ -38,20 +142,25 @@ public class EncounterManager : MonoBehaviour
         {
             buttonText.text = "";
         }
+        CloseChildPanels();
     }
 
-    private void OnPopulateEncounter(SWSM_EncounterData encounterData)
+    private void CloseChildPanels() 
     {
-        creatureImage.sprite = SpriteAssetManager.Instance.GetEncounterCreature(encounterData.data.data.imageId);
-        creatureImage.SetNativeSize();
-        creatureImage.gameObject.SetActive(true);
-        titleText.text = encounterData.data.data.encounterName;
-        PopulateEncounterText(encounterData.data.data.displayText);
-        PopulateButtonText(encounterData.data.data.buttons);
-        EncounterContainer.SetActive(true);
+        cardPanel.HidePanel();
+        ClosePairPanel();
     }
 
-    private void PopulateEncounterText(string text)
+    private void Populate(EncounterData encounterData)
+    {
+        creatureImage.sprite = SpriteAssetManager.Instance.GetEncounterCreature(encounterData.imageId);
+        creatureImage.SetNativeSize();
+        titleText.text = encounterData.encounterName;
+        SetDialogueText(encounterData.displayText);
+        SetButtons(encounterData.buttons);
+    }
+
+    private void SetDialogueText(string text)
     {
         if (text.Length <= GameSettings.ENCOUNTER_TEXT_BOX_CHARACTER_COUNT)
         {
@@ -87,7 +196,7 @@ public class EncounterManager : MonoBehaviour
         }
     }
 
-    private void PopulateButtonText(List<ButtonData> ButtonsData)
+    private void SetButtons(List<ButtonData> ButtonsData)
     {
         if (ButtonsData == null || ButtonsData.Count == 0)
         {
@@ -119,7 +228,7 @@ public class EncounterManager : MonoBehaviour
             optionButtons[i].onClick.RemoveAllListeners();
             optionButtons[i].onClick.AddListener(() =>
             {
-                GameManager.Instance.EVENT_ENCOUNTER_OPTION_SELECTED.Invoke(buttonNum);
+                SelectOptionAndPopulate(buttonNum);
                 GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
                 DisableButtons();
             });
@@ -206,4 +315,31 @@ public class EncounterManager : MonoBehaviour
             button.interactable = false;
         }
     }
+}
+
+[Serializable]
+public class EncounterData
+{
+    public string encounterName;
+    public string imageId;
+    public string displayText;
+    public List<ButtonData> buttons = new();
+    [Serializable]
+    public class ButtonData
+    {
+        public string text;
+        public bool enabled;
+    }
+}
+
+
+[Serializable]
+public class EncounterSelectionData
+{
+    [JsonProperty("cards")]
+    public List<Card> Cards = new();
+    [JsonProperty("cardsToTake")]
+    public int NumberOfCardsToSelect;
+    [JsonProperty("kind")]
+    public string Type;
 }

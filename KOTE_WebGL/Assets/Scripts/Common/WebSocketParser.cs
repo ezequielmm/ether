@@ -28,7 +28,7 @@ public class WebSocketParser
                 ProcessCampUpdate(swsm.data.action, data);
                 break;
             case nameof(WS_MESSAGE_TYPES.card_upgrade):
-                ProcessCardUpgrade(swsm.data.action, data);
+                throw new NotImplementedException();
                 break;
             case nameof(WS_MESSAGE_TYPES.add_potion):
                 ProcessAddPotion(swsm.data.action, data);
@@ -215,16 +215,15 @@ public class WebSocketParser
                 ProcessPlayerFullDeck(data);
                 break;
             case nameof(WS_DATA_REQUEST_TYPES.UpgradableCards):
-                ProcessUpgradeableCards(data);
-                break;
+                throw new NotImplementedException();
             case nameof(WS_DATA_REQUEST_TYPES.MerchantData):
-                ProcessMerchantData(data);
-                break;
+                throw new NotImplementedException();
             case nameof(WS_DATA_REQUEST_TYPES.TreasureData):
                 ProcessTreasureData(data);
                 break;
             case nameof(WS_DATA_REQUEST_TYPES.EncounterData):
-                ProcessEncounterData(data);
+                Debug.LogWarning($"Using Obsolete Method. Please don't use a generic, encounterData request.");
+                GameObject.FindObjectOfType<EncounterManager>().ShowAndPopulate();
                 break;
             case nameof(WS_DATA_REQUEST_TYPES.Rewards):
                 ProcessRewardsData(data);
@@ -413,7 +412,7 @@ public class WebSocketParser
         };
         GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCards.data.data.cards,
             panelOptions,
-            (selectedCards) => { GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards); });
+            (selectedCards) => { SendData.Instance.SendCardsSelected(selectedCards); });
     }
 
     private static void ProcessSpawnEnemies(string data)
@@ -473,21 +472,6 @@ public class WebSocketParser
         GameManager.Instance.EVENT_CARD_PILE_SHOW_DECK.Invoke(deck);
     }
 
-    private static void ProcessUpgradeableCards(string data)
-    {
-        SWSM_PlayerDeckData deckData = JsonConvert.DeserializeObject<SWSM_PlayerDeckData>(data);
-        Deck deck = new Deck() { cards = deckData.data.data };
-        GameManager.Instance.EVENT_SHOW_UPGRADE_CARDS_PANEL.Invoke(deck);
-    }
-
-
-    private static void ProcessMerchantData(string data)
-    {
-        SWSM_MerchantData merchant = JsonConvert.DeserializeObject<SWSM_MerchantData>(data);
-        Debug.Log(data);
-        GameManager.Instance.EVENT_POPULATE_MERCHANT_PANEL.Invoke(merchant.data.data);
-    }
-
     private static void ProcessTreasureData(string data)
     {
         SWSM_TreasureData treasureData = JsonConvert.DeserializeObject<SWSM_TreasureData>(data);
@@ -504,12 +488,6 @@ public class WebSocketParser
     {
         SWSM_ChestResult chestResult = JsonConvert.DeserializeObject<SWSM_ChestResult>(data);
         GameManager.Instance.EVENT_TREASURE_CHEST_RESULT.Invoke(chestResult);
-    }
-
-    private static void ProcessEncounterData(string data)
-    {
-        SWSM_EncounterData encounterData = JsonConvert.DeserializeObject<SWSM_EncounterData>(data);
-        GameManager.Instance.EVENT_POPULATE_ENCOUNTER_PANEL.Invoke(encounterData);
     }
 
     private static void ProcessMoveCard(string rawData)
@@ -590,27 +568,12 @@ public class WebSocketParser
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Encounter);
                 break;
             case "show_cards":
-                SWSM_ShowCardDialog showCardData = JsonConvert.DeserializeObject<SWSM_ShowCardDialog>(data);
-                if (showCardData.data.data.kind == "upgrade")
-                {
-                    GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.UpgradableCards);
-                    break;
-                }
-
-                SelectPanelOptions panelOptions = new SelectPanelOptions
-                {
-                    FireSelectWhenCardClicked = false,
-                    HideBackButton = true,
-                    MustSelectAllCards = true,
-                    NumberOfCardsToSelect = showCardData.data.data.cardsToTake,
-                    ShowCardInCenter = false
-                };
-                GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCardData.data.data.cards, panelOptions,
-                    (selectedCards) => { GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards); });
+                var encounterSelection = FetchData.ParseJsonWithPath<EncounterSelectionData>(data, "data.data");
+                GameObject.FindObjectOfType<EncounterManager>().ShowCardSelectionPanel(encounterSelection);
                 break;
             case "select_trinkets":
-                SWSM_SelectTrinketData trinketData = JsonConvert.DeserializeObject<SWSM_SelectTrinketData>(data);
-                GameManager.Instance.EVENT_SHOW_SELECT_TRINKET_PANEL.Invoke(trinketData);
+                var trinkets = FetchData.ParseJsonWithPath<List<Trinket>>(data, "data.data.trinkets");
+                GameManager.Instance.EVENT_SHOW_SELECT_TRINKET_PANEL.Invoke(trinkets);
                 break;
             case "finish_encounter":
                 //  GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
@@ -651,19 +614,6 @@ public class WebSocketParser
         }
     }
 
-    private static void ProcessCardUpgrade(string action, string data)
-    {
-        switch (action)
-        {
-            case "upgradable_pair":
-                ProcessUpgradeablePair(data);
-                break;
-            case "confirm_upgrade":
-                ProcessConfirmUpgrade(data);
-                break;
-        }
-    }
-
     private static void ProcessAddPotion(string action, string data)
     {
         //TODO possibly switch effects for different warnings
@@ -695,18 +645,5 @@ public class WebSocketParser
                 Debug.LogError("Selected trinket not found in database");
                 break;
         }
-    }
-
-    private static void ProcessUpgradeablePair(string data)
-    {
-        SWSM_DeckData deckData = JsonConvert.DeserializeObject<SWSM_DeckData>(data);
-        Deck deck = new Deck() { cards = deckData.data.data.deck };
-        GameManager.Instance.EVENT_SHOW_UPGRADE_PAIR.Invoke(deck);
-    }
-
-    private static void ProcessConfirmUpgrade(string data)
-    {
-        SWSM_ConfirmUpgrade confirmUpgradeData = JsonConvert.DeserializeObject<SWSM_ConfirmUpgrade>(data);
-        GameManager.Instance.EVENT_UPGRADE_CONFIRMED.Invoke(confirmUpgradeData);
     }
 }

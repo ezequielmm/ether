@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -97,6 +98,7 @@ public class ExpeditionStatusData
     }
 }
 
+[Serializable]
 public class ExpeditionRequestData
 {
     public Data data = new();
@@ -138,11 +140,7 @@ public class RegisterData
     }
 }
 
-[Serializable]
-public class ServerVersionText
-{
-    public string data;
-}
+
 
 [Serializable]
 public class LoginData
@@ -260,6 +258,7 @@ public class Trinket
     public string name;
     public string rarity;
     public string description;
+    public int counter = 0;
     public Effects effects = new();
 }
 
@@ -310,6 +309,11 @@ public class Effect
 [Serializable]
 public class Deck
 {
+    public Deck() { }
+    public Deck(List<Card> cards) 
+    {
+        this.cards = cards;
+    }
     public List<Card> cards = new();
 }
 
@@ -423,67 +427,6 @@ public class SWSM_Base
 }
 
 [Serializable]
-public class MerchantData 
-{
-    public int coins;
-    public int shopkeeper;
-    public string speechBubble;
-    public List<Card> upgradeableCards = new List<Card>();
-    public List<Card> upgradedCards = new List<Card>();
-    public List<Card> playerCards = new List<Card>();
-    public int upgradeCost;
-    public int destroyCost;
-    public List<Merchant<Card>> cards = new List<Merchant<Card>>();
-    public List<Merchant<Card>> neutralCards = new List<Merchant<Card>>();// TODO
-    public List<Merchant<Trinket>> trinkets = new List<Merchant<Trinket>>();
-    public List<Merchant<PotionData>> potions = new List<Merchant<PotionData>>();
-
-    [Serializable]
-    public class Merchant<T> : IMerchant
-    {
-        [SerializeField]
-        protected int itemId;
-        [SerializeField]
-        protected int cost;
-        [SerializeField]
-        protected bool isSold;
-        [SerializeField]
-        protected string type;
-        [SerializeField]
-        protected string id;
-
-        public int ItemId { get => itemId; set => itemId = value; }
-        public int Coin { get => cost; set => cost = value; }
-        public bool IsSold { get => isSold; set => isSold = value; }
-        public string Type { get => type; set => type = value; }
-        public string Id { get => id; set => id = value; }
-        public T item;
-    }
-
-    public interface IMerchant 
-    {
-        public int ItemId { get; set; }
-        public int Coin { get; set; }
-        public bool IsSold { get; set; }
-        public string Type { get; set; }
-        public string Id { get; set; }
-    }
-}
-
-[Serializable]
-public class SWSM_MerchantData
-{
-    public Data data = new();
-
-    [Serializable]
-    public class Data
-    {
-        public string message_type;
-        public string action;
-        public MerchantData data = new();
-    }
-}
-[Serializable]
 public class SWSM_TreasureData
 {
     public Data data = new();
@@ -527,34 +470,6 @@ public class TrappedResult
 }
 
 [Serializable]
-public class SWSM_EncounterData
-{
-    public Data data = new();
-
-    [Serializable]
-    public class Data
-    {
-        public EncounterData data = new();
-
-        [Serializable]
-        public class EncounterData
-        {
-            public string encounterName;
-            public string imageId;
-            public string displayText;
-            public List<ButtonData> buttons = new();
-        }
-    }
-}
-
-[Serializable]
-public class ButtonData
-{
-    public string text;
-    public bool enabled;
-}
-
-[Serializable]
 public class SWSM_PlayerDeckData
 {
     public Data data = new();
@@ -587,22 +502,12 @@ public class DeckData
 }
 
 [Serializable]
-public class SWSM_ConfirmUpgrade
+public class CardUpgrade
 {
-    public SWSM_UpgradeData data = new();
-
-    [Serializable]
-    public class SWSM_UpgradeData
-    {
-        public UpgradeData data = new();
-
-        [Serializable]
-        public class UpgradeData
-        {
-            public string cardIdToDelete;
-            public Card newCard = new();
-        }
-    }
+    [JsonProperty("cardIdToDelete")]
+    public string CardIdToDelete;
+    [JsonProperty("newCard")]
+    public Card NewCard;
 }
 
 [Serializable]
@@ -735,6 +640,7 @@ public class SWSM_ErrorData
     public string data;
 }
 
+[Serializable]
 public class SWSM_PlayerState
 {
     public PlayerStateData data = new();
@@ -868,6 +774,7 @@ public class AddCardData
     public Card card = new();
 }
 
+[Serializable]
 public class SWSM_ChangeTurn
 {
     public Data data = new();
@@ -879,6 +786,7 @@ public class SWSM_ChangeTurn
     }
 }
 
+[Serializable]
 public class SWSM_RewardsData
 {
     public Data data = new();
