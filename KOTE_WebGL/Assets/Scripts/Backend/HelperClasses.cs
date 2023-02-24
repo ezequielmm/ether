@@ -260,6 +260,7 @@ public class Trinket
     public string name;
     public string rarity;
     public string description;
+    public int counter = 0;
     public Effects effects = new();
 }
 
