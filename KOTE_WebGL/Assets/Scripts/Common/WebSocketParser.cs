@@ -222,7 +222,7 @@ public class WebSocketParser
                 ProcessTreasureData(data);
                 break;
             case nameof(WS_DATA_REQUEST_TYPES.EncounterData):
-                Debug.LogError($"Using Obsolete Method. Please don't use a generic, encounterData request.");
+                Debug.LogWarning($"Using Obsolete Method. Please don't use a generic, encounterData request.");
                 GameObject.FindObjectOfType<EncounterManager>().ShowAndPopulate();
                 break;
             case nameof(WS_DATA_REQUEST_TYPES.Rewards):
@@ -568,13 +568,12 @@ public class WebSocketParser
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Encounter);
                 break;
             case "show_cards":
-                EncounterSelectionData encounterSelection 
-                    = FetchData.ParseJsonWithPath<EncounterSelectionData>(data, "data.data");
+                var encounterSelection = FetchData.ParseJsonWithPath<EncounterSelectionData>(data, "data.data");
                 GameObject.FindObjectOfType<EncounterManager>().ShowCardSelectionPanel(encounterSelection);
                 break;
             case "select_trinkets":
-                SWSM_SelectTrinketData trinketData = JsonConvert.DeserializeObject<SWSM_SelectTrinketData>(data);
-                GameManager.Instance.EVENT_SHOW_SELECT_TRINKET_PANEL.Invoke(trinketData);
+                var trinkets = FetchData.ParseJsonWithPath<List<Trinket>>(data, "data.data.trinkets");
+                GameManager.Instance.EVENT_SHOW_SELECT_TRINKET_PANEL.Invoke(trinkets);
                 break;
             case "finish_encounter":
                 //  GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
