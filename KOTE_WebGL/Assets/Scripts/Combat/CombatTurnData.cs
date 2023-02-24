@@ -8,21 +8,17 @@ public class CombatTurnData
 {
     public string originType = string.Empty;
     public string originId = string.Empty;
-    public List<Target> targets;
-    public float delay;
-    public Guid attackId;
+    public List<Target> targets = new();
+    public float delay = GameSettings.COMBAT_ANIMATION_DELAY;
+    public Guid attackId = Guid.NewGuid();
 
-    public CombatTurnData()
-    {
-        attackId = new Guid();
-        delay = GameSettings.COMBAT_ANIMATION_DELAY;
-    }
+    public CombatTurnData() { }
+
     public CombatTurnData(string origin, List<Target> targets, float delay = GameSettings.COMBAT_ANIMATION_DELAY)
     {
         this.originId = origin;
         this.targets = targets;
         this.delay = delay;
-        attackId = new Guid();
     }
 
     public bool ContainsTarget(string targetID)
@@ -62,7 +58,7 @@ public class CombatTurnData
         public int defenseDelta;
         public int finalDefense;
         public string effectType;
-        public List<StatusData.Status> statuses;
+        public List<StatusData.Status> statuses = new();
 
         public override string ToString() 
         {
