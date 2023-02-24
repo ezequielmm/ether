@@ -22,6 +22,9 @@ namespace KOTE.Expedition.Combat.Cards
 
         internal Vector3 targetPosition;
         internal Vector3 targetRotation;
+        
+        private TargetProfile targetProfile;
+
 
         private void Awake()
         {
@@ -35,6 +38,11 @@ namespace KOTE.Expedition.Combat.Cards
         {
             collider = GetComponent<Collider2D>();
             GameManager.Instance.EVENT_CARD_SHOWING_UP.AddListener(OnCardMouseShowingUp);
+            targetProfile = new TargetProfile()
+            {
+                player = false,
+                enemy = true
+            };
         }
 
         private void Update()
@@ -44,6 +52,27 @@ namespace KOTE.Expedition.Combat.Cards
                 delay -= Time.deltaTime;
                 if (delay < 0) delay = 0;
             }
+        }
+        
+        internal void ShowPointer()
+        {
+            //show the pointer instead of following the mouse
+            PointerData pd = new PointerData(transform.position, PointerOrigin.card, targetProfile);
+
+            GameManager.Instance.EVENT_ACTIVATE_POINTER.Invoke(pd);
+            GameManager.Instance.EVENT_TOGGLE_TOOLTIPS.Invoke(false);
+
+            Vector3 showUpPosition =
+                new Vector3(0, GameSettings.HAND_CARD_SHOW_UP_Y, GameSettings.HAND_CARD_SHOW_UP_Z);
+            transform.DOMove(showUpPosition, GameSettings.HAND_CARD_SHOW_UP_TIME);
+        }
+
+        internal void FollowMouse()
+        {
+            float zz = transform.position.z;
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePos.z = zz;
+            transform.position = mousePos;
         }
 
         internal Sequence OnCardToMove(CardToMoveData data, float delayIndex)

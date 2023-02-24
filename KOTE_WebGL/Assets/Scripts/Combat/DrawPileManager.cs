@@ -59,11 +59,6 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             amountOfCardsTF.SetText(data.data.draw.Count!.ToString());
         }
 
-        private void OnNodeStateDateUpdate(NodeStateData nodeState, WS_QUERY_TYPE wsType)
-        {
-            // if (nodeState.data != null && nodeState.data.data != null) amountOfCardsTF.SetText(nodeState.data.data.player.cards.draw.Count!.ToString());
-        }
-
         public void OnPileClick()
         {
             GameManager.Instance.EVENT_CARD_PILE_CLICKED.Invoke(PileTypes.Draw);

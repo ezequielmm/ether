@@ -102,6 +102,16 @@ namespace KOTE.Expedition.Combat.Cards
             cardMovement.ShowUpCard();
         }
 
+        internal void ShowPointer()
+        {
+            cardMovement.ShowPointer();
+        }
+
+        internal void FollowMouse()
+        {
+            cardMovement.FollowMouse();
+        }
+
         internal void StartTimeout(string cardId, string enemyId)
         {
             if(id == cardId) StartCoroutine(CardTimeout());

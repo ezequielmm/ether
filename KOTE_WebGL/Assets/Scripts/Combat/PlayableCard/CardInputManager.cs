@@ -16,16 +16,10 @@ namespace KOTE.Expedition.Combat.Cards
 
         private bool overPlayer;
         private GameObject lastOver;
-        private TargetProfile targetProfile;
 
         private void Start()
         {
             GameManager.Instance.EVENT_CARD_MOUSE_EXIT.AddListener(OnCardMouseExit);
-            targetProfile = new TargetProfile()
-            {
-                player = false,
-                enemy = true
-            };
         }
 
         private void Update()
@@ -74,25 +68,15 @@ namespace KOTE.Expedition.Combat.Cards
             // Debug.Log("Distance y is " + xxDelta);
             if (cardManager.cardData != null && cardManager.cardData.showPointer)
             {
-                //show the pointer instead of following the mouse
-                PointerData pd = new PointerData(transform.position, PointerOrigin.card, targetProfile);
-
-                GameManager.Instance.EVENT_ACTIVATE_POINTER.Invoke(pd);
-                GameManager.Instance.EVENT_TOGGLE_TOOLTIPS.Invoke(false);
-
-                Vector3 showUpPosition =
-                    new Vector3(0, GameSettings.HAND_CARD_SHOW_UP_Y, GameSettings.HAND_CARD_SHOW_UP_Z);
-                transform.DOMove(showUpPosition, GameSettings.HAND_CARD_SHOW_UP_TIME);
-
+                cardManager.ShowPointer();
                 pointerIsActive = true;
                 return;
             }
 
-            float zz = transform.position.z;
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mousePos.z = zz;
-            transform.position = mousePos;
+            cardManager.FollowMouse();
         }
+        
+        
 
         private void OnMouseExit()
         {

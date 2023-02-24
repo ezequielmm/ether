@@ -25,13 +25,16 @@ namespace KOTE.Expedition.Combat.Cards.Piles
         private bool requestAgain;
         private Coroutine requestTimer;
 
+        // this is a field due to abstraction
+        private bool pause;
+
 
         // Start is called before the first frame update
         void Start()
         {
             GameManager.Instance.EVENT_CARD_DRAW_CARDS.AddListener(OnDrawCards);
             GameManager.Instance.EVENT_CARDS_PILES_UPDATED.AddListener(OnCardsPilesUpdated);
-            GameManager.Instance.EVENT_CARD_ADD.AddListener(OnCardAdd);
+            GameManager.Instance.EVENT_CARD_ADD.AddListener(GameplayCardSpawn);
             GameManager.Instance.EVENT_CARD_DISABLED.AddListener(OnCardDestroyed);
             GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(OnGameOver);
         }
@@ -54,15 +57,10 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             }
 
             Debug.Log("[HandManager]------------------------------------------------>[OnDrawCards]");
-            if (cardPilesData == null)
+            if (CardPilesDoesNotHaveHandData())
             {
-                Debug.Log("[HandManager] No cards data at all. Requesting Card Piles");
-                RequestCardsPilesData();
-                return;
-            }
-            else if (cardPilesData.data.hand.Count < 1)
-            {
-                Debug.Log("[HandManager] No hands cards data. Requesting Card Piles");
+                Debug.Log(
+                    $"[HandManager] Insufficient card data to draw cards. Hand Count is {cardPilesData?.data?.hand?.Count} Requesting Card Piles");
                 RequestCardsPilesData();
                 return;
             }
@@ -71,14 +69,29 @@ namespace KOTE.Expedition.Combat.Cards.Piles
                 $"[HandManager] Card Piles Retrieved. draw.count: {cardPilesData.data.draw.Count} | hand.count: {cardPilesData.data.hand.Count} | discard.count: {cardPilesData.data.discard.Count} | exhaust.count: {cardPilesData.data.exhausted.Count}");
             requestAgain = false;
 
-            // create card lists
+            ClearCardLists();
+
+            PopulateCardLists();
+
+            // Debug.Log("[HandManager] listOfCardsOnHand.Count:" + listOfCardsOnHand.Count);
+            StartCoroutine(ConfirmCardsAreInDrawPile());
+        }
+
+        private bool CardPilesDoesNotHaveHandData()
+        {
+            return cardPilesData == null || cardPilesData.data.hand.Count < 1;
+        }
+
+        private void ClearCardLists()
+        {
             handManager.handDeck.Clear();
             drawManager.drawDeck.Clear();
             discardManager.discardDeck.Clear();
             exhaustManager.exhaustDeck.Clear();
+        }
 
-            float delayStep = 0.1f;
-
+        private void PopulateCardLists()
+        {
             foreach (Card card in cardPilesData.data.hand)
             {
                 SpawnCardToPile(handManager.handDeck, card);
@@ -98,16 +111,13 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             {
                 SpawnCardToPile(exhaustManager.exhaustDeck, card);
             }
-
-            // Debug.Log("[HandManager] listOfCardsOnHand.Count:" + listOfCardsOnHand.Count);
-            StartCoroutine(ValidateCardPositions());
         }
 
         private void SpawnCardToPile(List<CardManager> cardPile, Card card)
         {
             if (!MasterCardList.ContainsKey(card.id))
             {
-                SpawnCard(cardPile, card);
+                InitialCardSpawn(cardPile, card);
             }
             else
             {
@@ -115,43 +125,52 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             }
         }
 
-        private void SpawnCard(List<CardManager> cardPile, Card card)
+        // called when creating cards at start of combat
+        private void InitialCardSpawn(List<CardManager> cardPile, Card card)
         {
             // Debug.Log("[HandManager | Hand Deck] Instantiating card " + card.id);
-            CardManager cardManager = Instantiate(SpriteCardPrefab, handManager.transform);
-            cardManager.gameObject.name = card.name + " "+ card.id;
-            cardManager.Populate(card, cardPilesData.data.energy);
+            CardManager cardManager = SpawnCard(card);
             if (cardPile != handManager.handDeck) cardManager.DisableCardContent();
-            MasterCardList.Add(card.id, cardManager);
             cardPile.Add(cardManager);
         }
 
-        private IEnumerator ValidateCardPositions()
+        // called when a card is created in the midst of combat (typically status cards)
+        private void GameplayCardSpawn(AddCardData addCardData)
+        {
+            // create the new card in the middle of the screen
+            SpawnCard(addCardData.card);
+            GameManager.Instance.EVENT_MOVE_CARDS.Invoke(new List<(CardToMoveData, float)>
+            {
+                (new CardToMoveData
+                {
+                    destination = addCardData.destination,
+                    id = addCardData.card.id,
+                    source = "none"
+                }, GameSettings.SHOW_NEW_CARD_DURATION)
+            });
+        }
+
+        private CardManager SpawnCard(Card card)
+        {
+            CardManager cardManager = Instantiate(SpriteCardPrefab, handManager.transform);
+            cardManager.gameObject.name = card.name + " " + card.id;
+            cardManager.Populate(card, cardPilesData.data.energy);
+            MasterCardList.Add(card.id, cardManager);
+            return cardManager;
+        }
+
+        private IEnumerator ConfirmCardsAreInDrawPile()
         {
             // Debug.Log("----------------------------Relocate cards offset=" + offset);
-            bool pause = false;
+            pause = false;
             foreach (CardManager cardManager in drawManager.drawDeck)
             {
-                if (cardManager.TryMoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw,
-                        out Sequence sequence))
-                {
-                    // we can adjust the card right away here as this function is cleanup after other movement
-                    if (sequence != null) sequence.Play();
-                    yield return new WaitForSeconds(0.1f);
-                    pause = true;
-                }
+                yield return ConfirmCardInDrawPile(cardManager);
             }
 
             foreach (CardManager cardManager in handManager.handDeck)
             {
-                if (cardManager.TryMoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw,
-                        out Sequence sequence))
-                {
-                    // we can adjust the card right away here as this function is cleanup after other movement
-                    if (sequence != null) sequence.Play();
-                    yield return new WaitForSeconds(0.1f);
-                    pause = true;
-                }
+                yield return ConfirmCardInDrawPile(cardManager);
             }
 
             if (pause)
@@ -160,6 +179,21 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             }
 
             handManager.StartRelocateCards(true);
+            pause = false;
+        }
+
+        private IEnumerator ConfirmCardInDrawPile(CardManager cardManager)
+        {
+            if (cardManager.TryMoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw,
+                    out Sequence sequence))
+            {
+                // we can adjust the card right away here as this function is cleanup after other movement
+                if (sequence != null) sequence.Play();
+                yield return new WaitForSeconds(0.1f);
+                pause = true;
+            }
+
+            yield return null;
         }
 
         private void RequestCardsPilesData()
@@ -195,25 +229,6 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             requestTimerIsRunning = false;
         }
 
-        private void OnCardAdd(AddCardData addCardData)
-        {
-            // create the new card in the middle of the screen
-            CardManager cardManager = Instantiate(SpriteCardPrefab, handManager.transform);
-            cardManager.gameObject.name = addCardData.card.name + " " + addCardData.card.id;
-            MasterCardList.Add(addCardData.card.id, cardManager);
-            cardManager.Populate(addCardData.card, cardPilesData.data.energy);
-
-            GameManager.Instance.EVENT_MOVE_CARDS.Invoke(new List<(CardToMoveData, float)>
-            {
-                (new CardToMoveData
-                {
-                    destination = addCardData.destination,
-                    id = addCardData.card.id,
-                    source = "none"
-                }, GameSettings.SHOW_NEW_CARD_DURATION)
-            });
-        }
-
         private void OnCardsPilesUpdated(CardPiles data)
         {
             Debug.Log("[HandManager] OnCardPilesUpdated");
@@ -246,7 +261,7 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             {
                 if (!MasterCardList.ContainsKey(card.id))
                 {
-                    SpawnCard(cardPile, card);
+                    InitialCardSpawn(cardPile, card);
                 }
                 else
                 {
@@ -262,10 +277,8 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             {
                 return true;
             }
-
-            {
-                return false;
-            }
+            
+            return false;
         }
 
 
