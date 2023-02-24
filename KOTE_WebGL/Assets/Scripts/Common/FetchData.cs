@@ -85,11 +85,19 @@ public class FetchData : ISingleton<FetchData>, IDisposable
         return data;
     }
 
-    public async UniTask<Deck> GetUpgradeableCards()
+    public async UniTask<List<Card>> GetUpgradeableCards()
     {
         string rawJson = await socketRequest.EmitAwaitResponse(SocketEvent.GetData, WS_DATA_REQUEST_TYPES.UpgradableCards.ToString());
         JObject json = JObject.Parse(rawJson);
-        Deck data = new Deck(json.SelectToken("data.data").ToObject<List<Card>>());
+        List<Card> data = json.SelectToken("data.data").ToObject<List<Card>>();
+        return data;
+    }
+
+    public async UniTask<MerchantData> GetMerchantData()
+    {
+        string rawJson = await socketRequest.EmitAwaitResponse(SocketEvent.GetData, WS_DATA_REQUEST_TYPES.MerchantData.ToString());
+        JObject json = JObject.Parse(rawJson);
+        MerchantData data = json.SelectToken("data.data").ToObject<MerchantData>();
         return data;
     }
 }

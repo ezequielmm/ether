@@ -217,7 +217,7 @@ public class WebSocketParser
             case nameof(WS_DATA_REQUEST_TYPES.UpgradableCards):
                 throw new NotImplementedException();
             case nameof(WS_DATA_REQUEST_TYPES.MerchantData):
-                ProcessMerchantData(data);
+                throw new NotImplementedException();
                 break;
             case nameof(WS_DATA_REQUEST_TYPES.TreasureData):
                 ProcessTreasureData(data);
@@ -470,14 +470,6 @@ public class WebSocketParser
         SWSM_PlayerDeckData deckData = JsonConvert.DeserializeObject<SWSM_PlayerDeckData>(data);
         Deck deck = new Deck() { cards = deckData.data.data };
         GameManager.Instance.EVENT_CARD_PILE_SHOW_DECK.Invoke(deck);
-    }
-
-
-    private static void ProcessMerchantData(string data)
-    {
-        SWSM_MerchantData merchant = JsonConvert.DeserializeObject<SWSM_MerchantData>(data);
-        Debug.Log(data);
-        GameManager.Instance.EVENT_POPULATE_MERCHANT_PANEL.Invoke(merchant.data.data);
     }
 
     private static void ProcessTreasureData(string data)

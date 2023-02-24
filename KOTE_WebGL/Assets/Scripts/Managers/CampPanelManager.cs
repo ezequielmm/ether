@@ -62,7 +62,7 @@ public class CampPanelManager : MonoBehaviour
         campContainer.SetActive(false);
     }
 
-    private void ShowUpgradePanel(Deck deck)
+    private void ShowUpgradePanel(List<Card> cards)
     {
         SelectPanelOptions selectOptions = new SelectPanelOptions
         {
@@ -74,7 +74,7 @@ public class CampPanelManager : MonoBehaviour
         upgradePanel.HidePairPannel();
 
         cardPanel.ClearSelectList();
-        cardPanel.PopulatePanel(deck.cards, selectOptions, null, PopulatePairPanel);
+        cardPanel.PopulatePanel(cards, selectOptions, null, PopulatePairPanel);
     }
 
     private void PopulatePairPanel(string cardId) 
@@ -92,8 +92,8 @@ public class CampPanelManager : MonoBehaviour
 
     private async void OpenAndPopulatUpgradeCards()
     {
-        Deck deck = await FetchData.Instance.GetUpgradeableCards();
-        ShowUpgradePanel(deck);
+        List<Card> cards = await FetchData.Instance.GetUpgradeableCards();
+        ShowUpgradePanel(cards);
     }
 
     private void CloseUpgradePanels() 

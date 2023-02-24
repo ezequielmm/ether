@@ -671,15 +671,6 @@ public class WebSocketParserTests
     }
 
     [Test]
-    public void DoesProcessMerchantDataFirePopulateMerchantPanel()
-    {
-        bool eventFired = false;
-        GameManager.Instance.EVENT_POPULATE_MERCHANT_PANEL.AddListener((data) => { eventFired = true; });
-        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("generic_data", "MerchantData"));
-        Assert.True(eventFired);
-    }
-
-    [Test]
     public void DoesProcessAddPotionFirePotionWarningEvent()
     {
         bool eventFired = false;

@@ -10,7 +10,7 @@ public class PotionMerchantItem : MerchantItem<MerchantData.Merchant<PotionData>
     {
         potionManager.enabled = true;
         base.Populate(data);
-        potionManager.Populate(data.item);
+        potionManager.Populate(data.Item);
         TooltipAtCursor tooltipManager = potionManager.GetComponent<TooltipAtCursor>();
         tooltipManager.limit = -Vector2.one;
         tooltipManager.anchor = TooltipController.Anchor.TopLeft;

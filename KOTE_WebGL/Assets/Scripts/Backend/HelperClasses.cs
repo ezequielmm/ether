@@ -426,67 +426,6 @@ public class SWSM_Base
 }
 
 [Serializable]
-public class MerchantData 
-{
-    public int coins;
-    public int shopkeeper;
-    public string speechBubble;
-    public List<Card> upgradeableCards = new List<Card>();
-    public List<Card> upgradedCards = new List<Card>();
-    public List<Card> playerCards = new List<Card>();
-    public int upgradeCost;
-    public int destroyCost;
-    public List<Merchant<Card>> cards = new List<Merchant<Card>>();
-    public List<Merchant<Card>> neutralCards = new List<Merchant<Card>>();// TODO
-    public List<Merchant<Trinket>> trinkets = new List<Merchant<Trinket>>();
-    public List<Merchant<PotionData>> potions = new List<Merchant<PotionData>>();
-
-    [Serializable]
-    public class Merchant<T> : IMerchant
-    {
-        [SerializeField]
-        protected int itemId;
-        [SerializeField]
-        protected int cost;
-        [SerializeField]
-        protected bool isSold;
-        [SerializeField]
-        protected string type;
-        [SerializeField]
-        protected string id;
-
-        public int ItemId { get => itemId; set => itemId = value; }
-        public int Coin { get => cost; set => cost = value; }
-        public bool IsSold { get => isSold; set => isSold = value; }
-        public string Type { get => type; set => type = value; }
-        public string Id { get => id; set => id = value; }
-        public T item;
-    }
-
-    public interface IMerchant 
-    {
-        public int ItemId { get; set; }
-        public int Coin { get; set; }
-        public bool IsSold { get; set; }
-        public string Type { get; set; }
-        public string Id { get; set; }
-    }
-}
-
-[Serializable]
-public class SWSM_MerchantData
-{
-    public Data data = new();
-
-    [Serializable]
-    public class Data
-    {
-        public string message_type;
-        public string action;
-        public MerchantData data = new();
-    }
-}
-[Serializable]
 public class SWSM_TreasureData
 {
     public Data data = new();
