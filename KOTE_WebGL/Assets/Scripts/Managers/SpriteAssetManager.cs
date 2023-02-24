@@ -11,6 +11,7 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
     public List<NamedSpriteList> combatBackgroundList;
     public NamedSpriteList encounterCreatureList;
     public NamedSpriteList miscImages;
+    public NamedSpriteList statusIcons;
     private List<(int, int)> _potionListRanges = new List<(int, int)>();
     private List<(int, int)> _trinketListRanges = new List<(int, int)>();
 
@@ -30,6 +31,22 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
             _trinketListRanges.Add((int.Parse(imageList.entityImages[0].name),
                 int.Parse(imageList.entityImages[imageList.entityImages.Count - 1].name)));
         }
+    }
+
+    public Sprite GetStatusIcon(STATUS status)
+    {
+        foreach (var icon in statusIcons.SpriteList) 
+        {
+            if (icon.name.ToLower().Trim() == status.ToString().ToLower()) 
+            {
+                return icon.image;
+            }
+        }
+        if(status != STATUS.unknown) 
+        {
+            return GetStatusIcon(STATUS.unknown);
+        }
+        return null;
     }
 
     public Sprite GetPotionImage(int potionId)

@@ -82,3 +82,4 @@ MonoBehaviour:
   encounterCreatureList: {fileID: 11400000, guid: 0eb3155688a4d9d408d01bba4fcc3344,
     type: 2}
   miscImages: {fileID: 11400000, guid: d387e2d0bffaf704293b5cda2dd4d12b, type: 2}
+  statusIcons: {fileID: 11400000, guid: ef391eb58f468f243adf45ce8dc571df, type: 2}
