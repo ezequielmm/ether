@@ -1,38 +1,36 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using KOTE.Expedition.Combat.Cards.Piles;
 using NUnit.Framework;
-using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-public class DiscardedCardPileManagerTests : MonoBehaviour
+public class DiscardPileManagerTests : MonoBehaviour
 {
-    private DiscardedCardPileManager _discardManager;
+    private DiscardPileManager _discardManager;
     private GameObject cameraObject;
 
     [UnitySetUp]
     public IEnumerator Setup()
     {
         // add a camera so that things will run
-         cameraObject = new GameObject();
+        cameraObject = new GameObject();
         Camera camera = cameraObject.AddComponent<Camera>();
         camera.tag = "MainCamera";
-        
+
         GameObject DiscardPilePrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/BattleUI/DiscardCardPile.prefab");
-        GameObject discardPile = GameObject.Instantiate(DiscardPilePrefab);
-        _discardManager = discardPile.GetComponent<DiscardedCardPileManager>();
+        GameObject discardPile = Instantiate(DiscardPilePrefab);
+        _discardManager = discardPile.GetComponent<DiscardPileManager>();
         discardPile.SetActive(true);
         EventSystem eventSystem = discardPile.AddComponent<EventSystem>();
-        
+
 
         yield return null;
     }
-    
+
     [UnityTearDown]
     public IEnumerator TearDown()
     {
@@ -117,7 +115,7 @@ public class DiscardedCardPileManagerTests : MonoBehaviour
         _discardManager.OnPointerEnter(new PointerEventData(EventSystem.current));
         Assert.True(eventFired);
     }
-    
+
     [Test]
     public void DoesOnPointerExitFireClearToolTipEvent()
     {

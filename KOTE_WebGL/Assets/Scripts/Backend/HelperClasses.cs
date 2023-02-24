@@ -303,17 +303,9 @@ public class Statuses
 [Serializable]
 public class Effect
 {
-    public string effect;
     public string target;
-    public EffectArgs args = new();
 }
 
-
-[Serializable]
-public class EffectArgs
-{
-    public int value;
-}
 
 [Serializable]
 public class Deck

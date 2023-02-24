@@ -1,30 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
+using KOTE.Expedition.Combat.Cards.Piles;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.TestTools;
 
-public class ExhaustedCardPileManagerTests : MonoBehaviour
+public class DrawPileManagerTests : MonoBehaviour
 {
-    private ExhaustedCardPileManager _exhaustManager;
+    private DrawPileManager _drawManager;
     private GameObject go;
 
     [UnitySetUp]
     public IEnumerator Setup()
     {
         // add a camera so that things will run
-        GameObject go = new GameObject();
+        go = new GameObject();
         Camera camera = go.AddComponent<Camera>();
         camera.tag = "MainCamera";
 
-        GameObject exhaustedCardPilePrefab =
-            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/BattleUI/ExhaustedPilePrefab.prefab");
-        GameObject exhaustPileManager = Instantiate(exhaustedCardPilePrefab);
-        _exhaustManager = exhaustPileManager.GetComponent<ExhaustedCardPileManager>();
-        exhaustPileManager.SetActive(true);
-        EventSystem eventSystem = exhaustPileManager.AddComponent<EventSystem>();
+        GameObject drawPilePrefab =
+            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/BattleUI/DrawCardPile.prefab");
+        GameObject drawPileManager = Instantiate(drawPilePrefab);
+        _drawManager = drawPileManager.GetComponent<DrawPileManager>();
+        drawPileManager.SetActive(true);
+        EventSystem eventSystem = drawPileManager.AddComponent<EventSystem>();
 
 
         yield return null;
@@ -33,34 +34,35 @@ public class ExhaustedCardPileManagerTests : MonoBehaviour
     [UnityTearDown]
     public IEnumerator TearDown()
     {
-        Destroy(_exhaustManager.gameObject);
+        Destroy(_drawManager.gameObject);
         Destroy(go);
         yield return null;
     }
 
-    [Test]
-    public void DoesExhaustingaCardFireSFXEvent()
+    [UnityTest]
+    public IEnumerator DoesShufflingMoreThanOneCardFireSFXEvent()
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) => { eventFired = true; });
-        GameManager.Instance.EVENT_CARD_EXHAUST.Invoke();
+        GameManager.Instance.EVENT_CARD_SHUFFLE.Invoke();
+        yield return new WaitForSeconds(0.3f);
         Assert.True(eventFired);
     }
 
-    [Test]
-    public void DoesExhaustingaCardFireCorrectSFX()
+    [UnityTest]
+    public IEnumerator DoesShufflingMoreThanOneCardFireCorrectSFX()
     {
+        SoundTypes soundType = SoundTypes.EnemyOffensive;
         string sfxType = "";
-        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) => { sfxType = data2; });
-        GameManager.Instance.EVENT_CARD_EXHAUST.Invoke();
-        Assert.AreEqual("Card Exhaust", sfxType);
-    }
-
-    [Test]
-    public void DoesExhaustingCardLogThatCardWasDiscarded()
-    {
-        GameManager.Instance.EVENT_CARD_EXHAUST.Invoke();
-        LogAssert.Expect(LogType.Log, "[Exhaust Pile] Card Exhausted.");
+        GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) =>
+        {
+            soundType = data;
+            sfxType = data2;
+        });
+        GameManager.Instance.EVENT_CARD_SHUFFLE.Invoke();
+        yield return new WaitForSeconds(0.3f);
+        Assert.AreEqual(SoundTypes.Card, soundType);
+        Assert.AreEqual("Shuffle", sfxType);
     }
 
     [Test]
@@ -70,10 +72,10 @@ public class ExhaustedCardPileManagerTests : MonoBehaviour
         {
             data = new Cards
             {
-                exhausted = new List<Card> { new Card() }
+                draw = new List<Card> { new Card() }
             }
         });
-        Assert.AreEqual("1", _exhaustManager.amountOfCardsTF.text);
+        Assert.AreEqual("1", _drawManager.amountOfCardsTF.text);
     }
 
     [Test]
@@ -81,7 +83,7 @@ public class ExhaustedCardPileManagerTests : MonoBehaviour
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_CARD_PILE_CLICKED.AddListener((data) => { eventFired = true; });
-        _exhaustManager.OnPileClick();
+        _drawManager.OnPileClick();
         Assert.True(eventFired);
     }
 
@@ -90,7 +92,7 @@ public class ExhaustedCardPileManagerTests : MonoBehaviour
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_SET_TOOLTIPS.AddListener((data, data2, data3, data4) => { eventFired = true; });
-        _exhaustManager.OnPointerEnter(new PointerEventData(EventSystem.current));
+        _drawManager.OnPointerEnter(new PointerEventData(EventSystem.current));
         Assert.True(eventFired);
     }
 
@@ -99,7 +101,7 @@ public class ExhaustedCardPileManagerTests : MonoBehaviour
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_CLEAR_TOOLTIPS.AddListener(() => { eventFired = true; });
-        _exhaustManager.OnPointerExit(null);
+        _drawManager.OnPointerExit(null);
         Assert.True(eventFired);
     }
 }
