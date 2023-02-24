@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class FetchData : ISingleton<FetchData>, IDisposable
+public class FetchData : DataManager, ISingleton<FetchData>
 {
     private static FetchData instance;
     public static FetchData Instance 
@@ -21,35 +21,10 @@ public class FetchData : ISingleton<FetchData>, IDisposable
             return instance;
         } 
     }
-    WebRequesterManager webRequest;
-    WebSocketManager socketRequest;
-
-    private FetchData() 
-    {
-        GameManager.Instance.EVENT_SCENE_LOADED.AddListener(OnSceneLoaded);
-        OnSceneLoaded(GameManager.Instance.CurrentScene);
-    }
-
-    private void OnSceneLoaded(inGameScenes scene) 
-    {
-        switch(scene) 
-        {
-            case inGameScenes.MainMenu:
-                webRequest = GameObject.FindObjectOfType<WebRequesterManager>();
-                break;
-            case inGameScenes.Expedition:
-                socketRequest = WebSocketManager.Instance;
-                break;
-        }
-    }
 
     public void DestroyInstance()
     {
         instance = null;
-    }
-    public void Dispose()
-    {
-        
     }
 
     public async UniTask<string> GetServerVersion()
@@ -62,10 +37,10 @@ public class FetchData : ISingleton<FetchData>, IDisposable
         }
     }
 
-    public async UniTask<Deck> GetCardUpgradePair(string cardId) 
+    public async UniTask<List<Card>> GetCardUpgradePair(string cardId) 
     {
         string rawJson = await socketRequest.EmitAwaitResponse(SocketEvent.GetCardUpgradePair, cardId);
-        return ParseJsonWithPath<Deck>(rawJson, "data.data");
+        return ParseJsonWithPath<List<Card>>(rawJson, "data.data.deck");
     }
 
     public async UniTask<CardUpgrade> CampUpgradeCard(string cardId)
@@ -98,7 +73,7 @@ public class FetchData : ISingleton<FetchData>, IDisposable
         return ParseJsonWithPath<EncounterData>(rawJson, "data.data");
     }
 
-    private T ParseJsonWithPath<T>(string rawJson, string tokenPath) 
+    public static T ParseJsonWithPath<T>(string rawJson, string tokenPath) 
     {
         JObject json = JObject.Parse(rawJson);
         T data = json.SelectToken(tokenPath).ToObject<T>();

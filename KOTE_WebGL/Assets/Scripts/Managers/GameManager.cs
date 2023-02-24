@@ -192,7 +192,7 @@ public class GameManager : SingleTon<GameManager>
     //SELECT PANEL EVENTS
     [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>> EVENT_SHOW_SELECT_CARD_PANEL { get; } = new UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>>();
     [HideInInspector] public UnityEvent<Deck> EVENT_CARD_PILE_SHOW_DECK = new UnityEvent<Deck>();
-    [HideInInspector] public UnityEvent<List<string>> EVENT_CARDS_SELECTED = new UnityEvent<List<string>>();
+    [HideInInspector] public UnityEvent<List<string>> EVENT_CARDS_SELECTED { get; } = new UnityEvent<List<string>>();
     [HideInInspector] public UnityEvent EVENT_HIDE_COMMON_CARD_PANEL = new UnityEvent();
     [HideInInspector] public UnityEvent<SWSM_SelectTrinketData> EVENT_SHOW_SELECT_TRINKET_PANEL = new UnityEvent<SWSM_SelectTrinketData>();
     [HideInInspector] public UnityEvent<List<string>> EVENT_TRINKETS_SELECTED = new UnityEvent<List<string>>();

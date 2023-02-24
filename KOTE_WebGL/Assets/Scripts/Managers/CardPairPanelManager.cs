@@ -1,5 +1,6 @@
 using DG.Tweening;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CardPairPanelManager : MonoBehaviour
@@ -19,10 +20,10 @@ public class CardPairPanelManager : MonoBehaviour
         cardPairPanel.SetActive(false);
     }
 
-    private void OnShowUpgradePair(Deck deck)
+    private void OnShowUpgradePair(List<Card> cards)
     {
-        OriginalCard = deck.cards[0];
-        NewCard = deck.cards[1];
+        OriginalCard = cards[0];
+        NewCard = cards[1];
 
         uiCardPair[0].Populate(OriginalCard);
         uiCardPair[1].Populate(NewCard);
@@ -33,7 +34,7 @@ public class CardPairPanelManager : MonoBehaviour
     {
         OnConfirm = onConfirm;
         OnBack = onBack;
-        Deck cardPairs = await FetchData.Instance.GetCardUpgradePair(cardId);
+        List<Card> cardPairs = await FetchData.Instance.GetCardUpgradePair(cardId);
         OnShowUpgradePair(cardPairs);
     }
 

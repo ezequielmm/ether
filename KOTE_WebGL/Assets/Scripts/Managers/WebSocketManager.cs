@@ -5,6 +5,7 @@ using BestHTTP.SocketIO3;
 using BestHTTP.SocketIO3.Events;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using UnityEditor;
 using UnityEngine;
 
 public class WebSocketManager : SingleTon<WebSocketManager>
@@ -58,7 +59,6 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             GameManager.Instance.EVENT_REWARD_SELECTED.AddListener(OnRewardSelected);
             GameManager.Instance.EVENT_CONTINUE_EXPEDITION.AddListener(OnContinueExpedition);
             GameManager.Instance.EVENT_CAMP_HEAL.AddListener(OnCampHealSelected);
-            GameManager.Instance.EVENT_CARDS_SELECTED.AddListener(OnCardsSelected);
             GameManager.Instance.EVENT_POTION_USED.AddListener(OnPotionUsed);
             GameManager.Instance.EVENT_POTION_DISCARDED.AddListener(OnPotionDiscarded);
             GameManager.Instance.EVENT_TREASURE_OPEN_CHEST.AddListener(OnTreasureOpened);
@@ -145,7 +145,6 @@ public class WebSocketManager : SingleTon<WebSocketManager>
                         ConnectSocket();
                         break;
                     }
-
                     break;
                 case SocketManager.States.Open:
                     SocketOpened = true;
@@ -224,7 +223,14 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void GenericParser(string data)
     {
-        WebSocketParser.ParseJSON(data);
+        try
+        {
+            WebSocketParser.ParseJSON(data);
+        } 
+        catch(Exception e) 
+        {
+            Debug.LogException(e);
+        }
     }
 
     void OnConnected(ConnectResponse resp)
@@ -258,7 +264,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         //Debug.Log("[WebSocket Manager] Sending message NodeSelected with node id " + nodeId);
         //customNamespace.Emit("NodeSelected",nodeId);
 
-        LogEmission(SocketEvent.NodeSelected, nodeId);
+        LogEmission(null, SocketEvent.NodeSelected, nodeId);
         EmitWithResponse(OnNodeClickedAnswer, SocketEvent.NodeSelected, nodeId);
     }
 
@@ -272,7 +278,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         //NodeStateData nodeState = JsonConvert.DeserializeObject<NodeStateData>(nodeData);
         //GameManager.Instance.EVENT_NODE_DATA_UPDATE.Invoke(nodeState,WS_QUERY_TYPE.MAP_NODE_SELECTED);
 
-        WebSocketParser.ParseJSON(data);
+        GenericParser(data);
 
         //Debug.Log("OnNodeClickedAnswer: " + nodeState);
     }
@@ -291,7 +297,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 #endif
         //Debug.Log("Data from OnExpeditionMap: " + data);
         // GameManager.Instance.EVENT_MAP_NODES_UPDATE.Invoke(data);
-        WebSocketParser.ParseJSON(data);
+        GenericParser(data);
     }
 
     private void OnCardPlayed(string cardId, string id) //int enemyId)//TODO: enemyId will an array 
@@ -305,14 +311,6 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
         //EmitWithResponse(OnCardPlayedAnswer, WS_MESSAGE_CARD_PLAYED, data);
         Emit(SocketEvent.CardPlayed, data);
-    }
-
-    private void OnCardsSelected(List<string> cardIds)
-    {
-        CardsSelectedList cardList = new CardsSelectedList { cardsToTake = cardIds };
-        string data = JsonConvert.SerializeObject(cardList);
-        Debug.Log("[WebSocket Manager] OnCardsSelected data: " + data);
-        Emit(SocketEvent.MoveSelectedCard, data);
     }
 
     private void OnTrinketsSelected(List<string> trinketIds)
@@ -384,7 +382,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void OnEndTurn()
     {
-        LogEmission(SocketEvent.EndTurn);
+        LogEmission(null, SocketEvent.EndTurn);
         EmitWithResponse(OnEndOfTurnAnswer, SocketEvent.EndTurn);
     }
 
@@ -423,6 +421,12 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         return promise;
     }
 
+    public void SendData(string eventName, object message) 
+    {
+        string rawJson = JsonConvert.SerializeObject(message);
+        Emit(eventName, rawJson);
+    }
+
     private void Emit(string eventName, params object[] variables)
     {
         if (!IsSocketHealthy)
@@ -432,7 +436,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             return;
         }
 
-        LogEmission(eventName, variables);
+        LogEmission(null, eventName, variables);
         rootSocket.Emit(eventName, variables);
     }
 
@@ -456,15 +460,15 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         }
 
         await UniTask.WaitUntil(() => promise.Completed);
-        Debug.Log($"[WebSocketManager] RESPONSE <<< {promise.Json}");
-        ServerCommunicationLogger.Instance.LogCommunication($"[WebSocketManager] RESPONSE <<<",
+        Debug.Log($"[WebSocketManager] RESPONSE [{promise.Id.ToString().Substring(0,4)}] <<< {promise.Json}");
+        ServerCommunicationLogger.Instance.LogCommunication($"[WebSocketManager] RESPONSE [{promise.Id.ToString().Substring(0, 4)}] <<<",
             CommunicationDirection.Incoming, promise.Json);
         return promise.Json;
     }
 
     private void EmitPromise(SocketPromise promise, string eventName, params object[] variables)
     {
-        LogEmission(eventName, variables);
+        LogEmission(promise.Id, eventName, variables);
         rootSocket.ExpectAcknowledgement<string>((json) => { ResolvePromise(json, promise); })
             .Emit(eventName, variables);
     }
@@ -479,7 +483,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             return;
         }
 
-        LogEmission(eventName, variables);
+        LogEmission(Guid.NewGuid(), eventName, variables);
         rootSocket.ExpectAcknowledgement<string>(parser).Emit(eventName, variables);
     }
 
@@ -491,11 +495,15 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     }
 #endif
 
-    private void LogEmission(string eventName, params object[] variables)
+    private void LogEmission(Guid? id, string eventName, params object[] variables)
     {
         StringBuilder sb = new StringBuilder();
         StringBuilder cb = new StringBuilder();
-        sb.Append($"[WebSocketManager] EMISSION >> Message: {eventName}");
+
+        sb.Append($"[WebSocketManager] EMISSION ");
+        if(id != null)
+            sb.Append($"[{id.ToString().Substring(0, 4)}] ");
+        sb.Append($">>> Message: {eventName}");
         cb.Append($"Socket Emit: {eventName}");
         if (variables != null && variables.Length >= 1)
         {
@@ -507,9 +515,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
                 cb.Append($", {variables[i]}");
             }
         }
-
         Debug.Log(sb.ToString());
-
         ServerCommunicationLogger.Instance.LogCommunication(cb.ToString(), CommunicationDirection.Outgoing);
     }
 

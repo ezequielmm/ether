@@ -222,7 +222,9 @@ public class WebSocketParser
                 ProcessTreasureData(data);
                 break;
             case nameof(WS_DATA_REQUEST_TYPES.EncounterData):
-                throw new NotImplementedException();
+                Debug.LogError($"Using Obsolete Method. Please don't use a generic, encounterData request.");
+                GameObject.FindObjectOfType<EncounterManager>().ShowAndPopulate();
+                break;
             case nameof(WS_DATA_REQUEST_TYPES.Rewards):
                 ProcessRewardsData(data);
                 break;
@@ -410,7 +412,7 @@ public class WebSocketParser
         };
         GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCards.data.data.cards,
             panelOptions,
-            (selectedCards) => { GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards); });
+            (selectedCards) => { SendData.Instance.SendCardsSelected(selectedCards); });
     }
 
     private static void ProcessSpawnEnemies(string data)
@@ -566,23 +568,9 @@ public class WebSocketParser
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Encounter);
                 break;
             case "show_cards":
-                SWSM_ShowCardDialog showCardData = JsonConvert.DeserializeObject<SWSM_ShowCardDialog>(data);
-                if (showCardData.data.data.kind == "upgrade")
-                {
-                    GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.UpgradableCards);
-                    break;
-                }
-
-                SelectPanelOptions panelOptions = new SelectPanelOptions
-                {
-                    FireSelectWhenCardClicked = false,
-                    HideBackButton = true,
-                    MustSelectAllCards = true,
-                    NumberOfCardsToSelect = showCardData.data.data.cardsToTake,
-                    ShowCardInCenter = false
-                };
-                GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCardData.data.data.cards, panelOptions,
-                    (selectedCards) => { GameManager.Instance.EVENT_CARDS_SELECTED.Invoke(selectedCards); });
+                EncounterSelectionData encounterSelection 
+                    = FetchData.ParseJsonWithPath<EncounterSelectionData>(data, "data.data");
+                GameObject.FindObjectOfType<EncounterManager>().ShowCardSelectionPanel(encounterSelection);
                 break;
             case "select_trinkets":
                 SWSM_SelectTrinketData trinketData = JsonConvert.DeserializeObject<SWSM_SelectTrinketData>(data);
