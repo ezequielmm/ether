@@ -81,6 +81,11 @@ public class IconMap<T> : MonoBehaviour
     public void SetIcon(T type, int value = 0)
     {
         gameObject.name = type.ToString();
+        icon.sprite = SelectSprite(type, value);
+    }
+
+    public virtual Sprite SelectSprite(T type, int value = 0) 
+    {
         Icon selected = null;
         foreach (var icon in iconMap)
         {
@@ -97,11 +102,12 @@ public class IconMap<T> : MonoBehaviour
         if (selected != null)
         {
             Debug.Log($"[{gameObject.name}] New Icon | {selected.type} - {selected.valueThreshold}");
-            icon.sprite = selected.icon;
+            return selected.icon;
         }
         else
         {
             Debug.Log($"[{gameObject.name}] No Icon Found | {type} - {value}");
         }
+        return null;
     }
 }
