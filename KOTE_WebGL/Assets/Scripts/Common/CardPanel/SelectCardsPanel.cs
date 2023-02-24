@@ -45,7 +45,6 @@ public class SelectCardsPanel : CardPanelBase
     {
         base.Start();
         GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.AddListener(OnShowSelectCardPanel);
-        GameManager.Instance.EVENT_SHOW_DIRECT_SELECT_CARD_PANEL.AddListener(OnShowDirectSelectPanel);
         hideCardOverlay.gameObject.SetActive(false);
     }
     
@@ -53,23 +52,14 @@ public class SelectCardsPanel : CardPanelBase
         Action<List<string>> onFinishedSelection)
     {
         ClearSelectList();
-        totalCardsSelected = 0;
         PopulatePanel(selectableCards, selectOptions, onFinishedSelection);
-    }
-
-    private void OnShowDirectSelectPanel(List<Card> selectableCards, SelectPanelOptions selectOptions,
-        Action<string> onFinishedSelection)
-    {
-        ClearSelectList();
-        totalCardsSelected = 0;
-        PopulatePanel(selectableCards, selectOptions, onSelect: onFinishedSelection);
     }
 
 
     public void PopulatePanel(List<Card> selectableCards, SelectPanelOptions selectOptions,
         Action<List<string>> onFinishedSelection = null, Action<string> onSelect = null)
     {
-        selectedCardIds.Clear();
+        ClearSelectList();
         DestroyCards();
         currentSettings = selectOptions;
         foreach (Card card in selectableCards)
@@ -215,6 +205,7 @@ public class SelectCardsPanel : CardPanelBase
     public void ClearSelectList()
     {
         selectedCardIds.Clear();
+        totalCardsSelected = 0;
     }
 
     private void UpdateSelectButton()

@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ public class MerchantNodeManager : MonoBehaviour
     public Image ShopKeepImage;
     public List<Sprite> ShopKeepSprites = new List<Sprite>();
 
-    MerchantData merchantData;
+    MerchantData merchant;
 
     [Header("Checkout")]
     [SerializeField]
@@ -55,11 +56,10 @@ public class MerchantNodeManager : MonoBehaviour
     private MerchantData.IMerchant selectedItem;
     private string selectedCard = string.Empty;
 
-    private int gold => merchantData.coins;
+    private int gold => merchant.coins;
 
     private void Start()
     {
-        GameManager.Instance.EVENT_POPULATE_MERCHANT_PANEL.AddListener(PopulateMerchantNode);
         GameManager.Instance.EVENT_TOGGLE_MERCHANT_PANEL.AddListener(ToggleVisibility);
         GameManager.Instance.EVENT_MERCHANT_PURCHASE_SUCCESS.AddListener(OnPurchaseResponse);
         serviceCardPanel.OnBackButton.AddListener(ResetItems);
@@ -75,7 +75,7 @@ public class MerchantNodeManager : MonoBehaviour
         {
             ClearMerchandise();
             // Get merchant data
-            GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.MerchantData);
+            UpdateMerchantData();
         }
     }
 
@@ -86,33 +86,36 @@ public class MerchantNodeManager : MonoBehaviour
             // Run Effects
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Confirm Purchase");
         }
-        // Update the merch node
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.MerchantData);
+        UpdateMerchantData();
     }
 
-    private void PopulateMerchantNode(MerchantData data) 
+    private async void UpdateMerchantData() 
     {
-        merchantData = data;
+        merchant = await FetchData.Instance.GetMerchantData();
+        RenderMerchant();
+    }
+
+    private void RenderMerchant() 
+    {
         ClearMerchandise();
 
-        // Populate cards
         PopulateCards();
-        // Populate Potions
         PopulatePotions();
-        // Populate Trinkets
         PopulateTrinkets();
-
-        // Populate Shopkeeper
-        ShopKeepImage.sprite = ShopKeepSprites[(int)Mathf.Clamp(data.shopkeeper, 0, ShopKeepSprites.Count - 1)];
-        // Populate Speach Bubble
-        SetSpeachBubble(data.speechBubble);
+        PopulateShopKeep();
 
         ResetItems();
     }
 
+    private void PopulateShopKeep() 
+    {
+        ShopKeepImage.sprite = ShopKeepSprites[(int)Mathf.Clamp(merchant.shopkeeper, 0, ShopKeepSprites.Count - 1)];
+        SetSpeachBubble(merchant.speechBubble);
+    }
+
     private void PopulateTrinkets()
     {
-        foreach (var trinket in merchantData.trinkets)
+        foreach (var trinket in merchant.trinkets)
         {
             TrinketMerchantItem trinketItem = Instantiate(uiTrinketPrefab, trinketPanel).GetComponent<TrinketMerchantItem>();
             trinketItem.Populate(trinket);
@@ -123,7 +126,7 @@ public class MerchantNodeManager : MonoBehaviour
 
     private void PopulatePotions()
     {
-        foreach (var potion in merchantData.potions)
+        foreach (var potion in merchant.potions)
         {
             PotionMerchantItem potionItem = Instantiate(uiPotionPrefab, potionPanel).GetComponent<PotionMerchantItem>();
             potionItem.Populate(potion);
@@ -134,7 +137,7 @@ public class MerchantNodeManager : MonoBehaviour
 
     private void PopulateCards() 
     {
-        foreach (var card in merchantData.cards) 
+        foreach (var card in merchant.cards) 
         {
             CardMerchantItem cardItem = Instantiate(uiCardPrefab, cardPanel).GetComponent<CardMerchantItem>();
             cardItem.Populate(card);
@@ -195,8 +198,8 @@ public class MerchantNodeManager : MonoBehaviour
         }
         totalText.text = "0";
 
-        upgradeButton.interactable = merchantData.upgradeCost <= gold;
-        removeButton.interactable = merchantData.destroyCost <= gold;
+        upgradeButton.interactable = merchant.upgradeCost <= gold;
+        removeButton.interactable = merchant.destroyCost <= gold;
 
         selectedItem = null;
         buyButton.interactable = false;
@@ -234,12 +237,13 @@ public class MerchantNodeManager : MonoBehaviour
     }
 
     bool upgradeCard = false;
-    public void UpgradeCard() 
+    public async void UpgradeCard() 
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         ResetItems();
         // Run upgrade card pannel
-        ShowCardPanel(merchantData.upgradeableCards, new SelectPanelOptions 
+        List<Card> upgradeableCards = await FetchData.Instance.GetUpgradeableCards();
+        ShowCardPanel(upgradeableCards, new SelectPanelOptions 
         {
             MustSelectAllCards = false,
             HideBackButton = false,
@@ -262,7 +266,7 @@ public class MerchantNodeManager : MonoBehaviour
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         ResetItems();
         // Run remove card pannel
-        ShowCardPanel(merchantData.playerCards, new SelectPanelOptions
+        ShowCardPanel(merchant.removeableCards, new SelectPanelOptions
         {
             MustSelectAllCards = true,
             HideBackButton = false,
@@ -285,34 +289,27 @@ public class MerchantNodeManager : MonoBehaviour
         buyButton.interactable = true;
         if (upgradeCard)
         {
-            totalText.text = $"{merchantData.upgradeCost}";
+            totalText.text = $"{merchant.upgradeCost}";
             ShowCardComparison(cardId);
         }
         else 
         {
-            totalText.text = $"{merchantData.destroyCost}";
+            totalText.text = $"{merchant.destroyCost}";
         }
     }
 
     public void ShowCardComparison(string cardId) 
     {
-        // Find Card
-        Card card = merchantData.upgradeableCards.FirstOrDefault<Card>(c => c.id == cardId || c.cardId.ToString() == cardId);
-
-        if (card == null) 
-        {
-            Debug.LogError($"[MerchantNodeManager] Could not find card of id [{cardId}]. Does it exist?");
-            return;
-        }
-
-        cardPairPanel.ShowCardAndUpgrade(card, () => 
+        cardPairPanel.ShowCardAndUpgrade(cardId, () => 
         {
             // On Confirm
             BuyItem();
+            cardPairPanel.HidePairPannel();
         }, () => 
         {
             // On Back
             ResetItems();
+            cardPairPanel.HidePairPannel();
         });
     }
 
@@ -335,5 +332,47 @@ public class MerchantNodeManager : MonoBehaviour
         ToggleVisibility(false);
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
+    }
+}
+
+[Serializable]
+public class MerchantData
+{
+    public int coins;
+    public int shopkeeper;
+    public string speechBubble;
+    [JsonProperty("playerCards")]
+    public List<Card> removeableCards { get; } = new List<Card>();
+    public int upgradeCost;
+    public int destroyCost;
+    public List<Merchant<Card>> cards = new List<Merchant<Card>>();
+    public List<Merchant<Card>> neutralCards = new List<Merchant<Card>>();// TODO
+    public List<Merchant<Trinket>> trinkets = new List<Merchant<Trinket>>();
+    public List<Merchant<PotionData>> potions = new List<Merchant<PotionData>>();
+
+    [Serializable]
+    public class Merchant<T> : IMerchant
+    {
+        [JsonProperty("itemId")]
+        public int ItemId { get; set; }
+        [JsonProperty("cost")]
+        public int Coin { get; set; }
+        [JsonProperty("isSold")]
+        public bool IsSold { get; set; }
+        [JsonProperty("type")]
+        public string Type { get; set; }
+        [JsonProperty("id")]
+        public string Id { get; set; }
+        [JsonProperty("item")]
+        public T Item;
+    }
+
+    public interface IMerchant
+    {
+        public int ItemId { get; set; }
+        public int Coin { get; set; }
+        public bool IsSold { get; set; }
+        public string Type { get; set; }
+        public string Id { get; set; }
     }
 }

@@ -8,7 +8,7 @@ public class CardMerchantItem : MerchantItem<MerchantData.Merchant<Card>>
     private UICardPrefabManager card;
     public override void Populate(MerchantData.Merchant<Card> data)
     {
-        card.populate(data.item);
+        card.Populate(data.Item);
         base.Populate(data);
     }
 }

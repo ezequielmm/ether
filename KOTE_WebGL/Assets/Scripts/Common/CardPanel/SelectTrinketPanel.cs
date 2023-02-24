@@ -14,18 +14,17 @@ public class SelectTrinketPanel : CardPanelBase
     private int trinketsToSelect = 0;
     private int trinketsSelected = 0;
     private List<string> selectedTrinketIds = new List<string>();
-    
-    // Start is called before the first frame update
+
     protected override void Start()
     {
-        GameManager.Instance.EVENT_SHOW_SELECT_TRINKET_PANEL.AddListener(ShowTrinkets);
+        GameManager.Instance.EVENT_SHOW_SELECT_TRINKET_PANEL.AddListener(Populate);
     }
 
-    private void ShowTrinkets(SWSM_SelectTrinketData trinketData)
+    public void Populate(List<Trinket> trinkets)
     {
         SetupPanel();
         trinketsToSelect = 1;
-        foreach (Trinket trinket in trinketData.data.data.trinkets)
+        foreach (Trinket trinket in trinkets)
         {
             GameObject currentReward = Instantiate(trinketPrefab, objectLayout.gameObject.transform);
             TrinketItemManager trinketManager = currentReward.GetComponent<TrinketItemManager>();

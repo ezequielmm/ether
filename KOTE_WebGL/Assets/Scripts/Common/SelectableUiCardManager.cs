@@ -11,7 +11,7 @@ public class SelectableUiCardManager : MonoBehaviour, IPointerEnterHandler, IPoi
 
     public void Populate(Card card)
     {
-        uiCardManager.populate(card);
+        uiCardManager.Populate(card);
     }
 
     public string GetId()

@@ -41,7 +41,6 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_LOGOUT_SUCCESSFUL = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_LOGOUT_ERROR = new UnityEvent<string>();
 
-    [HideInInspector] public UnityEvent<Action<string>> EVENT_REQUEST_SERVER_VERSION = new();
     [HideInInspector] public UnityEvent EVENT_VERSION_UPDATED = new();
 
     //WALLET EVENTS
@@ -108,12 +107,9 @@ public class GameManager : SingleTon<GameManager>
 
     //ENCOUNTER EVENTS
     [HideInInspector] public UnityEvent EVENT_SHOW_ENCOUNTER_PANEL = new UnityEvent();
-    [HideInInspector] public UnityEvent<SWSM_EncounterData> EVENT_POPULATE_ENCOUNTER_PANEL = new UnityEvent<SWSM_EncounterData>();
-    [HideInInspector] public UnityEvent<int> EVENT_ENCOUNTER_OPTION_SELECTED = new UnityEvent<int>();
 
     //MERCHANT EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_TOGGLE_MERCHANT_PANEL = new UnityEvent<bool>();
-    [HideInInspector] public UnityEvent<MerchantData> EVENT_POPULATE_MERCHANT_PANEL = new UnityEvent<MerchantData>();
     [HideInInspector] public UnityEvent<string, string> EVENT_MERCHANT_BUY = new UnityEvent<string, string>(); // type, id
     [HideInInspector] public UnityEvent<bool> EVENT_MERCHANT_PURCHASE_SUCCESS = new UnityEvent<bool>();
 
@@ -128,14 +124,6 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_TREASURE_OPEN_CHEST = new UnityEvent();
     [HideInInspector] public UnityEvent<SWSM_ChestResult> EVENT_TREASURE_CHEST_RESULT = new UnityEvent<SWSM_ChestResult>();
     [HideInInspector] public UnityEvent<int> EVENT_ENCOUNTER_DAMAGE = new UnityEvent<int>();
-
-
-    //UPGRADE CARDS EVENTS
-    [HideInInspector] public UnityEvent<Deck> EVENT_SHOW_UPGRADE_CARDS_PANEL { get; } = new UnityEvent<Deck>(); //event from the BE to show the upgradable cards panel
-    [HideInInspector] public UnityEvent<string> EVENT_GET_UPGRADE_PAIR = new UnityEvent<string>(); // when the user click a card, we need the show the upgraded card data. We send
-    [HideInInspector] public UnityEvent<Deck> EVENT_SHOW_UPGRADE_PAIR { get; } = new UnityEvent<Deck>();// BE sending us the 2 cards
-    [HideInInspector] public UnityEvent<string> EVENT_USER_CONFIRMATION_UPGRADE_CARD = new UnityEvent<string>();// the user confirmed to upgrade this card id. We send
-    [HideInInspector] public UnityEvent<SWSM_ConfirmUpgrade> EVENT_UPGRADE_CONFIRMED { get; } = new UnityEvent<SWSM_ConfirmUpgrade>();//from BE confirming. Can contain an error    
    
 
     //EXPEDITION EVENTS
@@ -202,12 +190,10 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_CURRENT_STEP_INFORMATION = new UnityEvent<int, int>();
 
     //SELECT PANEL EVENTS
-    [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>> EVENT_SHOW_SELECT_CARD_PANEL = new UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>>();
-    [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<string>> EVENT_SHOW_DIRECT_SELECT_CARD_PANEL = new UnityEvent<List<Card>, SelectPanelOptions, Action<string>>();
+    [HideInInspector] public UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>> EVENT_SHOW_SELECT_CARD_PANEL { get; } = new UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>>();
     [HideInInspector] public UnityEvent<Deck> EVENT_CARD_PILE_SHOW_DECK = new UnityEvent<Deck>();
-        [HideInInspector] public UnityEvent<List<string>> EVENT_CARDS_SELECTED = new UnityEvent<List<string>>();
+    [HideInInspector] public UnityEvent<List<Trinket>> EVENT_SHOW_SELECT_TRINKET_PANEL = new UnityEvent<List<Trinket>>();
     [HideInInspector] public UnityEvent EVENT_HIDE_COMMON_CARD_PANEL = new UnityEvent();
-    [HideInInspector] public UnityEvent<SWSM_SelectTrinketData> EVENT_SHOW_SELECT_TRINKET_PANEL = new UnityEvent<SWSM_SelectTrinketData>();
     [HideInInspector] public UnityEvent<List<string>> EVENT_TRINKETS_SELECTED = new UnityEvent<List<string>>();
     
     //CARDS EVENTS
@@ -271,7 +257,7 @@ public class GameManager : SingleTon<GameManager>
 
     //Common events
     [HideInInspector]
-    public UnityEvent<WS_DATA_REQUEST_TYPES> EVENT_GENERIC_WS_DATA = new UnityEvent<WS_DATA_REQUEST_TYPES>();
+    public UnityEvent<WS_DATA_REQUEST_TYPES> EVENT_GENERIC_WS_DATA { get; } = new UnityEvent<WS_DATA_REQUEST_TYPES>();
 
     [HideInInspector] public UnityEvent EVENT_WS_CONNECTED = new UnityEvent();
     [HideInInspector] public UnityEvent<string> EVENT_CHANGE_TURN = new UnityEvent<string>();
@@ -296,7 +282,7 @@ public class GameManager : SingleTon<GameManager>
 
     // Scene Events
     [HideInInspector] public UnityEvent EVENT_SCENE_LOADING = new UnityEvent();
-    [HideInInspector] public UnityEvent<inGameScenes> EVENT_SCENE_LOADED = new UnityEvent<inGameScenes>();
+    [HideInInspector] public UnityEvent<inGameScenes> EVENT_SCENE_LOADED { get; } = new UnityEvent<inGameScenes>();
 
     // Feedback Reporting Events
     [HideInInspector] public UnityEvent EVENT_SHOW_FEEDBACK_PANEL = new UnityEvent();
@@ -305,6 +291,7 @@ public class GameManager : SingleTon<GameManager>
 
     public inGameScenes
         nextSceneToLoad { get; set; } // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
+    public inGameScenes CurrentScene { get; private set; } = inGameScenes.Loader;
 
     public WebRequesterManager webRequester;
 
@@ -321,12 +308,21 @@ public class GameManager : SingleTon<GameManager>
         //EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ReturnToMainMenu);
     }
 
-    private void GetServerVersion() 
+    private async void GetServerVersion()
     {
-        EVENT_REQUEST_SERVER_VERSION.Invoke((serverVersion) => {
-            ServerVersion = serverVersion;
-            EVENT_VERSION_UPDATED.Invoke();
-        });
+        ServerVersion = await FetchData.Instance.GetServerVersion();
+        EVENT_VERSION_UPDATED.Invoke();
+    }
+
+    public void SceneLoaded() 
+    {
+        if (CurrentScene == nextSceneToLoad) 
+        {
+            Debug.LogError($"[GameManager] SceneLoaded Called Twice. Not running Event Scene Loaded.");
+            return;
+        }
+        CurrentScene = nextSceneToLoad;
+        EVENT_SCENE_LOADED.Invoke(nextSceneToLoad);
     }
 
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene
@@ -342,6 +338,7 @@ public class GameManager : SingleTon<GameManager>
             EVENT_STOP_MUSIC.Invoke();
         }
         SceneManager.LoadScene(inGameScenes.Loader.ToString());
+        CurrentScene = inGameScenes.Loader;
     }
 
     private void RequestExpeditionSync()
@@ -375,7 +372,7 @@ public class GameManager : SingleTon<GameManager>
     private void OnSceneLoad(inGameScenes scene) 
     {
         Debug.Log($"[GameManager] Scene Loaded: {scene}");
-        for(int i = SceneLoadsActions.Count - 1; i >= 0; i--) 
+        for (int i = SceneLoadsActions.Count - 1; i >= 0; i--) 
         {
             (Action, inGameScenes) action = SceneLoadsActions[i];
             if (action.Item2 == scene) 
