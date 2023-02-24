@@ -5335,7 +5335,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6187759085374558748}
+  - component: {fileID: 6495530672036091231}
+  - component: {fileID: 771487587530092360}
   - component: {fileID: 8572111283056100763}
+  - component: {fileID: 4034319271250049818}
   - component: {fileID: 1590421481447034592}
   - component: {fileID: 2320126777662523146}
   m_Layer: 0
@@ -5361,6 +5364,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6495530672036091231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3965819321617490583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d09469e50512a3542a6107dbc491d0b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardManager: {fileID: 771487587530092360}
+--- !u!114 &771487587530092360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3965819321617490583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 530bdb7e69e4b174d96cfb4d64c3d2c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cardActive: 0
 --- !u!114 &8572111283056100763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5373,6 +5402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: effc74c7073b38f45b9a372cefe5b6aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardManager: {fileID: 771487587530092360}
   cardcontent: {fileID: 6848073897826432067}
   cardidTF: {fileID: 3773508212455757793}
   energyTF: {fileID: 7508715367563101625}
@@ -5383,10 +5413,6 @@ MonoBehaviour:
   gemSprite: {fileID: 4176703382880440533}
   bannerSprite: {fileID: 2845704448172493043}
   frameSprite: {fileID: 2969695255542709312}
-  card_can_be_played: 1
-  targetPosition: {x: 0, y: 0, z: 0}
-  targetRotation: {x: 0, y: 0, z: 0}
-  _cardActive: 0
   auraPS: {fileID: 2455367811583604567}
   greenOutlineMaterial: {fileID: 2100000, guid: 2336fb1f44d8f764980e28d82722fd08,
     type: 2}
@@ -5396,7 +5422,7 @@ MonoBehaviour:
   redColor: {r: 1, g: 0, b: 0, a: 1}
   tooltips: []
   movePs: {fileID: 8438878561791075559}
-  thisCardValues:
+  cardData:
     name: 
     id: 
     cardId: 0
@@ -5411,6 +5437,20 @@ MonoBehaviour:
       effects: []
       statuses: []
     keywords: []
+--- !u!114 &4034319271250049818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3965819321617490583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70cd848887d22a2409fc1754b874be5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardManager: {fileID: 771487587530092360}
+  visualsManager: {fileID: 8572111283056100763}
 --- !u!61 &1590421481447034592
 BoxCollider2D:
   m_ObjectHideFlags: 0

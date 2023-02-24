@@ -3,325 +3,93 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-public class HandManager : MonoBehaviour
+namespace KOTE.Expedition.Combat.Cards.Piles
 {
-    public GameObject spriteCardPrefab;
-
-    // Hand Manager and CardMovementManager are one module, but are split for cleanlieness
-    public CardMovementManager cardMovementManager;
-
-    //  public List<GameObject> listOfCardsOnHand;
-    public Dictionary<string, GameObject>
-        listOfCardsOnHand = new Dictionary<string, GameObject>(); // CardID <--> Card Obj
-    // public Dictionary<string, GameObject> listOfCardsOnDraw = new Dictionary<string, GameObject>();
-
-
-    public GameObject explosionEffectPrefab;
-
-    private string currentCardID;
-    private GameObject currentCard;
-
-    public Deck handDeck;
-    public Deck drawDeck;
-    public Deck discardDeck;
-    public Deck exhaustDeck;
-
-
-    CardPiles cardPilesData;
-
-    int cardsDrawn = 0;
-    bool audioRunning = false;
-
-    private bool gameOver;
-    
-    private bool requestTimerIsRunning;
-    private bool requestAgain;
-    private Coroutine requestTimer;
-
-    private void OnCardDestroyed(string cardId)
+    public class HandManager : MonoBehaviour
     {
-        Debug.Log("[HandManager] Removing card " + cardId + " from hand");
+        [HideInInspector] public List<CardManager> handDeck = new();
 
-        var cardMoved = handDeck.cards.Find(card => card.id == cardId);
-        if (cardMoved != null)
+        public GameObject explosionEffectPrefab;
+
+        int cardsDrawn = 0;
+        bool audioRunning = false;
+
+        private void Awake()
         {
-            handDeck.cards.Remove(cardMoved);
-            discardDeck.cards.Add(cardMoved);
+            GameManager.Instance.EVENT_CARD_DRAW.AddListener(OnCardDraw); // SFX
+            // if we're adding a card to the hand that isn't a draw
+            GameManager.Instance.EVENT_REARRANGE_HAND.AddListener(OnRearrangeHand);
+            // if the game is over, don't try to draw more cards
         }
 
-        StartCoroutine(RelocateCards());
-    }
-
-    private void Awake()
-    {
-        GameManager.Instance.EVENT_CARDS_PILES_UPDATED.AddListener(OnCardsPilesUpdated);
-        GameManager.Instance.EVENT_CARD_DRAW_CARDS.AddListener(OnDrawCards);
-        GameManager.Instance.EVENT_CARD_DRAW.AddListener(OnCardDraw); // SFX
-        GameManager.Instance.EVENT_CARD_ADD.AddListener(OnCardAdd);
-        GameManager.Instance.EVENT_CARD_DISABLED.AddListener(OnCardDestroyed);
-        // if we're adding a card to the hand that isn't a draw
-        GameManager.Instance.EVENT_REARRANGE_HAND.AddListener(OnRearrangeHand);
-        // if the game is over, don't try to draw more cards
-        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(OnGameOver);
-    }
-
-    private void Start()
-    {
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-    }
-
-    private void OnCardDraw()
-    {
-        //Debug.Log($"[Hand Pile] Card Drawn.");
-        cardsDrawn++;
-        StartCoroutine(DrawCardSFX());
-    }
-
-    private void OnGameOver(GameStatuses gameStatus)
-    {
-        if (gameStatus == GameStatuses.GameOver)
+        private void Start()
         {
-            gameOver = true;
-        }
-    }
-
-    private IEnumerator DrawCardSFX()
-    {
-        if (!audioRunning)
-        {
-            audioRunning = true;
-
-            if (cardsDrawn == 1)
-            {
-                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Draw Single");
-            }
-            else if (cardsDrawn > 1)
-            {
-                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Draw Multiple");
-            }
-
-            yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
-
-            cardsDrawn = 0;
-            audioRunning = false;
-        }
-    }
-
-    private void OnCardAdd(AddCardData addCardData)
-    {
-        // create the new card in the middle of the screen
-        GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
-        listOfCardsOnHand.Add(addCardData.card.id, newCard);
-        CardOnHandManager cardManager = newCard.GetComponent<CardOnHandManager>();
-        cardManager.Populate(addCardData.card, cardPilesData.data.energy);
-        cardManager.ShowAddedCard(addCardData);
-    }
-
-    private void OnRearrangeHand()
-    {
-        StartCoroutine(RelocateCards());
-    }
-
-    private void OnDrawCards()
-    {
-        // if the game is over stop asking for cards
-        if (gameOver)
-        {
-            requestAgain = false;
-            return;
-        }
-        Debug.Log("[HandManager]------------------------------------------------>[OnDrawCards]");
-        if (cardPilesData == null)
-        {
-            Debug.Log("[HandManager] No cards data at all. Requesting Card Piles");
-            RequestCardsPilesData();
-            return;
-        }
-        else if (cardPilesData.data.hand.Count < 1)
-        {
-            Debug.Log("[HandManager] No hands cards data. Requesting Card Piles");
-            RequestCardsPilesData();
-            return;
-        }
-
-        Debug.Log(
-            $"[HandManager] Card Piles Retrieved. draw.count: {cardPilesData.data.draw.Count} | hand.count: {cardPilesData.data.hand.Count} | discard.count: {cardPilesData.data.discard.Count} | exhaust.count: {cardPilesData.data.exhausted.Count}");
-        requestAgain = false;
-
-        //Generate cards hand
-        handDeck = new Deck();
-        handDeck.cards = cardPilesData.data.hand;
-
-        drawDeck = new Deck();
-        drawDeck.cards = cardPilesData.data.draw;
-
-        discardDeck = new Deck();
-        discardDeck.cards = cardPilesData.data.discard;
-
-        exhaustDeck = new Deck();
-        exhaustDeck.cards = cardPilesData.data.exhausted;
-
-        Vector3 spawnPosition = GameSettings.HAND_CARDS_GENERATION_POINT;
-
-        float counter = handDeck.cards.Count / -2;
-        float delayStep = 0.1f;
-        float delay = delayStep * handDeck.cards.Count;
-
-        foreach (Card card in handDeck.cards)
-        {
-            if (!listOfCardsOnHand.ContainsKey(card.id))
-            {
-                // Debug.Log("[HandManager | Hand Deck] Instantiating card " + card.id);
-                GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
-                listOfCardsOnHand.Add(card.id, newCard);
-                newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
-            }
-        }
-
-        foreach (Card card in drawDeck.cards)
-        {
-            if (!listOfCardsOnHand.ContainsKey(card.id))
-            {
-                // Debug.Log("[HandManager | Draw Deck] Instantiating card " + card.id);
-                GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
-                listOfCardsOnHand.Add(card.id, newCard);
-                newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
-                newCard.GetComponent<CardOnHandManager>().DisableCardContent(false); //disable and not notify
-            }
-        }
-
-        foreach (Card card in discardDeck.cards)
-        {
-            if (!listOfCardsOnHand.ContainsKey(card.id))
-            {
-                //Debug.Log("[HandManager | Discard Deck] Instantiating card " + card.id);
-                GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
-                listOfCardsOnHand.Add(card.id, newCard);
-                newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
-                newCard.GetComponent<CardOnHandManager>().DisableCardContent(false); //disable and not notify
-            }
-        }
-
-        foreach (Card card in exhaustDeck.cards)
-        {
-            if (!listOfCardsOnHand.ContainsKey(card.id))
-            {
-                // Debug.Log("[HandManager | Exhaust Deck] Instantiating card " + card.id);
-                GameObject newCard = Instantiate(spriteCardPrefab, this.transform);
-                listOfCardsOnHand.Add(card.id, newCard);
-                newCard.GetComponent<CardOnHandManager>().Populate(card, cardPilesData.data.energy);
-                newCard.GetComponent<CardOnHandManager>().DisableCardContent(false); //disable and not notify
-            }
-        }
-
-        // Debug.Log("[HandManager] listOfCardsOnHand.Count:" + listOfCardsOnHand.Count);
-
-        StartCoroutine(RelocateCards(true));
-    }
-
-    private void RequestCardsPilesData()
-    {
-        if (!requestTimerIsRunning)
-        {
-            // if theres not a request running, start the coroutine
-            requestTimer = StartCoroutine(WaitToRequestCardPiles());
-        }
-        else if (requestTimerIsRunning)
-        {
-            // if there is a request running, tell it to check again
-            requestAgain = true;
-        }
-    }
-
-    private IEnumerator WaitToRequestCardPiles()
-    {
-        do
-        {
-            Debug.Log("[HandManager] Card Pile Request Sent");
-            // flag that the timer is running
-            requestTimerIsRunning = true;
-            // then make the request
             GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
-            //if this fails, it will tell this function to check again
-            Invoke(nameof(OnDrawCards), 0.2f);
-            yield return new WaitForSeconds(1);
-            // if there are still no cards after a second, make another request
-        } while (requestAgain);
+        }
 
-        // if the request was made, drop out
-        requestTimerIsRunning = false;
-    }
-
-    /// <summary>
-    /// Relocates the cards in hands. If move is on, card movement is send to the cards themselves to be preformed.
-    /// </summary>
-    /// <param name="move">True to do a draw animation to hand.</param>
-    private IEnumerator RelocateCards(bool move = false)
-    {
-        float counter = 0;
-        float depth = GameSettings.HAND_CARD_SPRITE_Z;
-        float halfWidth = handDeck.cards.Count * GameSettings.HAND_CARD_GAP / 2;
-
-        string result = handDeck.cards.Count % 2 == 0 ? "even" : "odd";
-
-        //Debug.Log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++handDeck.cards.Count=" + handDeck.cards.Count+" is "+ result);
-
-        //float offset = handDeck.cards.Count % 2 == 0 ?  GameSettings.HAND_CARD_GAP / 2 : GameSettings.HAND_CARD_GAP/2;
-        float offset = GameSettings.HAND_CARD_GAP / 2;
-        float delayStep = 0.1f;
-        float delay = delayStep * handDeck.cards.Count;
-
-        // Debug.Log("----------------------------Relocate cards offset=" + offset);
-        if (move)
+        private void OnCardDraw()
         {
-            bool pause = false;
-            foreach (Card cardData in drawDeck.cards)
+            //Debug.Log($"[Hand Pile] Card Drawn.");
+            cardsDrawn++;
+            StartCoroutine(DrawCardSfx());
+        }
+
+
+        private IEnumerator DrawCardSfx()
+        {
+            if (!audioRunning)
             {
-                GameObject card;
-                if (listOfCardsOnHand.TryGetValue(cardData.id, out card))
+                audioRunning = true;
+
+                if (cardsDrawn == 1)
                 {
-                    var manager = card.GetComponent<CardOnHandManager>();
-
-                    if (manager.TryMoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw,
-                            out Sequence sequence))
-                    {
-                        // we can adjust the card right away here as this function is cleanup after other movement
-                        if (sequence != null) sequence.Play();
-                        yield return new WaitForSeconds(0.1f);
-                        pause = true;
-                    }
+                    GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Draw Single");
                 }
-            }
-
-            foreach (Card cardData in handDeck.cards)
-            {
-                GameObject card;
-                if (listOfCardsOnHand.TryGetValue(cardData.id, out card))
+                else if (cardsDrawn > 1)
                 {
-                    var manager = card.GetComponent<CardOnHandManager>();
-                    if (manager.TryMoveCardIfClose(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw,
-                            out Sequence sequence))
-                    {
-                        // we can adjust the card right away here as this function is cleanup after other movement
-                        if (sequence != null) sequence.Play();
-                        yield return new WaitForSeconds(0.1f);
-                        pause = true;
-                    }
+                    GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Draw Multiple");
                 }
-            }
 
-            if (pause)
-            {
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
+
+                cardsDrawn = 0;
+                audioRunning = false;
             }
         }
 
-        foreach (Card cardData in handDeck.cards)
+        private void OnRearrangeHand()
         {
-            GameObject card;
-            if (listOfCardsOnHand.TryGetValue(cardData.id, out card))
+            RelocateCards();
+        }
+
+        internal void StartRelocateCards(bool drawCards = false)
+        {
+            RelocateCards(drawCards);
+        }
+
+
+        /// <summary>
+        /// Relocates the cards in hand. If move is on, card movement is send to the cards themselves to be preformed.
+        /// </summary>
+        /// <param name="drawCards">True to do a draw animation to hand.</param>
+        private void RelocateCards(bool drawCards = false)
+        {
+            float counter = 0;
+            float depth = GameSettings.HAND_CARD_SPRITE_Z;
+            float halfWidth = handDeck.Count * GameSettings.HAND_CARD_GAP / 2;
+
+            string result = handDeck.Count % 2 == 0 ? "even" : "odd";
+
+            //Debug.Log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++handDeck.cards.Count=" + handDeck.cards.Count+" is "+ result);
+
+            float offset = GameSettings.HAND_CARD_GAP / 2;
+
+            float delayStep = 0.1f;
+            float delay = delayStep * handDeck.Count;
+
+            foreach (CardManager cardManager in handDeck)
             {
-                var cardManager = card.GetComponent<CardOnHandManager>();
+                GameObject card = cardManager.gameObject;
 
                 Vector3 pos = Vector3.zero;
                 pos.x = counter * GameSettings.HAND_CARD_GAP - halfWidth + offset;
@@ -336,18 +104,16 @@ public class HandManager : MonoBehaviour
                 rot.z = angle / -2;
                 card.transform.eulerAngles = rot;
 
-                cardManager.targetRotation = rot;
-                cardManager.targetPosition = pos;
+                cardManager.SetCardPosition(pos, rot);
                 card.transform.localScale = Vector3.one;
 
                 counter++;
                 depth -= GameSettings.HAND_CARD_SPRITE_Z_INTERVAL;
 
-                var manager = cardManager;
-                if (move)
+                if (drawCards)
                 {
                     // we can adjust the card right away here as this function is cleanup after other movement
-                    manager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, pos, delay).Play();
+                    cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, pos, delay).Play();
                     delay -= delayStep;
                 }
                 else
@@ -356,23 +122,5 @@ public class HandManager : MonoBehaviour
                 }
             }
         }
-    }
-
-    private void OnCardsPilesUpdated(CardPiles data)
-    {
-        Debug.Log("[HandManager] OnCardPilesUpdated");
-        cardPilesData = data;
-
-        handDeck = new Deck();
-        handDeck.cards = cardPilesData.data.hand;
-
-        drawDeck = new Deck();
-        drawDeck.cards = cardPilesData.data.draw;
-
-        discardDeck = new Deck();
-        discardDeck.cards = cardPilesData.data.discard;
-
-        exhaustDeck = new Deck();
-        exhaustDeck.cards = cardPilesData.data.exhausted;
     }
 }

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1793463218884153947}
   - component: {fileID: 1793463218884153946}
-  - component: {fileID: 5940169909502769974}
   - component: {fileID: 527132830}
   - component: {fileID: 8111427391619548158}
   m_Layer: 0
@@ -47,33 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad93d8a1a5284ea4bb29ba65f5f1147f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteCardPrefab: {fileID: 3965819321617490583, guid: 4912c08d2b3482c44800e4ee984fc359,
-    type: 3}
-  cardMovementManager: {fileID: 5940169909502769974}
+  handDeck: []
   explosionEffectPrefab: {fileID: 100000, guid: 6746092d79f3e4fe1bfa983603238e26,
     type: 3}
-  handDeck:
-    cards: []
-  drawDeck:
-    cards: []
-  discardDeck:
-    cards: []
-  exhaustDeck:
-    cards: []
---- !u!114 &5940169909502769974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1793463218884153944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60cfcd6f473daf44b9a72a70e312a037, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  handManager: {fileID: 1793463218884153946}
-  queueRunning: 0
 --- !u!61 &527132830
 BoxCollider2D:
   m_ObjectHideFlags: 0
