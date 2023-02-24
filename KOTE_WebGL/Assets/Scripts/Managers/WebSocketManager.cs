@@ -1,13 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Text;
 using BestHTTP.SocketIO3;
 using BestHTTP.SocketIO3.Events;
-using System.Text;
 using Cysharp.Threading.Tasks;
-using UnityEditor;
 using Newtonsoft.Json;
+using UnityEngine;
 
 public class WebSocketManager : SingleTon<WebSocketManager>
 {
@@ -26,6 +24,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     [SerializeField] private string SocketStatus = "Unknown";
     private bool doNotResuscitate = false;
     public bool SocketOpened { get; private set; } = false;
+
     public bool IsSocketHealthy
     {
         get
@@ -82,9 +81,9 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         }
     }
 
-    private void OnSceneChange(inGameScenes scene) 
+    private void OnSceneChange(inGameScenes scene)
     {
-        if (scene == inGameScenes.MainMenu) 
+        if (scene == inGameScenes.MainMenu)
         {
             this.DestroyInstance();
         }
@@ -105,6 +104,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             Debug.Log("[WebSocket Manager] socket disconnected");
             rootSocket.Disconnect();
         }
+
         if (Instance == this)
         {
             Debug.Log($"[WebSocketManager] Socket manager destroyed");
@@ -116,7 +116,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         Debug.Log("[WebSocketManager] Socket manager Enabled");
     }
 
-    private void UpdateSocketHealthStatus() 
+    private void UpdateSocketHealthStatus()
     {
         string newSocketState = manager.State.ToString();
         if (SocketStatus != newSocketState)
@@ -132,6 +132,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
                     Debug.Log($"[WebSocketManager] New Socket State: {manager.State}.");
                     break;
             }
+
             // Actions
             switch (manager.State)
             {
@@ -145,6 +146,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
                         ConnectSocket();
                         break;
                     }
+
                     break;
                 case SocketManager.States.Open:
                     SocketOpened = true;
@@ -152,22 +154,25 @@ public class WebSocketManager : SingleTon<WebSocketManager>
                     socketDeathTimeGameSeconds = -1;
                     break;
             }
+
             // Update Unity UI
             SocketStatus = manager.State.ToString();
         }
     }
 
-    private void CheckTimedoutSocket() 
+    private void CheckTimedoutSocket()
     {
-        if (!IsSocketHealthy && socketDeathTimeGameSeconds != -1 && Time.time - socketDeathTimeGameSeconds > GameSettings.MAX_TIMEOUT_SECONDS)
+        if (!IsSocketHealthy && socketDeathTimeGameSeconds != -1 &&
+            Time.time - socketDeathTimeGameSeconds > GameSettings.MAX_TIMEOUT_SECONDS)
         {
             // After some seconds of closed connection, return to main menu.
-            Debug.LogError($"[WebSocketManager] Disconnected for {Mathf.Round(Time.time - socketDeathTimeGameSeconds)} seconds Connection could not be salvaged.");
+            Debug.LogError(
+                $"[WebSocketManager] Disconnected for {Mathf.Round(Time.time - socketDeathTimeGameSeconds)} seconds Connection could not be salvaged.");
             Destroy(gameObject);
         }
     }
 
-    private void ManageQueuedMessages() 
+    private void ManageQueuedMessages()
     {
         if (IsSocketHealthy && EmissionQueue.Count > 0 && Time.time - socketOpenTimeGameSeconds > 1)
         {
@@ -176,7 +181,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         }
     }
 
-    
+
     void ConnectSocket()
     {
         //BestHTTP.HTTPManager.UseAlternateSSLDefaultValue = true; 
@@ -226,7 +231,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     void OnConnected(ConnectResponse resp)
     {
         Debug.Log("Websocket Connected sucessfully!");
-        
+
         GameManager.Instance.EVENT_WS_CONNECTED.Invoke();
     }
 
@@ -302,6 +307,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         //EmitWithResponse(OnCardPlayedAnswer, WS_MESSAGE_CARD_PLAYED, data);
         Emit(SocketEvent.CardPlayed, data);
     }
+
     private void OnCardsSelected(List<string> cardIds)
     {
         CardsSelectedList cardList = new CardsSelectedList { cardsToTake = cardIds };
@@ -316,10 +322,10 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         Debug.Log("[WebSocket Manager] OnTrinketsSelected data: " + data);
         Emit(SocketEvent.TrinketsSelected, data);
     }
-    
+
     private void OnBuyItem(string type, string id)
     {
-        PurchaseData purchase = new PurchaseData() 
+        PurchaseData purchase = new PurchaseData()
         {
             type = type,
             targetId = id
@@ -363,7 +369,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void OnTreasureOpened()
     {
-       // Debug.Log($"[WebSocketManager] Sending message {WS_MESSAGE_OPEN_CHEST}");
+        // Debug.Log($"[WebSocketManager] Sending message {WS_MESSAGE_OPEN_CHEST}");
         EmitWithResponse(SocketEvent.OpenChest);
     }
 
@@ -412,37 +418,36 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private Queue<Action> EmissionQueue = new Queue<Action>();
 
-    private void ResolvePromise(string json, SocketPromise promise) 
+    private void ResolvePromise(string json, SocketPromise promise)
     {
         promise.FulfillRequest(json);
     }
-    private SocketPromise CreatePromise() 
+
+    private SocketPromise CreatePromise()
     {
         SocketPromise promise = new SocketPromise();
         return promise;
     }
 
-    private void Emit(string eventName, params object[] variables) 
+    private void Emit(string eventName, params object[] variables)
     {
-        if (!IsSocketHealthy) 
+        if (!IsSocketHealthy)
         {
-            EmissionQueue.Enqueue(() => 
-            {
-                Emit(eventName, variables);
-            });
+            EmissionQueue.Enqueue(() => { Emit(eventName, variables); });
             Debug.LogWarning($"[WebSocketManager] Socket is Unhealthy. Queuing Emission ({eventName}) for Later.");
             return;
         }
+
         LogEmission(eventName, variables);
         rootSocket.Emit(eventName, variables);
     }
+
     private void EmitWithResponse(string eventName, params object[] variables)
     {
         EmitWithResponse(GenericParser, eventName, variables);
-
     }
 
-    public async UniTask<string> EmitAwaitResponse(string eventName, params object[] variables) 
+    public async UniTask<string> EmitAwaitResponse(string eventName, params object[] variables)
     {
         SocketPromise promise = CreatePromise();
         if (IsSocketHealthy)
@@ -451,50 +456,48 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         }
         else
         {
-            EmissionQueue.Enqueue(() =>
-            {
-                EmitPromise(promise, eventName, variables);
-            });
-            Debug.LogWarning($"[WebSocketManager] Socket is Unhealthy. Queuing Emission with Response ({eventName}) for Later.");
+            EmissionQueue.Enqueue(() => { EmitPromise(promise, eventName, variables); });
+            Debug.LogWarning(
+                $"[WebSocketManager] Socket is Unhealthy. Queuing Emission with Response ({eventName}) for Later.");
         }
+
         await UniTask.WaitUntil(() => promise.Completed);
         Debug.Log($"[WebSocketManager] RESPONSE <<< {promise.Json}");
-        ServerCommunicationLogger.Instance.LogCommunication($"[WebSocketManager] RESPONSE <<<", CommunicationDirection.Incoming, promise.Json);
+        ServerCommunicationLogger.Instance.LogCommunication($"[WebSocketManager] RESPONSE <<<",
+            CommunicationDirection.Incoming, promise.Json);
         return promise.Json;
     }
 
-    private void EmitPromise(SocketPromise promise, string eventName, params object[] variables) 
+    private void EmitPromise(SocketPromise promise, string eventName, params object[] variables)
     {
         LogEmission(eventName, variables);
         rootSocket.ExpectAcknowledgement<string>((json) => { ResolvePromise(json, promise); })
-                  .Emit(eventName, variables);
+            .Emit(eventName, variables);
     }
 
     private void EmitWithResponse(Action<string> parser, string eventName, params object[] variables)
     {
         if (!IsSocketHealthy)
         {
-            EmissionQueue.Enqueue(() =>
-            {
-                EmitWithResponse(parser, eventName, variables);
-            });
-            Debug.LogWarning($"[WebSocketManager] Socket is Unhealthy. Queuing Emission with Response ({eventName}) for Later.");
+            EmissionQueue.Enqueue(() => { EmitWithResponse(parser, eventName, variables); });
+            Debug.LogWarning(
+                $"[WebSocketManager] Socket is Unhealthy. Queuing Emission with Response ({eventName}) for Later.");
             return;
         }
+
         LogEmission(eventName, variables);
         rootSocket.ExpectAcknowledgement<string>(parser).Emit(eventName, variables);
     }
 
 
-
 #if UNITY_EDITOR
-    public void ForceEmit(string eventName, params object[] variables) 
+    public void ForceEmit(string eventName, params object[] variables)
     {
         EmitWithResponse(eventName, variables);
     }
 #endif
 
-    private void LogEmission(string eventName, params object[] variables) 
+    private void LogEmission(string eventName, params object[] variables)
     {
         StringBuilder sb = new StringBuilder();
         StringBuilder cb = new StringBuilder();
@@ -510,8 +513,9 @@ public class WebSocketManager : SingleTon<WebSocketManager>
                 cb.Append($", {variables[i]}");
             }
         }
+
         Debug.Log(sb.ToString());
-        
+
         ServerCommunicationLogger.Instance.LogCommunication(cb.ToString(), CommunicationDirection.Outgoing);
     }
 
@@ -535,7 +539,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     }
 }
 
-public static class SocketEvent 
+public static class SocketEvent
 {
     public static readonly string GameSync = "SyncExpedition";
 
@@ -565,4 +569,4 @@ public static class SocketEvent
     public static readonly string GetData = "GetData";
     public static readonly string ContinueExpedition = "ContinueExpedition";
     public static readonly string NodeSkip = "NodeSkipped";
-} 
+}
