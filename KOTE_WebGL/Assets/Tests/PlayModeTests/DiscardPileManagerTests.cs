@@ -36,6 +36,7 @@ public class DiscardPileManagerTests : MonoBehaviour
     {
         Destroy(_discardManager.gameObject);
         Destroy(cameraObject);
+        GameManager.Instance.DestroyInstance();
         yield return null;
     }
 
@@ -71,22 +72,26 @@ public class DiscardPileManagerTests : MonoBehaviour
         LogAssert.Expect(LogType.Log, "[Discard Pile] Card Discarded.");
     }
 
-    [Test]
-    public void DoesDiscardingCardFirePlaySfxEvent()
+    [UnityTest]
+    public IEnumerator DoesDiscardingCardFirePlaySfxEvent()
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) => { eventFired = true; });
         GameManager.Instance.EVENT_CARD_DISCARD.Invoke();
+        yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
+        yield return null;
         Assert.True(eventFired);
     }
 
-    [Test]
-    public void DoesDiscardingCardEventPlayCorrectSound()
+    [UnityTest]
+    public IEnumerator DoesDiscardingCardEventPlayCorrectSound()
     {
         string eventContent = "";
         GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) => { eventContent = data2; });
         GameManager.Instance.EVENT_CARD_DISCARD.Invoke();
-        Assert.AreEqual("Card Discard", eventContent);
+        yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
+        yield return null;
+        Assert.AreEqual("Discard", eventContent);
     }
 
     [Test]

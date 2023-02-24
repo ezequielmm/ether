@@ -115,6 +115,7 @@ public class CardManagerTests : MonoBehaviour
         spriteCardInstance = Instantiate(spriteCardPrefab);
         cardManager = spriteCardInstance.GetComponent<CardManager>();
         _visualsManager = spriteCardInstance.GetComponent<CardVisualsManager>();
+        cardManager.Populate(new Card(), 0);
         spriteCardInstance.SetActive(true);
         yield return null;
     }
@@ -129,6 +130,7 @@ public class CardManagerTests : MonoBehaviour
         Destroy(spriteManager);
         Destroy(spriteCardInstance);
         Destroy(drawPileManager);
+        GameManager.Instance.DestroyInstance();
         yield return null;
     }
 
