@@ -25,7 +25,7 @@ public class WebRequesterManager : MonoBehaviour
     private readonly string urlExpeditionRequest = "/gsrv/v1/expeditions";
     private readonly string urlExpeditionCancel = "/gsrv/v1/expeditions/cancel";
     private readonly string urlExpeditionScore = "/gsrv/v1/expeditions/score";
-    private readonly string urlBugReport = "/gsrv/v1/bugreport";
+    private readonly string urlBugReport = "/v1/bugReports";
     private readonly string urlServerVersion = "/gsrv/v1/showversion";
 
 
@@ -842,7 +842,7 @@ public class WebRequesterManager : MonoBehaviour
 
     private IEnumerator PushBugReport(string title, string description, string base64Image)
     {
-        string fullUrl = "https://api.dev.kote.robotseamonster.com/v1/bugReports"; //$"{baseUrl}{urlBugReport}";
+        string fullUrl = $"{ClientEnvironmentManager.Instance.WebSocketURL}{urlBugReport}";
 
         BugReportData reportData = new BugReportData
         {
@@ -854,7 +854,7 @@ public class WebRequesterManager : MonoBehaviour
             expeditionId = UserDataManager.Instance.ExpeditionId,
             userTitle = title,
             userDescription = description,
-            screenshot = "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==",//base64Image,
+            screenshot = base64Image,
             frontendVersion = VersionManager.ClientVersionWithCommit,
             backendVersion = VersionManager.ServerVersion,
             messageLog = ServerCommunicationLogger.Instance.GetCommunicationLog()
