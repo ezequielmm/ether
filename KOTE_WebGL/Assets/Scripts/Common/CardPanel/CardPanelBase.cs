@@ -46,7 +46,7 @@ public class CardPanelBase : MonoBehaviour
             uiCard.useBackgroundImage = useBackgroundImage;
             uiCard.scaleCardOnHover = scaleOnHover;
             uiCard = OnGenerateCard(uiCard);
-            uiCard.populate(card);
+            uiCard.Populate(card);
         }
     }
 

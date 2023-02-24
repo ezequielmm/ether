@@ -25,7 +25,6 @@ public class TrinketItemManager : MonoBehaviour, IPointerClickHandler
     private void Start()
     {
         selectFrame.gameObject.SetActive(false);
-        counter.SetActive(false);
     }
 
     // uses string values for right now, will probably need to change once we parse trinket data
@@ -45,6 +44,9 @@ public class TrinketItemManager : MonoBehaviour, IPointerClickHandler
             enablePointerClick = true;
             onTrinketSelected = onSelected;
         }
+
+        counter.SetActive(trinket.counter > 0);
+        counterText.text = trinket.counter.ToString();
     }
 
     // utility function to update the toggle status from within the OnTrinketSelected action
