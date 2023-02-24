@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -141,11 +142,6 @@ public class WebRequesterManager : MonoBehaviour
     public void RequestCharacterList()
     {
         StartCoroutine(GetCharacterList());
-    }
-
-    public void SendBugReport(string title, string description, string base64Image)
-    {
-        StartCoroutine(PushBugReport(title, description, base64Image));
     }
 
     public async UniTask<string> MakeRequest(UnityWebRequest request) 
@@ -807,9 +803,9 @@ public class WebRequesterManager : MonoBehaviour
         }
     }
 
-    private IEnumerator PushBugReport(string title, string description, string base64Image)
+    private async void SendBugReport(string title, string description, string base64Image)
     {
-        string fullUrl = $"{baseUrl}{RestEndpoint.BugReport}";
+        string fullUrl = $"{ClientEnvironmentManager.Instance.WebSocketURL}{RestEndpoint.BugReport}";
 
         BugReportData reportData = new BugReportData
         {
@@ -822,19 +818,20 @@ public class WebRequesterManager : MonoBehaviour
             userTitle = title,
             userDescription = description,
             screenshot = base64Image,
-            frontendVersion = Application.version,
+            frontendVersion = VersionManager.ClientVersionWithCommit,
+            backendVersion = VersionManager.ServerVersion,
             messageLog = ServerCommunicationLogger.Instance.GetCommunicationLog()
         };
         string data = JsonConvert.SerializeObject(reportData);
-        using (UnityWebRequest request = UnityWebRequest.Post(fullUrl, data))
+        Debug.Log(data);
+        byte[] utf8String = Encoding.Default.GetBytes(data);
+        using (UnityWebRequest request = new UnityWebRequest(fullUrl, "POST"))
         {
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.ConnectionError ||
-                request.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.Log("[Error sending bug report]");
-            }
+            var uploadHandler = new UploadHandlerRaw(utf8String);
+            uploadHandler.contentType = $"application/json";
+            request.uploadHandler = uploadHandler;
+            await MakeRequest(request);
+            uploadHandler.Dispose();
         }
     }
 
@@ -859,6 +856,6 @@ public static class RestEndpoint
     public static readonly string ExpeditionRequest = "/gsrv/v1/expeditions";
     public static readonly string ExpeditionCancel = "/gsrv/v1/expeditions/cancel";
     public static readonly string ExpeditionScore = "/gsrv/v1/expeditions/score";
-    public static readonly string BugReport = "/gsrv/v1/bugreport";
+    public static readonly string BugReport = "/v1/bugReports";
     public static readonly string ServerVersion = "/gsrv/v1/showversion";
 }
