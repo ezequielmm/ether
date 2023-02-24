@@ -1,6 +1,7 @@
 on: 
-  release:
-    types: [published]
+  push:
+    tags:
+      - 0.**
   
 jobs:
   selectEnvName:
@@ -48,7 +49,7 @@ jobs:
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
 
       - name: Restore LFS cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: lfs-cache
         with:
           path: .git/lfs
@@ -61,12 +62,11 @@ jobs:
           git reset --hard
 
       - name: Restore Library cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: KOTE_WebGL/Library
-          key: Library-test-project-${{ matrix.targetPlatform }}
+          key: Library-${{ matrix.targetPlatform }}
           restore-keys: |
-            Library-test-project-
             Library-
 
       - name: Run tests
@@ -124,7 +124,7 @@ jobs:
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
 
       - name: Restore LFS cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: lfs-cache
         with:
           path: .git/lfs
@@ -137,12 +137,11 @@ jobs:
           git reset --hard
 
       - name: Restore Library cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: KOTE_WebGL/Library
-          key: Library-build-WebGL
+          key: Library-WebGL
           restore-keys: |
-            Library-build-
             Library-
 
       - name: Build Game in Unity
