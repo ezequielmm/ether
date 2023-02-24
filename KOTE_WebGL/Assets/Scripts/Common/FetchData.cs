@@ -57,16 +57,9 @@ public class FetchData : ISingleton<FetchData>, IDisposable
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.ServerVersion);
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
-            string json = await webRequest.MakeRequest(request);
-            var versionWrapper = JsonConvert.DeserializeObject<ServerVersionWrapper>(json);
-            return versionWrapper.Version;
+            string rawJson = await webRequest.MakeRequest(request);
+            return ParseJsonWithPath<string>(rawJson, "data");
         }
-    }
-    [Serializable]
-    private class ServerVersionWrapper
-    {
-        [JsonProperty("data")]
-        public string Version;
     }
 
     public async UniTask<Deck> GetCardUpgradePair(string cardId) 
