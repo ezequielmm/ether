@@ -63,7 +63,6 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             GameManager.Instance.EVENT_POTION_DISCARDED.AddListener(OnPotionDiscarded);
             GameManager.Instance.EVENT_TREASURE_OPEN_CHEST.AddListener(OnTreasureOpened);
             GameManager.Instance.EVENT_MERCHANT_BUY.AddListener(OnBuyItem);
-            GameManager.Instance.EVENT_ENCOUNTER_OPTION_SELECTED.AddListener(OnEncounterOptionSelected);
             GameManager.Instance.EVENT_START_COMBAT_ENCOUNTER.AddListener(OnStartCombatEncounter);
             GameManager.Instance.EVENT_SKIP_NODE.AddListener(OnSkipNode);
             GameManager.Instance.EVENT_TRINKETS_SELECTED.AddListener(OnTrinketsSelected);
@@ -371,11 +370,6 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     {
         // Debug.Log($"[WebSocketManager] Sending message {WS_MESSAGE_OPEN_CHEST}");
         EmitWithResponse(SocketEvent.OpenChest);
-    }
-
-    private void OnEncounterOptionSelected(int option)
-    {
-        EmitWithResponse(SocketEvent.EncounterSelection, option);
     }
 
     private void OnStartCombatEncounter()

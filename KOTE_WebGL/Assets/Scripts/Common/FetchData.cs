@@ -71,33 +71,44 @@ public class FetchData : ISingleton<FetchData>, IDisposable
 
     public async UniTask<Deck> GetCardUpgradePair(string cardId) 
     {
-        string json = await socketRequest.EmitAwaitResponse(SocketEvent.GetCardUpgradePair, cardId);
-        SWSM_DeckData deckData = JsonConvert.DeserializeObject<SWSM_DeckData>(json);
-        Deck deck = new Deck() { cards = deckData.data.data.deck };
-        return deck;
+        string rawJson = await socketRequest.EmitAwaitResponse(SocketEvent.GetCardUpgradePair, cardId);
+        return ParseJsonWithPath<Deck>(rawJson, "data.data");
     }
 
     public async UniTask<CardUpgrade> CampUpgradeCard(string cardId)
     {
         string rawJson = await socketRequest.EmitAwaitResponse(SocketEvent.UpgradeCard, cardId);
-        JObject json = JObject.Parse(rawJson);
-        CardUpgrade data = json.SelectToken("data.data").ToObject<CardUpgrade>();
-        return data;
+        return ParseJsonWithPath<CardUpgrade>(rawJson, "data.data");
     }
 
     public async UniTask<List<Card>> GetUpgradeableCards()
     {
         string rawJson = await socketRequest.EmitAwaitResponse(SocketEvent.GetData, WS_DATA_REQUEST_TYPES.UpgradableCards.ToString());
-        JObject json = JObject.Parse(rawJson);
-        List<Card> data = json.SelectToken("data.data").ToObject<List<Card>>();
-        return data;
+        return ParseJsonWithPath<List<Card>>(rawJson, "data.data");
     }
 
     public async UniTask<MerchantData> GetMerchantData()
     {
         string rawJson = await socketRequest.EmitAwaitResponse(SocketEvent.GetData, WS_DATA_REQUEST_TYPES.MerchantData.ToString());
-        JObject json = JObject.Parse(rawJson);
-        MerchantData data = json.SelectToken("data.data").ToObject<MerchantData>();
-        return data;
+        return ParseJsonWithPath<MerchantData>(rawJson, "data.data");
     }
+
+    public async UniTask<EncounterData> GetEncounterData()
+    {
+        string rawJson = await socketRequest.EmitAwaitResponse(SocketEvent.GetData, WS_DATA_REQUEST_TYPES.EncounterData.ToString());
+        return ParseJsonWithPath<EncounterData>(rawJson, "data.data");
+    }
+
+    public async UniTask<EncounterData> SelectEncounterOption(int option) 
+    {
+        string rawJson = await socketRequest.EmitAwaitResponse(SocketEvent.EncounterSelection, option);
+        return ParseJsonWithPath<EncounterData>(rawJson, "data.data");
+    }
+
+    private T ParseJsonWithPath<T>(string rawJson, string tokenPath) 
+    {
+        JObject json = JObject.Parse(rawJson);
+        T data = json.SelectToken(tokenPath).ToObject<T>();
+        return data;
+    } 
 }

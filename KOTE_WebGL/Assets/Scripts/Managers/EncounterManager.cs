@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static EncounterData;
 
 public class EncounterManager : MonoBehaviour
 {
@@ -19,13 +21,26 @@ public class EncounterManager : MonoBehaviour
     {
         EncounterContainer.SetActive(false);
         ClearPanel();
-        GameManager.Instance.EVENT_SHOW_ENCOUNTER_PANEL.AddListener(ShowEncounterPanel);
-        GameManager.Instance.EVENT_POPULATE_ENCOUNTER_PANEL.AddListener(OnPopulateEncounter);
+        GameManager.Instance.EVENT_SHOW_ENCOUNTER_PANEL.AddListener(ShowAndPopulate);
     }
 
-    public void ShowEncounterPanel()
+    public async void ShowAndPopulate()
     {
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.EncounterData);
+        EncounterData encounterData = await FetchData.Instance.GetEncounterData();
+        Populate(encounterData);
+        Show();
+    }
+
+    public async void SelectOptionAndPopulate(int option) 
+    {
+        EncounterData encounterData = await FetchData.Instance.SelectEncounterOption(option);
+        Populate(encounterData);
+    }
+
+    public void Show() 
+    {
+        creatureImage.gameObject.SetActive(true);
+        EncounterContainer.SetActive(true);
     }
 
     // clear the panel so it doesn't show anything while waiting to be populated
@@ -40,18 +55,16 @@ public class EncounterManager : MonoBehaviour
         }
     }
 
-    private void OnPopulateEncounter(SWSM_EncounterData encounterData)
+    private void Populate(EncounterData encounterData)
     {
-        creatureImage.sprite = SpriteAssetManager.Instance.GetEncounterCreature(encounterData.data.data.imageId);
+        creatureImage.sprite = SpriteAssetManager.Instance.GetEncounterCreature(encounterData.imageId);
         creatureImage.SetNativeSize();
-        creatureImage.gameObject.SetActive(true);
-        titleText.text = encounterData.data.data.encounterName;
-        PopulateEncounterText(encounterData.data.data.displayText);
-        PopulateButtonText(encounterData.data.data.buttons);
-        EncounterContainer.SetActive(true);
+        titleText.text = encounterData.encounterName;
+        SetDialogueText(encounterData.displayText);
+        SetButtons(encounterData.buttons);
     }
 
-    private void PopulateEncounterText(string text)
+    private void SetDialogueText(string text)
     {
         if (text.Length <= GameSettings.ENCOUNTER_TEXT_BOX_CHARACTER_COUNT)
         {
@@ -87,7 +100,7 @@ public class EncounterManager : MonoBehaviour
         }
     }
 
-    private void PopulateButtonText(List<ButtonData> ButtonsData)
+    private void SetButtons(List<ButtonData> ButtonsData)
     {
         if (ButtonsData == null || ButtonsData.Count == 0)
         {
@@ -119,7 +132,7 @@ public class EncounterManager : MonoBehaviour
             optionButtons[i].onClick.RemoveAllListeners();
             optionButtons[i].onClick.AddListener(() =>
             {
-                GameManager.Instance.EVENT_ENCOUNTER_OPTION_SELECTED.Invoke(buttonNum);
+                SelectOptionAndPopulate(buttonNum);
                 GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
                 DisableButtons();
             });
@@ -205,5 +218,20 @@ public class EncounterManager : MonoBehaviour
         {
             button.interactable = false;
         }
+    }
+}
+
+[Serializable]
+public class EncounterData
+{
+    public string encounterName;
+    public string imageId;
+    public string displayText;
+    public List<ButtonData> buttons = new();
+    [Serializable]
+    public class ButtonData
+    {
+        public string text;
+        public bool enabled;
     }
 }

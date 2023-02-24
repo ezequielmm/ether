@@ -218,13 +218,11 @@ public class WebSocketParser
                 throw new NotImplementedException();
             case nameof(WS_DATA_REQUEST_TYPES.MerchantData):
                 throw new NotImplementedException();
-                break;
             case nameof(WS_DATA_REQUEST_TYPES.TreasureData):
                 ProcessTreasureData(data);
                 break;
             case nameof(WS_DATA_REQUEST_TYPES.EncounterData):
-                ProcessEncounterData(data);
-                break;
+                throw new NotImplementedException();
             case nameof(WS_DATA_REQUEST_TYPES.Rewards):
                 ProcessRewardsData(data);
                 break;
@@ -488,12 +486,6 @@ public class WebSocketParser
     {
         SWSM_ChestResult chestResult = JsonConvert.DeserializeObject<SWSM_ChestResult>(data);
         GameManager.Instance.EVENT_TREASURE_CHEST_RESULT.Invoke(chestResult);
-    }
-
-    private static void ProcessEncounterData(string data)
-    {
-        SWSM_EncounterData encounterData = JsonConvert.DeserializeObject<SWSM_EncounterData>(data);
-        GameManager.Instance.EVENT_POPULATE_ENCOUNTER_PANEL.Invoke(encounterData);
     }
 
     private static void ProcessMoveCard(string rawData)
