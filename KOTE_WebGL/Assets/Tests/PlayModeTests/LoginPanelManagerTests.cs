@@ -38,6 +38,7 @@ public class LoginPanelManagerTests : MonoBehaviour
     {
         Destroy(loginPanel.gameObject);
         Destroy(metaMask);
+        GameManager.Instance.DestroyInstance();
         yield return null;
     }
 
@@ -120,11 +121,13 @@ public class LoginPanelManagerTests : MonoBehaviour
         Assert.AreEqual("andrewtest@gmail.com", PlayerPrefs.GetString("email_reme_login"));
     }
 
-    [Test]
-    public void DoesSuccessfulLoginSaveCurrentDate()
+    [UnityTest]
+    public IEnumerator DoesSuccessfulLoginSaveCurrentDate()
     {
+        yield return null;
         loginPanel.emailInputField.text = "andrewtest@gmail.com";
         loginPanel.rememberMe.isOn = true;
+        yield return new WaitForSeconds(0.1f);
         GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.Invoke("", 0);
         DateTime savedDate = DateTime.ParseExact(PlayerPrefs.GetString("date_reme_login"), "MM/dd/yyyy HH:mm:ss",
             CultureInfo.InvariantCulture);
