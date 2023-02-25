@@ -16,7 +16,7 @@ public class ExhaustPileManagerTests : MonoBehaviour
     public IEnumerator Setup()
     {
         // add a camera so that things will run
-        GameObject go = new GameObject();
+        go = new GameObject();
         Camera camera = go.AddComponent<Camera>();
         camera.tag = "MainCamera";
 
@@ -37,6 +37,7 @@ public class ExhaustPileManagerTests : MonoBehaviour
         Destroy(_exhaustManager.gameObject);
         Destroy(go);
         GameManager.Instance.DestroyInstance();
+
         yield return null;
     }
 
