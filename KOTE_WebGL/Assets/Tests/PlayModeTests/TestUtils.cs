@@ -202,12 +202,13 @@ public static class TestUtils
         {
             NodeDataHelper nodeData = new NodeDataHelper
             {
-                act = i,
+                act = 0,
                 id = i,
                 status = "completed",
-                step = 0,
+                step = i,
                 type = "combat",
-                subType = "combat_standard"
+                subType = "combat_standard",
+                title = "Node Test"
             };
             if (i != 0) nodeData.enter = new[] { i - 1 };
             else nodeData.enter = Array.Empty<int>();
@@ -238,7 +239,8 @@ public static class TestUtils
                         status = "completed",
                         step = 0,
                         subType = "royal_house_a",
-                        type = "royal_house"
+                        type = "royal_house",
+                        title = "royal house"
                     },
                     new NodeDataHelper
                     {
@@ -249,7 +251,8 @@ public static class TestUtils
                         status = "available",
                         step = 1,
                         subType = "portal",
-                        type = "portal"
+                        type = "portal",
+                        title = "portal"
                     }
                 }
             }
