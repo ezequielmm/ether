@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace KOTE.UI.Armory
 {
     internal class ArmoryTokenData
     {
+        // this is so the Armory panel knows if image is updated after showing the character
+        public UnityEvent tokenImageReceived = new();
+        
         public string Id => MetaData.token_id;
         public NftMetaData MetaData { get; }
         public Sprite NftImage { get; private set; }
@@ -13,13 +17,13 @@ namespace KOTE.UI.Armory
         public ArmoryTokenData(NftMetaData tokenMetadata)
         {
             MetaData = tokenMetadata;
-            Sprite image = NftImageManager.Instance.GetNftImage(MetaData);
-            if (image != null)
+            if (NftImageManager.Instance.TryGetNftImage(MetaData, out Sprite image))
             {
                 NftImage = image;
                 return;
             }
 
+            NftImage = image;
             // if the image isn't already downloaded, wait for it to be
             GameManager.Instance.EVENT_NFT_IMAGE_RECEIVED.AddListener(OnImageReceived);
         }
@@ -30,6 +34,7 @@ namespace KOTE.UI.Armory
             {
                 NftImage = image;
             }
+            tokenImageReceived.Invoke();
         }
     }
 }

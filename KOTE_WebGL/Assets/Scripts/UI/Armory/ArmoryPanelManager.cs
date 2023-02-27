@@ -33,20 +33,30 @@ namespace KOTE.UI.Armory
             }
 
             curNode = nftList.First;
+            curNode.Value.tokenImageReceived.AddListener(UpdateCharacterImage);
+            UpdateCharacterImage();
+        }
+
+        private void UpdateCharacterImage()
+        {
             nftImage.sprite = curNode.Value.NftImage;
         }
-        
+
         public void OnPreviousToken()
         {
             if (curNode.Previous == null) return;
+            curNode.Value.tokenImageReceived.RemoveListener(UpdateCharacterImage);
             curNode = curNode.Previous;
-            nftImage.sprite = curNode.Value.NftImage;
+            curNode.Value.tokenImageReceived.AddListener(UpdateCharacterImage);
+            UpdateCharacterImage();
         }
 
         public void OnNextToken()
         {
             if (curNode.Next == null) return;
+            curNode.Value.tokenImageReceived.RemoveListener(UpdateCharacterImage);
             curNode = curNode.Next;
+            curNode.Value.tokenImageReceived.AddListener(UpdateCharacterImage);
             nftImage.sprite = curNode.Value.NftImage;
         }
 
@@ -61,12 +71,13 @@ namespace KOTE.UI.Armory
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             ActivateContainer(false);
         }
-        
+
         private void OnStartExpedition()
         {
             playButton.interactable = false;
             GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
-            GameManager.Instance.webRequester.RequestStartExpedition("knight", curNode.Value.Id); //for the moment this is hardcoded
+            GameManager.Instance.webRequester.RequestStartExpedition("knight",
+                curNode.Value.Id); //for the moment this is hardcoded
         }
 
         private void OnExpeditionConfirmed()
