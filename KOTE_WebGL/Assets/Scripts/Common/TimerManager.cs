@@ -25,14 +25,17 @@ public class TimerManager : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(TimerUpdated);
+        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusUpdate);
     }
 
-    private void TimerUpdated(PlayerStateData playerState) 
+    private void OnPlayerStatusUpdate(PlayerStateData playerState) 
     {
-        DateTime timerBegining = playerState.data.expeditionCreatedAt;
-        DateTime now = DateTime.UtcNow;
-        TimeSpan timePassed = now - timerBegining;
+        SetTimerStartTime(playerState.data.expeditionCreatedAt);
+    }
+
+    public void SetTimerStartTime(DateTime startTimeUTC) 
+    {
+        TimeSpan timePassed = DateTime.UtcNow - startTimeUTC;
         previousTimeSeconds = (float)timePassed.TotalSeconds;
     }
 
