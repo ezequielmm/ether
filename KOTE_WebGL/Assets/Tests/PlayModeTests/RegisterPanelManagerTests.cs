@@ -48,17 +48,6 @@ public class RegisterPanelManagerTests : MonoBehaviour
     }
 
     [Test]
-    public void DoesRequestNameUpdateNameText()
-    {
-        GameManager.Instance.EVENT_REQUEST_NAME_SUCESSFUL.Invoke("test");
-        Assert.AreEqual("test", registerPanel.nameInputField.text);
-        GameManager.Instance.EVENT_REQUEST_NAME_SUCESSFUL.Invoke("No One Can Stop The Ping Pong In The Bayou");
-        Assert.AreEqual("No One Can Stop The Ping Pong In The Bayou", registerPanel.nameInputField.text);
-        GameManager.Instance.EVENT_REQUEST_NAME_SUCESSFUL.Invoke("yup, this be working");
-        Assert.AreEqual("yup, this be working", registerPanel.nameInputField.text);
-    }
-
-    [Test]
     public void DoesSuccessfulLoginDeactivateRegisterPanel()
     {
         registerPanel.ActivateInnerRegisterPanel(true);
@@ -224,6 +213,7 @@ public class RegisterPanelManagerTests : MonoBehaviour
     [Test]
     public void DoesClickingRegisterFireRequestRegisterEvent()
     {
+        registerPanel.nameInputField.text = "TestUsername";
         registerPanel.emailInputField.text = "test@gmail.com";
         registerPanel.confirmEmailInputField.text = "test@gmail.com";
         registerPanel.passwordInputField.text = "P@ssw0rd";
@@ -278,6 +268,7 @@ public class RegisterPanelManagerTests : MonoBehaviour
     [Test]
     public void DoesActivatingRegisterPanelClearFields()
     {
+        registerPanel.nameInputField.text = "Gertrude";
         registerPanel.emailInputField.text = "test@gmail.com";
         registerPanel.confirmEmailInputField.text = "test@gmail.com";
         registerPanel.passwordInputField.text = "P@ssw0rd";
@@ -287,7 +278,9 @@ public class RegisterPanelManagerTests : MonoBehaviour
         Assert.AreEqual("", registerPanel.confirmEmailInputField.text);
         Assert.AreEqual("", registerPanel.passwordInputField.text);
         Assert.AreEqual("", registerPanel.confirmPasswordInputField.text);
+        Assert.AreEqual("", registerPanel.nameInputField.text);
 
+        registerPanel.nameInputField.text = "Gertrude";
         registerPanel.emailInputField.text = "test@gmail.com";
         registerPanel.confirmEmailInputField.text = "test@gmail.com";
         registerPanel.passwordInputField.text = "P@ssw0rd";
@@ -297,6 +290,7 @@ public class RegisterPanelManagerTests : MonoBehaviour
         Assert.AreEqual("", registerPanel.confirmEmailInputField.text);
         Assert.AreEqual("", registerPanel.passwordInputField.text);
         Assert.AreEqual("", registerPanel.confirmPasswordInputField.text);
+        Assert.AreEqual("", registerPanel.nameInputField.text);
     }
 
     [Test]
@@ -311,6 +305,7 @@ public class RegisterPanelManagerTests : MonoBehaviour
     [Test]
     public void DoesEmailToShortDeactivateRegisterButton()
     {
+        registerPanel.nameInputField.text = "Gertrude";
         registerPanel.passwordInputField.text = "P@ssw0rd";
         registerPanel.termsAndConditions.isOn = true;
         registerPanel.registerButton.interactable = true;
@@ -327,6 +322,7 @@ public class RegisterPanelManagerTests : MonoBehaviour
     [Test]
     public void DoesPasswordToShortDeactivateRegisterButton()
     {
+        registerPanel.nameInputField.text = "Gertrude";
         registerPanel.emailInputField.text = "longeremailtest";
         registerPanel.termsAndConditions.isOn = true;
         registerPanel.registerButton.interactable = true;
@@ -342,6 +338,7 @@ public class RegisterPanelManagerTests : MonoBehaviour
     [Test]
     public void DoesTermsAndConditionsToggleDeactivateRegisterButton()
     {
+        registerPanel.nameInputField.text = "Gertrude";
         registerPanel.emailInputField.text = "longeremailtest";
         registerPanel.passwordInputField.text = "P@ssw0rd";
         registerPanel.registerButton.interactable = true;

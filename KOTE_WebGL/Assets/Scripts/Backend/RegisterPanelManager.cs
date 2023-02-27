@@ -199,6 +199,7 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void ActivateInnerRegisterPanel(bool activate)
     {
+        nameInputField.text = "";
         emailInputField.text = "";
         confirmEmailInputField.text = "";
         passwordInputField.text = "";
