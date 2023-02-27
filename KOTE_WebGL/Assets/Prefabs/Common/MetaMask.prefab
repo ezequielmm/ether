@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 399075699897500505}
   - component: {fileID: 399075699897500504}
+  - component: {fileID: 1418562121906665698}
   m_Layer: 0
   m_Name: MetaMask
   m_TagString: Untagged
@@ -27,6 +28,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -41,5 +43,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ecd35f99015b61843800d9834ad7b225, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1418562121906665698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 399075699897500507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 628893925ecaefa4b8600bae7ff9c5a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

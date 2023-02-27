@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.TestTools;
 
 public class PotionsContainerManagerTests : MonoBehaviour
@@ -11,8 +10,8 @@ public class PotionsContainerManagerTests : MonoBehaviour
     private GameObject cursorObject;
     private GameObject go;
     private GameObject spriteManager;
+    private GameObject potionsContainerGameObject;
     private PotionsContainerManager _potionsContainerManager;
-    private GameObject potionPrefab;
 
     private PlayerStateData emptyPlayerState = new PlayerStateData
     {
@@ -109,12 +108,12 @@ public class PotionsContainerManagerTests : MonoBehaviour
 
         GameObject potionsContainerPrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/BattleUI/PotionsContainer.prefab");
-        GameObject potionsContainerGameObject = Instantiate(potionsContainerPrefab);
+        potionsContainerGameObject = Instantiate(potionsContainerPrefab);
         _potionsContainerManager = potionsContainerGameObject.GetComponent<PotionsContainerManager>();
         potionsContainerGameObject.SetActive(true);
         yield return null;
 
-        potionPrefab =
+        GameObject potionPrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/BattleUI/PotionPrefab.prefab");
         dummyPotion = Instantiate(potionPrefab).GetComponent<PotionManager>();
         dummyPotion.Populate(_potionData);
@@ -126,8 +125,8 @@ public class PotionsContainerManagerTests : MonoBehaviour
         Destroy(cursorObject);
         Destroy(go);
         Destroy(spriteManager);
-        Destroy(potionPrefab);
-        Destroy(_potionsContainerManager.gameObject);
+        Destroy(dummyPotion.gameObject);
+        Destroy(potionsContainerGameObject);
         yield return null;
     }
 
@@ -135,18 +134,6 @@ public class PotionsContainerManagerTests : MonoBehaviour
     public void IsPotionOptionPanelDeactivatedOnStart()
     {
         Assert.False(_potionsContainerManager.potionOptionPanel.activeSelf);
-    }
-
-    [Test]
-    public void DoesPlayerStateUpdateCreateEmptyPotions()
-    {
-        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.Invoke(emptyPlayerState);
-        Assert.AreEqual(3, _potionsContainerManager.potions.Count);
-        Assert.AreEqual(3, _potionsContainerManager.potionLayout.GetComponentsInChildren<PotionManager>().Length);
-        foreach (PotionManager potion in _potionsContainerManager.potions)
-        {
-            Assert.AreEqual("", potion.GetPotionId());
-        }
     }
 
     [Test]

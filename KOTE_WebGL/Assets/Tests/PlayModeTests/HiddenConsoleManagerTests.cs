@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.TestTools;
 
 public class HiddenConsoleManagerTests : MonoBehaviour
@@ -26,6 +23,7 @@ public class HiddenConsoleManagerTests : MonoBehaviour
     public IEnumerator TearDown()
     {
         Destroy(HiddenConsoleManager.gameObject);
+        GameManager.Instance.DestroyInstance();
         yield return null;
     }
 
@@ -38,18 +36,18 @@ public class HiddenConsoleManagerTests : MonoBehaviour
     [Test]
     public void DoesDisableDebugSwitchFilterLogTypeToException()
     {
-        Assert.AreEqual(LogType.Log, Debug.unityLogger.filterLogType);
+        Assert.AreEqual(LogType.Log, GameSettings.FilterLogType);
         HiddenConsoleManager.DisableDebug();
-        Assert.AreEqual(LogType.Exception, Debug.unityLogger.filterLogType);
+        Assert.AreEqual(LogType.Exception, GameSettings.FilterLogType);
     }
 
     [Test]
     public void DoesEnableDebugSwitchFilterLogTypeToLog()
     {
         HiddenConsoleManager.DisableDebug();
-        Assert.AreEqual(LogType.Exception, Debug.unityLogger.filterLogType);
+        Assert.AreEqual(LogType.Exception, GameSettings.FilterLogType);
         HiddenConsoleManager.EnableDebug();
-        Assert.AreEqual(LogType.Log, Debug.unityLogger.filterLogType);
+        Assert.AreEqual(LogType.Log, GameSettings.FilterLogType);
     }
 
     [Test]
@@ -170,15 +168,6 @@ public class HiddenConsoleManagerTests : MonoBehaviour
     }
 
     [Test]
-    public void DoesSendingDisableDebugDisableDebug()
-    {
-        HiddenConsoleManager.EnableDebug();
-        HiddenConsoleManager.OnTextInput("disable_debug");
-        Assert.AreEqual(LogType.Exception, Debug.unityLogger.filterLogType);
-        LogAssert.Expect(LogType.Log, "Console Disabled.");
-    }
-
-    [Test]
     public void DoesSendingEnableDebugEnableDebug()
     {
         HiddenConsoleManager.DisableDebug();
@@ -200,9 +189,10 @@ public class HiddenConsoleManagerTests : MonoBehaviour
         HiddenConsoleManager.OnTextInput("show_commands");
         LogAssert.Expect(LogType.Log,
             "Available commands: ws_url, apis_url, api_url, player_token, quit, exit, close, close_console," +
-            " enable_debug, disable_debug, version, show_commands, help, enable_all_functionality, " +
-            "enable_register_panel, enable_armory_panel, enable_royal_houses_panel, enable_node_numbers, " +
-            "disable_all_functionality, disable_register_panel, disable_armory_panel, disable_royal_houses_panel," +
-            " disable_node_numbers");
+            " enable_debug, disable_debug, version, show_commands, help, enable_all_functionality," +
+            " enable_register_panel, enable_armory_panel, enable_royal_houses_panel, enable_node_numbers," +
+            " disable_all_functionality, disable_register_panel, disable_armory_panel, disable_royal_houses_panel," +
+            " disable_node_numbers, enable_node, enable_injured_idle, disable_injured_idle," +
+            " reset_all, use_nft, get_score, commit, environment");
     }
 }

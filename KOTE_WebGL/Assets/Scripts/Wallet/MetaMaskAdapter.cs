@@ -12,6 +12,12 @@ public class MetaMaskAdapter : SingleTon<MetaMaskAdapter>
         mm = MetaMask.Instance;
     }
 
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        Destroy(mm);
+    }
+
     public bool HasMetamask() 
     {
         return mm.HasMetamask;

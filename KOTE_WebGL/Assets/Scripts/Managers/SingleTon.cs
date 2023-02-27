@@ -38,7 +38,7 @@ public abstract class SingleTon<T> : MonoBehaviour, ISingleton<T> where T : Comp
         }
     }
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
         if (instance == this)
         {

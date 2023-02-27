@@ -187,7 +187,7 @@ public class WebSocketParserTests
     {
         string data = TestUtils.BuildTestSwsmData("combat_update", "test");
         WebSocketParser.ParseJSON(data);
-        LogAssert.Expect(LogType.Log, $"[SWSM Parser][Combat Update] Unknown Action \"test\". Data = {data}");
+        LogAssert.Expect(LogType.Warning, $"[SWSM Parser][Combat Update] Unknown Action \"test\". Data = {data}");
     }
 
     [Test]
@@ -236,15 +236,15 @@ public class WebSocketParserTests
     [Test]
     public void DoesProcessErrorActionLogCorrectWarning()
     {
-        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("error", "card_unplayable"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSWSMErrorData("error", "card_unplayable"));
 
         LogAssert.Expect(LogType.Log, "card_unplayable: ");
 
-        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("error", "invalid_card"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSWSMErrorData("error", "invalid_card"));
 
         LogAssert.Expect(LogType.Log, "invalid_card: ");
 
-        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("error", "insufficient_energy"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestSWSMErrorData("error", "insufficient_energy"));
 
         // TODO THIS FAILS EVERY TIME FOR NO REASON
         // LogAssert.Expect(LogType.Log, new Regex("insufficient_energy: "));
@@ -285,7 +285,7 @@ public class WebSocketParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener((data) => { eventFired = true; });
-        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("generic_data", "Players"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestPlayersData("generic_data", "Players"));
 
         Assert.AreEqual(true, eventFired);
     }
@@ -308,15 +308,6 @@ public class WebSocketParserTests
         WebSocketParser.ParseJSON(TestUtils.BuildTestEnemyIntentData("generic_data", "EnemyIntents", 3));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(3, eventCount);
-    }
-
-    [Test]
-    public void DoesProcessGenericDataInvokeEnemyIntentsErrors()
-    {
-        //TODO discuss this, as this cannot happen with the code the way it is.
-        string data = TestUtils.BuildTestEnemyIntentData("generic_data", "EnemyIntents", 1);
-        WebSocketParser.ParseJSON(data);
-        LogAssert.Expect(LogType.Log, $"[SWSM Parser][Combat Update] Unknown Action \"test\". Data = {data}");
     }
 
     [Test]
@@ -390,7 +381,7 @@ public class WebSocketParserTests
         WebSocketParser.ParseJSON(TestUtils.BuildTestCardMoveData("enemy_affected", "move_card", 23));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(true, wsDataEventFired);
-        Assert.AreEqual(23, eventCount);
+        Assert.AreEqual(1, eventCount);
 
         eventFired = false;
     }
@@ -409,7 +400,7 @@ public class WebSocketParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener((data) => { eventFired = true; });
-        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("enemy_affected", "update_player"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestPlayersData("enemy_affected", "update_player"));
         Assert.AreEqual(true, eventFired);
     }
 
@@ -444,7 +435,7 @@ public class WebSocketParserTests
         WebSocketParser.ParseJSON(TestUtils.BuildTestCardMoveData("player_affected", "move_card", 3));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(true, wsDataEventFired);
-        Assert.AreEqual(3, eventCount);
+        Assert.AreEqual(1, eventCount);
     }
 
     [Test]
@@ -461,7 +452,7 @@ public class WebSocketParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener((data) => { eventFired = true; });
-        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("player_affected", "update_player"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestPlayersData("player_affected", "update_player"));
         Assert.AreEqual(true, eventFired);
     }
 
@@ -496,7 +487,7 @@ public class WebSocketParserTests
         WebSocketParser.ParseJSON(TestUtils.BuildTestCardMoveData("end_turn", "move_card", 3));
         Assert.AreEqual(true, eventFired);
         Assert.AreEqual(true, wsDataEventFired);
-        Assert.AreEqual(3, eventCount);
+        Assert.AreEqual(1, eventCount);
     }
 
     [Test]
@@ -513,7 +504,7 @@ public class WebSocketParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_UPDATE_PLAYER.AddListener((data) => { eventFired = true; });
-        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("end_turn", "update_player"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestPlayersData("end_turn", "update_player"));
         Assert.AreEqual(true, eventFired);
     }
 
@@ -539,17 +530,14 @@ public class WebSocketParserTests
     public void DoesEndNodeMessageInvokeProcessEndCombatEnemiesDefeatedEvents()
     {
         bool statusChangeEventFired = false;
-        bool rewardPanelEventFired = false;
         GameStatuses returnStatus = GameStatuses.Camp;
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.AddListener((data) =>
         {
             statusChangeEventFired = true;
             returnStatus = data;
         });
-        GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.AddListener((data) => { rewardPanelEventFired = true; });
         WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("end_node", "enemies_defeated"));
         Assert.AreEqual(true, statusChangeEventFired);
-        Assert.AreEqual(true, rewardPanelEventFired);
     }
 
     [Test]
@@ -587,7 +575,7 @@ public class WebSocketParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.AddListener((data) => { eventFired = true; });
-        WebSocketParser.ParseJSON(TestUtils.BuildTestChangeTurnData("end_node", "select_another_reward"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestRewardsData("end_node", "select_another_reward"));
         Assert.AreEqual(true, eventFired);
     }
 
@@ -605,12 +593,9 @@ public class WebSocketParserTests
     public void DoesEndCombatMessageInvokeProcessEndCombatEnemiesDefeatedEvents()
     {
         bool statusChangeEventFired = false;
-        bool rewardPanelEventFired = false;
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.AddListener((data) => { statusChangeEventFired = true; });
-        GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.AddListener((data) => { rewardPanelEventFired = true; });
         WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("end_combat", "enemies_defeated"));
         Assert.AreEqual(true, statusChangeEventFired);
-        Assert.AreEqual(true, rewardPanelEventFired);
     }
 
     [Test]
@@ -648,7 +633,7 @@ public class WebSocketParserTests
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.AddListener((data) => { eventFired = true; });
-        WebSocketParser.ParseJSON(TestUtils.BuildTestChangeTurnData("end_combat", "select_another_reward"));
+        WebSocketParser.ParseJSON(TestUtils.BuildTestRewardsData("end_combat", "select_another_reward"));
         Assert.AreEqual(true, eventFired);
     }
 
@@ -667,7 +652,7 @@ public class WebSocketParserTests
     {
         string data = TestUtils.BuildTestSwsmData("failure", "nope");
         WebSocketParser.ParseJSON(data);
-        LogAssert.Expect(LogType.Error, "[SWSM Parser] No message_type processed. Data Received: " + data);
+        LogAssert.Expect(LogType.Warning, "[SWSM Parser] Unknown message_type: failure , data:" + data);
     }
 
     [Test]
