@@ -11,7 +11,9 @@ public class WebSocketParser
         SWSM_Base swsm = JsonConvert.DeserializeObject<SWSM_Base>(data);
 
         Debug.Log($"[WebSocketParser] <<< [MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}\n{data}");
-        ServerCommunicationLogger.Instance.LogCommunication($"[MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}", CommunicationDirection.Incoming, data);
+        ServerCommunicationLogger.Instance.LogCommunication(
+            $"[MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}", CommunicationDirection.Incoming,
+            data);
 
         switch (swsm.data.message_type)
         {
@@ -160,15 +162,15 @@ public class WebSocketParser
         switch (action)
         {
             case nameof(WS_ERROR_TYPES.card_unplayable):
-                errorData = JsonConvert.DeserializeObject<SWSM_ErrorData>(data);
+                errorData = JsonUtility.FromJson<SWSM_ErrorData>(data);
                 Debug.Log(action + ": " + errorData.data);
                 break;
             case nameof(WS_ERROR_TYPES.invalid_card):
-                errorData = JsonConvert.DeserializeObject<SWSM_ErrorData>(data);
+                errorData = JsonUtility.FromJson<SWSM_ErrorData>(data);
                 Debug.Log(action + ": " + errorData.data);
                 break;
             case nameof(WS_ERROR_TYPES.insufficient_energy):
-                errorData = JsonConvert.DeserializeObject<SWSM_ErrorData>(data);
+                errorData = JsonUtility.FromJson<SWSM_ErrorData>(data);
                 Debug.Log(action + ": " + errorData.data);
                 break;
         }
@@ -206,7 +208,7 @@ public class WebSocketParser
                 ProcessUpdatePlayer(data);
                 break;
             case nameof(WS_DATA_REQUEST_TYPES.EnemyIntents):
-                ProcessEnemyIntents("update_enemy_intents", data);
+                ProcessEnemyIntents(data);
                 break;
             case nameof(WS_DATA_REQUEST_TYPES.Statuses):
                 ProcessStatusUpdate(data);
@@ -444,24 +446,15 @@ public class WebSocketParser
         // }//TODO: plyersdta will be a list
     }
 
-    private static void ProcessEnemyIntents(string action, string data)
+    private static void ProcessEnemyIntents(string data)
     {
         //Debug.Log($"[SWSM_Parser][ProcessEnemyIntents] data = {data}");
         SWSM_IntentData swsm_intentData = JsonConvert.DeserializeObject<SWSM_IntentData>(data);
         List<EnemyIntent> enemyIntents = swsm_intentData.data.data;
-        switch (action)
+        foreach (EnemyIntent enemyIntent in enemyIntents)
         {
-            case "update_enemy_intents":
-                foreach (EnemyIntent enemyIntent in enemyIntents)
-                {
-                    if (enemyIntent != null)
-                        GameManager.Instance.EVENT_UPDATE_INTENT.Invoke(enemyIntent);
-                }
-
-                break;
-            default:
-                Debug.Log($"[SWSM_Parser] Enemy Intents - {action}: Action not found.");
-                break;
+            if (enemyIntent != null)
+                GameManager.Instance.EVENT_UPDATE_INTENT.Invoke(enemyIntent);
         }
     }
 
@@ -515,11 +508,12 @@ public class WebSocketParser
     private static void ProcessAddCard(string data)
     {
         SWSM_CardAdd cardAddData = JsonConvert.DeserializeObject<SWSM_CardAdd>(data);
-        foreach(AddCardData addCardData in cardAddData.data.data)
+        foreach (AddCardData addCardData in cardAddData.data.data)
         {
             GameManager.Instance.EVENT_CARD_ADD.Invoke(addCardData);
         }
     }
+
     private static void ProcessChangeTurn(string data)
     {
         SWSM_ChangeTurn who = JsonConvert.DeserializeObject<SWSM_ChangeTurn>(data);

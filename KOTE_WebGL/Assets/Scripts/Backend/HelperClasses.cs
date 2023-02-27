@@ -633,7 +633,6 @@ public class SWSM_CardUpdateData
     }
 }
 
-
 [Serializable]
 public class SWSM_ErrorData
 {
