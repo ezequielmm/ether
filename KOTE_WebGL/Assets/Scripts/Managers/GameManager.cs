@@ -127,7 +127,7 @@ public class GameManager : SingleTon<GameManager>
    
 
     //EXPEDITION EVENTS
-    [HideInInspector] public UnityEvent EVENT_EXPEDITION_SYNC = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_EXPEDITION_SYNC { get; } = new UnityEvent();
     [HideInInspector] public UnityEvent<bool, int> EVENT_EXPEDITION_STATUS_UPDATE = new UnityEvent<bool, int>();
     [HideInInspector] public UnityEvent EVENT_EXPEDITION_CONFIRMED = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_REQUEST_EXPEDITION_CANCEL = new UnityEvent();
