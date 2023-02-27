@@ -81,10 +81,11 @@ namespace KOTE.Expedition.Combat.Cards
             cardMovement.TryResetPosition();
         }
 
-        public void Populate(Card card, int energy)
+        public void Populate(Card card, int energy, Vector3[] pileOrthoPositions)
         {
             cardData = card;
             cardVisuals.Populate(card, energy);
+            cardMovement.SetOrthoPositions(pileOrthoPositions);
         }
 
         public void DisableCardContent()

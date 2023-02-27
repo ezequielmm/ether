@@ -1,11 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using JetBrains.Annotations;
 using Newtonsoft.Json;
-using UnityEditor;
-using UnityEngine;
 
 public static class TestUtils
 {
@@ -33,11 +29,42 @@ public static class TestUtils
         return "{\"data\":{\"message_type\":\"" + messageType + "\",\"action\":\"" + action + "\",\"data\":[]}}";
     }
 
+    public static string BuildTestSWSMErrorData(string messageType, string action)
+    {
+        return "{\"data\":{\"message_type\":\""+ messageType +"\",\"action\":\""+action+"\",\"data\":{\"data\":\"Test error\"}}}";
+    }
+
     public static string BuildTestPlayerStateData(string messageType, string action)
     {
-        string data = "{\"data\":{\"message_type\":\"" + messageType + "\",\"action\":\"" + action +
-                      "\",\"data\":[{\"playerName\": \"test\", \"characterClass\": \"test\", \"hpCurrent\": 23, \"hpMax\": 30, \"gold\": 10, \"energy\": 3, \"energyMax\":3, \"defense\": 2, \"cards\":[]}]}}";
-        return data;
+        SWSM_PlayerState stateData = new SWSM_PlayerState
+        {
+            data = new PlayerStateData
+            {
+                data = new PlayerStateData.Data
+                {
+                    expeditionId = "test",
+                    playerState = new PlayerData
+                    {
+                        cards = new List<Card>(),
+                        defense = 0,
+                        hpCurrent = 1,
+                        hpMax = 1,
+                        characterClass = "test"
+                    }
+                }
+            }
+        };
+
+        SWSM_TestPlayerState testState = new SWSM_TestPlayerState
+        {
+            data = new SWSM_TestPlayerState.SWSM_DataPayload
+            {
+                action = "activate_portal",
+                message_type = "player_state_update",
+                data = stateData
+            }
+        };
+        return JsonConvert.SerializeObject(testState);
     }
 
     public static string BuildTestGenericEnergyData(string messageType, string action)
@@ -62,14 +89,14 @@ public static class TestUtils
                 }
             }
         };
-        string data = JsonConvert.SerializeObject(returnPiles.data.data);
-        SWSM_TestBase baseJson = new SWSM_TestBase()
+        
+        SWSM_TestCardPiles baseJson = new SWSM_TestCardPiles()
         {
-            data = new SWSM_TestBase.SWSM_DataPayload
+            data = new SWSM_TestCardPiles.SWSM_DataPayload
             {
                 message_type = messageType,
                 action = action,
-                data = data
+                data = returnPiles
             }
         };
         return JsonConvert.SerializeObject(baseJson);
@@ -161,6 +188,67 @@ public static class TestUtils
         return JsonConvert.SerializeObject(baseJson);
     }
 
+    public static string BuildTestRewardsData(string messageType, string action)
+    {
+        SWSM_RewardsData rewardsData = new SWSM_RewardsData
+        {
+            data = new SWSM_RewardsData.Data
+            {
+                data = new SWSM_RewardsData.Data.RewardsData
+                {
+                    rewards = new List<RewardItemData>
+                    {
+                        new()
+                        {
+                            amount = 1,
+                            potion = new PotionData(),
+                            type = "potion",
+                            id = "test",
+                            taken = false
+                        }
+                    }
+                }
+            }
+        };
+
+        SWSM_TestRewards baseJson = new SWSM_TestRewards
+        {
+            data = new SWSM_TestRewards.SWSM_DataPayload
+            {
+                action = action,
+                data = rewardsData,
+                message_type = messageType
+            }
+        };
+        return JsonConvert.SerializeObject(baseJson);
+    }
+
+    public static string BuildTestPlayersData(string messageType, string action)
+    {
+        SWSM_Players rewardsData = new SWSM_Players
+        {
+            data = new PlayersData
+            {
+                data = new PlayerData
+                {
+                    playerName = "test"
+                }
+            }
+        };
+
+        SWSM_TestPlayers baseJson = new SWSM_TestPlayers
+        {
+            data = new SWSM_TestPlayers.SWSM_DataPayload
+            {
+                action = action,
+                data = rewardsData,
+                message_type = messageType
+            }
+        };
+        return JsonConvert.SerializeObject(baseJson);
+    }
+
+
     public static string BuildTestCombatQueueData(string messageType, string action, int numberOfActions)
     {
         SWSM_CombatAction actionData = new SWSM_CombatAction
@@ -202,12 +290,13 @@ public static class TestUtils
         {
             NodeDataHelper nodeData = new NodeDataHelper
             {
-                act = i,
+                act = 0,
                 id = i,
                 status = "completed",
-                step = 0,
+                step = i,
                 type = "combat",
-                subType = "combat_standard"
+                subType = "combat_standard",
+                title = "Node Test"
             };
             if (i != 0) nodeData.enter = new[] { i - 1 };
             else nodeData.enter = Array.Empty<int>();
@@ -238,7 +327,8 @@ public static class TestUtils
                         status = "completed",
                         step = 0,
                         subType = "royal_house_a",
-                        type = "royal_house"
+                        type = "royal_house",
+                        title = "royal house"
                     },
                     new NodeDataHelper
                     {
@@ -249,7 +339,8 @@ public static class TestUtils
                         status = "available",
                         step = 1,
                         subType = "portal",
-                        type = "portal"
+                        type = "portal",
+                        title = "portal"
                     }
                 }
             }
@@ -299,6 +390,71 @@ public static class TestUtils
             public string message_type;
             public string action;
             public string data;
+        }
+    }
+
+    public class SWSM_TestRewards
+    {
+        public SWSM_DataPayload data;
+
+        [Serializable]
+        public class SWSM_DataPayload
+        {
+            public string message_type;
+            public string action;
+            public SWSM_RewardsData data;
+        }
+    }
+
+    public class SWSM_TestPlayers
+    {
+        public SWSM_DataPayload data;
+
+        [Serializable]
+        public class SWSM_DataPayload
+        {
+            public string message_type;
+            public string action;
+            public SWSM_Players data;
+        }
+    }
+
+    public class SWSM_TestPlayerState
+    {
+        public SWSM_DataPayload data;
+
+        [Serializable]
+        public class SWSM_DataPayload
+        {
+            public string message_type;
+            public string action;
+            public SWSM_PlayerState data;
+        }
+    }
+
+    public class SWSM_TestErrorData
+    {
+        public SWSM_DataPayload data;
+
+        [Serializable]
+        public class SWSM_DataPayload
+        {
+            public string message_type;
+            public string action;
+            public SWSM_ErrorData data;
+        }
+    }
+    
+    public class SWSM_TestCardPiles
+    {
+        public SWSM_DataPayload data;
+
+        [Serializable]
+        public class SWSM_DataPayload
+        {
+            public string message_type;
+            public string action;
+            public SWSM_CardsPiles data;
         }
     }
 }

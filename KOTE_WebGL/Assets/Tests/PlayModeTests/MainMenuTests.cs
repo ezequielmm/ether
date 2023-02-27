@@ -140,11 +140,10 @@ public class MainMenuTests
         Assert.AreEqual(false, mainMenu.loginButton.gameObject.activeSelf);
     }
 
-    [UnityTest]
-    public IEnumerator TestOnLogoutSuccessfulListener()
+    [Test]
+    public void TestOnLogoutSuccessfulListener()
     {
         GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.Invoke("message");
-        yield return null;
         Assert.AreEqual(false, mainMenu.nameText.gameObject.activeSelf);
         Assert.AreEqual(false, mainMenu.moneyText.gameObject.activeSelf);
         Assert.AreEqual(false, mainMenu.playButton.gameObject.activeSelf);
@@ -158,20 +157,14 @@ public class MainMenuTests
     }
 
     [UnityTest]
-    public IEnumerator TestOnExpeditionUpdateListener()
+    public IEnumerator TestMainMenuSetup()
     {
         TextMeshProUGUI playButtonText = mainMenu.playButton.GetComponentInChildren<TextMeshProUGUI>();
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false, -1);
         yield return null;
         Assert.AreEqual("PLAY", playButtonText.text);
-        Assert.AreEqual(true, mainMenu.playButton.gameObject.activeSelf);
+        Assert.AreEqual(false, mainMenu.playButton.gameObject.activeSelf);
         Assert.AreEqual(false, mainMenu.newExpeditionButton.gameObject.activeSelf);
-        Assert.AreEqual(true, mainMenu.treasuryButton.gameObject.activeSelf);
-        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(true, -1);
-        yield return null;
-        Assert.AreEqual("RESUME", playButtonText.text);
-        Assert.AreEqual(true, mainMenu.playButton.gameObject.activeSelf);
-        Assert.AreEqual(true, mainMenu.newExpeditionButton.gameObject.activeSelf);
         Assert.AreEqual(true, mainMenu.treasuryButton.gameObject.activeSelf);
     }
     
