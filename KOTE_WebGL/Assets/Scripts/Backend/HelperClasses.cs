@@ -203,6 +203,7 @@ public class PlayerStateData
     public class Data
     {
         public string expeditionId;
+        public DateTime expeditionCreatedAt;
         public PlayerData playerState = new();
     }
 }
