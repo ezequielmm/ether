@@ -20,4 +20,8 @@ public class StatusIcon : IconMap<STATUS>
             SetDisplayText(value.ToString());
         }
     }
+    public override Sprite SelectSprite(STATUS type, int value = 0)
+    {
+        return SpriteAssetManager.Instance.GetStatusIcon(type);
+    }
 }
