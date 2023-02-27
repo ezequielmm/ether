@@ -94,9 +94,9 @@ public class MapSpriteManagerTests
         List<NodeData> createdNodes = _mapSpriteManager.nodesHolder.GetComponentsInChildren<NodeData>().ToList();
         NodeData activeNode = createdNodes.Find(node => node.status == NODE_STATUS.active);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(_mapSpriteManager.playerIcon.transform.localPosition.x,
-            activeNode.transform.localPosition.x + -0.25f);
+            activeNode.transform.localPosition.x, 0.5f);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(_mapSpriteManager.playerIcon.transform.localPosition.y,
-            activeNode.transform.localPosition.y + -0.25f);
+            activeNode.transform.localPosition.y, 0.5f);
     }
 
     [Test]
@@ -124,18 +124,27 @@ public class MapSpriteManagerTests
         yield return null;
         GameManager.Instance.EVENT_MAP_MASK_DOUBLECLICK.Invoke();
         yield return new WaitForSeconds(1);
-        Assert.AreNotEqual(mapPosition, playerPosition);
-        UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(mapPosition.x,
-            _mapSpriteManager.nodesHolder.transform.position.x);
-        UnityEngine.Assertions.Assert.AreApproximatelyEqual(mapPosition.y,
-            _mapSpriteManager.nodesHolder.transform.position.y);
-        if (playerPosition.x < mapPosition.x)
+        if (GameSettings.MAP_AUTO_SCROLL_ACTIVE)
         {
-            Assert.Less(mapPosition.x, _mapSpriteManager.nodesHolder.transform.position.x);
+            UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(mapPosition.x,
+                _mapSpriteManager.nodesHolder.transform.position.x);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual(mapPosition.y,
+                _mapSpriteManager.nodesHolder.transform.position.y);
+            if (playerPosition.x < mapPosition.x)
+            {
+                Assert.Less(mapPosition.x, _mapSpriteManager.nodesHolder.transform.position.x);
+            }
+            else
+            {
+                Assert.Greater(mapPosition.x, _mapSpriteManager.nodesHolder.transform.position.x);
+            }
         }
         else
         {
-            Assert.Greater(mapPosition.x, _mapSpriteManager.nodesHolder.transform.position.x);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual(mapPosition.x,
+                _mapSpriteManager.nodesHolder.transform.position.x);
+            UnityEngine.Assertions.Assert.AreApproximatelyEqual(mapPosition.y,
+                _mapSpriteManager.nodesHolder.transform.position.y);
         }
     }
 

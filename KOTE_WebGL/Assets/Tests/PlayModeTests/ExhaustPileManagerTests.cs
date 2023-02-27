@@ -16,7 +16,7 @@ public class ExhaustPileManagerTests : MonoBehaviour
     public IEnumerator Setup()
     {
         // add a camera so that things will run
-        GameObject go = new GameObject();
+        go = new GameObject();
         Camera camera = go.AddComponent<Camera>();
         camera.tag = "MainCamera";
 
@@ -36,6 +36,8 @@ public class ExhaustPileManagerTests : MonoBehaviour
     {
         Destroy(_exhaustManager.gameObject);
         Destroy(go);
+        GameManager.Instance.DestroyInstance();
+
         yield return null;
     }
 
@@ -54,7 +56,7 @@ public class ExhaustPileManagerTests : MonoBehaviour
         string sfxType = "";
         GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) => { sfxType = data2; });
         GameManager.Instance.EVENT_CARD_EXHAUST.Invoke();
-        Assert.AreEqual("Card Exhaust", sfxType);
+        Assert.AreEqual("Exhaust", sfxType);
     }
 
     [Test]

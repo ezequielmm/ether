@@ -323,12 +323,13 @@ public class GameStatusManagerTests : MonoBehaviour
         Assert.True(correctStatus);
     }
 
-    [Test]
-    public void DoesGameStatusChangeToCombatTriggerDrawingCards()
+    [UnityTest]
+    public IEnumerator DoesGameStatusChangeToCombatTriggerDrawingCards()
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_CARD_DRAW_CARDS.AddListener(() => { eventFired = true; });
         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Combat);
+        yield return new WaitForSeconds(0.22f);
         Assert.True(eventFired);
     }
 
@@ -427,19 +428,16 @@ public class GameStatusManagerTests : MonoBehaviour
     }
     
     [Test]
-    public void DoesGameStatusChangeToTreasureToggleCombatElementsOff()
+    public void DoesGameStatusChangeToTreasureOnlyShowPlayer()
     {
         bool eventFired = false;
-        bool correctStatus = false;
 
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.AddListener((toggleStatus) =>
+        GameManager.Instance.EVENT_SHOW_PLAYER_CHARACTER.AddListener(() =>
         {
             eventFired = true;
-            if (!toggleStatus) correctStatus = true;
         });
         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Treasure);
         Assert.True(eventFired);
-        Assert.True(correctStatus);
     }
 
     [Test]

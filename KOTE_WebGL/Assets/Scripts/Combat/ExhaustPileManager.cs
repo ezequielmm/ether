@@ -25,6 +25,7 @@ namespace KOTE.Expedition.Combat.Cards.Piles
 
         private void OnCardExhausted()
         {
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Exhaust");
             Debug.Log($"[Exhaust Pile] Card Exhausted.");
         }
 

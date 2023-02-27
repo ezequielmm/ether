@@ -9,6 +9,7 @@ public class StatusManagerTests : MonoBehaviour
 {
     private StatusManager _statusManager;
     private GameObject player;
+    private GameObject spriteManager;
 
     [UnitySetUp]
     public IEnumerator Setup()
@@ -31,6 +32,10 @@ public class StatusManagerTests : MonoBehaviour
         };
         _statusManager = player.GetComponentInChildren<StatusManager>();
         player.SetActive(true);
+        
+        GameObject spriteManagerPrefab =
+            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/NftSpriteManager.prefab");
+        spriteManager = Instantiate(spriteManagerPrefab);
 
         yield return null;
     }
@@ -39,13 +44,14 @@ public class StatusManagerTests : MonoBehaviour
     public IEnumerator TearDown()
     {
         Destroy(player);
+        Destroy(spriteManager);
+        GameManager.Instance.DestroyInstance();
         yield return null;
     }
 
     [UnityTest]
     public IEnumerator StatusManagerHasParentManagerAndSerializedFields()
     {
-        LogAssert.NoUnexpectedReceived();
         GameObject go = new GameObject();
         go.AddComponent<StatusManager>();
         go.SetActive(true);

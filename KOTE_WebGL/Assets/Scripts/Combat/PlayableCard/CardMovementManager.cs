@@ -22,15 +22,12 @@ namespace KOTE.Expedition.Combat.Cards
 
         internal Vector3 targetPosition;
         internal Vector3 targetRotation;
-        
+
         private TargetProfile targetProfile;
 
 
         private void Awake()
         {
-            drawPileOrthoPosition = TransformUIToOrtho("DrawCardPile");
-            discardPileOrthoPosition = TransformUIToOrtho("DiscardCardPile");
-            exhaustPileOrthoPosition = TransformUIToOrtho("ExhaustedPilePrefab");
             inTransit = false;
         }
 
@@ -53,7 +50,14 @@ namespace KOTE.Expedition.Combat.Cards
                 if (delay < 0) delay = 0;
             }
         }
-        
+
+        internal void SetOrthoPositions(Vector3[] cardPilePositions)
+        {
+            drawPileOrthoPosition = cardPilePositions[0];
+            discardPileOrthoPosition = cardPilePositions[1];
+            exhaustPileOrthoPosition = cardPilePositions[2];
+        }
+
         internal void ShowPointer()
         {
             //show the pointer instead of following the mouse
@@ -270,7 +274,7 @@ namespace KOTE.Expedition.Combat.Cards
                     transform.localScale = Vector3.zero;
                     sequence.Insert(sequenceStartPoint, transform.DOScale(Vector3.one, 1f).SetDelay(moveDelay, true)
                         .SetEase(Ease.OutElastic)
-                        .OnComplete(OnMoveCompleted));
+                        .OnComplete(OnMovingToHandCompleted));
                 }
                 else
                 {
@@ -290,7 +294,8 @@ namespace KOTE.Expedition.Combat.Cards
                     transform.localScale = Vector3.zero;
                     sequence.Insert(sequenceStartPoint, transform.DORotate(Vector3.zero, 1f));
                     sequence.Insert(sequenceStartPoint,
-                        transform.DOScale(Vector3.one * 1.5f, 1f).SetEase(Ease.OutElastic).OnComplete(OnMoveCompleted));
+                        transform.DOScale(Vector3.one * 1.5f, 1f).SetEase(Ease.OutElastic)
+                            .OnComplete(OnMovingToHandCompleted));
                 }
                 else
                 {
@@ -316,17 +321,11 @@ namespace KOTE.Expedition.Combat.Cards
             return sequence;
         }
 
-        private void OnMoveCompleted()
+        private void OnMovingToHandCompleted()
         {
             inTransit = false;
             cardManager.cardActive = activateCardAfterMove;
             visualsManager.StopCardParticles(CARD_PARTICLE_TYPES.Move);
-            if (discardAfterMove)
-            {
-                discardAfterMove = false;
-                GameManager.Instance.EVENT_CARD_DISABLED.Invoke(cardManager.cardData.id);
-            }
-
 
             if (cardManager.cardActive && ((Vector2)transform.position).magnitude < 0.5f)
                 // if in the center of the screen
@@ -442,21 +441,6 @@ namespace KOTE.Expedition.Combat.Cards
             TryResetPosition();
         }
 
-        private Vector3 TransformUIToOrtho(string uiName)
-        {
-            Vector3 pos = GameObject.Find(uiName).transform.position; //(1.1, 104.5, 0.0)
-
-            float height = 2 * Camera.main.orthographicSize; //10
-            float width = height * Camera.main.aspect; //21.42
-
-            //transform UI coordinates to orthorgraphic coordinates
-            float xx = pos.x * width / Screen.width;
-            xx -= width / 2; //ortho counts from the center 
-            float yy = pos.y * height / Screen.height;
-            yy -= height / 2;
-
-            return new Vector3(xx, yy, this.transform.position.z);
-        }
 
         private void OnCardMouseShowingUp(string cardId, Vector3 cardPos)
         {

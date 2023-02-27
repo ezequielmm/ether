@@ -50,6 +50,7 @@ namespace KOTE.Expedition.Combat.Cards.Piles
                     cardsDiscarded = 0;
                 }
 
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Discard");
                 audioRunning = false;
             }
         }
