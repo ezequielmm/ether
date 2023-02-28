@@ -14,7 +14,6 @@ public class WebRequesterManager : MonoBehaviour
 {
     private string baseUrl => ClientEnvironmentManager.Instance.WebRequestURL;
     private string skinUrl => ClientEnvironmentManager.Instance.SkinURL;
-    private string urlOpenSea => ClientEnvironmentManager.Instance.OpenSeasURL;
 
     // we have to queue the requested nft images due to rate limiting
     private Queue<(string, string)> requestedNftImages = new Queue<(string, string)>();
@@ -34,10 +33,8 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_WALLET_CONTENTS.AddListener(RequestWalletContents);
         GameManager.Instance.EVENT_REQUEST_LOGOUT.AddListener(RequestLogout);
         GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.AddListener(RequestExpeditionCancel);
-        GameManager.Instance.EVENT_REQUEST_NFT_METADATA.AddListener(RequestNftData);
         GameManager.Instance.EVENT_REQUEST_NFT_IMAGE.AddListener(RequestNftImage);
         GameManager.Instance.EVENT_REQUEST_NFT_SKIN_SPRITE.AddListener(RequestNftSkinElement);
-        GameManager.Instance.EVENT_REQUEST_NFT_SET_SKIN.AddListener(SetKnightNft);
         GameManager.Instance.EVENT_REQUEST_EXPEDITON_SCORE.AddListener(RequestExpeditionScore);
         GameManager.Instance.EVENT_REQUEST_WHITELIST_CHECK.AddListener(RequestWhitelistStatus);
         GameManager.Instance.EVENT_SEND_BUG_FEEDBACK.AddListener(SendBugReport);
@@ -84,16 +81,6 @@ public class WebRequesterManager : MonoBehaviour
     public void RequestWhitelistStatus(float expires, string message, string signature, string wallet)
     {
         StartCoroutine(WhitelistStatus(expires, message, signature, wallet));
-    }
-
-    public void SetKnightNft(int tokenId)
-    {
-        StartCoroutine(GetSingleNft(tokenId));
-    }
-
-    public void RequestNftData(int[] tokenIds)
-    {
-        StartCoroutine(GetNftData(tokenIds));
     }
 
     public void RequestNftImage(NftMetaData[] requestedTokens)
@@ -564,95 +551,6 @@ public class WebRequesterManager : MonoBehaviour
         }
     }
 
-    public IEnumerator GetNftData(int[] tokenIds)
-    {
-        List<int[]> splitTokenLists = new List<int[]>();
-        for (int i = 0; i < tokenIds.Length; i += 30)
-        {
-            int[] tokenIdChunk;
-            if (tokenIds.Length - i < 30)
-            {
-                tokenIdChunk = new int[tokenIds.Length - i];
-            }
-            else
-            {
-                tokenIdChunk = new int[30];
-            }
-
-            Array.Copy(tokenIds, i, tokenIdChunk, 0, tokenIdChunk.Length);
-            splitTokenLists.Add(tokenIdChunk);
-        }
-
-        foreach (int[] idChunk in splitTokenLists)
-        {
-            UnityWebRequest openSeaRequest = NftRequest(idChunk);
-            ServerCommunicationLogger.Instance.LogCommunication($"Metadata request: {openSeaRequest.url}",
-                CommunicationDirection.Outgoing);
-            using (openSeaRequest)
-            {
-                yield return openSeaRequest.SendWebRequest();
-                if (openSeaRequest.result == UnityWebRequest.Result.ConnectionError ||
-                    openSeaRequest.result == UnityWebRequest.Result.ProtocolError)
-                {
-                    Debug.Log($"{openSeaRequest.error} {openSeaRequest.downloadHandler.text}");
-                    ServerCommunicationLogger.Instance.LogCommunication(
-                        $"Metadata error: {openSeaRequest.error} {openSeaRequest.downloadHandler.text}",
-                        CommunicationDirection.Incoming);
-                    yield break;
-                }
-
-                Debug.Log("Nft metadata received");
-                ServerCommunicationLogger.Instance.LogCommunication(
-                    $"Metadata success: {openSeaRequest.downloadHandler.text}", CommunicationDirection.Incoming);
-                NftData nftData = JsonConvert.DeserializeObject<NftData>(openSeaRequest.downloadHandler.text);
-                GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.Invoke(nftData);
-            }
-        }
-    }
-
-    public UnityWebRequest NftRequest(int[] idChunk)
-    {
-        string nftUrl = urlOpenSea;
-        nftUrl = nftUrl.Replace("xxxx", "token_ids=" + string.Join("&token_ids=", idChunk));
-        Debug.Log("[WebRequesterManager] nft metadata url: " + nftUrl);
-        UnityWebRequest openSeaRequest = UnityWebRequest.Get(nftUrl);
-        openSeaRequest.SetRequestHeader("User-Agent",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
-        return openSeaRequest;
-    }
-
-    public IEnumerator GetSingleNft(int tokenId)
-    {
-        using (UnityWebRequest openSeaRequest = NftRequest(new int[] { tokenId }))
-        {
-            yield return openSeaRequest.SendWebRequest();
-            if (openSeaRequest.result == UnityWebRequest.Result.ConnectionError ||
-                openSeaRequest.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.Log($"{openSeaRequest.error} {openSeaRequest.downloadHandler.text}");
-                ServerCommunicationLogger.Instance.LogCommunication(
-                    $"Single metadata error: {openSeaRequest.error} {openSeaRequest.downloadHandler.text}",
-                    CommunicationDirection.Incoming);
-                yield break;
-            }
-
-            Debug.Log("Nft metadata received");
-            ServerCommunicationLogger.Instance.LogCommunication(
-                $"Single metadata success: {openSeaRequest.downloadHandler.text}", CommunicationDirection.Incoming);
-            NftData nftData = JsonConvert.DeserializeObject<NftData>(openSeaRequest.downloadHandler.text);
-            GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.Invoke(nftData);
-
-            if (nftData.assets.Length > 0)
-            {
-                GameManager.Instance.EVENT_NFT_SELECTED.Invoke(nftData.assets[0]);
-            }
-            else
-            {
-                Debug.Log($"[WebRequesterManager] nft {tokenId} could not be found.");
-            }
-        }
-    }
-
     public IEnumerator GetNftImages()
     {
         nftQueueRunning = true;
@@ -841,6 +739,7 @@ public class WebRequesterManager : MonoBehaviour
         return $"{host}{path}";
     }
 }
+
 
 public static class RestEndpoint 
 {

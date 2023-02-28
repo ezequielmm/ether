@@ -73,10 +73,25 @@ public class FetchData : DataManager, ISingleton<FetchData>
         return ParseJsonWithPath<EncounterData>(rawJson, "data.data");
     }
 
+    public async UniTask<List<NftMetaData>> GetNFTData(List<int> knightIds)
+    {
+        var requestBatch = knightIds.Partition(OpenSeasRequstBuilder.MaxContentRequest);
+        List<NftMetaData> nftMetaDataList = new List<NftMetaData>();
+        foreach (var knightId in knightIds)
+        {
+            using (UnityWebRequest request = OpenSeasRequstBuilder.ConstructKnightRequest(knightIds.ToArray()))
+            {
+                string rawJson = await webRequest.MakeRequest(request);
+                nftMetaDataList.AddRange(ParseJsonWithPath<List<NftMetaData>>(rawJson, "assets"));
+            }
+        }
+        return nftMetaDataList;
+    }
+
     public static T ParseJsonWithPath<T>(string rawJson, string tokenPath) 
     {
         JObject json = JObject.Parse(rawJson);
         T data = json.SelectToken(tokenPath).ToObject<T>();
         return data;
-    } 
+    }
 }
