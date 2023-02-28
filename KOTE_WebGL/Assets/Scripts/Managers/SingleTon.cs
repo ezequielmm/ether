@@ -48,7 +48,7 @@ public abstract class SingleTon<T> : MonoBehaviour, ISingleton<T> where T : Comp
 
     public void DestroyInstance() 
     {
-        Destroy(instance);
+        Destroy(instance.gameObject);
         instance = null;
     }
 

@@ -66,7 +66,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<bool> EVENT_TREASURYPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
     //ARMORY EVENTS
-    [HideInInspector] public UnityEvent<bool> EVENT_ARMORYPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<bool> EVENT_SHOW_ARMORY_PANEL = new UnityEvent<bool>();
 
     //CONFIRMATION PANEL EVENTS
     [HideInInspector]
@@ -318,6 +318,7 @@ public class GameManager : SingleTon<GameManager>
     {
         if (CurrentScene == nextSceneToLoad) 
         {
+            //TODO this needs to be addressed better. This can cause false failures for tests if testing the same function multiple times
             Debug.LogError($"[GameManager] SceneLoaded Called Twice. Not running Event Scene Loaded.");
             return;
         }

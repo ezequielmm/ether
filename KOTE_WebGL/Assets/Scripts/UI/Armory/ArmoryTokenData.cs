@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
+
+[assembly: InternalsVisibleTo("PlayModeTests")]
 
 namespace KOTE.UI.Armory
 {
@@ -9,7 +10,7 @@ namespace KOTE.UI.Armory
     {
         // this is so the Armory panel knows if image is updated after showing the character
         public UnityEvent tokenImageReceived = new();
-        
+
         public string Id => MetaData.token_id;
         public NftMetaData MetaData { get; }
         public Sprite NftImage { get; private set; }
@@ -34,6 +35,7 @@ namespace KOTE.UI.Armory
             {
                 NftImage = image;
             }
+
             tokenImageReceived.Invoke();
         }
     }

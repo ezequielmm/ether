@@ -16,7 +16,7 @@ namespace KOTE.UI.Armory
         {
             panelContainer.SetActive(false);
             GameManager.Instance.EVENT_EXPEDITION_CONFIRMED.AddListener(OnExpeditionConfirmed);
-            GameManager.Instance.EVENT_ARMORYPANEL_ACTIVATION_REQUEST.AddListener(ActivateContainer);
+            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.AddListener(ActivateContainer);
             GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(PopulateCharacterList);
         }
 
@@ -27,11 +27,22 @@ namespace KOTE.UI.Armory
 
         private void PopulateCharacterList(NftData heldNftData)
         {
+            nftList.Clear();
+
+            if (heldNftData.assets.Length == 0)
+            {
+                nftImage.sprite = NftImageManager.Instance.defaultImage;
+                curNode = null;
+                playButton.interactable = false;
+                return;
+            }
+            
             foreach (NftMetaData nftMetaData in heldNftData.assets)
             {
                 nftList.AddLast(new ArmoryTokenData(nftMetaData));
             }
 
+            playButton.interactable = true;
             curNode = nftList.First;
             curNode.Value.tokenImageReceived.AddListener(UpdateCharacterImage);
             UpdateCharacterImage();
@@ -44,7 +55,8 @@ namespace KOTE.UI.Armory
 
         public void OnPreviousToken()
         {
-            if (curNode.Previous == null) return;
+            if (curNode?.Previous == null) return;
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             curNode.Value.tokenImageReceived.RemoveListener(UpdateCharacterImage);
             curNode = curNode.Previous;
             curNode.Value.tokenImageReceived.AddListener(UpdateCharacterImage);
@@ -53,7 +65,8 @@ namespace KOTE.UI.Armory
 
         public void OnNextToken()
         {
-            if (curNode.Next == null) return;
+            if (curNode?.Next == null) return;
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             curNode.Value.tokenImageReceived.RemoveListener(UpdateCharacterImage);
             curNode = curNode.Next;
             curNode.Value.tokenImageReceived.AddListener(UpdateCharacterImage);

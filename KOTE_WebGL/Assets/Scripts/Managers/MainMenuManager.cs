@@ -312,7 +312,7 @@ public class MainMenuManager : MonoBehaviour
 
             // else open the armory panel
             //GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
-            GameManager.Instance.EVENT_ARMORYPANEL_ACTIVATION_REQUEST.Invoke(true);
+            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
         }
     }
 
