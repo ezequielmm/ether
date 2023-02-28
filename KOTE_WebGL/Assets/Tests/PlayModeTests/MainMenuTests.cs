@@ -226,7 +226,7 @@ public class MainMenuTests
 
         GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.AddListener(
             (string test, Action test2, Action test3, string[] test4) => { showConfirmationPanel = true; });
-        GameManager.Instance.EVENT_ARMORYPANEL_ACTIVATION_REQUEST.AddListener(
+        GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.AddListener(
             (bool show) => { showArmoryPanel = true; });
 
         mainMenu.OnPlayButton();

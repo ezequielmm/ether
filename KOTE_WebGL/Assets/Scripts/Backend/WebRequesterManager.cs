@@ -10,7 +10,7 @@ using Cysharp.Threading.Tasks;
 /// <summary>
 /// Check HelperClasses.cs for the classes usaed to hold JSON data
 /// </summary>
-public class WebRequesterManager : MonoBehaviour
+public class WebRequesterManager : SingleTon<WebRequesterManager>
 {
     private string baseUrl => ClientEnvironmentManager.Instance.WebRequestURL;
     private string skinUrl => ClientEnvironmentManager.Instance.SkinURL;
@@ -41,19 +41,6 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_EXPEDITON_SCORE.AddListener(RequestExpeditionScore);
         GameManager.Instance.EVENT_REQUEST_WHITELIST_CHECK.AddListener(RequestWhitelistStatus);
         GameManager.Instance.EVENT_SEND_BUG_FEEDBACK.AddListener(SendBugReport);
-    }
-
-    private void Start()
-    {
-        if (GameManager.Instance.webRequester == null)
-        {
-            GameManager.Instance.webRequester = this;
-            DontDestroyOnLoad(this);
-        }
-        else if (GameManager.Instance.webRequester != this)
-        {
-            Destroy(this.gameObject);
-        }
     }
 
     internal void RequestStartExpedition(string characterType, string selectedNft)

@@ -22,6 +22,12 @@ public class SendData : DataManager, ISingleton<SendData>
     {
         instance = null;
     }
+    
+    public void SendStartExpedition(string characterType, string tokenId)
+    {
+       webRequest.RequestStartExpedition(characterType,
+            tokenId);
+    }
 
     public void SendCardsSelected(List<string> cardIds)
     {

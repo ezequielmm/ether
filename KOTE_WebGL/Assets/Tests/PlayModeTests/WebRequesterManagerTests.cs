@@ -57,7 +57,7 @@ public class WebRequesterManagerTests : MonoBehaviour
     public IEnumerator TestValuesOnStart()
     {
         yield return null;
-        Assert.IsNotNull(GameManager.Instance.webRequester);
-        Assert.AreEqual(true, requestManager.gameObject.scene.name == "DontDestroyOnLoad");
+        Assert.IsNotNull(WebRequesterManager.Instance);
+        Assert.AreEqual(true, WebRequesterManager.Instance.gameObject.scene.name == "DontDestroyOnLoad");
     }
 }

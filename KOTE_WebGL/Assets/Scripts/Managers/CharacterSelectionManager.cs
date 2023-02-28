@@ -97,7 +97,8 @@ public class CharacterSelectionManager : MonoBehaviour
         startExpeditionButton.enabled = false;
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_NFT_SELECTED.Invoke(selectedNft.internalPrefab.metaData);
-        GameManager.Instance.webRequester.RequestStartExpedition("knight", selectedNft.internalPrefab.metaData.token_id); //for the moment this is hardcoded
+        SendData.Instance.SendStartExpedition("knight",
+            selectedNft.internalPrefab.metaData.token_id); //for the moment this is hardcoded
     }
 
     private void OnExpeditionConfirmed()
@@ -111,7 +112,7 @@ public class CharacterSelectionManager : MonoBehaviour
     public void OnArmoryButton()
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-        GameManager.Instance.EVENT_ARMORYPANEL_ACTIVATION_REQUEST.Invoke(true);
+        GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
         ActivateInnerCharacterSelectionPanel(false);
     }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class NftImageManager : SingleTon<NftImageManager>
 {
+    public Sprite defaultImage;
     private List<string> requestedImages = new List<string>();
     private List<nftSprite> imageCache = new List<nftSprite>();
 
@@ -40,13 +41,15 @@ public class NftImageManager : SingleTon<NftImageManager>
     }
 
     // returns the image for the requested tokenId if it has been downloaded already
-    public Sprite GetNftImage(NftMetaData metaData)
+    public bool TryGetNftImage(NftMetaData metaData, out Sprite tokenImage)
     {
         if (imageCache.Exists(x => x.tokenId == metaData.token_id))
         {
-            return imageCache.Find(x => x.tokenId == metaData.token_id).tokenImage;
+            tokenImage = imageCache.Find(x => x.tokenId == metaData.token_id).tokenImage;
+            return true;
         }
 
-        return null;
+        tokenImage = defaultImage;
+        return false;
     }
 }
