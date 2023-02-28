@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using BestHTTP.SocketIO3;
 using BestHTTP.SocketIO3.Events;
-using CodiceApp.EventTracking.Plastic;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
