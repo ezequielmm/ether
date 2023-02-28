@@ -11,17 +11,7 @@ public class TimerManager : MonoBehaviour
     private float startTimeSeconds = 0;
     private static float previousTimeSeconds = 0;
 
-    private float timePassed
-    {
-        get
-        {
-            return clock.Seconds;
-        }
-        set
-        {
-            clock.Seconds = value;
-        }
-    }
+    public float TimePassed => (Time.time - startTimeSeconds) + previousTimeSeconds;
 
     private void Awake()
     {
@@ -46,12 +36,18 @@ public class TimerManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        previousTimeSeconds = timePassed;
+        previousTimeSeconds = TimePassed;
     }
 
+    public void Reset()
+    {
+        startTimeSeconds = 0;
+        previousTimeSeconds = 0;
+        Start();
+    }
 
     void Update()
     {
-        timePassed = (Time.time - startTimeSeconds) + previousTimeSeconds;
+        clock.Seconds = TimePassed;
     }
 }
