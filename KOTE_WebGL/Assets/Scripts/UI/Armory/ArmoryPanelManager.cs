@@ -36,7 +36,7 @@ namespace KOTE.UI.Armory
                 playButton.interactable = false;
                 return;
             }
-            
+
             foreach (NftMetaData nftMetaData in heldNftData.assets)
             {
                 nftList.AddLast(new ArmoryTokenData(nftMetaData));
@@ -100,5 +100,31 @@ namespace KOTE.UI.Armory
             GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Ambient, 1);
             GameManager.Instance.LoadScene(inGameScenes.Expedition);
         }
+
+        private class GearItem
+        {
+            public TraitTypes Trait;
+            public string ItemName;
+            public Sprite GearImage;
+        }
     }
 }
+
+/*
+  Helmet,
+Pauldrons,
+ *  Breastplate,
+ * Legguard
+ * Boots,
+ *
+ * Weapon,
+ * Shield,
+    Padding,
+    Vambrace,
+    Gauntlet,
+    
+    
+    
+    
+    
+*/
