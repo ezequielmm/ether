@@ -11,6 +11,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
+        max-parallel: 1
         testMode:
           - EditMode
           - PlayMode
