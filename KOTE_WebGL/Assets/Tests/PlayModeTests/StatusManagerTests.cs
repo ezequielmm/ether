@@ -9,6 +9,7 @@ public class StatusManagerTests : MonoBehaviour
 {
     private StatusManager _statusManager;
     private GameObject player;
+    private GameObject nftManager;
     private GameObject spriteManager;
 
     [UnitySetUp]
@@ -33,9 +34,15 @@ public class StatusManagerTests : MonoBehaviour
         _statusManager = player.GetComponentInChildren<StatusManager>();
         player.SetActive(true);
         
-        GameObject spriteManagerPrefab =
+        GameObject nftManagerPrefab =
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/NftSpriteManager.prefab");
+        nftManager = Instantiate(nftManagerPrefab);
+        
+        GameObject spriteManagerPrefab =
+            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/SpriteManager.prefab");
         spriteManager = Instantiate(spriteManagerPrefab);
+        spriteManager.SetActive(true);
+        yield return null;
 
         yield return null;
     }
@@ -44,6 +51,7 @@ public class StatusManagerTests : MonoBehaviour
     public IEnumerator TearDown()
     {
         Destroy(player);
+        Destroy(nftManager);
         Destroy(spriteManager);
         GameManager.Instance.DestroyInstance();
         yield return null;

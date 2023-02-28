@@ -89,8 +89,8 @@ namespace KOTE.UI.Armory
         {
             playButton.interactable = false;
             GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
-            GameManager.Instance.webRequester.RequestStartExpedition("knight",
-                curNode.Value.Id); //for the moment this is hardcoded
+            //for the moment this is hardcoded
+            SendData.Instance.SendStartExpedition("knight", curNode.Value.Id);
         }
 
         private void OnExpeditionConfirmed()

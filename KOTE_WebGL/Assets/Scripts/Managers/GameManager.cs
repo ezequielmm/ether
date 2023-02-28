@@ -292,9 +292,7 @@ public class GameManager : SingleTon<GameManager>
     public inGameScenes
         nextSceneToLoad { get; set; } // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
     public inGameScenes CurrentScene { get; private set; } = inGameScenes.Loader;
-
-    public WebRequesterManager webRequester;
-
+    
     public static string ServerVersion { get; private set; }
 
     // Start is called before the first frame update

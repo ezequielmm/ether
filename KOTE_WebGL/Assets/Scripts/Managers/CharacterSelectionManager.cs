@@ -97,7 +97,7 @@ public class CharacterSelectionManager : MonoBehaviour
         startExpeditionButton.enabled = false;
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_NFT_SELECTED.Invoke(selectedNft.internalPrefab.metaData);
-        GameManager.Instance.webRequester.RequestStartExpedition("knight", selectedNft.internalPrefab.metaData.token_id); //for the moment this is hardcoded
+        WebRequesterManager.Instance.RequestStartExpedition("knight", selectedNft.internalPrefab.metaData.token_id); //for the moment this is hardcoded
     }
 
     private void OnExpeditionConfirmed()

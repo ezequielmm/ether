@@ -18,6 +18,12 @@ public class SendData : DataManager, ISingleton<SendData>
         }
     }
 
+    public void SendStartExpedition(string characterType, string tokenId)
+    {
+       webRequest.RequestStartExpedition(characterType,
+            tokenId);
+    }
+
     public void DestroyInstance()
     {
         instance = null;
