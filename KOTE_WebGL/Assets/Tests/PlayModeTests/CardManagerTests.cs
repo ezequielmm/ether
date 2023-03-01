@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -117,7 +118,7 @@ public class CardManagerTests : MonoBehaviour
         spriteCardInstance = Instantiate(spriteCardPrefab);
         cardManager = spriteCardInstance.GetComponent<CardManager>();
         _visualsManager = spriteCardInstance.GetComponent<CardVisualsManager>();
-        cardManager.Populate(new Card(), 0, pileOrthoPos, null);
+        cardManager.Populate(new Card(), 0, pileOrthoPos);
         spriteCardInstance.SetActive(true);
         yield return null;
     }
@@ -170,7 +171,7 @@ public class CardManagerTests : MonoBehaviour
     [Test]
     public void DoesPopulateUpdateTextFields()
     {
-        cardManager.Populate(testCard, 1, pileOrthoPos, null);
+        cardManager.Populate(testCard, 1, pileOrthoPos);
         Assert.AreEqual(testCard.energy.ToString(), _visualsManager.energyTF.text);
         Assert.AreEqual(testCard.rarity, _visualsManager.rarityTF.text);
         Assert.AreEqual(testCard.name, _visualsManager.nameTF.text);
@@ -180,7 +181,7 @@ public class CardManagerTests : MonoBehaviour
     [Test]
     public void DoesPopulateUpdateEnergyAmount()
     {
-        cardManager.Populate(testCard, 1, pileOrthoPos, null);
+        cardManager.Populate(testCard, 1, pileOrthoPos);
         Assert.AreEqual(testCard.energy.ToString(), _visualsManager.energyTF.text);
     }
 
@@ -188,14 +189,14 @@ public class CardManagerTests : MonoBehaviour
     public void DoesPopulateChangeEnergyToXIfLessThanZero()
     {
         testCard.energy = -1;
-        cardManager.Populate(testCard, 1, pileOrthoPos, null);
+        cardManager.Populate(testCard, 1, pileOrthoPos);
         Assert.AreEqual("X", _visualsManager.energyTF.text);
     }
 
     [Test]
     public void DoesUpdateCardTextUpdateDescriptionField()
     {
-        cardManager.Populate(testCard, 1, pileOrthoPos, null);
+        cardManager.Populate(testCard, 1, pileOrthoPos);
         testCard.description = "new description";
         GameManager.Instance.EVENT_CARD_UPDATE_TEXT.Invoke(testCard);
         Assert.AreEqual(testCard.description, _visualsManager.descriptionTF.text);
@@ -204,7 +205,7 @@ public class CardManagerTests : MonoBehaviour
     [Test]
     public void DoesUpdateCardTextUpdateNameField()
     {
-        cardManager.Populate(testCard, 1, pileOrthoPos, null);
+        cardManager.Populate(testCard, 1, pileOrthoPos);
         testCard.name = "Brace";
         GameManager.Instance.EVENT_CARD_UPDATE_TEXT.Invoke(testCard);
         Assert.AreEqual(testCard.name, _visualsManager.nameTF.text);
@@ -213,7 +214,7 @@ public class CardManagerTests : MonoBehaviour
     [Test]
     public void DoesUpdateCardTextUpdateRarityField()
     {
-        cardManager.Populate(testCard, 1, pileOrthoPos, null);
+        cardManager.Populate(testCard, 1, pileOrthoPos);
         testCard.rarity = "TestRarity";
         GameManager.Instance.EVENT_CARD_UPDATE_TEXT.Invoke(testCard);
         Assert.AreEqual(testCard.rarity, _visualsManager.rarityTF.text);
@@ -223,7 +224,7 @@ public class CardManagerTests : MonoBehaviour
     public void DoesUpdateCardChangeEnergyToXIfLessThanZero()
     {
         testCard.energy = 1;
-        cardManager.Populate(testCard, 1, pileOrthoPos, null);
+        cardManager.Populate(testCard, 1, pileOrthoPos);
         testCard.energy = -1;
         GameManager.Instance.EVENT_CARD_UPDATE_TEXT.Invoke(testCard);
         Assert.AreEqual("X", _visualsManager.energyTF.text);
@@ -232,7 +233,7 @@ public class CardManagerTests : MonoBehaviour
     [Test]
     public void DoesUpdateCardTextUpdateEnergyField()
     {
-        cardManager.Populate(testCard, 1, pileOrthoPos, null);
+        cardManager.Populate(testCard, 1, pileOrthoPos);
         testCard.energy = 0;
         GameManager.Instance.EVENT_CARD_UPDATE_TEXT.Invoke(testCard);
         Assert.AreEqual(testCard.energy.ToString(), _visualsManager.energyTF.text);
@@ -241,7 +242,7 @@ public class CardManagerTests : MonoBehaviour
     [Test]
     public void DoesPopulateSelectCorrectSprites()
     {
-        cardManager.Populate(testCard, 1, pileOrthoPos, null);
+        cardManager.Populate(testCard, 1, pileOrthoPos);
         Assert.AreEqual("KOTE_Asset_Gem_Attack", _visualsManager.gemSprite.sprite.name);
         Assert.AreEqual("KOTE_Asset_Frame_Knight", _visualsManager.frameSprite.sprite.name);
         Assert.AreEqual("Green", _visualsManager.bannerSprite.sprite.name);
@@ -251,14 +252,14 @@ public class CardManagerTests : MonoBehaviour
     [Test]
     public void DoesPopulateSaveCardData()
     {
-        cardManager.Populate(testCard, 1, pileOrthoPos, null);
+        cardManager.Populate(testCard, 1, pileOrthoPos);
         Assert.AreEqual(testCard.id, cardManager.id);
     }
 
     [Test]
     public void DoesPopulateGenerateTooltips()
     {
-        cardManager.Populate(testCard, 1, pileOrthoPos, null);
+        cardManager.Populate(testCard, 1, pileOrthoPos);
         Assert.AreEqual(2, _visualsManager.tooltips.Count);
         Assert.AreEqual("ToolTip title", _visualsManager.tooltips[0].title);
         Assert.AreEqual("Tooltip Description", _visualsManager.tooltips[0].description);
@@ -269,7 +270,7 @@ public class CardManagerTests : MonoBehaviour
     [Test]
     public void DoesPopulateUpdateCardBasedOnEnergy()
     {
-        cardManager.Populate(testCard, 1, pileOrthoPos, null);
+        cardManager.Populate(testCard, 1, pileOrthoPos);
         Assert.AreEqual(_visualsManager.redColor, _visualsManager.energyTF.color);
     }
 
@@ -346,9 +347,9 @@ public class CardManagerTests : MonoBehaviour
     }
 
     [Test]
-    public void DoesMovingCardActivateCardContent()
+    public void DoesMovingCardToHandActivateCardContent()
     {
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.exhaust);
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand);
         Assert.True(_visualsManager.cardcontent.activeSelf);
     }
 
@@ -356,7 +357,7 @@ public class CardManagerTests : MonoBehaviour
     public IEnumerator DoesMovingCardWithDelayWaitBeforeMoving()
     {
         Vector3 originPos = TransformUIToOrtho("DrawCardPile");
-        cardManager.Populate(testCard, 0, new[] { originPos, originPos, originPos }, null);
+        cardManager.Populate(testCard, 0, new[] { originPos, originPos, originPos });
         cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.exhaust, moveDelay: 0.5f).Play();
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(originPos.x, cardManager.transform.position.x, 0.01f);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(originPos.y, cardManager.transform.position.y, 0.01f);
@@ -371,7 +372,7 @@ public class CardManagerTests : MonoBehaviour
     public IEnumerator DoesMovingCardWithDelayMoveCardToDestination()
     {
         Vector3 FinalPos = TransformUIToOrtho("DiscardCardPile");
-        cardManager.Populate(testCard, 0, new[] { new Vector3(0, 0, FinalPos.z), FinalPos, Vector3.zero }, null);
+        cardManager.Populate(testCard, 0, new[] { new Vector3(0, 0, FinalPos.z), FinalPos, Vector3.zero });
         cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.discard, moveDelay: 0.5f).Play();
         yield return new WaitForSeconds(0.501f);
         UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(FinalPos.x, cardManager.transform.position.x, 0.01f);
@@ -425,7 +426,7 @@ public class CardManagerTests : MonoBehaviour
     public IEnumerator DoesMovingCardMoveCardToDestination()
     {
         Vector3 FinalPos = TransformUIToOrtho("DiscardCardPile");
-        cardManager.Populate(testCard, 0, new[] { new Vector3(0, 0, FinalPos.z), FinalPos, Vector3.zero }, null);
+        cardManager.Populate(testCard, 0, new[] { new Vector3(0, 0, FinalPos.z), FinalPos, Vector3.zero });
         cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.discard).Play();
         UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(FinalPos.x, cardManager.transform.position.x);
         UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(FinalPos.y, cardManager.transform.position.y);
@@ -505,7 +506,7 @@ public class CardManagerTests : MonoBehaviour
     [UnityTest]
     public IEnumerator DoesOnMoveCompletedUpdateCardBasedOnEnergy()
     {
-        cardManager.Populate(testCard, 1, pileOrthoPos, null);
+        cardManager.Populate(testCard, 1, pileOrthoPos);
         Assert.AreEqual(_visualsManager.redColor, _visualsManager.energyTF.color);
         cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand);
         GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(3, 3);
@@ -516,7 +517,7 @@ public class CardManagerTests : MonoBehaviour
     [UnityTest]
     public IEnumerator DoesMovingCardWithDelayFromDrawToHandProcessOnMoveCompleted()
     {
-        cardManager.Populate(testCard, 1, pileOrthoPos, null);
+        cardManager.Populate(testCard, 1, pileOrthoPos);
         Assert.AreEqual(_visualsManager.redColor, _visualsManager.energyTF.color);
         cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand, moveDelay: 0.5f);
         GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(3, 3);
@@ -527,7 +528,7 @@ public class CardManagerTests : MonoBehaviour
     [UnityTest]
     public IEnumerator DoesMovingCardFromDrawToHandProcessOnMoveCompleted()
     {
-        cardManager.Populate(testCard, 1, pileOrthoPos, null);
+        cardManager.Populate(testCard, 1, pileOrthoPos);
         Assert.AreEqual(_visualsManager.redColor, _visualsManager.energyTF.color);
         cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand);
         GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(3, 3);
@@ -557,8 +558,7 @@ public class CardManagerTests : MonoBehaviour
         Sequence sequence = cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.hand);
         Assert.NotNull(sequence);
     }
-
-
+    
     private Vector3 TransformUIToOrtho(string uiName)
     {
         Vector3 pos = GameObject.Find(uiName).transform.position; //(1.1, 104.5, 0.0)

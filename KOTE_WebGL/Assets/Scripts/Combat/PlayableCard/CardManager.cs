@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -84,12 +83,11 @@ namespace KOTE.Expedition.Combat.Cards
         }
 
         public void Populate(Card card, int energy,
-            Vector3[] pileOrthoPositions, Action<string, CARDS_POSITIONS_TYPES, CARDS_POSITIONS_TYPES> moveCallback)
+            Vector3[] pileOrthoPositions)
         {
             cardData = card;
             cardVisuals.Populate(card, energy);
             cardMovement.SetOrthoPositions(pileOrthoPositions);
-            cardMovement.SetMoveCallback(moveCallback);
         }
 
         public void DisableCardContent()

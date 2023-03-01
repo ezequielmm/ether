@@ -194,25 +194,12 @@ namespace KOTE.Expedition.Combat.Cards.Piles
         {
             CardManager cardManager = Instantiate(SpriteCardPrefab, handManager.transform);
             cardManager.gameObject.name = card.name + " " + card.id;
-            cardManager.Populate(card, cardPilesData.data.energy, pileOrthoPositionArray, OnCardMove);
+            cardManager.Populate(card, cardPilesData.data.energy, pileOrthoPositionArray);
             MasterCardList.Add(card.id, cardManager);
             return cardManager;
         }
 
-        private void OnCardMove(string cardId, CARDS_POSITIONS_TYPES origin, CARDS_POSITIONS_TYPES destination)
-        {
-            CardManager card = MasterCardList[cardId];
-            List<CardManager> originList = GetCardPileFromType(origin);
-            List<CardManager> destinationList = GetCardPileFromType(destination);
-            // if the origin list is null that means the origin is none, so it's a new status card
-            if (originList != null && originList.Contains(card))
-            {
-                originList.Remove(card);
-            }
-            
-            destinationList.Add(card);
-        }
-
+        
         private List<CardManager> GetCardPileFromType(CARDS_POSITIONS_TYPES pileType)
         {
             switch (pileType)
