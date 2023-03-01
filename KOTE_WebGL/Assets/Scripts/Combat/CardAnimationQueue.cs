@@ -56,7 +56,7 @@ public class CardAnimationQueue : MonoBehaviour
         }
     }
 
-    private void AddSequenceToQueue(Sequence sequence)
+    public void AddSequenceToQueue(Sequence sequence)
     {
         sequence.OnKill(() => PlayNext());
         if (activeSequence != null)

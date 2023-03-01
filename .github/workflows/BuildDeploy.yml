@@ -37,6 +37,7 @@ jobs:
     needs: [selectEnvName]
     strategy:
       fail-fast: true
+      max-parallel: 1
       matrix:
         testMode:
           - EditMode

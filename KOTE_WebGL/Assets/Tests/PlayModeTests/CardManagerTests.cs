@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -346,9 +347,9 @@ public class CardManagerTests : MonoBehaviour
     }
 
     [Test]
-    public void DoesMovingCardActivateCardContent()
+    public void DoesMovingCardToHandActivateCardContent()
     {
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.exhaust);
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.hand);
         Assert.True(_visualsManager.cardcontent.activeSelf);
     }
 
@@ -371,7 +372,7 @@ public class CardManagerTests : MonoBehaviour
     public IEnumerator DoesMovingCardWithDelayMoveCardToDestination()
     {
         Vector3 FinalPos = TransformUIToOrtho("DiscardCardPile");
-        cardManager.Populate(testCard, 0, new[] { new Vector3(0,0, FinalPos.z), FinalPos, Vector3.zero });
+        cardManager.Populate(testCard, 0, new[] { new Vector3(0, 0, FinalPos.z), FinalPos, Vector3.zero });
         cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.discard, moveDelay: 0.5f).Play();
         yield return new WaitForSeconds(0.501f);
         UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(FinalPos.x, cardManager.transform.position.x, 0.01f);
@@ -425,7 +426,7 @@ public class CardManagerTests : MonoBehaviour
     public IEnumerator DoesMovingCardMoveCardToDestination()
     {
         Vector3 FinalPos = TransformUIToOrtho("DiscardCardPile");
-        cardManager.Populate(testCard, 0, new[] { new Vector3(0,0, FinalPos.z), FinalPos, Vector3.zero });
+        cardManager.Populate(testCard, 0, new[] { new Vector3(0, 0, FinalPos.z), FinalPos, Vector3.zero });
         cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.discard).Play();
         UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(FinalPos.x, cardManager.transform.position.x);
         UnityEngine.Assertions.Assert.AreNotApproximatelyEqual(FinalPos.y, cardManager.transform.position.y);
@@ -557,8 +558,7 @@ public class CardManagerTests : MonoBehaviour
         Sequence sequence = cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.hand);
         Assert.NotNull(sequence);
     }
-
-
+    
     private Vector3 TransformUIToOrtho(string uiName)
     {
         Vector3 pos = GameObject.Find(uiName).transform.position; //(1.1, 104.5, 0.0)
