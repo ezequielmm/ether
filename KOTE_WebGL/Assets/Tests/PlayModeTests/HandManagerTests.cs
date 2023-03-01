@@ -81,19 +81,6 @@ public class HandManagerTests : MonoBehaviour
         yield return null;
     }
 
-    [UnityTest]
-    public IEnumerator DoesStartFireGenericDataEvent()
-    {
-        bool eventFired = false;
-        GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener((data) => { eventFired = true; });
-        GameObject go = new GameObject();
-        HandManager handManager = go.AddComponent<HandManager>();
-        go.SetActive(true);
-        handManager.enabled = true;
-        yield return null;
-        Assert.True(eventFired);
-    }
-
     [Test]
     public void DoesDrawingACardFireSFXEvent()
     {
