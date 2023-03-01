@@ -37,6 +37,7 @@ namespace KOTE.Expedition.Combat.Cards
         {
             cardVisuals = GetComponent<CardVisualsManager>();
             cardMovement = GetComponent<CardMovementManager>();
+            cardVisuals.DisableCardContent();
         }
 
         private void Start()
