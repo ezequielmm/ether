@@ -79,6 +79,9 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             Debug.Log(
                 $"[CardPilesManager] Card Piles Retrieved. draw.count: {cardPilesData.data.draw.Count} | hand.count: {cardPilesData.data.hand.Count} | discard.count: {cardPilesData.data.discard.Count} | exhaust.count: {cardPilesData.data.exhausted.Count}");
             requestAgain = false;
+
+            ClearHand();
+            PopulateHand();
             
             // Debug.Log("[CardPilesManager] listOfCardsOnHand.Count:" + listOfCardsOnHand.Count);
             StartCoroutine(ConfirmCardsAreInDrawPile());
@@ -89,34 +92,17 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             return cardPilesData == null || cardPilesData.data.hand.Count < 1;
         }
 
-        private void ClearCardLists()
+        private void ClearHand()
         {
             handManager.handDeck.Clear();
-            drawManager.drawDeck.Clear();
-            discardManager.discardDeck.Clear();
-            exhaustManager.exhaustDeck.Clear();
+            
         }
 
-        private void PopulateCardLists()
+        private void PopulateHand()
         {
             foreach (Card card in cardPilesData.data.hand)
             {
                 SpawnCardToPile(handManager.handDeck, card);
-            }
-
-            foreach (Card card in cardPilesData.data.draw)
-            {
-                SpawnCardToPile(drawManager.drawDeck, card);
-            }
-
-            foreach (Card card in cardPilesData.data.discard)
-            {
-                SpawnCardToPile(discardManager.discardDeck, card);
-            }
-
-            foreach (Card card in cardPilesData.data.exhausted)
-            {
-                SpawnCardToPile(exhaustManager.exhaustDeck, card);
             }
         }
 
@@ -136,18 +122,10 @@ namespace KOTE.Expedition.Combat.Cards.Piles
         {
             Debug.Log("[CardPilesManager] OnCardPilesUpdated");
             cardPilesData = data;
-            
-            ClearCardLists();
-            PopulateCardLists();
 
             foreach (Card card in data.data.draw)
             {
                 VerifyCardPosition(card, CARDS_POSITIONS_TYPES.draw, drawManager.drawDeck);
-            }
-
-            foreach (Card card in data.data.hand)
-            {
-                VerifyCardPosition(card, CARDS_POSITIONS_TYPES.hand, handManager.handDeck);
             }
 
             foreach (Card card in data.data.discard)
@@ -216,9 +194,40 @@ namespace KOTE.Expedition.Combat.Cards.Piles
         {
             CardManager cardManager = Instantiate(SpriteCardPrefab, handManager.transform);
             cardManager.gameObject.name = card.name + " " + card.id;
-            cardManager.Populate(card, cardPilesData.data.energy, pileOrthoPositionArray);
+            cardManager.Populate(card, cardPilesData.data.energy, pileOrthoPositionArray, OnCardMove);
             MasterCardList.Add(card.id, cardManager);
             return cardManager;
+        }
+
+        private void OnCardMove(string cardId, CARDS_POSITIONS_TYPES origin, CARDS_POSITIONS_TYPES destination)
+        {
+            CardManager card = MasterCardList[cardId];
+            List<CardManager> originList = GetCardPileFromType(origin);
+            List<CardManager> destinationList = GetCardPileFromType(destination);
+            // if the origin list is null that means the origin is none, so it's a new status card
+            if (originList != null && originList.Contains(card))
+            {
+                originList.Remove(card);
+            }
+            
+            destinationList.Add(card);
+        }
+
+        private List<CardManager> GetCardPileFromType(CARDS_POSITIONS_TYPES pileType)
+        {
+            switch (pileType)
+            {
+                case CARDS_POSITIONS_TYPES.draw:
+                    return drawManager.drawDeck;
+                case CARDS_POSITIONS_TYPES.hand:
+                    return handManager.handDeck;
+                case CARDS_POSITIONS_TYPES.discard:
+                    return discardManager.discardDeck;
+                case CARDS_POSITIONS_TYPES.exhaust:
+                    return exhaustManager.exhaustDeck;
+                default:
+                    return null;
+            }
         }
 
         private IEnumerator ConfirmCardsAreInDrawPile()
@@ -290,9 +299,6 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             // if the request was made, drop out
             requestTimerIsRunning = false;
         }
-
-      
-
 
         private void OnCardDestroyed(string cardId)
         {

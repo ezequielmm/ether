@@ -24,6 +24,7 @@ namespace KOTE.Expedition.Combat.Cards
         internal Vector3 targetRotation;
 
         private TargetProfile targetProfile;
+        private Action<string, CARDS_POSITIONS_TYPES, CARDS_POSITIONS_TYPES> OnMoveCallback;
 
 
         private void Awake()
@@ -58,6 +59,11 @@ namespace KOTE.Expedition.Combat.Cards
             exhaustPileOrthoPosition = cardPilePositions[2];
         }
 
+        internal void SetMoveCallback(Action<string, CARDS_POSITIONS_TYPES, CARDS_POSITIONS_TYPES> moveCallback)
+        {
+            OnMoveCallback = moveCallback;
+        }
+        
         internal void ShowPointer()
         {
             //show the pointer instead of following the mouse
