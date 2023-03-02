@@ -22,7 +22,6 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
 
     private void Awake()
     {
-        base.Awake();
         PlayerPrefs.SetString("api_url", baseUrl);
 
         PlayerPrefs.SetString("session_token", "");

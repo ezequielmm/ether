@@ -25,7 +25,6 @@ public class VersionManager : MonoBehaviour
     {
         SetTMP();
         GameManager.Instance.EVENT_VERSION_UPDATED.AddListener(SetTMP);
-        Debug.Log(this.ToString());
     }
 
     private void SetTMP() 
