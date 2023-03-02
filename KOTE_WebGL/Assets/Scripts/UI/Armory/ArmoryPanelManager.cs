@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +11,8 @@ namespace KOTE.UI.Armory
         public GameObject panelContainer;
         public Button playButton;
         public Image nftImage;
+        public ArmoryHeaderManager headerPrefab;
+        public Transform gearListTransform;
         private LinkedListNode<ArmoryTokenData> curNode;
         private LinkedList<ArmoryTokenData> nftList = new();
 
@@ -18,11 +22,14 @@ namespace KOTE.UI.Armory
             GameManager.Instance.EVENT_EXPEDITION_CONFIRMED.AddListener(OnExpeditionConfirmed);
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.AddListener(ActivateContainer);
             GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(PopulateCharacterList);
+            GameManager.Instance.EVENT_GEAR_RECEIVED.AddListener(PopulateGearList);
         }
 
         private void ActivateContainer(bool show)
         {
             panelContainer.SetActive(show);
+            
+            PopulateDummyData();
         }
 
         private void PopulateCharacterList(NftData heldNftData)
@@ -47,6 +54,33 @@ namespace KOTE.UI.Armory
             curNode.Value.tokenImageReceived.AddListener(UpdateCharacterImage);
             UpdateCharacterImage();
         }
+
+        private void PopulateGearList(string rawData)
+        {
+            GearData data = JsonConvert.DeserializeObject<GearData>(rawData);
+            string[] categoryNames = Enum.GetNames(typeof(GearCategories));
+            for (int i = 0; i < categoryNames.Length; i++)
+            {
+                if (data.categories.ContainsKey(categoryNames[i]))
+                {
+                    ArmoryHeaderManager curHeader = Instantiate(headerPrefab, gearListTransform);
+                    curHeader.Populate(categoryNames[i]);
+                }
+            }
+        }
+        
+        // MOCKUP CODE, DELETE WHEN BACKEND SENDS MESSAGES
+        private void PopulateDummyData()
+        {
+            string[] categoryNames = Enum.GetNames(typeof(GearCategories));
+
+            for (int i = 0; i < categoryNames.Length; i++)
+            {
+                ArmoryHeaderManager curHeader = Instantiate(headerPrefab, gearListTransform);
+                curHeader.Populate(categoryNames[i]);
+            }
+        }
+        // END MOCKUP CODE +++++++++++++++++++++++++++++++++++++++++
 
         private void UpdateCharacterImage()
         {
@@ -108,23 +142,23 @@ namespace KOTE.UI.Armory
             public Sprite GearImage;
         }
     }
-}
 
-/*
-  Helmet,
-Pauldrons,
- *  Breastplate,
- * Legguard
- * Boots,
- *
- * Weapon,
- * Shield,
-    Padding,
-    Vambrace,
-    Gauntlet,
-    
-    
-    
-    
-    
-*/
+    internal enum GearCategories
+    {
+        Helmet = 0,
+        Pauldrons = 1,
+        Breastplate = 2,
+        Legguards = 3,
+        Boots = 4,
+        Weapon = 5,
+        Shield = 6,
+        Padding = 7,
+        Vambraces = 8,
+        Gauntlet = 9,
+    }
+
+    internal class GearData
+    {
+        public Dictionary<string, GearItemData> categories;
+    }
+}

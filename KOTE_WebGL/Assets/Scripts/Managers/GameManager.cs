@@ -67,7 +67,8 @@ public class GameManager : SingleTon<GameManager>
 
     //ARMORY EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_SHOW_ARMORY_PANEL = new UnityEvent<bool>();
-
+    [HideInInspector] public UnityEvent<string> EVENT_GEAR_RECEIVED = new UnityEvent<string>();
+    
     //CONFIRMATION PANEL EVENTS
     [HideInInspector]
     public UnityEvent<string, Action> EVENT_SHOW_CONFIRMATION_PANEL = new UnityEvent<string, Action>();

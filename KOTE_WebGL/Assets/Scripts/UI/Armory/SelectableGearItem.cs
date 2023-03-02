@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class SelectableGearItem : MonoBehaviour
+namespace KOTE.UI.Armory
 {
-    // Start is called before the first frame update
-    void Start()
+    public class SelectableGearItem : MonoBehaviour
     {
-        
+        public Image gearImage;
+        public TMP_Text encumbranceText;
+
+        public void Populate(int encumbrance)
+        {
+            encumbranceText.text = encumbrance.ToString();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    internal class GearItemData
     {
-        
+        public int encumbrance;
     }
 }
