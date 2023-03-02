@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using KOTE.UI.Armory;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using UnityEditor;
@@ -9,7 +7,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 namespace KOTE.UI.Armory
 {
@@ -48,12 +45,97 @@ namespace KOTE.UI.Armory
             }
         };
 
-        private GearData testData;
+        private GearData testData = new GearData
+        {
+            gear = new List<GearItemData>
+            {
+                new GearItemData
+                {
+                    category = "Helmet",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Helmet"
+                },
+                new GearItemData
+                {
+                    category = "Pauldrons",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Pauldrons"
+                },
+                new GearItemData
+                {
+                    category = "Breastplate",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Breastplate"
+                },
+                new GearItemData
+                {
+                    category = "Legguards",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Legguards"
+                },
+                new GearItemData
+                {
+                    category = "Boots",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Boots"
+                },
+                new GearItemData
+                {
+                    category = "Weapon",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Weapon"
+                },
+                new GearItemData
+                {
+                    category = "Shield",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Shield"
+                },
+                new GearItemData
+                {
+                    category = "Padding",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Padding"
+                },
+                new GearItemData
+                {
+                    category = "Vambraces",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Vambraces"
+                },
+                new GearItemData
+                {
+                    category = "Gauntlet",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Gauntlet"
+                },
+            }
+        };
+
         private Image characterImage;
         private GameObject armoryPanel;
         private ArmoryPanelManager _armoryPanelManager;
-        
-        
+
 
         [UnitySetUp]
         public IEnumerator Setup()
@@ -68,22 +150,6 @@ namespace KOTE.UI.Armory
             armoryPanel = Instantiate(armoryPrefab);
             _armoryPanelManager = armoryPanel.GetComponent<ArmoryPanelManager>();
 
-            testData = new GearData
-            {
-                categories = new Dictionary<string, GearItemData>()
-            };
-            string[] categoryNames = Enum.GetNames(typeof(GearCategories));
-
-            int encumbrance = 1;
-            foreach (string category in categoryNames)
-            {
-                testData.categories[category] = new GearItemData
-                {
-                    encumbrance = encumbrance
-                };
-                encumbrance *= 2;
-            }
-
             yield return null;
         }
 
@@ -95,6 +161,12 @@ namespace KOTE.UI.Armory
             Destroy(armoryPanel);
             _armoryPanelManager = null;
             yield return null;
+        }
+
+        [Test]
+        public void DoesOnGearSelectedEventExist()
+        {
+            Assert.IsNotNull(ArmoryPanelManager.OnGearSelected);
         }
 
         [Test]
@@ -133,6 +205,18 @@ namespace KOTE.UI.Armory
             Assert.NotNull(_armoryPanelManager.gearListTransform);
         }
 
+        [Test]
+        public void DoGearSlotsExist()
+        {
+            Assert.Greater(_armoryPanelManager.gearSlots.Length, 0);
+        }
+
+        [Test]
+        public void AreThereCorrectNumberOfGearSlots()
+        {
+            Assert.AreEqual(10, _armoryPanelManager.gearSlots.Length);
+        }
+        
         [Test]
         public void DoesCallingShowArmoryPanelActivateArmoryPanel()
         {
@@ -402,6 +486,13 @@ namespace KOTE.UI.Armory
             ArmoryHeaderManager[] children =
                 _armoryPanelManager.gearListTransform.GetComponentsInChildren<ArmoryHeaderManager>();
             Assert.AreEqual(10, children.Length);
+        }
+
+        [Test]
+        public void DoesCallingGearSelectedChangeSlotImage()
+        {
+            ArmoryPanelManager.OnGearSelected.Invoke(testData.gear[0]);
+            Assert.IsNull(_armoryPanelManager.gearSlots[(int)GearCategories.Helmet].sprite);
         }
     }
 }

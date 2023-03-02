@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,9 +23,19 @@ namespace KOTE.UI.Armory
             toggle.onValueChanged.AddListener(OnToggle);
         }
 
-        public void Populate(string headerName)
+        internal void Populate(string headerName, List<GearItemData> gearData)
         {
             title.text = headerName;
+            GenerateGearItems(gearData);
+        }
+
+        private void GenerateGearItems(List<GearItemData> gearData)
+        {
+            foreach (GearItemData gearItem in gearData)
+            {
+                SelectableGearItem item = Instantiate(gearPrefab, gearList.transform);
+                item.Populate(gearItem);
+            }
         }
 
         private void OnToggle(bool isOn)

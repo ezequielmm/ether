@@ -1,20 +1,114 @@
 using System;
 using System.Collections.Generic;
-using Unity.Plastic.Newtonsoft.Json;
+using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace KOTE.UI.Armory
 {
     public class ArmoryPanelManager : MonoBehaviour
     {
+        internal static UnityEvent<GearItemData> OnGearSelected { get; } = new();
+
         public GameObject panelContainer;
         public Button playButton;
         public Image nftImage;
         public ArmoryHeaderManager headerPrefab;
         public Transform gearListTransform;
+        public Image[] gearSlots;
         private LinkedListNode<ArmoryTokenData> curNode;
         private LinkedList<ArmoryTokenData> nftList = new();
+        private Dictionary<string, List<GearItemData>> categoryLists = new();
+
+        // +++++++ TEMP DATA UNTIL BACKEND WORKS ++++++++++++++
+        private GearData testData = new GearData
+        {
+            gear = new List<GearItemData>
+            {
+                new GearItemData
+                {
+                    category = "Helmet",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Helmet"
+                },
+                new GearItemData
+                {
+                    category = "Pauldrons",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Pauldrons"
+                },
+                new GearItemData
+                {
+                    category = "Breastplate",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Breastplate"
+                },
+                new GearItemData
+                {
+                    category = "Legguards",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Legguards"
+                },
+                new GearItemData
+                {
+                    category = "Boots",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Boots"
+                },
+                new GearItemData
+                {
+                    category = "Weapon",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Weapon"
+                },
+                new GearItemData
+                {
+                    category = "Shield",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Shield"
+                },
+                new GearItemData
+                {
+                    category = "Padding",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Padding"
+                },
+                new GearItemData
+                {
+                    category = "Vambraces",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Vambraces"
+                },
+                new GearItemData
+                {
+                    category = "Gauntlet",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Gauntlet"
+                },
+            }
+        };
+        // +++++++++++++++ END TEST DATA ++++++++++++++++++++++++
 
         private void Start()
         {
@@ -22,14 +116,14 @@ namespace KOTE.UI.Armory
             GameManager.Instance.EVENT_EXPEDITION_CONFIRMED.AddListener(OnExpeditionConfirmed);
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.AddListener(ActivateContainer);
             GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(PopulateCharacterList);
-            GameManager.Instance.EVENT_GEAR_RECEIVED.AddListener(PopulateGearList);
+            GameManager.Instance.EVENT_GEAR_RECEIVED.AddListener(PopulateGear);
+            OnGearSelected.AddListener(OnGearItemSelected);
         }
 
         private void ActivateContainer(bool show)
         {
             panelContainer.SetActive(show);
-            
-            PopulateDummyData();
+            GameManager.Instance.EVENT_GEAR_RECEIVED.Invoke(JsonConvert.SerializeObject(testData));
         }
 
         private void PopulateCharacterList(NftData heldNftData)
@@ -55,32 +149,37 @@ namespace KOTE.UI.Armory
             UpdateCharacterImage();
         }
 
-        private void PopulateGearList(string rawData)
+        private void PopulateGear(string rawData)
         {
-            GearData data = JsonConvert.DeserializeObject<GearData>(rawData);
-            string[] categoryNames = Enum.GetNames(typeof(GearCategories));
-            for (int i = 0; i < categoryNames.Length; i++)
-            {
-                if (data.categories.ContainsKey(categoryNames[i]))
-                {
-                    ArmoryHeaderManager curHeader = Instantiate(headerPrefab, gearListTransform);
-                    curHeader.Populate(categoryNames[i]);
-                }
-            }
+            GearData data = Unity.Plastic.Newtonsoft.Json.JsonConvert.DeserializeObject<GearData>(rawData);
+            if (data == null) return;
+            PopulateGearList(data);
+            GenerateHeaders();
         }
-        
-        // MOCKUP CODE, DELETE WHEN BACKEND SENDS MESSAGES
-        private void PopulateDummyData()
-        {
-            string[] categoryNames = Enum.GetNames(typeof(GearCategories));
 
-            for (int i = 0; i < categoryNames.Length; i++)
+        private void PopulateGearList(GearData data)
+        {
+            foreach (GearItemData itemData in data.gear)
             {
-                ArmoryHeaderManager curHeader = Instantiate(headerPrefab, gearListTransform);
-                curHeader.Populate(categoryNames[i]);
+                if (categoryLists.ContainsKey(itemData.category))
+                {
+                    categoryLists[itemData.category].Add(itemData);
+                    continue;
+                }
+
+                categoryLists[itemData.category] = new List<GearItemData> { itemData };
             }
         }
-        // END MOCKUP CODE +++++++++++++++++++++++++++++++++++++++++
+
+        private void GenerateHeaders()
+        {
+            string[] categories = Enum.GetNames(typeof(GearCategories));
+            foreach (string category in categories)
+            {
+                ArmoryHeaderManager header = Instantiate(headerPrefab, gearListTransform);
+                header.Populate(category, categoryLists[category]);
+            }
+        }
 
         private void UpdateCharacterImage()
         {
@@ -135,11 +234,10 @@ namespace KOTE.UI.Armory
             GameManager.Instance.LoadScene(inGameScenes.Expedition);
         }
 
-        private class GearItem
+        private void OnGearItemSelected(GearItemData activeItem)
         {
-            public TraitTypes Trait;
-            public string ItemName;
-            public Sprite GearImage;
+            GearCategories category = Utils.ParseEnum<GearCategories>(activeItem.category);
+            gearSlots[(int)category].sprite = activeItem.gearImage;
         }
     }
 
@@ -159,6 +257,6 @@ namespace KOTE.UI.Armory
 
     internal class GearData
     {
-        public Dictionary<string, GearItemData> categories;
+        public List<GearItemData> gear;
     }
 }

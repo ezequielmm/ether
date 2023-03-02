@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -10,6 +11,34 @@ namespace KOTE.UI.Armory
     {
         private GameObject armoryHeaderObject;
         private ArmoryHeaderManager _headerManager;
+
+        private List<GearItemData> testItemData = new List<GearItemData>
+        {
+            new GearItemData
+            {
+                category = "Helmet",
+                gearId = 1,
+                gearImage = null,
+                name = "Test",
+                trait = "Helmet"
+            },
+            new GearItemData
+            {
+            category = "Helmet",
+            gearId = 2,
+            gearImage = null,
+            name = "Test2",
+            trait = "Helmet"
+        },
+        new GearItemData
+        {
+            category = "Helmet",
+            gearId = 3,
+            gearImage = null,
+            name = "Test3",
+            trait = "Helmet"
+        }
+        };
 
         [UnitySetUp]
         public IEnumerator Setup()
@@ -105,8 +134,32 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoesPopulatingHeaderChangeHeaderName()
         {
-            _headerManager.Populate("Helmet");
+            _headerManager.Populate("Helmet",testItemData);
             Assert.AreEqual("Helmet", _headerManager.title.text);
+        }
+
+        [Test]
+        public void DoesPopulatingHeaderSpawnChildItem()
+        {
+            _headerManager.Populate("Test", testItemData);
+            SelectableGearItem gearItem = _headerManager.gearList.GetComponentInChildren<SelectableGearItem>();
+            Assert.NotNull(gearItem);
+        }
+        
+        [Test]
+        public void DoesPopulatingHeaderPopulateChildItem()
+        {
+            _headerManager.Populate("Test", testItemData);
+            SelectableGearItem gearItem = _headerManager.gearList.GetComponentInChildren<SelectableGearItem>();
+            Assert.AreEqual("Test", gearItem.ItemName);
+        }
+        
+        [Test]
+        public void DoesPopulatingHeaderSpawnCorrectNumberOfChildren()
+        {
+            _headerManager.Populate("Test", testItemData);
+            SelectableGearItem[] gearItems = _headerManager.gearList.GetComponentsInChildren<SelectableGearItem>();
+            Assert.AreEqual(3, gearItems.Length);
         }
     }
 }
