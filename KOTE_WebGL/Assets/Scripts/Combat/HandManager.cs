@@ -7,7 +7,7 @@ namespace KOTE.Expedition.Combat.Cards.Piles
 {
     public class HandManager : MonoBehaviour
     {
-         public List<CardManager> handDeck = new();
+        [HideInInspector] public List<CardManager> handDeck = new();
 
         public GameObject explosionEffectPrefab;
 
@@ -20,6 +20,11 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             // if we're adding a card to the hand that isn't a draw
             GameManager.Instance.EVENT_REARRANGE_HAND.AddListener(OnRearrangeHand);
             // if the game is over, don't try to draw more cards
+        }
+
+        private void Start()
+        {
+            GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.CardsPiles);
         }
 
         private void OnCardDraw()
