@@ -31,10 +31,10 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_PROFILE = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_PROFILE_ERROR = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<ProfileData> EVENT_REQUEST_PROFILE_SUCCESSFUL = new UnityEvent<ProfileData>();
-    
+
     //PLAYER VERIFICATION EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_OWNS_CURRENT_EXPEDITION_NFT = new UnityEvent<bool>();
-    
+
     //SETTINGS EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_SETTINGSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_LOGOUT = new UnityEvent<string>();
@@ -46,12 +46,10 @@ public class GameManager : SingleTon<GameManager>
     //WALLET EVENTS
     // Panel
     [HideInInspector] public UnityEvent<bool> EVENT_WALLETSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
-    [HideInInspector] public UnityEvent<bool, GameObject> EVENT_DISCONNECT_WALLET_PANEL_ACTIVATION_REQUEST =
-        new UnityEvent<bool, GameObject>();
     // data requests
     [HideInInspector] public UnityEvent<string> EVENT_WALLET_ADDRESS_RECEIVED { get; } = new UnityEvent<string>();
     [HideInInspector] public UnityEvent EVENT_WALLET_DISCONNECTED = new UnityEvent();
-    [HideInInspector] public UnityEvent<string> EVENT_REQUEST_WALLET_CONTENTS = new UnityEvent<string>();
+    [HideInInspector] public UnityEvent<string> EVENT_REQUEST_WALLET_CONTENTS { get; } = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<WalletKnightIds> EVENT_WALLET_CONTENTS_RECEIVED = new UnityEvent<WalletKnightIds>();
     [HideInInspector] public UnityEvent<string> EVENT_MESSAGE_SIGN = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<float, string, string, string> EVENT_REQUEST_WHITELIST_CHECK { get; } = new UnityEvent<float, string, string, string>();
@@ -178,7 +176,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<NftData> EVENT_NFT_METADATA_RECEIVED { get; } = new UnityEvent<NftData>();
     
     [HideInInspector] public UnityEvent<NftMetaData> EVENT_NFT_SELECTED { get; } = new UnityEvent<NftMetaData>();
-    [HideInInspector] public UnityEvent<NftMetaData[]> EVENT_REQUEST_NFT_IMAGE = new UnityEvent<NftMetaData[]>();
+    [HideInInspector] public UnityEvent<NftMetaData[]> EVENT_REQUEST_NFT_IMAGE { get; } = new UnityEvent<NftMetaData[]>();
     
     [HideInInspector] public UnityEvent<string, Sprite> EVENT_NFT_IMAGE_RECEIVED = new UnityEvent<string, Sprite>();
     [HideInInspector] public UnityEvent<TraitSprite> EVENT_REQUEST_NFT_SKIN_SPRITE { get; } = new UnityEvent<TraitSprite>();

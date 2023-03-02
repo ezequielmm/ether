@@ -9,28 +9,35 @@ var plugin = {
         // Check window.ethereum for data. If missing, metamask is not installed
         return (typeof window.ethereum !== 'undefined');
     },
-    MetamaskSelectedAccount: function (success, error, gameobject) {
-        success = UTF8ToString(success);
-        if(error){ error = UTF8ToString(error); }
+    MetamaskSelectAccount: function (promiseId, returnMethod, gameobject) {
+        promiseId = UTF8ToString(promiseId);
+        returnMethod = UTF8ToString(returnMethod);
         if(gameobject != "MetaMask") { gameobject = UTF8ToString(gameobject); }
 
         window.ethereum.request({ method: 'eth_requestAccounts' })
         .then(function (accounts) {
-            var account = accounts[0];
-            unity.SendMessage(gameobject, success, account);
+            var json = JSON.stringify({
+                "promiseId": promiseId,
+                "accountSelected": accounts[0]
+            });
+            unity.SendMessage(gameobject, returnMethod, json);
         })
         .catch(function (errorMsg) {
             if(error) {
-                var json = UTF8ToString(errorMsg);
-                unity.SendMessage(gameobject, error, json);
+                var json = JSON.stringify({
+                    "promiseId": promiseId,
+                    "error": errorMsg
+                });
+                unity.SendMessage(gameobject, returnMethod, json);
             }
         });
-        
     },
-    MetamaskPersonalSign: function(account, message, success, error, gameobject) {
+    MetamaskPersonalSign: function(promiseId, account, message, returnMethod, gameobject) {
+        promiseId = UTF8ToString(promiseId);
         success = UTF8ToString(success);
-        if(error){ error = UTF8ToString(error); }
+        returnMethod = UTF8ToString(returnMethod);
         if(gameobject != "MetaMask") { gameobject = UTF8ToString(gameobject); }
+
         var from = UTF8ToString(account);
         var msg = UTF8ToString(message);
         
@@ -39,12 +46,19 @@ var plugin = {
 
         ethereum.request({method: method, params: params})
         .then(function (result) {
-            unity.SendMessage(gameobject, success, result);
+            var json = JSON.stringify({
+                "promiseId": promiseId,
+                "signedMessage": result
+            });
+            unity.SendMessage(gameobject, returnMethod, json);
         })
         .catch(function (errorMsg) {
             if(error) {
-                var json = UTF8ToString(errorMsg);
-                unity.SendMessage(gameobject, error, json);
+                var json = JSON.stringify({
+                    "promiseId": promiseId,
+                    "error": errorMsg
+                });
+                unity.SendMessage(gameobject, returnMethod, json);
             }
         });
     }

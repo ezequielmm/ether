@@ -80,11 +80,8 @@ public class LoginPanelManager : MonoBehaviour
 
         ActivateInnerLoginPanel(false);
 
-        if (MetaMaskAdapter.Instance.HasMetamask())
-        {
-            MetaMaskAdapter.Instance.RequestWallet();
-        }
-        
+        NftManager.Instance.RequestActiveWallet();
+
         // hardcoded wallet data for testing, metamask doesn't exist in editor so we have to send a wallet id manually
 #if UNITY_EDITOR
         GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke(GameSettings.EDITOR_WALLET);

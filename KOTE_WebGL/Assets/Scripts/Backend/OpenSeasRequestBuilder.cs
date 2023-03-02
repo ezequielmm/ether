@@ -15,7 +15,8 @@ public static class OpenSeasRequstBuilder
     }
     public static UnityWebRequest ConstructKnightRequest(params int[] tokenIds)
     {
-        return ConstructTokenRequest("0x32A322C7C77840c383961B8aB503c9f45440c81f", tokenIds);
+        string KnightContract = NftManager.GetNftContractAddress(NftContract.KnightsOfTheEther);
+        return ConstructTokenRequest(KnightContract, tokenIds);
     }
     private static string BuildRequestUrl(string contractId, params int[] tokenIds)
     {

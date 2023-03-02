@@ -410,14 +410,14 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private Queue<Action> EmissionQueue = new Queue<Action>();
 
-    private void ResolvePromise(string json, SocketPromise promise)
+    private void ResolvePromise(string json, UniPromise<string> promise)
     {
         promise.FulfillRequest(json);
     }
 
-    private SocketPromise CreatePromise()
+    private UniPromise<string> CreatePromise()
     {
-        SocketPromise promise = new SocketPromise();
+        UniPromise<string> promise = new UniPromise<string>();
         return promise;
     }
 
@@ -447,7 +447,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     public async UniTask<string> EmitAwaitResponse(string eventName, params object[] variables)
     {
-        SocketPromise promise = CreatePromise();
+        UniPromise<string> promise = CreatePromise();
         if (IsSocketHealthy)
         {
             EmitPromise(promise, eventName, variables);
@@ -459,14 +459,14 @@ public class WebSocketManager : SingleTon<WebSocketManager>
                 $"[WebSocketManager] Socket is Unhealthy. Queuing Emission with Response ({eventName}) for Later.");
         }
 
-        await UniTask.WaitUntil(() => promise.Completed);
-        Debug.Log($"[WebSocketManager] RESPONSE [{promise.Id.ToString().Substring(0,4)}] <<< {promise.Json}");
+        await promise.WaitForFufillment();
+        Debug.Log($"[WebSocketManager] RESPONSE [{promise.Id.ToString().Substring(0,4)}] <<< {promise.Data}");
         ServerCommunicationLogger.Instance.LogCommunication($"[WebSocketManager] RESPONSE [{promise.Id.ToString().Substring(0, 4)}] <<<",
-            CommunicationDirection.Incoming, promise.Json);
-        return promise.Json;
+            CommunicationDirection.Incoming, promise.Data);
+        return promise.Data;
     }
 
-    private void EmitPromise(SocketPromise promise, string eventName, params object[] variables)
+    private void EmitPromise(UniPromise<string> promise, string eventName, params object[] variables)
     {
         LogEmissionExpectingResponse(promise.Id, eventName, variables);
         rootSocket.ExpectAcknowledgement<string>((json) => { ResolvePromise(json, promise); })
@@ -548,25 +548,6 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         }
 
         return JsonConvert.SerializeObject(temporaryContainer);
-    }
-
-    private class SocketPromise
-    {
-        public bool Completed { get; private set; }
-        public Guid Id { get; private set; }
-        public string Json { get; private set; } = null;
-
-        public SocketPromise()
-        {
-            Id = Guid.NewGuid();
-            Completed = false;
-        }
-
-        public void FulfillRequest(string data)
-        {
-            Json = data;
-            Completed = true;
-        }
     }
 }
 

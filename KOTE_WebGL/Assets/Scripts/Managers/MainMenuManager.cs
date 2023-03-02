@@ -275,12 +275,9 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnWalletConnectButton()
     {
-        if (MetaMaskAdapter.Instance.HasMetamask())
-        {
-            MetaMaskAdapter.Instance.RequestWallet();
-            GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Please check MetaMask to finish connecting your wallet",
-                () => { });
-        }
+        NftManager.Instance.RequestActiveWallet();
+        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Please check MetaMask to finish connecting your wallet",
+            () => { });
     }
 
     public void OnPlayButton()
@@ -304,7 +301,7 @@ public class MainMenuManager : MonoBehaviour
             {
                 GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(
                     "No Wallet connected, would you like to add one?",
-                    () => { MetaMaskAdapter.Instance.RequestWallet(); }, //TODO:this button was disabled for the client Demo Sept 3 2022
+                    () => { NftManager.Instance.RequestActiveWallet(); }, //TODO:this button was disabled for the client Demo Sept 3 2022
                     () => { GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true); },
                     new[] { "Manage Wallet", "Play Without Wallet" });
                 return;

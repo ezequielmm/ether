@@ -1,40 +1,25 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
-using static UnityEngine.Networking.UnityWebRequest;
-using Random = UnityEngine.Random;
 
-public class WalletManager : MonoBehaviour
+public class WalletPanel : MonoBehaviour
 {
-    public GameObject walletsContainer;
+    [SerializeField]
+    GameObject walletsContainer;
 
-    [Space(20)] public GameObject informationContent;
-    [FormerlySerializedAs("rowPrefab")] public GameObject walletDataPrefab;
+    [Space(20)] [SerializeField] 
+    GameObject informationContent;
 
-    private WalletItem walletItem;
+    [FormerlySerializedAs("rowPrefab")][SerializeField] 
+    GameObject walletDataPrefab;
 
-    // store the current wallet id so we don't request the data more than once
-    private static string curWallet = "";
-    private static int curKnightCount;
-    
-    // we need to store the list of ids to verify owned nfts
-    private List<int> nftIds;
-
-    // these are used to verify ownership of the expedition nft if the encounter check occurs before the wallet data is pulled
-    private bool RunNftDataCheck;
-    private int _selectedNft;
-
-    // store data for checking if the wallet is whitelisted
-    private float signRequest;
-    private string message;
+    List<WalletItem> wallets = new List<WalletItem>();
 
     private void Start()
     {
-        GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerWalletsPanel);
-        GameManager.Instance.EVENT_DISCONNECT_WALLET_PANEL_ACTIVATION_REQUEST.AddListener(
-            ActivateInnerDisconnectWalletConfirmPanel);
-        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.AddListener(OnWalletAddressReceived);
+        GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.AddListener(ToggleInnerWalletContainer);
         GameManager.Instance.EVENT_MESSAGE_SIGN.AddListener(OnSignReceived);
         GameManager.Instance.EVENT_WALLET_DISCONNECTED.AddListener(OnWalletDisconnected);
         GameManager.Instance.EVENT_WALLET_CONTENTS_RECEIVED.AddListener(OnWalletContentsReceived);
@@ -44,24 +29,49 @@ public class WalletManager : MonoBehaviour
         GameObject currentRow = Instantiate(walletDataPrefab, informationContent.transform);
         walletItem = currentRow.GetComponent<WalletItem>();
         
-        // if there's a wallet connected, show it on the panel 
-        if (!string.IsNullOrEmpty(curWallet))
-        {
-            walletItem.SetKnightCount(curKnightCount);
-            walletItem.SetWalletAddress(curWallet);
-        }
     }
 
-    public void OnWalletAddressReceived(string walletAddress)
+    private async UniTask<List<string>> GetVerifiedWallets() 
     {
-        //if we've already requested the wallet, don't ask again.
-        if (walletAddress == curWallet) return;
-        
-        walletItem.SetWalletAddress(walletAddress);
-        curWallet = walletAddress;
+        // TODO: Get previously connected wallets. For now, we don't persist connections
+        // so this section stays blank. This will require backend support.
+        return new List<string>();
+    }
 
-        GameManager.Instance.EVENT_REQUEST_WALLET_CONTENTS.Invoke(walletAddress);
-        CheckWhitelist();
+    public void ConnectNewWallet(string walletAddress)
+    {
+        AddWallet(walletAddress);
+    }
+
+    public void RemoveWallet(string walletAddress) 
+    {
+        if(!HasWallet(walletAddress)) { }
+        WalletItem wallet = GetWallet(walletAddress);
+        wallets.Remove(wallet);
+        Destroy(wallet.gameObject);
+    }
+
+    private void AddWallet(string walletAddress) 
+    {
+        if(HasWallet(walletAddress)) 
+        {
+            return;
+        }
+        // Get Wallet Nft Data
+
+        // Create Prefab
+
+        // Add prefab to list
+    }
+
+    private bool HasWallet(string walletAddress) 
+    {
+        return wallets.Find(other => other.WalletAddress == walletAddress) != null;
+    }
+
+    private WalletItem GetWallet(string walletAddress) 
+    {
+        return wallets.Find(other => other.WalletAddress == walletAddress);
     }
 
 
@@ -81,13 +91,13 @@ public class WalletManager : MonoBehaviour
     private void OnSignReceived(string result)
     {
         Debug.Log($"[WalletManager] Sign Result: {result}");
-        GameManager.Instance.EVENT_REQUEST_WHITELIST_CHECK.Invoke(signRequest, message, result, curWallet);
+        GameManager.Instance.EVENT_REQUEST_WHITELIST_CHECK.Invoke(signRequest, message, result, activeWallet);
     }
 
     private void OnWalletDisconnected()
     {
-        curWallet = "";
-        curKnightCount = 0;
+        activeWallet = "";
+        knightCount = 0;
         walletItem.SetKnightCount(0);
         walletItem.SetWalletAddress("");
     }
@@ -102,7 +112,7 @@ public class WalletManager : MonoBehaviour
         }
 
         GameManager.Instance.EVENT_WALLET_TOKENS_OWNED.Invoke(true);
-        curKnightCount = knightIds.data.Length;
+        knightCount = knightIds.data.Length;
         walletItem.SetKnightCount(knightIds.data.Length);
         nftIds = new List<int>();
         nftIds.AddRange(knightIds.data);
@@ -159,19 +169,7 @@ public class WalletManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_NFT_METADATA.Invoke(nftIds.ToArray());
     }
 
-    public void OnDisconnectConfirm()
-    {
-    }
-
-    public void ActivateInnerDisconnectWalletConfirmPanel(bool activate, GameObject wallet)
-    {
-    }
-
-    public void ActivateInnerDisconnectWalletConfirmPanel(bool activate)
-    {
-    }
-
-    public void ActivateInnerWalletsPanel(bool activate)
+    public void ToggleInnerWalletContainer(bool activate)
     {
         walletsContainer.SetActive(activate);
     }

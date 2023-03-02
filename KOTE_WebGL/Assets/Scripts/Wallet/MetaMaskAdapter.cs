@@ -1,41 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class MetaMaskAdapter : SingleTon<MetaMaskAdapter>
 {
-    private MetaMask mm;
+    private MetaMask metaMask;
 
     private void Start()
     {
-        mm = MetaMask.Instance;
+        metaMask = MetaMask.Instance;
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        Destroy(mm);
+        Destroy(metaMask);
     }
 
     public bool HasMetamask() 
     {
-        return mm.HasMetamask;
+        return metaMask.HasMetamask;
     }
 
-   
-    public void RequestWallet() 
+    public async void RequestWallet() 
     {
-        UnityEvent requestFail = new UnityEvent();
-        requestFail.AddListener(GetWalletFail);
+        string walletAddress = await metaMask.RequestAccount();
 
-        UnityEvent<string> requestSuccess = new UnityEvent<string>();
-        requestSuccess.AddListener(GetWalletSuccess);
-
-        mm.GetAccount(requestSuccess, requestFail);
+        if(walletAddress == null) 
+        {
+            Debug.Log($"[MetaMaskAdapter] Could not fetch wallet.");
+            return;
+        }
+        Debug.Log($"[MetaMaskAdapter] Got Wallet. [{walletAddress}]");
+        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke(walletAddress);
     }
 
-    public void SignMessage(string message) 
+    public void SignMessage(string account, string message) 
     {
         UnityEvent requestFail = new UnityEvent();
         requestFail.AddListener(SignFail);
@@ -43,17 +45,7 @@ public class MetaMaskAdapter : SingleTon<MetaMaskAdapter>
         UnityEvent<string> requestSuccess = new UnityEvent<string>();
         requestSuccess.AddListener(SignSuccess);
 
-        mm.SignMessage(message, requestSuccess, requestFail);
-    }
-
-    private void GetWalletFail()
-    {
-        Debug.LogError($"[MetaMaskAdapter] Could not get Wallet Address.");
-    }
-    private void GetWalletSuccess(string walletAddress)
-    {
-        Debug.Log($"[MetaMaskAdapter] Got Wallet. [{walletAddress}]");
-        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke(walletAddress);
+        metaMask.SignMessage(message);
     }
 
     private void SignFail()
