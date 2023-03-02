@@ -44,7 +44,7 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
         Debug.Log("[UpdateSkin] skeletonData:" + skeletonData);
 
         List<TraitSprite> skinSprites = PlayerSpriteManager.Instance.GetAllTraitSprites();
-        foreach (var traitType in Enum.GetNames(typeof(TraitTypes)))
+        foreach (var traitType in Enum.GetNames(typeof(Trait)))
         {
             TraitSprite traitSprite = skinSprites.Find(x => x.traitType == traitType);
             if (string.IsNullOrEmpty(traitSprite.skinName)) continue;

@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public class NftManager : ISingleton<NftManager>
 {
     private static NftManager instance;
-    public static NftManager Instance 
+    public static NftManager Instance
     {
-        get 
+        get
         {
-            if(instance == null) 
+            if (instance == null)
             {
                 instance = new NftManager();
             }
@@ -21,49 +22,24 @@ public class NftManager : ISingleton<NftManager>
         instance = null;
     }
 
-    public string ActiveWallet { get; private set; }
-    //public Dictionary<NftContract, List<NftData>>;
+    private WalletManager wallet;
 
-
-    private NftManager() 
-    { }
-
-
-    public void RequestActiveWallet() 
+    private NftManager()
     {
-        
+        wallet = WalletManager.Instance;
     }
 
-    public void SelectedAccountChanged(string newAccount) 
-    {
-    
-    }
-
-    public void ForgetWallet(string walletToRemove) 
-    {
-        if(walletToRemove == ActiveWallet) { RemoveActiveWallet(); }
-    }
-
-    public void RemoveActiveWallet() 
-    {
-    
-    }
-
-    public int GetNftCountForContract(NftContract contract) 
-    {
-        return -1;
-    }
 
     private static readonly Dictionary<NftContract, string> nftContractMap = new() {
         { NftContract.KnightsOfTheEther, "0x32A322C7C77840c383961B8aB503c9f45440c81f" }
     };
-    public static string GetNftContractAddress(NftContract contract) 
+    public static string GetNftContractAddress(NftContract contract)
     {
         return nftContractMap[contract];
     }
 }
-
-public enum NftContract 
+public enum NftContract
 {
     KnightsOfTheEther
 }
+

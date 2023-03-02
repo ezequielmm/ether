@@ -30,13 +30,11 @@ public class WebRequesterManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_REGISTER.AddListener(OnRegisterEvent);
         GameManager.Instance.EVENT_REQUEST_LOGIN.AddListener(RequestLogin);
         GameManager.Instance.EVENT_REQUEST_PROFILE.AddListener(RequestProfile);
-        GameManager.Instance.EVENT_REQUEST_WALLET_CONTENTS.AddListener(RequestWalletContents);
         GameManager.Instance.EVENT_REQUEST_LOGOUT.AddListener(RequestLogout);
         GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.AddListener(RequestExpeditionCancel);
         GameManager.Instance.EVENT_REQUEST_NFT_IMAGE.AddListener(RequestNftImage);
         GameManager.Instance.EVENT_REQUEST_NFT_SKIN_SPRITE.AddListener(RequestNftSkinElement);
         GameManager.Instance.EVENT_REQUEST_EXPEDITON_SCORE.AddListener(RequestExpeditionScore);
-        GameManager.Instance.EVENT_REQUEST_WHITELIST_CHECK.AddListener(RequestWhitelistStatus);
         GameManager.Instance.EVENT_SEND_BUG_FEEDBACK.AddListener(SendBugReport);
     }
 
@@ -78,11 +76,6 @@ public class WebRequesterManager : MonoBehaviour
         StartCoroutine(CancelOngoingExpedition());
     }
 
-    public void RequestWhitelistStatus(float expires, string message, string signature, string wallet)
-    {
-        StartCoroutine(WhitelistStatus(expires, message, signature, wallet));
-    }
-
     public void RequestNftImage(NftMetaData[] requestedTokens)
     {
         foreach (NftMetaData metaData in requestedTokens)
@@ -119,11 +112,6 @@ public class WebRequesterManager : MonoBehaviour
     public void RequestProfile(string token)
     {
         StartCoroutine(GetProfile(token));
-    }
-
-    public void RequestWalletContents(string walletAddress)
-    {
-        StartCoroutine(GetWalletContents(walletAddress));
     }
 
     public void RequestCharacterList()
@@ -461,96 +449,6 @@ public class WebRequesterManager : MonoBehaviour
         }
     }
 
-    public IEnumerator GetWalletContents(string walletAddress)
-    {
-        string fullUrl = $"{baseUrl}{RestEndpoint.WalletData}/{walletAddress}";
-        int maxTry = 10;
-        var tryDelay = new WaitForSeconds(3);
-
-        UnityWebRequest request = null;
-
-
-        for (int tryCount = 0; tryCount < maxTry; tryCount++)
-        {
-            Debug.Log($"[WebRequestManager] Getting Wallet Contents...");
-            ServerCommunicationLogger.Instance.LogCommunication(
-                $"Wallet content request: wallet {walletAddress}",
-                CommunicationDirection.Outgoing);
-            using (request = UnityWebRequest.Get($"{fullUrl}"))
-            {
-                yield return request.SendWebRequest();
-
-                if (request.result == UnityWebRequest.Result.Success)
-                {
-                    yield return new WaitForEndOfFrame();
-                    // moved this code inside the loop to encapsulate this in the using statement
-                    Debug.Log($"[WebRequestManager] Wallet Contents Retrieved: {request?.downloadHandler.text}");
-                    ServerCommunicationLogger.Instance.LogCommunication(
-                        $"Wallet Content success: {request.downloadHandler.text}",
-                        CommunicationDirection.Incoming);
-                    WalletKnightIds walletKnightIds =
-                        JsonConvert.DeserializeObject<WalletKnightIds>(request.downloadHandler.text);
-                    GameManager.Instance.EVENT_WALLET_CONTENTS_RECEIVED.Invoke(walletKnightIds);
-                    yield break;
-                }
-
-                Debug.LogError($"[WebRequestManager] Error Getting Wallet Contents {request.error} from {fullUrl}");
-                ServerCommunicationLogger.Instance.LogCommunication(
-                    $"Wallet content error: {request.error}",
-                    CommunicationDirection.Incoming);
-
-                if (tryCount + 1 >= maxTry)
-                {
-                    Debug.Log($"[WebRequestManager] Will not try for wallet content again.");
-                    Debug.Log($"[WebRequestManager] Will not try for wallet content again.");
-                    GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
-                        "ERROR: Could not gather wallet contents. Please try again later.", () => { });
-                    yield break;
-                }
-                else
-                {
-                    Debug.Log($"[WebRequestManager] Retrying to get wallet contents...");
-                    yield return tryDelay;
-                }
-            }
-        }
-    }
-
-
-    public IEnumerator WhitelistStatus(float signRequest, string message, string signature, string wallet)
-    {
-        WWWForm form = new WWWForm();
-        form.AddField("sig", signature); // The 0x signature string
-        form.AddField("wallet", wallet); // The 0x wallet string
-        form.AddField("created", (int)signRequest); // Unix Timestamp
-        form.AddField("message", message); // String of what was signed
-        string fullUrl = baseUrl + RestEndpoint.KoteWhitelist;
-        ServerCommunicationLogger.Instance.LogCommunication(
-            $"Whitelist status request: {form}",
-            CommunicationDirection.Outgoing);
-        using (UnityWebRequest request = UnityWebRequest.Post(fullUrl, form))
-        {
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.ConnectionError ||
-                request.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError("[WhitelistStatus] Error getting white list status: " + request.error);
-                ServerCommunicationLogger.Instance.LogCommunication(
-                    "Whitelist error: " + request.error,
-                    CommunicationDirection.Incoming);
-                yield break;
-            }
-
-            Debug.Log($"Whitelist status retrieved: {request.downloadHandler.text}");
-            ServerCommunicationLogger.Instance.LogCommunication(
-                $"Whitelist success: {request.downloadHandler.text}", CommunicationDirection.Incoming);
-            WhitelistResponse whitelistResponse =
-                JsonConvert.DeserializeObject<WhitelistResponse>(request.downloadHandler.text);
-            GameManager.Instance.EVENT_WHITELIST_CHECK_RECEIVED.Invoke(whitelistResponse.data.isValid);
-        }
-    }
-
     public IEnumerator GetNftImages()
     {
         nftQueueRunning = true;
@@ -749,7 +647,7 @@ public static class RestEndpoint
     public static readonly string Logout = "/auth/v1/logout";
     public static readonly string Profile = "/gsrv/v1/profile";
     public static readonly string WalletData = "/gsrv/v1/wallets";
-    public static readonly string KoteWhitelist = "/gsrv/v1/tokens/verify";
+    public static readonly string VerifyWalletSignature = "/gsrv/v1/tokens/verify";
     public static readonly string CharactersList = "/gsrv/v1/characters";
     public static readonly string ExpeditionStatus = "/gsrv/v1/expeditions/status";
     public static readonly string ExpeditionRequest = "/gsrv/v1/expeditions";

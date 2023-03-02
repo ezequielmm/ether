@@ -20,15 +20,8 @@ public class WalletPanel : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.AddListener(ToggleInnerWalletContainer);
-        GameManager.Instance.EVENT_MESSAGE_SIGN.AddListener(OnSignReceived);
-        GameManager.Instance.EVENT_WALLET_DISCONNECTED.AddListener(OnWalletDisconnected);
-        GameManager.Instance.EVENT_WALLET_CONTENTS_RECEIVED.AddListener(OnWalletContentsReceived);
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(OnExpeditionStatus);
 
-        //create an instance of the current connected wallet, in case we need to add the ability to display more
-        GameObject currentRow = Instantiate(walletDataPrefab, informationContent.transform);
-        walletItem = currentRow.GetComponent<WalletItem>();
-        
     }
 
     private async UniTask<List<string>> GetVerifiedWallets() 
@@ -45,23 +38,32 @@ public class WalletPanel : MonoBehaviour
 
     public void RemoveWallet(string walletAddress) 
     {
-        if(!HasWallet(walletAddress)) { }
+        if(!HasWallet(walletAddress)) 
+        {
+            return;
+        }
         WalletItem wallet = GetWallet(walletAddress);
         wallets.Remove(wallet);
         Destroy(wallet.gameObject);
     }
 
-    private void AddWallet(string walletAddress) 
+    private async void AddWallet(string walletAddress) 
     {
         if(HasWallet(walletAddress)) 
         {
             return;
         }
-        // Get Wallet Nft Data
+        int knightCount = await WalletManager.Instance.GetNftCountPerContract(NftContract.KnightsOfTheEther, walletAddress);
+        WalletItem wallet = CreateWalletItem(walletAddress, knightCount);
+        wallets.Add(wallet);
+    }
 
-        // Create Prefab
-
-        // Add prefab to list
+    private WalletItem CreateWalletItem(string walletAddress, int knightCount) 
+    {
+        GameObject walletGameObject = Instantiate(walletDataPrefab, informationContent.transform);
+        var walletItem = walletGameObject.GetComponent<WalletItem>();
+        walletItem.Populate(walletAddress, knightCount);
+        return walletItem;
     }
 
     private bool HasWallet(string walletAddress) 
@@ -72,55 +74,6 @@ public class WalletPanel : MonoBehaviour
     private WalletItem GetWallet(string walletAddress) 
     {
         return wallets.Find(other => other.WalletAddress == walletAddress);
-    }
-
-
-    private void CheckWhitelist()
-    {
-#if UNITY_EDITOR
-        GameManager.Instance.EVENT_WHITELIST_CHECK_RECEIVED.Invoke(true);
-        return;
-#endif
-        GameManager.Instance.EVENT_WHITELIST_CHECK_RECEIVED.Invoke(false);
-        signRequest = DateTimeOffset.Now.ToUnixTimeSeconds();
-        message = $"Hello, welcome to Knights of the Ether.\nPlease sign this message to verify your wallet.\nThis action will not cost you any transaction fee.\n\n\nSecret Code: {Guid.NewGuid()}";
-        Debug.Log($"[WalletManager] Sign Message:\n{message}");
-        MetaMaskAdapter.Instance.SignMessage(message);
-    }
-
-    private void OnSignReceived(string result)
-    {
-        Debug.Log($"[WalletManager] Sign Result: {result}");
-        GameManager.Instance.EVENT_REQUEST_WHITELIST_CHECK.Invoke(signRequest, message, result, activeWallet);
-    }
-
-    private void OnWalletDisconnected()
-    {
-        activeWallet = "";
-        knightCount = 0;
-        walletItem.SetKnightCount(0);
-        walletItem.SetWalletAddress("");
-    }
-
-    private void OnWalletContentsReceived(WalletKnightIds knightIds)
-    {
-        if (knightIds.data == null || knightIds.data.Length == 0)
-        {
-            GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("No Knights found in connected wallet\n, please try a different wallet.", () => {});
-            GameManager.Instance.EVENT_WALLET_TOKENS_OWNED.Invoke(false);
-            return;
-        }
-
-        GameManager.Instance.EVENT_WALLET_TOKENS_OWNED.Invoke(true);
-        knightCount = knightIds.data.Length;
-        walletItem.SetKnightCount(knightIds.data.Length);
-        nftIds = new List<int>();
-        nftIds.AddRange(knightIds.data);
-        if (RunNftDataCheck)
-        {
-            bool hasNft = VerifyNftInWallet(_selectedNft);
-            RequestMetadata(hasNft);
-        }
     }
 
     private void OnExpeditionStatus(bool hasExpedition, int nftId)

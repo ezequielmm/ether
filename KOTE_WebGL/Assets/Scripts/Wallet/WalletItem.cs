@@ -8,7 +8,7 @@ public class WalletItem : MonoBehaviour
 {
     public string WalletAddress { get; private set; }
     public int KnightCount { get; private set; }
-    public bool IsActiveWallet => NftManager.Instance.ActiveWallet == WalletAddress;
+    public bool IsActiveWallet => WalletManager.Instance.ActiveWallet == WalletAddress;
 
     [SerializeField]
     private TMP_Text walletAddressText;
@@ -33,6 +33,6 @@ public class WalletItem : MonoBehaviour
 
     public void RemoveWallet()
     {
-        GameManager.Instance.EVENT_DISCONNECT_WALLET_PANEL_ACTIVATION_REQUEST.Invoke(true, gameObject);
+        WalletManager.Instance.ForgetWallet(WalletAddress);
     }
 }

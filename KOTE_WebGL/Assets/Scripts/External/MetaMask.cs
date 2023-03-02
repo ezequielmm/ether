@@ -81,13 +81,14 @@ public class MetaMask : SingleTon<MetaMask>
         if (string.IsNullOrEmpty(account))
         {
             Debug.Log("[MetaMask] Account Change Received, no account found. Received account data: " + account);
-            GameManager.Instance.EVENT_WALLET_DISCONNECTED.Invoke();
-            return;
+            account = null;
         }
-        account = account.Trim('"');
-        Debug.Log("[MetaMask] Account Change Received, new account data: " + account);
-
-        NftManager.Instance.SelectedAccountChanged(account);
+        else 
+        {
+            account = account.Trim('"');
+            Debug.Log("[MetaMask] Account Change Received, new account data: " + account);
+        }
+        WalletManager.Instance.SelectedAccountChanged(account);
     }
 
 

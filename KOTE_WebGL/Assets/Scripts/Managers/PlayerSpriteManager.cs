@@ -10,7 +10,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     // we need the skeleton data so we can pull the image assets without needing the player to be activated in combat
     public SkeletonDataAsset KinghtData;
     public SpriteList DefaultSkinImages;
-    private List<Trait> currentMetadata = new List<Trait>();
+    private List<TraitValue> currentMetadata = new List<TraitValue>();
 
     private List<TraitSprite> SkinSprites = new List<TraitSprite>();
     private List<TraitSprite> DefaultSprites = new List<TraitSprite>();
@@ -70,32 +70,32 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         currentMetadata.AddRange(nftMetaData.traits);
 
         // ===============TEMP CODE FOR BOTTOMS HANDLING=====================================
-        if (currentMetadata.Exists(x => x.trait_type == nameof(TraitTypes.Gauntlet)))
+        if (currentMetadata.Exists(x => x.trait_type == nameof(Trait.Gauntlet)))
         {
-            Trait tempTrait = currentMetadata.Find(x => x.trait_type == nameof(TraitTypes.Gauntlet));
-            Trait bottomTrait = SelectTraitBottoms(tempTrait);
+            TraitValue tempTrait = currentMetadata.Find(x => x.trait_type == nameof(Trait.Gauntlet));
+            TraitValue bottomTrait = SelectTraitBottoms(tempTrait);
             if (bottomTrait != null) currentMetadata.Add(bottomTrait);
         }
 
-        if (currentMetadata.Exists(x => x.trait_type == nameof(TraitTypes.Breastplate)))
+        if (currentMetadata.Exists(x => x.trait_type == nameof(Trait.Breastplate)))
         {
-            Trait tempTrait = currentMetadata.Find(x => x.trait_type == nameof(TraitTypes.Breastplate));
-            Trait bottomTrait = SelectTraitBottoms(tempTrait);
+            TraitValue tempTrait = currentMetadata.Find(x => x.trait_type == nameof(Trait.Breastplate));
+            TraitValue bottomTrait = SelectTraitBottoms(tempTrait);
             if (bottomTrait != null) currentMetadata.Add(bottomTrait);
         }
         // ===============REMOVE WHEN NFTS HAVE BOOTS AND LEGGUARD TRAITS=====================================
 
         // select correct sigil shape
-        if (currentMetadata.Exists(x => x.trait_type == nameof(TraitTypes.Sigil)))
+        if (currentMetadata.Exists(x => x.trait_type == nameof(Trait.Sigil)))
         {
-            Trait shield = currentMetadata.Find(x => x.trait_type == nameof(TraitTypes.Shield));
+            TraitValue shield = currentMetadata.Find(x => x.trait_type == nameof(Trait.Shield));
            if(shield.value.Contains("Circle")) shieldType = "CShield";
            else if(shield.value.Contains("Triangle")) shieldType = "TShield";
            else Debug.LogWarning($"Warning! Invalid Shield/Sigil combination for nft #{nftMetaData.token_id}");
         }
 
 
-        foreach (Trait trait in currentMetadata)
+        foreach (TraitValue trait in currentMetadata)
         {
             List<string> traitSplit = trait.value.Split().ToList();
             
@@ -106,7 +106,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
             
             string skinName;
             
-                if (trait.trait_type == nameof(TraitTypes.Sigil))
+                if (trait.trait_type == nameof(Trait.Sigil))
             {
                 skinName = trait.trait_type + "_" + shieldType + "_" + string.Join('_', traitSplit);
             }
@@ -200,7 +200,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     public List<TraitSprite> GetAllTraitSprites()
     {
         List<TraitSprite> allSprites = new List<TraitSprite>();
-        foreach (var traitType in Enum.GetNames(typeof(TraitTypes)))
+        foreach (var traitType in Enum.GetNames(typeof(Trait)))
         {
             if (SkinSprites.Exists(x => x.traitType == traitType))
             {
@@ -208,8 +208,8 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
                 continue;
             }
 
-            if (traitType == nameof(TraitTypes.Sigil) || traitType == nameof(TraitTypes.Crest)
-                                                      || traitType == nameof(TraitTypes.Vambrace))
+            if (traitType == nameof(Trait.Sigil) || traitType == nameof(Trait.Crest)
+                                                      || traitType == nameof(Trait.Vambrace))
             {
                 continue;
             }
@@ -224,120 +224,120 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     }
 
     //====================TEMP CODE, DELETE WHEN NFTS HAVE BOOTS AND LEGGUARD TRAITS==============
-    private Trait SelectTraitBottoms(Trait traitData)
+    private TraitValue SelectTraitBottoms(TraitValue traitData)
     {
-        if (traitData.trait_type == nameof(TraitTypes.Breastplate))
+        if (traitData.trait_type == nameof(Trait.Breastplate))
         {
             switch (traitData.value)
             {
                 case "Gothic":
                 case "Engraved":
                 case "Galactic":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Legguard),
+                        trait_type = nameof(Trait.Legguard),
                         value = "Gothic"
                     };
                 case "Gold Gothic":
                 case "Gold Engraved":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Legguard),
+                        trait_type = nameof(Trait.Legguard),
                         value = "Gold Gothic"
                     };
                 case "Bloodied Gothic":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Legguard),
+                        trait_type = nameof(Trait.Legguard),
                         value = "Bloodied Gothic"
                     };
                 case "Red Leather":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Legguard),
+                        trait_type = nameof(Trait.Legguard),
                         value = "Red Leather"
                     };
 
                 case "Blue Leather":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Legguard),
+                        trait_type = nameof(Trait.Legguard),
                         value = "Blue Leather"
                     };
                 case "Purple Leather":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Legguard),
+                        trait_type = nameof(Trait.Legguard),
                         value = "Purple Leather"
                     };
                 case "Red Dragon Rent":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Legguard),
+                        trait_type = nameof(Trait.Legguard),
                         value = "Red Dragon Rent"
                     };
                 case "Blue Dragon Rent":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Legguard),
+                        trait_type = nameof(Trait.Legguard),
                         value = "Blue Dragon Rent"
                     };
                 case "Purple Dragon Rent":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Legguard),
+                        trait_type = nameof(Trait.Legguard),
                         value = "Purple Dragon Rent"
                     };
                 case "Royal Guard":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Legguard),
+                        trait_type = nameof(Trait.Legguard),
                         value = "Royal Guard"
                     };
                 case "Blue and Gold":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Legguard),
+                        trait_type = nameof(Trait.Legguard),
                         value = "Blue and Gold"
                     };
 
                 case "White Hand":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Legguard),
+                        trait_type = nameof(Trait.Legguard),
                         value = "White Hand"
                     };
 
                 case "Gold White Hand":
                 case "Gold Templar":
                 case "Gold Royal Guard":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Legguard),
+                        trait_type = nameof(Trait.Legguard),
                         value = "Gold White Hand"
                     };
                 case "Dark":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Legguard),
+                        trait_type = nameof(Trait.Legguard),
                         value = "Dark"
                     };
                 case "Ancient":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Legguard),
+                        trait_type = nameof(Trait.Legguard),
                         value = "Ancient"
                     };
                 case "Medici":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Legguard),
+                        trait_type = nameof(Trait.Legguard),
                         value = "Medici"
                     };
             }
         }
 
-        if (traitData.trait_type == nameof(TraitTypes.Gauntlet))
+        if (traitData.trait_type == nameof(Trait.Gauntlet))
         {
             switch (traitData.value)
             {
@@ -345,80 +345,80 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
                 case "Balthasar":
                 case "Hourglass":
                 case "Gold Hourglass":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Boots),
+                        trait_type = nameof(Trait.Boots),
                         value = "Leather"
                     };
                 case "Churburg Hourglass":
                 case "Elven":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Boots),
+                        trait_type = nameof(Trait.Boots),
                         value = "Churburg Hourglass"
                     };
                 case "Gold Churburg Hourglass":
                 case "Gold Knuckle":
                 case "Gold Articulated":
                 case "Gold Mitten":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Boots),
+                        trait_type = nameof(Trait.Boots),
                         value = "Gold Churburg Hourglass"
                     };
                 case "Mitten":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Boots),
+                        trait_type = nameof(Trait.Boots),
                         value = "Mitten"
                     };
                 case "Volcanic":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Boots),
+                        trait_type = nameof(Trait.Boots),
                         value = "Volcanic"
                     };
                 case "Spiked":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Boots),
+                        trait_type = nameof(Trait.Boots),
                         value = "Spiked"
                     };
                 case "Bloodied":
                 case "Dread":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Boots),
+                        trait_type = nameof(Trait.Boots),
                         value = "Dread"
                     };
                 case "Gold Dread":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Boots),
+                        trait_type = nameof(Trait.Boots),
                         value = "Gold Dread"
                     };
                 case "Flaming":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Boots),
+                        trait_type = nameof(Trait.Boots),
                         value = "Flaming"
                     };
                 case "Blue Flaming":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Boots),
+                        trait_type = nameof(Trait.Boots),
                         value = "Blue Flaming Dread"
                     };
                 case "Articulated":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Boots),
+                        trait_type = nameof(Trait.Boots),
                         value = "Articulated"
                     };
                 case "Medici":
-                    return new Trait
+                    return new TraitValue
                     {
-                        trait_type = nameof(TraitTypes.Boots),
+                        trait_type = nameof(Trait.Boots),
                         value = "Medici"
                     };
             }

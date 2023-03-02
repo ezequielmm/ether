@@ -21,7 +21,7 @@ public class MainMenuManager : MonoBehaviour
         settingButton,
         connectWalletButton;
 
-    private bool _hasWallet;
+    private bool _hasWallet => !string.IsNullOrEmpty(WalletManager.Instance.ActiveWallet);
     private int _selectedNft = -1;
     private NftMetaData selectedMetadata;
 
@@ -29,16 +29,14 @@ public class MainMenuManager : MonoBehaviour
     private bool _hasExpedition;
     private bool _expeditionStatusReceived;
     private bool _ownershipChecked;
-    private bool _whitelistStatusReceived;
 
     // verification that the player still owns the continuing nft
     private bool _ownsSavedNft;
     
     // verification that the connected wallet contains at least one knight
-    private bool _ownsAnyNft;
-
-    // verification that the player is whitelisted to play/owns an nft
-    private bool _isWhitelisted;
+    private bool _ownsAnyNft => (WalletManager.Instance.NftsInWallet[NftContract.KnightsOfTheEther]?.Count ?? 0) > 0;
+    private bool _isWalletVerified => WalletManager.Instance.WalletVerified;
+    private bool _isWhitelisted => true;
 
     private void Start()
     {
@@ -51,16 +49,11 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(OnExpeditionUpdate);
         GameManager.Instance.EVENT_OWNS_CURRENT_EXPEDITION_NFT.AddListener(OnCurrentNftConfirmed);
        
-        GameManager.Instance.EVENT_WHITELIST_CHECK_RECEIVED.AddListener(OnWalletWhitelisted);
-        
-        // listen for the wallet address to come in so we know if a wallet is connected/disconnected
-        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.AddListener(OnWalletAddressReceived);
-        GameManager.Instance.EVENT_WALLET_DISCONNECTED.AddListener(OnWalletDisconnected);
-        
         // Listen for the metadata for the selected NFT so it can be sent on resume
         GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(OnCurrentNftDataReceived);
-        GameManager.Instance.EVENT_WALLET_TOKENS_OWNED.AddListener(OnTokensChecked);
-        
+
+        WalletManager.Instance.WalletStatusModified.AddListener(UpdateUiOnWalletModification);
+
         //CheckIfRegisterButtonIsEnabled();
         CheckIfArmoryButtonIsEnabled();
 
@@ -108,30 +101,10 @@ public class MainMenuManager : MonoBehaviour
         VerifyResumeExpedition();
     }
 
-    private void OnTokensChecked(bool hasTokens)
-    {
-        _ownsAnyNft = hasTokens;
-        VerifyResumeExpedition();
-    }
-
     private void OnCurrentNftConfirmed(bool ownsNft)
     {
         _ownsSavedNft = ownsNft;
         _ownershipChecked = true;
-        VerifyResumeExpedition();
-    }
-
-    private void OnWalletAddressReceived(string address)
-    {
-        _hasWallet = true;
-        connectWalletButton.gameObject.SetActive(!_hasWallet);
-        VerifyResumeExpedition();
-    }
-
-    private void OnWalletDisconnected()
-    {
-        _hasWallet = false;
-        connectWalletButton.gameObject.SetActive(!_hasWallet);
         VerifyResumeExpedition();
     }
 
@@ -153,20 +126,13 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    private void OnWalletWhitelisted(bool isWhitelisted)
-    {
-        _whitelistStatusReceived = true;
-        _isWhitelisted = isWhitelisted;
-        VerifyResumeExpedition();
-    }
-
     // we need to verify that the player can actually resume or start a new game before presenting those options
     // this is designed to be called whenever a callback is triggered, due to not knowing when all the responses will come in
     private void VerifyResumeExpedition()
     {
         
         // if the player isn't whitelisted, doesn't have a wallet connected, or doesn't own a knight, never show the play button
-        if (!_isWhitelisted || !_whitelistStatusReceived || !_hasWallet || !_ownsAnyNft)
+        if (!_hasWallet || !_isWalletVerified || !_isWhitelisted || !_ownsAnyNft)
         {
             // if no routes are available, lock the player out of the game
             playButton.gameObject.SetActive(false);
@@ -199,6 +165,12 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
+    private void UpdateUiOnWalletModification() 
+    {
+        connectWalletButton.gameObject.SetActive(!_hasWallet);
+        VerifyResumeExpedition();
+    }
+
 
     private void UpdatePlayButtonText()
     {
@@ -212,10 +184,6 @@ public class MainMenuManager : MonoBehaviour
         moneyText.text = $"{fief} $fief";
         DeactivateMenuButtons();
         settingButton.gameObject.SetActive(true);
-        // temp wallet data for testing, metamask doesn't exist in editor so we have to send a wallet id manually
-#if UNITY_EDITOR
-        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke(GameSettings.EDITOR_WALLET);
-#endif
     }
 
     public void OnLogoutSuccessful(string message)
@@ -275,14 +243,14 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnWalletConnectButton()
     {
-        NftManager.Instance.RequestActiveWallet();
+        WalletManager.Instance.SetActiveWallet();
         GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Please check MetaMask to finish connecting your wallet",
             () => { });
     }
 
     public void OnPlayButton()
     {
-        Debug.Log($"Has expedition: {_hasExpedition} is Whitelisted: {_isWhitelisted} Owns nft {_ownsSavedNft} Ownership Confirmed {_ownershipChecked}");
+        Debug.Log($"Has expedition: {_hasExpedition} is Wallet Verified: {_isWalletVerified} Owns nft {_ownsSavedNft} Ownership Confirmed {_ownershipChecked}");
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         //check if we are playing a new expedition or resuming
         if (_hasExpedition)
@@ -301,7 +269,7 @@ public class MainMenuManager : MonoBehaviour
             {
                 GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(
                     "No Wallet connected, would you like to add one?",
-                    () => { NftManager.Instance.RequestActiveWallet(); }, //TODO:this button was disabled for the client Demo Sept 3 2022
+                    () => { WalletManager.Instance.SetActiveWallet(); }, //TODO:this button was disabled for the client Demo Sept 3 2022
                     () => { GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true); },
                     new[] { "Manage Wallet", "Play Without Wallet" });
                 return;

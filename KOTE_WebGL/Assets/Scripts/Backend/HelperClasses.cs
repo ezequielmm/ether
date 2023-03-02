@@ -869,11 +869,11 @@ public class NftMetaData
 {
     public string token_id;
     public string image_url;
-    public Trait[] traits;
+    public TraitValue[] traits;
 }
 
 [Serializable]
-public class Trait
+public class TraitValue
 {
     public string trait_type;
     public string value;

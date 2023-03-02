@@ -19,7 +19,7 @@ public class CharacterSelectionManager : MonoBehaviour
     {
         //GameManager.Instance.webRequester.RequestCharacterList();// we are not requesting the list until we have more than one type so for the moment only knight
 
-        GameManager.Instance.EVENT_WALLET_DISCONNECTED.AddListener(OnWalletDisconnected);
+        WalletManager.Instance.DisconnectingWallet.AddListener(OnWalletDisconnected);
         GameManager.Instance.EVENT_REQUEST_NFT_METADATA.AddListener(OnMetadataRequest);
         GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.AddListener(
             ActivateInnerCharacterSelectionPanel);
@@ -34,7 +34,7 @@ public class CharacterSelectionManager : MonoBehaviour
         characterSelectionContainer.SetActive(activate);
     }
 
-    private void OnWalletDisconnected()
+    private void OnWalletDisconnected(string walletAddress)
     {
         ClearNfts();
     }

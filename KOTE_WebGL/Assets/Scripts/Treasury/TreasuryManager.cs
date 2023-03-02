@@ -28,7 +28,7 @@ public class TreasuryManager : MonoBehaviour
         GameManager.Instance.EVENT_TREASURYPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerTreasuryPanel);
         GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(SetNftPanelContent);
         GameManager.Instance.EVENT_REQUEST_NFT_METADATA.AddListener(OnMetadataRequested);
-        GameManager.Instance.EVENT_WALLET_DISCONNECTED.AddListener(OnWalletDisconnected);
+        WalletManager.Instance.DisconnectingWallet.AddListener(OnWalletDisconnected);
         Button firstCharacterButton = characterList.transform.GetChild(0)?.GetComponent<Button>();
         if (firstCharacterButton != null) firstCharacterButton.onClick?.Invoke();
     }
@@ -43,7 +43,7 @@ public class TreasuryManager : MonoBehaviour
         SetArmorPanelContent();
     }
 
-    private void OnWalletDisconnected()
+    private void OnWalletDisconnected(string walletAddress)
     {
         ClearNfts();
     }

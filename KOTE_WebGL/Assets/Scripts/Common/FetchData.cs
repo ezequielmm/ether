@@ -1,8 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -88,8 +86,53 @@ public class FetchData : DataManager, ISingleton<FetchData>
         return nftMetaDataList;
     }
 
+    public async UniTask<bool> VerifyWallet(WalletSignature walletSignature)
+    {
+        WWWForm form = walletSignature.ToWWWForm();
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.VerifyWalletSignature);
+        using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
+        {
+            string rawJson = await webRequest.MakeRequest(request);
+            return ParseJsonWithPath<bool>(rawJson, "data.isValid");
+        }
+    }
+
+    public async UniTask<List<int>> GetNftsInWalletPerContract(string wallet, string contract) 
+    {
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.VerifyWalletSignature) + $"/{wallet}";
+        using(UnityWebRequest request = UnityWebRequest.Get(requestUrl)) 
+        {
+            string rawJson = await KeepRetryingRequest(request);
+            return ParseJsonWithPath<List<int>>(rawJson, "data");
+        }
+        
+    }
+
+    private async UniTask<string> KeepRetryingRequest(UnityWebRequest request, int tryLimit = 10, float retryDelaySeconds = 3) 
+    {
+        bool successful = false;
+        int trys = 0;
+        int retryDelayInMiliseconds = Mathf.RoundToInt(retryDelaySeconds * 1000);
+        using (request) 
+        {
+            string rawJson = null;
+            while (!successful && trys < tryLimit)
+            {
+                rawJson = await webRequest.MakeRequest(request);
+                successful = !string.IsNullOrEmpty(rawJson);
+                trys++;
+            }
+            await UniTask.Delay(retryDelayInMiliseconds);
+            return rawJson;
+        }
+    }
+
     public static T ParseJsonWithPath<T>(string rawJson, string tokenPath) 
     {
+        if (string.IsNullOrEmpty(rawJson)) 
+        {
+            return default(T);
+        }
         JObject json = JObject.Parse(rawJson);
         T data = json.SelectToken(tokenPath).ToObject<T>();
         return data;
