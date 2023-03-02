@@ -54,7 +54,7 @@ public class ArmoryPanelManagerTests : MonoBehaviour
         GameObject nftSpriteManager = Instantiate(spriteManagerPrefab);
         nftSpriteManager.SetActive(true);
 
-        GameObject armoryPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/MainMenu/ArmoryPanel.prefab");
+        GameObject armoryPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/MainMenu/Armory/ArmoryPanel.prefab");
         armoryPanel = Instantiate(armoryPrefab);
         _armoryPanelManager = armoryPanel.GetComponent<ArmoryPanelManager>();
         yield return null;
