@@ -109,12 +109,14 @@ namespace KOTE.UI.Armory
             }
         };
         // +++++++++++++++ END TEST DATA ++++++++++++++++++++++++
-        [SerializeField] Sprite DefaultNft;
+        public Sprite defaultCharacterSprite;
 
         private void Start()
         {
             panelContainer.SetActive(false);
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.AddListener(ActivateContainer);
+            GameManager.Instance.EVENT_GEAR_RECEIVED.AddListener(PopulateGear);
+            OnGearSelected.AddListener(OnGearItemSelected);
         }
 
         private void ActivateContainer(bool show)
@@ -131,7 +133,7 @@ namespace KOTE.UI.Armory
 
             if (nfts.Count == 0)
             {
-                nftImage.sprite = DefaultNft;
+                nftImage.sprite = defaultCharacterSprite;
                 curNode = null;
                 playButton.interactable = false;
                 return;
