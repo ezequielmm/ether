@@ -30,7 +30,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.ServerVersion);
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
-            string rawJson = await webRequest.MakeRequest(request);
+            string rawJson = await MakeJsonRequest(request);
             return ParseJsonWithPath<string>(rawJson, "data");
         }
     }
@@ -71,28 +71,13 @@ public class FetchData : DataManager, ISingleton<FetchData>
         return ParseJsonWithPath<EncounterData>(rawJson, "data.data");
     }
 
-    public async UniTask<List<NftMetaData>> GetNFTData(List<int> knightIds)
-    {
-        var requestBatch = knightIds.Partition(OpenSeasRequstBuilder.MaxContentRequest);
-        List<NftMetaData> nftMetaDataList = new List<NftMetaData>();
-        foreach (var knightId in knightIds)
-        {
-            using (UnityWebRequest request = OpenSeasRequstBuilder.ConstructKnightRequest(knightIds.ToArray()))
-            {
-                string rawJson = await webRequest.MakeRequest(request);
-                nftMetaDataList.AddRange(ParseJsonWithPath<List<NftMetaData>>(rawJson, "assets"));
-            }
-        }
-        return nftMetaDataList;
-    }
-
     public async UniTask<bool> VerifyWallet(WalletSignature walletSignature)
     {
         WWWForm form = walletSignature.ToWWWForm();
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.VerifyWalletSignature);
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
-            string rawJson = await webRequest.MakeRequest(request);
+            string rawJson = await MakeJsonRequest(request);
             return ParseJsonWithPath<bool>(rawJson, "data.isValid");
         }
     }
@@ -105,8 +90,57 @@ public class FetchData : DataManager, ISingleton<FetchData>
             string rawJson = await KeepRetryingRequest(request);
             return ParseJsonWithPath<List<int>>(rawJson, "data");
         }
-        
     }
+    public async UniTask<List<Nft>> GetNftMetaData(List<int> tokenId, NftContract contract)
+    {
+        var requestBatch = tokenId.Partition(OpenSeasRequstBuilder.MaxContentRequest);
+        List<Nft> nftMetaDataList = new List<Nft>();
+        foreach (var knightId in tokenId)
+        {
+            using (UnityWebRequest request = OpenSeasRequstBuilder.ConstructNftRequest(contract, tokenId.ToArray()))
+            {
+                string rawJson = await MakeJsonRequest(request);
+                nftMetaDataList.AddRange(ParseJsonWithPath<List<Nft>>(rawJson, "assets"));
+            }
+        }
+        foreach (var token in nftMetaDataList) 
+        {
+            token.Contract = contract;
+        }
+        return nftMetaDataList;
+    }
+
+    public async UniTask<Texture2D> GetTexture(string url) 
+    {
+        using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(url)) 
+        {
+            return await MakeTextureRequest(request);
+        }
+    }
+
+    public async UniTask<Texture2D> GetNftSkinElement(TraitSprite spriteData)
+    {
+        string spriteName = spriteData.ImageName + ".png";
+        string requestUrl = ClientEnvironmentManager.Instance.SkinURL + spriteName;
+        return await GetTexture(requestUrl);
+    }
+
+    public async UniTask<bool> RequestNewExpedition(string characterType, int selectedNft)
+    {
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.ExpeditionRequest);
+        
+        WWWForm form = new WWWForm();
+        form.AddField("class", characterType);
+        form.AddField("nftId", selectedNft);
+
+        using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
+        {
+            request.AddAuthToken();
+            string rawJson = await KeepRetryingRequest(request);
+            return ParseJsonWithPath<bool>(rawJson, "data.expeditionCreated");
+        }
+    }
+
 
     private async UniTask<string> KeepRetryingRequest(UnityWebRequest request, int tryLimit = 10, float retryDelaySeconds = 3) 
     {
@@ -118,13 +152,23 @@ public class FetchData : DataManager, ISingleton<FetchData>
             string rawJson = null;
             while (!successful && trys < tryLimit)
             {
-                rawJson = await webRequest.MakeRequest(request);
+                rawJson = await MakeJsonRequest(request);
                 successful = !string.IsNullOrEmpty(rawJson);
                 trys++;
             }
             await UniTask.Delay(retryDelayInMiliseconds);
             return rawJson;
         }
+    }
+
+    private async UniTask<string> MakeJsonRequest(UnityWebRequest request) 
+    {
+        return (await webRequest.MakeRequest(request))?.text;
+    }
+
+    private async UniTask<Texture2D> MakeTextureRequest(UnityWebRequest request)
+    {
+        return ((DownloadHandlerTexture)await webRequest.MakeRequest(request))?.texture;
     }
 
     public static T ParseJsonWithPath<T>(string rawJson, string tokenPath) 

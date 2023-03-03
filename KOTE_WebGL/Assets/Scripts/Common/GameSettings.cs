@@ -92,26 +92,26 @@ public static class GameSettings
     // Player Skin Defaults
     public static TraitSprite[] DEFAULT_SKIN_DATA = new[]
     {
-        new TraitSprite{skinName ="Padding/Padding_Brown",
-        traitType = nameof(Trait.Padding)
+        new TraitSprite{SkinName ="Padding/Padding_Brown",
+        TraitType = nameof(Trait.Padding)
         },
-        new TraitSprite{skinName ="Helmet/Helmet_Bucket",
-        traitType = nameof(Trait.Helmet)
-        },
-        new TraitSprite
-        {
-            skinName = "Weapon/Weapon_Rusty_Sword",
-            traitType =  nameof(Trait.Weapon)
+        new TraitSprite{SkinName ="Helmet/Helmet_Bucket",
+        TraitType = nameof(Trait.Helmet)
         },
         new TraitSprite
         {
-            skinName = "character_shadow",
-            traitType = nameof(Trait.Shadow)
+            SkinName = "Weapon/Weapon_Rusty_Sword",
+            TraitType =  nameof(Trait.Weapon)
         },
         new TraitSprite
         {
-            skinName = "character-nude",
-            traitType = nameof(Trait.Base)
+            SkinName = "character_shadow",
+            TraitType = nameof(Trait.Shadow)
+        },
+        new TraitSprite
+        {
+            SkinName = "character-nude",
+            TraitType = nameof(Trait.Base)
         }
     };
 

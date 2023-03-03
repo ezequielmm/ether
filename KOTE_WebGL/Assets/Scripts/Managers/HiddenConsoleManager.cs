@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using TMPro;
+using Unity.Plastic.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -95,7 +97,7 @@ public class HiddenConsoleManager : MonoBehaviour
         RunCommand(input);
     }
 
-    private void RunCommand(string input, params string[] args)
+    private async void RunCommand(string input, params string[] args)
     {
         bool isCommand = Enum.TryParse(input, out ConsoleCommands command);
         if (!isCommand)
@@ -121,7 +123,8 @@ public class HiddenConsoleManager : MonoBehaviour
             case ConsoleCommands.use_nft:
                 int nftNum = int.Parse(args[0]);
                 PublicLog($"Setting skin to #{nftNum}.");
-                GameManager.Instance.EVENT_REQUEST_NFT_SET_SKIN.Invoke(nftNum);
+                List<Nft> nftList = await FetchData.Instance.GetNftMetaData(new List<int>{ nftNum }, NftContract.KnightsOfTheEther);
+                GameManager.Instance.EVENT_NFT_SELECTED.Invoke(nftList[0]);
                 break;
         }
     }

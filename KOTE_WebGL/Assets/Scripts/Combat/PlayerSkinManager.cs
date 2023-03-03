@@ -46,18 +46,18 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
         List<TraitSprite> skinSprites = PlayerSpriteManager.Instance.GetAllTraitSprites();
         foreach (var traitType in Enum.GetNames(typeof(Trait)))
         {
-            TraitSprite traitSprite = skinSprites.Find(x => x.traitType == traitType);
-            if (string.IsNullOrEmpty(traitSprite.skinName)) continue;
-            Debug.Log("[UpdateSkin] traitSprite.skinName:" + traitSprite.skinName);
-            Skin skin = skeletonData.FindSkin(traitSprite.skinName);
+            TraitSprite traitSprite = skinSprites.Find(x => x.TraitType == traitType);
+            if (string.IsNullOrEmpty(traitSprite.SkinName)) continue;
+            Debug.Log("[UpdateSkin] traitSprite.skinName:" + traitSprite.SkinName);
+            Skin skin = skeletonData.FindSkin(traitSprite.SkinName);
             if (skin == null)
             {
-                Debug.Log("[UpdateSkin] skin" + traitSprite.skinName + "NOT FOUND");
+                Debug.Log("[UpdateSkin] skin" + traitSprite.SkinName + "NOT FOUND");
             }
             else
             {
                 Debug.Log(
-                    $"[UpdateSkin] ADDING SKIN : {traitSprite.skinName} WITH ATTACHMENT {traitSprite.attachmentIndex} AND IMAGE {traitSprite.imageName}");
+                    $"[UpdateSkin] ADDING SKIN : {traitSprite.SkinName} WITH ATTACHMENT {traitSprite.AttachmentIndex} AND IMAGE {traitSprite.ImageName}");
                 equipsSkin.AddSkin(skin);
             }
         }
@@ -66,10 +66,10 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
 
         foreach (Skin.SkinEntry skinAttachment in equipsSkin.Attachments)
         {
-            TraitSprite traitSprite = skinSprites.Find(x => x.attachmentIndex == skinAttachment.SlotIndex);
+            TraitSprite traitSprite = skinSprites.Find(x => x.AttachmentIndex == skinAttachment.SlotIndex);
             // Debug.Log("[UpdateSkin] Attachment name is : " + skinAttachment.Attachment.Name);
-            Sprite attachmentSprite = traitSprite.sprite;
-            string templateSkinName = traitSprite.skinName;
+            Sprite attachmentSprite = traitSprite.Sprite;
+            string templateSkinName = traitSprite.SkinName;
 
             spritesArray.Add(attachmentSprite);
 

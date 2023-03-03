@@ -117,8 +117,7 @@ public class GameManager : SingleTon<GameManager>
 
     //EXPEDITION EVENTS
     [HideInInspector] public UnityEvent EVENT_EXPEDITION_SYNC = new UnityEvent();
-    [HideInInspector] public UnityEvent<bool, int> EVENT_EXPEDITION_STATUS_UPDATE { get; }  = new UnityEvent<bool, int>();
-    [HideInInspector] public UnityEvent EVENT_EXPEDITION_CONFIRMED = new UnityEvent();
+    [HideInInspector] public UnityEvent<bool, int> EVENT_EXPEDITION_STATUS_UPDATE { get; } = new();
     [HideInInspector] public UnityEvent EVENT_REQUEST_EXPEDITION_CANCEL = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_REQUEST_EXPEDITON_SCORE = new UnityEvent();
     
@@ -162,17 +161,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<PlayerData> EVENT_UPDATE_PLAYER = new UnityEvent<PlayerData>();
     
     // NFT SKIN EVENTS
-    [HideInInspector] public UnityEvent<int[]> EVENT_REQUEST_NFT_METADATA { get; } = new UnityEvent<int[]>();
-    [HideInInspector] public UnityEvent<int> EVENT_REQUEST_NFT_SET_SKIN { get; } = new UnityEvent<int>();
-    [HideInInspector] public UnityEvent<NftData> EVENT_NFT_METADATA_RECEIVED { get; } = new UnityEvent<NftData>();
-    
-    [HideInInspector] public UnityEvent<NftMetaData> EVENT_NFT_SELECTED { get; } = new UnityEvent<NftMetaData>();
-    [HideInInspector] public UnityEvent<NftMetaData[]> EVENT_REQUEST_NFT_IMAGE { get; } = new UnityEvent<NftMetaData[]>();
-    
-    [HideInInspector] public UnityEvent<string, Sprite> EVENT_NFT_IMAGE_RECEIVED = new UnityEvent<string, Sprite>();
-    [HideInInspector] public UnityEvent<TraitSprite> EVENT_REQUEST_NFT_SKIN_SPRITE { get; } = new UnityEvent<TraitSprite>();
-    [HideInInspector] public UnityEvent<TraitSprite> EVENT_NFT_SKIN_SPRITE_RECEIVED { get; } = new UnityEvent<TraitSprite>();
-    [HideInInspector] public UnityEvent EVENT_NFT_SKIN_SPRITE_FAILED = new UnityEvent();
+    [HideInInspector] public UnityEvent<Nft> EVENT_NFT_SELECTED { get; } = new UnityEvent<Nft>();
     [HideInInspector] public UnityEvent EVENT_UPDATE_PLAYER_SKIN { get; } = new UnityEvent();
     
     //TOP BAR EVENTS

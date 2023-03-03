@@ -22,8 +22,6 @@ public class MainMenuManager : MonoBehaviour
         connectWalletButton;
 
     private bool _hasWallet => !string.IsNullOrEmpty(WalletManager.Instance.ActiveWallet);
-    private int _selectedNft = -1;
-    private NftMetaData selectedMetadata;
 
     // we need to confirm all verification values before showing the play button
     private bool _hasExpedition;
@@ -48,9 +46,6 @@ public class MainMenuManager : MonoBehaviour
 
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(OnExpeditionUpdate);
         GameManager.Instance.EVENT_OWNS_CURRENT_EXPEDITION_NFT.AddListener(OnCurrentNftConfirmed);
-       
-        // Listen for the metadata for the selected NFT so it can be sent on resume
-        GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(OnCurrentNftDataReceived);
 
         WalletManager.Instance.WalletStatusModified.AddListener(UpdateUiOnWalletModification);
 
@@ -95,7 +90,6 @@ public class MainMenuManager : MonoBehaviour
     {
         _expeditionStatusReceived = true;
         _hasExpedition = hasExpedition;
-        _selectedNft = nftId;
         treasuryButton.gameObject.SetActive(true);
 
         VerifyResumeExpedition();
@@ -106,24 +100,6 @@ public class MainMenuManager : MonoBehaviour
         _ownsSavedNft = ownsNft;
         _ownershipChecked = true;
         VerifyResumeExpedition();
-    }
-
-    private void OnCurrentNftDataReceived(NftData nftData)
-    {
-        if (_selectedNft == -1)
-        {
-            playButton.interactable = true;
-            return;
-        }
-
-        foreach (NftMetaData metaData in nftData.assets)
-        {
-            if (int.Parse(metaData.token_id) == _selectedNft)
-            {
-                selectedMetadata = metaData;
-                playButton.interactable = true;
-            }
-        }
     }
 
     // we need to verify that the player can actually resume or start a new game before presenting those options
@@ -159,7 +135,6 @@ public class MainMenuManager : MonoBehaviour
         // if the player no longer owns the nft, clear the expedition
         else if (_hasExpedition && !_ownsSavedNft)
         {
-            _selectedNft = -1;
             _hasExpedition = false;
             GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.Invoke();
         }
@@ -259,7 +234,6 @@ public class MainMenuManager : MonoBehaviour
             // play the correct music depending on where the player is
             GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Music, 1);
             GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Ambient, 1);
-            GameManager.Instance.EVENT_NFT_SELECTED.Invoke(selectedMetadata);
             GameManager.Instance.LoadScene(inGameScenes.Expedition);
         }
         else

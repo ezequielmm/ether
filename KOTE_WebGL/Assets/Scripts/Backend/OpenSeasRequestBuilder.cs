@@ -13,9 +13,9 @@ public static class OpenSeasRequstBuilder
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
         return openSeaRequest;
     }
-    public static UnityWebRequest ConstructKnightRequest(params int[] tokenIds)
+    public static UnityWebRequest ConstructNftRequest(NftContract contract, params int[] tokenIds)
     {
-        string KnightContract = NftManager.GetNftContractAddress(NftContract.KnightsOfTheEther);
+        string KnightContract = NftManager.GetNftContractAddress(contract);
         return ConstructTokenRequest(KnightContract, tokenIds);
     }
     private static string BuildRequestUrl(string contractId, params int[] tokenIds)

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Networking;
 
-public static class LinqExtension
+public static class Extensions
 {
     public static IEnumerable<IEnumerable<T>> Partition<T>(this IEnumerable<T> sequence, int size)
     {
@@ -16,5 +18,17 @@ public static class LinqExtension
         }
         if (partition.Count > 0)
             yield return partition;
+    }
+
+    public static Sprite ToSprite(this Texture2D texture) 
+    {
+        Rect imageSize = new Rect(0, 0, texture.width, texture.height);
+        return Sprite.Create(texture, imageSize, Vector2.zero);
+    }
+
+    public static void AddAuthToken(this UnityWebRequest request)
+    {
+        string token = PlayerPrefs.GetString("session_token");
+        request.SetRequestHeader("Authorization", $"Bearer {token}");
     }
 }

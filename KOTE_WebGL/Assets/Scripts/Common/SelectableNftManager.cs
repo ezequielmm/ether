@@ -4,13 +4,13 @@ using UnityEngine.UI;
 
 public class SelectableNftManager : MonoBehaviour
 {
-    public TreasuryNftItem internalPrefab;
+    public NftItem internalPrefab;
     public Toggle toggle;
     public bool isSelected;
 
-    public void Populate(NftMetaData nftMetaData, UnityAction<bool> onToggle)
+    public void Populate(Nft nft, UnityAction<bool> onToggle)
     {
-        internalPrefab.Populate(nftMetaData);
+        internalPrefab.Populate(nft);
         toggle.onValueChanged.AddListener(onToggle);
     }
     
