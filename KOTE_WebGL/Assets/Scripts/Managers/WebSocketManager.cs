@@ -21,8 +21,6 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     private const string WS_MESSAGE_ENEMY_INTENTS = "EnemiesIntents";
     private const string WS_MESSAGE_PUT_DATA = "PutData";
 
-    const int LengthOfIdToLog = 4;
-
 
     [SerializeField] private string SocketStatus = "Unknown";
     private bool doNotResuscitate = false;
@@ -210,11 +208,11 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
         //customNamespace.On<string>("ExpeditionMap", (arg1) => Debug.Log("Data from ReceiveExpeditionStatus:" + arg1));
 
-        rootSocket.On<string>(WS_MESSAGE_EXPEDITION_MAP, GenericParserWithoutCallback);
-        rootSocket.On<string>(WS_MESSAGE_PLAYER_STATE, GenericParserWithoutCallback);
-        rootSocket.On<string>(WS_MESSAGE_INIT_COMBAT, GenericParserWithoutCallback);
-        //rootSocket.On<string>(WS_MESSAGE_ENEMY_INTENTS, GenericParserWithoutCallback);
-        rootSocket.On<string>(WS_MESSAGE_PUT_DATA, GenericParserWithoutCallback);
+        rootSocket.On<string>(WS_MESSAGE_EXPEDITION_MAP, GenericParser);
+        rootSocket.On<string>(WS_MESSAGE_PLAYER_STATE, GenericParser);
+        rootSocket.On<string>(WS_MESSAGE_INIT_COMBAT, GenericParser);
+        //rootSocket.On<string>(WS_MESSAGE_ENEMY_INTENTS, GenericParser);
+        rootSocket.On<string>(WS_MESSAGE_PUT_DATA, GenericParser);
 
 
         //  manager.Open();
@@ -233,12 +231,6 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         {
             Debug.LogException(e);
         }
-    }
-
-    private void GenericParserWithoutCallback(string data)
-    {
-        LogIncoming(data);
-        GenericParser(data);
     }
 
     void OnConnected(ConnectResponse resp)
@@ -272,6 +264,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         //Debug.Log("[WebSocket Manager] Sending message NodeSelected with node id " + nodeId);
         //customNamespace.Emit("NodeSelected",nodeId);
 
+        LogEmission(SocketEvent.NodeSelected, nodeId);
         EmitWithResponse(OnNodeClickedAnswer, SocketEvent.NodeSelected, nodeId);
     }
 
@@ -389,6 +382,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void OnEndTurn()
     {
+        LogEmission(SocketEvent.EndTurn);
         EmitWithResponse(OnEndOfTurnAnswer, SocketEvent.EndTurn);
     }
 
@@ -466,7 +460,9 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         }
 
         await UniTask.WaitUntil(() => promise.Completed);
-        LogResponse(promise.Id, promise.Json);
+        Debug.Log($"[WebSocketManager] RESPONSE [{promise.Id.ToString().Substring(0,4)}] <<< {promise.Json}");
+        ServerCommunicationLogger.Instance.LogCommunication($"[WebSocketManager] RESPONSE [{promise.Id.ToString().Substring(0, 4)}] <<<",
+            CommunicationDirection.Incoming, promise.Json);
         return promise.Json;
     }
 
@@ -486,13 +482,9 @@ public class WebSocketManager : SingleTon<WebSocketManager>
                 $"[WebSocketManager] Socket is Unhealthy. Queuing Emission with Response ({eventName}) for Later.");
             return;
         }
-        Guid requestId = Guid.NewGuid();
-        LogEmissionExpectingResponse(requestId, eventName, variables);
-        rootSocket.ExpectAcknowledgement<string>((json) => 
-        {
-            LogResponse(requestId, json);
-            parser(json);
-        }).Emit(eventName, variables);
+
+        LogEmissionExpectingResponse(Guid.NewGuid(), eventName, variables);
+        rootSocket.ExpectAcknowledgement<string>(parser).Emit(eventName, variables);
     }
 
 
@@ -503,59 +495,36 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     }
 #endif
 
-    private void LogResponse(Guid requestId, string rawJson) 
+    private void LogEmission(params object[] variables)
     {
-        string requestIdShortened = requestId.ToString().Substring(0, LengthOfIdToLog);
-        Debug.Log($"[WebSocketManager] RESPONSE [{requestIdShortened}] <<< {rawJson}");
-        SendIncomingCommunicationLogs($"[WebSocketManager] RESPONSE [{requestIdShortened}] <<<", rawJson);
+        SendCommunicationLogs($"[WebSocketManager] Socket Emit >>> {VariablesToHumanReadable(variables)}", VariablesToJson(variables));
     }
 
-    private void LogIncoming(string rawJson)
+    private void LogEmissionExpectingResponse(Guid pairingId, params object[] variables)
     {
-        Debug.Log($"[WebSocketManager] INCOMING <<< {rawJson}");
-        SendIncomingCommunicationLogs($"[WebSocketManager] INCOMING <<<", rawJson);
+        string messageId = pairingId.ToString().Substring(0, 4);
+        SendCommunicationLogs($"[WebSocketManager] Socket Emit [{messageId}] >>> {VariablesToHumanReadable(variables)}", VariablesToJson(variables));
     }
 
-    private void LogEmission(string eventName, params object[] variables)
+    private void SendCommunicationLogs(string stringLog, string rawJson) 
     {
-        string variableString = VariablesToHumanReadable(eventName, variables);
-        string jsonString = VariablesToJson(eventName, variables);
-        Debug.Log($"[WebSocketManager] EMISSION >>> {jsonString}");
-        SendOutgoingCommunicationLogs($"[WebSocketManager] EMISSION >>> {variableString}", jsonString);
-    }
-
-    private void LogEmissionExpectingResponse(Guid requestId, string eventName, params object[] variables)
-    {
-        string requestIdShortened = requestId.ToString().Substring(0, LengthOfIdToLog);
-        string variableString = VariablesToHumanReadable(eventName, variables);
-        string jsonString = VariablesToJson(eventName, variables);
-        Debug.Log($"[WebSocketManager] EMISSION [{requestIdShortened}] >>> {jsonString}");
-        SendOutgoingCommunicationLogs($"[WebSocketManager] EMISSION [{requestIdShortened}] >>> {variableString}", jsonString);
-    }
-
-    private void SendOutgoingCommunicationLogs(string stringLog, string rawJson) 
-    {
+        Debug.Log($"{stringLog}\n{rawJson}");
         ServerCommunicationLogger.Instance.LogCommunication(stringLog, CommunicationDirection.Outgoing, rawJson);
-    }
-
-    private void SendIncomingCommunicationLogs(string stringLog, string rawJson)
-    {
-        ServerCommunicationLogger.Instance.LogCommunication(stringLog, CommunicationDirection.Incoming, rawJson);
     }
 
     private class OutgoingMessage 
     {
         public object eventName;
-        public object[] variables;
+        public List<object> variables = new();
     }
 
-    private string VariablesToHumanReadable(string eventName, params object[] variables) 
+    private string VariablesToHumanReadable(params object[] variables) 
     {
         StringBuilder sb = new StringBuilder();
-        sb.Append($"Event: {eventName}");
         if (variables != null && variables.Length >= 1)
         {
-            for (int i = 0; i < variables.Length; i++)
+            sb.Append($"Event: {variables[0]}");
+            for (int i = 1; i < variables.Length; i++)
             {
                 sb.Append($" | Param [{i}]: {variables[i]}");
             }
@@ -563,12 +532,20 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         return sb.ToString();
     }
 
-    private string VariablesToJson(string eventName, params object[] variables) 
+    private string VariablesToJson(params object[] variables) 
     {
         OutgoingMessage temporaryContainer = new OutgoingMessage();
 
-        temporaryContainer.eventName = eventName;
-        temporaryContainer.variables = variables;
+        if(variables.Length >= 1) 
+        {
+            temporaryContainer.eventName = variables[0];
+        }
+
+        temporaryContainer.variables = variables.ToList();
+        if (temporaryContainer.variables.Count >= 1)
+        { 
+            temporaryContainer.variables.RemoveAt(0);
+        }
 
         return JsonConvert.SerializeObject(temporaryContainer);
     }
