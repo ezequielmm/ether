@@ -15,15 +15,15 @@ namespace KOTE.Expedition.Combat.Cards
         internal bool hasUnplayableKeyword;
         internal bool inTransit;
         internal CARDS_POSITIONS_TYPES currentPosition;
-
+        
         // timer events
         private bool playResponseReceived;
         private bool timerRunning;
-
+        
         // card modules
         private CardVisualsManager cardVisuals;
         private CardMovementManager cardMovement;
-
+        
         internal bool cardActive
         {
             get => _cardActive;
@@ -33,12 +33,11 @@ namespace KOTE.Expedition.Combat.Cards
                 cardVisuals.UpdateCardBasedOnEnergy();
             }
         }
-
+        
         private void Awake()
         {
             cardVisuals = GetComponent<CardVisualsManager>();
             cardMovement = GetComponent<CardMovementManager>();
-            cardVisuals.DisableCardContent();
         }
 
         private void Start()
@@ -54,7 +53,7 @@ namespace KOTE.Expedition.Combat.Cards
             GameManager.Instance.EVENT_CARD_PLAYED.AddListener(StartTimeout);
             GameManager.Instance.EVENT_MOVE_CARDS.AddListener(OnMoveCards);
         }
-
+        
         public void SetCardPosition(Vector3 targetPosition, Vector3 targetRotation)
         {
             cardMovement.targetPosition = targetPosition;
@@ -70,7 +69,7 @@ namespace KOTE.Expedition.Combat.Cards
         public bool TryMoveCardIfClose(CARDS_POSITIONS_TYPES originType, CARDS_POSITIONS_TYPES destinationType,
             out Sequence sequence)
         {
-            return cardMovement.TryMoveCardIfClose(originType, destinationType, out sequence);
+           return cardMovement.TryMoveCardIfClose(originType, destinationType, out sequence);
         }
 
         public Sequence OnCardToMove(CardToMoveData data, float delayIndex)
@@ -83,8 +82,7 @@ namespace KOTE.Expedition.Combat.Cards
             cardMovement.TryResetPosition();
         }
 
-        public void Populate(Card card, int energy,
-            Vector3[] pileOrthoPositions)
+        public void Populate(Card card, int energy, Vector3[] pileOrthoPositions)
         {
             cardData = card;
             cardVisuals.Populate(card, energy);
@@ -118,7 +116,7 @@ namespace KOTE.Expedition.Combat.Cards
 
         internal void StartTimeout(string cardId, string enemyId)
         {
-            if (id == cardId) StartCoroutine(CardTimeout());
+            if(id == cardId) StartCoroutine(CardTimeout());
         }
 
         private void OnMoveCards(List<(CardToMoveData, float)> cards)
@@ -139,7 +137,6 @@ namespace KOTE.Expedition.Combat.Cards
                 Debug.LogWarning($"Warning! No move response after playing card {id}. Discarding card.");
                 cardMovement.MoveCard(currentPosition, CARDS_POSITIONS_TYPES.discard).Play();
             }
-
             timerRunning = false;
         }
     }

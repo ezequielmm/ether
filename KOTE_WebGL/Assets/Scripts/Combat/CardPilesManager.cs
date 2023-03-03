@@ -7,7 +7,6 @@ namespace KOTE.Expedition.Combat.Cards.Piles
 {
     public class CardPilesManager : MonoBehaviour
     {
-        public CardAnimationQueue animationQueue;
         public CardManager SpriteCardPrefab;
         public DiscardPileManager discardManager;
         public ExhaustPileManager exhaustManager;
@@ -80,9 +79,10 @@ namespace KOTE.Expedition.Combat.Cards.Piles
                 $"[CardPilesManager] Card Piles Retrieved. draw.count: {cardPilesData.data.draw.Count} | hand.count: {cardPilesData.data.hand.Count} | discard.count: {cardPilesData.data.discard.Count} | exhaust.count: {cardPilesData.data.exhausted.Count}");
             requestAgain = false;
 
-            ClearHand();
-            PopulateHand();
-            
+            ClearCardLists();
+
+            PopulateCardLists();
+
             // Debug.Log("[CardPilesManager] listOfCardsOnHand.Count:" + listOfCardsOnHand.Count);
             StartCoroutine(ConfirmCardsAreInDrawPile());
         }
@@ -92,17 +92,34 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             return cardPilesData == null || cardPilesData.data.hand.Count < 1;
         }
 
-        private void ClearHand()
+        private void ClearCardLists()
         {
             handManager.handDeck.Clear();
-            
+            drawManager.drawDeck.Clear();
+            discardManager.discardDeck.Clear();
+            exhaustManager.exhaustDeck.Clear();
         }
 
-        private void PopulateHand()
+        private void PopulateCardLists()
         {
             foreach (Card card in cardPilesData.data.hand)
             {
                 SpawnCardToPile(handManager.handDeck, card);
+            }
+
+            foreach (Card card in cardPilesData.data.draw)
+            {
+                SpawnCardToPile(drawManager.drawDeck, card);
+            }
+
+            foreach (Card card in cardPilesData.data.discard)
+            {
+                SpawnCardToPile(discardManager.discardDeck, card);
+            }
+
+            foreach (Card card in cardPilesData.data.exhausted)
+            {
+                SpawnCardToPile(exhaustManager.exhaustDeck, card);
             }
         }
 
@@ -116,65 +133,6 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             {
                 cardPile.Add(MasterCardList[card.id]);
             }
-        }
-        
-        private void OnCardsPilesUpdated(CardPiles data)
-        {
-            Debug.Log("[CardPilesManager] OnCardPilesUpdated");
-            cardPilesData = data;
-
-            foreach (Card card in data.data.draw)
-            {
-                VerifyCardPosition(card, CARDS_POSITIONS_TYPES.draw, drawManager.drawDeck);
-            }
-
-            foreach (Card card in data.data.discard)
-            {
-                VerifyCardPosition(card, CARDS_POSITIONS_TYPES.discard, discardManager.discardDeck);
-            }
-
-            foreach (Card card in data.data.exhausted)
-            {
-                VerifyCardPosition(card, CARDS_POSITIONS_TYPES.exhaust, exhaustManager.exhaustDeck);
-            }
-        }
-
-        internal void UpdatePilesOnMove(string cardId, string originType, string destinationType)
-        {
-            CARDS_POSITIONS_TYPES origin = Utils.ParseEnum<CARDS_POSITIONS_TYPES>(originType);
-            CARDS_POSITIONS_TYPES destination = Utils.ParseEnum<CARDS_POSITIONS_TYPES>(destinationType);
-            CardManager curCard = MasterCardList[cardId];
-            List<CardManager> originPile = GetCardPileFromType(origin);
-            List<CardManager> destinationPile = GetCardPileFromType(destination);
-
-            originPile.Remove(curCard);
-            destinationPile.Add(curCard);
-        }
-
-        private void VerifyCardPosition(Card card, CARDS_POSITIONS_TYPES position, List<CardManager> cardPile)
-        {
-            if (!ConfirmCardIsInPile(card, cardPile))
-            {
-                if (!MasterCardList.ContainsKey(card.id))
-                {
-                    InitialCardSpawn(cardPile, card);
-                }
-                else
-                {
-                    CardManager cardManager = MasterCardList[card.id];
-                    animationQueue.AddSequenceToQueue(cardManager.MoveCard(cardManager.currentPosition, position));
-                }
-            }
-        }
-
-        private bool ConfirmCardIsInPile(Card card, List<CardManager> cardPile)
-        {
-            if (MasterCardList.ContainsKey(card.id) && cardPile.Exists(x => x.cardData.id == card.id))
-            {
-                return true;
-            }
-
-            return false;
         }
 
         // called when creating cards at start of combat
@@ -209,24 +167,6 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             cardManager.Populate(card, cardPilesData.data.energy, pileOrthoPositionArray);
             MasterCardList.Add(card.id, cardManager);
             return cardManager;
-        }
-
-        
-        private List<CardManager> GetCardPileFromType(CARDS_POSITIONS_TYPES pileType)
-        {
-            switch (pileType)
-            {
-                case CARDS_POSITIONS_TYPES.draw:
-                    return drawManager.drawDeck;
-                case CARDS_POSITIONS_TYPES.hand:
-                    return handManager.handDeck;
-                case CARDS_POSITIONS_TYPES.discard:
-                    return discardManager.discardDeck;
-                case CARDS_POSITIONS_TYPES.exhaust:
-                    return exhaustManager.exhaustDeck;
-                default:
-                    return null;
-            }
         }
 
         private IEnumerator ConfirmCardsAreInDrawPile()
@@ -299,6 +239,59 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             requestTimerIsRunning = false;
         }
 
+        private void OnCardsPilesUpdated(CardPiles data)
+        {
+            Debug.Log("[CardPilesManager] OnCardPilesUpdated");
+            cardPilesData = data;
+
+            foreach (Card card in data.data.draw)
+            {
+                VerifyCardPosition(card, CARDS_POSITIONS_TYPES.draw, drawManager.drawDeck);
+            }
+
+            foreach (Card card in data.data.hand)
+            {
+                VerifyCardPosition(card, CARDS_POSITIONS_TYPES.hand, handManager.handDeck);
+            }
+
+            foreach (Card card in data.data.discard)
+            {
+                VerifyCardPosition(card, CARDS_POSITIONS_TYPES.discard, discardManager.discardDeck);
+            }
+
+            foreach (Card card in data.data.exhausted)
+            {
+                VerifyCardPosition(card, CARDS_POSITIONS_TYPES.exhaust, exhaustManager.exhaustDeck);
+            }
+        }
+
+        private void VerifyCardPosition(Card card, CARDS_POSITIONS_TYPES position, List<CardManager> cardPile)
+        {
+            if (!ConfirmCardIsInPile(card, position))
+            {
+                if (!MasterCardList.ContainsKey(card.id))
+                {
+                    InitialCardSpawn(cardPile, card);
+                }
+                else
+                {
+                    CardManager cardManager = MasterCardList[card.id];
+                    cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, position);
+                }
+            }
+        }
+
+        private bool ConfirmCardIsInPile(Card card, CARDS_POSITIONS_TYPES position)
+        {
+            if (MasterCardList.ContainsKey(card.id) && MasterCardList[card.id].currentPosition == position)
+            {
+                return true;
+            }
+            
+            return false;
+        }
+
+
         private void OnCardDestroyed(string cardId)
         {
             Debug.Log("[CardPilesManager] Removing card " + cardId + " from hand");
@@ -312,7 +305,7 @@ namespace KOTE.Expedition.Combat.Cards.Piles
 
             handManager.StartRelocateCards();
         }
-
+        
         private Vector3 TransformUIToOrtho(GameObject cardPile)
         {
             Vector3 pos = cardPile.transform.position; //(1.1, 104.5, 0.0)
@@ -329,4 +322,6 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             return new Vector3(xx, yy, handManager.transform.position.z);
         }
     }
+    
+    
 }
