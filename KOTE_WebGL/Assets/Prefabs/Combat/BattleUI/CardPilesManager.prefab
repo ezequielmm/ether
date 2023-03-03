@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66c90e0f52e3ecf488b6660b5a1ea26b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animationQueue: {fileID: 7047464487285149285}
   SpriteCardPrefab: {fileID: 771487587530092360, guid: 4912c08d2b3482c44800e4ee984fc359,
     type: 3}
   discardManager: {fileID: 0}
