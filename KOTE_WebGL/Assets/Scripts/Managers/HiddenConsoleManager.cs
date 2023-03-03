@@ -1,9 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using TMPro;
-using Unity.Plastic.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -97,7 +93,7 @@ public class HiddenConsoleManager : MonoBehaviour
         RunCommand(input);
     }
 
-    private async void RunCommand(string input, params string[] args)
+    private void RunCommand(string input, params string[] args)
     {
         bool isCommand = Enum.TryParse(input, out ConsoleCommands command);
         if (!isCommand)

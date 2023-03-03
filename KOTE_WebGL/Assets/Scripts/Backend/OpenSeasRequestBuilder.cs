@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 
 public static class OpenSeasRequstBuilder
 {
-    public static readonly int MaxContentRequest = 30;
+    public static int MaxContentRequest => GameSettings.MAX_OPENSEA_CONTENT_REQUEST;
     public static UnityWebRequest ConstructTokenRequest(string contractId, params int[] tokenIds)
     {
         string requestUrl = BuildRequestUrl(contractId, tokenIds);
@@ -23,6 +23,8 @@ public static class OpenSeasRequstBuilder
         StringBuilder requestString = new StringBuilder();
         requestString.Append("https://api.opensea.io/api/v1/assets?token_ids=");
         requestString.Append(string.Join("&token_ids=", tokenIds));
+        requestString.Append("&limit=");
+        requestString.Append(MaxContentRequest);
         requestString.Append("&format=json&asset_contract_address=");
         requestString.Append(contractId);
         return requestString.ToString();

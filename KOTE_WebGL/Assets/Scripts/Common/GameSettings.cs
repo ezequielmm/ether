@@ -84,6 +84,8 @@ public static class GameSettings
     // Logging
     public static LogType FilterLogType = LogType.Log;
 
+    public static int MAX_OPENSEA_CONTENT_REQUEST = 30;
+
 
 #if UNITY_EDITOR
     public const string EDITOR_WALLET = "0x1Ef6Ccf27f778dbb37241e6fD86eD69f79300F84";
