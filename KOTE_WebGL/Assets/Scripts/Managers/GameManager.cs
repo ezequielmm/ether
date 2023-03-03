@@ -24,7 +24,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string, string> EVENT_REQUEST_LOGIN = new UnityEvent<string, string>();
     [HideInInspector] public UnityEvent<string, int> EVENT_REQUEST_LOGIN_SUCESSFUL = new UnityEvent<string, int>();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_LOGIN_ERROR = new UnityEvent<string>();
-    [HideInInspector] public UnityEvent<bool> EVENT_LOGINPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<bool> EVENT_LOGINPANEL_ACTIVATION_REQUEST { get; } = new UnityEvent<bool>();
 
     //PROFILE EVENTS
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_PROFILE { get; } = new UnityEvent<string>();

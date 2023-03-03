@@ -247,8 +247,10 @@ namespace Papertrail
         private IEnumerator LogWebRequest(string msg)
         {
 #if UNITY_EDITOR
-            if (Environment.StackTrace.Contains("UnityEngine.TestRunner"))
+            if (UnitTestDetector.IsRunningFromNUnit)
+            {
                 yield break;
+            }
 #endif
             using (UnityWebRequest request =
                    new UnityWebRequest("https://logs.collector.solarwinds.com/v1/log", "POST"))

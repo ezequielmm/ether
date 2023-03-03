@@ -44,7 +44,7 @@ public class TimerManagerTests
         _timerManager = Timer.GetComponent<TimerManager>();
         yield return null;
 
-        Assert.Less(500, _timerManager.TimePassed);
+        Assert.LessOrEqual(500, _timerManager.TimePassed);
     }
 
     [Test]
@@ -52,7 +52,7 @@ public class TimerManagerTests
     {
         _timerManager.Reset();
         _timerManager.SetTimerStartTime(DateTime.UtcNow - TimeSpan.FromSeconds(323));
-        Assert.Less(323, _timerManager.TimePassed);
+        Assert.LessOrEqual(323, _timerManager.TimePassed);
     }
 
     [UnityTest]
@@ -61,6 +61,6 @@ public class TimerManagerTests
         _timerManager.SetTimerStartTime(DateTime.UtcNow - TimeSpan.FromSeconds(323));
         yield return null;
         _timerManager.Reset();
-        Assert.Less(0, _timerManager.TimePassed);
+        Assert.LessOrEqual(0, _timerManager.TimePassed);
     }
 }

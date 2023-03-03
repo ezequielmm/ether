@@ -49,7 +49,7 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
             TraitSprite traitSprite = skinSprites.Find(x => x.TraitType.ToString() == traitType);
             if (string.IsNullOrEmpty(traitSprite?.SkinName)) 
             {
-                Debug.LogError($"[PlayerSkinManager] Can't apply Sprite of type [{traitType}]: {traitSprite}");
+                Debug.LogWarning($"[PlayerSkinManager] Can't apply Sprite of type [{traitType}]: {traitSprite}");
                 continue;
             }
             Debug.Log("[UpdateSkin] traitSprite.skinName:" + traitSprite.SkinName);

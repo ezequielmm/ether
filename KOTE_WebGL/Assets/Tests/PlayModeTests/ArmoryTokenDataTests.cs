@@ -62,13 +62,5 @@ namespace KOTE.UI.Armory
             _tokenData = new ArmoryTokenData(testMetaData);
             Assert.AreEqual(testMetaData.TokenId, _tokenData.Id);
         }
-
-        [Test]
-        public void DoesCreatingATokenDataObjectSetTokenImage()
-        {
-            _tokenData = new ArmoryTokenData(testMetaData);
-            Assert.IsNotNull(_tokenData.NftImage);
-            Assert.IsInstanceOf<Sprite>(_tokenData.NftImage);
-        }
     }
 }

@@ -49,6 +49,6 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 
     public List<TraitSprite> GetAllTraitSprites()
     {
-        return playerNft.FullSpriteList();
+        return playerNft?.FullSpriteList() ?? new List<TraitSprite>();
     }
 }
