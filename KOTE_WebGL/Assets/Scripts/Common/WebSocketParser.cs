@@ -10,6 +10,11 @@ public class WebSocketParser
     {
         SWSM_Base swsm = JsonConvert.DeserializeObject<SWSM_Base>(data);
 
+        Debug.Log($"[WebSocketParser] <<< [MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}\n{data}");
+        ServerCommunicationLogger.Instance.LogCommunication(
+            $"[MessageType] {swsm.data.message_type}, [Action] {swsm.data.action}", CommunicationDirection.Incoming,
+            data);
+
         switch (swsm.data.message_type)
         {
             case nameof(WS_MESSAGE_TYPES.map_update):

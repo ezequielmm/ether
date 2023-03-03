@@ -1,25 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
 using TMPro;
 using UnityEngine;
-using static UnityEngine.UI.CanvasScaler;
 
 public class ClockManager : MonoBehaviour
 {
     [SerializeField]
-    public bool ShowMilliSeconds = true;
+    bool showMilliSeconds = true;
     [SerializeField]
-    public bool AlwaysShowMilliSeconds = false;
+    bool forceMilliSeconds = false;
     [SerializeField]
-    public bool ShowSeconds = true;
+    bool showSeconds = true;
     [SerializeField]
-    public bool AlwaysShowMinutes = true;
+    bool forceMinutes = true;
     [SerializeField]
-    public bool AlwaysShowHours = false;
+    bool forceHours = false;
     [SerializeField]
-    public bool AlwaysShowUnits = false;
+    bool forceUnits = false;
 
     public float Seconds;
 
@@ -49,19 +46,17 @@ public class ClockManager : MonoBehaviour
         int millis = Mathf.FloorToInt(s*1000 % 1000);
         int sec = Mathf.FloorToInt(s % 60);
         int min = Mathf.FloorToInt((s / 60) % 60);
-        int hour = Mathf.FloorToInt(s / 3600);
+        int hour = Mathf.FloorToInt((s / 3600) % 60);
 
         string unit = string.Empty;
 
         List<string> places = new List<string>();
-
-        if (AlwaysShowHours || hour > 0) 
+        if (forceHours || hour > 0) 
         {
             places.Add($"{hour:0}");
             unit = "h";
         }
-        if (AlwaysShowMinutes || min > 0 && !AlwaysShowHours || hour > 0 && !AlwaysShowHours 
-            || AlwaysShowMinutes && AlwaysShowHours)
+        if (forceMinutes || min > 0)
         {
             string minString = string.Empty;
             if (places.Count == 0)
@@ -75,7 +70,7 @@ public class ClockManager : MonoBehaviour
             places.Add(minString);
             unit = "m";
         }
-        if (ShowSeconds || !AlwaysShowMinutes && !AlwaysShowHours)
+        if (showSeconds || !forceMinutes && !forceHours)
         {
             string secString = string.Empty;
             if (places.Count == 0)
@@ -86,7 +81,7 @@ public class ClockManager : MonoBehaviour
             {
                 secString = $"{sec:00}";
             }
-            if (ShowMilliSeconds && (AlwaysShowMilliSeconds || (min == 0 && !AlwaysShowMinutes && hour == 0)))
+            if (showMilliSeconds && (forceMilliSeconds || (min == 0 && !forceMinutes && hour == 0)))
             {
                 secString += $".{millis:000}";
             }
@@ -94,6 +89,6 @@ public class ClockManager : MonoBehaviour
             unit = "s";
         }
 
-        return (Seconds < 0 ? "-" : "") + string.Join(":", places) + (places.Count == 1 || AlwaysShowUnits ? unit : "");
+        return (Seconds < 0 ? "-" : "") + string.Join(":", places) + (places.Count == 1 || forceUnits ? unit : "");
     }
 }

@@ -75,16 +75,8 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
     public static T ParseJsonWithPath<T>(string rawJson, string tokenPath) 
     {
-        try
-        {
-            JObject json = JObject.Parse(rawJson);
-            T data = json.SelectToken(tokenPath).ToObject<T>();
-            return data;
-        }
-        catch (Exception e)
-        {
-            Debug.LogException(e);
-            return default(T);
-        }
+        JObject json = JObject.Parse(rawJson);
+        T data = json.SelectToken(tokenPath).ToObject<T>();
+        return data;
     } 
 }

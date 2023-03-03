@@ -56,7 +56,8 @@ namespace KOTE.Expedition.Combat.Cards
             discardPileOrthoPosition = cardPilePositions[1];
             exhaustPileOrthoPosition = cardPilePositions[2];
         }
-
+        
+        
         internal void ShowPointer()
         {
             //show the pointer instead of following the mouse
@@ -316,7 +317,6 @@ namespace KOTE.Expedition.Combat.Cards
                     }
                 }
             }
-
             return sequence;
         }
 
