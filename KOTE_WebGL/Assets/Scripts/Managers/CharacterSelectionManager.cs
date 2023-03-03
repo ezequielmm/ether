@@ -86,25 +86,7 @@ public class CharacterSelectionManager : MonoBehaviour
         }
     }
 
-    public async void OnStartExpedition()
-    {
-        startExpeditionButton.enabled = false;
-        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-        GameManager.Instance.EVENT_NFT_SELECTED.Invoke(selectedNft.internalPrefab.Nft);
-        bool success = await FetchData.Instance.RequestNewExpedition("knight", selectedNft.internalPrefab.Nft.TokenId);
-        if(success) 
-        {
-            OnExpeditionConfirmed();
-        }
-    }
-
-    private void OnExpeditionConfirmed()
-    {
-        // play the correct music depending on where the player is
-        GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Music, 1);
-        GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Ambient, 1);
-        GameManager.Instance.LoadScene(inGameScenes.Expedition);
-    }
+    
 
     public void OnArmoryButton()
     {
@@ -118,10 +100,6 @@ public class CharacterSelectionManager : MonoBehaviour
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         ActivateInnerCharacterSelectionPanel(false);
     }
-
-    // Leaving this so we still have it when we need to do class selections
-
-    #region ClassSelect
 
     public void OnCharacterSelected(GameObject currentClassBorder)
     {
@@ -138,6 +116,4 @@ public class CharacterSelectionManager : MonoBehaviour
     {
         currentClass = selectedClass;
     }
-
-    #endregion
 }

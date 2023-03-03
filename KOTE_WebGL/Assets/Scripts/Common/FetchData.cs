@@ -143,7 +143,6 @@ public class FetchData : DataManager, ISingleton<FetchData>
         }
     }
 
-
     private async UniTask<string> KeepRetryingRequest(UnityWebRequest request, int tryLimit = 10, float retryDelaySeconds = 3) 
     {
         bool successful = false;
@@ -179,7 +178,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
             T data = json.SelectToken(tokenPath).ToObject<T>();
             return data;
         }
-        catch (Exception e)
+        catch (System.Exception e)
         {
             Debug.LogException(e);
             return default(T);

@@ -31,24 +31,6 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         GameManager.Instance.EVENT_SEND_BUG_FEEDBACK.AddListener(SendBugReport);
     }
 
-    private void Start()
-    {
-        if (GameManager.Instance.webRequester == null)
-        {
-            GameManager.Instance.webRequester = this;
-            DontDestroyOnLoad(this);
-        }
-        else if (GameManager.Instance.webRequester != this)
-        {
-            Destroy(this.gameObject);
-        }
-    }
-    
-    internal void RequestStartExpedition(string characterType, string selectedNft)
-    {
-        StartCoroutine(RequestNewExpedition(characterType, selectedNft));
-    }
-
     public void RequestLogout(string token)
     {
         StartCoroutine(GetLogout(token));
