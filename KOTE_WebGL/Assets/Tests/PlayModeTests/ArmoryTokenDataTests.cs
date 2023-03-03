@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -10,17 +11,13 @@ namespace KOTE.UI.Armory
     {
         private ArmoryTokenData _tokenData;
 
-        private NftMetaData testMetaData = new NftMetaData
+        private Nft testMetaData = new Nft()
         {
-            image_url = "test.com",
-            token_id = "0000",
-            traits = new[]
+            ImageUrl = "test.com",
+            TokenId = 0,
+            Traits = new Dictionary<Trait, string>()
             {
-                new Trait
-                {
-                    trait_type = "helmet",
-                    value = "helmet"
-                }
+                { Trait.Helmet, "helmet" }
             }
         };
 
@@ -38,7 +35,6 @@ namespace KOTE.UI.Armory
         [UnityTearDown]
         public IEnumerator TearDown()
         {
-            NftImageManager.Instance.DestroyInstance();
             GameManager.Instance.DestroyInstance();
             yield return null;
         }
@@ -64,31 +60,7 @@ namespace KOTE.UI.Armory
         public void DoesCreatingATokenDataObjectPopulateId()
         {
             _tokenData = new ArmoryTokenData(testMetaData);
-            Assert.AreEqual(testMetaData.token_id, _tokenData.Id);
-        }
-
-        [Test]
-        public void DoesCreatingATokenDataObjectSetTokenImage()
-        {
-            _tokenData = new ArmoryTokenData(testMetaData);
-            Assert.IsNotNull(_tokenData.NftImage);
-            Assert.IsInstanceOf<Sprite>(_tokenData.NftImage);
-        }
-
-        [Test]
-        public void DoesCallingImageReceivedUpdateTokenImage()
-        {
-            Assert.IsNotNull(_tokenData.NftImage);
-            GameManager.Instance.EVENT_NFT_IMAGE_RECEIVED.Invoke("0000", null);
-            Assert.IsNull(_tokenData.NftImage);
-        }
-
-        [Test]
-        public void DoesCallingImageReceivedFireImageReceivedEvent()
-        {
-            bool eventFired = false;
-            _tokenData.tokenImageReceived.AddListener(() => { eventFired = true; });
-            GameManager.Instance.EVENT_NFT_IMAGE_RECEIVED.Invoke("0000", null);
+            Assert.AreEqual(testMetaData.TokenId, _tokenData.Id);
         }
     }
 }

@@ -145,17 +145,20 @@ namespace Papertrail
                 yield return new WaitForSeconds(1);
             }
 
-            while (true)
+            int maxRetry = 3;
+            while (maxRetry > 0)
             {
+                maxRetry--;
                 // Find the client's external IP address
-                UnityWebRequest webRequest = UnityWebRequest.Get("https://api.ipify.org?format=text");
-                yield return webRequest.Send();
-                if (!webRequest.isNetworkError)
+                using (UnityWebRequest webRequest = UnityWebRequest.Get("https://api.ipify.org?format=text"))
                 {
-                    m_localIp = webRequest.downloadHandler.text;
-                    break;
+                    yield return webRequest.SendWebRequest();
+                    if (webRequest.result != UnityWebRequest.Result.Success)
+                    {
+                        m_localIp = webRequest.downloadHandler.text;
+                        break;
+                    }
                 }
-
                 yield return new WaitForSeconds(1);
             }
 
@@ -243,6 +246,12 @@ namespace Papertrail
         /// <param name="msg">message to be logged</param>
         private IEnumerator LogWebRequest(string msg)
         {
+#if UNITY_EDITOR
+            if (UnitTestDetector.IsRunningFromNUnit)
+            {
+                yield break;
+            }
+#endif
             using (UnityWebRequest request =
                    new UnityWebRequest("https://logs.collector.solarwinds.com/v1/log", "POST"))
             {

@@ -2,19 +2,14 @@
 
 public abstract class SingleTon<T> : MonoBehaviour, ISingleton<T> where T : Component
 {
-    #region Fields
-
     /// <summary>
     /// The instance.
     /// </summary>
     private static T instance;
 
     //TODO this needs to be set dynamically when a gameobject is created for the instance
-    private bool createdGO = true;
+    private bool createdGameobject = true;
 
-    #endregion
-
-    #region Properties
 
     /// <summary>
     /// Gets the instance.
@@ -47,7 +42,7 @@ public abstract class SingleTon<T> : MonoBehaviour, ISingleton<T> where T : Comp
 
     public void DestroyInstance()
     {
-        if (createdGO)
+        if (createdGameobject)
         {
             Destroy(instance.gameObject);
         }
@@ -67,10 +62,6 @@ public abstract class SingleTon<T> : MonoBehaviour, ISingleton<T> where T : Comp
         return instance != null;
     }
 
-    #endregion
-
-    #region Methods
-
     /// <summary>
     /// Use this for initialization.
     /// </summary>
@@ -81,7 +72,7 @@ public abstract class SingleTon<T> : MonoBehaviour, ISingleton<T> where T : Comp
             instance = this as T;
             DontDestroyOnLoad(instance);
         }
-        else if (createdGO)
+        else if (createdGameobject)
         {
             Destroy(gameObject);
         }
@@ -90,6 +81,4 @@ public abstract class SingleTon<T> : MonoBehaviour, ISingleton<T> where T : Comp
             Destroy(instance);
         }
     }
-
-    #endregion
 }

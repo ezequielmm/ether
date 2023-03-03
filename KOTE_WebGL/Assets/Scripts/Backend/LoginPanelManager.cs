@@ -80,15 +80,7 @@ public class LoginPanelManager : MonoBehaviour
 
         ActivateInnerLoginPanel(false);
 
-        if (MetaMaskAdapter.Instance.HasMetamask())
-        {
-            MetaMaskAdapter.Instance.RequestWallet();
-        }
-        
-        // hardcoded wallet data for testing, metamask doesn't exist in editor so we have to send a wallet id manually
-#if UNITY_EDITOR
-        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke(GameSettings.EDITOR_WALLET);
-#endif
+        WalletManager.Instance.SetActiveWallet();
     }
 
     private void OnLoginError(string errorMessage)

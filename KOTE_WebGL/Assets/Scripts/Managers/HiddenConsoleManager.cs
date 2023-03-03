@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -121,7 +119,7 @@ public class HiddenConsoleManager : MonoBehaviour
             case ConsoleCommands.use_nft:
                 int nftNum = int.Parse(args[0]);
                 PublicLog($"Setting skin to #{nftNum}.");
-                GameManager.Instance.EVENT_REQUEST_NFT_SET_SKIN.Invoke(nftNum);
+                PlayerSpriteManager.Instance.SetSkin(nftNum);
                 break;
         }
     }

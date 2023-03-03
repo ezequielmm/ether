@@ -25,7 +25,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
 
     [SerializeField] private string SocketStatus = "Unknown";
-    private bool doNotResuscitate = false;
+    private bool doNotResuscitate = true;
     public bool SocketOpened { get; private set; } = false;
 
     public bool IsSocketHealthy
@@ -144,14 +144,15 @@ public class WebSocketManager : SingleTon<WebSocketManager>
                     if (!doNotResuscitate)
                     {
                         socketDeathTimeGameSeconds = Time.time;
+                        Debug.Log($"[WebSocketManager] Trying to fix socket.");
                         ConnectSocket();
-                        break;
                     }
                     break;
                 case SocketManager.States.Open:
                     SocketOpened = true;
                     socketOpenTimeGameSeconds = Time.time;
                     socketDeathTimeGameSeconds = -1;
+                    doNotResuscitate = false;
                     break;
             }
 
@@ -416,14 +417,14 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private Queue<Action> EmissionQueue = new Queue<Action>();
 
-    private void ResolvePromise(string json, SocketPromise promise)
+    private void ResolvePromise(string json, UniPromise<string> promise)
     {
         promise.FulfillRequest(json);
     }
 
-    private SocketPromise CreatePromise()
+    private UniPromise<string> CreatePromise()
     {
-        SocketPromise promise = new SocketPromise();
+        UniPromise<string> promise = new UniPromise<string>();
         return promise;
     }
 
@@ -453,7 +454,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     public async UniTask<string> EmitAwaitResponse(string eventName, params object[] variables)
     {
-        SocketPromise promise = CreatePromise();
+        UniPromise<string> promise = CreatePromise();
         if (IsSocketHealthy)
         {
             EmitPromise(promise, eventName, variables);
@@ -465,12 +466,14 @@ public class WebSocketManager : SingleTon<WebSocketManager>
                 $"[WebSocketManager] Socket is Unhealthy. Queuing Emission with Response ({eventName}) for Later.");
         }
 
-        await UniTask.WaitUntil(() => promise.Completed);
-        LogResponse(promise.Id, promise.Json);
-        return promise.Json;
+        await promise.WaitForFufillment();
+        Debug.Log($"[WebSocketManager] RESPONSE [{promise.Id.ToString().Substring(0,4)}] <<< {promise.Data}");
+        ServerCommunicationLogger.Instance.LogCommunication($"[WebSocketManager] RESPONSE [{promise.Id.ToString().Substring(0, 4)}] <<<",
+            CommunicationDirection.Incoming, promise.Data);
+        return promise.Data;
     }
 
-    private void EmitPromise(SocketPromise promise, string eventName, params object[] variables)
+    private void EmitPromise(UniPromise<string> promise, string eventName, params object[] variables)
     {
         LogEmissionExpectingResponse(promise.Id, eventName, variables);
         rootSocket.ExpectAcknowledgement<string>((json) => { ResolvePromise(json, promise); })
@@ -571,25 +574,6 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         temporaryContainer.variables = variables;
 
         return JsonConvert.SerializeObject(temporaryContainer);
-    }
-
-    private class SocketPromise
-    {
-        public bool Completed { get; private set; }
-        public Guid Id { get; private set; }
-        public string Json { get; private set; } = null;
-
-        public SocketPromise()
-        {
-            Id = Guid.NewGuid();
-            Completed = false;
-        }
-
-        public void FulfillRequest(string data)
-        {
-            Json = data;
-            Completed = true;
-        }
     }
 }
 

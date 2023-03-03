@@ -19,12 +19,11 @@ public class CharacterSelectionManager : MonoBehaviour
     {
         //GameManager.Instance.webRequester.RequestCharacterList();// we are not requesting the list until we have more than one type so for the moment only knight
 
-        GameManager.Instance.EVENT_WALLET_DISCONNECTED.AddListener(OnWalletDisconnected);
-        GameManager.Instance.EVENT_REQUEST_NFT_METADATA.AddListener(OnMetadataRequest);
+        WalletManager.Instance.DisconnectingWallet.AddListener(ClearOutNfts);
+        WalletManager.Instance.NewWalletConfirmed.AddListener(ClearOutNfts);
         GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.AddListener(
             ActivateInnerCharacterSelectionPanel);
-        GameManager.Instance.EVENT_EXPEDITION_CONFIRMED.AddListener(OnExpeditionConfirmed);
-        GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(PopulateNftPanel);
+        NftManager.Instance.NftsLoaded.AddListener(PopulateNftPanel);
 
         startExpeditionButton.interactable = false;
     }
@@ -34,13 +33,7 @@ public class CharacterSelectionManager : MonoBehaviour
         characterSelectionContainer.SetActive(activate);
     }
 
-    private void OnWalletDisconnected()
-    {
-        ClearNfts();
-    }
-
-    // when a new wallet is received clear the panel
-    private void OnMetadataRequest(int[] ids)
+    private void ClearOutNfts(string walletAddress)
     {
         ClearNfts();
     }
@@ -53,13 +46,14 @@ public class CharacterSelectionManager : MonoBehaviour
         }
     }
 
-    private void PopulateNftPanel(NftData heldNftData)
+    private void PopulateNftPanel()
     {
-        foreach (NftMetaData metaData in heldNftData.assets)
+        List<Nft> nfts = NftManager.Instance.GetAllNfts();
+        foreach (Nft nft in nfts)
         {
             GameObject localObject = Instantiate(nftSelectItemPrefab, nftSelectionLayout.transform);
             SelectableNftManager currentNft = localObject.GetComponent<SelectableNftManager>();
-            currentNft.Populate(metaData, (isOn) =>
+            currentNft.Populate(nft, (isOn) =>
             {
                 if (!currentNft.isSelected)
                 {
@@ -92,22 +86,7 @@ public class CharacterSelectionManager : MonoBehaviour
         }
     }
 
-    public void OnStartExpedition()
-    {
-        startExpeditionButton.enabled = false;
-        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-        GameManager.Instance.EVENT_NFT_SELECTED.Invoke(selectedNft.internalPrefab.metaData);
-        SendData.Instance.SendStartExpedition("knight",
-            selectedNft.internalPrefab.metaData.token_id); //for the moment this is hardcoded
-    }
-
-    private void OnExpeditionConfirmed()
-    {
-        // play the correct music depending on where the player is
-        GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Music, 1);
-        GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Ambient, 1);
-        GameManager.Instance.LoadScene(inGameScenes.Expedition);
-    }
+    
 
     public void OnArmoryButton()
     {
@@ -121,10 +100,6 @@ public class CharacterSelectionManager : MonoBehaviour
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         ActivateInnerCharacterSelectionPanel(false);
     }
-
-    // Leaving this so we still have it when we need to do class selections
-
-    #region ClassSelect
 
     public void OnCharacterSelected(GameObject currentClassBorder)
     {
@@ -141,6 +116,4 @@ public class CharacterSelectionManager : MonoBehaviour
     {
         currentClass = selectedClass;
     }
-
-    #endregion
 }
