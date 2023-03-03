@@ -57,6 +57,34 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             }
         }
 
+        internal void UpdatePilesOnMove(string cardId, string originType, string destinationType)
+        {
+            CARDS_POSITIONS_TYPES origin = Utils.ParseEnum<CARDS_POSITIONS_TYPES>(originType);
+            CARDS_POSITIONS_TYPES destination = Utils.ParseEnum<CARDS_POSITIONS_TYPES>(destinationType);
+            CardManager curCard = MasterCardList[cardId];
+            List<CardManager> originPile = GetCardPileFromType(origin);
+            List<CardManager> destinationPile = GetCardPileFromType(destination);
+            originPile.Remove(curCard);
+            destinationPile.Add(curCard);
+        }
+
+        private List<CardManager> GetCardPileFromType(CARDS_POSITIONS_TYPES type)
+        {
+            switch (type)
+            {
+                case CARDS_POSITIONS_TYPES.draw:
+                    return drawManager.drawDeck;
+                case CARDS_POSITIONS_TYPES.hand:
+                    return handManager.handDeck;
+                case CARDS_POSITIONS_TYPES.discard:
+                    return discardManager.discardDeck;
+                case CARDS_POSITIONS_TYPES.exhaust:
+                    return exhaustManager.exhaustDeck;
+                default:
+                    return null;
+            }
+        }
+        
         private void OnDrawCards()
         {
             // if the game is over stop asking for cards
