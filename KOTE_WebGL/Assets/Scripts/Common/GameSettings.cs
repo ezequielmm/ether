@@ -93,25 +93,25 @@ public static class GameSettings
     public static TraitSprite[] DEFAULT_SKIN_DATA = new[]
     {
         new TraitSprite{SkinName ="Padding/Padding_Brown",
-        TraitType = nameof(Trait.Padding)
+        TraitValue = nameof(Trait.Padding)
         },
         new TraitSprite{SkinName ="Helmet/Helmet_Bucket",
-        TraitType = nameof(Trait.Helmet)
+        TraitValue = nameof(Trait.Helmet)
         },
         new TraitSprite
         {
             SkinName = "Weapon/Weapon_Rusty_Sword",
-            TraitType =  nameof(Trait.Weapon)
+            TraitValue =  nameof(Trait.Weapon)
         },
         new TraitSprite
         {
             SkinName = "character_shadow",
-            TraitType = nameof(Trait.Shadow)
+            TraitValue = nameof(Trait.Shadow)
         },
         new TraitSprite
         {
             SkinName = "character-nude",
-            TraitType = nameof(Trait.Base)
+            TraitValue = nameof(Trait.Base)
         }
     };
 

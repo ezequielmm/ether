@@ -7,49 +7,48 @@ using UnityEngine;
 
 public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 {
-    // we need the skeleton data so we can pull the image assets without needing the player to be activated in combat
     public SkeletonDataAsset KinghtData;
     public SpriteList DefaultSkinImages;
     private PlayerNft playerNft;
 
     private SkeletonData knightSkeletonData;
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
     private void Start()
     {
         GameManager.Instance.EVENT_NFT_SELECTED.AddListener(BuildPlayer);
+        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(UpdateNftForExpedition);
+
         knightSkeletonData = KinghtData.GetSkeletonData(true);
+    }
+
+    private void UpdateNftForExpedition(bool data, int nftInt) 
+    {
+        SetSkin(nftInt);
+    }
+
+    public async void SetSkin(int nftToken) 
+    {
+        if (nftToken < 0) { return; }
+        List<Nft> nftList = await FetchData.Instance.GetNftMetaData(new List<int> { nftToken }, NftContract.KnightsOfTheEther);
+        BuildPlayer(nftList[0]);
     }
 
     private async void BuildPlayer(Nft selectedNft)
     {
         this.playerNft = new PlayerNft(selectedNft);
         Debug.Log($"[PlayerSpriteManager] Nft #{selectedNft.TokenId} has been selected.");
-        await playerNft.GetDefaultSprits(knightSkeletonData);
+        await playerNft.GetDefaultSprits(knightSkeletonData, DefaultSkinImages);
         await playerNft.GetNftSprites(knightSkeletonData);
         GameManager.Instance.EVENT_UPDATE_PLAYER_SKIN.Invoke();
     }
 
     public List<TraitSprite> GetAllTraitSprites()
     {
-        List<TraitSprite> allSprites = new List<TraitSprite>();
-        foreach (var traitType in Enum.GetNames(typeof(Trait)))
-        {
-            if (playerNft.SkinSprites.Exists(x => x.TraitType == traitType))
-            {
-                allSprites.AddRange(playerNft.SkinSprites.FindAll(x => x.TraitType == traitType));
-                continue;
-            }
-            if (traitType == nameof(Trait.Sigil) || traitType == nameof(Trait.Crest)
-                                                      || traitType == nameof(Trait.Vambrace))
-            {
-                continue;
-            }
-
-            if (playerNft.DefaultSprites.Exists(x => x.TraitType == traitType))
-            {
-                allSprites.AddRange(playerNft.DefaultSprites.FindAll(x => x.TraitType == traitType));
-            }
-        }
-        return allSprites;
+        return playerNft.FullSpriteList();
     }
 }

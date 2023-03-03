@@ -25,7 +25,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
 
     [SerializeField] private string SocketStatus = "Unknown";
-    private bool doNotResuscitate = false;
+    private bool doNotResuscitate = true;
     public bool SocketOpened { get; private set; } = false;
 
     public bool IsSocketHealthy
@@ -144,14 +144,15 @@ public class WebSocketManager : SingleTon<WebSocketManager>
                     if (!doNotResuscitate)
                     {
                         socketDeathTimeGameSeconds = Time.time;
+                        Debug.Log($"[WebSocketManager] Trying to fix socket.");
                         ConnectSocket();
-                        break;
                     }
                     break;
                 case SocketManager.States.Open:
                     SocketOpened = true;
                     socketOpenTimeGameSeconds = Time.time;
                     socketDeathTimeGameSeconds = -1;
+                    doNotResuscitate = false;
                     break;
             }
 

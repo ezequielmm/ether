@@ -123,8 +123,7 @@ public class HiddenConsoleManager : MonoBehaviour
             case ConsoleCommands.use_nft:
                 int nftNum = int.Parse(args[0]);
                 PublicLog($"Setting skin to #{nftNum}.");
-                List<Nft> nftList = await FetchData.Instance.GetNftMetaData(new List<int>{ nftNum }, NftContract.KnightsOfTheEther);
-                GameManager.Instance.EVENT_NFT_SELECTED.Invoke(nftList[0]);
+                PlayerSpriteManager.Instance.SetSkin(nftNum);
                 break;
         }
     }

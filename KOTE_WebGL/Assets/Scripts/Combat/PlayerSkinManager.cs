@@ -46,8 +46,12 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
         List<TraitSprite> skinSprites = PlayerSpriteManager.Instance.GetAllTraitSprites();
         foreach (var traitType in Enum.GetNames(typeof(Trait)))
         {
-            TraitSprite traitSprite = skinSprites.Find(x => x.TraitType == traitType);
-            if (string.IsNullOrEmpty(traitSprite.SkinName)) continue;
+            TraitSprite traitSprite = skinSprites.Find(x => x.TraitType.ToString() == traitType);
+            if (string.IsNullOrEmpty(traitSprite?.SkinName)) 
+            {
+                Debug.LogError($"[PlayerSkinManager] Can't apply Sprite of type [{traitType}]: {traitSprite}");
+                continue;
+            }
             Debug.Log("[UpdateSkin] traitSprite.skinName:" + traitSprite.SkinName);
             Skin skin = skeletonData.FindSkin(traitSprite.SkinName);
             if (skin == null)
@@ -67,6 +71,7 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
         foreach (Skin.SkinEntry skinAttachment in equipsSkin.Attachments)
         {
             TraitSprite traitSprite = skinSprites.Find(x => x.AttachmentIndex == skinAttachment.SlotIndex);
+            if (traitSprite == null) continue;
             // Debug.Log("[UpdateSkin] Attachment name is : " + skinAttachment.Attachment.Name);
             Sprite attachmentSprite = traitSprite.Sprite;
             string templateSkinName = traitSprite.SkinName;

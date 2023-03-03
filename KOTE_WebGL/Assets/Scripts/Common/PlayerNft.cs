@@ -38,9 +38,24 @@ public class PlayerNft
 
             foreach (Skin.SkinEntry skinEntry in traitSkin.Attachments)
             {
-                TraitSprite spriteData = GenerateSpriteData(skinEntry, traitSkin.Name, traitValue);
+                TraitSprite spriteData = GenerateSpriteData(skinEntry, traitSkin.Name, traitValue, trait);
+                if (spriteData == null)
+                {
+                    // ignore placeholder
+                    continue;
+                }
+                if (SkinSprites.Find(x => x.ImageName == spriteData.ImageName) != null)
+                {
+                    // Sprite already fetched
+                    continue;
+                }
                 Sprite skinElement = await GetPlayerSkin(spriteData);
                 spriteData.Sprite = skinElement;
+                if (!spriteData.IsUseableInSkin)
+                {
+                    Debug.LogError($"[PlayerNft] Can not use current TraitSprite. {spriteData}");
+                    continue;
+                }
                 SkinSprites.Add(spriteData);
             }
         }
@@ -56,7 +71,7 @@ public class PlayerNft
         return imageName;
     }
 
-    public async UniTask GetDefaultSprits(SkeletonData playerSkeleton) 
+    public async UniTask GetDefaultSprits(SkeletonData playerSkeleton, SpriteList internalSprites) 
     {
         for (int i = 0; i < GameSettings.DEFAULT_SKIN_DATA.Length; i++)
         {
@@ -70,26 +85,62 @@ public class PlayerNft
                 spriteData.AttachmentIndex = skinEntry.SlotIndex;
                 spriteData.ImageName = imageName;
 
-                Sprite skinElement = await GetPlayerSkin(spriteData);
+                if (DefaultSprites.Find(x => x.ImageName == spriteData.ImageName) != null)
+                {
+                    // Sprite already fetched
+                    continue;
+                }
+
+                Sprite skinElement = internalSprites.entityImages.Find(s => s.name == imageName);
+                if (skinElement == null) 
+                {
+                    skinElement = await GetPlayerSkin(spriteData);
+                }
+                
                 spriteData.Sprite = skinElement;
+                if (!spriteData.IsUseableInSkin)
+                {
+                    Debug.LogError($"[PlayerNft] Can not use current TraitSprite. {spriteData}");
+                    continue;
+                }
                 DefaultSprites.Add(spriteData);
             }
         }
     }
 
-    private TraitSprite GenerateSpriteData(Skin.SkinEntry skinEntry, string skinName, string traitValue) 
+    private TraitSprite GenerateSpriteData(Skin.SkinEntry skinEntry, string skinName, string traitValue, Trait traitType) 
     {
         string imageName = FormatImageName(skinEntry);
         if(string.IsNullOrEmpty(imageName)) return null;
         TraitSprite spriteData = new TraitSprite
         {
             SkinName = skinName,
-            TraitType = traitValue,
+            TraitType = traitType,
+            TraitValue = traitValue,
             AttachmentIndex = skinEntry.SlotIndex,
             ImageName = imageName
         };
 
         return spriteData;
+    }
+
+    public List<TraitSprite> FullSpriteList()
+    {
+        List<TraitSprite> allSprites = new List<TraitSprite>();
+        foreach (var traitType in Enum.GetNames(typeof(Trait)))
+        {
+            if (SkinSprites.Exists(x => x.TraitType.ToString() == traitType))
+            {
+                allSprites.AddRange(SkinSprites.FindAll(x => x.TraitType.ToString() == traitType));
+                continue;
+            }
+
+            if (DefaultSprites.Exists(x => x.TraitType.ToString() == traitType))
+            {
+                allSprites.AddRange(DefaultSprites.FindAll(x => x.TraitType.ToString() == traitType));
+            }
+        }
+        return allSprites;
     }
 
     private async UniTask<Sprite> GetPlayerSkin(TraitSprite spriteData) 
@@ -199,8 +250,17 @@ public class PlayerNft
 public class TraitSprite
 {
     public string SkinName;
-    public string TraitType;
+    public string TraitValue;
+    public Trait TraitType;
     public int AttachmentIndex;
     public string ImageName;
     public Sprite Sprite;
+
+    public bool IsUseableInSkin => Sprite != null && !string.IsNullOrEmpty(TraitValue)
+        && !string.IsNullOrEmpty(SkinName);
+
+    public override string ToString()
+    {
+        return $"Skin: {SkinName} | Trait: {TraitValue} | Attachment: {AttachmentIndex} | Image: {ImageName} | Sprite Set? {Sprite!=null}";
+    }
 }

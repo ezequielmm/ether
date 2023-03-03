@@ -70,6 +70,7 @@ public abstract class SingleTon<T> : MonoBehaviour, ISingleton<T> where T : Comp
         if (instance == null)
         {
             instance = this as T;
+            DontDestroyOnLoad(instance.gameObject);
         }
         else if (createdGameobject)
         {
