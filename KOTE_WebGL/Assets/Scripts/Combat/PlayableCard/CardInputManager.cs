@@ -1,5 +1,3 @@
-using System.Collections;
-using DG.Tweening;
 using UnityEngine;
 
 namespace KOTE.Expedition.Combat.Cards
@@ -12,7 +10,7 @@ namespace KOTE.Expedition.Combat.Cards
         private bool cardIsDisplaced;
         private bool cardIsShowingUp;
         private bool awaitMouseUp;
-        
+
 
         private bool overPlayer;
         private GameObject lastOver;
@@ -35,7 +33,7 @@ namespace KOTE.Expedition.Combat.Cards
 
         private void OnMouseEnter()
         {
-            if (cardManager.cardActive && !Input.GetMouseButton(0) && !cardIsShowingUp)
+            if (cardManager.cardActive && !Input.GetMouseButton(0) && !cardIsShowingUp && !cardManager.inTransit)
             {
                 cardIsShowingUp = true;
                 cardManager.ShowUpCard();
@@ -44,7 +42,7 @@ namespace KOTE.Expedition.Combat.Cards
 
         private void OnMouseOver()
         {
-            if (Input.GetMouseButtonUp(0) && !cardIsShowingUp)
+            if (Input.GetMouseButtonUp(0) && !cardIsShowingUp && !cardManager.inTransit)
             {
                 cardIsShowingUp = true;
                 cardManager.ShowUpCard();
@@ -59,7 +57,7 @@ namespace KOTE.Expedition.Combat.Cards
                 return;
             }
 
-            if (!cardManager.cardActive) 
+            if (!cardManager.cardActive)
             {
                 //TODO: show no energy message
                 return;
@@ -75,8 +73,7 @@ namespace KOTE.Expedition.Combat.Cards
 
             cardManager.FollowMouse();
         }
-        
-        
+
 
         private void OnMouseExit()
         {
@@ -108,7 +105,7 @@ namespace KOTE.Expedition.Combat.Cards
 
         private void OnMouseDown()
         {
-            if (!cardManager.card_can_be_played && !cardManager.hasUnplayableKeyword)
+            if (!cardManager.card_can_be_played && !cardManager.hasUnplayableKeyword && !cardManager.inTransit)
             {
                 GameManager.Instance.EVENT_CARD_NO_ENERGY.Invoke();
             }

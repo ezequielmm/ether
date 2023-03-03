@@ -13,6 +13,7 @@ namespace KOTE.Expedition.Combat.Cards
         [SerializeField] private bool _cardActive;
         internal bool card_can_be_played = true;
         internal bool hasUnplayableKeyword;
+        internal bool inTransit;
         internal CARDS_POSITIONS_TYPES currentPosition;
 
         // timer events

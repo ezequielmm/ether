@@ -29,6 +29,7 @@ public class CardAnimationQueue : MonoBehaviour
                     .OnCardToMove(cardMove.Item1, cardMove.Item2);
 
                 sequence.Insert(0, movementSequence);
+                handManager.UpdatePilesOnMove(cardMove.Item1.id, cardMove.Item1.source, cardMove.Item1.destination);
             }
             else
             {
