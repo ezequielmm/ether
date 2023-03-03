@@ -59,16 +59,29 @@ public class NftManager : ISingleton<NftManager>
         NftsLoaded.Invoke();
     }
 
-    private static readonly Dictionary<NftContract, string> nftContractMap = new() {
-        { NftContract.KnightsOfTheEther, "0x32A322C7C77840c383961B8aB503c9f45440c81f" }
+    private static readonly Dictionary<NftContract, string> etheriumNftContractMap = new() {
+        { NftContract.KnightsOfTheEther, "0x32A322C7C77840c383961B8aB503c9f45440c81f" },
+        { NftContract.Villager, "0xbB4342E7aB28fd581d751b064dd924BCcd860faC" },
+        { NftContract.BlessedVillager, "0x2d51402A6DAb0EA48E30Bb169db74FfE3c1c6675" }
+    };
+    private static readonly Dictionary<NftContract, string> testNetNftContractMap = new() {
+        { NftContract.KnightsOfTheEther, "0xb80FB9371E4662D97E719d6734A8208102b18349" },
+        { NftContract.Villager, "0xbB4342E7aB28fd581d751b064dd924BCcd860faC" },
+        { NftContract.BlessedVillager, "0x2d51402A6DAb0EA48E30Bb169db74FfE3c1c6675" }
     };
     public static string GetNftContractAddress(NftContract contract)
     {
-        return nftContractMap[contract];
+        bool IsTestNet = false;
+        if (IsTestNet) 
+            return testNetNftContractMap[contract];
+        else
+            return etheriumNftContractMap[contract];
     }
 }
 public enum NftContract
 {
-    KnightsOfTheEther
+    KnightsOfTheEther,
+    Villager,
+    BlessedVillager,
 }
 
