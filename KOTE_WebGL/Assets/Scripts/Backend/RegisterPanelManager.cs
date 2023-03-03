@@ -88,7 +88,6 @@ public class RegisterPanelManager : MonoBehaviour
     private void Start()
     {
         DeactivateAllErrorLabels();
-        GameManager.Instance.EVENT_REQUEST_NAME.Invoke("");
     }
 
     private void DeactivateAllErrorLabels()

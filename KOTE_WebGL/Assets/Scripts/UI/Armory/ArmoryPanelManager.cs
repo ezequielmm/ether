@@ -109,43 +109,41 @@ namespace KOTE.UI.Armory
             }
         };
         // +++++++++++++++ END TEST DATA ++++++++++++++++++++++++
+        [SerializeField] Sprite DefaultNft;
 
         private void Start()
         {
             panelContainer.SetActive(false);
-            GameManager.Instance.EVENT_EXPEDITION_CONFIRMED.AddListener(OnExpeditionConfirmed);
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.AddListener(ActivateContainer);
-            GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(PopulateCharacterList);
-            GameManager.Instance.EVENT_GEAR_RECEIVED.AddListener(PopulateGear);
-            OnGearSelected.AddListener(OnGearItemSelected);
         }
 
         private void ActivateContainer(bool show)
         {
             panelContainer.SetActive(show);
             GameManager.Instance.EVENT_GEAR_RECEIVED.Invoke(JsonConvert.SerializeObject(testData));
+            PopulateCharacterList();
         }
 
-        private void PopulateCharacterList(NftData heldNftData)
+        private void PopulateCharacterList()
         {
+            List<Nft> nfts = NftManager.Instance.GetAllNfts();
             nftList.Clear();
 
-            if (heldNftData.assets.Length == 0)
+            if (nfts.Count == 0)
             {
-                nftImage.sprite = NftImageManager.Instance.defaultImage;
+                nftImage.sprite = DefaultNft;
                 curNode = null;
                 playButton.interactable = false;
                 return;
             }
-
-            foreach (NftMetaData nftMetaData in heldNftData.assets)
+            
+            foreach (Nft nft in nfts)
             {
-                nftList.AddLast(new ArmoryTokenData(nftMetaData));
+                nftList.AddLast(new ArmoryTokenData(nft));
             }
 
             playButton.interactable = true;
             curNode = nftList.First;
-            curNode.Value.tokenImageReceived.AddListener(UpdateCharacterImage);
             UpdateCharacterImage();
         }
 
@@ -190,9 +188,7 @@ namespace KOTE.UI.Armory
         {
             if (curNode?.Previous == null) return;
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-            curNode.Value.tokenImageReceived.RemoveListener(UpdateCharacterImage);
             curNode = curNode.Previous;
-            curNode.Value.tokenImageReceived.AddListener(UpdateCharacterImage);
             UpdateCharacterImage();
         }
 
@@ -200,10 +196,8 @@ namespace KOTE.UI.Armory
         {
             if (curNode?.Next == null) return;
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-            curNode.Value.tokenImageReceived.RemoveListener(UpdateCharacterImage);
             curNode = curNode.Next;
-            curNode.Value.tokenImageReceived.AddListener(UpdateCharacterImage);
-            nftImage.sprite = curNode.Value.NftImage;
+            UpdateCharacterImage();
         }
 
         public void OnPlayButton()
@@ -218,12 +212,16 @@ namespace KOTE.UI.Armory
             ActivateContainer(false);
         }
 
-        private void OnStartExpedition()
+        private async void OnStartExpedition()
         {
             playButton.interactable = false;
             GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
-            //for the moment this is hardcoded
-            SendData.Instance.SendStartExpedition("knight", curNode.Value.Id);
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
+            bool success = await FetchData.Instance.RequestNewExpedition("knight", curNode.Value.Id);
+            if (success)
+            {
+                OnExpeditionConfirmed();
+            }
         }
 
         private void OnExpeditionConfirmed()

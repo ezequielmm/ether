@@ -12,39 +12,28 @@ namespace KOTE.UI.Armory
 {
     public class ArmoryPanelManagerTests : MonoBehaviour
     {
-        private NftData testNftList = new NftData
+        private List<Nft> testNftList = new()
         {
-            assets = new[]
+        new Nft()
             {
-                new NftMetaData
+            ImageUrl = "test.com",
+            TokenId = 0,
+            Traits = new Dictionary<Trait, string>()
                 {
-                    image_url = "nope",
-                    token_id = "0000",
-                    traits = new[]
-                    {
-                        new Trait
-                        {
-                            trait_type = "helmet",
-                            value = "helmet"
-                        }
-                    }
-                },
-                new NftMetaData
+                    { Trait.Helmet, "helmet" }
+                }
+            },
+        new Nft()
+            {
+            ImageUrl = "nope",
+            TokenId = 9999,
+            Traits = new Dictionary<Trait, string>()
                 {
-                    image_url = "nope",
-                    token_id = "9999",
-                    traits = new[]
-                    {
-                        new Trait
-                        {
-                            trait_type = "boots",
-                            value = "boots"
-                        }
-                    }
+                    { Trait.Boots, "boots" }
                 }
             }
         };
-
+        
         private GearData testData = new GearData
         {
             gear = new List<GearItemData>

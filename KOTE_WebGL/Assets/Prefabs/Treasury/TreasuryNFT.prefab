@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 9201802348708546017}
   - component: {fileID: 6560463872070685962}
   - component: {fileID: 7326041469427555711}
-  - component: {fileID: 3586634574311673506}
+  - component: {fileID: 3060395641380815666}
   m_Layer: 5
   m_Name: TreasuryNFT
   m_TagString: Untagged
@@ -154,7 +154,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3586634574311673506
+--- !u!114 &3060395641380815666
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -163,11 +163,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5248840075696290227}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8575e0ad5e0593341a9f0e10aca76a3f, type: 3}
+  m_Script: {fileID: 11500000, guid: f19f4e5c88ea5784096f64b62f0e08cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   nftImage: {fileID: 8854309543504419940}
-  metaData:
-    token_id: 
-    image_url: 
-    traits: []
+  Nft:
+    TokenId: 0
+    Contract: 0
+    ImageUrl: 
+    Name: 
+    Description: 
+    Image: {fileID: 0}

@@ -99,23 +99,6 @@ public class ExpeditionStatusData
 }
 
 [Serializable]
-public class ExpeditionRequestData
-{
-    public Data data = new();
-
-    public bool GetExpeditionStarted()
-    {
-        return this.data.expeditionCreated == "true";
-    }
-
-    [Serializable]
-    public class Data
-    {
-        public string expeditionCreated;
-    }
-}
-
-[Serializable]
 public class RandomNameData
 {
     public Data data = new();
@@ -859,22 +842,9 @@ public class TrinketData
 {
     public List<Trinket> trinkets = new();
 }
-public class NftData
-{
-    public NftMetaData[] assets;
-    
-}
 
 [Serializable]
-public class NftMetaData
-{
-    public string token_id;
-    public string image_url;
-    public Trait[] traits;
-}
-
-[Serializable]
-public class Trait
+public class TraitValue
 {
     public string trait_type;
     public string value;
@@ -884,18 +854,6 @@ public class Trait
 public class WalletKnightIds
 {
     public int[] data;
-}
-
-// this is to pass along data needed for each individual skin image downloaded from the server
-[Serializable]
-public struct TraitSprite
-{
-    public string skinName;
-    public string traitType;
-    public int attachmentIndex;
-    public string imageName;
-    public Sprite sprite;
-    public bool isDefault;
 }
 
 [Serializable]

@@ -69,20 +69,6 @@ public class RegisterPanelManagerTests : MonoBehaviour
         Assert.False(registerPanel.registerButton.interactable);
     }
 
-    [UnityTest]
-    public IEnumerator DoesStartFireRequestNameEvent()
-    {
-        bool eventFired = false;
-        GameManager.Instance.EVENT_REQUEST_NAME.AddListener((data) => { eventFired = true; });
-        GameObject registerPanelPrefab =
-            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/MainMenu/RegisterPanel.prefab");
-        GameObject registerManager = Instantiate(registerPanelPrefab);
-        registerPanel = registerManager.GetComponent<RegisterPanelManager>();
-        registerManager.SetActive(true);
-        yield return null;
-        Assert.True(eventFired);
-    }
-
     [Test]
     public void DoesStartDeactivateAllErrorLabels()
     {

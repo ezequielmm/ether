@@ -84,6 +84,8 @@ public static class GameSettings
     // Logging
     public static LogType FilterLogType = LogType.Log;
 
+    public static int MAX_OPENSEA_CONTENT_REQUEST = 30;
+
 
 #if UNITY_EDITOR
     public const string EDITOR_WALLET = "0x1Ef6Ccf27f778dbb37241e6fD86eD69f79300F84";
@@ -92,26 +94,26 @@ public static class GameSettings
     // Player Skin Defaults
     public static TraitSprite[] DEFAULT_SKIN_DATA = new[]
     {
-        new TraitSprite{skinName ="Padding/Padding_Brown",
-        traitType = nameof(TraitTypes.Padding)
+        new TraitSprite{SkinName ="Padding/Padding_Brown",
+        TraitValue = nameof(Trait.Padding)
         },
-        new TraitSprite{skinName ="Helmet/Helmet_Bucket",
-        traitType = nameof(TraitTypes.Helmet)
-        },
-        new TraitSprite
-        {
-            skinName = "Weapon/Weapon_Rusty_Sword",
-            traitType =  nameof(TraitTypes.Weapon)
+        new TraitSprite{SkinName ="Helmet/Helmet_Bucket",
+        TraitValue = nameof(Trait.Helmet)
         },
         new TraitSprite
         {
-            skinName = "character_shadow",
-            traitType = nameof(TraitTypes.Shadow)
+            SkinName = "Weapon/Weapon_Rusty_Sword",
+            TraitValue =  nameof(Trait.Weapon)
         },
         new TraitSprite
         {
-            skinName = "character-nude",
-            traitType = nameof(TraitTypes.Base)
+            SkinName = "character_shadow",
+            TraitValue = nameof(Trait.Shadow)
+        },
+        new TraitSprite
+        {
+            SkinName = "character-nude",
+            TraitValue = nameof(Trait.Base)
         }
     };
 
