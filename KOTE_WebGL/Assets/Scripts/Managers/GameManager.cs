@@ -55,7 +55,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<bool> EVENT_TREASURYPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
     //ARMORY EVENTS
-    [HideInInspector] public UnityEvent<bool> EVENT_ARMORYPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<bool> EVENT_SHOW_ARMORY_PANEL = new UnityEvent<bool>();
 
     //CONFIRMATION PANEL EVENTS
     [HideInInspector]
@@ -157,7 +157,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<bool?> EVENT_TOGGLE_GAME_CLICK = new UnityEvent<bool?>();
 
     //PLAYER DATA EVENTS
-    [HideInInspector] public UnityEvent<PlayerStateData> EVENT_PLAYER_STATUS_UPDATE = new UnityEvent<PlayerStateData>();
+    [HideInInspector] public UnityEvent<PlayerStateData> EVENT_PLAYER_STATUS_UPDATE { get; } = new UnityEvent<PlayerStateData>();
     [HideInInspector] public UnityEvent<PlayerData> EVENT_UPDATE_PLAYER = new UnityEvent<PlayerData>();
     
     // NFT SKIN EVENTS
@@ -272,9 +272,7 @@ public class GameManager : SingleTon<GameManager>
     public inGameScenes
         nextSceneToLoad { get; set; } // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
     public inGameScenes CurrentScene { get; private set; } = inGameScenes.Loader;
-
-    public WebRequesterManager webRequester;
-
+    
     public static string ServerVersion { get; private set; }
 
     // Start is called before the first frame update
@@ -298,6 +296,7 @@ public class GameManager : SingleTon<GameManager>
     {
         if (CurrentScene == nextSceneToLoad) 
         {
+            //TODO this needs to be addressed better. This can cause false failures for tests if testing the same function multiple times
             Debug.LogError($"[GameManager] SceneLoaded Called Twice. Not running Event Scene Loaded.");
             return;
         }

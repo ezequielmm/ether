@@ -10,7 +10,7 @@ using Cysharp.Threading.Tasks;
 /// <summary>
 /// Check HelperClasses.cs for the classes usaed to hold JSON data
 /// </summary>
-public class WebRequesterManager : MonoBehaviour
+public class WebRequesterManager : SingleTon<WebRequesterManager>
 {
     private string baseUrl => ClientEnvironmentManager.Instance.WebRequestURL;
 
@@ -42,6 +42,11 @@ public class WebRequesterManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+    }
+    
+    internal void RequestStartExpedition(string characterType, string selectedNft)
+    {
+        StartCoroutine(RequestNewExpedition(characterType, selectedNft));
     }
 
     public void RequestLogout(string token)

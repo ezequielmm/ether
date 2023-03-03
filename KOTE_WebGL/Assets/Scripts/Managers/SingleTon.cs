@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class SingleTon<T> : MonoBehaviour, ISingleton<T> where T : Component
 {
@@ -11,6 +8,9 @@ public abstract class SingleTon<T> : MonoBehaviour, ISingleton<T> where T : Comp
     /// The instance.
     /// </summary>
     private static T instance;
+
+    //TODO this needs to be set dynamically when a gameobject is created for the instance
+    private bool createdGO = true;
 
     #endregion
 
@@ -26,14 +26,13 @@ public abstract class SingleTon<T> : MonoBehaviour, ISingleton<T> where T : Comp
         {
             if (instance == null)
             {
-                instance = FindObjectOfType<T>();
-                if (instance == null)
-                {
-                    GameObject obj = new GameObject();
-                    obj.name = typeof(T).Name;
-                    instance = obj.AddComponent<T>();
-                }
+                GameObject obj = new GameObject();
+                obj.name = typeof(T).Name;
+                instance = obj.AddComponent<T>();
+
+                DontDestroyOnLoad(instance.gameObject);
             }
+
             return instance;
         }
     }
@@ -46,9 +45,16 @@ public abstract class SingleTon<T> : MonoBehaviour, ISingleton<T> where T : Comp
         }
     }
 
-    public void DestroyInstance() 
+    public void DestroyInstance()
     {
-        Destroy(instance);
+        if (createdGO)
+        {
+            Destroy(instance.gameObject);
+        }
+        else
+        {
+            Destroy(instance);
+        }
         instance = null;
     }
 
@@ -73,11 +79,14 @@ public abstract class SingleTon<T> : MonoBehaviour, ISingleton<T> where T : Comp
         if (instance == null)
         {
             instance = this as T;
-            DontDestroyOnLoad(gameObject);
+        }
+        else if (createdGO)
+        {
+            Destroy(gameObject);
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(instance);
         }
     }
 
