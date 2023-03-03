@@ -139,6 +139,18 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             }
         }
 
+        internal void UpdatePilesOnMove(string cardId, string originType, string destinationType)
+        {
+            CARDS_POSITIONS_TYPES origin = Utils.ParseEnum<CARDS_POSITIONS_TYPES>(originType);
+            CARDS_POSITIONS_TYPES destination = Utils.ParseEnum<CARDS_POSITIONS_TYPES>(destinationType);
+            CardManager curCard = MasterCardList[cardId];
+            List<CardManager> originPile = GetCardPileFromType(origin);
+            List<CardManager> destinationPile = GetCardPileFromType(destination);
+
+            originPile.Remove(curCard);
+            destinationPile.Add(curCard);
+        }
+
         private void VerifyCardPosition(Card card, CARDS_POSITIONS_TYPES position, List<CardManager> cardPile)
         {
             if (!ConfirmCardIsInPile(card, cardPile))

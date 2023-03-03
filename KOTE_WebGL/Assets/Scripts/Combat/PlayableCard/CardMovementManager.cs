@@ -13,7 +13,6 @@ namespace KOTE.Expedition.Combat.Cards
         private Vector3 drawPileOrthoPosition;
         private Vector3 discardPileOrthoPosition;
         private Vector3 exhaustPileOrthoPosition;
-        private bool inTransit;
         static float delay;
         new Collider2D collider;
 
@@ -28,7 +27,7 @@ namespace KOTE.Expedition.Combat.Cards
 
         private void Awake()
         {
-            inTransit = false;
+            cardManager.inTransit = false;
         }
 
         private void Start()
@@ -104,7 +103,7 @@ namespace KOTE.Expedition.Combat.Cards
                     internalDelay += 1;
                 }
 
-                if (inTransit)
+                if (cardManager.inTransit)
                 {
                     delay += 1.1f;
                 }
@@ -267,7 +266,7 @@ namespace KOTE.Expedition.Combat.Cards
 
             if (moveDelay > 0)
             {
-                inTransit = true;
+                cardManager.inTransit = true;
                 sequence.Insert(sequenceStartPoint,
                     transform.DOMove(destination, 1f).SetDelay(moveDelay, true).SetEase(Ease.InCirc).From(origin));
                 if (destinationType == CARDS_POSITIONS_TYPES.hand)
@@ -286,7 +285,7 @@ namespace KOTE.Expedition.Combat.Cards
             }
             else
             {
-                inTransit = true;
+                cardManager.inTransit = true;
                 sequence.Insert(sequenceStartPoint,
                     transform.DOMove(destination, 1f).From(origin).SetEase(Ease.OutCirc));
                 if (destinationType == CARDS_POSITIONS_TYPES.hand)
@@ -323,14 +322,14 @@ namespace KOTE.Expedition.Combat.Cards
 
         private void OnMovingToHandCompleted()
         {
-            inTransit = false;
+            cardManager.inTransit = false;
             cardManager.cardActive = activateCardAfterMove;
             visualsManager.StopCardParticles(CARD_PARTICLE_TYPES.Move);
 
             if (cardManager.cardActive && ((Vector2)transform.position).magnitude < 0.5f)
                 // if in the center of the screen
             {
-                inTransit = true;
+                cardManager.inTransit = true;
                 cardManager.cardActive = false;
                 StartCoroutine(ResetAfterTime(GameSettings.CARD_DRAW_SHOW_TIME));
             }
@@ -346,7 +345,7 @@ namespace KOTE.Expedition.Combat.Cards
             if (cardManager.currentPosition == CARDS_POSITIONS_TYPES.hand) return;
             visualsManager.StopCardParticles(CARD_PARTICLE_TYPES.Move);
 
-            inTransit = false;
+            cardManager.inTransit = false;
 
             if (cardManager.currentPosition == CARDS_POSITIONS_TYPES.exhaust)
             {
@@ -403,7 +402,7 @@ namespace KOTE.Expedition.Combat.Cards
         IEnumerator ResetAfterTime(float seconds)
         {
             yield return new WaitForSeconds(seconds);
-            inTransit = false;
+            cardManager.inTransit = false;
             cardManager.cardActive = true;
             ResetCardPosition();
         }
@@ -425,7 +424,7 @@ namespace KOTE.Expedition.Combat.Cards
 
         internal void TryResetPosition()
         {
-            if (inTransit)
+            if (cardManager.inTransit)
             {
                 StartCoroutine(TryResetAfterTime(0.25f));
             }
