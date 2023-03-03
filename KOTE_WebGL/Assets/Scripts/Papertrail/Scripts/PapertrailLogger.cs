@@ -247,7 +247,7 @@ namespace Papertrail
         private IEnumerator LogWebRequest(string msg)
         {
 #if UNITY_EDITOR
-            if (UnitTestDetector.IsRunningFromNUnit)
+            if (UnitTestDetector.IsInUnitTest)
             {
                 yield break;
             }
