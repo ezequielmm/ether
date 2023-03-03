@@ -82,7 +82,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
     public async UniTask<DownloadHandler> MakeRequest(UnityWebRequest request) 
     {
 #if UNITY_EDITOR
-        if (UnitTestDetector.IsRunningFromNUnit)
+        if (UnitTestDetector.IsInUnitTest)
         {
             Debug.Log($"Can't make a webrequest while testing.");
             return null;

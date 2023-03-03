@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -93,17 +94,19 @@ public class FetchData : DataManager, ISingleton<FetchData>
             return ParseJsonWithPath<List<int>>(rawJson, "data");
         }
     }
+
     public async UniTask<List<Nft>> GetNftMetaData(List<int> tokenId, NftContract contract)
     {
         var requestBatch = tokenId.Partition(OpenSeasRequstBuilder.MaxContentRequest);
         List<Nft> nftMetaDataList = new List<Nft>();
-        foreach (var knightId in tokenId)
+        foreach (var tokenList in requestBatch)
         {
-            using (UnityWebRequest request = OpenSeasRequstBuilder.ConstructNftRequest(contract, tokenId.ToArray()))
+            using (UnityWebRequest request = OpenSeasRequstBuilder.ConstructNftRequest(contract, tokenList.ToArray()))
             {
                 string rawJson = await MakeJsonRequest(request);
                 nftMetaDataList.AddRange(ParseJsonWithPath<List<Nft>>(rawJson, "assets"));
             }
+            await UniTask.Yield();
         }
         foreach (var token in nftMetaDataList) 
         {

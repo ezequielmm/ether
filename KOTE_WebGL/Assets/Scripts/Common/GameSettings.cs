@@ -84,7 +84,7 @@ public static class GameSettings
     // Logging
     public static LogType FilterLogType = LogType.Log;
 
-    public static int MAX_OPENSEA_CONTENT_REQUEST = 30;
+    public static int MAX_OPENSEA_CONTENT_REQUEST = 20;
 
 
 #if UNITY_EDITOR
