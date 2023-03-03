@@ -142,6 +142,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
         {
             request.AddAuthToken();
             string rawJson = await MakeJsonRequest(request);
+            if (string.IsNullOrEmpty(rawJson)) return false;
             return ParseJsonWithPath<bool>(rawJson, "data.expeditionCreated");
         }
     }
