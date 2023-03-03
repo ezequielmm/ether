@@ -842,19 +842,6 @@ public class TrinketData
 {
     public List<Trinket> trinkets = new();
 }
-public class NftData
-{
-    public NftMetaData[] assets;
-    
-}
-
-[Serializable]
-public class NftMetaData
-{
-    public string token_id;
-    public string image_url;
-    public TraitValue[] traits;
-}
 
 [Serializable]
 public class TraitValue
