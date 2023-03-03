@@ -24,6 +24,7 @@ public static class OpenSeasRequstBuilder
         requestString.Append("https://api.opensea.io/api/v1/assets?token_ids=");
         requestString.Append(string.Join("&token_ids=", tokenIds));
         requestString.Append("&format=json&asset_contract_address=");
+        requestString.Append(contractId);
         return requestString.ToString();
     }
 }

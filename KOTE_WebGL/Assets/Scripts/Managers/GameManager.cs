@@ -16,7 +16,6 @@ public class GameManager : SingleTon<GameManager>
 
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_REGISTER_ERROR = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<bool> EVENT_REGISTERPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
-    [HideInInspector] public UnityEvent<string> EVENT_REQUEST_NAME = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_NAME_SUCESSFUL = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_NAME_ERROR = new UnityEvent<string>();
 
@@ -32,8 +31,6 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_PROFILE_ERROR = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<ProfileData> EVENT_REQUEST_PROFILE_SUCCESSFUL = new UnityEvent<ProfileData>();
 
-    //PLAYER VERIFICATION EVENTS
-    [HideInInspector] public UnityEvent<bool> EVENT_OWNS_CURRENT_EXPEDITION_NFT = new UnityEvent<bool>();
 
     //SETTINGS EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_SETTINGSPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();

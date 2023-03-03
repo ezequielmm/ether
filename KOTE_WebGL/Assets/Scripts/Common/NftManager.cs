@@ -23,7 +23,7 @@ public class NftManager : ISingleton<NftManager>
         instance = null;
     }
 
-    public UnityEvent NftsLoaded = new();
+    public UnityEvent NftsLoaded { get; } = new();
 
     private WalletManager wallet;
     public Dictionary<NftContract, List<Nft>> Nfts = new();

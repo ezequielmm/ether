@@ -14,14 +14,16 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
 {
     private string baseUrl => ClientEnvironmentManager.Instance.WebRequestURL;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
+        if (this != Instance) return;
+
         PlayerPrefs.SetString("api_url", baseUrl);
 
-        PlayerPrefs.SetString("session_token", "");
-        PlayerPrefs.Save();
+        SetSessionToken(string.Empty);
 
-        GameManager.Instance.EVENT_REQUEST_NAME.AddListener(OnRandomNameEvent);
         GameManager.Instance.EVENT_REQUEST_REGISTER.AddListener(OnRegisterEvent);
         GameManager.Instance.EVENT_REQUEST_LOGIN.AddListener(RequestLogin);
         GameManager.Instance.EVENT_REQUEST_PROFILE.AddListener(RequestProfile);
@@ -29,6 +31,12 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.AddListener(RequestExpeditionCancel);
         GameManager.Instance.EVENT_REQUEST_EXPEDITON_SCORE.AddListener(RequestExpeditionScore);
         GameManager.Instance.EVENT_SEND_BUG_FEEDBACK.AddListener(SendBugReport);
+    }
+
+    private void SetSessionToken(string token) 
+    {
+        PlayerPrefs.SetString("session_token", token);
+        PlayerPrefs.Save();
     }
 
     public void RequestLogout(string token)
@@ -49,11 +57,6 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
     public void RequestExpeditionCancel()
     {
         StartCoroutine(CancelOngoingExpedition());
-    }
-
-    public void OnRandomNameEvent(string previousName)
-    {
-        StartCoroutine(GetRandomName(previousName));
     }
 
     public void OnRegisterEvent(string name, string email, string password)
@@ -78,46 +81,27 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
 
     public async UniTask<DownloadHandler> MakeRequest(UnityWebRequest request) 
     {
-        await request.SendWebRequest();
-        if (request.result != UnityWebRequest.Result.Success)
+        try
         {
-            Debug.LogError($"{request.error}");
-            ServerCommunicationLogger.Instance.LogCommunication($"[{request.uri}] Data Not Retrieved: {request.error}", CommunicationDirection.Incoming);
+            await request.SendWebRequest();
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                throw new Exception();
+            }
+            else
+            {
+                return request.downloadHandler;
+            }
+        }
+        catch(Exception e) 
+        {
+            Debug.LogException(e);
+            Debug.LogError($"[WebRequesterManager] Error sending [{request.method}] request to [{request.uri}]\n{request?.error}");
+            ServerCommunicationLogger.Instance.LogCommunication($"[{request.method}][{request.uri}] Data Not Retrieved: {request?.error}", CommunicationDirection.Incoming);
             return null;
         }
-        else 
-        {
-            var downloadHandler = request.downloadHandler;
-            ServerCommunicationLogger.Instance.LogCommunication($"[{request.uri}] Data Successfully Retrieved", CommunicationDirection.Incoming, downloadHandler.text);
-            return downloadHandler;
-        }
     }
 
-    public IEnumerator GetRandomName(string lastName)
-    {
-        string randomNameUrl = $"{baseUrl}{RestEndpoint.RandomName}";
-
-        UnityWebRequest randomNameInfoRequest;
-
-        randomNameInfoRequest = UnityWebRequest.Get($"{randomNameUrl}?username={Uri.EscapeDataString(lastName)}");
-
-        yield return randomNameInfoRequest.SendWebRequest();
-
-        if (randomNameInfoRequest.result == UnityWebRequest.Result.ConnectionError ||
-            randomNameInfoRequest.result == UnityWebRequest.Result.ProtocolError)
-        {
-            Debug.Log($"{randomNameInfoRequest.error}");
-            yield break;
-        }
-
-        //TODO: check for errors here
-
-        RandomNameData randomNameData =
-            JsonConvert.DeserializeObject<RandomNameData>(randomNameInfoRequest.downloadHandler.text);
-        string newName = randomNameData.data.username;
-
-        GameManager.Instance.EVENT_REQUEST_NAME_SUCESSFUL.Invoke(string.IsNullOrEmpty(newName) ? "" : newName);
-    }
 
 
     /// <summary>
@@ -245,8 +229,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             string name = profileData.data.name;
             int fief = profileData.data.fief;
 
-            PlayerPrefs.SetString("session_token", token);
-            PlayerPrefs.Save();
+            SetSessionToken(token);
 
             RequestExpeditionStatus();
 

@@ -26,10 +26,10 @@ public class MainMenuManager : MonoBehaviour
     // we need to confirm all verification values before showing the play button
     private bool _hasExpedition;
     private bool _expeditionStatusReceived;
-    private bool _ownershipChecked;
 
     // verification that the player still owns the continuing nft
-    private bool _ownsSavedNft;
+    private bool _ownsSavedNft => WalletManager.Instance.NftsInWallet[NftContract.KnightsOfTheEther].Contains(_nftInExpedition);
+    private int _nftInExpedition = -1;
     
     // verification that the connected wallet contains at least one knight
     private bool _ownsAnyNft => (WalletManager.Instance.NftsInWallet[NftContract.KnightsOfTheEther]?.Count ?? 0) > 0;
@@ -45,9 +45,9 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(false);
 
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(OnExpeditionUpdate);
-        GameManager.Instance.EVENT_OWNS_CURRENT_EXPEDITION_NFT.AddListener(OnCurrentNftConfirmed);
 
         WalletManager.Instance.WalletStatusModified.AddListener(UpdateUiOnWalletModification);
+        NftManager.Instance.NftsLoaded.AddListener(VerifyResumeExpedition);
 
         //CheckIfRegisterButtonIsEnabled();
         CheckIfArmoryButtonIsEnabled();
@@ -57,19 +57,6 @@ public class MainMenuManager : MonoBehaviour
         // default the play button to not being interactable
         playButton.interactable = false;
         
-    }
-
-    private void CheckIfRegisterButtonIsEnabled()
-    {
-        int enableRegistration = PlayerPrefs.GetInt("enable_registration");
-        if (enableRegistration == 1)
-        {
-            registerButton.interactable = true;
-        }
-        else
-        {
-            registerButton.interactable = false;
-        }
     }
 
     private void CheckIfArmoryButtonIsEnabled()
@@ -88,17 +75,11 @@ public class MainMenuManager : MonoBehaviour
     // callbacks for verifying the player can play the game
     private void OnExpeditionUpdate(bool hasExpedition, int nftId)
     {
+        _nftInExpedition = nftId;
         _expeditionStatusReceived = true;
         _hasExpedition = hasExpedition;
         treasuryButton.gameObject.SetActive(true);
 
-        VerifyResumeExpedition();
-    }
-
-    private void OnCurrentNftConfirmed(bool ownsNft)
-    {
-        _ownsSavedNft = ownsNft;
-        _ownershipChecked = true;
         VerifyResumeExpedition();
     }
 
@@ -113,6 +94,7 @@ public class MainMenuManager : MonoBehaviour
             // if no routes are available, lock the player out of the game
             playButton.gameObject.SetActive(false);
             newExpeditionButton.gameObject.SetActive(false);
+            playButton.interactable = false;
             return;
         }
         
@@ -121,16 +103,15 @@ public class MainMenuManager : MonoBehaviour
             UpdatePlayButtonText();
             playButton.gameObject.SetActive(true);
             newExpeditionButton.gameObject.SetActive(false);
+            playButton.interactable = true;
         }
-
-        // if there is an expedition, we need wait to check if the player owns the nft
-        if (!_ownershipChecked) return;
 
         if (_hasExpedition && _ownsSavedNft)
         {
             UpdatePlayButtonText();
             playButton.gameObject.SetActive(true);
             newExpeditionButton.gameObject.SetActive(true);
+            playButton.interactable = true;
         }
         // if the player no longer owns the nft, clear the expedition
         else if (_hasExpedition && !_ownsSavedNft)
@@ -225,7 +206,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnPlayButton()
     {
-        Debug.Log($"Has expedition: {_hasExpedition} is Wallet Verified: {_isWalletVerified} Owns nft {_ownsSavedNft} Ownership Confirmed {_ownershipChecked}");
+        Debug.Log($"Has expedition: {_hasExpedition} is Wallet Verified: {_isWalletVerified} Owns nft {_ownsSavedNft} Ownership Confirmed {false}");
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         //check if we are playing a new expedition or resuming
         if (_hasExpedition)

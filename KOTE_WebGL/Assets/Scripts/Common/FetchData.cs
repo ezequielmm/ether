@@ -84,7 +84,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
     public async UniTask<List<int>> GetNftsInWalletPerContract(string wallet, string contract) 
     {
-        string requestUrl = webRequest.ConstructUrl(RestEndpoint.VerifyWalletSignature) + $"/{wallet}";
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.WalletData) + $"/{wallet}";
         Debug.Log(requestUrl);
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl)) 
         {
@@ -130,12 +130,12 @@ public class FetchData : DataManager, ISingleton<FetchData>
     public async UniTask<bool> RequestNewExpedition(string characterType, int selectedNft)
     {
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.ExpeditionRequest);
-        
+
         WWWForm form = new WWWForm();
         form.AddField("class", characterType);
         form.AddField("nftId", selectedNft);
 
-        using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
+        using (UnityWebRequest request = UnityWebRequest.Post(requestUrl, form))
         {
             request.AddAuthToken();
             string rawJson = await MakeJsonRequest(request);
@@ -162,12 +162,18 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
     private async UniTask<string> MakeJsonRequest(UnityWebRequest request) 
     {
-        return (await webRequest.MakeRequest(request))?.text;
+        string rawJson = (await webRequest.MakeRequest(request))?.text;
+        if(rawJson != null)
+            ServerCommunicationLogger.Instance.LogCommunication($"[{request.uri}] Data Successfully Retrieved", CommunicationDirection.Incoming, rawJson);
+        return rawJson;
     }
 
     private async UniTask<Texture2D> MakeTextureRequest(UnityWebRequest request)
     {
-        return ((DownloadHandlerTexture)await webRequest.MakeRequest(request))?.texture;
+        Texture2D texture = ((DownloadHandlerTexture)await webRequest.MakeRequest(request))?.texture;
+        if (texture != null)
+            ServerCommunicationLogger.Instance.LogCommunication($"[{request.uri}] Data Successfully Retrieved", CommunicationDirection.Incoming, "{\"message\":\"<Image File>\"}");
+        return texture;
     }
 
     public static T ParseJsonWithPath<T>(string rawJson, string tokenPath) 
