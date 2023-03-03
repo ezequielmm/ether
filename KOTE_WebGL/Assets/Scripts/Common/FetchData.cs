@@ -85,9 +85,11 @@ public class FetchData : DataManager, ISingleton<FetchData>
     public async UniTask<List<int>> GetNftsInWalletPerContract(string wallet, string contract) 
     {
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.VerifyWalletSignature) + $"/{wallet}";
-        using(UnityWebRequest request = UnityWebRequest.Get(requestUrl)) 
+        Debug.Log(requestUrl);
+        using (UnityWebRequest request = UnityWebRequest.Get(requestUrl)) 
         {
             string rawJson = await KeepRetryingRequest(request);
+            Debug.Log(rawJson);
             return ParseJsonWithPath<List<int>>(rawJson, "data");
         }
     }
@@ -136,7 +138,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
             request.AddAuthToken();
-            string rawJson = await KeepRetryingRequest(request);
+            string rawJson = await MakeJsonRequest(request);
             return ParseJsonWithPath<bool>(rawJson, "data.expeditionCreated");
         }
     }
@@ -147,18 +149,16 @@ public class FetchData : DataManager, ISingleton<FetchData>
         bool successful = false;
         int trys = 0;
         int retryDelayInMiliseconds = Mathf.RoundToInt(retryDelaySeconds * 1000);
-        using (request) 
+        
+        string rawJson = null;
+        while (!successful && trys < tryLimit)
         {
-            string rawJson = null;
-            while (!successful && trys < tryLimit)
-            {
-                rawJson = await MakeJsonRequest(request);
-                successful = !string.IsNullOrEmpty(rawJson);
-                trys++;
-            }
+            rawJson = await MakeJsonRequest(request);
+            successful = !string.IsNullOrEmpty(rawJson);
+            trys++;
             await UniTask.Delay(retryDelayInMiliseconds);
-            return rawJson;
         }
+        return rawJson;
     }
 
     private async UniTask<string> MakeJsonRequest(UnityWebRequest request) 
