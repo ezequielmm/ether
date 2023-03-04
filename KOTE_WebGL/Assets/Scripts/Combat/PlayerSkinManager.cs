@@ -9,16 +9,13 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
 {
     public SkeletonAnimation skeletonAnimation;
     public Material skeletonMaterial;
-
-    private SkeletonData _skeletonData;
-
     public SkeletonDataAsset skeletonDataAsset;
 
     public List<Sprite> spritesArray = new List<Sprite>();
     SkeletonDataAsset IHasSkeletonDataAsset.SkeletonDataAsset => skeletonDataAsset;
 
-    Skin equipsSkin;
-    SkeletonData skeletonData;
+    private Skin equipsSkin;
+    private SkeletonData skeletonData;
 
 
     // Start is called before the first frame update

@@ -93,7 +93,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skeletonAnimation: {fileID: 9032002354893603797}
   skeletonMaterial: {fileID: 2100000, guid: 7c6832fc74eb7fc409b7ab0a6491c54f, type: 2}
-  skeletonDataAsset: {fileID: 0}
+  skeletonDataAsset: {fileID: 11400000, guid: 0833cefecbb1e774184077143e73eb05, type: 2}
   spritesArray: []
 --- !u!33 &9032002354893603803
 MeshFilter:

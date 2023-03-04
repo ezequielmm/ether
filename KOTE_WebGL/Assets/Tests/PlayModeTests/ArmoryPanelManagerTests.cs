@@ -236,6 +236,15 @@ namespace KOTE.UI.Armory
             Assert.IsNotNull(_armoryPanelManager.nftImage.sprite);
             Assert.AreEqual(testSprite, _armoryPanelManager.nftImage.sprite);
         }
+        
+        [Test]
+        public void DoesShowingPanelCallNftSelectedEvent()
+        {bool eventFired = false;
+            GameManager.Instance.EVENT_NFT_SELECTED.AddListener((data) => { eventFired = true; });
+            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
+            _armoryPanelManager.OnNextToken();
+            Assert.True(eventFired);
+        }
 
         [Test]
         public void DoesCallingOnNextTokenSwitchToNextToken()
@@ -266,6 +275,18 @@ namespace KOTE.UI.Armory
             yield return null;
             _armoryPanelManager.OnNextToken();
             GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) => { eventFired = true; });
+            _armoryPanelManager.OnPreviousToken();
+            Assert.True(eventFired);
+        }
+        
+        [UnityTest]
+        public IEnumerator DoesOnPreviousTokenCallNftSelectedEvent()
+        {
+            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
+            bool eventFired = false;
+            yield return null;
+            _armoryPanelManager.OnNextToken();
+            GameManager.Instance.EVENT_NFT_SELECTED.AddListener((data) => { eventFired = true; });
             _armoryPanelManager.OnPreviousToken();
             Assert.True(eventFired);
         }
@@ -300,6 +321,16 @@ namespace KOTE.UI.Armory
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             bool eventFired = false;
             GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) => { eventFired = true; });
+            _armoryPanelManager.OnNextToken();
+            Assert.True(eventFired);
+        }
+        
+        [Test]
+        public void DoesOnNextTokenCallNftSelectedEvent()
+        {
+            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
+            bool eventFired = false;
+            GameManager.Instance.EVENT_NFT_SELECTED.AddListener((data) => { eventFired = true; });
             _armoryPanelManager.OnNextToken();
             Assert.True(eventFired);
         }

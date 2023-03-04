@@ -146,6 +146,7 @@ namespace KOTE.UI.Armory
 
             playButton.interactable = true;
             curNode = nftList.First;
+            GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
             UpdateCharacterImage();
         }
 
@@ -191,6 +192,7 @@ namespace KOTE.UI.Armory
             if (curNode?.Previous == null) return;
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             curNode = curNode.Previous;
+            GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
             UpdateCharacterImage();
         }
 
@@ -199,6 +201,7 @@ namespace KOTE.UI.Armory
             if (curNode?.Next == null) return;
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             curNode = curNode.Next;
+            GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
             UpdateCharacterImage();
         }
 
@@ -217,7 +220,6 @@ namespace KOTE.UI.Armory
         private async void OnStartExpedition()
         {
             playButton.interactable = false;
-            GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             bool success = await FetchData.Instance.RequestNewExpedition("knight", curNode.Value.Id);
             if (success)

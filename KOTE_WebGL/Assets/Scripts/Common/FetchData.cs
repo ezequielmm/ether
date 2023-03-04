@@ -130,6 +130,13 @@ public class FetchData : DataManager, ISingleton<FetchData>
         return await GetTexture(requestUrl);
     }
 
+    public async UniTask<Texture2D> GetArmoryGearImage(string gearName)
+    {
+        string spriteName = gearName + ".png";
+        string requestUrl = ClientEnvironmentManager.Instance.GearIconURL + spriteName;
+        return await GetTexture(requestUrl);
+    }
+
     public async UniTask<bool> RequestNewExpedition(string characterType, int selectedNft)
     {
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.ExpeditionRequest);
