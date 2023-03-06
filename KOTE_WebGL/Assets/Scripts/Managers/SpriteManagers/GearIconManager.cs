@@ -28,7 +28,6 @@ namespace KOTE.UI.Armory
 
         private void CacheIcon(Trait traitType, string itemName, Sprite iconSprite)
         {
-            Dictionary<string, Sprite> iconDict;
             if (iconCache.ContainsKey(traitType))
             {
                 iconCache[traitType][itemName] = iconSprite;
@@ -47,16 +46,6 @@ namespace KOTE.UI.Armory
                 if(IsIconCached(itemTrait, item.name)) continue;
                 Sprite curSprite = await GetIcon(item.name);
                 CacheIcon(itemTrait, item.name, curSprite);
-            }
-        }
-
-        public async void RequestKnightGearIcons(Nft curNft)
-        {
-            foreach (KeyValuePair<Trait,string> traitData in curNft.Traits)
-            {
-                if(IsIconCached(traitData.Key, traitData.Value)) continue;
-                Sprite curSprite = await GetIcon(traitData.Value);
-                CacheIcon(traitData.Key, traitData.Value, curSprite);
             }
         }
         

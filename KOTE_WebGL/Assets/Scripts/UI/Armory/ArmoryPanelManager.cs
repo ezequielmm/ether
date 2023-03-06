@@ -11,15 +11,21 @@ namespace KOTE.UI.Armory
     {
         internal static UnityEvent<GearItemData> OnGearSelected { get; } = new();
 
+        
         public GameObject panelContainer;
         public Button playButton;
+        public Sprite defaultCharacterSprite;
         public Image nftImage;
         public ArmoryHeaderManager headerPrefab;
         public Transform gearListTransform;
         public Image[] gearSlots;
+        public GameObject[] gearPanels;
         private LinkedListNode<ArmoryTokenData> curNode;
         private LinkedList<ArmoryTokenData> nftList = new();
         private Dictionary<string, List<GearItemData>> categoryLists = new();
+
+        // cache this for easy lookup
+        private int numGearCategories;
 
         // +++++++ TEMP DATA UNTIL BACKEND WORKS ++++++++++++++
         private GearData testData = new GearData
@@ -109,11 +115,11 @@ namespace KOTE.UI.Armory
             }
         };
         // +++++++++++++++ END TEST DATA ++++++++++++++++++++++++
-        public Sprite defaultCharacterSprite;
 
         private void Start()
         {
             panelContainer.SetActive(false);
+            numGearCategories = Enum.GetNames(typeof(GearCategories)).Length;
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.AddListener(ActivateContainer);
             GameManager.Instance.EVENT_GEAR_RECEIVED.AddListener(PopulateGear);
             OnGearSelected.AddListener(OnGearItemSelected);
@@ -147,7 +153,12 @@ namespace KOTE.UI.Armory
             playButton.interactable = true;
             curNode = nftList.First;
             GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
-            UpdateCharacterImage();
+            UpdatePanelOnNftUpdate();
+        }
+
+        private async void PopulateGearSlots()
+        {
+           
         }
 
         private void PopulateGear(string rawData)
@@ -182,9 +193,13 @@ namespace KOTE.UI.Armory
             }
         }
 
-        private void UpdateCharacterImage()
+        private void UpdatePanelOnNftUpdate()
         {
             nftImage.sprite = curNode.Value.NftImage;
+            foreach (GameObject panel in gearPanels)
+            {
+                panel.SetActive(curNode.Value.MetaData.Contract != NftContract.KnightsOfTheEther);
+            }
         }
 
         public void OnPreviousToken()
@@ -193,7 +208,7 @@ namespace KOTE.UI.Armory
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             curNode = curNode.Previous;
             GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
-            UpdateCharacterImage();
+            UpdatePanelOnNftUpdate();
         }
 
         public void OnNextToken()
@@ -202,7 +217,7 @@ namespace KOTE.UI.Armory
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             curNode = curNode.Next;
             GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
-            UpdateCharacterImage();
+            UpdatePanelOnNftUpdate();
         }
 
         public void OnPlayButton()

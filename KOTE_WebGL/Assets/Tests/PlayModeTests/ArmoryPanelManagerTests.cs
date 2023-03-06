@@ -19,7 +19,8 @@ namespace KOTE.UI.Armory
                 Traits = new Dictionary<Trait, string>()
                 {
                     { Trait.Helmet, "helmet" }
-                }
+                },
+                Contract = NftContract.KnightsOfTheEther
             },
             new Nft()
             {
@@ -28,7 +29,8 @@ namespace KOTE.UI.Armory
                 Traits = new Dictionary<Trait, string>()
                 {
                     { Trait.Boots, "boots" }
-                }
+                },
+                Contract = NftContract.KnightsOfTheEther
             }
         };
 
@@ -236,10 +238,11 @@ namespace KOTE.UI.Armory
             Assert.IsNotNull(_armoryPanelManager.nftImage.sprite);
             Assert.AreEqual(testSprite, _armoryPanelManager.nftImage.sprite);
         }
-        
+
         [Test]
         public void DoesShowingPanelCallNftSelectedEvent()
-        {bool eventFired = false;
+        {
+            bool eventFired = false;
             GameManager.Instance.EVENT_NFT_SELECTED.AddListener((data) => { eventFired = true; });
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             _armoryPanelManager.OnNextToken();
@@ -278,7 +281,7 @@ namespace KOTE.UI.Armory
             _armoryPanelManager.OnPreviousToken();
             Assert.True(eventFired);
         }
-        
+
         [UnityTest]
         public IEnumerator DoesOnPreviousTokenCallNftSelectedEvent()
         {
@@ -324,7 +327,7 @@ namespace KOTE.UI.Armory
             _armoryPanelManager.OnNextToken();
             Assert.True(eventFired);
         }
-        
+
         [Test]
         public void DoesOnNextTokenCallNftSelectedEvent()
         {
@@ -455,6 +458,15 @@ namespace KOTE.UI.Armory
         {
             ArmoryPanelManager.OnGearSelected.Invoke(testData.gear[0]);
             Assert.IsNull(_armoryPanelManager.gearSlots[(int)GearCategories.Helmet].sprite);
+        }
+
+        [Test]
+        public void DoKnightNftsDeactivateGearPanels()
+        {
+            foreach (GameObject panel in _armoryPanelManager.gearPanels)
+            {
+                Assert.True(panel.activeSelf);
+            }
         }
     }
 }

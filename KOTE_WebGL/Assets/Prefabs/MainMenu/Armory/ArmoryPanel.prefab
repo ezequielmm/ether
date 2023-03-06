@@ -2542,6 +2542,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panelContainer: {fileID: 1325322342185662606}
   playButton: {fileID: 5814190891556325965}
+  defaultCharacterSprite: {fileID: 0}
   nftImage: {fileID: 1204826621947849933}
   headerPrefab: {fileID: 6503190128952527097, guid: e57ecd5646c586246a1cea646dcaf6cf,
     type: 3}
@@ -2557,7 +2558,11 @@ MonoBehaviour:
   - {fileID: 3140910063777365853}
   - {fileID: 5338512025297752238}
   - {fileID: 4012196612069522986}
-  defaultCharacterSprite: {fileID: 0}
+  gearPanels:
+  - {fileID: 6220174527205603789}
+  - {fileID: 3640251270229046520}
+  - {fileID: 6841770010625878433}
+  - {fileID: 8848254487179275150}
 --- !u!1 &6567153663409820806
 GameObject:
   m_ObjectHideFlags: 0
@@ -3083,7 +3088,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 7c6832fc74eb7fc409b7ab0a6491c54f, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
