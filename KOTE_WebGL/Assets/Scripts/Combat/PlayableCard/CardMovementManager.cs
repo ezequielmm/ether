@@ -174,6 +174,8 @@ namespace KOTE.Expedition.Combat.Cards
                 sequence.Rewind();
             }
 
+            if (originType == destinationType) return sequence;
+
             Debug.Log("[CardOnHandManager] MoveCard = " + originType + " to " + destinationType + "........card id: " +
                       cardManager.cardData.id);
             visualsManager.PlayCardParticles(CARD_PARTICLE_TYPES.Move);
