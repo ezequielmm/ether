@@ -222,7 +222,7 @@ public class StatusManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         DrawStatus(status.statuses);
     }
 
-    private STATUS ToEnum(string str) 
+    public STATUS ToEnum(string str) 
     {
         System.Enum.TryParse(str, out STATUS status);
         return status;

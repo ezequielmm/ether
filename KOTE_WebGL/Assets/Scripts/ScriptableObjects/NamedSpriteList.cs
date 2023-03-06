@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 public class NamedSpriteList : ScriptableObject
 {
     [Serializable]
-    public struct NamedSprite
+    public class NamedSprite
     {
         public string name;
         public Sprite image;
