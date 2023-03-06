@@ -793,7 +793,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
 
     private async void SendBugReport(string title, string description, string base64Image)
     {
-        string fullUrl = $"{ClientEnvironmentManager.Instance.WebSocketURL}{RestEndpoint.BugReport}";
+        string fullUrl = $"{baseUrl}{RestEndpoint.BugReport}";
 
         BugReportData reportData = new BugReportData
         {
@@ -844,6 +844,6 @@ public static class RestEndpoint
     public static readonly string ExpeditionRequest = "/gsrv/v1/expeditions";
     public static readonly string ExpeditionCancel = "/gsrv/v1/expeditions/cancel";
     public static readonly string ExpeditionScore = "/gsrv/v1/expeditions/score";
-    public static readonly string BugReport = "/v1/bugReports";
+    public static readonly string BugReport = "/gsrv/v1/bug/report";
     public static readonly string ServerVersion = "/gsrv/v1/showversion";
 }
