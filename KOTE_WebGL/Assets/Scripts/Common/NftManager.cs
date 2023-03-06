@@ -50,6 +50,7 @@ public class NftManager : ISingleton<NftManager>
 
     private async void UpdateNfts(string WalletAddress) 
     {
+        Nfts.Clear();
         var NftTokenMap = WalletManager.Instance.NftsInWallet;
         foreach (NftContract contract in NftTokenMap.Keys) 
         {

@@ -153,7 +153,9 @@ public class WalletManager : ISingleton<WalletManager>
             return NftsInWallet[contract];
         }
         string contractAddress = GetNftContractAddress(contract);
+        Debug.Log($"[WalletManager] Fetching Wallet Contents...");
         List<int> nftIds = await FetchData.Instance.GetNftsInWalletPerContract(walletAddress, contractAddress);
+        Debug.Log($"[WalletManager] Wallet Contents Received.");
         NftsInWallet[contract] = nftIds;
         return nftIds;
     }
