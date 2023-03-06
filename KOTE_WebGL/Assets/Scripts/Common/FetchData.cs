@@ -90,7 +90,6 @@ public class FetchData : DataManager, ISingleton<FetchData>
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl)) 
         {
             string rawJson = await KeepRetryingRequest(request);
-            Debug.Log(rawJson);
             return ParseJsonWithPath<List<int>>(rawJson, "data");
         }
     }
