@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using static UnityEngine.UI.CanvasScaler;
 
-public class ClockManager : MonoBehaviour
+public abstract class ClockManager : MonoBehaviour
 {
     [SerializeField]
     public bool ShowMilliSeconds = true;
@@ -23,24 +23,12 @@ public class ClockManager : MonoBehaviour
 
     public float TotalSeconds;
 
-    [SerializeField]
-    TMP_Text clockText;
-
-    void Start()
+    void Update()
     {
-        if(clockText == null) 
-        {
-            clockText = GetComponent<TMP_Text>();
-        }
+        UpdateClock();
     }
 
-    private void Update()
-    {
-        if (clockText != null)
-        {
-            clockText.text = ToString();
-        }
-    }
+    protected abstract void UpdateClock();
 
     protected int Hours => Mathf.FloorToInt(TotalSeconds / 3600);
     protected int Minutes => Mathf.FloorToInt(TotalSeconds / 60 % 60);
