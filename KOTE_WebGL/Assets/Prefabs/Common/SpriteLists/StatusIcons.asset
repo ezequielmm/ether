@@ -124,4 +124,4 @@ MonoBehaviour:
   - name: emptyFade
     image: {fileID: 21300000, guid: 34039c27376dc4c409acefb5feb28510, type: 3}
   - name: birdcage
-    image: {fileID: 0}
+    image: {fileID: 21300000, guid: 68fb6e0ddc58d71498a85dc2959e0ad8, type: 3}
