@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Spine;
@@ -112,10 +111,21 @@ public abstract class PlayerNft
 
     protected string FormatImageName(Skin.SkinEntry skinEntry)
     {
-        string[] baseImageName = skinEntry.Attachment.Name.Split('/');
+        string imagePath = "";
+        if (skinEntry.Attachment.GetType() == typeof(MeshAttachment))
+        {
+            imagePath = ((MeshAttachment)skinEntry.Attachment).Path;
+        }
+        else if (skinEntry.Attachment.GetType() == typeof(RegionAttachment))
+        {
+            imagePath = ((RegionAttachment)skinEntry.Attachment).Path;
+        }
+
+        if (string.IsNullOrEmpty(imagePath) || !imagePath.Contains("undergarment")) imagePath = skinEntry.Attachment.Name;
+        string[] baseImageName = imagePath.Split('/');
         string imageName = (baseImageName.Length > 1) ? baseImageName[1] : baseImageName[0];
         imageName = imageName.TrimEnd(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });
-        if (imageName.Contains("placeholder")) return null;
+        if (imageName.Contains("placeholder") || imageName.Contains("FX")) return null;
 
         return imageName;
     }

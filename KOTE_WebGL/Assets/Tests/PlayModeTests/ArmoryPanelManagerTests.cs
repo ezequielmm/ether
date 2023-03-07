@@ -10,29 +10,7 @@ namespace KOTE.UI.Armory
 {
     public class ArmoryPanelManagerTests : MonoBehaviour
     {
-        private List<Nft> testNftList = new()
-        {
-            new Nft()
-            {
-                ImageUrl = "test.com",
-                TokenId = 0,
-                Traits = new Dictionary<Trait, string>()
-                {
-                    { Trait.Helmet, "helmet" }
-                },
-                Contract = NftContract.KnightsOfTheEther
-            },
-            new Nft()
-            {
-                ImageUrl = "nope",
-                TokenId = 9999,
-                Traits = new Dictionary<Trait, string>()
-                {
-                    { Trait.Boots, "boots" }
-                },
-                Contract = NftContract.KnightsOfTheEther
-            }
-        };
+        private List<Nft> testNftList;
 
         private GearData testData = new GearData
         {
@@ -140,6 +118,30 @@ namespace KOTE.UI.Armory
             _armoryPanelManager = armoryPanel.GetComponent<ArmoryPanelManager>();
             testSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Sprites/Main_Menu/CharSelection/knight.png");
 
+            testNftList = new()
+            {
+                new Nft()
+                {
+                    ImageUrl = "test.com",
+                    TokenId = 0,
+                    Traits = new Dictionary<Trait, string>()
+                    {
+                        { Trait.Helmet, "helmet" }
+                    },
+                    Contract = NftContract.KnightsOfTheEther
+                },
+                new Nft()
+                {
+                    ImageUrl = "nope",
+                    TokenId = 9999,
+                    Traits = new Dictionary<Trait, string>()
+                    {
+                        { Trait.Boots, "boots" }
+                    },
+                    Contract = NftContract.KnightsOfTheEther
+                }
+            };
+            
             foreach (Nft nft in testNftList)
             {
                 nft.Image = testSprite;
@@ -425,8 +427,23 @@ namespace KOTE.UI.Armory
         }
 
         [Test]
-        public void DoesCallingGearSelectedChangeSlotImage()
+        public void DoesCallingGearSelectedNotChangeSlotImageIfKnight()
         {
+            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
+            _armoryPanelManager.gearSlots[(int)GearCategories.Helmet].sprite = null;
+
+            ArmoryPanelManager.OnGearSelected.Invoke(testData.data[0]);
+            Assert.IsNull(_armoryPanelManager.gearSlots[(int)GearCategories.Helmet].sprite);
+        }
+        
+        [Test]
+        public void DoesCallingGearSelectedChangeSlotImageIfNotKnight()
+        {
+            testNftList[0].Contract = NftContract.Villager;
+            NftManager.Instance.Nfts.Clear();
+            NftManager.Instance.Nfts[NftContract.Villager] = testNftList;
+            
+            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             ArmoryPanelManager.OnGearSelected.Invoke(testData.data[0]);
             Assert.IsNull(_armoryPanelManager.gearSlots[(int)GearCategories.Helmet].sprite);
         }

@@ -13,20 +13,21 @@ public class Knight : PlayerNft
         Traits = Metadata.Traits;
         InjectTempTraits();
     }
-    
+
     public override void ChangeGear(Trait trait, string traitValue)
     {
         // knights cannot change gear
     }
 
 
-    public override async UniTask GetNftSprites(SkeletonData playerSkeleton) 
+    public override async UniTask GetNftSprites(SkeletonData playerSkeleton)
     {
-        if(Metadata == null) 
+        if (Metadata == null)
         {
             throw new NullReferenceException("Nft Metadata cannot be null.");
         }
-        foreach (Trait trait in Traits.Keys) 
+
+        foreach (Trait trait in Traits.Keys)
         {
             string traitValue = Traits[trait];
             string skinName = GetSkinName(trait, traitValue);
@@ -45,11 +46,13 @@ public class Knight : PlayerNft
                     // ignore placeholder
                     continue;
                 }
+
                 if (SkinSprites.Find(x => x.ImageName == spriteData.ImageName) != null)
                 {
                     // Sprite already fetched
                     continue;
                 }
+
                 Sprite skinElement = await GetPlayerSkin(spriteData);
                 spriteData.Sprite = skinElement;
                 if (!spriteData.IsUseableInSkin)
@@ -57,24 +60,27 @@ public class Knight : PlayerNft
                     Debug.LogError($"[PlayerNft] Can not use current TraitSprite. {spriteData}");
                     continue;
                 }
+
                 SkinSprites.Add(spriteData);
             }
         }
     }
 
     #region Temp Code
+
     // Temp Code as Boots and Legguards don't have traits in the Nft.
     // It'll disable itself if it does have the trait though, so it's future proof.
-    private void InjectTempTraits() 
+    private void InjectTempTraits()
     {
-        if (Traits.ContainsKey(Trait.Gauntlet) && !Traits.ContainsKey(Trait.Boots)) 
+        if (Traits.ContainsKey(Trait.Gauntlet) && !Traits.ContainsKey(Trait.Boots))
         {
             string bottomTrait = SelectTraitPair(Trait.Gauntlet, Traits[Trait.Gauntlet]);
-            if (!string.IsNullOrEmpty(bottomTrait)) 
+            if (!string.IsNullOrEmpty(bottomTrait))
             {
                 Traits.Add(Trait.Boots, bottomTrait);
             }
         }
+
         if (Traits.ContainsKey(Trait.Breastplate) && !Traits.ContainsKey(Trait.Legguard))
         {
             string bottomTrait = SelectTraitPair(Trait.Breastplate, Traits[Trait.Breastplate]);
@@ -84,6 +90,7 @@ public class Knight : PlayerNft
             }
         }
     }
+
     private string SelectTraitPair(Trait trait, string value)
     {
         if (trait == Trait.Breastplate)
@@ -98,7 +105,7 @@ public class Knight : PlayerNft
                 case "Gold Templar":
                 case "Gold Royal Guard":
                     return "Gold White Hand";
-                default: 
+                default:
                     return value;
             }
         }
@@ -119,13 +126,14 @@ public class Knight : PlayerNft
                     return "Gold Churburg Hourglass";
                 case "Bloodied":
                     return "Dread";
-                default: 
+                default:
                     return value;
             }
         }
 
         return null;
     }
+
     #endregion
 }
 
@@ -141,10 +149,11 @@ public class TraitSprite
     public Sprite Sprite;
 
     public bool IsUseableInSkin => Sprite != null && !string.IsNullOrEmpty(TraitValue)
-        && !string.IsNullOrEmpty(SkinName);
+                                                  && !string.IsNullOrEmpty(SkinName);
 
     public override string ToString()
     {
-        return $"Skin: {SkinName} | Trait: {TraitValue} | Attachment: {AttachmentIndex} | Image: {ImageName} | Sprite Set? {Sprite!=null}";
+        return
+            $"Skin: {SkinName} | Trait: {TraitValue} | Attachment: {AttachmentIndex} | Image: {ImageName} | Sprite Set? {Sprite != null}";
     }
 }

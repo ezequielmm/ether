@@ -26,6 +26,7 @@ namespace KOTE.UI.Armory
         private void Awake()
         {
             GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLogin);
+            NftManager.Instance.NftsLoaded.AddListener(PopulateCharacterList);
         }
 
         private void Start()
@@ -34,6 +35,7 @@ namespace KOTE.UI.Armory
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.AddListener(ActivateContainer);
             // listen for successful login to get the player's gear
             OnGearSelected.AddListener(OnGearItemSelected);
+            
         }
 
         private void ActivateContainer(bool show)
@@ -173,8 +175,6 @@ namespace KOTE.UI.Armory
             if (curNode.Value.MetaData.Contract == NftContract.KnightsOfTheEther) return;
             GearCategories category = Utils.ParseEnum<GearCategories>(activeItem.category);
             gearSlots[(int)category].sprite = activeItem.gearImage;
-            
-            
         }
     }
 
