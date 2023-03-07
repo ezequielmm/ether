@@ -22,96 +22,7 @@ namespace KOTE.UI.Armory
         private LinkedListNode<ArmoryTokenData> curNode;
         private LinkedList<ArmoryTokenData> nftList = new();
         private Dictionary<string, List<GearItemData>> categoryLists = new();
-
-        // +++++++ TEMP DATA UNTIL BACKEND WORKS ++++++++++++++
-        private GearData testData = new GearData
-        {
-            data = new List<GearItemData>
-            {
-                new GearItemData
-                {
-                    category = "Helmet",
-                    gearId = 1,
-                    gearImage = null,
-                    name = "Test",
-                    trait = "Helmet"
-                },
-                new GearItemData
-                {
-                    category = "Pauldrons",
-                    gearId = 1,
-                    gearImage = null,
-                    name = "Test",
-                    trait = "Pauldrons"
-                },
-                new GearItemData
-                {
-                    category = "Breastplate",
-                    gearId = 1,
-                    gearImage = null,
-                    name = "Test",
-                    trait = "Breastplate"
-                },
-                new GearItemData
-                {
-                    category = "Legguards",
-                    gearId = 1,
-                    gearImage = null,
-                    name = "Test",
-                    trait = "Legguards"
-                },
-                new GearItemData
-                {
-                    category = "Boots",
-                    gearId = 1,
-                    gearImage = null,
-                    name = "Test",
-                    trait = "Boots"
-                },
-                new GearItemData
-                {
-                    category = "Weapon",
-                    gearId = 1,
-                    gearImage = null,
-                    name = "Test",
-                    trait = "Weapon"
-                },
-                new GearItemData
-                {
-                    category = "Shield",
-                    gearId = 1,
-                    gearImage = null,
-                    name = "Test",
-                    trait = "Shield"
-                },
-                new GearItemData
-                {
-                    category = "Padding",
-                    gearId = 1,
-                    gearImage = null,
-                    name = "Test",
-                    trait = "Padding"
-                },
-                new GearItemData
-                {
-                    category = "Vambraces",
-                    gearId = 1,
-                    gearImage = null,
-                    name = "Test",
-                    trait = "Vambraces"
-                },
-                new GearItemData
-                {
-                    category = "Gauntlet",
-                    gearId = 1,
-                    gearImage = null,
-                    name = "Test",
-                    trait = "Gauntlet"
-                },
-            }
-        };
-        // +++++++++++++++ END TEST DATA ++++++++++++++++++++++++
-
+        
         private void Awake()
         {
             GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLogin);
@@ -259,8 +170,11 @@ namespace KOTE.UI.Armory
 
         private void OnGearItemSelected(GearItemData activeItem)
         {
+            if (curNode.Value.MetaData.Contract == NftContract.KnightsOfTheEther) return;
             GearCategories category = Utils.ParseEnum<GearCategories>(activeItem.category);
             gearSlots[(int)category].sprite = activeItem.gearImage;
+            
+            
         }
     }
 

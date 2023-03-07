@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class GameSettings
@@ -88,32 +89,39 @@ public static class GameSettings
 
 
 #if UNITY_EDITOR
-    public const string EDITOR_WALLET = "0x1Ef6Ccf27f778dbb37241e6fD86eD69f79300F84";
+    public const string EDITOR_WALLET = "0x2F2CF39D0325A9792f0C9E0de73cdc0820C5c65e";
 #endif
 
     // Player Skin Defaults
-    public static TraitSprite[] DEFAULT_SKIN_DATA = new[]
+    public static List<TraitSprite> DEFAULT_SKIN_DATA = new List<TraitSprite>
     {
         new TraitSprite{SkinName ="Padding/Padding_Brown",
-        TraitValue = nameof(Trait.Padding)
-        },
-        new TraitSprite{SkinName ="Helmet/Helmet_Bucket",
-        TraitValue = nameof(Trait.Helmet)
+        TraitValue = "Brown",
+        TraitType = Trait.Padding
         },
         new TraitSprite
         {
             SkinName = "Weapon/Weapon_Rusty_Sword",
-            TraitValue =  nameof(Trait.Weapon)
+            TraitValue =  "Rusty Sword",
+            TraitType = Trait.Weapon
+        },
+        new TraitSprite
+        {
+            SkinName = "Shield/Shield_Rusty_Shield",
+            TraitValue =   "Rusty Shield",
+            TraitType = Trait.Shield
         },
         new TraitSprite
         {
             SkinName = "character_shadow",
-            TraitValue = nameof(Trait.Shadow)
+            TraitValue = nameof(Trait.Shadow),
+            TraitType = Trait.Shadow
         },
         new TraitSprite
         {
             SkinName = "character-nude",
-            TraitValue = nameof(Trait.Base)
+            TraitValue = nameof(Trait.Base),
+            TraitType = Trait.Base
         }
     };
 
