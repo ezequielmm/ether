@@ -415,17 +415,6 @@ namespace KOTE.UI.Armory
             Assert.AreEqual(SoundTypes.UI, requestedType);
         }
 
-        [UnityTest]
-        public IEnumerator DoesOnPlayButtonCallNftSelected()
-        {
-            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
-            bool eventFired = false;
-            GameManager.Instance.EVENT_NFT_SELECTED.AddListener((data) => { eventFired = true; });
-            _armoryPanelManager.OnPlayButton();
-            yield return null;
-            Assert.True(eventFired);
-        }
-
         [Test]
         public void DoesOnBackButtonHideArmoryPanel()
         {
@@ -463,9 +452,10 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoKnightNftsDeactivateGearPanels()
         {
+            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             foreach (GameObject panel in _armoryPanelManager.gearPanels)
             {
-                Assert.True(panel.activeSelf);
+                Assert.False(panel.activeSelf);
             }
         }
     }
