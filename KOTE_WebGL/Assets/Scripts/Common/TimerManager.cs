@@ -48,6 +48,6 @@ public class TimerManager : MonoBehaviour
 
     void Update()
     {
-        clock.Seconds = TimePassed;
+        clock.TotalSeconds = TimePassed;
     }
 }
