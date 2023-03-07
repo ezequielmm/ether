@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6906705016500501296}
   - component: {fileID: 5251767638875460354}
+  - component: {fileID: 2882658803657167702}
   m_Layer: 0
   m_Name: NftSpriteManager
   m_TagString: Untagged
@@ -46,3 +47,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   KinghtData: {fileID: 11400000, guid: 0833cefecbb1e774184077143e73eb05, type: 2}
   DefaultSkinImages: {fileID: 11400000, guid: baf93baaee53bdf40a8a217e048cc1bc, type: 2}
+--- !u!114 &2882658803657167702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8999129073027636477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2031e5eb10a17f04e8b9e5da31d24c72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultImage: {fileID: 21300000, guid: b763e389a5c8c1e47ac82761bdbdaa3d, type: 3}

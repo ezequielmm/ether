@@ -23,6 +23,7 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
 #endif
     public string WebRequestURL { get; private set; }
     public string SkinURL { get; private set; }
+    public string GearIconURL { get; private set; }
     public string WebSocketURL { get; private set; }
     public string OpenSeasURL { get; private set; } =
         "https://api.opensea.io/api/v1/assets?xxxx&asset_contract_address=0x32A322C7C77840c383961B8aB503c9f45440c81f&format=json";
@@ -72,16 +73,19 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
             case Environments.Stage:
                 WebRequestURL = $"https://gateway.stage.kote.robotseamonster.com";
                 SkinURL = $"https://koteskins.robotseamonster.com/";
+                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/";
                 WebSocketURL = $"https://api.stage.kote.robotseamonster.com";
                 break;
             case Environments.TestAlpha:
                 WebRequestURL = $"https://gateway.alpha.kote.robotseamonster.com";
                 SkinURL = $"https://koteskins.robotseamonster.com/";
+                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/";
                 WebSocketURL = $"https://api.alpha.kote.robotseamonster.com";
                 break;
             case Environments.Alpha:
                 WebRequestURL = $"https://gateway.alpha.knightsoftheether.com";
                 SkinURL = $"https://s3.amazonaws.com/koteskins.knightsoftheether.com/";
+                GearIconURL = $"https://s3.amazonaws.com/koteskins.knightsoftheether.com/GearIcons";
                 WebSocketURL = $"https://api.alpha.knightsoftheether.com:443";
                 break;
 #if UNITY_EDITOR
@@ -92,6 +96,7 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
             default:
                 WebRequestURL = $"https://gateway.dev.kote.robotseamonster.com";
                 SkinURL = $"https://koteskins.robotseamonster.com/";
+                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/";
                 WebSocketURL = $"https://api.dev.kote.robotseamonster.com";
                 break;
         }

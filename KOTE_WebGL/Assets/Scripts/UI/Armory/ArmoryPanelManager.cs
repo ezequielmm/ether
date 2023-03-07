@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -11,12 +10,15 @@ namespace KOTE.UI.Armory
     {
         internal static UnityEvent<GearItemData> OnGearSelected { get; } = new();
 
+
         public GameObject panelContainer;
         public Button playButton;
+        public Sprite defaultCharacterSprite;
         public Image nftImage;
         public ArmoryHeaderManager headerPrefab;
         public Transform gearListTransform;
         public Image[] gearSlots;
+        public GameObject[] gearPanels;
         private LinkedListNode<ArmoryTokenData> curNode;
         private LinkedList<ArmoryTokenData> nftList = new();
         private Dictionary<string, List<GearItemData>> categoryLists = new();
@@ -24,7 +26,7 @@ namespace KOTE.UI.Armory
         // +++++++ TEMP DATA UNTIL BACKEND WORKS ++++++++++++++
         private GearData testData = new GearData
         {
-            gear = new List<GearItemData>
+            data = new List<GearItemData>
             {
                 new GearItemData
                 {
@@ -109,20 +111,23 @@ namespace KOTE.UI.Armory
             }
         };
         // +++++++++++++++ END TEST DATA ++++++++++++++++++++++++
-        public Sprite defaultCharacterSprite;
+
+        private void Awake()
+        {
+            GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLogin);
+        }
 
         private void Start()
         {
             panelContainer.SetActive(false);
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.AddListener(ActivateContainer);
-            GameManager.Instance.EVENT_GEAR_RECEIVED.AddListener(PopulateGear);
+            // listen for successful login to get the player's gear
             OnGearSelected.AddListener(OnGearItemSelected);
         }
 
         private void ActivateContainer(bool show)
         {
             panelContainer.SetActive(show);
-            GameManager.Instance.EVENT_GEAR_RECEIVED.Invoke(JsonConvert.SerializeObject(testData));
             PopulateCharacterList();
         }
 
@@ -138,7 +143,7 @@ namespace KOTE.UI.Armory
                 playButton.interactable = false;
                 return;
             }
-            
+
             foreach (Nft nft in nfts)
             {
                 nftList.AddLast(new ArmoryTokenData(nft));
@@ -146,21 +151,34 @@ namespace KOTE.UI.Armory
 
             playButton.interactable = true;
             curNode = nftList.First;
-            UpdateCharacterImage();
+            GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
+            UpdatePanelOnNftUpdate();
         }
 
-        private void PopulateGear(string rawData)
+        private void OnLogin(string data, int data2)
         {
-            GearData data = Unity.Plastic.Newtonsoft.Json.JsonConvert.DeserializeObject<GearData>(rawData);
+            PopulatePlayerGearInventory();
+        }
+
+        private void PopulateGearSlots()
+        {
+        }
+
+        private async void PopulatePlayerGearInventory()
+        {
+            GearData data = await FetchData.Instance.GetGearInventory();
             if (data == null) return;
+            await GearIconManager.Instance.RequestGearIcons(data);
             PopulateGearList(data);
             GenerateHeaders();
         }
 
         private void PopulateGearList(GearData data)
         {
-            foreach (GearItemData itemData in data.gear)
+            foreach (GearItemData itemData in data.data)
             {
+                itemData.gearImage =
+                    GearIconManager.Instance.GetGearSprite(Utils.ParseEnum<Trait>(itemData.trait), itemData.name);
                 if (categoryLists.ContainsKey(itemData.category))
                 {
                     categoryLists[itemData.category].Add(itemData);
@@ -181,9 +199,13 @@ namespace KOTE.UI.Armory
             }
         }
 
-        private void UpdateCharacterImage()
+        private void UpdatePanelOnNftUpdate()
         {
             nftImage.sprite = curNode.Value.NftImage;
+            foreach (GameObject panel in gearPanels)
+            {
+                panel.SetActive(curNode.Value.MetaData.Contract != NftContract.KnightsOfTheEther);
+            }
         }
 
         public void OnPreviousToken()
@@ -191,7 +213,8 @@ namespace KOTE.UI.Armory
             if (curNode?.Previous == null) return;
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             curNode = curNode.Previous;
-            UpdateCharacterImage();
+            GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
+            UpdatePanelOnNftUpdate();
         }
 
         public void OnNextToken()
@@ -199,7 +222,8 @@ namespace KOTE.UI.Armory
             if (curNode?.Next == null) return;
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             curNode = curNode.Next;
-            UpdateCharacterImage();
+            GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
+            UpdatePanelOnNftUpdate();
         }
 
         public void OnPlayButton()
@@ -217,7 +241,6 @@ namespace KOTE.UI.Armory
         private async void OnStartExpedition()
         {
             playButton.interactable = false;
-            GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             bool success = await FetchData.Instance.RequestNewExpedition("knight", curNode.Value.Id);
             if (success)
@@ -246,17 +269,17 @@ namespace KOTE.UI.Armory
         Helmet = 0,
         Pauldrons = 1,
         Breastplate = 2,
-        Legguards = 3,
+        Legguard = 3,
         Boots = 4,
         Weapon = 5,
         Shield = 6,
         Padding = 7,
         Vambraces = 8,
-        Gauntlet = 9,
+        Gauntlets = 9,
     }
 
-    internal class GearData
+    public class GearData
     {
-        public List<GearItemData> gear;
+        public List<GearItemData> data;
     }
 }

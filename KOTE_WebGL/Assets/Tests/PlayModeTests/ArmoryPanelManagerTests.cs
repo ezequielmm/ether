@@ -19,7 +19,8 @@ namespace KOTE.UI.Armory
                 Traits = new Dictionary<Trait, string>()
                 {
                     { Trait.Helmet, "helmet" }
-                }
+                },
+                Contract = NftContract.KnightsOfTheEther
             },
             new Nft()
             {
@@ -28,13 +29,14 @@ namespace KOTE.UI.Armory
                 Traits = new Dictionary<Trait, string>()
                 {
                     { Trait.Boots, "boots" }
-                }
+                },
+                Contract = NftContract.KnightsOfTheEther
             }
         };
 
         private GearData testData = new GearData
         {
-            gear = new List<GearItemData>
+            data = new List<GearItemData>
             {
                 new GearItemData
                 {
@@ -238,6 +240,16 @@ namespace KOTE.UI.Armory
         }
 
         [Test]
+        public void DoesShowingPanelCallNftSelectedEvent()
+        {
+            bool eventFired = false;
+            GameManager.Instance.EVENT_NFT_SELECTED.AddListener((data) => { eventFired = true; });
+            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
+            _armoryPanelManager.OnNextToken();
+            Assert.True(eventFired);
+        }
+
+        [Test]
         public void DoesCallingOnNextTokenSwitchToNextToken()
         {
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
@@ -266,6 +278,18 @@ namespace KOTE.UI.Armory
             yield return null;
             _armoryPanelManager.OnNextToken();
             GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) => { eventFired = true; });
+            _armoryPanelManager.OnPreviousToken();
+            Assert.True(eventFired);
+        }
+
+        [UnityTest]
+        public IEnumerator DoesOnPreviousTokenCallNftSelectedEvent()
+        {
+            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
+            bool eventFired = false;
+            yield return null;
+            _armoryPanelManager.OnNextToken();
+            GameManager.Instance.EVENT_NFT_SELECTED.AddListener((data) => { eventFired = true; });
             _armoryPanelManager.OnPreviousToken();
             Assert.True(eventFired);
         }
@@ -300,6 +324,16 @@ namespace KOTE.UI.Armory
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             bool eventFired = false;
             GameManager.Instance.EVENT_PLAY_SFX.AddListener((data, data2) => { eventFired = true; });
+            _armoryPanelManager.OnNextToken();
+            Assert.True(eventFired);
+        }
+
+        [Test]
+        public void DoesOnNextTokenCallNftSelectedEvent()
+        {
+            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
+            bool eventFired = false;
+            GameManager.Instance.EVENT_NFT_SELECTED.AddListener((data) => { eventFired = true; });
             _armoryPanelManager.OnNextToken();
             Assert.True(eventFired);
         }
@@ -381,17 +415,6 @@ namespace KOTE.UI.Armory
             Assert.AreEqual(SoundTypes.UI, requestedType);
         }
 
-        [UnityTest]
-        public IEnumerator DoesOnPlayButtonCallNftSelected()
-        {
-            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
-            bool eventFired = false;
-            GameManager.Instance.EVENT_NFT_SELECTED.AddListener((data) => { eventFired = true; });
-            _armoryPanelManager.OnPlayButton();
-            yield return null;
-            Assert.True(eventFired);
-        }
-
         [Test]
         public void DoesOnBackButtonHideArmoryPanel()
         {
@@ -402,28 +425,20 @@ namespace KOTE.UI.Armory
         }
 
         [Test]
-        public void DoesCallingGearReceivedCreateHeader()
-        {
-            GameManager.Instance.EVENT_GEAR_RECEIVED.Invoke(JsonConvert.SerializeObject(testData));
-            ArmoryHeaderManager child =
-                _armoryPanelManager.gearListTransform.GetComponentInChildren<ArmoryHeaderManager>();
-            Assert.NotNull(child);
-        }
-
-        [Test]
-        public void DoesCallingGearReceivedCreateCorrectNumberOfHeaders()
-        {
-            GameManager.Instance.EVENT_GEAR_RECEIVED.Invoke(JsonConvert.SerializeObject(testData));
-            ArmoryHeaderManager[] children =
-                _armoryPanelManager.gearListTransform.GetComponentsInChildren<ArmoryHeaderManager>();
-            Assert.AreEqual(10, children.Length);
-        }
-
-        [Test]
         public void DoesCallingGearSelectedChangeSlotImage()
         {
-            ArmoryPanelManager.OnGearSelected.Invoke(testData.gear[0]);
+            ArmoryPanelManager.OnGearSelected.Invoke(testData.data[0]);
             Assert.IsNull(_armoryPanelManager.gearSlots[(int)GearCategories.Helmet].sprite);
+        }
+
+        [Test]
+        public void DoKnightNftsDeactivateGearPanels()
+        {
+            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
+            foreach (GameObject panel in _armoryPanelManager.gearPanels)
+            {
+                Assert.False(panel.activeSelf);
+            }
         }
     }
 }
