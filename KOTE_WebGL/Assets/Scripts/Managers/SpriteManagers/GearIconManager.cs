@@ -38,13 +38,13 @@ namespace KOTE.UI.Armory
             iconCache[traitType][itemName] = iconSprite;
         }
 
-        internal async void RequestGearIcons(GearData gearList)
+        internal async UniTask RequestGearIcons(GearData gearList)
         {
-            foreach (GearItemData item in gearList.gear)
+            foreach (GearItemData item in gearList.data)
             {
                 Trait itemTrait = Utils.ParseEnum<Trait>(item.trait);
                 if(IsIconCached(itemTrait, item.name)) continue;
-                Sprite curSprite = await GetIcon(item.name);
+                Sprite curSprite = await GetIcon($"{item.trait}/{item.name}");
                 CacheIcon(itemTrait, item.name, curSprite);
             }
         }

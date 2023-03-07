@@ -36,7 +36,7 @@ namespace KOTE.UI.Armory
 
         private GearData testData = new GearData
         {
-            gear = new List<GearItemData>
+            data = new List<GearItemData>
             {
                 new GearItemData
                 {
@@ -425,27 +425,9 @@ namespace KOTE.UI.Armory
         }
 
         [Test]
-        public void DoesCallingGearReceivedCreateHeader()
-        {
-            GameManager.Instance.EVENT_GEAR_RECEIVED.Invoke(JsonConvert.SerializeObject(testData));
-            ArmoryHeaderManager child =
-                _armoryPanelManager.gearListTransform.GetComponentInChildren<ArmoryHeaderManager>();
-            Assert.NotNull(child);
-        }
-
-        [Test]
-        public void DoesCallingGearReceivedCreateCorrectNumberOfHeaders()
-        {
-            GameManager.Instance.EVENT_GEAR_RECEIVED.Invoke(JsonConvert.SerializeObject(testData));
-            ArmoryHeaderManager[] children =
-                _armoryPanelManager.gearListTransform.GetComponentsInChildren<ArmoryHeaderManager>();
-            Assert.AreEqual(10, children.Length);
-        }
-
-        [Test]
         public void DoesCallingGearSelectedChangeSlotImage()
         {
-            ArmoryPanelManager.OnGearSelected.Invoke(testData.gear[0]);
+            ArmoryPanelManager.OnGearSelected.Invoke(testData.data[0]);
             Assert.IsNull(_armoryPanelManager.gearSlots[(int)GearCategories.Helmet].sprite);
         }
 

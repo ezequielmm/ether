@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using KOTE.UI.Armory;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -112,6 +113,18 @@ public class FetchData : DataManager, ISingleton<FetchData>
             token.Contract = contract;
         }
         return nftMetaDataList;
+    }
+
+    public async UniTask<GearData> GetGearInventory()
+    {
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.PlayerGear);
+        using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
+        {
+            request.SetRequestHeader("Authorization", $"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMjM0Y2NkNmFlMzc4YjgxNDE1MmU1NzAyNjFmY2RlMDEyNTViYmE1ODZkNGEzMjU1NWUyMTQ5Njg2YTkyNjlkZTI0OTUyNjI5ZTE1NmVkZmIiLCJpYXQiOjE2NzgxNTE4OTYuNDU1MjY5LCJuYmYiOjE2NzgxNTE4OTYuNDU1Mjc2LCJleHAiOjE3MDk3NzQyOTYuNDMyNTE1LCJzdWIiOiIyNDMiLCJzY29wZXMiOltdfQ.ESjM9kAh7h2PHv3w0HbzFHTCrBNIvKng9FnBQhNlILxITxX8C5xnoxrmyj5t2xZbBJJ50kA4NqajFesedeyWJPXr7L1QW_3YdHGYr2-F7c9vTUbtxYG28d1ZdsMUYFhPU9Yt9W5MtH9XpN9TIzDLDsWmakIq6zSwawtLnbbWnVTuj5cOVtW9gAyL05dBgb5lxf6eD5GVYF_QJ2EOMTLPoMlnBrGmG2FobtvBcJxhlgyV9vfo8WtwTlFKTmp21FmV9NVvAppgz0DYjEeYcGwUDmmZ8kjSLmOsiDlRsCPmYKtEFZiOc-i5EhQmzqBcfyeXOy6pmXNfQIFfAHupyrjh2HJZKya_mDoKc0KJanoXBBo3J6YEwxoUohv8sIGMjFLE-TAq7QvB0pz00LVoM4iPhxx_MqH0-wqUns8riw-mBdTFw7Kp3RDphRivP_DF4FWcuRObTBBuRBmdKs6gzmQOPhXP7utadLQwr_zHMS_X1i33WigOdOFmqa_63SjaLxPBJlEzWCd7cP-M9o2gojj3twNrM-hG1A8OzUljWKkEE38Ey5iOUZ86q1jNSXwBv4yFwQ8BkUoyhIQwIEGA_Z9NCVhR4Y0cL_gDTtZzUwYv7Lr34-mqIWigEGneQHysiDb9m2vpCF7QKwwrOYj1EjRxBrjBC-Gm72zNQmNlQCM68Vk");
+            string rawJson = await MakeJsonRequest(request);
+            Debug.Log($"Raw Gear Data: {rawJson}");
+            return JsonConvert.DeserializeObject<GearData>(rawJson);
+        }
     }
 
     public async UniTask<Texture2D> GetTexture(string url) 
