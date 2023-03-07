@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -129,5 +130,23 @@ public class StatusManagerTests : MonoBehaviour
         }
 
         Assert.AreEqual(1, count);
+    }
+
+    [Test]
+    public void AllEnumsCanBeParsed()
+    {
+        bool allValuesPass = true;
+        foreach (STATUS status in Enum.GetValues(typeof(STATUS)))
+        {
+            string generatedString = status.ToString();
+            STATUS parsedValue = _statusManager.ToEnum(generatedString);
+            if (status != parsedValue) 
+            {
+                allValuesPass = false;
+                Debug.LogAssertion($"{generatedString} did not parse into {parsedValue}");
+                break;
+            }
+        }
+        Assert.IsTrue(allValuesPass);
     }
 }
