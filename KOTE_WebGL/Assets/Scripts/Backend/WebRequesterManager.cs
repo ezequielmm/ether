@@ -132,20 +132,26 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         StartCoroutine(GetCharacterList());
     }
 
-    public async UniTask<string> MakeRequest(UnityWebRequest request) 
+    public async UniTask<DownloadHandler> MakeRequest(UnityWebRequest request)
     {
-        await request.SendWebRequest();
-        if (request.result != UnityWebRequest.Result.Success)
+        try
         {
-            Debug.LogError($"{request.error}");
-            ServerCommunicationLogger.Instance.LogCommunication($"[{request.uri}] Data Not Retrieved: {request.error}", CommunicationDirection.Incoming);
-            return null;
+            await request.SendWebRequest();
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                throw new Exception();
+            }
+            else
+            {
+                return request.downloadHandler;
+            }
         }
-        else 
+        catch (Exception e)
         {
-            string rawJson = request.downloadHandler.text;
-            ServerCommunicationLogger.Instance.LogCommunication($"[{request.uri}] Data Successfully Retrieved", CommunicationDirection.Incoming, rawJson);
-            return rawJson;
+            Debug.LogException(e);
+            Debug.LogError($"[WebRequesterManager] Error sending [{request.method}] request to [{request.uri}]\n{request?.error}");
+            ServerCommunicationLogger.Instance.LogCommunication($"[{request.method}][{request.uri}] Data Not Retrieved: {request?.error}", CommunicationDirection.Incoming);
+            return null;
         }
     }
 
@@ -811,7 +817,6 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             messageLog = ServerCommunicationLogger.Instance.GetCommunicationLog()
         };
         string data = JsonConvert.SerializeObject(reportData);
-        Debug.Log(data);
         byte[] utf8String = Encoding.Default.GetBytes(data);
         using (UnityWebRequest request = new UnityWebRequest(fullUrl, "POST"))
         {
@@ -821,6 +826,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             await MakeRequest(request);
             uploadHandler.Dispose();
         }
+        Debug.Log($"[WebRequesterManager] Bug Report Sent!");
     }
 
     public string ConstructUrl(string path) 
