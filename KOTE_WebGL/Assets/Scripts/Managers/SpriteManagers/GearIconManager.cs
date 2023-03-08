@@ -49,9 +49,24 @@ namespace KOTE.UI.Armory
             }
         }
         
+        internal async UniTask RequestGearIcons(Nft metadata)
+        {
+            foreach (KeyValuePair<Trait, string> trait in metadata.Traits)
+            {
+                if(IsIconCached(trait.Key, trait.Value)) continue;
+                Sprite curSprite = await GetIcon($"{trait.Key}/{trait.Value}");
+                CacheIcon(trait.Key, trait.Value, curSprite);
+            }
+        }
+        
         private async UniTask<Sprite> GetIcon(string itemName) 
         {
             Texture2D texture = await FetchData.Instance.GetArmoryGearImage(itemName);
+            if (texture == null)
+            {
+                Debug.LogWarning($"Gear icon not found for {itemName}");
+                return defaultImage;
+            }
             return texture.ToSprite();
         }
     }

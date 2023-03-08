@@ -8,7 +8,6 @@ public class Villager : PlayerNft
     public Villager(Nft nftData)
     {
         Metadata = nftData;
-        Traits = new Dictionary<Trait, string>();
         BuildBaseTraits();
     }
 

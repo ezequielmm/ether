@@ -100,6 +100,7 @@ namespace KOTE.UI.Armory
         };
 
         private GameObject armoryPanel;
+        private GameObject nftSpriteManager;
         private ArmoryPanelManager _armoryPanelManager;
         private Sprite testSprite;
 
@@ -109,7 +110,7 @@ namespace KOTE.UI.Armory
         {
             GameObject spriteManagerPrefab =
                 AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/NftSpriteManager.prefab");
-            GameObject nftSpriteManager = Instantiate(spriteManagerPrefab);
+            nftSpriteManager = Instantiate(spriteManagerPrefab);
             nftSpriteManager.SetActive(true);
 
             GameObject armoryPrefab =
@@ -149,6 +150,7 @@ namespace KOTE.UI.Armory
 
             NftManager.Instance.Nfts = new Dictionary<NftContract, List<Nft>>();
             NftManager.Instance.Nfts[NftContract.KnightsOfTheEther] = testNftList;
+            NftManager.Instance.NftsLoaded.Invoke();
 
             yield return null;
         }
@@ -156,9 +158,11 @@ namespace KOTE.UI.Armory
         [UnityTearDown]
         public IEnumerator TearDown()
         {
-            GameManager.Instance.DestroyInstance();
+            Destroy(nftSpriteManager);
             Destroy(armoryPanel);
             _armoryPanelManager = null;
+            GameManager.Instance.DestroyInstance();
+            GearIconManager.Instance.DestroyInstance();
             yield return null;
         }
 
@@ -254,6 +258,7 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoesCallingOnNextTokenSwitchToNextToken()
         {
+            
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             _armoryPanelManager.nftImage.sprite = null;
             Assert.IsNull(_armoryPanelManager.nftImage.sprite);
@@ -442,6 +447,7 @@ namespace KOTE.UI.Armory
             testNftList[0].Contract = NftContract.Villager;
             NftManager.Instance.Nfts.Clear();
             NftManager.Instance.Nfts[NftContract.Villager] = testNftList;
+            NftManager.Instance.NftsLoaded.Invoke();
             
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             ArmoryPanelManager.OnGearSelected.Invoke(testData.data[0]);
@@ -455,6 +461,20 @@ namespace KOTE.UI.Armory
             foreach (GameObject panel in _armoryPanelManager.gearPanels)
             {
                 Assert.False(panel.activeSelf);
+            }
+        }
+
+        [Test]
+        public void DoesLoadingAVillagerUpdateGearSlots()
+        {
+            testNftList[0].Contract = NftContract.Villager;
+            NftManager.Instance.Nfts.Clear();
+            NftManager.Instance.Nfts[NftContract.Villager] = testNftList;
+            
+            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
+            foreach (GearSlot slot in _armoryPanelManager.gearSlots)
+            {
+                Assert.IsNull(slot.GetEquippedGear());
             }
         }
     }

@@ -10,7 +10,6 @@ namespace KOTE.UI.Armory
     {
         internal static UnityEvent<GearItemData> OnGearSelected { get; } = new();
 
-
         public GameObject panelContainer;
         public Button playButton;
         public Sprite defaultCharacterSprite;
@@ -19,7 +18,7 @@ namespace KOTE.UI.Armory
         public Transform gearListTransform;
         public GearSlot[] gearSlots;
         public GameObject[] gearPanels;
-        
+
         private LinkedListNode<ArmoryTokenData> curNode;
         private LinkedList<ArmoryTokenData> nftList = new();
         private Dictionary<string, List<GearItemData>> categoryLists = new();
@@ -37,7 +36,6 @@ namespace KOTE.UI.Armory
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.AddListener(ActivateContainer);
             // listen for successful login to get the player's gear
             OnGearSelected.AddListener(OnGearItemSelected);
-            
         }
 
         private void ActivateContainer(bool show)
@@ -67,6 +65,17 @@ namespace KOTE.UI.Armory
             curNode = nftList.First;
             GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
             UpdatePanelOnNftUpdate();
+        }
+
+        private async void UpdatePanelOnNftUpdate()
+        {
+            nftImage.sprite = await curNode.Value.MetaData.GetImage();
+            foreach (GameObject panel in gearPanels)
+            {
+                panel.SetActive(!curNode.Value.MetaData.isKnight);
+            }
+
+            PopulateGearSlots();
         }
 
         private void OnLogin(string data, int data2)
@@ -109,22 +118,29 @@ namespace KOTE.UI.Armory
             }
         }
 
-        private async void UpdatePanelOnNftUpdate()
-        {
-            nftImage.sprite = await curNode.Value.MetaData.GetImage();
-            foreach (GameObject panel in gearPanels)
-            {
-                panel.SetActive(!curNode.Value.MetaData.isKnight);
-            }
-            PopulateGearSlots();
-        }
-        
-        private void PopulateGearSlots()
+        private async void PopulateGearSlots()
         {
             // if a knight is selected don't show anything
             if (curNode.Value.MetaData.isKnight) return;
-            // if a villager is selected, populate gear slots based off of base traits
-            // we need to get the gear equipped to a villager somehow, and should be able to get defaults for that token?
+            await GearIconManager.Instance.RequestGearIcons(curNode.Value.MetaData);
+
+            foreach (GearSlot slot in gearSlots)
+            {
+                if (!curNode.Value.MetaData.Traits.ContainsKey(slot.gearTrait))
+                {
+                    slot.Clear();
+                    continue;
+                }
+                string nftTraitValue = curNode.Value.MetaData.Traits[slot.gearTrait];
+
+                slot.SetGearInSlot(new GearItemData
+                {
+                    category = slot.gearCategory.ToString(),
+                    trait = slot.gearTrait.ToString(),
+                    name = nftTraitValue,
+                    gearImage = GearIconManager.Instance.GetGearSprite(slot.gearTrait, nftTraitValue)
+                });
+            }
         }
 
         public void OnPreviousToken()

@@ -67,8 +67,8 @@ public class NftManager : ISingleton<NftManager>
     };
     private static readonly Dictionary<NftContract, string> testNetNftContractMap = new() {
         { NftContract.KnightsOfTheEther, "0xb80FB9371E4662D97E719d6734A8208102b18349" },
-        { NftContract.Villager, "0xbB4342E7aB28fd581d751b064dd924BCcd860faC" },
-        { NftContract.BlessedVillager, "0x2d51402A6DAb0EA48E30Bb169db74FfE3c1c6675" }
+        { NftContract.Villager, "0xF0aA34f832c34b32478B8D9696DC8Ad1c8065D2d" },
+        { NftContract.BlessedVillager, "0x55abb816b145CA8F34ffA22D63fBC5bc57186690" }
     };
     public static string GetNftContractAddress(NftContract contract)
     {

@@ -12,10 +12,21 @@ namespace KOTE.UI.Armory
         public Image icon;
         private GearItemData selectedGear;
 
+        internal GearItemData GetEquippedGear()
+        {
+            return selectedGear;
+        }
+
         internal void SetGearInSlot(GearItemData currentGear)
         {
             selectedGear = currentGear;
             icon.sprite =currentGear.gearImage;
+        }
+
+        internal void Clear()
+        {
+            icon.sprite = GearIconManager.Instance.defaultImage;
+            selectedGear = null;
         }
     }
 }

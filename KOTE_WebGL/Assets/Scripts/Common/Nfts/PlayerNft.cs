@@ -13,8 +13,8 @@ public abstract class PlayerNft
 
     public Nft Metadata;
     
-    protected Dictionary<Trait, string> Traits;
-    protected Dictionary<Trait, string> EquippedTraits;
+    protected Dictionary<Trait, string> Traits = new();
+    protected Dictionary<Trait, string> EquippedTraits = new();
 
     public abstract UniTask GetNftSprites(SkeletonData playerSkeleton);
 
@@ -91,6 +91,11 @@ public abstract class PlayerNft
     protected async UniTask<Sprite> GetPlayerSkin(TraitSprite spriteData)
     {
         Texture2D texture = await FetchData.Instance.GetNftSkinElement(spriteData);
+        if (texture == null)
+        {
+            Debug.LogWarning($"Skin image not found on server for {spriteData.ImageName}");
+            return null;
+        }
         return texture.ToSprite();
     }
 
