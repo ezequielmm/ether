@@ -2,14 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static PlasticGui.Help.GuiHelp;
 
 public class ContestRulesPanel : MonoBehaviour
 {
     [SerializeField]
-    GameObject Panel;
+    public GameObject Panel;
     [SerializeField]
-    GameObject RulesContainer;
+    public GameObject RulesContainer;
 
     [SerializeField]
     GameObject RulePrefab;
