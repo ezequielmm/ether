@@ -6,6 +6,7 @@ using System.Linq;
 using KOTE.UI.Armory;
 using UnityEngine;
 using UnityEngine.Networking;
+using JsonConverter = Unity.Plastic.Newtonsoft.Json.JsonConverter;
 
 public class FetchData : DataManager, ISingleton<FetchData>
 {
@@ -150,13 +151,14 @@ public class FetchData : DataManager, ISingleton<FetchData>
         return await GetTexture(requestUrl);
     }
 
-    public async UniTask<bool> RequestNewExpedition(string characterType, int selectedNft)
+    public async UniTask<bool> RequestNewExpedition(string characterType, int selectedNft, List<GearItemData> equippedGear)
     {
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.ExpeditionRequest);
 
         WWWForm form = new WWWForm();
         form.AddField("class", characterType);
         form.AddField("nftId", selectedNft);
+        form.AddField("gear", JsonConvert.SerializeObject(equippedGear));
 
         using (UnityWebRequest request = UnityWebRequest.Post(requestUrl, form))
         {

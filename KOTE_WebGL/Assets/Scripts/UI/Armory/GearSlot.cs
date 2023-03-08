@@ -11,9 +11,11 @@ namespace KOTE.UI.Armory
         public Trait gearTrait;
         public Image icon;
         private GearItemData selectedGear;
+        internal GearItemData defaultGear;
 
         internal GearItemData GetEquippedGear()
         {
+            if (selectedGear == defaultGear) return null;
             return selectedGear;
         }
 
@@ -23,8 +25,13 @@ namespace KOTE.UI.Armory
             icon.sprite =currentGear.gearImage;
         }
 
-        internal void Clear()
+        internal void ResetSlot()
         {
+            if (defaultGear != null)
+            {
+                SetGearInSlot(defaultGear);
+                return;
+            }
             icon.sprite = GearIconManager.Instance.defaultImage;
             selectedGear = null;
         }

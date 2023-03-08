@@ -470,6 +470,7 @@ namespace KOTE.UI.Armory
             testNftList[0].Contract = NftContract.Villager;
             NftManager.Instance.Nfts.Clear();
             NftManager.Instance.Nfts[NftContract.Villager] = testNftList;
+            NftManager.Instance.NftsLoaded.Invoke();
             
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             foreach (GearSlot slot in _armoryPanelManager.gearSlots)

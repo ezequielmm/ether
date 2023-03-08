@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -128,18 +129,22 @@ namespace KOTE.UI.Armory
             {
                 if (!curNode.Value.MetaData.Traits.ContainsKey(slot.gearTrait))
                 {
-                    slot.Clear();
-                    continue;
+                    slot.defaultGear = null;
                 }
-                string nftTraitValue = curNode.Value.MetaData.Traits[slot.gearTrait];
-
-                slot.SetGearInSlot(new GearItemData
+                else
                 {
-                    category = slot.gearCategory.ToString(),
-                    trait = slot.gearTrait.ToString(),
-                    name = nftTraitValue,
-                    gearImage = GearIconManager.Instance.GetGearSprite(slot.gearTrait, nftTraitValue)
-                });
+                    string nftTraitValue = curNode.Value.MetaData.Traits[slot.gearTrait];
+
+                    slot.defaultGear = new GearItemData
+                    {
+                        category = slot.gearCategory.ToString(),
+                        trait = slot.gearTrait.ToString(),
+                        name = nftTraitValue,
+                        gearImage = GearIconManager.Instance.GetGearSprite(slot.gearTrait, nftTraitValue)
+                    };
+                }
+
+                slot.ResetSlot();
             }
         }
 
@@ -177,7 +182,8 @@ namespace KOTE.UI.Armory
         {
             playButton.interactable = false;
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-            bool success = await FetchData.Instance.RequestNewExpedition("knight", curNode.Value.Id);
+            bool success =
+                await FetchData.Instance.RequestNewExpedition("knight", curNode.Value.Id, equippedGear.Values.ToList());
             if (success)
             {
                 OnExpeditionConfirmed();
