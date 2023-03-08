@@ -11,14 +11,14 @@ public class ContestManagerTests : MonoBehaviour
     ContestManager contestManager;
 
     [UnitySetUp]
-    private IEnumerator SetUp() 
+    public IEnumerator SetUp() 
     {
         contestManager = ContestManager.Instance;
         yield return null;
     }
 
     [UnityTearDown]
-    private IEnumerator TearDown() 
+    public IEnumerator TearDown() 
     {
         contestManager.DestroyInstance();
         contestManager = null;
@@ -26,7 +26,7 @@ public class ContestManagerTests : MonoBehaviour
     }
 
     [Test]
-    private void EndTimeSet() 
+    public void EndTimeSet() 
     {
         DateTime endTime = DateTime.Now.AddDays(1);
         contestManager.SetNewContestTime(endTime);
@@ -35,7 +35,7 @@ public class ContestManagerTests : MonoBehaviour
     }
 
     [Test]
-    private void TimeUntilEnd()
+    public void TimeUntilEnd()
     {
         double dayInSeconds = 864000;
 
