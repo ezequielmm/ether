@@ -229,8 +229,8 @@ MonoBehaviour:
   ShowMilliSeconds: 0
   AlwaysShowMilliSeconds: 0
   ShowSeconds: 1
-  AlwaysShowMinutes: 1
+  AlwaysShowMinutes: 0
   AlwaysShowHours: 0
   AlwaysShowUnits: 0
-  TotalSeconds: 0
+  Seconds: 0
   clockText: {fileID: 3957825093989682878}
