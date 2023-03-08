@@ -226,11 +226,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd032c9f848956944881ab519e34547b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showMilliSeconds: 1
-  forceMilliSeconds: 0
-  showSeconds: 1
-  forceMinutes: 0
-  forceHours: 0
-  forceUnits: 0
+  ShowMilliSeconds: 0
+  AlwaysShowMilliSeconds: 0
+  ShowSeconds: 1
+  AlwaysShowMinutes: 0
+  AlwaysShowHours: 0
+  AlwaysShowUnits: 0
   Seconds: 0
   clockText: {fileID: 3957825093989682878}
