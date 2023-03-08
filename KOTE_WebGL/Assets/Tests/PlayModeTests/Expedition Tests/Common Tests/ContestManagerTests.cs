@@ -37,9 +37,9 @@ public class ContestManagerTests : MonoBehaviour
     [Test]
     public void TimeUntilEnd()
     {
-        double dayInSeconds = 864000;
+        double dayInSeconds = 86400;
 
-        DateTime endTime = DateTime.Now.AddDays(1);
+        DateTime endTime = DateTime.UtcNow.AddSeconds(dayInSeconds);
         contestManager.SetNewContestTime(endTime);
 
         Assert.AreEqual(dayInSeconds, contestManager.TimeUntilEnd.TotalSeconds, 5);
