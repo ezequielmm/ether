@@ -14,9 +14,12 @@ public class ContestCountdownManager : MonoBehaviour
     [SerializeField]
     TMP_Text CountdownBlurb;
 
-    private void Start()
+    private void Awake()
     {
         contest = ContestManager.Instance;
+    }
+    private void Start()
+    {
         contest.OnContestStarted.AddListener(EnableTimer);
     }
 
