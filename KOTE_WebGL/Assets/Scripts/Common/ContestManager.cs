@@ -15,11 +15,11 @@ public class ContestManager : SingleTon<ContestManager>
     public DateTime ContestEndTimeUtc { get; private set; }
     public TimeSpan TimeUntilEnd => ContestEndTimeUtc - DateTime.UtcNow;
 
-    private DateTime NextDayUtc() 
+    private DateTime NextDay6AmUtc() 
     {
         var time = DateTime.UtcNow;
         time = time.AddDays(1);
-        return new DateTime(time.Year, time.Month, time.Day);
+        return new DateTime(time.Year, time.Month, time.Day).AddHours(6);
     }
 
     public void SetNewContestTime(DateTime UtcDateTime)
@@ -46,7 +46,7 @@ public class ContestManager : SingleTon<ContestManager>
         await CheckContestStatus();
         if (HasContest)
         {
-            SetNewContestTime(NextDayUtc());
+            SetNewContestTime(NextDay6AmUtc());
         }
     }
 

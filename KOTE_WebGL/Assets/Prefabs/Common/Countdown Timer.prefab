@@ -89,6 +89,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countDownTimer: {fileID: 4773993129063932738}
+  CountdownBlurb: {fileID: 4773993129267845210}
 --- !u!1 &4773993129009513741
 GameObject:
   m_ObjectHideFlags: 0
