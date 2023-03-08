@@ -12,7 +12,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     private List<PlayerNft> characterList = new List<PlayerNft>();
 
 
-    private SkeletonData knightSkeletonData;
+    private SkeletonData knightSkeletonData => KinghtData.GetSkeletonData(true);
 
     protected override void Awake()
     {
@@ -24,8 +24,6 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         GameManager.Instance.EVENT_NFT_SELECTED.AddListener(BuildPlayer);
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(UpdateNftForExpedition);
         GameManager.Instance.EVENT_UPDATE_NFT.AddListener(UpdateNftTrait);
-
-        knightSkeletonData = KinghtData.GetSkeletonData(true);
     }
 
     private void UpdateNftForExpedition(bool data, int nftInt)

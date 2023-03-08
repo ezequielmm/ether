@@ -41,7 +41,6 @@ namespace KOTE.UI.Armory
         private void ActivateContainer(bool show)
         {
             panelContainer.SetActive(show);
-            PopulateCharacterList();
         }
 
         private void PopulateCharacterList()
@@ -112,9 +111,9 @@ namespace KOTE.UI.Armory
             }
         }
 
-        private void UpdatePanelOnNftUpdate()
+        private async void UpdatePanelOnNftUpdate()
         {
-            nftImage.sprite = curNode.Value.NftImage;
+            nftImage.sprite = await curNode.Value.MetaData.GetImage();
             foreach (GameObject panel in gearPanels)
             {
                 panel.SetActive(curNode.Value.MetaData.Contract != NftContract.KnightsOfTheEther);
