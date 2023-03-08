@@ -13,6 +13,26 @@ public class ContestCountdownManager : MonoBehaviour
     private void Start()
     {
         contest = ContestManager.Instance;
+        contest.OnContestStarted.AddListener(EnableTimer);
+    }
+
+    private void OnEnable()
+    {
+        ToggleTimer(contest.HasContest);
+    }
+
+    public void EnableTimer() 
+    {
+        ToggleTimer(true);
+    }
+    public void DisableTimer()
+    {
+        ToggleTimer(false);
+    }
+
+    public void ToggleTimer(bool active)
+    {
+        countDownTimer.gameObject.SetActive(active);
     }
 
     private void Update()

@@ -9,7 +9,7 @@ public class ContestManager : SingleTon<ContestManager>
 {
     public UnityEvent OnContestEnded = new UnityEvent();
     public UnityEvent OnContestStarted = new UnityEvent();
-    public bool HasContest { get; private set; }
+    public bool HasContest { get; private set; } = false;
     bool reportedEndOfContest = true;
 
     public DateTime ContestEndTimeUtc { get; private set; }
@@ -31,7 +31,7 @@ public class ContestManager : SingleTon<ContestManager>
 
     void Start()
     {
-        SetNewContestTime(NextDayUtc());
+        ResetContestOnEnd();
         reportedEndOfContest = false;
         OnContestEnded.AddListener(ResetContestOnEnd);
     }
