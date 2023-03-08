@@ -482,4 +482,5 @@ public static class RestEndpoint
     public static readonly string ExpeditionScore = "/gsrv/v1/expeditions/score";
     public static readonly string BugReport = "/gsrv/v1/bug/report";
     public static readonly string ServerVersion = "/gsrv/v1/showversion";
+    public static readonly string PlayerGear = "/v1/playerGear";
 }

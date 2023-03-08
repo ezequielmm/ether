@@ -118,7 +118,7 @@ public class CardManagerTests : MonoBehaviour
         spriteCardInstance = Instantiate(spriteCardPrefab);
         cardManager = spriteCardInstance.GetComponent<CardManager>();
         _visualsManager = spriteCardInstance.GetComponent<CardVisualsManager>();
-        cardManager.Populate(new Card(), 0, pileOrthoPos);
+        cardManager.Populate(testCard, 0, pileOrthoPos);
         spriteCardInstance.SetActive(true);
         yield return null;
     }
@@ -148,7 +148,7 @@ public class CardManagerTests : MonoBehaviour
     {
         Assert.NotNull(_visualsManager.tooltips);
         Assert.IsInstanceOf<List<Tooltip>>(_visualsManager.tooltips);
-        Assert.AreEqual(0, _visualsManager.tooltips.Count);
+        Assert.AreEqual(2, _visualsManager.tooltips.Count);
     }
 
     [Test]
@@ -259,7 +259,6 @@ public class CardManagerTests : MonoBehaviour
     [Test]
     public void DoesPopulateGenerateTooltips()
     {
-        cardManager.Populate(testCard, 1, pileOrthoPos);
         Assert.AreEqual(2, _visualsManager.tooltips.Count);
         Assert.AreEqual("ToolTip title", _visualsManager.tooltips[0].title);
         Assert.AreEqual("Tooltip Description", _visualsManager.tooltips[0].description);
@@ -286,7 +285,7 @@ public class CardManagerTests : MonoBehaviour
     [Test]
     public void DoesMoveFromDiscardShrinkLocalScale()
     {
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.discard).Play();
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.draw).Play();
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.x);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.y);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.z);
@@ -411,7 +410,7 @@ public class CardManagerTests : MonoBehaviour
     public IEnumerator DoesMovingCardWithDelayScaleDownToZero()
     {
         Vector3 currentScale = cardManager.transform.localScale;
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.exhaust, moveDelay: 0.5f).Play();
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.exhaust, moveDelay: 0.5f).Play();
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.x);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.y);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.z);

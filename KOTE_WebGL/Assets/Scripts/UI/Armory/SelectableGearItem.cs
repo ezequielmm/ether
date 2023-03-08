@@ -27,7 +27,7 @@ namespace KOTE.UI.Armory
         }
     }
 
-    internal class GearItemData
+    public class GearItemData
     {
         public int gearId;
         public string name;
