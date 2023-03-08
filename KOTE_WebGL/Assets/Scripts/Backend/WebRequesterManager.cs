@@ -446,7 +446,6 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             messageLog = ServerCommunicationLogger.Instance.GetCommunicationLog()
         };
         string data = JsonConvert.SerializeObject(reportData);
-        Debug.Log(data);
         byte[] utf8String = Encoding.Default.GetBytes(data);
         using (UnityWebRequest request = new UnityWebRequest(fullUrl, "POST"))
         {
@@ -456,6 +455,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             await MakeRequest(request);
             uploadHandler.Dispose();
         }
+        Debug.Log($"[WebRequesterManager] Bug Report Sent!");
     }
 
     public string ConstructUrl(string path) 
