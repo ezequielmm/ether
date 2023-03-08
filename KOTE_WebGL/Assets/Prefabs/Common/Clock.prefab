@@ -229,7 +229,7 @@ MonoBehaviour:
   ShowMilliSeconds: 0
   AlwaysShowMilliSeconds: 0
   ShowSeconds: 1
-  AlwaysShowMinutes: 1
+  AlwaysShowMinutes: 0
   AlwaysShowHours: 0
   AlwaysShowUnits: 0
   Seconds: 0
