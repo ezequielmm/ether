@@ -174,6 +174,7 @@ namespace KOTE.UI.Armory
             if (curNode.Value.MetaData.Contract == NftContract.KnightsOfTheEther) return;
             GearCategories category = Utils.ParseEnum<GearCategories>(activeItem.category);
             gearSlots[(int)category].sprite = activeItem.gearImage;
+            GameManager.Instance.EVENT_UPDATE_NFT.Invoke(Enum.Parse<Trait>(activeItem.trait), activeItem.name);
         }
     }
 
