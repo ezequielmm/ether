@@ -32,7 +32,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.ServerVersion);
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
-            string rawJson = await webRequest.MakeRequest(request);
+            string rawJson = await MakeJsonRequest(request);
             return ParseJsonWithPath<string>(rawJson, "data");
         }
     }
@@ -71,6 +71,22 @@ public class FetchData : DataManager, ISingleton<FetchData>
     {
         string rawJson = await socketRequest.EmitAwaitResponse(SocketEvent.EncounterSelection, option);
         return ParseJsonWithPath<EncounterData>(rawJson, "data.data");
+    }
+
+    private async UniTask<string> MakeJsonRequest(UnityWebRequest request)
+    {
+        string rawJson = (await webRequest.MakeRequest(request))?.text;
+        if (rawJson != null)
+            ServerCommunicationLogger.Instance.LogCommunication($"[{request.uri}] Data Successfully Retrieved", CommunicationDirection.Incoming, rawJson);
+        return rawJson;
+    }
+
+    private async UniTask<Texture2D> MakeTextureRequest(UnityWebRequest request)
+    {
+        Texture2D texture = ((DownloadHandlerTexture)await webRequest.MakeRequest(request))?.texture;
+        if (texture != null)
+            ServerCommunicationLogger.Instance.LogCommunication($"[{request.uri}] Data Successfully Retrieved", CommunicationDirection.Incoming, "{\"message\":\"<Image File>\"}");
+        return texture;
     }
 
     public static T ParseJsonWithPath<T>(string rawJson, string tokenPath) 
