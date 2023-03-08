@@ -9,10 +9,10 @@ public class Villager : PlayerNft
     {
         Metadata = nftData;
         Traits = new Dictionary<Trait, string>();
-        BuildCurrentTraits();
+        BuildBaseTraits();
     }
 
-    private void BuildCurrentTraits()
+    private void BuildBaseTraits()
     {
         foreach (var defaultTrait in GameSettings.DEFAULT_SKIN_DATA)
         {
@@ -27,14 +27,15 @@ public class Villager : PlayerNft
 
     public override void ChangeGear(Trait trait, string traitValue)
     {
-        Traits[trait] = traitValue;
+        EquippedTraits[trait] = traitValue;
     }
 
     public override async UniTask GetNftSprites(SkeletonData playerSkeleton)
     {
         foreach (Trait trait in Traits.Keys)
         {
-            string traitValue = Traits[trait];
+            string traitValue = (EquippedTraits.ContainsKey(trait)) ? EquippedTraits[trait] : Traits[trait];
+
             string skinName;
             if (trait != Trait.Base && trait != Trait.Shadow)
             {

@@ -17,12 +17,14 @@ namespace KOTE.UI.Armory
         public Image nftImage;
         public ArmoryHeaderManager headerPrefab;
         public Transform gearListTransform;
-        public Image[] gearSlots;
+        public GearSlot[] gearSlots;
         public GameObject[] gearPanels;
+        
         private LinkedListNode<ArmoryTokenData> curNode;
         private LinkedList<ArmoryTokenData> nftList = new();
         private Dictionary<string, List<GearItemData>> categoryLists = new();
-        
+        private Dictionary<GearCategories, GearItemData> equippedGear = new();
+
         private void Awake()
         {
             GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLogin);
@@ -72,10 +74,6 @@ namespace KOTE.UI.Armory
             PopulatePlayerGearInventory();
         }
 
-        private void PopulateGearSlots()
-        {
-        }
-
         private async void PopulatePlayerGearInventory()
         {
             GearData data = await FetchData.Instance.GetGearInventory();
@@ -116,8 +114,17 @@ namespace KOTE.UI.Armory
             nftImage.sprite = await curNode.Value.MetaData.GetImage();
             foreach (GameObject panel in gearPanels)
             {
-                panel.SetActive(curNode.Value.MetaData.Contract != NftContract.KnightsOfTheEther);
+                panel.SetActive(!curNode.Value.MetaData.isKnight);
             }
+            PopulateGearSlots();
+        }
+        
+        private void PopulateGearSlots()
+        {
+            // if a knight is selected don't show anything
+            if (curNode.Value.MetaData.isKnight) return;
+            // if a villager is selected, populate gear slots based off of base traits
+            // we need to get the gear equipped to a villager somehow, and should be able to get defaults for that token?
         }
 
         public void OnPreviousToken()
@@ -173,7 +180,8 @@ namespace KOTE.UI.Armory
         {
             if (curNode.Value.MetaData.Contract == NftContract.KnightsOfTheEther) return;
             GearCategories category = Utils.ParseEnum<GearCategories>(activeItem.category);
-            gearSlots[(int)category].sprite = activeItem.gearImage;
+            gearSlots[(int)category].SetGearInSlot(activeItem);
+            equippedGear[Utils.ParseEnum<GearCategories>(activeItem.category)] = activeItem;
             GameManager.Instance.EVENT_UPDATE_NFT.Invoke(Enum.Parse<Trait>(activeItem.trait), activeItem.name);
         }
     }

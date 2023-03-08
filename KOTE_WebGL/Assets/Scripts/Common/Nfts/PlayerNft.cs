@@ -12,7 +12,9 @@ public abstract class PlayerNft
     public static List<TraitSprite> DefaultSprites = new List<TraitSprite>();
 
     public Nft Metadata;
+    
     protected Dictionary<Trait, string> Traits;
+    protected Dictionary<Trait, string> EquippedTraits;
 
     public abstract UniTask GetNftSprites(SkeletonData playerSkeleton);
 

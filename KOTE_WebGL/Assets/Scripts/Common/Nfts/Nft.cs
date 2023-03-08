@@ -22,6 +22,8 @@ public class Nft
     public Dictionary<Trait, string> Traits;
 
     public Sprite Image = null;
+    
+    public bool isKnight => Contract == NftContract.KnightsOfTheEther;
 
     public async UniTask<Sprite> GetImage() 
     {

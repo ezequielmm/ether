@@ -430,10 +430,10 @@ namespace KOTE.UI.Armory
         public void DoesCallingGearSelectedNotChangeSlotImageIfKnight()
         {
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
-            _armoryPanelManager.gearSlots[(int)GearCategories.Helmet].sprite = null;
+            _armoryPanelManager.gearSlots[(int)GearCategories.Helmet].icon.sprite = null;
 
             ArmoryPanelManager.OnGearSelected.Invoke(testData.data[0]);
-            Assert.IsNull(_armoryPanelManager.gearSlots[(int)GearCategories.Helmet].sprite);
+            Assert.IsNull(_armoryPanelManager.gearSlots[(int)GearCategories.Helmet].icon.sprite);
         }
         
         [Test]
@@ -445,7 +445,7 @@ namespace KOTE.UI.Armory
             
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             ArmoryPanelManager.OnGearSelected.Invoke(testData.data[0]);
-            Assert.IsNull(_armoryPanelManager.gearSlots[(int)GearCategories.Helmet].sprite);
+            Assert.IsNull(_armoryPanelManager.gearSlots[(int)GearCategories.Helmet].icon.sprite);
         }
 
         [Test]
