@@ -142,12 +142,13 @@ namespace KOTE.UI.Armory
                     Contract = NftContract.KnightsOfTheEther
                 }
             };
-            
+
             foreach (Nft nft in testNftList)
             {
                 nft.Image = testSprite;
             }
 
+            _armoryPanelManager.defaultCharacterSprite = testSprite;
             NftManager.Instance.Nfts = new Dictionary<NftContract, List<Nft>>();
             NftManager.Instance.Nfts[NftContract.KnightsOfTheEther] = testNftList;
             NftManager.Instance.NftsLoaded.Invoke();
@@ -258,7 +259,6 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoesCallingOnNextTokenSwitchToNextToken()
         {
-            
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             _armoryPanelManager.nftImage.sprite = null;
             Assert.IsNull(_armoryPanelManager.nftImage.sprite);
@@ -440,7 +440,7 @@ namespace KOTE.UI.Armory
             ArmoryPanelManager.OnGearSelected.Invoke(testData.data[0]);
             Assert.IsNull(_armoryPanelManager.gearSlots[(int)GearCategories.Helmet].icon.sprite);
         }
-        
+
         [Test]
         public void DoesCallingGearSelectedChangeSlotImageIfNotKnight()
         {
@@ -448,7 +448,7 @@ namespace KOTE.UI.Armory
             NftManager.Instance.Nfts.Clear();
             NftManager.Instance.Nfts[NftContract.Villager] = testNftList;
             NftManager.Instance.NftsLoaded.Invoke();
-            
+
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             ArmoryPanelManager.OnGearSelected.Invoke(testData.data[0]);
             Assert.IsNull(_armoryPanelManager.gearSlots[(int)GearCategories.Helmet].icon.sprite);
@@ -471,11 +471,42 @@ namespace KOTE.UI.Armory
             NftManager.Instance.Nfts.Clear();
             NftManager.Instance.Nfts[NftContract.Villager] = testNftList;
             NftManager.Instance.NftsLoaded.Invoke();
-            
+
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             foreach (GearSlot slot in _armoryPanelManager.gearSlots)
             {
                 Assert.IsNull(slot.GetEquippedGear());
+            }
+        }
+
+        [Test]
+        public void DoesSendingEmptyNftListSetImageToDefault()
+        {
+            NftManager.Instance.Nfts.Clear();
+            _armoryPanelManager.nftImage.sprite = null;
+            NftManager.Instance.NftsLoaded.Invoke();
+            Assert.NotNull(_armoryPanelManager.nftImage.sprite);
+            Assert.AreEqual(_armoryPanelManager.defaultCharacterSprite, _armoryPanelManager.nftImage.sprite);
+        }
+
+        [Test]
+        public void DoesSendingEmptyNftListDeactivatePlayButton()
+        {
+            NftManager.Instance.Nfts.Clear();
+            NftManager.Instance.NftsLoaded.Invoke();
+            Assert.False(_armoryPanelManager.playButton.interactable);
+        }
+
+        [Test]
+        public void DoesPopulatingGearCreateHeadersWithNoItems()
+        {
+            GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.Invoke("", -1);
+            ArmoryHeaderManager[] headers =
+                _armoryPanelManager.gearListTransform.GetComponentsInChildren<ArmoryHeaderManager>();
+            Assert.AreEqual(10, headers.Length);
+            foreach (ArmoryHeaderManager header in headers)
+            {
+                Assert.AreEqual(0, header.gameObject.GetComponentsInChildren<SelectableGearItem>().Length);
             }
         }
     }
