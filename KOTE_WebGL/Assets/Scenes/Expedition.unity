@@ -3154,9 +3154,6 @@ MonoBehaviour:
   EVENT_REGISTERPANEL_ACTIVATION_REQUEST:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_REQUEST_NAME:
-    m_PersistentCalls:
-      m_Calls: []
   EVENT_REQUEST_NAME_SUCESSFUL:
     m_PersistentCalls:
       m_Calls: []
@@ -3172,19 +3169,10 @@ MonoBehaviour:
   EVENT_REQUEST_LOGIN_ERROR:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_LOGINPANEL_ACTIVATION_REQUEST:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_REQUEST_PROFILE:
-    m_PersistentCalls:
-      m_Calls: []
   EVENT_REQUEST_PROFILE_ERROR:
     m_PersistentCalls:
       m_Calls: []
   EVENT_REQUEST_PROFILE_SUCCESSFUL:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_OWNS_CURRENT_EXPEDITION_NFT:
     m_PersistentCalls:
       m_Calls: []
   EVENT_SETTINGSPANEL_ACTIVATION_REQUEST:
@@ -3199,34 +3187,7 @@ MonoBehaviour:
   EVENT_REQUEST_LOGOUT_ERROR:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_REQUEST_SERVER_VERSION:
-    m_PersistentCalls:
-      m_Calls: []
   EVENT_VERSION_UPDATED:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_WALLETSPANEL_ACTIVATION_REQUEST:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_DISCONNECT_WALLET_PANEL_ACTIVATION_REQUEST:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_WALLET_DISCONNECTED:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_REQUEST_WALLET_CONTENTS:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_WALLET_CONTENTS_RECEIVED:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_MESSAGE_SIGN:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_WALLET_TOKENS_OWNED:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_DISCONNECT_WALLET_CONFIRMED:
     m_PersistentCalls:
       m_Calls: []
   EVENT_SHOW_SCOREBOARD:
@@ -3235,7 +3196,7 @@ MonoBehaviour:
   EVENT_TREASURYPANEL_ACTIVATION_REQUEST:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_ARMORYPANEL_ACTIVATION_REQUEST:
+  EVENT_SHOW_ARMORY_PANEL:
     m_PersistentCalls:
       m_Calls: []
   EVENT_SHOW_CONFIRMATION_PANEL:
@@ -3295,16 +3256,7 @@ MonoBehaviour:
   EVENT_SHOW_ENCOUNTER_PANEL:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_POPULATE_ENCOUNTER_PANEL:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_ENCOUNTER_OPTION_SELECTED:
-    m_PersistentCalls:
-      m_Calls: []
   EVENT_TOGGLE_MERCHANT_PANEL:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_POPULATE_MERCHANT_PANEL:
     m_PersistentCalls:
       m_Calls: []
   EVENT_MERCHANT_BUY:
@@ -3337,19 +3289,7 @@ MonoBehaviour:
   EVENT_ENCOUNTER_DAMAGE:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_GET_UPGRADE_PAIR:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_USER_CONFIRMATION_UPGRADE_CARD:
-    m_PersistentCalls:
-      m_Calls: []
   EVENT_EXPEDITION_SYNC:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_EXPEDITION_STATUS_UPDATE:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_EXPEDITION_CONFIRMED:
     m_PersistentCalls:
       m_Calls: []
   EVENT_REQUEST_EXPEDITION_CANCEL:
@@ -3397,40 +3337,7 @@ MonoBehaviour:
   EVENT_TOGGLE_GAME_CLICK:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_PLAYER_STATUS_UPDATE:
-    m_PersistentCalls:
-      m_Calls: []
   EVENT_UPDATE_PLAYER:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_REQUEST_NFT_METADATA:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_NFT_METADATA_RECEIVED:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_NFT_SELECTED:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_REQUEST_NFT_IMAGE:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_REQUEST_NFT_SET_SKIN:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_NFT_IMAGE_RECEIVED:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_REQUEST_NFT_SKIN_SPRITE:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_NFT_SKIN_SPRITE_RECEIVED:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_NFT_SKIN_SPRITE_FAILED:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_UPDATE_PLAYER_SKIN:
     m_PersistentCalls:
       m_Calls: []
   EVENT_MAP_ICON_CLICKED:
@@ -3442,22 +3349,13 @@ MonoBehaviour:
   EVENT_UPDATE_CURRENT_STEP_INFORMATION:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_SHOW_SELECT_CARD_PANEL:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_SHOW_DIRECT_SELECT_CARD_PANEL:
-    m_PersistentCalls:
-      m_Calls: []
   EVENT_CARD_PILE_SHOW_DECK:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_CARDS_SELECTED:
+  EVENT_SHOW_SELECT_TRINKET_PANEL:
     m_PersistentCalls:
       m_Calls: []
   EVENT_HIDE_COMMON_CARD_PANEL:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_SHOW_SELECT_TRINKET_PANEL:
     m_PersistentCalls:
       m_Calls: []
   EVENT_TRINKETS_SELECTED:
@@ -3583,9 +3481,6 @@ MonoBehaviour:
   EVENT_DEACTIVATE_POINTER:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_GENERIC_WS_DATA:
-    m_PersistentCalls:
-      m_Calls: []
   EVENT_WS_CONNECTED:
     m_PersistentCalls:
       m_Calls: []
@@ -3622,16 +3517,12 @@ MonoBehaviour:
   EVENT_SCENE_LOADING:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_SCENE_LOADED:
-    m_PersistentCalls:
-      m_Calls: []
   EVENT_SHOW_FEEDBACK_PANEL:
     m_PersistentCalls:
       m_Calls: []
   EVENT_SEND_BUG_FEEDBACK:
     m_PersistentCalls:
       m_Calls: []
-  webRequester: {fileID: 0}
 --- !u!4 &1829050461
 Transform:
   m_ObjectHideFlags: 0
@@ -4831,6 +4722,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 764bf5e498a69b64fa011bf18593161c, type: 3}
+--- !u!1001 &5693233000852580179
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5693233002181264549, guid: 0a15d35722f89124796e090c9b21f16d,
+        type: 3}
+      propertyPath: m_Name
+      value: ContestNotifications
+      objectReference: {fileID: 0}
+    - target: {fileID: 5693233002181264555, guid: 0a15d35722f89124796e090c9b21f16d,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5693233002181264555, guid: 0a15d35722f89124796e090c9b21f16d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 916.206
+      objectReference: {fileID: 0}
+    - target: {fileID: 5693233002181264555, guid: 0a15d35722f89124796e090c9b21f16d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 587.8165
+      objectReference: {fileID: 0}
+    - target: {fileID: 5693233002181264555, guid: 0a15d35722f89124796e090c9b21f16d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.12663905
+      objectReference: {fileID: 0}
+    - target: {fileID: 5693233002181264555, guid: 0a15d35722f89124796e090c9b21f16d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5693233002181264555, guid: 0a15d35722f89124796e090c9b21f16d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5693233002181264555, guid: 0a15d35722f89124796e090c9b21f16d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5693233002181264555, guid: 0a15d35722f89124796e090c9b21f16d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5693233002181264555, guid: 0a15d35722f89124796e090c9b21f16d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5693233002181264555, guid: 0a15d35722f89124796e090c9b21f16d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5693233002181264555, guid: 0a15d35722f89124796e090c9b21f16d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0a15d35722f89124796e090c9b21f16d, type: 3}
 --- !u!1001 &6874471933986591582
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5192,7 +5152,7 @@ PrefabInstance:
     - target: {fileID: 6413443757216341784, guid: cfde224b6c58c614eadd85e7c967e1a0,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 73.605
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6413443757216341784, guid: cfde224b6c58c614eadd85e7c967e1a0,
         type: 3}

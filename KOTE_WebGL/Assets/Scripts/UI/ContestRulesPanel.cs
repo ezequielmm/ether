@@ -28,7 +28,7 @@ public class ContestRulesPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        if (!shownPanelPreviously) 
+        if (!shownPanelPreviously && ContestManager.Instance.HasContest) 
         {
             shownPanelPreviously = true;
             EnablePanel();
