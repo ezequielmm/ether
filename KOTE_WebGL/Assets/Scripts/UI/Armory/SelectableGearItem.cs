@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,6 +31,11 @@ namespace KOTE.UI.Armory
         public string name;
         public string trait;
         public string category;
-        public Sprite gearImage;
+        [JsonIgnore] public Sprite gearImage;
+
+        public override string ToString()
+        {
+            return "{gearId:" + gearId + ", name:" + name + ", trait:" + trait + ", category:" + category + "}";
+        }
     }
 }

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using Cysharp.Threading.Tasks;
 using Spine;
 using UnityEngine;
@@ -31,9 +31,22 @@ public class Villager : PlayerNft
 
     public override async UniTask GetNftSprites(SkeletonData playerSkeleton)
     {
-        foreach (Trait trait in Traits.Keys)
+        foreach (Trait trait in Enum.GetValues(typeof(Trait)))
         {
-            string traitValue = (EquippedTraits.ContainsKey(trait)) ? EquippedTraits[trait] : Traits[trait];
+            string traitValue;
+            
+            if (EquippedTraits.ContainsKey(trait))
+            {
+                traitValue = EquippedTraits[trait];
+            }
+            else if (Traits.ContainsKey(trait))
+            {
+                traitValue = Traits[trait];
+            }
+            else
+            {
+                continue;
+            }
 
             string skinName;
             if (trait != Trait.Base && trait != Trait.Shadow)
@@ -61,7 +74,7 @@ public class Villager : PlayerNft
                     continue;
                 }
 
-                if (SkinSprites.Find(x => x.ImageName == spriteData.ImageName) != null || 
+                if (SkinSprites.Find(x => x.ImageName == spriteData.ImageName) != null ||
                     DefaultSprites.Find(x => x.ImageName == spriteData.ImageName) != null)
                 {
                     // Sprite already fetched

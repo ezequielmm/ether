@@ -47,6 +47,24 @@ namespace KOTE.UI.Armory
         private void PopulateCharacterList()
         {
             List<Nft> nfts = NftManager.Instance.GetAllNfts();
+
+            // ++++++++++++++++++++++TEST VILLAGER DATA++++++++++++++++++++++++++++++++++++++++++++++++++
+            Nft testVillager = new Nft
+            {
+                Contract = NftContract.Villager,
+                Description = "NOPE THIS IS A TEST",
+                ImageUrl = "https://i.seadn.io/gcs/files/5685fc1142009fd4233a2b076ef762f9.jpg",
+                Name = "Villager #10",
+                TokenId = 10,
+                Traits = new Dictionary<Trait, string>()
+            };
+            testVillager.Traits[Trait.Padding] = "Brown";
+            testVillager.Traits[Trait.Helmet] = "None";
+            testVillager.Traits[Trait.Shield] = "Rusty Shield";
+            testVillager.Traits[Trait.Weapon] = "Rusty Sword";
+
+            nfts.Add(testVillager);
+            // +++++++++++++++++ END TEST VILLAGER+++++++++++++++++++++++++++++++++++++++++
             nftList.Clear();
 
             if (nfts.Count == 0)
@@ -119,31 +137,10 @@ namespace KOTE.UI.Armory
             }
         }
 
-        private async void PopulateGearSlots()
+        private void PopulateGearSlots()
         {
-            // if a knight is selected don't show anything
-            if (curNode.Value.MetaData.isKnight) return;
-            await GearIconManager.Instance.RequestGearIcons(curNode.Value.MetaData);
-
             foreach (GearSlot slot in gearSlots)
             {
-                if (!curNode.Value.MetaData.Traits.ContainsKey(slot.gearTrait))
-                {
-                    slot.defaultGear = null;
-                }
-                else
-                {
-                    string nftTraitValue = curNode.Value.MetaData.Traits[slot.gearTrait];
-
-                    slot.defaultGear = new GearItemData
-                    {
-                        category = slot.gearCategory.ToString(),
-                        trait = slot.gearTrait.ToString(),
-                        name = nftTraitValue,
-                        gearImage = GearIconManager.Instance.GetGearSprite(slot.gearTrait, nftTraitValue)
-                    };
-                }
-
                 slot.ResetSlot();
             }
         }
@@ -182,8 +179,12 @@ namespace KOTE.UI.Armory
         {
             playButton.interactable = false;
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
+            GearData selectedGear = new GearData
+            {
+                data = equippedGear.Values.ToList()
+            };
             bool success =
-                await FetchData.Instance.RequestNewExpedition("knight", curNode.Value.Id, equippedGear.Values.ToList());
+                await FetchData.Instance.RequestNewExpedition("knight", curNode.Value.Id, selectedGear);
             if (success)
             {
                 OnExpeditionConfirmed();

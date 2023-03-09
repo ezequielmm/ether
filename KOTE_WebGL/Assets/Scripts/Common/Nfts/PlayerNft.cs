@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Spine;
 using UnityEngine;
-using Object = System.Object;
 
 public abstract class PlayerNft
 {
@@ -12,7 +11,7 @@ public abstract class PlayerNft
     public static List<TraitSprite> DefaultSprites = new List<TraitSprite>();
 
     public Nft Metadata;
-    
+
     protected Dictionary<Trait, string> Traits = new();
     protected Dictionary<Trait, string> EquippedTraits = new();
 
@@ -44,7 +43,8 @@ public abstract class PlayerNft
                 actualSpriteData.AttachmentIndex = skinEntry.SlotIndex;
                 actualSpriteData.ImageName = imageName;
 
-                if (DefaultSprites.Find(x => x.ImageName == actualSpriteData.ImageName) != null)
+                if (DefaultSprites.Find(x =>
+                        x.ImageName == actualSpriteData.ImageName && !x.SkinName.Contains("nude")) != null)
                 {
                     // Sprite already fetched
                     continue;
@@ -74,7 +74,12 @@ public abstract class PlayerNft
         List<TraitSprite> allSprites = new List<TraitSprite>();
         foreach (Trait trait in Enum.GetValues(typeof(Trait)))
         {
-            if (Traits.ContainsKey(trait) && SkinSprites.Exists(x => x.TraitValue == Traits[trait]))
+            if (EquippedTraits.ContainsKey(trait) && SkinSprites.Exists(x => x.TraitValue == EquippedTraits[trait]))
+            {
+                allSprites.AddRange(SkinSprites.FindAll(x => x.TraitValue == EquippedTraits[trait]));
+            }
+
+            else if (Traits.ContainsKey(trait) && SkinSprites.Exists(x => x.TraitValue == Traits[trait]))
             {
                 allSprites.AddRange(SkinSprites.FindAll(x => x.TraitValue == Traits[trait]));
             }
@@ -96,6 +101,7 @@ public abstract class PlayerNft
             Debug.LogWarning($"Skin image not found on server for {spriteData.ImageName}");
             return null;
         }
+
         return texture.ToSprite();
     }
 
@@ -128,7 +134,8 @@ public abstract class PlayerNft
             imagePath = ((RegionAttachment)skinEntry.Attachment).Path;
         }
 
-        if (string.IsNullOrEmpty(imagePath) || !imagePath.Contains("undergarment")) imagePath = skinEntry.Attachment.Name;
+        if (string.IsNullOrEmpty(imagePath) || !imagePath.Contains("undergarment"))
+            imagePath = skinEntry.Attachment.Name;
         string[] baseImageName = imagePath.Split('/');
         string imageName = (baseImageName.Length > 1) ? baseImageName[1] : baseImageName[0];
         imageName = imageName.TrimEnd(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });

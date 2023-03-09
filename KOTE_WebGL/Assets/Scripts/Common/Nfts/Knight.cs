@@ -1,7 +1,6 @@
+using System;
 using Cysharp.Threading.Tasks;
 using Spine;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
