@@ -26,9 +26,9 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         GameManager.Instance.EVENT_UPDATE_NFT.AddListener(UpdateNftTrait);
     }
 
-    private void UpdateNftForExpedition(bool data, int nftInt)
+    private void UpdateNftForExpedition(ExpeditionStatusData data)
     {
-        SetSkin(nftInt);
+        SetSkin(data.nftId);
     }
 
     public async void SetSkin(int nftToken)

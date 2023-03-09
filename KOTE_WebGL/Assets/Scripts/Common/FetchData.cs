@@ -93,7 +93,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
     public async UniTask<List<int>> GetNftsInWalletPerContract(string wallet, string contract)
     {
-        string requestUrl = webRequest.ConstructUrl(RestEndpoint.WalletData) + $"/{wallet}";
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.WalletData) + $"/{wallet}?contractId={contract}";
         Debug.Log(requestUrl);
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {

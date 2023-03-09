@@ -78,11 +78,11 @@ public class MainMenuManager : MonoBehaviour
     }
 
     // callbacks for verifying the player can play the game
-    private void OnExpeditionUpdate(bool hasExpedition, int nftId)
+    private void OnExpeditionUpdate(ExpeditionStatusData data)
     {
-        _nftInExpedition = nftId;
+        _nftInExpedition = data.nftId;
         _expeditionStatusReceived = true;
-        _hasExpedition = hasExpedition;
+        _hasExpedition = data.hasExpedition;
         treasuryButton.gameObject.SetActive(true);
 
         VerifyResumeExpedition();
