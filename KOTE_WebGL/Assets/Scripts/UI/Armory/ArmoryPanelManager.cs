@@ -133,7 +133,10 @@ namespace KOTE.UI.Armory
             foreach (string category in categories)
             {
                 ArmoryHeaderManager header = Instantiate(headerPrefab, gearListTransform);
-                header.Populate(category, categoryLists[category]);
+                if (categoryLists.ContainsKey(category))
+                {
+                    header.Populate(category, categoryLists[category]);
+                }
             }
         }
 
