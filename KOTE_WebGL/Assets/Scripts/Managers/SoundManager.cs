@@ -42,7 +42,7 @@ public class SoundManager : SingleTon<SoundManager>
         AudioClip clip = GetAudioClip(soundType, sound);
         if (clip == null)
         {
-            Debug.LogError(
+            Debug.LogWarning(
                 $"[Sound Manager] Audio clip for \"{sound}\" could not be found. Make sure you spelled it right and make sure the clip exists in the Sound Manager.");
             return;
         }
