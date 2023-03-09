@@ -22,12 +22,14 @@ public static class Extensions
 
     public static Sprite ToSprite(this Texture2D texture) 
     {
+        if(texture == null) return null;
         Rect imageSize = new Rect(0, 0, texture.width, texture.height);
         return Sprite.Create(texture, imageSize, Vector2.zero);
     }
 
     public static void AddAuthToken(this UnityWebRequest request)
     {
+        if(request == null) return;
         string token = PlayerPrefs.GetString("session_token");
         request.SetRequestHeader("Authorization", $"Bearer {token}");
     }

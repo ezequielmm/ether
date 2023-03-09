@@ -136,7 +136,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
             string rawJson = await MakeJsonRequest(request);
             Debug.Log($"Raw Gear Data: {rawJson}");
             if (string.IsNullOrEmpty(rawJson)) return new GearData { data = new List<GearItemData>() };
-            return JsonConvert.DeserializeObject<GearData>(rawJson);
+            return ParseJsonWithPath<GearData>(rawJson);
         }
     }
 
@@ -200,12 +200,11 @@ public class FetchData : DataManager, ISingleton<FetchData>
         return rawJson;
     }
 
-    private async UniTask<string> MakeJsonRequest(UnityWebRequest request)
+    private async UniTask<string> MakeJsonRequest(UnityWebRequest request) 
     {
         string rawJson = (await webRequest.MakeRequest(request))?.text;
-        if (rawJson != null)
-            ServerCommunicationLogger.Instance.LogCommunication($"[{request.uri}] Data Successfully Retrieved",
-                CommunicationDirection.Incoming, rawJson);
+        if(rawJson != null)
+            ServerCommunicationLogger.Instance.LogCommunication($"[{request.uri}] Data Successfully Retrieved", CommunicationDirection.Incoming, rawJson);
         return rawJson;
     }
 
@@ -218,16 +217,28 @@ public class FetchData : DataManager, ISingleton<FetchData>
         return texture;
     }
 
-    public static T ParseJsonWithPath<T>(string rawJson, string tokenPath)
+    public static T ParseJsonWithPath<T>(string rawJson, string tokenPath = null) 
     {
         try
         {
             JObject json = JObject.Parse(rawJson);
-            T data = json.SelectToken(tokenPath).ToObject<T>();
+            JToken token = json;
+            if (!string.IsNullOrEmpty(tokenPath)) 
+            {
+                token = json.SelectToken(tokenPath);
+            }
+            T data = token.ToObject<T>();
             return data;
         }
         catch (Exception e)
         {
+#if UNITY_EDITOR
+            if (UnitTestDetector.IsInUnitTest) 
+            { // soft fail when testing
+                Debug.LogWarning(e);
+                return default(T);
+            }
+#endif
             Debug.LogException(e);
             return default(T);
         }

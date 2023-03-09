@@ -22,6 +22,9 @@ public class MainMenuManager : MonoBehaviour
         settingButton,
         connectWalletButton;
 
+    [SerializeField]
+    private GameObject ContestTimer;
+
     private bool _hasWallet => !string.IsNullOrEmpty(WalletManager.Instance.ActiveWallet);
 
     // we need to confirm all verification values before showing the play button
@@ -142,6 +145,7 @@ public class MainMenuManager : MonoBehaviour
         moneyText.text = $"{fief} $fief";
         DeactivateMenuButtons();
         settingButton.gameObject.SetActive(true);
+        ContestTimer.SetActive(true);
     }
 
     public void OnLogoutSuccessful(string message)
@@ -164,6 +168,7 @@ public class MainMenuManager : MonoBehaviour
         fiefButton.gameObject.SetActive(!preLoginStatus);
         settingButton.gameObject.SetActive(!preLoginStatus);
         connectWalletButton.gameObject.SetActive(!preLoginStatus);
+        ContestTimer.SetActive(!preLoginStatus);
     }
 
     private void DeactivateMenuButtons()
