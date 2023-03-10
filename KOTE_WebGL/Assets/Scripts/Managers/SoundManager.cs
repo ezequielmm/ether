@@ -18,7 +18,7 @@ public class SoundManager : SingleTon<SoundManager>
     [SerializeField] private NamedSoundList CardSounds;
     [SerializeField] private NamedSoundList UiSounds;
 
-    [SerializeField] bool showSoundDebugs = false;
+    [SerializeField] bool showSoundDebugs = true;
 
     private float SfxVolume => PlayerPrefs.GetFloat("sfx_volume", 1);
     private float MusicVolume => PlayerPrefs.GetFloat("music_volume", 0.5f);

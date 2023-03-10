@@ -15,7 +15,7 @@ MonoBehaviour:
   soundClips:
   - name: Play
     clips:
-    - {fileID: 0}
+    - {fileID: 8300000, guid: e73ec3360bcfd044e97364562cc467bb, type: 3}
   - name: Cancel
     clips:
     - {fileID: 8300000, guid: 52409cb3cd7d85e4bbcba30f7472b67e, type: 3}
@@ -30,7 +30,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 00982d25c8ac7974bb15a5e5a20683f9, type: 3}
   - name: Discard
     clips:
-    - {fileID: 8300000, guid: dc525b61ea1961443983ce690072ea6a, type: 3}
+    - {fileID: 0}
   - name: Out Of Energy
     clips:
     - {fileID: 8300000, guid: 6eaa37120c0547948a5ffd2a161bfea9, type: 3}
