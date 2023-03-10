@@ -1,7 +1,7 @@
 on: 
   push:
     tags:
-      - [0-9].[0-9]+.[0-9]+**
+      - [0-9]+w[0-9]+[a-z]+
   
 jobs:
   selectEnvName:
@@ -13,7 +13,7 @@ jobs:
       - id: branchCheck
         run: |
           echo "Develop Selected"
-          echo "deployEnv=develop" >> $GITHUB_OUTPUT
+          echo "deployEnv=snapshot" >> $GITHUB_OUTPUT
           
       - name: Use variable setup in previous step
         run: echo "I'm using variable ${{ steps.branchCheck.outputs.deployEnv }}"
