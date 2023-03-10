@@ -40,7 +40,7 @@ namespace KOTE.UI.Armory
 
         internal async UniTask RequestGearIcons(GearData gearList)
         {
-            foreach (GearItemData item in gearList.data)
+            foreach (GearItemData item in gearList.ownedGear)
             {
                 Trait itemTrait = Utils.ParseEnum<Trait>(item.trait);
                 if(IsIconCached(itemTrait, item.name)) continue;

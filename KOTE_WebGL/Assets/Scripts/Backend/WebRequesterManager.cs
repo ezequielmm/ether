@@ -465,6 +465,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
     public string ConstructUrl(string path) 
     {
         string host = ClientEnvironmentManager.Instance.WebRequestURL;
+        if (path == RestEndpoint.WalletData) host = ClientEnvironmentManager.Instance.WebSocketURL;
         return $"{host}{path}";
     }
 }
@@ -477,7 +478,8 @@ public static class RestEndpoint
     public static readonly string Login = "/auth/v1/login";
     public static readonly string Logout = "/auth/v1/logout";
     public static readonly string Profile = "/gsrv/v1/profile";
-    public static readonly string WalletData = "/gsrv/v1/wallets";
+    //public static readonly string WalletData = "/gsrv/v1/wallets";
+    public static readonly string WalletData = "/v1/wallets";
     public static readonly string VerifyWalletSignature = "/gsrv/v1/tokens/verify";
     public static readonly string CharactersList = "/gsrv/v1/characters";
     public static readonly string ExpeditionStatus = "/gsrv/v1/expeditions/status";
@@ -486,5 +488,5 @@ public static class RestEndpoint
     public static readonly string ExpeditionScore = "/gsrv/v1/expeditions/score";
     public static readonly string BugReport = "/gsrv/v1/bug/report";
     public static readonly string ServerVersion = "/gsrv/v1/showversion";
-    public static readonly string PlayerGear = "/v1/playerGear";
+    public static readonly string PlayerGear = "/gsrv/v1/playergear";
 }

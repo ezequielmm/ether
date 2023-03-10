@@ -113,7 +113,7 @@ namespace KOTE.UI.Armory
 
         private void PopulateGearList(GearData data)
         {
-            foreach (GearItemData itemData in data.data)
+            foreach (GearItemData itemData in data.ownedGear)
             {
                 itemData.gearImage =
                     GearIconManager.Instance.GetGearSprite(Utils.ParseEnum<Trait>(itemData.trait), itemData.name);
@@ -182,7 +182,7 @@ namespace KOTE.UI.Armory
         {
             playButton.interactable = false;
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-            GearData selectedGear = new GearData
+            EquippedGearData selectedGear = new EquippedGearData
             {
                 data = equippedGear.Values.ToList()
             };
@@ -226,8 +226,14 @@ namespace KOTE.UI.Armory
         Gauntlets = 9,
     }
 
-    public class GearData
+    public class EquippedGearData
     {
         public List<GearItemData> data;
+    }
+
+    public class GearData
+    {
+        public List<GearItemData> ownedGear;
+        public List<GearItemData> equippedGear;
     }
 }

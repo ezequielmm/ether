@@ -32,10 +32,5 @@ namespace KOTE.UI.Armory
         public string trait;
         public string category;
         [JsonIgnore] public Sprite gearImage;
-
-        public override string ToString()
-        {
-            return "{gearId:" + gearId + ", name:" + name + ", trait:" + trait + ", category:" + category + "}";
-        }
     }
 }

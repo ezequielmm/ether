@@ -6,6 +6,8 @@ using UnityEngine.Events;
 
 public class NftManager : ISingleton<NftManager>
 {
+    public static readonly bool IsTestNet = true;
+    
     private static NftManager instance;
     public static NftManager Instance
     {
@@ -66,13 +68,12 @@ public class NftManager : ISingleton<NftManager>
         { NftContract.BlessedVillager, "0x2d51402A6DAb0EA48E30Bb169db74FfE3c1c6675" }
     };
     private static readonly Dictionary<NftContract, string> testNetNftContractMap = new() {
-        { NftContract.KnightsOfTheEther, "0xb80FB9371E4662D97E719d6734A8208102b18349" },
+        { NftContract.KnightsOfTheEther, "0x80e2109a826148b9b1a41b0958ca53a4cdc64b70" },
         { NftContract.Villager, "0xF0aA34f832c34b32478B8D9696DC8Ad1c8065D2d" },
         { NftContract.BlessedVillager, "0x55abb816b145CA8F34ffA22D63fBC5bc57186690" }
     };
     public static string GetNftContractAddress(NftContract contract)
     {
-        bool IsTestNet = false;
         if (IsTestNet) 
             return testNetNftContractMap[contract];
         else
