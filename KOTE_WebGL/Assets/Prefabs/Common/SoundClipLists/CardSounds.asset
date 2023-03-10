@@ -15,7 +15,7 @@ MonoBehaviour:
   soundClips:
   - name: Play
     clips:
-    - {fileID: 8300000, guid: e73ec3360bcfd044e97364562cc467bb, type: 3}
+    - {fileID: 0}
   - name: Cancel
     clips:
     - {fileID: 8300000, guid: 52409cb3cd7d85e4bbcba30f7472b67e, type: 3}
