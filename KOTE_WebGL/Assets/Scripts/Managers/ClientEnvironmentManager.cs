@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
@@ -46,7 +47,11 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
             return Environments.Unity;
         }
 #endif
-        if (hostName.Contains("dev"))
+        if (hostName.Contains("villager") || hostName.Contains("snapshot"))
+        {
+            return Environments.Snapshot;
+        } 
+        else if (hostName.Contains("dev"))
         {
             return Environments.Dev;
         }
@@ -69,6 +74,11 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
     {
         switch(currentEnvironment) 
         {
+            case Environments.Snapshot:
+                WebRequestURL = $"https://gateway.villagers.dev.kote.robotseamonster.com";
+                SkinURL = $"https://koteskins.robotseamonster.com/";
+                WebSocketURL = $"https://api.villagers.dev.kote.robotseamonster.com";
+                break;
             case Environments.Stage:
                 WebRequestURL = $"https://gateway.stage.kote.robotseamonster.com";
                 SkinURL = $"https://koteskins.robotseamonster.com/";
@@ -86,6 +96,11 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
                 break;
 #if UNITY_EDITOR
             case Environments.Unity:
+                Environments emulate = AssetDatabase.LoadAssetAtPath<UnityEnvironment>("Assets/UnityEnvironment.asset").EnvironmentToEmulate;
+                if (emulate == Environments.Unity)
+                    emulate = Environments.Dev;
+                UpdateUrls(emulate);
+                break;
 #endif
             case Environments.Unknown:
             case Environments.Dev:
@@ -108,6 +123,7 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
 #if UNITY_EDITOR
         Unity,
 #endif
+        Snapshot,
         Dev,
         Stage,
         TestAlpha,
