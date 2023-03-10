@@ -24,6 +24,8 @@ namespace KOTE.UI.Armory
         private LinkedList<ArmoryTokenData> nftList = new();
         private Dictionary<string, List<GearItemData>> categoryLists = new();
         private Dictionary<GearCategories, GearItemData> equippedGear = new();
+        private Dictionary<int, List<GearItemData>> villagerEquippedGear = new();
+        private Dictionary<int, List<GearItemData>> blessedVillagerEquippedGear = new();
 
         private void Awake()
         {
@@ -94,7 +96,8 @@ namespace KOTE.UI.Armory
                 panel.SetActive(!curNode.Value.MetaData.isKnight);
             }
 
-            PopulateGearSlots();
+            if (curNode.Value.MetaData.isKnight) ClearGearSlots();
+            else PopulateEquippedGear();
         }
 
         private void OnLogin(string data, int data2)
@@ -107,13 +110,15 @@ namespace KOTE.UI.Armory
             GearData data = await FetchData.Instance.GetGearInventory();
             if (data == null) return;
             await GearIconManager.Instance.RequestGearIcons(data);
-            PopulateGearList(data);
+            villagerEquippedGear[10] = data.equippedGear;
+            PopulateGearInventory(data.ownedGear);
+
             GenerateHeaders();
         }
 
-        private void PopulateGearList(GearData data)
+        private void PopulateGearInventory(List<GearItemData> ownedGear)
         {
-            foreach (GearItemData itemData in data.ownedGear)
+            foreach (GearItemData itemData in ownedGear)
             {
                 itemData.gearImage =
                     GearIconManager.Instance.GetGearSprite(Utils.ParseEnum<Trait>(itemData.trait), itemData.name);
@@ -140,12 +145,49 @@ namespace KOTE.UI.Armory
             }
         }
 
-        private void PopulateGearSlots()
+        private void PopulateEquippedGear()
+        {
+            if (curNode.Value.MetaData.Contract == NftContract.Villager &&
+                villagerEquippedGear.ContainsKey(curNode.Value.Id))
+            {
+                EquipGearInSlots(villagerEquippedGear[curNode.Value.Id]);
+            }
+            else if (curNode.Value.MetaData.Contract == NftContract.BlessedVillager &&
+                     blessedVillagerEquippedGear.ContainsKey(curNode.Value.Id))
+            {
+                EquipGearInSlots(blessedVillagerEquippedGear[curNode.Value.Id]);
+            }
+            else
+            {
+                ClearGearSlots();
+            }
+        }
+
+        private void EquipGearInSlots(List<GearItemData> gear)
+        {
+            foreach (GearSlot slot in gearSlots)
+            {
+                GearItemData curGear = gear.Find(x => Utils.ParseEnum<Trait>(x.trait) == slot.gearTrait);
+                if (curGear != null)
+                {
+                    slot.SetGearInSlot(curGear);
+                    continue;
+                }
+
+                slot.ResetSlot();
+            }
+        }
+
+        private void ClearGearSlots()
         {
             foreach (GearSlot slot in gearSlots)
             {
                 slot.ResetSlot();
             }
+        }
+
+        private void SetEquippedGear()
+        {
         }
 
         public void OnPreviousToken()
