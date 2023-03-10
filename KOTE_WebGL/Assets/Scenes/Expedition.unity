@@ -3199,6 +3199,9 @@ MonoBehaviour:
   EVENT_REQUEST_LOGOUT_ERROR:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_REQUEST_SERVER_VERSION:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_VERSION_UPDATED:
     m_PersistentCalls:
       m_Calls: []
@@ -3232,7 +3235,7 @@ MonoBehaviour:
   EVENT_TREASURYPANEL_ACTIVATION_REQUEST:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_SHOW_ARMORY_PANEL:
+  EVENT_ARMORYPANEL_ACTIVATION_REQUEST:
     m_PersistentCalls:
       m_Calls: []
   EVENT_SHOW_CONFIRMATION_PANEL:
@@ -3292,7 +3295,16 @@ MonoBehaviour:
   EVENT_SHOW_ENCOUNTER_PANEL:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_POPULATE_ENCOUNTER_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_ENCOUNTER_OPTION_SELECTED:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_TOGGLE_MERCHANT_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_POPULATE_MERCHANT_PANEL:
     m_PersistentCalls:
       m_Calls: []
   EVENT_MERCHANT_BUY:
@@ -3323,6 +3335,15 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   EVENT_ENCOUNTER_DAMAGE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_GET_UPGRADE_PAIR:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_USER_CONFIRMATION_UPGRADE_CARD:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_EXPEDITION_SYNC:
     m_PersistentCalls:
       m_Calls: []
   EVENT_EXPEDITION_STATUS_UPDATE:
@@ -3376,6 +3397,9 @@ MonoBehaviour:
   EVENT_TOGGLE_GAME_CLICK:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_PLAYER_STATUS_UPDATE:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_UPDATE_PLAYER:
     m_PersistentCalls:
       m_Calls: []
@@ -3418,13 +3442,22 @@ MonoBehaviour:
   EVENT_UPDATE_CURRENT_STEP_INFORMATION:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_SHOW_SELECT_CARD_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SHOW_DIRECT_SELECT_CARD_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_CARD_PILE_SHOW_DECK:
     m_PersistentCalls:
       m_Calls: []
-  EVENT_SHOW_SELECT_TRINKET_PANEL:
+  EVENT_CARDS_SELECTED:
     m_PersistentCalls:
       m_Calls: []
   EVENT_HIDE_COMMON_CARD_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SHOW_SELECT_TRINKET_PANEL:
     m_PersistentCalls:
       m_Calls: []
   EVENT_TRINKETS_SELECTED:
@@ -3550,6 +3583,9 @@ MonoBehaviour:
   EVENT_DEACTIVATE_POINTER:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_GENERIC_WS_DATA:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_WS_CONNECTED:
     m_PersistentCalls:
       m_Calls: []
@@ -3586,12 +3622,16 @@ MonoBehaviour:
   EVENT_SCENE_LOADING:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_SCENE_LOADED:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_SHOW_FEEDBACK_PANEL:
     m_PersistentCalls:
       m_Calls: []
   EVENT_SEND_BUG_FEEDBACK:
     m_PersistentCalls:
       m_Calls: []
+  webRequester: {fileID: 0}
 --- !u!4 &1829050461
 Transform:
   m_ObjectHideFlags: 0
@@ -5152,7 +5192,7 @@ PrefabInstance:
     - target: {fileID: 6413443757216341784, guid: cfde224b6c58c614eadd85e7c967e1a0,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 73.605
       objectReference: {fileID: 0}
     - target: {fileID: 6413443757216341784, guid: cfde224b6c58c614eadd85e7c967e1a0,
         type: 3}
