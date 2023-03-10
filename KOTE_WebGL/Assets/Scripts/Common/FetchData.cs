@@ -182,9 +182,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
         WWWForm form = new WWWForm();
         form.AddField("class", characterType);
         form.AddField("nftId", selectedNft);
-        string gearJson = JsonConvert.SerializeObject(equippedGear);
-        
-        form.AddBinaryData("gear", System.Text.Encoding.UTF8.GetBytes(gearJson));
+        form.AddField("gear", JsonConvert.SerializeObject(equippedGear));
 
         using (UnityWebRequest request = UnityWebRequest.Post(requestUrl, form))
         {
