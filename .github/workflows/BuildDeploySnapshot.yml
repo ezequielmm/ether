@@ -1,7 +1,7 @@
 on: 
   push:
     tags:
-      - [0-9]+w[0-9]+[a-z]+
+      - '[0-9]+w[0-9]+[a-z]+'
   
 jobs:
   selectEnvName:
