@@ -78,6 +78,7 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
             case Environments.Snapshot:
                 WebRequestURL = $"https://gateway.villagers.dev.kote.robotseamonster.com";
                 SkinURL = $"https://koteskins.robotseamonster.com/";
+                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/";
                 WebSocketURL = $"https://api.villagers.dev.kote.robotseamonster.com";
                 break;
             case Environments.Stage:

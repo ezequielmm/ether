@@ -21,7 +21,15 @@ public static class OpenSeasRequstBuilder
     private static string BuildRequestUrl(string contractId, params int[] tokenIds)
     {
         StringBuilder requestString = new StringBuilder();
-        requestString.Append("https://api.opensea.io/api/v1/assets?token_ids=");
+        if (!NftManager.IsTestNet)
+        {
+            requestString.Append("https://api.opensea.io/api/v1/assets?token_ids=");
+        }
+
+        if (NftManager.IsTestNet)
+        {
+            requestString.Append("https://testnets-api.opensea.io/api/v1/assets?token_ids=");
+        }
         requestString.Append(string.Join("&token_ids=", tokenIds));
         requestString.Append("&limit=");
         requestString.Append(MaxContentRequest);
