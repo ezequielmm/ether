@@ -34,7 +34,6 @@ var plugin = {
     },
     MetamaskPersonalSign: function(promiseId, account, message, returnMethod, gameobject) {
         promiseId = UTF8ToString(promiseId);
-        success = UTF8ToString(success);
         returnMethod = UTF8ToString(returnMethod);
         if(gameobject != "MetaMask") { gameobject = UTF8ToString(gameobject); }
 
