@@ -44,10 +44,6 @@ public class GameManager : SingleTon<GameManager>
     // Panel
     [HideInInspector] public UnityEvent<bool> EVENT_WALLETSPANEL_ACTIVATION_REQUEST { get; } = new UnityEvent<bool>();
     
-
-    //GAME OVER EVENTS
-    [HideInInspector] public UnityEvent<SWSM_ScoreboardData> EVENT_SHOW_SCOREBOARD = new UnityEvent<SWSM_ScoreboardData>();
-    
     //TREASURY EVENTS
     [HideInInspector] public UnityEvent<bool> EVENT_TREASURYPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
@@ -116,7 +112,6 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent EVENT_EXPEDITION_SYNC = new UnityEvent();
     [HideInInspector] public UnityEvent<bool, int> EVENT_EXPEDITION_STATUS_UPDATE { get; } = new();
     [HideInInspector] public UnityEvent EVENT_REQUEST_EXPEDITION_CANCEL = new UnityEvent();
-    [HideInInspector] public UnityEvent EVENT_REQUEST_EXPEDITON_SCORE = new UnityEvent();
     
     //MAP EVENTS
     [HideInInspector]

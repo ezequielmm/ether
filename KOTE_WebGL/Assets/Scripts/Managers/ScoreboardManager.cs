@@ -1,68 +1,107 @@
+using KOTE.UI.Armory;
+using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
-public class ScoreboardManager : MonoBehaviour
+public class ScoreboardManager : SingleTon<ScoreboardManager>
 {
-    public GameObject gameOverContainer;
-    public GameObject scorePanel;
-    public GameObject achievementPanel;
-    public GameObject achievementLayout;
-    public GameObject scoreboardAchievementPrefab;
-    [Space] public TMP_Text resultText;
-    public TMP_Text finalScoreText;
-    public TMP_Text achievementfinalScoreText;
-    public TMP_Text expeditionTypeText;
+    [SerializeField]
+    ScoreboardPanelManager Scoreboard;
+    [SerializeField]
+    LootboxPanelManager Lootbox;
 
+    ScoreboardData ScoreData;
 
-    public void Start()
+    protected override void Awake()
     {
-        gameOverContainer.SetActive(false);
-        achievementPanel.SetActive(false);
-        GameManager.Instance.EVENT_SHOW_SCOREBOARD.AddListener(OnShowScoreboard);
+        base.Awake();
     }
 
-    public void OnShowAchievementsButton()
+    void Start()
     {
-        achievementPanel.SetActive(!achievementPanel.activeSelf);
-    }
-
-    public void OnContinueButton()
-    {
-        GameManager.Instance.LoadScene(inGameScenes.MainMenu);
-    }
-
-    private void OnShowScoreboard(SWSM_ScoreboardData scoreboardData)
-    {
-        // if the scoreboard data is null, that means there was an error, so just show the main menu button
-        if (scoreboardData == null)
+        if (Scoreboard == null) 
         {
-            scorePanel.SetActive(false);
-            gameOverContainer.SetActive(true);
+            Scoreboard = GetComponent<ScoreboardPanelManager>();
+        }
+        if (Lootbox == null)
+        {
+            Lootbox = GetComponent<LootboxPanelManager>();
+        }
+        ToggleLootPanel(false);
+        ToggleScorePanel(false);
+    }
+
+    public void ToggleScorePanel(bool enable)
+    {
+        Scoreboard.TogglePanel(enable);
+    }
+    public void ToggleLootPanel(bool enable)
+    {
+        Lootbox.TogglePanel(enable);
+    }
+
+    public async void UpdateScore()
+    {
+        ScoreData = await FetchData.Instance.GetExpeditionScore();
+        if (ScoreData == null)
+        {
+            HideScore();
             return;
         }
-        
-        Populate(scoreboardData);
-        gameOverContainer.SetActive(true);
+        ShowScore();
     }
 
-    private void Populate(SWSM_ScoreboardData data)
+    public void ShowScore()
     {
-        resultText.text = data.data.outcome.ToUpper();
-        finalScoreText.text = data.data.totalScore.ToString();
-        achievementfinalScoreText.text = data.data.totalScore.ToString();
-        expeditionTypeText.text = "Casual";
-
-        // if there's no achievements, ignore them as none were earned
-        if (data.data.achievements == null) return;
-        
-        for (int i = 0; i < data.data.achievements.Length; i++)
+        Scoreboard.Populate(ScoreData);
+        Lootbox.Populate(ScoreData.Lootbox);
+        if (ScoreData.Lootbox.Count == 0)
         {
-            GameObject achievementInstance = Instantiate(scoreboardAchievementPrefab, achievementLayout.transform);
-            ScoreboardAchievementManager achievementManager =
-                achievementInstance.GetComponent<ScoreboardAchievementManager>();
-            achievementManager.Populate(data.data.achievements[i], i);
+            ToggleLootPanel(true);
+        }
+        else 
+        {
+            ToggleScorePanel(true);
         }
     }
+
+    public void HideScore()
+    {
+        ToggleScorePanel(false);
+        ToggleLootPanel(false);
+    }
+}
+
+[Serializable]
+public class SWSM_ScoreboardData
+{
+    public ScoreboardData data;
+}
+
+[Serializable]
+public class ScoreboardData
+{
+    [JsonProperty("outcome")]
+    public string Outcome;
+    [JsonProperty("expeditionType")]
+    public string ExpeditionType;
+    [JsonProperty("totalScore")]
+    public int TotalScore;
+    [JsonProperty("achievements")]
+    public List<Achievement> Achievements = new();
+    [JsonProperty("validContestResults")]
+    public bool ValidContestResults;
+    [JsonProperty("lootbox")]
+    public List<GearItemData> Lootbox = new();
+}
+
+[Serializable]
+public class Achievement
+{
+    [JsonProperty("name")]
+    public string Name;
+    [JsonProperty("score")]
+    public int Score;
 }

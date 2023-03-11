@@ -29,7 +29,6 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         GameManager.Instance.EVENT_REQUEST_PROFILE.AddListener(RequestProfile);
         GameManager.Instance.EVENT_REQUEST_LOGOUT.AddListener(RequestLogout);
         GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.AddListener(RequestExpeditionCancel);
-        GameManager.Instance.EVENT_REQUEST_EXPEDITON_SCORE.AddListener(RequestExpeditionScore);
         GameManager.Instance.EVENT_SEND_BUG_FEEDBACK.AddListener(SendBugReport);
     }
 
@@ -47,11 +46,6 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
     public void RequestExpeditionStatus()
     {
         StartCoroutine(GetExpeditionStatus());
-    }
-
-    public void RequestExpeditionScore()
-    {
-        StartCoroutine(GetExpeditionScore());
     }
 
     public void RequestExpeditionCancel()
@@ -318,41 +312,6 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             ServerCommunicationLogger.Instance.LogCommunication(
                 $"Expedition status success: {request.downloadHandler.text}",
                 CommunicationDirection.Incoming);
-        }
-    }
-
-    IEnumerator GetExpeditionScore()
-    {
-        string token = PlayerPrefs.GetString("session_token");
-
-        string fullUrl = $"{baseUrl}{RestEndpoint.ExpeditionScore}";
-
-        ServerCommunicationLogger.Instance.LogCommunication($"Expedition score request. token: {token}",
-            CommunicationDirection.Outgoing);
-
-        using (UnityWebRequest request = UnityWebRequest.Get(fullUrl))
-        {
-            request.SetRequestHeader("Authorization", $"Bearer {token}");
-
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.ConnectionError ||
-                request.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError("[Error getting expedition score] " + request.error);
-                ServerCommunicationLogger.Instance.LogCommunication($"Expedition score error: {request.error}",
-                    CommunicationDirection.Incoming);
-
-                GameManager.Instance.EVENT_SHOW_SCOREBOARD.Invoke(null);
-                yield break;
-            }
-
-            SWSM_ScoreboardData scoreboardData =
-                JsonConvert.DeserializeObject<SWSM_ScoreboardData>(request.downloadHandler.text);
-            Debug.Log("answer from expedition score " + request.downloadHandler.text);
-            ServerCommunicationLogger.Instance.LogCommunication(
-                "Expedition score success: " + request.downloadHandler.text, CommunicationDirection.Incoming);
-            GameManager.Instance.EVENT_SHOW_SCOREBOARD.Invoke(scoreboardData);
         }
     }
 

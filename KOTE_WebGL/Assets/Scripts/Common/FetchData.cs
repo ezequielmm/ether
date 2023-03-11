@@ -166,6 +166,19 @@ public class FetchData : DataManager, ISingleton<FetchData>
         }
     }
 
+    public async UniTask<ScoreboardData> GetExpeditionScore()
+    {
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.ExpeditionScore);
+
+        using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
+        {
+            request.AddAuthToken();
+            string rawJson = await MakeJsonRequest(request);
+            if (string.IsNullOrEmpty(rawJson)) return null;
+            return ParseJsonWithPath<ScoreboardData>(rawJson, "data");
+        }
+    }
+
     private async UniTask<string> KeepRetryingRequest(UnityWebRequest request, int tryLimit = 10, float retryDelaySeconds = 3) 
     {
         bool successful = false;

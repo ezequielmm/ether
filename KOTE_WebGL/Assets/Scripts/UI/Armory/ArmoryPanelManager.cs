@@ -173,12 +173,12 @@ namespace KOTE.UI.Armory
             GenerateHeaders();
         }
 
-        private void PopulateGearList(GearData data)
+        private async void PopulateGearList(GearData data)
         {
             foreach (GearItemData itemData in data.data)
             {
                 itemData.gearImage =
-                    GearIconManager.Instance.GetGearSprite(Utils.ParseEnum<Trait>(itemData.trait), itemData.name);
+                    await GearIconManager.Instance.GetGearSprite(Utils.ParseEnum<Trait>(itemData.trait), itemData.name);
                 if (categoryLists.ContainsKey(itemData.category))
                 {
                     categoryLists[itemData.category].Add(itemData);
