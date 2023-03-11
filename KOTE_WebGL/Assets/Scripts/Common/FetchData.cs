@@ -90,14 +90,15 @@ public class FetchData : DataManager, ISingleton<FetchData>
         }
     }
 
-    public async UniTask<List<int>> GetNftsInWalletPerContract(string wallet, string contract)
+    public async UniTask<WalletData> GetNftsInWalletPerContract(string wallet, string contract)
     {
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.WalletData) + $"/{wallet}?contractId={contract}";
         Debug.Log(requestUrl);
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
             string rawJson = await KeepRetryingRequest(request);
-            return ParseJsonWithPath<List<int>>(rawJson, "data");
+            Debug.Log(rawJson);
+            return ParseJsonWithPath<WalletData>(rawJson, "data");
         }
     }
 

@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -154,10 +155,18 @@ public class WalletManager : ISingleton<WalletManager>
         }
         string contractAddress = GetNftContractAddress(contract);
         Debug.Log($"[WalletManager] Fetching Wallet Contents...");
-        List<int> nftIds = await FetchData.Instance.GetNftsInWalletPerContract(walletAddress, contractAddress);
+        WalletData nftData = await FetchData.Instance.GetNftsInWalletPerContract(walletAddress, contractAddress);
         Debug.Log($"[WalletManager] Wallet Contents Received.");
-        NftsInWallet[contract] = nftIds;
-        return nftIds;
+        NftsInWallet[contract] = new List<int>();
+        foreach (ContractData contractData in nftData.tokens)
+        {
+            foreach (TokenData token in contractData.tokens)
+            {
+                NftsInWallet[contract].Add(int.Parse(token.token_id));
+            }
+        }
+
+        return NftsInWallet[contract];
     }
 
     public async UniTask<int> GetNftCountPerContract(NftContract contract)
@@ -175,4 +184,23 @@ public class WalletManager : ISingleton<WalletManager>
     {
         return NftManager.GetNftContractAddress(contract);
     }
+}
+
+public class WalletData
+{
+    public List<ContractData> tokens;
+}
+
+public class ContractData
+{
+    public string contract_address;
+    public int token_count;
+    public List<TokenData> tokens;
+}
+
+[Serializable]
+public class TokenData
+{
+    public string token_id;
+    public string name;
 }
