@@ -128,7 +128,7 @@ namespace KOTE.UI.Armory
                     {
                         { Trait.Helmet, "helmet" }
                     },
-                    Contract = NftContract.KnightsOfTheEther
+                    Contract = NftContract.Knights
                 },
                 new Nft()
                 {
@@ -138,7 +138,7 @@ namespace KOTE.UI.Armory
                     {
                         { Trait.Boots, "boots" }
                     },
-                    Contract = NftContract.KnightsOfTheEther
+                    Contract = NftContract.Knights
                 }
             };
 
@@ -149,7 +149,7 @@ namespace KOTE.UI.Armory
 
             _armoryPanelManager.defaultCharacterSprite = testSprite;
             NftManager.Instance.Nfts = new Dictionary<NftContract, List<Nft>>();
-            NftManager.Instance.Nfts[NftContract.KnightsOfTheEther] = testNftList;
+            NftManager.Instance.Nfts[NftContract.Knights] = testNftList;
             NftManager.Instance.NftsLoaded.Invoke();
 
             yield return null;

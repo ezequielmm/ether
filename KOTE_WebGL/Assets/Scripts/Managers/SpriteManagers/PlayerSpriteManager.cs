@@ -39,7 +39,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         }
 
         List<Nft> nftList =
-            await FetchData.Instance.GetNftMetaData(new List<int> { nftToken }, NftContract.KnightsOfTheEther);
+            await FetchData.Instance.GetNftMetaData(new List<int> { nftToken }, NftContract.Knights);
         BuildPlayer(nftList[0]);
     }
 
@@ -80,7 +80,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     {
         switch (metadata.Contract)
         {
-            case NftContract.KnightsOfTheEther:
+            case NftContract.Knights:
                 return new Knight(metadata);
             case NftContract.Villager:
             case NftContract.BlessedVillager:

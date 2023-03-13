@@ -49,24 +49,6 @@ namespace KOTE.UI.Armory
         private void PopulateCharacterList()
         {
             List<Nft> nfts = NftManager.Instance.GetAllNfts();
-
-            // ++++++++++++++++++++++TEST VILLAGER DATA++++++++++++++++++++++++++++++++++++++++++++++++++
-            Nft testVillager = new Nft
-            {
-                Contract = NftContract.Villager,
-                Description = "NOPE THIS IS A TEST",
-                ImageUrl = "https://i.seadn.io/gcs/files/5685fc1142009fd4233a2b076ef762f9.jpg",
-                Name = "Villager #10",
-                TokenId = 10,
-                Traits = new Dictionary<Trait, string>()
-            };
-            testVillager.Traits[Trait.Padding] = "Brown";
-            testVillager.Traits[Trait.Helmet] = "None";
-            testVillager.Traits[Trait.Shield] = "Rusty Shield";
-            testVillager.Traits[Trait.Weapon] = "Rusty Sword";
-
-            nfts.Add(testVillager);
-            // +++++++++++++++++ END TEST VILLAGER+++++++++++++++++++++++++++++++++++++++++
             nftList.Clear();
 
             if (nfts.Count == 0)
@@ -246,7 +228,7 @@ namespace KOTE.UI.Armory
 
         private void OnGearItemSelected(GearItemData activeItem)
         {
-            if (curNode.Value.MetaData.Contract == NftContract.KnightsOfTheEther) return;
+            if (curNode.Value.MetaData.Contract == NftContract.Knights) return;
             GearCategories category = Utils.ParseEnum<GearCategories>(activeItem.category);
             gearSlots[(int)category].SetGearInSlot(activeItem);
             equippedGear[Utils.ParseEnum<GearCategories>(activeItem.category)] = activeItem;

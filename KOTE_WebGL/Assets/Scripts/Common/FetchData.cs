@@ -109,9 +109,9 @@ rawJson = TryGetTestData(FetchType.EncounterData, rawJson);
         }
     }
 
-    public async UniTask<WalletData> GetNftsInWalletPerContract(string wallet, string contract)
+    public async UniTask<WalletData> GetNftsInWalletPerContract(string wallet)
     {
-        string requestUrl = webRequest.ConstructUrl(RestEndpoint.WalletData) + $"/{wallet}?contractId={contract}";
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.WalletData) + $"/{wallet}";
         Debug.Log(requestUrl);
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {

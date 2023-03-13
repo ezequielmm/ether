@@ -33,11 +33,11 @@ public class MainMenuManager : MonoBehaviour
 
     // verification that the player still owns the continuing nft
     private bool _ownsSavedNft => WalletManager.Instance.NftsInWallet?
-        .GetValueOrDefault(NftContract.KnightsOfTheEther)?.Contains(_nftInExpedition) ?? false;
+        .GetValueOrDefault(NftContract.Knights)?.Contains(_nftInExpedition) ?? false;
     private int _nftInExpedition = -1;
     
     // verification that the connected wallet contains at least one knight
-    private bool _ownsAnyNft => (WalletManager.Instance.NftsInWallet?.GetValueOrDefault(NftContract.KnightsOfTheEther)?.Count ?? 0) > 0;
+    private bool _ownsAnyNft => (WalletManager.Instance.NftsInWallet?.GetValueOrDefault(NftContract.Knights)?.Count ?? 0) > 0;
     private bool _isWalletVerified => WalletManager.Instance.WalletVerified;
     private bool _isWhitelisted => true;
 
