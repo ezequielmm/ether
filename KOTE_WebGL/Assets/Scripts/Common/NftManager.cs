@@ -7,7 +7,6 @@ using UnityEngine.Events;
 public class NftManager : ISingleton<NftManager>
 {
     public static readonly bool IsTestNet = true;
-    
     private static NftManager instance;
     public static NftManager Instance
     {

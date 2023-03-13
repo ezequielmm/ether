@@ -117,7 +117,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
         }
     }
 
-    public async UniTask<List<int>> GetNftsInWalletPerContract(string wallet, string contract)
+    public async UniTask<WalletData> GetNftsInWalletPerContract(string wallet, string contract)
     {
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.WalletData) + $"/{wallet}?contractId={contract}";
         Debug.Log(requestUrl);
@@ -127,7 +127,8 @@ public class FetchData : DataManager, ISingleton<FetchData>
 #if UNITY_EDITOR
             if (UnitTestDetector.IsInUnitTest) rawJson = TryGetTestData(FetchType.WalletNfts, rawJson);
 #endif
-            return ParseJsonWithPath<List<int>>(rawJson, "data");
+            Debug.Log(rawJson);
+            return ParseJsonWithPath<WalletData>(rawJson, "data");
         }
     }
 
@@ -285,7 +286,14 @@ public class FetchData : DataManager, ISingleton<FetchData>
         }
     }
 
-    private string TryGetTestData(FetchType type, string rawData)
+    //private string TryGetTestData(FetchType type, string rawData)
+    {
+        #if UNITY_EDITOR
+            if (UnitTestDetector.IsInUnitTest) rawJson = TryGetTestData(FetchType.NewExpedition, rawJson);
+        #endif
+    }
+
+    private string GetTestData(FetchType type, string rawData)
     {
         if (TestData.ContainsKey(type))
         {

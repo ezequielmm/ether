@@ -118,7 +118,7 @@ namespace KOTE.UI.Armory
 
         private void PopulateGearInventory(List<GearItemData> ownedGear)
         {
-            foreach (GearItemData itemData in ownedGear)
+            foreach (GearItemData itemData in data.data.ownedGear)
             {
                 itemData.gearImage =
                     GearIconManager.Instance.GetGearSprite(Utils.ParseEnum<Trait>(itemData.trait), itemData.name);
@@ -270,7 +270,12 @@ namespace KOTE.UI.Armory
 
     public class EquippedGearData
     {
-        public List<GearItemData> data;
+        public Data data;
+
+        public class Data
+        {
+            public List<GearItemData> ownedGear;
+        }
     }
 
     public class GearData
