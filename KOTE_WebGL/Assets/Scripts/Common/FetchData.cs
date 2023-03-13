@@ -38,7 +38,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
             string rawJson = await MakeJsonRequest(request);
- rawJson = TryGetTestData(FetchType.ServerVersion, rawJson);
+            rawJson = TryGetTestData(FetchType.ServerVersion, rawJson);
 
             return ParseJsonWithPath<string>(rawJson, "data");
         }
@@ -47,7 +47,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
     public async UniTask<List<Card>> GetCardUpgradePair(string cardId)
     {
         string rawJson = await socketRequest.EmitAwaitResponse(SocketEvent.GetCardUpgradePair, cardId);
- rawJson = TryGetTestData(FetchType.UpgradePair, rawJson);
+        rawJson = TryGetTestData(FetchType.UpgradePair, rawJson);
 
         return ParseJsonWithPath<List<Card>>(rawJson, "data.data.deck");
     }
@@ -55,7 +55,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
     public async UniTask<CardUpgrade> CampUpgradeCard(string cardId)
     {
         string rawJson = await socketRequest.EmitAwaitResponse(SocketEvent.UpgradeCard, cardId);
- rawJson = TryGetTestData(FetchType.UpgradeCard, rawJson);
+        rawJson = TryGetTestData(FetchType.UpgradeCard, rawJson);
 
         return ParseJsonWithPath<CardUpgrade>(rawJson, "data.data");
     }
@@ -65,7 +65,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
         string rawJson =
             await socketRequest.EmitAwaitResponse(SocketEvent.GetData,
                 WS_DATA_REQUEST_TYPES.UpgradableCards.ToString());
- rawJson = TryGetTestData(FetchType.UpgradeableCards, rawJson);
+        rawJson = TryGetTestData(FetchType.UpgradeableCards, rawJson);
 
         return ParseJsonWithPath<List<Card>>(rawJson, "data.data");
     }
@@ -74,7 +74,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
     {
         string rawJson =
             await socketRequest.EmitAwaitResponse(SocketEvent.GetData, WS_DATA_REQUEST_TYPES.MerchantData.ToString());
- rawJson = TryGetTestData(FetchType.MerchantData, rawJson);
+        rawJson = TryGetTestData(FetchType.MerchantData, rawJson);
 
         return ParseJsonWithPath<MerchantData>(rawJson, "data.data");
     }
@@ -83,7 +83,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
     {
         string rawJson =
             await socketRequest.EmitAwaitResponse(SocketEvent.GetData, WS_DATA_REQUEST_TYPES.EncounterData.ToString());
-rawJson = TryGetTestData(FetchType.EncounterData, rawJson);
+        rawJson = TryGetTestData(FetchType.EncounterData, rawJson);
 
         return ParseJsonWithPath<EncounterData>(rawJson, "data.data");
     }
@@ -91,7 +91,7 @@ rawJson = TryGetTestData(FetchType.EncounterData, rawJson);
     public async UniTask<EncounterData> SelectEncounterOption(int option)
     {
         string rawJson = await socketRequest.EmitAwaitResponse(SocketEvent.EncounterSelection, option);
- rawJson = TryGetTestData(FetchType.EncounterOption, rawJson);
+        rawJson = TryGetTestData(FetchType.EncounterOption, rawJson);
 
         return ParseJsonWithPath<EncounterData>(rawJson, "data.data");
     }
@@ -103,7 +103,7 @@ rawJson = TryGetTestData(FetchType.EncounterData, rawJson);
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
             string rawJson = await MakeJsonRequest(request);
- rawJson = TryGetTestData(FetchType.VerifyWallet, rawJson);
+            rawJson = TryGetTestData(FetchType.VerifyWallet, rawJson);
 
             return ParseJsonWithPath<bool>(rawJson, "data.isValid");
         }
@@ -116,7 +116,7 @@ rawJson = TryGetTestData(FetchType.EncounterData, rawJson);
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
             string rawJson = await KeepRetryingRequest(request);
- rawJson = TryGetTestData(FetchType.WalletNfts, rawJson);
+            rawJson = TryGetTestData(FetchType.WalletNfts, rawJson);
 
             Debug.Log(rawJson);
             return ParseJsonWithPath<WalletData>(rawJson, "data");
@@ -132,7 +132,7 @@ rawJson = TryGetTestData(FetchType.EncounterData, rawJson);
             using (UnityWebRequest request = OpenSeasRequstBuilder.ConstructNftRequest(contract, tokenList.ToArray()))
             {
                 string rawJson = await MakeJsonRequest(request);
- rawJson = TryGetTestData(FetchType.NftMetadata, rawJson);
+                rawJson = TryGetTestData(FetchType.NftMetadata, rawJson);
 
                 nftMetaDataList.AddRange(ParseJsonWithPath<List<Nft>>(rawJson, "assets"));
             }
@@ -159,7 +159,7 @@ rawJson = TryGetTestData(FetchType.EncounterData, rawJson);
             rawJson = TryGetTestData(FetchType.GearInventory, rawJson);
 
             if (string.IsNullOrEmpty(rawJson))
-                return new GearData { ownedGear = new(), equippedGear = new() };
+                return new GearData { ownedGear = new() /*, equippedGear = new()*/ };
             return ParseJsonWithPath<GearData>(rawJson, "data");
         }
     }
@@ -179,7 +179,7 @@ rawJson = TryGetTestData(FetchType.EncounterData, rawJson);
             request.AddAuthToken();
             string rawJson = await MakeJsonRequest(request);
             if (string.IsNullOrEmpty(rawJson)) return false;
-rawJson = TryGetTestData(FetchType.NewExpedition, rawJson);
+            rawJson = TryGetTestData(FetchType.NewExpedition, rawJson);
 
             return ParseJsonWithPath<bool>(rawJson, "data.expeditionCreated");
         }
@@ -276,9 +276,9 @@ rawJson = TryGetTestData(FetchType.NewExpedition, rawJson);
 
     private string TryGetTestData(FetchType type, string rawData)
     {
-        #if UNITY_EDITOR
-            if (UnitTestDetector.IsInUnitTest) rawData = GetTestData(type, rawData);
-        #endif
+#if UNITY_EDITOR
+        if (UnitTestDetector.IsInUnitTest) rawData = GetTestData(type, rawData);
+#endif
         return rawData;
     }
 

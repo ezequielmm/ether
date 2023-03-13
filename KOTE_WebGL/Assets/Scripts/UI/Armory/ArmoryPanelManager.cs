@@ -92,7 +92,7 @@ namespace KOTE.UI.Armory
             GearData data = await FetchData.Instance.GetGearInventory();
             if (data == null) return;
             await GearIconManager.Instance.RequestGearIcons(data);
-            villagerEquippedGear[10] = data.equippedGear;
+            //villagerEquippedGear[10] = data.equippedGear;
             PopulateGearInventory(data.ownedGear);
 
             GenerateHeaders();
@@ -263,6 +263,8 @@ namespace KOTE.UI.Armory
     public class GearData
     {
         public List<GearItemData> ownedGear;
-        public List<GearItemData> equippedGear;
+        // TODO this isn't working quite right, it's not correctly being parsed into a js object
+        // TODO so we're getting a string back instead of a json object
+        //public List<GearItemData> equippedGear;
     }
 }
