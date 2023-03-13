@@ -10,6 +10,7 @@ namespace KOTE.UI.Armory
     public class ArmoryPanelManager : MonoBehaviour
     {
         internal static UnityEvent<GearItemData> OnGearSelected { get; } = new();
+        internal static UnityEvent<Trait, GearCategories> OnSlotCleared{ get; } = new();
 
         public GameObject panelContainer;
         public Button playButton;
@@ -39,6 +40,7 @@ namespace KOTE.UI.Armory
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.AddListener(ActivateContainer);
             // listen for successful login to get the player's gear
             OnGearSelected.AddListener(OnGearItemSelected);
+            OnSlotCleared.AddListener(OnGearItemRemoved);
         }
 
         private void ActivateContainer(bool show)
@@ -234,6 +236,13 @@ namespace KOTE.UI.Armory
             gearSlots[(int)category].SetGearInSlot(activeItem);
             equippedGear[Utils.ParseEnum<GearCategories>(activeItem.category)] = activeItem;
             GameManager.Instance.EVENT_UPDATE_NFT.Invoke(Enum.Parse<Trait>(activeItem.trait), activeItem.name);
+        }
+
+        private void OnGearItemRemoved(Trait gearTrait, GearCategories category)
+        {
+            equippedGear.Remove(category);
+            GameManager.Instance.EVENT_UPDATE_NFT.Invoke(gearTrait, "");
+
         }
     }
 

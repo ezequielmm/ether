@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +9,12 @@ namespace KOTE.UI.Armory
         public Trait gearTrait;
         public Image icon;
         private GearItemData selectedGear;
+
+        public void OnClick()
+        {
+            ResetSlot();
+            ArmoryPanelManager.OnSlotCleared.Invoke(gearTrait, gearCategory);
+        }
 
         internal GearItemData GetEquippedGear()
         {

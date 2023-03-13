@@ -26,6 +26,10 @@ public class Villager : PlayerNft
 
     public override void ChangeGear(Trait trait, string traitValue)
     {
+        if (string.IsNullOrEmpty(traitValue))
+        {
+            EquippedTraits.Remove(trait);
+        }
         EquippedTraits[trait] = traitValue;
     }
 
