@@ -37,7 +37,8 @@ public class ScoreboardPanelTests : MonoBehaviour
     [UnityTearDown]
     public IEnumerator TearDown()
     {
-        Destroy(scoreboardPanel.gameObject);
+        if(scoreboardPanel != null)
+            Destroy(scoreboardPanel.gameObject);
         yield return null;
     }
 
@@ -79,5 +80,24 @@ public class ScoreboardPanelTests : MonoBehaviour
         scoreboardPanel.Populate(testData);
         yield return null;
         Assert.AreEqual(1, scoreboardPanel.achievementPanel.transform.childCount);
+    }
+
+    [Test]
+    public void AchivementButtonToggle()
+    {
+        bool originalState = scoreboardPanel.achievementPanel.activeSelf;
+        scoreboardPanel.OnShowAchievementsButton();
+        Assert.AreEqual(!originalState, scoreboardPanel.achievementPanel.activeSelf);
+    }
+
+    [UnityTest]
+    public IEnumerator ContinueLoadsMainMenu()
+    {
+        scoreboardPanel.OnContinueButton();
+        while (GameManager.Instance.CurrentScene == inGameScenes.Loader)
+        {
+            yield return null;
+        }
+        Assert.AreEqual(inGameScenes.MainMenu, GameManager.Instance.CurrentScene);
     }
 }
