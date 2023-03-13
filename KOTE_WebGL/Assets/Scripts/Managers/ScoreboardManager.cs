@@ -75,12 +75,6 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
 }
 
 [Serializable]
-public class SWSM_ScoreboardData
-{
-    public ScoreboardData data;
-}
-
-[Serializable]
 public class ScoreboardData
 {
     [JsonProperty("outcome")]
@@ -91,8 +85,8 @@ public class ScoreboardData
     public int TotalScore;
     [JsonProperty("achievements")]
     public List<Achievement> Achievements = new();
-    [JsonProperty("validContestResults")]
-    public bool ValidContestResults;
+    [JsonProperty("notifyNoLoot")]
+    public bool NotifyNoLoot;
     [JsonProperty("lootbox")]
     public List<GearItemData> Lootbox = new();
 }

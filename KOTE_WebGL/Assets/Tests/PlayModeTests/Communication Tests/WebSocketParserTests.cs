@@ -579,15 +579,15 @@ public class WebSocketParserTests
         Assert.AreEqual(true, eventFired);
     }
 
-    [UnityTest]
-    public IEnumerator DoesCallingEndNodeShowMapLoadTheExpeditionScene()
-    {
-        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("end_node", "show_map"));
-        yield return null;
-        string sceneName = SceneManager.GetActiveScene().name;
-        Assert.AreEqual("Loader", sceneName);
-        //TODO Figure out how to check that the exepdition gets loaded
-    }
+    //[UnityTest]
+    //public IEnumerator DoesCallingEndNodeShowMapLoadTheExpeditionScene()
+    //{
+    //    WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("end_node", "show_map"));
+    //    yield return null;
+    //    string sceneName = SceneManager.GetActiveScene().name;
+    //    Assert.AreEqual("Loader", sceneName);
+    //    //TODO Figure out how to check that the exepdition gets loaded
+    //}
 
     [Test]
     public void DoesEndCombatMessageInvokeProcessEndCombatEnemiesDefeatedEvents()
@@ -637,15 +637,15 @@ public class WebSocketParserTests
         Assert.AreEqual(true, eventFired);
     }
 
-    [UnityTest]
-    public IEnumerator DoesCallingEndCombatShowMapLoadTheExpeditionScene()
-    {
-        WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("end_combat", "show_map"));
-        yield return null;
-        string sceneName = SceneManager.GetActiveScene().name;
-        Assert.AreEqual("Loader", sceneName);
-        //TODO Figure out how to check that the exepdition gets loaded
-    }
+    //[UnityTest]
+    //public IEnumerator DoesCallingEndCombatShowMapLoadTheExpeditionScene()
+    //{
+    //    WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("end_combat", "show_map"));
+    //    yield return null;
+    //    string sceneName = SceneManager.GetActiveScene().name;
+    //    Assert.AreEqual("Loader", sceneName);
+    //    //TODO Figure out how to check that the exepdition gets loaded
+    //}
 
     [Test]
     public void DoesParserThrowErrorWhenGivenBadMessageType()

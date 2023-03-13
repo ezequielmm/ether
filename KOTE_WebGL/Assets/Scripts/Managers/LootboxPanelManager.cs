@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class LootboxPanelManager : MonoBehaviour
 {
-    [SerializeField] GameObject lootboxPanel;
+    [SerializeField] public GameObject lootboxPanel;
     [SerializeField] GameObject GearItemPrefab;
-    [SerializeField] GameObject LootContainer;
+    [SerializeField] public GameObject LootContainer;
     [SerializeField] GameObject ReturnToLootButton;
 
     public void Populate(List<GearItemData> items)
@@ -37,6 +37,7 @@ public class LootboxPanelManager : MonoBehaviour
     public void TogglePanel(bool enable)
     {
         lootboxPanel.SetActive(enable);
-        ReturnToLootButton.SetActive(enable);
+        if(ReturnToLootButton != null)
+            ReturnToLootButton.SetActive(enable);
     }
 }
