@@ -148,10 +148,16 @@ public abstract class PlayerNft
     {
         string skinName = value;
         skinName = skinName.Replace('-', '_').Replace(' ', '_');
-
+        
         if (trait == Trait.Sigil)
         {
             skinName = $"{GetShieldType()}_{skinName}";
+        }
+        
+        // have to handle bucket helmet different, as it doesn't match the other helmet names
+        if (trait == Trait.Helmet && value.Contains("Bucket"))
+        {
+            skinName = "Bucket";
         }
 
         skinName = $"{trait}_{skinName}";

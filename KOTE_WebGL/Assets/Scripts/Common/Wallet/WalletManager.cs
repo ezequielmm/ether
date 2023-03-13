@@ -154,7 +154,7 @@ public class WalletManager : ISingleton<WalletManager>
     public async UniTask GetNftsInWalletPerContract(string walletAddress)
     {
         Debug.Log($"[WalletManager] Fetching Wallet Contents...");
-        WalletData nftData = await FetchData.Instance.GetNftsInWalletPerContract(walletAddress);
+        WalletData nftData = await FetchData.Instance.GetNftsInWallet(walletAddress);
         Debug.Log($"[WalletManager] Wallet Contents Received.");
         foreach (ContractData contractData in nftData.tokens)
         {

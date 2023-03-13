@@ -49,6 +49,7 @@ public class Villager : PlayerNft
             }
 
             string skinName;
+            
             if (trait != Trait.Base && trait != Trait.Shadow)
             {
                 skinName = GetSkinName(trait, traitValue);
@@ -57,7 +58,7 @@ public class Villager : PlayerNft
             {
                 skinName = GameSettings.DEFAULT_SKIN_DATA.Find(x => x.TraitType == trait).SkinName;
             }
-
+        
             Skin traitSkin = playerSkeleton.Skins.Find(x => x.Name.Contains(skinName));
             if (traitSkin == null)
             {
