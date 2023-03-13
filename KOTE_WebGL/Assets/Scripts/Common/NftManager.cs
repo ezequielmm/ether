@@ -60,14 +60,19 @@ public class NftManager : ISingleton<NftManager>
         etheriumNftContractMap[contract] = address;
     }
 
-    private async void UpdateNfts(string WalletAddress) 
+    private void UpdateNfts(RawWalletData walletData) 
     {
         Nfts.Clear();
         var NftTokenMap = WalletManager.Instance.NftsInWallet;
-        foreach (NftContract contract in NftTokenMap.Keys) 
+        foreach (ContractData contract in walletData.tokens) 
         {
-            List<Nft> nfts = await FetchData.Instance.GetNftMetaData(NftTokenMap[contract], contract);
-            Nfts.Add(contract, nfts);
+            Nfts[contract.ContractType] = new List<Nft>();
+            foreach (TokenData token in contract.tokens)
+            {
+                token.metadata.TokenId = int.Parse(token.token_id);
+                token.metadata.Contract = contract.ContractType;
+                Nfts[contract.ContractType].Add(token.metadata);
+            }
         }
         NftsLoaded.Invoke();
     }

@@ -72,7 +72,8 @@ namespace KOTE.UI.Armory
 
         private async void UpdatePanelOnNftUpdate()
         {
-            nftImage.sprite = await curNode.Value.MetaData.GetImage();
+            // TODO reactivate this once correct image route is found
+            //nftImage.sprite = await curNode.Value.MetaData.GetImage();
             foreach (GameObject panel in gearPanels)
             {
                 panel.SetActive(!curNode.Value.MetaData.isKnight);
@@ -211,7 +212,7 @@ namespace KOTE.UI.Armory
                 data = new EquippedGearData.Data { equippedGear = equippedGear.Values.ToList() }
             };
             bool success =
-                await FetchData.Instance.RequestNewExpedition("knight", curNode.Value.Id, selectedGear);
+                await FetchData.Instance.RequestNewExpedition(curNode.Value.MetaData.Contract.ToString(), curNode.Value.Id, selectedGear);
             if (success)
             {
                 OnExpeditionConfirmed();

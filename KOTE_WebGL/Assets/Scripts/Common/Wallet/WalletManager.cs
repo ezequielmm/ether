@@ -26,7 +26,7 @@ public class WalletManager : ISingleton<WalletManager>
         instance = null;
     }
 
-    public UnityEvent<string> NewWalletConfirmed { get; } = new();
+    public UnityEvent<RawWalletData> NewWalletConfirmed { get; } = new();
     public UnityEvent<string> DisconnectingWallet { get; } = new();
     public UnityEvent WalletStatusModified { get; } = new();
 
@@ -52,7 +52,7 @@ public class WalletManager : ISingleton<WalletManager>
             return;
         }
 
-        await GetNftsInWalletPerContract(ActiveWallet);
+        RawWalletData walletData = await GetNftsInWallet(ActiveWallet);
         WalletStatusModified.Invoke();
         if (NftsInWallet.Keys.Count == 0)
         {
@@ -72,7 +72,7 @@ public class WalletManager : ISingleton<WalletManager>
         }
 
         WalletVerified = true;
-        NewWalletConfirmed.Invoke(ActiveWallet);
+        NewWalletConfirmed.Invoke(walletData);
         WalletStatusModified.Invoke();
     }
 
@@ -151,15 +151,15 @@ public class WalletManager : ISingleton<WalletManager>
         NftsInWallet.Clear();
     }
 
-    public async UniTask GetNftsInWalletPerContract(string walletAddress)
+    public async UniTask<RawWalletData> GetNftsInWallet(string walletAddress)
     {
         Debug.Log($"[WalletManager] Fetching Wallet Contents...");
-        WalletData nftData = await FetchData.Instance.GetNftsInWallet(walletAddress);
+        RawWalletData nftData = await FetchData.Instance.GetNftsInWallet(walletAddress);
         Debug.Log($"[WalletManager] Wallet Contents Received.");
         foreach (ContractData contractData in nftData.tokens)
         {
             if (contractData.tokens == null || contractData.tokens.Count == 0) continue;
-            NftContract contract = Utils.ParseEnum<NftContract>(contractData.tokens[0].name);
+            NftContract contract = contractData.ContractType;
             NftManager.Instance.SetContractAddress(contract, contractData.contract_address);
 
             NftsInWallet[contract] = new List<int>();
@@ -168,31 +168,14 @@ public class WalletManager : ISingleton<WalletManager>
                 NftsInWallet[contract].Add(int.Parse(token.token_id));
             }
         }
+
+        return nftData;
     }
 
 
     public async UniTask<int> GetNftCountPerContract(NftContract contract, string walletAddress)
     {
-        await GetNftsInWalletPerContract(walletAddress);
+        await GetNftsInWallet(walletAddress);
         return NftsInWallet[contract].Count;
     }
-}
-
-public class WalletData
-{
-    public List<ContractData> tokens;
-}
-
-public class ContractData
-{
-    public string contract_address;
-    public int token_count;
-    public List<TokenData> tokens;
-}
-
-[Serializable]
-public class TokenData
-{
-    public string token_id;
-    public string name;
 }

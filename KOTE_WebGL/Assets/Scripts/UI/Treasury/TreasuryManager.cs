@@ -47,6 +47,11 @@ public class TreasuryManager : MonoBehaviour
     {
         ClearNfts();
     }
+    
+    private void ClearOutNfts(RawWalletData walletData)
+    {
+        ClearNfts();
+    }
 
     private void ClearNfts()
     {

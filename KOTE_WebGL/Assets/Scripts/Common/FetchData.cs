@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Cysharp.Threading.Tasks;
 using KOTE.UI.Armory;
 using Newtonsoft.Json;
@@ -109,7 +108,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
         }
     }
 
-    public async UniTask<WalletData> GetNftsInWallet(string wallet)
+    public async UniTask<RawWalletData> GetNftsInWallet(string wallet)
     {
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.WalletData) + $"/{wallet}";
         Debug.Log(requestUrl);
@@ -119,33 +118,8 @@ public class FetchData : DataManager, ISingleton<FetchData>
             rawJson = TryGetTestData(FetchType.WalletNfts, rawJson);
 
             Debug.Log(rawJson);
-            return ParseJsonWithPath<WalletData>(rawJson, "data");
+            return ParseJsonWithPath<RawWalletData>(rawJson, "data");
         }
-    }
-
-    public async UniTask<List<Nft>> GetNftMetaData(List<int> tokenId, NftContract contract)
-    {
-        var requestBatch = tokenId.Partition(OpenSeasRequstBuilder.MaxContentRequest);
-        List<Nft> nftMetaDataList = new List<Nft>();
-        foreach (var tokenList in requestBatch)
-        {
-            using (UnityWebRequest request = OpenSeasRequstBuilder.ConstructNftRequest(contract, tokenList.ToArray()))
-            {
-                string rawJson = await MakeJsonRequest(request);
-                rawJson = TryGetTestData(FetchType.NftMetadata, rawJson);
-
-                nftMetaDataList.AddRange(ParseJsonWithPath<List<Nft>>(rawJson, "assets"));
-            }
-
-            await UniTask.Yield();
-        }
-
-        foreach (var token in nftMetaDataList)
-        {
-            token.Contract = contract;
-        }
-
-        return nftMetaDataList;
     }
 
     public async UniTask<GearData> GetGearInventory()

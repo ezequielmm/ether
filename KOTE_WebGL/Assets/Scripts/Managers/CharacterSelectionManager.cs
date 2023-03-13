@@ -38,6 +38,11 @@ public class CharacterSelectionManager : MonoBehaviour
         ClearNfts();
     }
 
+    private void ClearOutNfts(RawWalletData walletData)
+    {
+        ClearNfts();
+    }
+
     private void ClearNfts()
     {
         for (int i = 0; i < nftSelectionLayout.transform.childCount; i++)
@@ -86,7 +91,6 @@ public class CharacterSelectionManager : MonoBehaviour
         }
     }
 
-    
 
     public void OnArmoryButton()
     {

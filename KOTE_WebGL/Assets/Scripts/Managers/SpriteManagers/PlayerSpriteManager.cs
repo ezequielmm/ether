@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Spine;
 using Spine.Unity;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 {
@@ -10,6 +11,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 
     private PlayerNft _curNft;
     private List<PlayerNft> characterList = new List<PlayerNft>();
+    private UnityAction nftLoadedListener;
 
 
     private SkeletonData knightSkeletonData => KinghtData.GetSkeletonData(true);
@@ -38,10 +40,38 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
             return;
         }
 
-        List<Nft> nftList =
-            await FetchData.Instance.GetNftMetaData(new List<int> { nftToken }, NftContract.Knights);
-        BuildPlayer(nftList[0]);
+        bool nftLoaded = false;
+        if (NftManager.Instance.Nfts.Keys.Count == 0)
+        {
+            nftLoadedListener = () => { WaitForNftLoad(nftToken); };
+            NftManager.Instance.NftsLoaded.AddListener(nftLoadedListener);
+            return;
+        }
+
+        Nft curNft = null;
+
+        if (NftManager.Instance.GetAllNfts().Exists(x => x.TokenId == nftToken))
+        {
+            curNft = NftManager.Instance.GetAllNfts().Find(x => x.TokenId == nftToken);
+        }
+
+        if (curNft == null)
+        {
+            Debug.LogWarning($"Loaded NFT skin {nftToken} not owned by player");
+            return;
+        }
+
+        BuildPlayer(curNft);
     }
+
+
+    private void WaitForNftLoad(int nftToken)
+    {
+        NftManager.Instance.NftsLoaded.RemoveListener(nftLoadedListener);
+        nftLoadedListener = null;
+        SetSkin(nftToken);
+    }
+
 
     private void UpdateNftTrait(Trait trait, string traitValue)
     {
@@ -49,7 +79,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         UpdatePlayerSkin();
     }
 
-    private  void BuildPlayer(Nft selectedNft)
+    private void BuildPlayer(Nft selectedNft)
     {
         _curNft = GetNftBasedOnMetadata(selectedNft);
         Debug.Log($"[PlayerSpriteManager] Nft #{selectedNft.TokenId} has been selected.");
