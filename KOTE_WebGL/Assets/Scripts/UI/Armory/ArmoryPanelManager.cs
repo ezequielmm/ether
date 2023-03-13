@@ -118,7 +118,7 @@ namespace KOTE.UI.Armory
 
         private void PopulateGearInventory(List<GearItemData> ownedGear)
         {
-            foreach (GearItemData itemData in data.data.ownedGear)
+            foreach (GearItemData itemData in ownedGear)
             {
                 itemData.gearImage =
                     GearIconManager.Instance.GetGearSprite(Utils.ParseEnum<Trait>(itemData.trait), itemData.name);
@@ -226,7 +226,7 @@ namespace KOTE.UI.Armory
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             EquippedGearData selectedGear = new EquippedGearData
             {
-                data = equippedGear.Values.ToList()
+                data = new EquippedGearData.Data { equippedGear = equippedGear.Values.ToList() }
             };
             bool success =
                 await FetchData.Instance.RequestNewExpedition("knight", curNode.Value.Id, selectedGear);
@@ -274,7 +274,7 @@ namespace KOTE.UI.Armory
 
         public class Data
         {
-            public List<GearItemData> ownedGear;
+            public List<GearItemData> equippedGear;
         }
     }
 
