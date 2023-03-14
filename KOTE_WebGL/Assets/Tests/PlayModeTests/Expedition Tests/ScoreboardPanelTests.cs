@@ -42,43 +42,38 @@ public class ScoreboardPanelTests : MonoBehaviour
         yield return null;
     }
 
-    [UnityTest]
-    public IEnumerator PanelToggleOn()
+    [Test]
+    public void PanelToggleOn()
     {
         scoreboardPanel.TogglePanel(true);
-        yield return null;
         Assert.AreEqual(true, scoreboardPanel.gameOverContainer.activeSelf);
     }
 
-    [UnityTest]
-    public IEnumerator PanelToggleOff()
+    [Test]
+    public void PanelToggleOff()
     {
         scoreboardPanel.TogglePanel(false);
-        yield return null;
         Assert.AreEqual(false, scoreboardPanel.gameOverContainer.activeSelf);
     }
 
-    [UnityTest]
-    public IEnumerator PopulateOutcome()
+    [Test]
+    public void PopulateOutcome()
     {
         scoreboardPanel.Populate(testData);
-        yield return null;
         Assert.AreEqual("outcome", scoreboardPanel.resultText.text.ToLower());
     }
 
-    [UnityTest]
-    public IEnumerator PopulateFinalScore()
+    [Test]
+    public void PopulateFinalScore()
     {
         scoreboardPanel.Populate(testData);
-        yield return null;
         Assert.AreEqual("101", scoreboardPanel.finalScoreText.text.ToLower());
     }
 
-    [UnityTest]
-    public IEnumerator PopulateAchievements()
+    [Test]
+    public void PopulateAchievements()
     {
         scoreboardPanel.Populate(testData);
-        yield return null;
         Assert.AreEqual(1, scoreboardPanel.achievementPanel.transform.childCount);
     }
 
