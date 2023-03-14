@@ -98,7 +98,7 @@ public class ExpeditionStatusData
     public bool hasExpedition;
     public int nftId;
     public List<GearItemData> equippedGear;
-    public NftContract contract;
+    public string tokenType;
 }
 
 [Serializable]

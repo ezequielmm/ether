@@ -210,7 +210,7 @@ namespace KOTE.UI.Armory
             playButton.interactable = false;
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             bool success =
-                await FetchData.Instance.RequestNewExpedition(curNode.Value.MetaData.Contract.ToString(), curNode.Value.Id, equippedGear.Values.ToList());
+                await FetchData.Instance.RequestNewExpedition(curNode.Value.MetaData.Contract, curNode.Value.Id, equippedGear.Values.ToList());
             if (success)
             {
                 OnExpeditionConfirmed();

@@ -139,17 +139,28 @@ public class FetchData : DataManager, ISingleton<FetchData>
         }
     }
 
-    public async UniTask<bool> RequestNewExpedition(string characterType, int selectedNft,
+    public async UniTask<bool> RequestNewExpedition(NftContract characterType, int selectedNft,
         List<GearItemData> equippedGear)
     {
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.ExpeditionRequest);
 
         ExpeditionStartData startData = new ExpeditionStartData
         {
-            tokenType = characterType,
             nftId = selectedNft,
             equippedGear = equippedGear
         };
+        switch (characterType)
+        {
+            case NftContract.Knights:
+                startData.tokenType = "knight";
+                break;
+            case NftContract.Villager:
+                startData.tokenType = "villager";
+                break;
+            case NftContract.BlessedVillager:
+                startData.tokenType = "blessed-villager";
+                break;
+        }
 
         string data = JsonConvert.SerializeObject(startData);
         byte[] utf8String = Encoding.Default.GetBytes(data);
@@ -163,7 +174,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
             request.uploadHandler = uploadHandler;
             request.downloadHandler = new DownloadHandlerBuffer();
             string rawJson = await MakeJsonRequest(request);
-            
+
             if (string.IsNullOrEmpty(rawJson)) return false;
             rawJson = TryGetTestData(FetchType.NewExpedition, rawJson);
 
