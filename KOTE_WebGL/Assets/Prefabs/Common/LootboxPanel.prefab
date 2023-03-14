@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7197590746660932973}
   - component: {fileID: 7065430932649715611}
   m_Layer: 5
-  m_Name: Collect Loot
+  m_Name: Collect Loot Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121,7 +121,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7197590746660932973}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3625768029374946754}
+        m_TargetAssemblyTypeName: LootboxPanelManager, GameAssembly
+        m_MethodName: OnCollectLoot
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1000378930324558813
 GameObject:
   m_ObjectHideFlags: 0
@@ -621,6 +633,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6141884563302307303}
+  - component: {fileID: 9059856932176421807}
   m_Layer: 5
   m_Name: LootboxContainer
   m_TagString: Untagged
@@ -656,6 +669,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &9059856932176421807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2504033507611305720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d40b57fa675efa4fb9dc005060d602b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3298372958061333957
 GameObject:
   m_ObjectHideFlags: 0
@@ -1103,7 +1128,7 @@ GameObject:
   - component: {fileID: 4024775572683481288}
   - component: {fileID: 7639357212218799984}
   m_Layer: 5
-  m_Name: See Score
+  m_Name: See Score Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -27,6 +27,11 @@ public class LootboxPanelManager : MonoBehaviour
         }
     }
 
+    public void OnCollectLoot() 
+    {
+        GameManager.Instance.LoadScene(inGameScenes.MainMenu);
+    }
+
     private void AddGearItem(GearItemData gear) 
     {
         GameObject GearItemObject = Instantiate(GearItemPrefab, LootContainer.transform);

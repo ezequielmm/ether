@@ -69,6 +69,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7827904886865857391}
     m_Modifications:
+    - target: {fileID: 33064827621473796, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 33064827621473796, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 33064827621473796, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 33064827621473796, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3625768029374946754, guid: 13688820924bc8647b58e9f24fe197f0,
         type: 3}
       propertyPath: ReturnToLootButton
@@ -78,6 +98,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LootboxPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656015478801594669, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656015478801594669, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656015478801594669, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4656015478801594669, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7079984045661438689, guid: 13688820924bc8647b58e9f24fe197f0,
         type: 3}
@@ -184,6 +224,66 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7639357212218799984, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639357212218799984, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639357212218799984, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4175713317503698638}
+    - target: {fileID: 7639357212218799984, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639357212218799984, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleScorePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639357212218799984, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ScoreboardManager, GameAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639357212218799984, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639357212218799984, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8945288072370069282, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8945288072370069282, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8945288072370069282, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8945288072370069282, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13688820924bc8647b58e9f24fe197f0, type: 3}
 --- !u!224 &2828429537603513442 stripped
@@ -211,6 +311,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7827904886865857391}
     m_Modifications:
+    - target: {fileID: 463187017970137971, guid: cfeae79a3b3d1ac47b8c66dc99671717,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 463187017970137971, guid: cfeae79a3b3d1ac47b8c66dc99671717,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 463187017970137971, guid: cfeae79a3b3d1ac47b8c66dc99671717,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 463187017970137971, guid: cfeae79a3b3d1ac47b8c66dc99671717,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1268661525687881696, guid: cfeae79a3b3d1ac47b8c66dc99671717,
         type: 3}
       propertyPath: m_Pivot.x
@@ -320,6 +440,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4199369324357197395, guid: cfeae79a3b3d1ac47b8c66dc99671717,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4199369324357197395, guid: cfeae79a3b3d1ac47b8c66dc99671717,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4199369324357197395, guid: cfeae79a3b3d1ac47b8c66dc99671717,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4199369324357197395, guid: cfeae79a3b3d1ac47b8c66dc99671717,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4402937321810296592, guid: cfeae79a3b3d1ac47b8c66dc99671717,
         type: 3}
