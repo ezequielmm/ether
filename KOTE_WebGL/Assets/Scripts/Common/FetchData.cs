@@ -161,6 +161,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
             var uploadHandler = new UploadHandlerRaw(utf8String);
             uploadHandler.contentType = $"application/json";
             request.uploadHandler = uploadHandler;
+            request.downloadHandler = new DownloadHandlerBuffer();
             string rawJson = await MakeJsonRequest(request);
             
             if (string.IsNullOrEmpty(rawJson)) return false;
