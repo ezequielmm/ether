@@ -12,7 +12,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
 {
     private static FetchData instance;
 
-    public Dictionary<FetchType, string> TestData;
+    public Dictionary<FetchType, string> TestData = new();
 
     public static FetchData Instance
     {
@@ -145,22 +145,10 @@ public class FetchData : DataManager, ISingleton<FetchData>
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.ExpeditionRequest);
 
         ExpeditionStartData startData = new ExpeditionStartData
-        {
+        {tokenType = characterType.ToString(),
             nftId = selectedNft,
             equippedGear = equippedGear
         };
-        switch (characterType)
-        {
-            case NftContract.Knights:
-                startData.tokenType = "knight";
-                break;
-            case NftContract.Villager:
-                startData.tokenType = "villager";
-                break;
-            case NftContract.BlessedVillager:
-                startData.tokenType = "blessed-villager";
-                break;
-        }
 
         string data = JsonConvert.SerializeObject(startData);
         byte[] utf8String = Encoding.Default.GetBytes(data);

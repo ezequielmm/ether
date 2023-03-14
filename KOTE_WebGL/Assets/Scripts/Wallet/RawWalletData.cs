@@ -20,5 +20,6 @@ public class TokenData
 {
     public string token_id;
     public string name;
+    public bool can_play;
     public Nft metadata;
 }

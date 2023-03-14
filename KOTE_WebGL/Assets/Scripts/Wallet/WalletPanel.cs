@@ -53,7 +53,7 @@ public class WalletPanel : MonoBehaviour
         {
             return;
         }
-        int knightCount = await WalletManager.Instance.GetNftCountPerContract(NftContract.Knights, walletAddress);
+        int knightCount = await WalletManager.Instance.GetNftCountPerContract(NftContract.knight, walletAddress);
         WalletItem wallet = CreateWalletItem(walletAddress, knightCount);
         wallets.Add(wallet);
     }

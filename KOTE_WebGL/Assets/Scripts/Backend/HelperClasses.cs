@@ -105,14 +105,14 @@ public class ExpeditionStatusData
         switch (tokenType)
         {
             case "knight":
-                return NftContract.Knights;
+                return NftContract.knight;
             case "villager":
-                return NftContract.Villager;
+                return NftContract.villager;
             case "blessed_villager":
-                return NftContract.BlessedVillager;
+                return NftContract.blessed_villager;
         }
 
-        return NftContract.None;
+        return NftContract.none;
     }
 }
 

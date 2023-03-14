@@ -66,7 +66,6 @@ namespace KOTE.UI.Armory
                 nftList.AddLast(new ArmoryTokenData(nft));
             }
 
-            playButton.interactable = true;
             curNode = nftList.First;
             GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
             UpdatePanelOnNftUpdate();
@@ -81,6 +80,8 @@ namespace KOTE.UI.Armory
                 panel.SetActive(!curNode.Value.MetaData.isKnight);
             }
 
+            nftImage.color = (curNode.Value.MetaData.CanPlay) ? Color.white : Color.gray;
+            playButton.interactable = curNode.Value.MetaData.CanPlay;
             if (curNode.Value.MetaData.isKnight) ClearGearSlots();
             else PopulateEquippedGear();
         }
@@ -132,12 +133,12 @@ namespace KOTE.UI.Armory
 
         private void PopulateEquippedGear()
         {
-            if (curNode.Value.MetaData.Contract == NftContract.Villager &&
+            if (curNode.Value.MetaData.Contract == NftContract.villager &&
                 villagerEquippedGear.ContainsKey(curNode.Value.Id))
             {
                 EquipGearInSlots(villagerEquippedGear[curNode.Value.Id]);
             }
-            else if (curNode.Value.MetaData.Contract == NftContract.BlessedVillager &&
+            else if (curNode.Value.MetaData.Contract == NftContract.blessed_villager &&
                      blessedVillagerEquippedGear.ContainsKey(curNode.Value.Id))
             {
                 EquipGearInSlots(blessedVillagerEquippedGear[curNode.Value.Id]);
@@ -227,7 +228,7 @@ namespace KOTE.UI.Armory
 
         private void OnGearItemSelected(GearItemData activeItem)
         {
-            if (curNode.Value.MetaData.Contract == NftContract.Knights) return;
+            if (curNode.Value.MetaData.Contract == NftContract.knight) return;
             GearCategories category = Utils.ParseEnum<GearCategories>(activeItem.category);
             gearSlots[(int)category].SetGearInSlot(activeItem);
             equippedGear[Utils.ParseEnum<GearCategories>(activeItem.category)] = activeItem;

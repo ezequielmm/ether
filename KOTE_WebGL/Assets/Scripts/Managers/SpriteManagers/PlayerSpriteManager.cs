@@ -110,10 +110,10 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     {
         switch (metadata.Contract)
         {
-            case NftContract.Knights:
+            case NftContract.knight:
                 return new Knight(metadata);
-            case NftContract.Villager:
-            case NftContract.BlessedVillager:
+            case NftContract.villager:
+            case NftContract.blessed_villager:
                 return new Villager(metadata);
             default:
                 return null;

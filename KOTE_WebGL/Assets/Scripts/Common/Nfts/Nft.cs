@@ -20,11 +20,12 @@ public class Nft
     [JsonProperty("attributes")]
     [JsonConverter(typeof(TraitDictionaryConverter))]
     public Dictionary<Trait, string> Traits;
+    public bool CanPlay;
 
     [JsonIgnore]
     public Sprite Image = null;
     
-    public bool isKnight => Contract == NftContract.Knights;
+    public bool isKnight => Contract == NftContract.knight;
 
     private async UniTask<Sprite> GetImage() 
     {

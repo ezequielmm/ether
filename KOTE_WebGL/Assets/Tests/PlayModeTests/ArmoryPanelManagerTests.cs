@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -45,7 +46,7 @@ namespace KOTE.UI.Armory
                     gearId = 1,
                     gearImage = null,
                     name = "Test",
-                    trait = "Legguards"
+                    trait = "Legguard"
                 },
                 new GearItemData
                 {
@@ -85,7 +86,7 @@ namespace KOTE.UI.Armory
                     gearId = 1,
                     gearImage = null,
                     name = "Test",
-                    trait = "Vambraces"
+                    trait = "Vambrace"
                 },
                 new GearItemData
                 {
@@ -128,7 +129,7 @@ namespace KOTE.UI.Armory
                     {
                         { Trait.Helmet, "helmet" }
                     },
-                    Contract = NftContract.Knights
+                    Contract = NftContract.knight
                 },
                 new Nft()
                 {
@@ -138,7 +139,7 @@ namespace KOTE.UI.Armory
                     {
                         { Trait.Boots, "boots" }
                     },
-                    Contract = NftContract.Knights
+                    Contract = NftContract.knight
                 }
             };
 
@@ -149,7 +150,7 @@ namespace KOTE.UI.Armory
 
             _armoryPanelManager.defaultCharacterSprite = testSprite;
             NftManager.Instance.Nfts = new Dictionary<NftContract, List<Nft>>();
-            NftManager.Instance.Nfts[NftContract.Knights] = testNftList;
+            NftManager.Instance.Nfts[NftContract.knight] = testNftList;
             NftManager.Instance.NftsLoaded.Invoke();
 
             yield return null;
@@ -443,9 +444,9 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoesCallingGearSelectedChangeSlotImageIfNotKnight()
         {
-            testNftList[0].Contract = NftContract.Villager;
+            testNftList[0].Contract = NftContract.villager;
             NftManager.Instance.Nfts.Clear();
-            NftManager.Instance.Nfts[NftContract.Villager] = testNftList;
+            NftManager.Instance.Nfts[NftContract.villager] = testNftList;
             NftManager.Instance.NftsLoaded.Invoke();
 
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
@@ -466,9 +467,9 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoesLoadingAVillagerUpdateGearSlots()
         {
-            testNftList[0].Contract = NftContract.Villager;
+            testNftList[0].Contract = NftContract.villager;
             NftManager.Instance.Nfts.Clear();
-            NftManager.Instance.Nfts[NftContract.Villager] = testNftList;
+            NftManager.Instance.Nfts[NftContract.villager] = testNftList;
             NftManager.Instance.NftsLoaded.Invoke();
 
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
@@ -499,6 +500,7 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoesPopulatingGearCreateHeadersWithNoItems()
         {
+            FetchData.Instance.TestData[FetchType.GearInventory] = JsonConvert.SerializeObject(new TestGearData{data = testData});
             GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.Invoke("", -1);
             ArmoryHeaderManager[] headers =
                 _armoryPanelManager.gearListTransform.GetComponentsInChildren<ArmoryHeaderManager>();
@@ -508,5 +510,10 @@ namespace KOTE.UI.Armory
                 Assert.AreEqual(0, header.gameObject.GetComponentsInChildren<SelectableGearItem>().Length);
             }
         }
+    }
+
+    public class TestGearData
+    {
+        public GearData data;
     }
 }
