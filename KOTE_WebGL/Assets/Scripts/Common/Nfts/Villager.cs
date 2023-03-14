@@ -29,6 +29,7 @@ public class Villager : PlayerNft
         if (string.IsNullOrEmpty(traitValue))
         {
             EquippedTraits.Remove(trait);
+            return;
         }
         EquippedTraits[trait] = traitValue;
     }

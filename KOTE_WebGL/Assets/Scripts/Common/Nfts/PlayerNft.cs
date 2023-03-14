@@ -74,19 +74,22 @@ public abstract class PlayerNft
         List<TraitSprite> allSprites = new List<TraitSprite>();
         foreach (Trait trait in Enum.GetValues(typeof(Trait)))
         {
-            if (EquippedTraits.ContainsKey(trait) && SkinSprites.Exists(x => x.TraitValue == EquippedTraits[trait]))
+            if (EquippedTraits.ContainsKey(trait) &&
+                SkinSprites.Exists(x => x.TraitValue == EquippedTraits[trait] && x.TraitType == trait))
             {
-                allSprites.AddRange(SkinSprites.FindAll(x => x.TraitValue == EquippedTraits[trait]));
+                allSprites.AddRange(SkinSprites.FindAll(x =>
+                    x.TraitValue == EquippedTraits[trait] && x.TraitType == trait));
             }
 
-            else if (Traits.ContainsKey(trait) && SkinSprites.Exists(x => x.TraitValue == Traits[trait]))
+            else if (Traits.ContainsKey(trait) &&
+                     SkinSprites.Exists(x => x.TraitValue == Traits[trait] && x.TraitType == trait))
             {
-                allSprites.AddRange(SkinSprites.FindAll(x => x.TraitValue == Traits[trait]));
+                allSprites.AddRange(SkinSprites.FindAll(x => x.TraitValue == Traits[trait] && x.TraitType == trait));
             }
 
-            else if (DefaultSprites.Exists(x => x.TraitType == trait))
+            else if (DefaultSprites.Exists(x => x.TraitType == trait && x.TraitType == trait))
             {
-                allSprites.AddRange(DefaultSprites.FindAll(x => x.TraitType == trait));
+                allSprites.AddRange(DefaultSprites.FindAll(x => x.TraitType == trait && x.TraitType == trait));
             }
         }
 
@@ -148,12 +151,12 @@ public abstract class PlayerNft
     {
         string skinName = value;
         skinName = skinName.Replace('-', '_').Replace(' ', '_');
-        
+
         if (trait == Trait.Sigil)
         {
             skinName = $"{GetShieldType()}_{skinName}";
         }
-        
+
         // have to handle bucket helmet different, as it doesn't match the other helmet names
         if (trait == Trait.Helmet && value.Contains("Bucket"))
         {
