@@ -209,12 +209,8 @@ namespace KOTE.UI.Armory
         {
             playButton.interactable = false;
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-            EquippedGearData selectedGear = new EquippedGearData
-            {
-                data = new EquippedGearData.Data { equippedGear = equippedGear.Values.ToList() }
-            };
             bool success =
-                await FetchData.Instance.RequestNewExpedition(curNode.Value.MetaData.Contract.ToString(), curNode.Value.Id, selectedGear);
+                await FetchData.Instance.RequestNewExpedition(curNode.Value.MetaData.Contract.ToString(), curNode.Value.Id, equippedGear.Values.ToList());
             if (success)
             {
                 OnExpeditionConfirmed();
@@ -258,16 +254,6 @@ namespace KOTE.UI.Armory
         Padding = 7,
         Vambraces = 8,
         Gauntlets = 9,
-    }
-
-    public class EquippedGearData
-    {
-        public Data data;
-
-        public class Data
-        {
-            public List<GearItemData> equippedGear;
-        }
     }
 
     public class GearData

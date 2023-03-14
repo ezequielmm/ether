@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Cysharp.Threading.Tasks;
 using KOTE.UI.Armory;
 using Newtonsoft.Json;
@@ -139,19 +140,29 @@ public class FetchData : DataManager, ISingleton<FetchData>
     }
 
     public async UniTask<bool> RequestNewExpedition(string characterType, int selectedNft,
-        EquippedGearData equippedGear)
+        List<GearItemData> equippedGear)
     {
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.ExpeditionRequest);
 
-        WWWForm form = new WWWForm();
-        form.AddField("class", characterType);
-        form.AddField("nftId", selectedNft);
-        form.AddField("gear", JsonConvert.SerializeObject(equippedGear));
+        ExpeditionStartData startData = new ExpeditionStartData
+        {
+            tokenType = characterType,
+            nftId = selectedNft,
+            equippedGear = equippedGear
+        };
 
-        using (UnityWebRequest request = UnityWebRequest.Post(requestUrl, form))
+        string data = JsonConvert.SerializeObject(startData);
+        byte[] utf8String = Encoding.Default.GetBytes(data);
+
+
+        using (UnityWebRequest request = new UnityWebRequest(requestUrl, "POST"))
         {
             request.AddAuthToken();
+            var uploadHandler = new UploadHandlerRaw(utf8String);
+            uploadHandler.contentType = $"application/json";
+            request.uploadHandler = uploadHandler;
             string rawJson = await MakeJsonRequest(request);
+            
             if (string.IsNullOrEmpty(rawJson)) return false;
             rawJson = TryGetTestData(FetchType.NewExpedition, rawJson);
 

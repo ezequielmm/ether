@@ -912,3 +912,11 @@ public class BugReportData
     public string backendVersion = "???";
     public List<ServerCommunicationLogger.ServerCommunicationLog> messageLog = new();
 }
+
+[Serializable]
+public class ExpeditionStartData
+{
+    public string tokenType;
+    public int nftId;
+    public List<GearItemData> equippedGear;
+}
