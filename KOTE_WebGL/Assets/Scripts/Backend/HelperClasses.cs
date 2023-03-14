@@ -99,6 +99,21 @@ public class ExpeditionStatusData
     public int nftId;
     public List<GearItemData> equippedGear;
     public string tokenType;
+
+    public NftContract GetContractType()
+    {
+        switch (tokenType)
+        {
+            case "knight":
+                return NftContract.Knights;
+            case "villager":
+                return NftContract.Villager;
+            case "blessed_villager":
+                return NftContract.BlessedVillager;
+        }
+
+        return NftContract.None;
+    }
 }
 
 [Serializable]

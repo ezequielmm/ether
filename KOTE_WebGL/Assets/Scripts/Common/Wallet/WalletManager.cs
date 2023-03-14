@@ -125,6 +125,26 @@ public class WalletManager : ISingleton<WalletManager>
         return true;
     }
 
+    public bool ConfirmNftOwnership(int nftId, NftContract tokenType)
+    {
+        if (NftsInWallet.ContainsKey(tokenType))
+        {
+            return NftsInWallet[tokenType].Contains(nftId);
+        }
+
+        return false;
+    }
+
+    public bool ConfirmOwnsNfts()
+    {
+        foreach (NftContract contract in NftsInWallet.Keys)
+        {
+            if (NftsInWallet[contract] != null && NftsInWallet[contract].Count > 0) return true;
+        }
+
+        return false;
+    }
+
     public void SelectedAccountChanged(string newAccount)
     {
         SetWallet(newAccount);

@@ -87,18 +87,12 @@ public class NftManager : ISingleton<NftManager>
         { NftContract.Villager, "0xF0aA34f832c34b32478B8D9696DC8Ad1c8065D2d" },
         { NftContract.BlessedVillager, "0x55abb816b145CA8F34ffA22D63fBC5bc57186690" }
     };
-    public static string GetNftContractAddress(NftContract contract)
-    {
-        if (IsTestNet) 
-            return testNetNftContractMap[contract];
-        else
-            return etheriumNftContractMap[contract];
-    }
 }
 public enum NftContract
 {
+    None, // default so we can have a bad contract check
     Knights,
     Villager,
-    BlessedVillager,
+    BlessedVillager
 }
 
