@@ -1,4 +1,5 @@
 using System;
+using KOTE.UI.Armory;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -117,9 +118,20 @@ public class HiddenConsoleManager : MonoBehaviour
                 GameManager.Instance.LoadScene(inGameScenes.Expedition);
                 break;
             case ConsoleCommands.use_nft:
+                if(args.Length != 2){
+                    PublicLog("Please enter only the nft id and contract type.\n "+ 
+                                               "Contract options are: Knights, Villager, BlessedVillager");
+                    break;
+                }
                 int nftNum = int.Parse(args[0]);
+                NftContract contract = args[1].ParseToEnum<NftContract>();
+                if (contract == NftContract.None)
+                {
+                    PublicLog("Invalid Contract entered");
+                    break;
+                }
                 PublicLog($"Setting skin to #{nftNum}.");
-                PlayerSpriteManager.Instance.SetSkin(nftNum);
+                PlayerSpriteManager.Instance.SetSkin(nftNum, contract);
                 break;
         }
     }

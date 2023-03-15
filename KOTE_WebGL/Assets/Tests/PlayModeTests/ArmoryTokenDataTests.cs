@@ -21,6 +21,8 @@ namespace KOTE.UI.Armory
             }
         };
 
+        private Sprite testSprite;
+
         [UnitySetUp]
         public IEnumerator Setup()
         {
@@ -29,6 +31,9 @@ namespace KOTE.UI.Armory
            GameObject nftSpriteManager = Instantiate(spriteManagerPrefab);
             nftSpriteManager.SetActive(true);
             _tokenData = new ArmoryTokenData(testMetaData);
+            
+            testSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Sprites/Main_Menu/CharSelection/knight.png");
+            testMetaData.Image = testSprite;
             yield return null;
         }
 
@@ -61,6 +66,13 @@ namespace KOTE.UI.Armory
         {
             _tokenData = new ArmoryTokenData(testMetaData);
             Assert.AreEqual(testMetaData.TokenId, _tokenData.Id);
+        }
+
+        [Test]
+        public void DoesCreatingATokenDataObjectGrabImage()
+        {
+            _tokenData = new ArmoryTokenData(testMetaData);
+            Assert.AreEqual(testSprite, _tokenData.NftImage);
         }
     }
 }

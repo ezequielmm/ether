@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public static class Utils
@@ -17,9 +17,11 @@ public static class Utils
         return result;
     }
 
-    public static TEnum ParseEnum<TEnum>(string dataString) where TEnum : struct, Enum
+    public static TEnum ParseToEnum<TEnum>(this string dataString) where TEnum : struct, Enum
     {
         TEnum parsedEnum;
+
+        dataString = dataString.Replace(" ", "");
 
         bool parseSuccess = Enum.TryParse(dataString, out parsedEnum);
         if (parseSuccess) return parsedEnum;
@@ -30,7 +32,8 @@ public static class Utils
         }
         catch
         {
-            Debug.LogError("Warning: Enum not parsed. No value '" + dataString + "' in enum type " + typeof(TEnum));
+            Debug.LogWarning("Warning: Enum not parsed. No value '" + dataString + "' in enum type " + typeof(TEnum) +
+                             "Falling back to default value");
             return default(TEnum);
         }
     }
@@ -56,7 +59,7 @@ public static class Utils
         return returnString.Trim();
     }
 
-    public static string PrettyText(string input) 
+    public static string PrettyText(string input)
     {
         StringBuilder sb = new StringBuilder();
         var charArr = input.ToCharArray();
@@ -139,7 +142,9 @@ public static class Utils
     /// <returns>A String UUID or "unknown"</returns>
     public static string FindEntityId(GameObject source)
     {
-        return source.GetComponentInParent<EnemyManager>()?.EnemyData?.id ?? source.GetComponentInParent<PlayerManager>()?.PlayerData?.id ??
-            source.GetComponentInChildren<EnemyManager>()?.EnemyData?.id ?? source.GetComponentInChildren<PlayerManager>()?.PlayerData?.id ?? "unknown";
+        return source.GetComponentInParent<EnemyManager>()?.EnemyData?.id ??
+               source.GetComponentInParent<PlayerManager>()?.PlayerData?.id ??
+               source.GetComponentInChildren<EnemyManager>()?.EnemyData?.id ??
+               source.GetComponentInChildren<PlayerManager>()?.PlayerData?.id ?? "unknown";
     }
 }

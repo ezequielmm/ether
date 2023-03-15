@@ -30,14 +30,16 @@ public class MainMenuManager : MonoBehaviour
     // we need to confirm all verification values before showing the play button
     private bool _hasExpedition;
     private bool _expeditionStatusReceived;
+    private bool _walletDataReceived;
+    
+    // save data so that we can run verification after both expedition and wallet data has arrived
+    private ExpeditionStatusData _expeditionStatusData;
 
     // verification that the player still owns the continuing nft
-    private bool _ownsSavedNft => WalletManager.Instance.NftsInWallet?
-        .GetValueOrDefault(NftContract.KnightsOfTheEther)?.Contains(_nftInExpedition) ?? false;
-    private int _nftInExpedition = -1;
+    private bool _ownsSavedNft;
     
     // verification that the connected wallet contains at least one knight
-    private bool _ownsAnyNft => (WalletManager.Instance.NftsInWallet?.GetValueOrDefault(NftContract.KnightsOfTheEther)?.Count ?? 0) > 0;
+    private bool _ownsAnyNft => WalletManager.Instance.ConfirmOwnsNfts();
     private bool _isWalletVerified => WalletManager.Instance.WalletVerified;
     private bool _isWhitelisted => true;
 
@@ -52,7 +54,7 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(OnExpeditionUpdate);
 
         WalletManager.Instance.WalletStatusModified.AddListener(UpdateUiOnWalletModification);
-        NftManager.Instance.NftsLoaded.AddListener(VerifyResumeExpedition);
+        NftManager.Instance.NftsLoaded.AddListener(RunVerificationCheck);
 
         //CheckIfRegisterButtonIsEnabled();
         CheckIfArmoryButtonIsEnabled();
@@ -78,18 +80,38 @@ public class MainMenuManager : MonoBehaviour
     }
 
     // callbacks for verifying the player can play the game
-    private void OnExpeditionUpdate(bool hasExpedition, int nftId)
+    private void OnExpeditionUpdate(ExpeditionStatusData data)
     {
-        _nftInExpedition = nftId;
         _expeditionStatusReceived = true;
-        _hasExpedition = hasExpedition;
-        treasuryButton.gameObject.SetActive(true);
+        _expeditionStatusData = data;
+        
+        RunVerificationCheck();
+    }
+    
+    private void UpdateUiOnWalletModification()
+    {
+        _walletDataReceived = true;
+        connectWalletButton.gameObject.SetActive(!_hasWallet);
+        RunVerificationCheck();
+    }
 
+    private void RunVerificationCheck()
+    {
+        if (!_expeditionStatusReceived || !_walletDataReceived) return;
+        RunExpeditionVerification();
+        
         VerifyResumeExpedition();
     }
 
+    private void RunExpeditionVerification()
+    {
+        _hasExpedition = _expeditionStatusData.hasExpedition;
+        treasuryButton.gameObject.SetActive(true);
+        _ownsSavedNft = WalletManager.Instance.ConfirmNftOwnership(_expeditionStatusData.nftId, _expeditionStatusData.GetContractType());
+    }
+
     // we need to verify that the player can actually resume or start a new game before presenting those options
-    // this is designed to be called whenever a callback is triggered, due to not knowing when all the responses will come in
+    // this can only run after ALL response have come in, due to them being able to come in at any order.
     private void VerifyResumeExpedition()
     {
         
@@ -125,13 +147,6 @@ public class MainMenuManager : MonoBehaviour
             GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.Invoke();
         }
     }
-
-    private void UpdateUiOnWalletModification() 
-    {
-        connectWalletButton.gameObject.SetActive(!_hasWallet);
-        VerifyResumeExpedition();
-    }
-
 
     private void UpdatePlayButtonText()
     {

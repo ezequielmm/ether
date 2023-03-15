@@ -77,7 +77,7 @@ public class EnemiesManager : MonoBehaviour
 
     private float GetSize(string size) 
     {
-        return Utils.GetSceneSize(Utils.ParseEnum<Size>(size));
+        return Utils.GetSceneSize(size.ParseToEnum<Size>());
     }
 
     private void OnEnemiesUpdate(EnemiesData enemiesData)

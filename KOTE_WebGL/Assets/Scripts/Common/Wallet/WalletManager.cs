@@ -26,7 +26,7 @@ public class WalletManager : ISingleton<WalletManager>
         instance = null;
     }
 
-    public UnityEvent<string> NewWalletConfirmed { get; } = new();
+    public UnityEvent<RawWalletData> NewWalletConfirmed { get; } = new();
     public UnityEvent<string> DisconnectingWallet { get; } = new();
     public UnityEvent WalletStatusModified { get; } = new();
 
@@ -52,9 +52,9 @@ public class WalletManager : ISingleton<WalletManager>
             return;
         }
 
-        List<int> knights = await GetNftsInWalletPerContract(NftContract.KnightsOfTheEther);
+        RawWalletData walletData = await GetNftsInWallet(ActiveWallet);
         WalletStatusModified.Invoke();
-        if (knights == null)
+        if (NftsInWallet.Keys.Count == 0)
         {
             // Could not get knights
             GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
@@ -62,16 +62,17 @@ public class WalletManager : ISingleton<WalletManager>
             return;
         }
 
-        if (knights.Count <= 0)
+        if (NftsInWallet[NftContract.Knights].Count <= 0 && NftsInWallet[NftContract.Villager].Count <= 0 &&
+            NftsInWallet[NftContract.BlessedVillager].Count <= 0)
         {
             // No Knights
             GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
-                "No Knights found in connected wallet.\n, Please try a different wallet.", () => { });
+                "No KOTE tokens found in connected wallet.\n, Please try a different wallet.", () => { });
             return;
         }
 
         WalletVerified = true;
-        NewWalletConfirmed.Invoke(ActiveWallet);
+        NewWalletConfirmed.Invoke(walletData);
         WalletStatusModified.Invoke();
     }
 
@@ -124,6 +125,26 @@ public class WalletManager : ISingleton<WalletManager>
         return true;
     }
 
+    public bool ConfirmNftOwnership(int nftId, NftContract tokenType)
+    {
+        if (NftsInWallet.ContainsKey(tokenType))
+        {
+            return NftsInWallet[tokenType].Contains(nftId);
+        }
+
+        return false;
+    }
+
+    public bool ConfirmOwnsNfts()
+    {
+        foreach (NftContract contract in NftsInWallet.Keys)
+        {
+            if (NftsInWallet[contract] != null && NftsInWallet[contract].Count > 0) return true;
+        }
+
+        return false;
+    }
+
     public void SelectedAccountChanged(string newAccount)
     {
         SetWallet(newAccount);
@@ -150,72 +171,31 @@ public class WalletManager : ISingleton<WalletManager>
         NftsInWallet.Clear();
     }
 
-    public async UniTask<List<int>> GetNftsInWalletPerContract(NftContract contract)
+    public async UniTask<RawWalletData> GetNftsInWallet(string walletAddress)
     {
-        return await GetNftsInWalletPerContract(contract, ActiveWallet);
-    }
-
-    public async UniTask<List<int>> GetNftsInWalletPerContract(NftContract contract, string walletAddress)
-    {
-        if (contract != NftContract.KnightsOfTheEther)
-        {
-            throw new NotImplementedException();
-        }
-
-        if (NftsInWallet.ContainsKey(contract))
-        {
-            return NftsInWallet[contract];
-        }
-
-        string contractAddress = GetNftContractAddress(contract);
         Debug.Log($"[WalletManager] Fetching Wallet Contents...");
-        WalletData nftData = await FetchData.Instance.GetNftsInWalletPerContract(walletAddress, contractAddress);
+        RawWalletData nftData = await FetchData.Instance.GetNftsInWallet(walletAddress);
         Debug.Log($"[WalletManager] Wallet Contents Received.");
-        NftsInWallet[contract] = new List<int>();
-        foreach (ContractData contractData in nftData.tokens)
+        foreach (ContractData contractData in nftData.Contracts)
         {
+            if (contractData.tokens == null || contractData.tokens.Count == 0) continue;
+            NftContract contract = contractData.ContractType;
+            NftManager.Instance.SetContractAddress(contract, contractData.contract_address);
+
+            NftsInWallet[contract] = new List<int>();
             foreach (TokenData token in contractData.tokens)
             {
                 NftsInWallet[contract].Add(int.Parse(token.token_id));
             }
         }
 
-        return NftsInWallet[contract];
+        return nftData;
     }
 
-    public async UniTask<int> GetNftCountPerContract(NftContract contract)
-    {
-        return await GetNftCountPerContract(contract, ActiveWallet);
-    }
 
     public async UniTask<int> GetNftCountPerContract(NftContract contract, string walletAddress)
     {
-        List<int> nfts = await GetNftsInWalletPerContract(contract, walletAddress);
-        if (nfts == null) return 0;
-        return nfts.Count;
+        await GetNftsInWallet(walletAddress);
+        return NftsInWallet[contract].Count;
     }
-
-    private static string GetNftContractAddress(NftContract contract)
-    {
-        return NftManager.GetNftContractAddress(contract);
-    }
-}
-
-public class WalletData
-{
-    public List<ContractData> tokens;
-}
-
-public class ContractData
-{
-    public string contract_address;
-    public int token_count;
-    public List<TokenData> tokens;
-}
-
-[Serializable]
-public class TokenData
-{
-    public string token_id;
-    public string name;
 }
