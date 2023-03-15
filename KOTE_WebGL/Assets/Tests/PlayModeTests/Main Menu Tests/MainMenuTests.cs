@@ -160,7 +160,11 @@ public class MainMenuTests
     public IEnumerator TestMainMenuSetup()
     {
         TextMeshProUGUI playButtonText = mainMenu.playButton.GetComponentInChildren<TextMeshProUGUI>();
-        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false, -1);
+        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(new ExpeditionStatusData
+        {
+            hasExpedition = false,
+            nftId = -1
+        });
         yield return null;
         Assert.AreEqual("PLAY", playButtonText.text);
         Assert.AreEqual(false, mainMenu.playButton.gameObject.activeSelf);

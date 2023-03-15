@@ -49,9 +49,9 @@ public class UserDataManager : SingleTon<UserDataManager>
 
    
 
-    private void OnExpeditionStatus(bool hasExpedtion, int nftId)
+    private void OnExpeditionStatus(ExpeditionStatusData data)
     {
-        ActiveNft = nftId.ToString();
+        ActiveNft = data.nftId.ToString();
     }
     
     private void OnPlayerProfileReceived(ProfileData profile)
