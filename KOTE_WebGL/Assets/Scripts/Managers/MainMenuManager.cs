@@ -60,7 +60,7 @@ public class MainMenuManager : MonoBehaviour
         
         // default the play button to not being interactable
         playButton.interactable = false;
-        
+        UserDataManager.Instance.SetSessionToken(null);
     }
 
     private void CheckIfArmoryButtonIsEnabled()
@@ -80,12 +80,23 @@ public class MainMenuManager : MonoBehaviour
     // this is designed to be called whenever a callback is triggered, due to not knowing when all the responses will come in
     private void VerifyResumeExpedition()
     {
-        
-        // if the player isn't whitelisted, doesn't have a wallet connected, or doesn't own a knight, never show the play button
-        if (!_hasWallet || !_isWalletVerified || !_isWhitelisted || !_ownsAnyNft)
+
+        if (!_hasWallet || !_isWhitelisted ) 
         {
-            // if no routes are available, lock the player out of the game
+            Debug.Log($"1 {_hasWallet} {_isWalletVerified} {_isWhitelisted} {_ownsAnyNft}");
             playButton.gameObject.SetActive(false);
+            newExpeditionButton.gameObject.SetActive(false);
+            playButton.interactable = false;
+            return;
+        }
+
+        
+        if (!_isWalletVerified || !_ownsAnyNft)
+        {
+            Debug.Log(2);
+            // if no routes are available, lock the player out of the game
+            playButton.gameObject.SetActive(true);
+            UpdatePlayButtonText("Verifying...");
             newExpeditionButton.gameObject.SetActive(false);
             playButton.interactable = false;
             return;
@@ -93,7 +104,8 @@ public class MainMenuManager : MonoBehaviour
         
         if (_expeditionStatusReceived && !_hasExpedition)
         {
-            UpdatePlayButtonText();
+            Debug.Log(3);
+            UpdatePlayButtonTextForExpedition();
             playButton.gameObject.SetActive(true);
             newExpeditionButton.gameObject.SetActive(false);
             playButton.interactable = true;
@@ -101,7 +113,7 @@ public class MainMenuManager : MonoBehaviour
 
         if (_hasExpedition && _ownsSavedNft)
         {
-            UpdatePlayButtonText();
+            UpdatePlayButtonTextForExpedition();
             playButton.gameObject.SetActive(true);
             newExpeditionButton.gameObject.SetActive(true);
             playButton.interactable = true;
@@ -120,10 +132,16 @@ public class MainMenuManager : MonoBehaviour
     }
 
 
-    private void UpdatePlayButtonText()
+    private void UpdatePlayButtonText(string value)
     {
+        
         TextMeshProUGUI textField = playButton.gameObject.GetComponentInChildren<TextMeshProUGUI>();
-        textField?.SetText(_hasExpedition ? "RESUME" : "PLAY");
+        textField?.SetText(value);
+    }
+
+    private void UpdatePlayButtonTextForExpedition() 
+    {
+        UpdatePlayButtonText(_hasExpedition ? "RESUME" : "PLAY");
     }
 
     public void OnLoginSuccessful(string name, int fief)

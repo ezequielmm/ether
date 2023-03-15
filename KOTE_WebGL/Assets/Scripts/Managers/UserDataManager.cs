@@ -80,7 +80,10 @@ public class UserDataManager : SingleTon<UserDataManager>
 
     public void SetSessionToken(string token) 
     {
-        PlayerPrefs.SetString("session_token", token);
+        if (string.IsNullOrEmpty(token))
+            PlayerPrefs.DeleteKey("session_token");
+        else
+            PlayerPrefs.SetString("session_token", token);
         PlayerPrefs.Save();
     }
 

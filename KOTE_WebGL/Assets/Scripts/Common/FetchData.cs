@@ -194,7 +194,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
     public async UniTask<string> GetTokenByRegistration(string name, string email, string hashedPassword)
     {
-        string requestUrl = webRequest.ConstructUrl(RestEndpoint.Login);
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.Register);
         WWWForm form = new WWWForm();
         form.AddField("name", name);
         form.AddField("email", email);
