@@ -40,22 +40,8 @@ public class RegisterPanelManager : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLoginSucessful);
-        GameManager.Instance.EVENT_REQUEST_LOGIN_ERROR.AddListener(OnLoginError);
+        GameManager.Instance.EVENT_AUTHENTICATED.AddListener(CloseRegistrationPanel);
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerRegisterPanel);
-    }
-
-    private void CheckIfRegisterButtonIsEnabled()
-    {
-        int enableRegistration = PlayerPrefs.GetInt("enable_registration");
-        if (enableRegistration == 1)
-        {
-            registerButton.interactable = true;
-        }
-        else
-        {
-            registerButton.interactable = false;
-        }
     }
 
     public void OnShowPassword()
@@ -75,14 +61,9 @@ public class RegisterPanelManager : MonoBehaviour
         confirmPasswordInputField.ForceLabelUpdate();
     }
 
-    private void OnLoginSucessful(string userName, int fief)
+    private void CloseRegistrationPanel()
     {
         ActivateInnerRegisterPanel(false);
-    }
-
-    private void OnLoginError(string errorMessage)
-    {
-        Debug.Log("Register Error:" + errorMessage);
     }
 
     private void Start()
@@ -174,7 +155,7 @@ public class RegisterPanelManager : MonoBehaviour
 
     #endregion
 
-    public void OnRegister()
+    public async void OnRegister()
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         if (!VerifyUsername()) return;
@@ -186,7 +167,11 @@ public class RegisterPanelManager : MonoBehaviour
         string name = nameInputField.text;
         string email = emailInputField.text;
         string password = passwordInputField.text;
-        GameManager.Instance.EVENT_REQUEST_REGISTER.Invoke(name, email, password);
+        bool Authenticated = await UserDataManager.Instance.Register(name, email, password);
+        if(Authenticated) 
+        {
+            CloseRegistrationPanel();
+        }
     }
 
     public void LoginHyperlink()
@@ -198,12 +183,17 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void ActivateInnerRegisterPanel(bool activate)
     {
+        ClearRegisterPanel();
+        registerContainer.SetActive(activate);
+    }
+
+    public void ClearRegisterPanel() 
+    {
         nameInputField.text = "";
         emailInputField.text = "";
         confirmEmailInputField.text = "";
         passwordInputField.text = "";
         confirmPasswordInputField.text = "";
-        registerContainer.SetActive(activate);
     }
 
     public void CheckIfCanActivateRegisterButton()

@@ -30,7 +30,7 @@ public static class Extensions
     public static void AddAuthToken(this UnityWebRequest request)
     {
         if(request == null) return;
-        string token = PlayerPrefs.GetString("session_token");
+        string token = UserDataManager.Instance.GetSessionToken() ?? string.Empty;
         request.SetRequestHeader("Authorization", $"Bearer {token}");
     }
 }

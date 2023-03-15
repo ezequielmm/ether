@@ -81,21 +81,12 @@ public class Tooltip
 
 
 [Serializable]
-public class ExpeditionStatusData
+public class ExpeditionStatus
 {
-    public Data data = new();
-
-    public bool GetHasExpedition()
-    {
-        return this.data.hasExpedition == "true";
-    }
-
-    [Serializable]
-    public class Data
-    {
-        public string hasExpedition;
-        public int nftId;
-    }
+    public bool HasExpedition => hasExpedition == "true";
+    private string hasExpedition;
+    [JsonProperty("nftId")]
+    public int NftId;
 }
 
 [Serializable]
@@ -111,58 +102,13 @@ public class RandomNameData
 }
 
 [Serializable]
-public class RegisterData
-{
-    public Data data = new();
-
-    [Serializable]
-    public class Data
-    {
-        public string token;
-        public string name;
-    }
-}
-
-
-
-[Serializable]
-public class LoginData
-{
-    public Data data = new();
-
-    [Serializable]
-    public class Data
-    {
-        public string token;
-    }
-}
-
-[Serializable]
 public class ProfileData
 {
-    public Data data = new();
-
-    [Serializable]
-    public class Data
-    {
-        public string id;
-        public string name;
-        public string email;
-        public List<string> wallets = new();
-        public int coins;
-        public int fief;
-        public int experience;
-        public int level;
-        public int act;
-        public ActMap act_map = new();
-
-        [Serializable]
-        public class ActMap
-        {
-            public string id;
-            public string currentNode;
-        }
-    }
+    public string name { get; set; }
+    public string email { get; set; }
+    [JsonProperty("wallets")]
+    public List<string> ownedWallets { get; set; } = new();
+    public int fief { get; set; }
 }
 
 [Serializable]
@@ -898,7 +844,7 @@ public class BugReportData
     public const string service = "Frontend";
     public string clientId;
     public string account;
-    public string knightId;
+    public int knightId;
     public string expeditionId;
     public string userDescription;
     public string userTitle;

@@ -428,10 +428,11 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         return promise;
     }
 
-    public void SendData(string eventName, object message) 
+    public UniTask SendData(string eventName, object message) 
     {
         string rawJson = JsonConvert.SerializeObject(message);
         Emit(eventName, rawJson);
+        return UniTask.CompletedTask;
     }
 
     private void Emit(string eventName, params object[] variables)

@@ -117,8 +117,17 @@ public class LoginPanelManagerTests : MonoBehaviour
     {
         loginPanel.emailInputField.text = "andrewtest@gmail.com";
         loginPanel.rememberMe.isOn = true;
-        GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.Invoke("", 0);
+        loginPanel.RememberAndCloseLoginPanel();
         Assert.AreEqual("andrewtest@gmail.com", PlayerPrefs.GetString("email_reme_login"));
+    }
+
+    [Test]
+    public void DoesSuccessfulLoginForgetCurrentEmail()
+    {
+        loginPanel.emailInputField.text = "andrewtest@gmail.com";
+        loginPanel.rememberMe.isOn = false;
+        loginPanel.RememberAndCloseLoginPanel();
+        Assert.AreNotEqual("andrewtest@gmail.com", PlayerPrefs.GetString("email_reme_login"));
     }
 
     [UnityTest]
@@ -128,7 +137,7 @@ public class LoginPanelManagerTests : MonoBehaviour
         loginPanel.emailInputField.text = "andrewtest@gmail.com";
         loginPanel.rememberMe.isOn = true;
         yield return new WaitForSeconds(0.1f);
-        GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.Invoke("", 0);
+        loginPanel.RememberAndCloseLoginPanel();
         DateTime savedDate = DateTime.ParseExact(PlayerPrefs.GetString("date_reme_login"), "MM/dd/yyyy HH:mm:ss",
             CultureInfo.InvariantCulture);
         DateTime now = DateTime.Today;
@@ -143,23 +152,23 @@ public class LoginPanelManagerTests : MonoBehaviour
     [Test]
     public void DoesLoginErrorActivateValidLoginPasswordError()
     {
-        GameManager.Instance.EVENT_REQUEST_LOGIN_ERROR.Invoke("");
+        loginPanel.UpdatePanelOnAuthenticated(false);
         Assert.True(loginPanel.validLoginEmail);
     }
 
     [Test]
-    public void DoesLoginErrorClearPasswordInputField()
+    public void DoesLoginErrorClearPasswordInputFieldOnFail()
     {
-        GameManager.Instance.EVENT_REQUEST_LOGIN_ERROR.Invoke("");
+        loginPanel.UpdatePanelOnAuthenticated(false);
         Assert.AreEqual("", loginPanel.passwordInputField.text);
     }
 
     [Test]
-    public void DoesLoginErrorClearSavedEmailAndDate()
+    public void DoesLoginErrorClearSavedEmailAndDateOnFail()
     {
         PlayerPrefs.SetString("email_reme_login", "andrewtest@gmail.com");
         PlayerPrefs.SetString("date_reme_login", DateTime.Today.ToString(CultureInfo.InvariantCulture));
-        GameManager.Instance.EVENT_REQUEST_LOGIN_ERROR.Invoke("");
+        loginPanel.UpdatePanelOnAuthenticated(false);
         Assert.AreEqual(string.Empty, PlayerPrefs.GetString("email_reme_login"));
         Assert.AreEqual(string.Empty, PlayerPrefs.GetString("date_reme_login"));
     }
@@ -167,7 +176,7 @@ public class LoginPanelManagerTests : MonoBehaviour
     [Test]
     public void DoesLoginErrorLogThatThereWasALoginError()
     {
-        GameManager.Instance.EVENT_REQUEST_LOGIN_ERROR.Invoke("");
+        loginPanel.UpdatePanelOnAuthenticated(false);
         LogAssert.Expect(LogType.Log, "-------------------Login Error------------------");
     }
 
@@ -221,17 +230,6 @@ public class LoginPanelManagerTests : MonoBehaviour
         loginPanel.validLoginPassword.gameObject.SetActive(true);
         loginPanel.OnLogin();
         Assert.False(loginPanel.validLoginPassword.gameObject.activeSelf);
-    }
-
-    [Test]
-    public void DoesOnLoginFireRequestLoginEvent()
-    {
-        bool eventFired = false;
-        GameManager.Instance.EVENT_REQUEST_LOGIN.AddListener(((arg0, s) => { eventFired = true;}));
-        loginPanel.emailInputField.text = "andrewtest@gmail.com";
-        loginPanel.VerifyEmail();
-        loginPanel.OnLogin();
-        Assert.True(eventFired);
     }
 
     [Test]

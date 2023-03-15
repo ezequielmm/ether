@@ -40,11 +40,9 @@ public class MainMenuTests
     public IEnumerator UsedUnityEventsExist()
     {
         yield return null;
-        Assert.IsNotNull(GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL);
         Assert.IsNotNull(GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL);
         Assert.IsNotNull(GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST);
         Assert.IsNotNull(GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST);
-        Assert.IsNotNull(GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE);
     }
 
     [UnityTest]
@@ -127,9 +125,9 @@ public class MainMenuTests
     }
 
     [UnityTest]
-    public IEnumerator TestOnLoginSuccessfulListener()
+    public IEnumerator TestNameAndFiefUpdateLiseners()
     {
-        GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.Invoke("test", 69420);
+        GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.Invoke("test", 69420);
         yield return null;
 
         Assert.AreEqual("test", mainMenu.nameText.text);
@@ -160,7 +158,7 @@ public class MainMenuTests
     public IEnumerator TestMainMenuSetup()
     {
         TextMeshProUGUI playButtonText = mainMenu.playButton.GetComponentInChildren<TextMeshProUGUI>();
-        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false, -1);
+        UserDataManager.Instance.ClearExpedition();
         yield return null;
         Assert.AreEqual("PLAY", playButtonText.text);
         Assert.AreEqual(false, mainMenu.playButton.gameObject.activeSelf);
@@ -248,12 +246,10 @@ public class MainMenuTests
     }
 
     [UnityTest]
-    public IEnumerator DoesOnNewExpeditionConfirmedFireEvent()
+    public IEnumerator DoesOnNewExpeditionClearExpedition()
     {
-        bool eventFired = false;
-        GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.AddListener(() => { eventFired = true; });
         mainMenu.OnNewExpeditionConfirmed();
         yield return null;
-        Assert.AreEqual(true, eventFired);
+        Assert.AreEqual(false, UserDataManager.Instance.HasExpedition);
     }
 }

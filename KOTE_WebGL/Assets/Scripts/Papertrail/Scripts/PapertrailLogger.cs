@@ -383,9 +383,9 @@ public class PapertrailLogData
 
     private string GetAccount()
     {
-        if (!string.IsNullOrEmpty(UserDataManager.Instance.UserAccount))
+        if (!string.IsNullOrEmpty(UserDataManager.Instance.UserEmail))
         {
-            return UserDataManager.Instance.UserAccount;
+            return UserDataManager.Instance.UserEmail;
         }
         return string.Empty;
     }

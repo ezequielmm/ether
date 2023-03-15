@@ -25,7 +25,7 @@ namespace KOTE.UI.Armory
         
         private void Awake()
         {
-            GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLogin);
+            GameManager.Instance.EVENT_AUTHENTICATED.AddListener(PopulatePlayerGearInventory);
         }
 
         private void Start()
@@ -64,11 +64,6 @@ namespace KOTE.UI.Armory
             curNode = nftList.First;
             GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
             UpdatePanelOnNftUpdate();
-        }
-
-        private void OnLogin(string data, int data2)
-        {
-            PopulatePlayerGearInventory();
         }
 
         private void PopulateGearSlots()

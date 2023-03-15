@@ -21,14 +21,8 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     private void Start()
     {
         GameManager.Instance.EVENT_NFT_SELECTED.AddListener(BuildPlayer);
-        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(UpdateNftForExpedition);
 
         knightSkeletonData = KinghtData.GetSkeletonData(true);
-    }
-
-    private void UpdateNftForExpedition(bool data, int nftInt) 
-    {
-        SetSkin(nftInt);
     }
 
     public async void SetSkin(int nftToken) 

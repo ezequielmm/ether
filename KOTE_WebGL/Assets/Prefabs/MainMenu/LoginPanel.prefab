@@ -1074,7 +1074,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6486409805944885769}
-        m_TargetAssemblyTypeName: LoginPanelManager, Assembly-CSharp
+        m_TargetAssemblyTypeName: LoginPanelManager, GameAssembly
         m_MethodName: OnLogin
         m_Mode: 1
         m_Arguments:

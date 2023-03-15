@@ -8,11 +8,24 @@ using Newtonsoft.Json.Linq;
 public class ServerCommunicationLogger : SingleTon<ServerCommunicationLogger>
 {
     private List<ServerCommunicationLog> communicationLog = new List<ServerCommunicationLog>();
+    private bool NoDataLogging = false;
 
     public void LogCommunication(string message, CommunicationDirection direction, string rawJson = "")
     {
+        if(NoDataLogging)
+            rawJson = string.Empty;
         var newLog = new ServerCommunicationLog(message, direction, rawJson);
         communicationLog.Add(newLog);
+    }
+
+    public void DisableDataLogging() 
+    {
+        NoDataLogging = true;
+    }
+
+    public void EnableDataLogging()
+    {
+        NoDataLogging = false;
     }
 
     public List<ServerCommunicationLog> GetCommunicationLog()

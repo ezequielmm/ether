@@ -22,21 +22,9 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
 
         PlayerPrefs.SetString("api_url", baseUrl);
 
-        SetSessionToken(string.Empty);
-
-        GameManager.Instance.EVENT_REQUEST_REGISTER.AddListener(OnRegisterEvent);
-        GameManager.Instance.EVENT_REQUEST_LOGIN.AddListener(RequestLogin);
-        GameManager.Instance.EVENT_REQUEST_PROFILE.AddListener(RequestProfile);
         GameManager.Instance.EVENT_REQUEST_LOGOUT.AddListener(RequestLogout);
-        GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.AddListener(RequestExpeditionCancel);
         GameManager.Instance.EVENT_REQUEST_EXPEDITON_SCORE.AddListener(RequestExpeditionScore);
         GameManager.Instance.EVENT_SEND_BUG_FEEDBACK.AddListener(SendBugReport);
-    }
-
-    private void SetSessionToken(string token) 
-    {
-        PlayerPrefs.SetString("session_token", token);
-        PlayerPrefs.Save();
     }
 
     public void RequestLogout(string token)
@@ -44,34 +32,9 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         StartCoroutine(GetLogout(token));
     }
 
-    public void RequestExpeditionStatus()
-    {
-        StartCoroutine(GetExpeditionStatus());
-    }
-
     public void RequestExpeditionScore()
     {
         StartCoroutine(GetExpeditionScore());
-    }
-
-    public void RequestExpeditionCancel()
-    {
-        StartCoroutine(CancelOngoingExpedition());
-    }
-
-    public void OnRegisterEvent(string name, string email, string password)
-    {
-        StartCoroutine(GetRegister(name, email, password));
-    }
-
-    public void RequestLogin(string email, string password)
-    {
-        StartCoroutine(GetLogin(email, password));
-    }
-
-    public void RequestProfile(string token)
-    {
-        StartCoroutine(GetProfile(token));
     }
 
     public void RequestCharacterList()
@@ -109,143 +72,6 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         }
     }
 
-
-
-    /// <summary>
-    /// GetRegister
-    /// </summary>
-    /// <param name="nameText"></param>
-    /// <param name="email"></param>
-    /// <param name="password"></param>
-    /// <returns></returns>
-    public IEnumerator GetRegister(string nameText, string email, string password)
-    {
-        string registerUrl = $"{baseUrl}{RestEndpoint.Register}";
-        WWWForm form = new WWWForm();
-        form.AddField("name", nameText);
-        form.AddField("email", email);
-        form.AddField("email_confirmation", email);
-        form.AddField("password", password);
-        form.AddField("password_confirmation", password);
-
-        ServerCommunicationLogger.Instance.LogCommunication(
-            $"Registration requested. username: {nameText} email: {email}", CommunicationDirection.Outgoing);
-
-        using (UnityWebRequest request = UnityWebRequest.Post(registerUrl, form))
-        {
-            yield return request.SendWebRequest();
-            if (request.result == UnityWebRequest.Result.ConnectionError ||
-                request.result == UnityWebRequest.Result.ProtocolError)
-            {
-                ServerCommunicationLogger.Instance.LogCommunication($"Register error: {request.error}",
-                    CommunicationDirection.Incoming);
-                Debug.Log($"{request.error}");
-                yield break;
-            }
-
-            ServerCommunicationLogger.Instance.LogCommunication(
-                $"Registration Success. {request.downloadHandler.text}", CommunicationDirection.Incoming);
-            RegisterData registerData = JsonConvert.DeserializeObject<RegisterData>(request.downloadHandler.text);
-            string token = registerData.data.token;
-
-            Debug.Log("Registration sucessful, token is " + token);
-
-            //TO DO: check for errors even on a sucessful answer
-
-            GameManager.Instance.EVENT_REQUEST_PROFILE
-                .Invoke(token); //we request the profile to confirm the server got our account created properly. This will invoke later EVENT_LOGIN_COMPLETED
-        }
-    }
-
-    /// <summary>
-    /// GetLogin
-    /// </summary>
-    /// <param name="email"></param>
-    /// <param name="password"></param>
-    /// <param name="rememberMe"></param>
-    /// <returns></returns>
-    IEnumerator GetLogin(string email, string password)
-    {
-        string loginUrl = $"{baseUrl}{RestEndpoint.Login}";
-
-        Debug.Log("Login url:" + loginUrl);
-        ServerCommunicationLogger.Instance.LogCommunication($"Login Requested. email: {email}",
-            CommunicationDirection.Outgoing);
-        WWWForm form = new WWWForm();
-        form.AddField("email", email);
-        form.AddField("password", password);
-
-        using (UnityWebRequest request = UnityWebRequest.Post(loginUrl, form))
-        {
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.ConnectionError ||
-                request.result == UnityWebRequest.Result.ProtocolError)
-            {
-                ServerCommunicationLogger.Instance.LogCommunication($"Login error: {request.error}",
-                    CommunicationDirection.Incoming);
-                Debug.Log($"{request.error}");
-                GameManager.Instance.EVENT_REQUEST_LOGIN_ERROR.Invoke(request.error);
-                yield break;
-            }
-
-            ServerCommunicationLogger.Instance.LogCommunication($"Login success: {request.downloadHandler.text}",
-                CommunicationDirection.Incoming);
-            LoginData loginData = JsonConvert.DeserializeObject<LoginData>(request.downloadHandler.text);
-            string token = loginData.data.token;
-
-            //TODO: check for errors even on successful result
-
-            GameManager.Instance.EVENT_REQUEST_PROFILE.Invoke(token);
-        }
-    }
-
-    IEnumerator GetProfile(string token)
-    {
-        // Debug.Log("Getting profile with token " + token);
-
-        string profileUrl = $"{baseUrl}{RestEndpoint.Profile}";
-        ServerCommunicationLogger.Instance.LogCommunication("Profile request. token: " + token,
-            CommunicationDirection.Outgoing);
-        //UnityWebRequest profileInfoRequest = UnityWebRequest.Get($"{profileUrl}?Authorization={Uri.EscapeDataString(token)}");
-        using (UnityWebRequest
-               request = UnityWebRequest
-                   .Get(profileUrl))
-        {
-            // TO DO: this should be asking for authorization on the header
-            request.SetRequestHeader("Authorization", $"Bearer {token}");
-
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.ConnectionError ||
-                request.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.Log("Error getting profile with token " + token);
-                ServerCommunicationLogger.Instance.LogCommunication(
-                    $"Profile error. token: {token}, error: {request.error}",
-                    CommunicationDirection.Incoming);
-                Debug.Log($"{request.error}");
-                yield break;
-            }
-
-            //TODO: check for errors even when the result is successful
-
-            ServerCommunicationLogger.Instance.LogCommunication(
-                $"Request profile successful: {request.downloadHandler.text}", CommunicationDirection.Incoming);
-            ProfileData profileData = JsonConvert.DeserializeObject<ProfileData>(request.downloadHandler.text);
-            string name = profileData.data.name;
-            int fief = profileData.data.fief;
-
-            SetSessionToken(token);
-
-            RequestExpeditionStatus();
-
-            GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL
-                .Invoke(profileData); //TODO: these 2 events here don't look good
-            GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.Invoke(name, fief);
-        }
-    }
-
     IEnumerator GetLogout(string token)
     {
         string loginUrl = $"{baseUrl}{RestEndpoint.Logout}";
@@ -276,48 +102,6 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             //TODO: check for errors even on sucessful result
 
             GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.Invoke(message);
-        }
-    }
-
-    IEnumerator GetExpeditionStatus()
-    {
-        string token = PlayerPrefs.GetString("session_token");
-
-        //Debug.Log("[RequestExpeditionStattus] with token " + token);
-
-        string fullUrl = $"{baseUrl}{RestEndpoint.ExpeditionStatus}";
-        WWWForm form = new WWWForm();
-        ServerCommunicationLogger.Instance.LogCommunication($"Expedition Status request. token: {token}",
-            CommunicationDirection.Outgoing);
-        using (UnityWebRequest request = UnityWebRequest.Get(fullUrl))
-        {
-            // using (UnityWebRequest request = UnityWebRequest.Post(loginUrl, form);
-            request.SetRequestHeader("Accept", "*/*");
-            request.SetRequestHeader("Authorization", $"Bearer {token}");
-
-            // Debug.Log(request.GetRequestHeader("Authorization"));
-
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.ConnectionError ||
-                request.result == UnityWebRequest.Result.ProtocolError)
-            {
-                ServerCommunicationLogger.Instance.LogCommunication($"Expedition status error: {request.error}",
-                    CommunicationDirection.Incoming);
-
-                Debug.Log("[Error getting expedition status] " + request.error);
-
-                yield break;
-            }
-
-            ExpeditionStatusData data = JsonConvert.DeserializeObject<ExpeditionStatusData>(request.downloadHandler.text);
-
-            GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(data.GetHasExpedition(), data.data.nftId);
-
-            Debug.Log("[WebRequestManager] Expedition status " + request.downloadHandler.text);
-            ServerCommunicationLogger.Instance.LogCommunication(
-                $"Expedition status success: {request.downloadHandler.text}",
-                CommunicationDirection.Incoming);
         }
     }
 
@@ -396,36 +180,6 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         }
     }
 
-    private IEnumerator CancelOngoingExpedition()
-    {
-        string fullURL = $"{baseUrl}{RestEndpoint.ExpeditionCancel}";
-        string token = PlayerPrefs.GetString("session_token");
-
-        ServerCommunicationLogger.Instance.LogCommunication($"Expedition cancel request. token: {token}",
-            CommunicationDirection.Outgoing);
-
-        using (UnityWebRequest request = UnityWebRequest.Post(fullURL, ""))
-        {
-            request.SetRequestHeader("Authorization", $"Bearer {token}");
-
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.ConnectionError ||
-                request.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.Log("[Error canceling expedition]");
-                ServerCommunicationLogger.Instance.LogCommunication("Expedition cancel error: " + request.error,
-                    CommunicationDirection.Outgoing);
-                yield break;
-            }
-
-            GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false, -1);
-            Debug.Log("answer from cancel expedition " + request.downloadHandler.text);
-            ServerCommunicationLogger.Instance.LogCommunication(
-                "cancel expedition success: " + request.downloadHandler.text, CommunicationDirection.Outgoing);
-        }
-    }
-
     private async void SendBugReport(string title, string description, string base64Image)
     {
         string fullUrl = $"{baseUrl}{RestEndpoint.BugReport}";
@@ -435,7 +189,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             reportId = Guid.NewGuid().ToString(),
             environment = ClientEnvironmentManager.Instance.Environment.ToString(),
             clientId = UserDataManager.Instance.ClientId,
-            account = UserDataManager.Instance.UserAccount,
+            account = UserDataManager.Instance.UserEmail,
             knightId = UserDataManager.Instance.ActiveNft,
             expeditionId = UserDataManager.Instance.ExpeditionId,
             userTitle = title,
