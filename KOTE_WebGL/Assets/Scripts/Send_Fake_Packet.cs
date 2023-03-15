@@ -36,6 +36,7 @@ public class Send_Fake_Packet : MonoBehaviour
             {
                 yield return wait;
             }
+            Debug.Log($"[SendFakePacket] INCOMING << {packet}");
             WebSocketParser.ParseJSON(packet);
         }
         yield return null;
