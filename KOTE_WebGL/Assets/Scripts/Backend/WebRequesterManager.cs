@@ -304,9 +304,9 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
                 yield break;
             }
 
-            ExpeditionStatusData data = JsonConvert.DeserializeObject<ExpeditionStatusData>(request.downloadHandler.text);
+            ExpeditionStatus data = JsonConvert.DeserializeObject<ExpeditionStatus>(request.downloadHandler.text);
 
-            GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(data.GetHasExpedition(), data.data.nftId);
+            GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(data.data);
 
             Debug.Log("[WebRequestManager] Expedition status " + request.downloadHandler.text);
             ServerCommunicationLogger.Instance.LogCommunication(
@@ -378,7 +378,11 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
                 yield break;
             }
 
-            GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(false, -1);
+            GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(new ExpeditionStatusData
+            {
+                hasExpedition = false,
+                nftId = -1
+            });
             Debug.Log("answer from cancel expedition " + request.downloadHandler.text);
             ServerCommunicationLogger.Instance.LogCommunication(
                 "cancel expedition success: " + request.downloadHandler.text, CommunicationDirection.Outgoing);

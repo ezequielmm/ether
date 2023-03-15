@@ -156,10 +156,10 @@ public class NodeData : MonoBehaviour, ITooltipSetter
 
     private void PopulateNodeInformation(NodeDataHelper nodeData)
     {
-        status = Utils.ParseEnum<NODE_STATUS>(nodeData.status);
+        status = nodeData.status.ParseToEnum<NODE_STATUS>();
         id = nodeData.id;
-        type = Utils.ParseEnum<NODE_TYPES>(nodeData.type);
-        subType = Utils.ParseEnum<NODE_SUBTYPES>(nodeData.subType);
+        type = nodeData.type.ParseToEnum<NODE_TYPES>();
+        subType = nodeData.subType.ParseToEnum<NODE_SUBTYPES>();
         exits = nodeData.exits;
         name = nodeData.type + "_" + nodeData.id;
         act = nodeData.act;

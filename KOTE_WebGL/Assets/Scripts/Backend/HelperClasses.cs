@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using KOTE.UI.Armory;
 using UnityEngine;
 
 /// <summary>
@@ -81,20 +82,37 @@ public class Tooltip
 
 
 [Serializable]
-public class ExpeditionStatusData
+public class ExpeditionStatus
 {
-    public Data data = new();
+    public ExpeditionStatusData data = new();
 
     public bool GetHasExpedition()
     {
-        return this.data.hasExpedition == "true";
+        return this.data.hasExpedition;
     }
+}
 
-    [Serializable]
-    public class Data
+[Serializable]
+public class ExpeditionStatusData
+{
+    public bool hasExpedition;
+    public int nftId;
+    public List<GearItemData> equippedGear;
+    public string tokenType;
+
+    public NftContract GetContractType()
     {
-        public string hasExpedition;
-        public int nftId;
+        switch (tokenType)
+        {
+            case "knight":
+                return NftContract.Knights;
+            case "villager":
+                return NftContract.Villager;
+            case "blessed_villager":
+                return NftContract.BlessedVillager;
+        }
+
+        return NftContract.None;
     }
 }
 
@@ -122,7 +140,6 @@ public class RegisterData
         public string name;
     }
 }
-
 
 
 [Serializable]
@@ -200,8 +217,7 @@ public class PlayerData
     /// <summary>
     /// Index of Player
     /// </summary>
-    [Obsolete("Int IDs are phased out.")]
-    public int playerId;
+    [Obsolete("Int IDs are phased out.")] public int playerId;
 
     public string id;
     public int hpCurrent;
@@ -235,7 +251,7 @@ public class Card
 }
 
 [Serializable]
-public class Trinket 
+public class Trinket
 {
     public string id;
     public int trinketId;
@@ -293,11 +309,15 @@ public class Effect
 [Serializable]
 public class Deck
 {
-    public Deck() { }
-    public Deck(List<Card> cards) 
+    public Deck()
+    {
+    }
+
+    public Deck(List<Card> cards)
     {
         this.cards = cards;
     }
+
     public List<Card> cards = new();
 }
 
@@ -423,6 +443,7 @@ public class SWSM_TreasureData
         public string data;
     }
 }
+
 [Serializable]
 public class SWSM_ChestResult
 {
@@ -488,10 +509,8 @@ public class DeckData
 [Serializable]
 public class CardUpgrade
 {
-    [JsonProperty("cardIdToDelete")]
-    public string CardIdToDelete;
-    [JsonProperty("newCard")]
-    public Card NewCard;
+    [JsonProperty("cardIdToDelete")] public string CardIdToDelete;
+    [JsonProperty("newCard")] public Card NewCard;
 }
 
 [Serializable]
@@ -608,6 +627,7 @@ public class SWSM_CardUpdateData
     public class CardUpdateData
     {
         public UpdateCardData data = new();
+
         [Serializable]
         public class UpdateCardData
         {
@@ -695,8 +715,8 @@ public class EnemyData
     /// <summary>
     /// Index of enemy
     /// </summary>
-    [Obsolete("Int IDs are phased out.")]
-    public int enemyId;
+    [Obsolete("Int IDs are phased out.")] public int enemyId;
+
     public int defense;
     public int hpCurrent; //current
     public int hpMax;
@@ -884,4 +904,12 @@ public class BugReportData
     public string frontendVersion;
     public string backendVersion = "???";
     public List<ServerCommunicationLogger.ServerCommunicationLog> messageLog = new();
+}
+
+[Serializable]
+public class ExpeditionStartData
+{
+    public string tokenType;
+    public int nftId;
+    public List<GearItemData> equippedGear;
 }

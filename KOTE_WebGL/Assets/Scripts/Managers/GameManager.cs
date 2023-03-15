@@ -110,7 +110,7 @@ public class GameManager : SingleTon<GameManager>
 
     //EXPEDITION EVENTS
     [HideInInspector] public UnityEvent EVENT_EXPEDITION_SYNC = new UnityEvent();
-    [HideInInspector] public UnityEvent<bool, int> EVENT_EXPEDITION_STATUS_UPDATE { get; } = new();
+    [HideInInspector] public UnityEvent<ExpeditionStatusData> EVENT_EXPEDITION_STATUS_UPDATE { get; } = new();
     [HideInInspector] public UnityEvent EVENT_REQUEST_EXPEDITION_CANCEL = new UnityEvent();
     
     //MAP EVENTS
@@ -154,6 +154,8 @@ public class GameManager : SingleTon<GameManager>
     
     // NFT SKIN EVENTS
     [HideInInspector] public UnityEvent<Nft> EVENT_NFT_SELECTED { get; } = new UnityEvent<Nft>();
+    [HideInInspector] public UnityEvent<Trait, string> EVENT_UPDATE_NFT { get; } = new UnityEvent<Trait, string>();
+
     [HideInInspector] public UnityEvent EVENT_UPDATE_PLAYER_SKIN { get; } = new UnityEvent();
     
     //TOP BAR EVENTS

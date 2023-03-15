@@ -14,7 +14,7 @@ public class ContestNotifications : MonoBehaviour
     string WarningText = $"The contest will be ending in {{time}}.";
 
     [SerializeField]
-    string EndOfContestText = $"The contest has ended! You can either keep playing and get no rewards or return to the main menu.";
+    string EndOfContestText = $"The contest has ended! To continue playing, you'll have to return to the main menu and start a new expedition.";
     ContestManager contest;
 
     private void Awake()
@@ -63,9 +63,10 @@ public class ContestNotifications : MonoBehaviour
     public void GiveContestEnded()
     {
         GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(EndOfContestText, () => {
+            GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.Invoke();
             GameManager.Instance.LoadScene(inGameScenes.MainMenu);
         }, () => { },
-            new string[] { "Back to Main Menu", "Continue Anyways" });
+            new string[] { "Back to Main Menu", null });
     }
 
     private string FormatTimeInMessage(int seconds, string text) 

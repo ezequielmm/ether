@@ -46,5 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TimesToDisplayWarningInSconds: 100e00000807000058020000
   WarningText: The contest will be ending in {time}.
-  EndOfContestText: The contest has ended! You can either keep playing and get no
-    rewards or return to the main menu.
+  EndOfContestText: The contest has ended! To continue playing, you'll have to return
+    to the main menu and start a new expedition.

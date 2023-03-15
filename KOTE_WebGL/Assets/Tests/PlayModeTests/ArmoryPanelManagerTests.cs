@@ -10,121 +10,97 @@ namespace KOTE.UI.Armory
 {
     public class ArmoryPanelManagerTests : MonoBehaviour
     {
-        private List<Nft> testNftList = new()
-        {
-            new Nft()
-            {
-                ImageUrl = "test.com",
-                TokenId = 0,
-                Traits = new Dictionary<Trait, string>()
-                {
-                    { Trait.Helmet, "helmet" }
-                },
-                Contract = NftContract.KnightsOfTheEther
-            },
-            new Nft()
-            {
-                ImageUrl = "nope",
-                TokenId = 9999,
-                Traits = new Dictionary<Trait, string>()
-                {
-                    { Trait.Boots, "boots" }
-                },
-                Contract = NftContract.KnightsOfTheEther
-            }
-        };
+        private List<Nft> testNftList;
 
         private GearData testData = new GearData
         {
-            data = new GearData.Data
+            ownedGear = new List<GearItemData>
             {
-                ownedGear = new List < GearItemData >
-                {
                 new GearItemData
                 {
-                category = "Helmet",
-                gearId = 1,
-                gearImage = null,
-                name = "Test",
-                trait = "Helmet"
-            },
-            new GearItemData
-            {
-                category = "Pauldrons",
-                gearId = 1,
-                gearImage = null,
-                name = "Test",
-                trait = "Pauldrons"
-            },
-            new GearItemData
-            {
-                category = "Breastplate",
-                gearId = 1,
-                gearImage = null,
-                name = "Test",
-                trait = "Breastplate"
-            },
-            new GearItemData
-            {
-                category = "Legguards",
-                gearId = 1,
-                gearImage = null,
-                name = "Test",
-                trait = "Legguards"
-            },
-            new GearItemData
-            {
-                category = "Boots",
-                gearId = 1,
-                gearImage = null,
-                name = "Test",
-                trait = "Boots"
-            },
-            new GearItemData
-            {
-                category = "Weapon",
-                gearId = 1,
-                gearImage = null,
-                name = "Test",
-                trait = "Weapon"
-            },
-            new GearItemData
-            {
-                category = "Shield",
-                gearId = 1,
-                gearImage = null,
-                name = "Test",
-                trait = "Shield"
-            },
-            new GearItemData
-            {
-                category = "Padding",
-                gearId = 1,
-                gearImage = null,
-                name = "Test",
-                trait = "Padding"
-            },
-            new GearItemData
-            {
-                category = "Vambraces",
-                gearId = 1,
-                gearImage = null,
-                name = "Test",
-                trait = "Vambraces"
-            },
-            new GearItemData
-            {
-                category = "Gauntlet",
-                gearId = 1,
-                gearImage = null,
-                name = "Test",
-                trait = "Gauntlet"
-            },
-        }
-    }
-};
+                    category = "Helmet",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Helmet"
+                },
+                new GearItemData
+                {
+                    category = "Pauldrons",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Pauldrons"
+                },
+                new GearItemData
+                {
+                    category = "Breastplate",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Breastplate"
+                },
+                new GearItemData
+                {
+                    category = "Legguards",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Legguard"
+                },
+                new GearItemData
+                {
+                    category = "Boots",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Boots"
+                },
+                new GearItemData
+                {
+                    category = "Weapon",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Weapon"
+                },
+                new GearItemData
+                {
+                    category = "Shield",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Shield"
+                },
+                new GearItemData
+                {
+                    category = "Padding",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Padding"
+                },
+                new GearItemData
+                {
+                    category = "Vambraces",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Vambrace"
+                },
+                new GearItemData
+                {
+                    category = "Gauntlet",
+                    gearId = 1,
+                    gearImage = null,
+                    name = "Test",
+                    trait = "Gauntlet"
+                },
+            }
+        };
 
         private GameObject armoryPanel;
+        private GameObject nftSpriteManager;
         private ArmoryPanelManager _armoryPanelManager;
         private Sprite testSprite;
 
@@ -134,7 +110,7 @@ namespace KOTE.UI.Armory
         {
             GameObject spriteManagerPrefab =
                 AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/NftSpriteManager.prefab");
-            GameObject nftSpriteManager = Instantiate(spriteManagerPrefab);
+            nftSpriteManager = Instantiate(spriteManagerPrefab);
             nftSpriteManager.SetActive(true);
 
             GameObject armoryPrefab =
@@ -143,13 +119,39 @@ namespace KOTE.UI.Armory
             _armoryPanelManager = armoryPanel.GetComponent<ArmoryPanelManager>();
             testSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Sprites/Main_Menu/CharSelection/knight.png");
 
+            testNftList = new()
+            {
+                new Nft()
+                {
+                    ImageUrl = "test.com",
+                    TokenId = 0,
+                    Traits = new Dictionary<Trait, string>()
+                    {
+                        { Trait.Helmet, "helmet" }
+                    },
+                    Contract = NftContract.Knights
+                },
+                new Nft()
+                {
+                    ImageUrl = "nope",
+                    TokenId = 9999,
+                    Traits = new Dictionary<Trait, string>()
+                    {
+                        { Trait.Boots, "boots" }
+                    },
+                    Contract = NftContract.Knights
+                }
+            };
+
             foreach (Nft nft in testNftList)
             {
                 nft.Image = testSprite;
             }
 
+            _armoryPanelManager.defaultCharacterSprite = testSprite;
             NftManager.Instance.Nfts = new Dictionary<NftContract, List<Nft>>();
-            NftManager.Instance.Nfts[NftContract.KnightsOfTheEther] = testNftList;
+            NftManager.Instance.Nfts[NftContract.Knights] = testNftList;
+            NftManager.Instance.NftsLoaded.Invoke();
 
             yield return null;
         }
@@ -157,9 +159,11 @@ namespace KOTE.UI.Armory
         [UnityTearDown]
         public IEnumerator TearDown()
         {
-            GameManager.Instance.DestroyInstance();
+            Destroy(nftSpriteManager);
             Destroy(armoryPanel);
             _armoryPanelManager = null;
+            GameManager.Instance.DestroyInstance();
+            GearIconManager.Instance.DestroyInstance();
             yield return null;
         }
 
@@ -237,6 +241,7 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoesShowingPanelPopulateCharacterImage()
         {
+            // TEMPORARILY BROKEN UNTIL NFT IMAGE PULLING IS FIXED
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             Assert.IsNotNull(_armoryPanelManager.nftImage.sprite);
             Assert.AreEqual(testSprite, _armoryPanelManager.nftImage.sprite);
@@ -255,6 +260,7 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoesCallingOnNextTokenSwitchToNextToken()
         {
+            // TEMPORARILY BROKEN UNTIL NFT IMAGE PULLING IS FIXED
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             _armoryPanelManager.nftImage.sprite = null;
             Assert.IsNull(_armoryPanelManager.nftImage.sprite);
@@ -265,6 +271,7 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoesCallingOnPreviousTokenSwitchToPreviousToken()
         {
+            // TEMPORARILY BROKEN UNTIL NFT IMAGE PULLING IS FIXED
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             _armoryPanelManager.OnNextToken();
             _armoryPanelManager.nftImage.sprite = null;
@@ -428,10 +435,26 @@ namespace KOTE.UI.Armory
         }
 
         [Test]
-        public void DoesCallingGearSelectedChangeSlotImage()
+        public void DoesCallingGearSelectedNotChangeSlotImageIfKnight()
         {
-            ArmoryPanelManager.OnGearSelected.Invoke(testData.data.ownedGear[0]);
-            Assert.IsNull(_armoryPanelManager.gearSlots[(int)GearCategories.Helmet].sprite);
+            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
+            _armoryPanelManager.gearSlots[(int)GearCategories.Helmet].icon.sprite = null;
+
+            ArmoryPanelManager.OnGearSelected.Invoke(testData.ownedGear[0]);
+            Assert.IsNull(_armoryPanelManager.gearSlots[(int)GearCategories.Helmet].icon.sprite);
+        }
+
+        [Test]
+        public void DoesCallingGearSelectedChangeSlotImageIfNotKnight()
+        {
+            testNftList[0].Contract = NftContract.Villager;
+            NftManager.Instance.Nfts.Clear();
+            NftManager.Instance.Nfts[NftContract.Villager] = testNftList;
+            NftManager.Instance.NftsLoaded.Invoke();
+
+            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
+            ArmoryPanelManager.OnGearSelected.Invoke(testData.ownedGear[0]);
+            Assert.IsNull(_armoryPanelManager.gearSlots[(int)GearCategories.Helmet].icon.sprite);
         }
 
         [Test]
@@ -443,5 +466,57 @@ namespace KOTE.UI.Armory
                 Assert.False(panel.activeSelf);
             }
         }
+
+        [Test]
+        public void DoesLoadingAVillagerUpdateGearSlots()
+        {
+            testNftList[0].Contract = NftContract.Villager;
+            NftManager.Instance.Nfts.Clear();
+            NftManager.Instance.Nfts[NftContract.Villager] = testNftList;
+            NftManager.Instance.NftsLoaded.Invoke();
+
+            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
+            foreach (GearSlot slot in _armoryPanelManager.gearSlots)
+            {
+                Assert.IsNull(slot.GetEquippedGear());
+            }
+        }
+
+        [Test]
+        public void DoesSendingEmptyNftListSetImageToDefault()
+        {
+            NftManager.Instance.Nfts.Clear();
+            _armoryPanelManager.nftImage.sprite = null;
+            NftManager.Instance.NftsLoaded.Invoke();
+            Assert.NotNull(_armoryPanelManager.nftImage.sprite);
+            Assert.AreEqual(_armoryPanelManager.defaultCharacterSprite, _armoryPanelManager.nftImage.sprite);
+        }
+
+        [Test]
+        public void DoesSendingEmptyNftListDeactivatePlayButton()
+        {
+            NftManager.Instance.Nfts.Clear();
+            NftManager.Instance.NftsLoaded.Invoke();
+            Assert.False(_armoryPanelManager.playButton.interactable);
+        }
+
+        [Test]
+        public void DoesPopulatingGearCreateHeadersWithNoItems()
+        {
+            FetchData.Instance.TestData[FetchType.GearInventory] = JsonConvert.SerializeObject(new TestGearData{data = testData});
+            GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.Invoke("", -1);
+            ArmoryHeaderManager[] headers =
+                _armoryPanelManager.gearListTransform.GetComponentsInChildren<ArmoryHeaderManager>();
+            Assert.AreEqual(10, headers.Length);
+            foreach (ArmoryHeaderManager header in headers)
+            {
+                Assert.AreEqual(0, header.gameObject.GetComponentsInChildren<SelectableGearItem>().Length);
+            }
+        }
+    }
+
+    public class TestGearData
+    {
+        public GearData data;
     }
 }
