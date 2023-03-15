@@ -43,6 +43,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
+        UserDataManager.Instance.SetSessionToken(null);
         GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.AddListener(UpdateNameAndFief);
         GameManager.Instance.EVENT_AUTHENTICATED.AddListener(SetupPostAuthenticationButtons);
         GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
@@ -60,7 +61,6 @@ public class MainMenuManager : MonoBehaviour
         
         // default the play button to not being interactable
         playButton.interactable = false;
-        UserDataManager.Instance.SetSessionToken(null);
     }
 
     private void CheckIfArmoryButtonIsEnabled()
@@ -83,7 +83,6 @@ public class MainMenuManager : MonoBehaviour
 
         if (!_hasWallet || !_isWhitelisted ) 
         {
-            Debug.Log($"1 {_hasWallet} {_isWalletVerified} {_isWhitelisted} {_ownsAnyNft}");
             playButton.gameObject.SetActive(false);
             newExpeditionButton.gameObject.SetActive(false);
             playButton.interactable = false;
@@ -93,7 +92,6 @@ public class MainMenuManager : MonoBehaviour
         
         if (!_isWalletVerified || !_ownsAnyNft)
         {
-            Debug.Log(2);
             // if no routes are available, lock the player out of the game
             playButton.gameObject.SetActive(true);
             UpdatePlayButtonText("Verifying...");
@@ -104,7 +102,6 @@ public class MainMenuManager : MonoBehaviour
         
         if (_expeditionStatusReceived && !_hasExpedition)
         {
-            Debug.Log(3);
             UpdatePlayButtonTextForExpedition();
             playButton.gameObject.SetActive(true);
             newExpeditionButton.gameObject.SetActive(false);
