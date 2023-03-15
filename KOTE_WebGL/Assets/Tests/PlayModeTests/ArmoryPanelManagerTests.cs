@@ -129,7 +129,7 @@ namespace KOTE.UI.Armory
                     {
                         { Trait.Helmet, "helmet" }
                     },
-                    Contract = NftContract.knight
+                    Contract = NftContract.Knights
                 },
                 new Nft()
                 {
@@ -139,7 +139,7 @@ namespace KOTE.UI.Armory
                     {
                         { Trait.Boots, "boots" }
                     },
-                    Contract = NftContract.knight
+                    Contract = NftContract.Knights
                 }
             };
 
@@ -150,7 +150,7 @@ namespace KOTE.UI.Armory
 
             _armoryPanelManager.defaultCharacterSprite = testSprite;
             NftManager.Instance.Nfts = new Dictionary<NftContract, List<Nft>>();
-            NftManager.Instance.Nfts[NftContract.knight] = testNftList;
+            NftManager.Instance.Nfts[NftContract.Knights] = testNftList;
             NftManager.Instance.NftsLoaded.Invoke();
 
             yield return null;
@@ -444,9 +444,9 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoesCallingGearSelectedChangeSlotImageIfNotKnight()
         {
-            testNftList[0].Contract = NftContract.villager;
+            testNftList[0].Contract = NftContract.Villager;
             NftManager.Instance.Nfts.Clear();
-            NftManager.Instance.Nfts[NftContract.villager] = testNftList;
+            NftManager.Instance.Nfts[NftContract.Villager] = testNftList;
             NftManager.Instance.NftsLoaded.Invoke();
 
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
@@ -467,9 +467,9 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoesLoadingAVillagerUpdateGearSlots()
         {
-            testNftList[0].Contract = NftContract.villager;
+            testNftList[0].Contract = NftContract.Villager;
             NftManager.Instance.Nfts.Clear();
-            NftManager.Instance.Nfts[NftContract.villager] = testNftList;
+            NftManager.Instance.Nfts[NftContract.Villager] = testNftList;
             NftManager.Instance.NftsLoaded.Invoke();
 
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);

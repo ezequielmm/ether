@@ -133,12 +133,12 @@ namespace KOTE.UI.Armory
 
         private void PopulateEquippedGear()
         {
-            if (curNode.Value.MetaData.Contract == NftContract.villager &&
+            if (curNode.Value.MetaData.Contract == NftContract.Villager &&
                 villagerEquippedGear.ContainsKey(curNode.Value.Id))
             {
                 EquipGearInSlots(villagerEquippedGear[curNode.Value.Id]);
             }
-            else if (curNode.Value.MetaData.Contract == NftContract.blessed_villager &&
+            else if (curNode.Value.MetaData.Contract == NftContract.BlessedVillager &&
                      blessedVillagerEquippedGear.ContainsKey(curNode.Value.Id))
             {
                 EquipGearInSlots(blessedVillagerEquippedGear[curNode.Value.Id]);
@@ -215,7 +215,10 @@ namespace KOTE.UI.Armory
             if (success)
             {
                 OnExpeditionConfirmed();
+                return;
             }
+
+            playButton.interactable = curNode.Value.MetaData.CanPlay;
         }
 
         private void OnExpeditionConfirmed()
@@ -228,7 +231,7 @@ namespace KOTE.UI.Armory
 
         private void OnGearItemSelected(GearItemData activeItem)
         {
-            if (curNode.Value.MetaData.Contract == NftContract.knight) return;
+            if (curNode.Value.MetaData.Contract == NftContract.Knights) return;
             GearCategories category = Utils.ParseEnum<GearCategories>(activeItem.category);
             gearSlots[(int)category].SetGearInSlot(activeItem);
             equippedGear[Utils.ParseEnum<GearCategories>(activeItem.category)] = activeItem;

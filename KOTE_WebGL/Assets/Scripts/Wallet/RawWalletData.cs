@@ -12,7 +12,11 @@ public class ContractData
     public string contract_address;
     public int token_count;
     public List<TokenData> tokens;
-    [JsonIgnore] public NftContract ContractType => Utils.ParseEnum<NftContract>(tokens[0]?.name);
+
+    [JsonIgnore]
+    public NftContract ContractType => (tokens[0].name == "Blessed Villager")
+        ? NftContract.BlessedVillager
+        : Utils.ParseEnum<NftContract>(tokens[0]?.name);
 }
 
 [Serializable]

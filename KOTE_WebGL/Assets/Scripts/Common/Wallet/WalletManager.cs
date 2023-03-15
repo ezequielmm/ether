@@ -62,8 +62,8 @@ public class WalletManager : ISingleton<WalletManager>
             return;
         }
 
-        if (NftsInWallet[NftContract.knight].Count <= 0 && NftsInWallet[NftContract.villager].Count <= 0 &&
-            NftsInWallet[NftContract.blessed_villager].Count <= 0)
+        if (NftsInWallet[NftContract.Knights].Count <= 0 && NftsInWallet[NftContract.Villager].Count <= 0 &&
+            NftsInWallet[NftContract.BlessedVillager].Count <= 0)
         {
             // No Knights
             GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(

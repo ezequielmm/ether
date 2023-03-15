@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using KOTE.UI.Armory;
 using Spine;
 using Spine.Unity;
 using UnityEngine;
@@ -30,10 +31,10 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 
     private void UpdateNftForExpedition(ExpeditionStatusData data)
     {
-        SetSkin(data.nftId);
+        SetSkin(data.nftId, data.GetContractType(), data.equippedGear);
     }
 
-    public async void SetSkin(int nftToken)
+    public void SetSkin(int nftToken, NftContract contract, List<GearItemData> equippedGear = null)
     {
         if (nftToken < 0)
         {
@@ -43,16 +44,16 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         bool nftLoaded = false;
         if (NftManager.Instance.Nfts.Keys.Count == 0)
         {
-            nftLoadedListener = () => { WaitForNftLoad(nftToken); };
+            nftLoadedListener = () => { WaitForNftLoad(nftToken, contract, equippedGear); };
             NftManager.Instance.NftsLoaded.AddListener(nftLoadedListener);
             return;
         }
 
         Nft curNft = null;
 
-        if (NftManager.Instance.GetAllNfts().Exists(x => x.TokenId == nftToken))
+        if (NftManager.Instance.GetContractNfts(contract).Exists(x => x.TokenId == nftToken))
         {
-            curNft = NftManager.Instance.GetAllNfts().Find(x => x.TokenId == nftToken);
+            curNft = NftManager.Instance.GetContractNfts(contract).Find(x => x.TokenId == nftToken);
         }
 
         if (curNft == null)
@@ -61,15 +62,29 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
             return;
         }
 
+        if (equippedGear != null)
+        {
+            EquipGearToStartingNft(curNft, equippedGear);
+        }
+
         BuildPlayer(curNft);
     }
 
+    private void EquipGearToStartingNft(Nft metadata, List<GearItemData> equippedGear)
+    {
+        PlayerNft curNft = GetNftBasedOnMetadata(metadata);
+        foreach (GearItemData itemData in equippedGear)
+        {
+            curNft.ChangeGear(Utils.ParseEnum<Trait>(itemData.trait), itemData.name);
+        }
+    }
 
-    private void WaitForNftLoad(int nftToken)
+
+    private void WaitForNftLoad(int nftToken, NftContract contract, List<GearItemData> equippedGear)
     {
         NftManager.Instance.NftsLoaded.RemoveListener(nftLoadedListener);
         nftLoadedListener = null;
-        SetSkin(nftToken);
+        SetSkin(nftToken, contract, equippedGear);
     }
 
 
@@ -101,6 +116,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         if (foundNft == null)
         {
             foundNft = CreateNftInstance(selectedNft);
+            characterList.Add(foundNft);
         }
 
         return foundNft;
@@ -110,10 +126,10 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     {
         switch (metadata.Contract)
         {
-            case NftContract.knight:
+            case NftContract.Knights:
                 return new Knight(metadata);
-            case NftContract.villager:
-            case NftContract.blessed_villager:
+            case NftContract.Villager:
+            case NftContract.BlessedVillager:
                 return new Villager(metadata);
             default:
                 return null;

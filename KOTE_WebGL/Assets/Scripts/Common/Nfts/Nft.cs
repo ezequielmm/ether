@@ -25,7 +25,7 @@ public class Nft
     [JsonIgnore]
     public Sprite Image = null;
     
-    public bool isKnight => Contract == NftContract.knight;
+    public bool isKnight => Contract == NftContract.Knights;
 
     private async UniTask<Sprite> GetImage() 
     {
