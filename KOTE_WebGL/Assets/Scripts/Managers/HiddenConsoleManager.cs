@@ -124,7 +124,7 @@ public class HiddenConsoleManager : MonoBehaviour
                     break;
                 }
                 int nftNum = int.Parse(args[0]);
-                NftContract contract = Utils.ParseEnum<NftContract>(args[1]);
+                NftContract contract = args[1].ParseToEnum<NftContract>();;
                 if (contract == NftContract.None)
                 {
                     PublicLog("Invalid Contract entered");

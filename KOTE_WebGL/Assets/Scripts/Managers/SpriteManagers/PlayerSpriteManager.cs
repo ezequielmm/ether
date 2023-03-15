@@ -75,7 +75,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         PlayerNft curNft = GetNftBasedOnMetadata(metadata);
         foreach (GearItemData itemData in equippedGear)
         {
-            curNft.ChangeGear(Utils.ParseEnum<Trait>(itemData.trait), itemData.name);
+            curNft.ChangeGear(itemData.trait.ParseToEnum<Trait>(), itemData.name);
         }
     }
 

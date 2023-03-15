@@ -241,6 +241,7 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoesShowingPanelPopulateCharacterImage()
         {
+            // TEMPORARILY BROKEN UNTIL NFT IMAGE PULLING IS FIXED
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             Assert.IsNotNull(_armoryPanelManager.nftImage.sprite);
             Assert.AreEqual(testSprite, _armoryPanelManager.nftImage.sprite);
@@ -259,6 +260,7 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoesCallingOnNextTokenSwitchToNextToken()
         {
+            // TEMPORARILY BROKEN UNTIL NFT IMAGE PULLING IS FIXED
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             _armoryPanelManager.nftImage.sprite = null;
             Assert.IsNull(_armoryPanelManager.nftImage.sprite);
@@ -269,6 +271,7 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoesCallingOnPreviousTokenSwitchToPreviousToken()
         {
+            // TEMPORARILY BROKEN UNTIL NFT IMAGE PULLING IS FIXED
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             _armoryPanelManager.OnNextToken();
             _armoryPanelManager.nftImage.sprite = null;

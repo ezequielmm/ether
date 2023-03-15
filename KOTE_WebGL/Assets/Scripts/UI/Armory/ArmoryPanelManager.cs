@@ -107,7 +107,7 @@ namespace KOTE.UI.Armory
             foreach (GearItemData itemData in ownedGear)
             {
                 itemData.gearImage =
-                    GearIconManager.Instance.GetGearSprite(Utils.ParseEnum<Trait>(itemData.trait), itemData.name);
+                    GearIconManager.Instance.GetGearSprite(itemData.trait.ParseToEnum<Trait>(), itemData.name);
                 if (categoryLists.ContainsKey(itemData.category))
                 {
                     categoryLists[itemData.category].Add(itemData);
@@ -153,7 +153,7 @@ namespace KOTE.UI.Armory
         {
             foreach (GearSlot slot in gearSlots)
             {
-                GearItemData curGear = gear.Find(x => Utils.ParseEnum<Trait>(x.trait) == slot.gearTrait);
+                GearItemData curGear = gear.Find(x => x.trait.ParseToEnum<Trait>() == slot.gearTrait);
                 if (curGear != null)
                 {
                     slot.SetGearInSlot(curGear);
@@ -232,9 +232,9 @@ namespace KOTE.UI.Armory
         private void OnGearItemSelected(GearItemData activeItem)
         {
             if (curNode.Value.MetaData.Contract == NftContract.Knights) return;
-            GearCategories category = Utils.ParseEnum<GearCategories>(activeItem.category);
+            GearCategories category = activeItem.category.ParseToEnum<GearCategories>();
             gearSlots[(int)category].SetGearInSlot(activeItem);
-            equippedGear[Utils.ParseEnum<GearCategories>(activeItem.category)] = activeItem;
+            equippedGear[activeItem.category.ParseToEnum<GearCategories>()] = activeItem;
             GameManager.Instance.EVENT_UPDATE_NFT.Invoke(Enum.Parse<Trait>(activeItem.trait), activeItem.name);
         }
 

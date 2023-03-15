@@ -42,7 +42,7 @@ namespace KOTE.UI.Armory
         {
             foreach (GearItemData item in gearList.ownedGear)
             {
-                Trait itemTrait = Utils.ParseEnum<Trait>(item.trait);
+                Trait itemTrait = item.trait.ParseToEnum<Trait>();
                 if(IsIconCached(itemTrait, item.name)) continue;
                 Sprite curSprite = await GetIcon($"{item.trait}/{item.name}");
                 CacheIcon(itemTrait, item.name, curSprite);

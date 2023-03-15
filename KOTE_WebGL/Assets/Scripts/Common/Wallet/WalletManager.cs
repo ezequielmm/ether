@@ -176,7 +176,7 @@ public class WalletManager : ISingleton<WalletManager>
         Debug.Log($"[WalletManager] Fetching Wallet Contents...");
         RawWalletData nftData = await FetchData.Instance.GetNftsInWallet(walletAddress);
         Debug.Log($"[WalletManager] Wallet Contents Received.");
-        foreach (ContractData contractData in nftData.tokens)
+        foreach (ContractData contractData in nftData.Contracts)
         {
             if (contractData.tokens == null || contractData.tokens.Count == 0) continue;
             NftContract contract = contractData.ContractType;

@@ -66,7 +66,7 @@ public class NftManager : ISingleton<NftManager>
     {
         Nfts.Clear();
         var NftTokenMap = WalletManager.Instance.NftsInWallet;
-        foreach (ContractData contract in walletData.tokens)
+        foreach (ContractData contract in walletData.Contracts)
         {
             Nfts[contract.ContractType] = new List<Nft>();
             foreach (TokenData token in contract.tokens)
