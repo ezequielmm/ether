@@ -245,7 +245,7 @@ public class HiddenConsoleManager : MonoBehaviour
                 PublicLog("Injured idle animation disabled");
                 break;
              case ConsoleCommands.get_score:
-                ScoreboardManager.Instance.UpdateScore();
+                ScoreboardManager.Instance.UpdateAndShow();
                 PublicLog("Current expedition score requested");
                 break;
             case ConsoleCommands.reset_all:

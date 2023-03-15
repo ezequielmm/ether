@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using KOTE.UI.Armory;
 using Newtonsoft.Json;
 using System;
@@ -42,19 +43,25 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
         Lootbox.TogglePanel(enable);
     }
 
-    public async void UpdateScore()
+    public async void UpdateAndShow() 
+    {
+        Debug.Log("[ScoreboardManager] Updating Score");
+        await UpdateScore();
+
+        if (ScoreData == null)
+            HideScore();
+        else
+            ShowScore();
+    }
+
+    public async UniTask UpdateScore()
     {
         ScoreData = await FetchData.Instance.GetExpeditionScore();
-        if (ScoreData == null)
-        {
-            HideScore();
-            return;
-        }
-        ShowScore();
     }
 
     public void ShowScore()
     {
+        Debug.Log("[ScoreboardManager] Showing Score");
         Scoreboard.Populate(ScoreData);
         Lootbox.Populate(ScoreData.Lootbox);
         if (ScoreData.Lootbox.Count == 0)
@@ -69,6 +76,7 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
 
     public void HideScore()
     {
+        Debug.Log("[ScoreboardManager] Hiding Score");
         ToggleScorePanel(false);
         ToggleLootPanel(false);
     }

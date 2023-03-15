@@ -67,7 +67,6 @@ public class EndOfCombatUIManager : MonoBehaviour
     void OnGameOverComplete()
     {
         DeactivateLabels();
-        ScoreboardManager.Instance.UpdateScore();
     }
 
     void OnVictoryComplete()

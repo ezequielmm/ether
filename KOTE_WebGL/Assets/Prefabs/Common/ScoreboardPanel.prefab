@@ -1031,8 +1031,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameOverManager, Assembly-CSharp
+      - m_Target: {fileID: 1203772174199023751}
+        m_TargetAssemblyTypeName: ScoreboardPanelManager, GameAssembly
         m_MethodName: OnShowAchievementsButton
         m_Mode: 1
         m_Arguments:

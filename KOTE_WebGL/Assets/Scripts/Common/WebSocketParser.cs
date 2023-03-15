@@ -341,7 +341,7 @@ public class WebSocketParser
                 GameManager.Instance.LoadScene(inGameScenes.Expedition);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.show_score):
-                ScoreboardManager.Instance.UpdateScore();
+                ScoreboardManager.Instance.UpdateAndShow();
                 break;
             default:
                 Debug.LogWarning("[ProcessEndCombat] unknown action: " + action + " , data: " + data);
