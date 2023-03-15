@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 using Cysharp.Threading.Tasks;
-using CodiceApp.EventTracking.Plastic;
 
 /// <summary>
 /// Check HelperClasses.cs for the classes usaed to hold JSON data
