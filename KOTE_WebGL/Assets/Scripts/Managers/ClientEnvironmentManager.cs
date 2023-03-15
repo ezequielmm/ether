@@ -108,10 +108,10 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
             case Environments.Unknown:
             case Environments.Dev:
             default:
-                WebRequestURL = $"https://gateway.villagers.dev.kote.robotseamonster.com";
+                WebRequestURL = $"https://gateway.dev.kote.robotseamonster.com";
                 SkinURL = $"https://koteskins.robotseamonster.com/";
                 GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/";
-                WebSocketURL = $"https://api.villagers.dev.kote.robotseamonster.com";
+                WebSocketURL = $"https://api.dev.kote.robotseamonster.com";
                 break;
         }
     }
