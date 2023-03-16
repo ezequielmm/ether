@@ -21,8 +21,6 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     private const string WS_MESSAGE_ENEMY_INTENTS = "EnemiesIntents";
     private const string WS_MESSAGE_PUT_DATA = "PutData";
 
-    const int LengthOfIdToLog = 4;
-
 
     [SerializeField] private string SocketStatus = "Unknown";
     private bool doNotResuscitate = true;
@@ -509,72 +507,32 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void LogResponse(Guid requestId, string rawJson) 
     {
-        string requestIdShortened = requestId.ToString().Substring(0, LengthOfIdToLog);
+        string requestIdShortened = requestId.ToString().Substring(0, LogHelper.LengthOfIdToLog);
         Debug.Log($"[WebSocketManager] RESPONSE [{requestIdShortened}] <<< {rawJson}");
-        SendIncomingCommunicationLogs($"[WebSocketManager] RESPONSE [{requestIdShortened}] <<<", rawJson);
+        LogHelper.SendIncomingCommunicationLogs($"[WebSocketManager] RESPONSE [{requestIdShortened}] <<<", rawJson);
     }
 
     private void LogIncoming(string rawJson)
     {
         Debug.Log($"[WebSocketManager] INCOMING <<< {rawJson}");
-        SendIncomingCommunicationLogs($"[WebSocketManager] INCOMING <<<", rawJson);
+        LogHelper.SendIncomingCommunicationLogs($"[WebSocketManager] INCOMING <<<", rawJson);
     }
 
     private void LogEmission(string eventName, params object[] variables)
     {
-        string variableString = VariablesToHumanReadable(eventName, variables);
-        string jsonString = VariablesToJson(eventName, variables);
+        string variableString = LogHelper.VariablesToHumanReadable(eventName, variables);
+        string jsonString = LogHelper.VariablesToJson(eventName, variables);
         Debug.Log($"[WebSocketManager] EMISSION >>> {jsonString}");
-        SendOutgoingCommunicationLogs($"[WebSocketManager] EMISSION >>> {variableString}", jsonString);
+        LogHelper.SendOutgoingCommunicationLogs($"[WebSocketManager] EMISSION >>> {variableString}", jsonString);
     }
 
     private void LogEmissionExpectingResponse(Guid requestId, string eventName, params object[] variables)
     {
-        string requestIdShortened = requestId.ToString().Substring(0, LengthOfIdToLog);
-        string variableString = VariablesToHumanReadable(eventName, variables);
-        string jsonString = VariablesToJson(eventName, variables);
+        string requestIdShortened = requestId.ToString().Substring(0, LogHelper.LengthOfIdToLog);
+        string variableString = LogHelper.VariablesToHumanReadable(eventName, variables);
+        string jsonString = LogHelper.VariablesToJson(eventName, variables);
         Debug.Log($"[WebSocketManager] EMISSION [{requestIdShortened}] >>> {jsonString}");
-        SendOutgoingCommunicationLogs($"[WebSocketManager] EMISSION [{requestIdShortened}] >>> {variableString}", jsonString);
-    }
-
-    private void SendOutgoingCommunicationLogs(string stringLog, string rawJson) 
-    {
-        ServerCommunicationLogger.Instance.LogCommunication(stringLog, CommunicationDirection.Outgoing, rawJson);
-    }
-
-    private void SendIncomingCommunicationLogs(string stringLog, string rawJson)
-    {
-        ServerCommunicationLogger.Instance.LogCommunication(stringLog, CommunicationDirection.Incoming, rawJson);
-    }
-
-    private class OutgoingMessage 
-    {
-        public object eventName;
-        public object[] variables;
-    }
-
-    private string VariablesToHumanReadable(string eventName, params object[] variables) 
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.Append($"Event: {eventName}");
-        if (variables != null && variables.Length >= 1)
-        {
-            for (int i = 0; i < variables.Length; i++)
-            {
-                sb.Append($" | Param [{i}]: {variables[i]}");
-            }
-        }
-        return sb.ToString();
-    }
-
-    private string VariablesToJson(string eventName, params object[] variables) 
-    {
-        OutgoingMessage temporaryContainer = new OutgoingMessage();
-
-        temporaryContainer.eventName = eventName;
-        temporaryContainer.variables = variables;
-
-        return JsonConvert.SerializeObject(temporaryContainer);
+        LogHelper.SendOutgoingCommunicationLogs($"[WebSocketManager] EMISSION [{requestIdShortened}] >>> {variableString}", jsonString);
     }
 }
 

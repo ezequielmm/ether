@@ -42,7 +42,7 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoesGearImageExist()
         {
-            Assert.NotNull(_itemManager.gearImage);
+            Assert.NotNull(_itemManager.Image);
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace KOTE.UI.Armory
             bool eventFired = false;
             ArmoryPanelManager.OnGearSelected.AddListener((data) => { eventFired = true; });
             _itemManager.Populate(testItemData);
-            _itemManager.OnItemClicked();
+            _itemManager.SendItemToArmoryPanel();
             Assert.True(eventFired);
         }
 
@@ -89,7 +89,7 @@ namespace KOTE.UI.Armory
             GearItemData receivedData = null;
             ArmoryPanelManager.OnGearSelected.AddListener((data) => { receivedData = data; });
             _itemManager.Populate(testItemData);
-            _itemManager.OnItemClicked();
+            _itemManager.SendItemToArmoryPanel();
             Assert.AreEqual(testItemData, receivedData);
         }
     }

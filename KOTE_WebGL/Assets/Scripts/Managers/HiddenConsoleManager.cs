@@ -245,9 +245,9 @@ public class HiddenConsoleManager : MonoBehaviour
                 PublicLog("Injured idle animation disabled");
                 break;
              case ConsoleCommands.get_score:
-                 GameManager.Instance.EVENT_REQUEST_EXPEDITON_SCORE.Invoke();
-                 PublicLog("Current expedition score requested");
-                 break;
+                ScoreboardManager.Instance.UpdateAndShow();
+                PublicLog("Current expedition score requested");
+                break;
             case ConsoleCommands.reset_all:
                 PlayerPrefs.SetInt("enable_registration", 0);
                 PlayerPrefs.SetInt("enable_armory", 0);

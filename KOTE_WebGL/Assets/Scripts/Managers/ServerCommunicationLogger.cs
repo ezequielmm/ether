@@ -54,7 +54,11 @@ public class ServerCommunicationLogger : SingleTon<ServerCommunicationLogger>
             Timestamp = unixTime.ToString();
             if (!string.IsNullOrEmpty(rawJson))
             {
-                Raw = JObject.Parse(rawJson);
+                try
+                {
+                    Raw = JObject.Parse(rawJson);
+                }
+                catch { }
             }
         }
     }

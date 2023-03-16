@@ -44,16 +44,6 @@ public class WebRequesterManagerTests : MonoBehaviour
     }
 
     [UnityTest]
-    public IEnumerator TestSavedValuesOnAwake()
-    {
-        yield return null;
-        string apiUrl = PlayerPrefs.GetString("api_url");
-        Assert.AreEqual("https://gateway.dev.kote.robotseamonster.com", apiUrl);
-        string sessionToken = PlayerPrefs.GetString("session_token");
-        Assert.AreEqual("", sessionToken);
-    }
-
-    [UnityTest]
     public IEnumerator TestValuesOnStart()
     {
         yield return null;

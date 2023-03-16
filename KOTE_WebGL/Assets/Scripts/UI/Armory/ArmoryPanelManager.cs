@@ -91,17 +91,17 @@ namespace KOTE.UI.Armory
             GearData data = await FetchData.Instance.GetGearInventory();
             if (data == null) return;
             await GearIconManager.Instance.RequestGearIcons(data);
-            PopulateGearInventory(data.ownedGear);
+            PopulateGearList(data.ownedGear);
 
             GenerateHeaders();
         }
 
-        private void PopulateGearInventory(List<GearItemData> ownedGear)
+        private async void PopulateGearList(List<GearItemData> ownedGear)
         {
             foreach (GearItemData itemData in ownedGear)
             {
                 itemData.gearImage =
-                    GearIconManager.Instance.GetGearSprite(itemData.trait.ParseToEnum<Trait>(), itemData.name);
+                    await GearIconManager.Instance.GetGearSprite(itemData.trait.ParseToEnum<Trait>(), itemData.name);
                 if (categoryLists.ContainsKey(itemData.category))
                 {
                     categoryLists[itemData.category].Add(itemData);
