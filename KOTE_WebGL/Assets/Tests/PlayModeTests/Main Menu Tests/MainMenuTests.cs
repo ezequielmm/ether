@@ -157,7 +157,7 @@ public class MainMenuTests
     }
 
     [UnityTest]
-    public IEnumerator TestMainMenuSetup()
+    public IEnumerator DoesPlayButtonTextChangeIfNoExpedition()
     {
         TextMeshProUGUI playButtonText = mainMenu.playButton.GetComponentInChildren<TextMeshProUGUI>();
         GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(new ExpeditionStatusData
@@ -167,9 +167,9 @@ public class MainMenuTests
         });
         yield return null;
         Assert.AreEqual("PLAY", playButtonText.text);
-        Assert.AreEqual(false, mainMenu.playButton.gameObject.activeSelf);
-        Assert.AreEqual(false, mainMenu.newExpeditionButton.gameObject.activeSelf);
-        Assert.AreEqual(true, mainMenu.treasuryButton.gameObject.activeSelf);
+        Assert.False(mainMenu.playButton.gameObject.activeSelf);
+        Assert.False(mainMenu.newExpeditionButton.gameObject.activeSelf);
+        Assert.False(mainMenu.treasuryButton.gameObject.activeSelf);
     }
     
     [UnityTest]
