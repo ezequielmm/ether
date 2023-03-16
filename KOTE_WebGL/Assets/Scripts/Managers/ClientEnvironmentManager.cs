@@ -73,6 +73,7 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
     {
         switch(currentEnvironment) 
         {
+            case Environments.Unknown:
             case Environments.Snapshot:
                 WebRequestURL = $"https://gateway.villagers.dev.kote.robotseamonster.com";
                 SkinURL = $"https://koteskins.robotseamonster.com/";
@@ -105,7 +106,6 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
                 UpdateUrls(emulate);
                 break;
 #endif
-            case Environments.Unknown:
             case Environments.Dev:
             default:
                 WebRequestURL = $"https://gateway.dev.kote.robotseamonster.com";
