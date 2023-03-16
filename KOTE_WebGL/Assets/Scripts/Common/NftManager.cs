@@ -37,7 +37,11 @@ public class NftManager : ISingleton<NftManager>
 
     public List<Nft> GetContractNfts(NftContract nftContract)
     {
-        return Nfts[nftContract] ?? new List<Nft>();
+        if (Nfts.TryGetValue(nftContract, out List<Nft> nfts) && nfts != null)
+        {
+            return nfts;
+        }
+        return new List<Nft>();
     }
 
     public List<Nft> GetAllNfts()
@@ -65,7 +69,6 @@ public class NftManager : ISingleton<NftManager>
     private void UpdateNfts(RawWalletData walletData)
     {
         Nfts.Clear();
-        var NftTokenMap = WalletManager.Instance.NftsInWallet;
         foreach (ContractData contract in walletData.Contracts)
         {
             Nfts[contract.ContractType] = new List<Nft>();

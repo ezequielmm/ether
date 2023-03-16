@@ -25,23 +25,23 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField]
     private GameObject ContestTimer;
 
+    private WalletManager wallet => WalletManager.Instance;
+    private UserDataManager userData => UserDataManager.Instance;
+
     private bool _hasWallet => !string.IsNullOrEmpty(WalletManager.Instance.ActiveWallet);
 
     // we need to confirm all verification values before showing the play button
     private bool _hasExpedition => UserDataManager.Instance.HasExpedition;
     private bool _expeditionStatusReceived;
     private bool _walletDataReceived;
-    
-    // save data so that we can run verification after both expedition and wallet data has arrived
-    private ExpeditionStatusData _expeditionStatusData;
 
     // verification that the player still owns the continuing nft
-    private bool _ownsSavedNft => WalletManager.Instance.ConfirmNftOwnership(_expeditionStatusData?.nftId, _expeditionStatusData?.GetContractType()) ?? false;
-    private int _nftInExpedition => UserDataManager.Instance.ActiveNft;
+    private bool _ownsSavedNft => wallet.ConfirmNftOwnership(userData.ActiveNft, userData.NftContract);
+    private int _nftInExpedition => userData.ActiveNft;
     
     // verification that the connected wallet contains at least one knight
-    private bool _ownsAnyNft => WalletManager.Instance.ConfirmOwnsNfts();
-    private bool _isWalletVerified => WalletManager.Instance.WalletVerified;
+    private bool _ownsAnyNft => wallet.ConfirmOwnsNfts();
+    private bool _isWalletVerified => wallet.WalletVerified;
     private bool _isWhitelisted => true;
 
     private void Start()
@@ -55,7 +55,7 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(false);
 
         WalletManager.Instance.WalletStatusModified.AddListener(UpdateUiOnWalletModification);
-        NftManager.Instance.NftsLoaded.AddListener(RunVerificationCheck);
+        NftManager.Instance.NftsLoaded.AddListener(VerifyResumeExpedition);
 
         //CheckIfRegisterButtonIsEnabled();
         CheckIfArmoryButtonIsEnabled();
@@ -134,7 +134,6 @@ public class MainMenuManager : MonoBehaviour
 
     private void UpdatePlayButtonText(string value)
     {
-        
         TextMeshProUGUI textField = playButton.gameObject.GetComponentInChildren<TextMeshProUGUI>();
         textField?.SetText(value);
     }
@@ -144,13 +143,7 @@ public class MainMenuManager : MonoBehaviour
         UpdatePlayButtonText(_hasExpedition ? "RESUME" : "PLAY");
     }
 
-    public void OnLoginSuccessful(string name, int fief)
-    {
-        nameText.text = name;
-        moneyText.text = $"{fief} $fief";
-    }
-
-    public void UpdateNameAndFief(string name, int fief) 
+    public void UpdateNameAndFief(string name, int fief)
     {
         nameText.text = name;
         moneyText.text = $"{fief} $fief";
@@ -193,11 +186,11 @@ public class MainMenuManager : MonoBehaviour
 
     private async void GetExpeditionStatus() 
     {
-        await UserDataManager.Instance.UpdateExpeditionStatus();
+        await userData.UpdateExpeditionStatus();
 
         _expeditionStatusReceived = true;
         treasuryButton.gameObject.SetActive(true);
-        PlayerSpriteManager.Instance.SetSkin(UserDataManager.Instance.ActiveNft);
+        PlayerSpriteManager.Instance.SetSkin(userData.ActiveNft, userData.NftContract);
 
         VerifyResumeExpedition();
 

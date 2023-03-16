@@ -94,10 +94,10 @@ public class MainMenuTests
     [UnityTest]
     public IEnumerator TestNameIsUpdatedOnSuccessfulLogin()
     {
-        mainMenu.OnLoginSuccessful("test", 0);
+        mainMenu.UpdateNameAndFief("test", 0);
         yield return null;
         Assert.AreEqual("test", mainMenu.nameText.text);
-        mainMenu.OnLoginSuccessful("No One Can Stop the Ping Pong in the Bayou", 0);
+        mainMenu.UpdateNameAndFief("No One Can Stop the Ping Pong in the Bayou", 0);
         yield return null;
         Assert.AreEqual("No One Can Stop the Ping Pong in the Bayou", mainMenu.nameText.text);
     }
@@ -105,10 +105,10 @@ public class MainMenuTests
     [UnityTest]
     public IEnumerator TestFiefIsUpdatedOnSuccessfulLogin()
     {
-        mainMenu.OnLoginSuccessful("", 0);
+        mainMenu.UpdateNameAndFief("", 0);
         yield return null;
         Assert.AreEqual("0 $fief", mainMenu.moneyText.text);
-        mainMenu.OnLoginSuccessful("", 45342);
+        mainMenu.UpdateNameAndFief("", 45342);
         yield return null;
         Assert.AreEqual("45342 $fief", mainMenu.moneyText.text);
     }
@@ -116,7 +116,7 @@ public class MainMenuTests
     [UnityTest]
     public IEnumerator TestMenuButtonsAreDeactivatedBySuccessfulLogin()
     {
-        mainMenu.OnLoginSuccessful("", 0);
+        mainMenu.UpdateNameAndFief("", 0);
         yield return null;
         Assert.AreEqual(false, mainMenu.playButton.gameObject.activeSelf);
         Assert.AreEqual(false, mainMenu.newExpeditionButton.gameObject.activeSelf);

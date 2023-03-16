@@ -25,8 +25,6 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     private void Start()
     {
         GameManager.Instance.EVENT_NFT_SELECTED.AddListener(BuildPlayer);
-
-        knightSkeletonData = KinghtData.GetSkeletonData(true);
     }
 
     public void SetSkin(int nftToken, NftContract contract, List<GearItemData> equippedGear = null)

@@ -91,7 +91,7 @@ public class ExpeditionStatus
     [JsonProperty("equippedGear")]
     public List<GearItemData> EquippedGear;
     private string tokenType;
-    private NftContract TokenType => GetContractType();
+    public NftContract TokenType => GetContractType();
 
     private NftContract GetContractType()
     {

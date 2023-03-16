@@ -71,7 +71,7 @@ namespace KOTE.UI.Armory
             UpdatePanelOnNftUpdate();
         }
 
-        private async void UpdatePanelOnNftUpdate()
+        private void UpdatePanelOnNftUpdate()
         {
             // TODO reactivate this once correct image route is found
             //nftImage.sprite = await curNode.Value.MetaData.GetImage();
@@ -86,12 +86,11 @@ namespace KOTE.UI.Armory
             else PopulateEquippedGear();
         }
         
-        private void PopulatePlayerGearInventory()
+        private async void PopulatePlayerGearInventory()
         {
             GearData data = await FetchData.Instance.GetGearInventory();
             if (data == null) return;
             await GearIconManager.Instance.RequestGearIcons(data);
-            //villagerEquippedGear[10] = data.equippedGear;
             PopulateGearInventory(data.ownedGear);
 
             GenerateHeaders();
