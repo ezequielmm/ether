@@ -4,33 +4,17 @@ using UnityEngine.UI;
 
 namespace KOTE.UI.Armory
 {
-    public class SelectableGearItem : MonoBehaviour
+    public class SelectableGearItem : GearItem
     {
-        public Image gearImage;
-        private GearItemData _itemData;
-        public string Category => _itemData.category;
-        public string ItemName => _itemData.name;
-        public Sprite Image => _itemData.gearImage;
-        public string Trait => _itemData.trait;
+        public string Category => ItemData.category;
+        public string ItemName => ItemData.name;
+        public Sprite Image => ItemData.gearImage;
+        public string Trait => ItemData.trait;
 
-        internal void Populate(GearItemData newItemData)
+        public void SendItemToArmoryPanel()
         {
-            _itemData = newItemData;
-            if (newItemData.gearImage != null) gearImage.sprite = newItemData.gearImage;
+            // TODO: Abstract out more
+            ArmoryPanelManager.OnGearSelected.Invoke(ItemData);
         }
-
-        public void OnItemClicked()
-        {
-            ArmoryPanelManager.OnGearSelected.Invoke(_itemData);
-        }
-    }
-
-    public class GearItemData
-    {
-        public int gearId;
-        public string name;
-        public string trait;
-        public string category;
-        [JsonIgnore] public Sprite gearImage;
     }
 }

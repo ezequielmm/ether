@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1f81f6655323b74ca04121c9cbd7666, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gearImage: {fileID: 5230807129041076601}
+  GearImage: {fileID: 0}
 --- !u!1 &5000072289380080428
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,7 +252,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2029367854477366574}
         m_TargetAssemblyTypeName: KOTE.UI.Armory.SelectableGearItem, GameAssembly
-        m_MethodName: OnItemClicked
+        m_MethodName: SendItemToArmoryPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

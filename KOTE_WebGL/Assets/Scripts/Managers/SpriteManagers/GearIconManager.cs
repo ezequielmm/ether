@@ -10,7 +10,7 @@ namespace KOTE.UI.Armory
         // cache for already downloaded images
         private Dictionary<Trait, Dictionary<string, Sprite>> iconCache = new();
 
-        public Sprite GetGearSprite(Trait gearType, string itemName)
+        public async UniTask<Sprite> GetGearSprite(Trait gearType, string itemName)
         {
             if (IsIconCached(gearType, itemName))
             {

@@ -193,8 +193,20 @@ public class FetchData : DataManager, ISingleton<FetchData>
     }
 
 
-    private async UniTask<string> KeepRetryingRequest(UnityWebRequest request, int tryLimit = 10,
-        float retryDelaySeconds = 3)
+    public async UniTask<ScoreboardData> GetExpeditionScore()
+    {
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.ExpeditionScore);
+
+        using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
+        {
+            request.AddAuthToken();
+            string rawJson = await MakeJsonRequest(request);
+            if (string.IsNullOrEmpty(rawJson)) return null;
+            return ParseJsonWithPath<ScoreboardData>(rawJson, "data");
+        }
+    }
+
+    private async UniTask<string> KeepRetryingRequest(UnityWebRequest request, int tryLimit = 10, float retryDelaySeconds = 3) 
     {
         bool successful = false;
         int trys = 0;
@@ -215,18 +227,12 @@ public class FetchData : DataManager, ISingleton<FetchData>
     private async UniTask<string> MakeJsonRequest(UnityWebRequest request)
     {
         string rawJson = (await webRequest.MakeRequest(request))?.text;
-        if (rawJson != null)
-            ServerCommunicationLogger.Instance.LogCommunication($"[{request.uri}] Data Successfully Retrieved",
-                CommunicationDirection.Incoming, rawJson);
         return rawJson;
     }
 
     private async UniTask<Texture2D> MakeTextureRequest(UnityWebRequest request)
     {
         Texture2D texture = ((DownloadHandlerTexture)await webRequest.MakeRequest(request))?.texture;
-        if (texture != null)
-            ServerCommunicationLogger.Instance.LogCommunication($"[{request.uri}] Data Successfully Retrieved",
-                CommunicationDirection.Incoming, "{\"message\":\"<Image File>\"}");
         return texture;
     }
 

@@ -29,7 +29,6 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         GameManager.Instance.EVENT_REQUEST_PROFILE.AddListener(RequestProfile);
         GameManager.Instance.EVENT_REQUEST_LOGOUT.AddListener(RequestLogout);
         GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.AddListener(RequestExpeditionCancel);
-        GameManager.Instance.EVENT_REQUEST_EXPEDITON_SCORE.AddListener(RequestExpeditionScore);
         GameManager.Instance.EVENT_SEND_BUG_FEEDBACK.AddListener(SendBugReport);
     }
 
@@ -47,11 +46,6 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
     public void RequestExpeditionStatus()
     {
         StartCoroutine(GetExpeditionStatus());
-    }
-
-    public void RequestExpeditionScore()
-    {
-        StartCoroutine(GetExpeditionScore());
     }
 
     public void RequestExpeditionCancel()
@@ -84,12 +78,14 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
 #if UNITY_EDITOR
         if (UnitTestDetector.IsInUnitTest)
         {
-            Debug.Log($"Can't make a webrequest while testing.");
+            Debug.Log($"[WebRequesterManager] Can't make a webrequest while testing.");
             return null;
         }
 #endif
         try
         {
+            Guid requestId = Guid.NewGuid();
+            LogRequest(requestId, request.uri.ToString());
             await request.SendWebRequest();
             if (request.result != UnityWebRequest.Result.Success)
             {
@@ -97,6 +93,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             }
             else
             {
+                LogRepsonse(requestId, request.uri.ToString(), request?.downloadHandler?.text ?? string.Empty);
                 return request.downloadHandler;
             }
         }
@@ -107,6 +104,23 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             ServerCommunicationLogger.Instance.LogCommunication($"[{request.method}][{request.uri}] Data Not Retrieved: {request?.error}", CommunicationDirection.Incoming);
             return null;
         }
+    }
+
+    private void LogRequest(Guid requestId, string url, params object[] payload) 
+    {
+        string requestIdShortened = requestId.ToString().Substring(0, LogHelper.LengthOfIdToLog);
+        string variableString = LogHelper.VariablesToHumanReadable(url, payload);
+        string jsonString = LogHelper.VariablesToJson(url, payload);
+        Debug.Log($"[WebRequesterManager] REQUEST [{requestIdShortened}] >>> {jsonString}");
+        LogHelper.SendOutgoingCommunicationLogs($"[WebRequesterManager] REQUEST [{requestIdShortened}] >>> {variableString}", jsonString);
+    }
+
+    private void LogRepsonse(Guid requestId, string url, string rawJson)
+    {
+        string requestIdShortened = requestId.ToString().Substring(0, LogHelper.LengthOfIdToLog);
+        string variableString = LogHelper.VariablesToHumanReadable(url, rawJson);
+        Debug.Log($"[WebRequesterManager] RESPONSE [{requestIdShortened}] <<< {rawJson}");
+        LogHelper.SendOutgoingCommunicationLogs($"[WebRequesterManager] RESPONSE [{requestIdShortened}] <<< {variableString}", rawJson);
     }
 
 
@@ -318,41 +332,6 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             ServerCommunicationLogger.Instance.LogCommunication(
                 $"Expedition status success: {request.downloadHandler.text}",
                 CommunicationDirection.Incoming);
-        }
-    }
-
-    IEnumerator GetExpeditionScore()
-    {
-        string token = PlayerPrefs.GetString("session_token");
-
-        string fullUrl = $"{baseUrl}{RestEndpoint.ExpeditionScore}";
-
-        ServerCommunicationLogger.Instance.LogCommunication($"Expedition score request. token: {token}",
-            CommunicationDirection.Outgoing);
-
-        using (UnityWebRequest request = UnityWebRequest.Get(fullUrl))
-        {
-            request.SetRequestHeader("Authorization", $"Bearer {token}");
-
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.ConnectionError ||
-                request.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError("[Error getting expedition score] " + request.error);
-                ServerCommunicationLogger.Instance.LogCommunication($"Expedition score error: {request.error}",
-                    CommunicationDirection.Incoming);
-
-                GameManager.Instance.EVENT_SHOW_SCOREBOARD.Invoke(null);
-                yield break;
-            }
-
-            SWSM_ScoreboardData scoreboardData =
-                JsonConvert.DeserializeObject<SWSM_ScoreboardData>(request.downloadHandler.text);
-            Debug.Log("answer from expedition score " + request.downloadHandler.text);
-            ServerCommunicationLogger.Instance.LogCommunication(
-                "Expedition score success: " + request.downloadHandler.text, CommunicationDirection.Incoming);
-            GameManager.Instance.EVENT_SHOW_SCOREBOARD.Invoke(scoreboardData);
         }
     }
 

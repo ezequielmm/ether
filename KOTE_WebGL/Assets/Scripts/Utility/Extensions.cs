@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -32,5 +33,26 @@ public static class Extensions
         if(request == null) return;
         string token = PlayerPrefs.GetString("session_token");
         request.SetRequestHeader("Authorization", $"Bearer {token}");
+    }
+
+    public static TEnum ParseToEnum<TEnum>(this string dataString) where TEnum : struct, Enum
+    {
+        TEnum parsedEnum;
+
+        dataString = dataString.Replace(" ", "");
+
+        bool parseSuccess = Enum.TryParse(dataString, out parsedEnum);
+        if (parseSuccess) return parsedEnum;
+        try
+        {
+            parsedEnum = (TEnum)Enum.Parse(typeof(TEnum), dataString, true);
+            return parsedEnum;
+        }
+        catch
+        {
+            Debug.LogWarning("Warning: Enum not parsed. No value '" + dataString + "' in enum type " + typeof(TEnum) +
+                             "Falling back to default value");
+            return default(TEnum);
+        }
     }
 }
