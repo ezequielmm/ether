@@ -30,14 +30,17 @@ public class MainMenuManager : MonoBehaviour
     // we need to confirm all verification values before showing the play button
     private bool _hasExpedition => UserDataManager.Instance.HasExpedition;
     private bool _expeditionStatusReceived;
+    private bool _walletDataReceived;
+    
+    // save data so that we can run verification after both expedition and wallet data has arrived
+    private ExpeditionStatusData _expeditionStatusData;
 
     // verification that the player still owns the continuing nft
-    private bool _ownsSavedNft => WalletManager.Instance.NftsInWallet?
-        .GetValueOrDefault(NftContract.KnightsOfTheEther)?.Contains(_nftInExpedition) ?? false;
+    private bool _ownsSavedNft => WalletManager.Instance.ConfirmNftOwnership(_expeditionStatusData?.nftId, _expeditionStatusData?.GetContractType()) ?? false;
     private int _nftInExpedition => UserDataManager.Instance.ActiveNft;
     
     // verification that the connected wallet contains at least one knight
-    private bool _ownsAnyNft => (WalletManager.Instance.NftsInWallet?.GetValueOrDefault(NftContract.KnightsOfTheEther)?.Count ?? 0) > 0;
+    private bool _ownsAnyNft => WalletManager.Instance.ConfirmOwnsNfts();
     private bool _isWalletVerified => WalletManager.Instance.WalletVerified;
     private bool _isWhitelisted => true;
 
@@ -52,7 +55,7 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(false);
 
         WalletManager.Instance.WalletStatusModified.AddListener(UpdateUiOnWalletModification);
-        NftManager.Instance.NftsLoaded.AddListener(VerifyResumeExpedition);
+        NftManager.Instance.NftsLoaded.AddListener(RunVerificationCheck);
 
         //CheckIfRegisterButtonIsEnabled();
         CheckIfArmoryButtonIsEnabled();
@@ -77,7 +80,7 @@ public class MainMenuManager : MonoBehaviour
     }
 
     // we need to verify that the player can actually resume or start a new game before presenting those options
-    // this is designed to be called whenever a callback is triggered, due to not knowing when all the responses will come in
+    // this can only run after ALL response have come in, due to them being able to come in at any order.
     private void VerifyResumeExpedition()
     {
 

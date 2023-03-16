@@ -60,11 +60,11 @@ public class MetaMask : SingleTon<MetaMask>
         return ProcessSimpleData<string>("signedMessage", promise.Data);
     }
 
-    private T ProcessSimpleData<T>(string successVariabele, JObject data)
+    private T ProcessSimpleData<T>(string successVariable, JObject data)
     {
-        if (data.ContainsKey("successVariabele"))
+        if (data.ContainsKey(successVariable))
         {
-            T successValue = data.GetValue("successVariabele").Value<T>();
+            T successValue = data.GetValue(successVariable).Value<T>();
             return successValue;
         }
         if (data.ContainsKey("error"))

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ namespace KOTE.UI.Armory
     public class ArmoryPanelManager : MonoBehaviour
     {
         internal static UnityEvent<GearItemData> OnGearSelected { get; } = new();
-
+        internal static UnityEvent<Trait, GearCategories> OnSlotCleared{ get; } = new();
 
         public GameObject panelContainer;
         public Button playButton;
@@ -17,15 +18,20 @@ namespace KOTE.UI.Armory
         public Image nftImage;
         public ArmoryHeaderManager headerPrefab;
         public Transform gearListTransform;
-        public Image[] gearSlots;
+        public GearSlot[] gearSlots;
         public GameObject[] gearPanels;
+
         private LinkedListNode<ArmoryTokenData> curNode;
         private LinkedList<ArmoryTokenData> nftList = new();
         private Dictionary<string, List<GearItemData>> categoryLists = new();
-        
+        private Dictionary<GearCategories, GearItemData> equippedGear = new();
+        private Dictionary<int, List<GearItemData>> villagerEquippedGear = new();
+        private Dictionary<int, List<GearItemData>> blessedVillagerEquippedGear = new();
+
         private void Awake()
         {
             GameManager.Instance.EVENT_AUTHENTICATED.AddListener(PopulatePlayerGearInventory);
+            NftManager.Instance.NftsLoaded.AddListener(PopulateCharacterList);
         }
 
         private void Start()
@@ -34,12 +40,12 @@ namespace KOTE.UI.Armory
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.AddListener(ActivateContainer);
             // listen for successful login to get the player's gear
             OnGearSelected.AddListener(OnGearItemSelected);
+            OnSlotCleared.AddListener(OnGearItemRemoved);
         }
 
         private void ActivateContainer(bool show)
         {
             panelContainer.SetActive(show);
-            PopulateCharacterList();
         }
 
         private void PopulateCharacterList()
@@ -60,31 +66,43 @@ namespace KOTE.UI.Armory
                 nftList.AddLast(new ArmoryTokenData(nft));
             }
 
-            playButton.interactable = true;
             curNode = nftList.First;
             GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
             UpdatePanelOnNftUpdate();
         }
 
-        private void PopulateGearSlots()
+        private async void UpdatePanelOnNftUpdate()
         {
-        }
+            // TODO reactivate this once correct image route is found
+            //nftImage.sprite = await curNode.Value.MetaData.GetImage();
+            foreach (GameObject panel in gearPanels)
+            {
+                panel.SetActive(!curNode.Value.MetaData.isKnight);
+            }
 
-        private async void PopulatePlayerGearInventory()
+            nftImage.color = (curNode.Value.MetaData.CanPlay) ? Color.white : Color.gray;
+            playButton.interactable = curNode.Value.MetaData.CanPlay;
+            if (curNode.Value.MetaData.isKnight) ClearGearSlots();
+            else PopulateEquippedGear();
+        }
+        
+        private void PopulatePlayerGearInventory()
         {
             GearData data = await FetchData.Instance.GetGearInventory();
             if (data == null) return;
             await GearIconManager.Instance.RequestGearIcons(data);
-            PopulateGearList(data);
+            //villagerEquippedGear[10] = data.equippedGear;
+            PopulateGearInventory(data.ownedGear);
+
             GenerateHeaders();
         }
 
-        private void PopulateGearList(GearData data)
+        private void PopulateGearInventory(List<GearItemData> ownedGear)
         {
-            foreach (GearItemData itemData in data.data.ownedGear)
+            foreach (GearItemData itemData in ownedGear)
             {
                 itemData.gearImage =
-                    GearIconManager.Instance.GetGearSprite(Utils.ParseEnum<Trait>(itemData.trait), itemData.name);
+                    GearIconManager.Instance.GetGearSprite(itemData.trait.ParseToEnum<Trait>(), itemData.name);
                 if (categoryLists.ContainsKey(itemData.category))
                 {
                     categoryLists[itemData.category].Add(itemData);
@@ -101,17 +119,56 @@ namespace KOTE.UI.Armory
             foreach (string category in categories)
             {
                 ArmoryHeaderManager header = Instantiate(headerPrefab, gearListTransform);
-                header.Populate(category, categoryLists[category]);
+                if (categoryLists.ContainsKey(category))
+                {
+                    header.Populate(category, categoryLists[category]);
+                }
             }
         }
 
-        private void UpdatePanelOnNftUpdate()
+        private void PopulateEquippedGear()
         {
-            nftImage.sprite = curNode.Value.NftImage;
-            foreach (GameObject panel in gearPanels)
+            if (curNode.Value.MetaData.Contract == NftContract.Villager &&
+                villagerEquippedGear.ContainsKey(curNode.Value.Id))
             {
-                panel.SetActive(curNode.Value.MetaData.Contract != NftContract.KnightsOfTheEther);
+                EquipGearInSlots(villagerEquippedGear[curNode.Value.Id]);
             }
+            else if (curNode.Value.MetaData.Contract == NftContract.BlessedVillager &&
+                     blessedVillagerEquippedGear.ContainsKey(curNode.Value.Id))
+            {
+                EquipGearInSlots(blessedVillagerEquippedGear[curNode.Value.Id]);
+            }
+            else
+            {
+                ClearGearSlots();
+            }
+        }
+
+        private void EquipGearInSlots(List<GearItemData> gear)
+        {
+            foreach (GearSlot slot in gearSlots)
+            {
+                GearItemData curGear = gear.Find(x => x.trait.ParseToEnum<Trait>() == slot.gearTrait);
+                if (curGear != null)
+                {
+                    slot.SetGearInSlot(curGear);
+                    continue;
+                }
+
+                slot.ResetSlot();
+            }
+        }
+
+        private void ClearGearSlots()
+        {
+            foreach (GearSlot slot in gearSlots)
+            {
+                slot.ResetSlot();
+            }
+        }
+
+        private void SetEquippedGear()
+        {
         }
 
         public void OnPreviousToken()
@@ -148,11 +205,15 @@ namespace KOTE.UI.Armory
         {
             playButton.interactable = false;
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-            bool success = await FetchData.Instance.RequestNewExpedition("knight", curNode.Value.Id);
+            bool success =
+                await FetchData.Instance.RequestNewExpedition(curNode.Value.MetaData.Contract, curNode.Value.Id, equippedGear.Values.ToList());
             if (success)
             {
                 OnExpeditionConfirmed();
+                return;
             }
+
+            playButton.interactable = curNode.Value.MetaData.CanPlay;
         }
 
         private void OnExpeditionConfirmed()
@@ -165,8 +226,18 @@ namespace KOTE.UI.Armory
 
         private void OnGearItemSelected(GearItemData activeItem)
         {
-            GearCategories category = Utils.ParseEnum<GearCategories>(activeItem.category);
-            gearSlots[(int)category].sprite = activeItem.gearImage;
+            if (curNode.Value.MetaData.Contract == NftContract.Knights) return;
+            GearCategories category = activeItem.category.ParseToEnum<GearCategories>();
+            gearSlots[(int)category].SetGearInSlot(activeItem);
+            equippedGear[activeItem.category.ParseToEnum<GearCategories>()] = activeItem;
+            GameManager.Instance.EVENT_UPDATE_NFT.Invoke(Enum.Parse<Trait>(activeItem.trait), activeItem.name);
+        }
+
+        private void OnGearItemRemoved(Trait gearTrait, GearCategories category)
+        {
+            equippedGear.Remove(category);
+            GameManager.Instance.EVENT_UPDATE_NFT.Invoke(gearTrait, "");
+
         }
     }
 
@@ -186,11 +257,9 @@ namespace KOTE.UI.Armory
 
     public class GearData
     {
-        public Data data;
-
-        public class Data
-        {
-            public List<GearItemData> ownedGear;
-        }
+        public List<GearItemData> ownedGear;
+        // TODO this isn't working quite right, it's not correctly being parsed into a js object
+        // TODO so we're getting a string back instead of a json object
+        //public List<GearItemData> equippedGear;
     }
 }

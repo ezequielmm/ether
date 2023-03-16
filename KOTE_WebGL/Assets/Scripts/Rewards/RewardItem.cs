@@ -35,7 +35,7 @@ public class RewardItem : MonoBehaviour //, IPointerClickHandler
             onRewardSelected = onAddACard;
         }
 
-        rewardItemType = Utils.ParseEnum<RewardItemType>(reward.type);
+        rewardItemType = reward.type.ParseToEnum<RewardItemType>();
         rewardData = reward;
         List<Tooltip> tooltips = new List<Tooltip>();
         switch (rewardItemType)

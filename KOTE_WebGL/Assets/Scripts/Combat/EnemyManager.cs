@@ -107,7 +107,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             enemyBounds = collider.bounds;
             collider.enabled = false;
 
-            this.enemyType = Utils.ParseEnum<EnemyTypes>(enemyType);
+            this.enemyType = enemyType.ParseToEnum<EnemyTypes>();
             gameObject.name = Enum.GetName(typeof(EnemyTypes), this.enemyType);
 
             Instantiate();
@@ -330,7 +330,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     {
         if (!string.IsNullOrEmpty(enemyData.size))
         {
-            float size = Utils.GetSceneSize(Utils.ParseEnum<Size>(enemyData.size));
+            float size = Utils.GetSceneSize(enemyData.size.ParseToEnum<Size>());
             Gizmos.color = Color.cyan;
             GizmoExtensions.DrawBox(size, size * 2, (Vector3.up * size) + transform.position);
         }

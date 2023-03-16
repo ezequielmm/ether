@@ -141,8 +141,8 @@ namespace KOTE.Expedition.Combat.Cards.Piles
 
         internal void UpdatePilesOnMove(string cardId, string originType, string destinationType)
         {
-            CARDS_POSITIONS_TYPES origin = Utils.ParseEnum<CARDS_POSITIONS_TYPES>(originType);
-            CARDS_POSITIONS_TYPES destination = Utils.ParseEnum<CARDS_POSITIONS_TYPES>(destinationType);
+            CARDS_POSITIONS_TYPES origin = originType.ParseToEnum<CARDS_POSITIONS_TYPES>();
+            CARDS_POSITIONS_TYPES destination = destinationType.ParseToEnum<CARDS_POSITIONS_TYPES>();
             CardManager curCard = MasterCardList[cardId];
             List<CardManager> originPile = GetCardPileFromType(origin);
             List<CardManager> destinationPile = GetCardPileFromType(destination);

@@ -1,15 +1,18 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
 using Cysharp.Threading.Tasks;
+using KOTE.UI.Armory;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using System.Linq;
-using KOTE.UI.Armory;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class FetchData : DataManager, ISingleton<FetchData>
 {
     private static FetchData instance;
+
+    public Dictionary<FetchType, string> TestData = new();
 
     public static FetchData Instance
     {
@@ -35,6 +38,8 @@ public class FetchData : DataManager, ISingleton<FetchData>
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
             string rawJson = await MakeJsonRequest(request);
+            rawJson = TryGetTestData(FetchType.ServerVersion, rawJson);
+
             return ParseJsonWithPath<string>(rawJson, "data");
         }
     }
@@ -42,12 +47,16 @@ public class FetchData : DataManager, ISingleton<FetchData>
     public async UniTask<List<Card>> GetCardUpgradePair(string cardId)
     {
         string rawJson = await socketRequest.EmitAwaitResponse(SocketEvent.GetCardUpgradePair, cardId);
+        rawJson = TryGetTestData(FetchType.UpgradePair, rawJson);
+
         return ParseJsonWithPath<List<Card>>(rawJson, "data.data.deck");
     }
 
     public async UniTask<CardUpgrade> CampUpgradeCard(string cardId)
     {
         string rawJson = await socketRequest.EmitAwaitResponse(SocketEvent.UpgradeCard, cardId);
+        rawJson = TryGetTestData(FetchType.UpgradeCard, rawJson);
+
         return ParseJsonWithPath<CardUpgrade>(rawJson, "data.data");
     }
 
@@ -56,6 +65,8 @@ public class FetchData : DataManager, ISingleton<FetchData>
         string rawJson =
             await socketRequest.EmitAwaitResponse(SocketEvent.GetData,
                 WS_DATA_REQUEST_TYPES.UpgradableCards.ToString());
+        rawJson = TryGetTestData(FetchType.UpgradeableCards, rawJson);
+
         return ParseJsonWithPath<List<Card>>(rawJson, "data.data");
     }
 
@@ -63,6 +74,8 @@ public class FetchData : DataManager, ISingleton<FetchData>
     {
         string rawJson =
             await socketRequest.EmitAwaitResponse(SocketEvent.GetData, WS_DATA_REQUEST_TYPES.MerchantData.ToString());
+        rawJson = TryGetTestData(FetchType.MerchantData, rawJson);
+
         return ParseJsonWithPath<MerchantData>(rawJson, "data.data");
     }
 
@@ -70,12 +83,16 @@ public class FetchData : DataManager, ISingleton<FetchData>
     {
         string rawJson =
             await socketRequest.EmitAwaitResponse(SocketEvent.GetData, WS_DATA_REQUEST_TYPES.EncounterData.ToString());
+        rawJson = TryGetTestData(FetchType.EncounterData, rawJson);
+
         return ParseJsonWithPath<EncounterData>(rawJson, "data.data");
     }
 
     public async UniTask<EncounterData> SelectEncounterOption(int option)
     {
         string rawJson = await socketRequest.EmitAwaitResponse(SocketEvent.EncounterSelection, option);
+        rawJson = TryGetTestData(FetchType.EncounterOption, rawJson);
+
         return ParseJsonWithPath<EncounterData>(rawJson, "data.data");
     }
 
@@ -83,46 +100,27 @@ public class FetchData : DataManager, ISingleton<FetchData>
     {
         WWWForm form = walletSignature.ToWWWForm();
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.VerifyWalletSignature);
-        using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
+        using (UnityWebRequest request = UnityWebRequest.Post(requestUrl, form))
         {
             string rawJson = await MakeJsonRequest(request);
+            rawJson = TryGetTestData(FetchType.VerifyWallet, rawJson);
+
             return ParseJsonWithPath<bool>(rawJson, "data.isValid");
         }
     }
 
-    public async UniTask<WalletData> GetNftsInWalletPerContract(string wallet, string contract)
+    public async UniTask<RawWalletData> GetNftsInWallet(string wallet)
     {
-        string requestUrl = webRequest.ConstructUrl(RestEndpoint.WalletData) + $"/{wallet}?contractId={contract}";
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.WalletData) + $"/{wallet}";
         Debug.Log(requestUrl);
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
             string rawJson = await KeepRetryingRequest(request);
+            rawJson = TryGetTestData(FetchType.WalletNfts, rawJson);
+
             Debug.Log(rawJson);
-            return ParseJsonWithPath<WalletData>(rawJson, "data");
+            return ParseJsonWithPath<RawWalletData>(rawJson, "data");
         }
-    }
-
-    public async UniTask<List<Nft>> GetNftMetaData(List<int> tokenId, NftContract contract)
-    {
-        var requestBatch = tokenId.Partition(OpenSeasRequstBuilder.MaxContentRequest);
-        List<Nft> nftMetaDataList = new List<Nft>();
-        foreach (var tokenList in requestBatch)
-        {
-            using (UnityWebRequest request = OpenSeasRequstBuilder.ConstructNftRequest(contract, tokenList.ToArray()))
-            {
-                string rawJson = await MakeJsonRequest(request);
-                nftMetaDataList.AddRange(ParseJsonWithPath<List<Nft>>(rawJson, "assets"));
-            }
-
-            await UniTask.Yield();
-        }
-
-        foreach (var token in nftMetaDataList)
-        {
-            token.Contract = contract;
-        }
-
-        return nftMetaDataList;
     }
 
     public async UniTask<GearData> GetGearInventory()
@@ -133,7 +131,42 @@ public class FetchData : DataManager, ISingleton<FetchData>
             request.AddAuthToken();
             string rawJson = await MakeJsonRequest(request);
             Debug.Log($"Raw Gear Data: {rawJson}");
-            return ParseJsonWithPath<GearData>(rawJson);
+            rawJson = TryGetTestData(FetchType.GearInventory, rawJson);
+
+            if (string.IsNullOrEmpty(rawJson))
+                return new GearData { ownedGear = new() /*, equippedGear = new()*/ };
+            return ParseJsonWithPath<GearData>(rawJson, "data");
+        }
+    }
+
+    public async UniTask<bool> RequestNewExpedition(NftContract characterType, int selectedNft,
+        List<GearItemData> equippedGear)
+    {
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.ExpeditionRequest);
+
+        ExpeditionStartData startData = new ExpeditionStartData
+        {tokenType = characterType.ToString(),
+            nftId = selectedNft,
+            equippedGear = equippedGear
+        };
+
+        string data = JsonConvert.SerializeObject(startData);
+        byte[] utf8String = Encoding.Default.GetBytes(data);
+
+
+        using (UnityWebRequest request = new UnityWebRequest(requestUrl, "POST"))
+        {
+            request.AddAuthToken();
+            var uploadHandler = new UploadHandlerRaw(utf8String);
+            uploadHandler.contentType = $"application/json";
+            request.uploadHandler = uploadHandler;
+            request.downloadHandler = new DownloadHandlerBuffer();
+            string rawJson = await MakeJsonRequest(request);
+
+            if (string.IsNullOrEmpty(rawJson)) return false;
+            rawJson = TryGetTestData(FetchType.NewExpedition, rawJson);
+
+            return ParseJsonWithPath<bool>(rawJson, "data.expeditionCreated");
         }
     }
 
@@ -159,22 +192,6 @@ public class FetchData : DataManager, ISingleton<FetchData>
         return await GetTexture(requestUrl);
     }
 
-    public async UniTask<bool> RequestNewExpedition(string characterType, int selectedNft)
-    {
-        string requestUrl = webRequest.ConstructUrl(RestEndpoint.ExpeditionRequest);
-
-        WWWForm form = new WWWForm();
-        form.AddField("class", characterType);
-        form.AddField("nftId", selectedNft);
-
-        using (UnityWebRequest request = UnityWebRequest.Post(requestUrl, form))
-        {
-            request.AddAuthToken();
-            string rawJson = await MakeJsonRequest(request);
-            if (string.IsNullOrEmpty(rawJson)) return false;
-            return ParseJsonWithPath<bool>(rawJson, "data.expeditionCreated");
-        }
-    }
 
     public async UniTask<string> GetTokenByLogin(string email, string hashedPassword)
     {
@@ -287,7 +304,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
             T data = token.ToObject<T>();
             return data;
         }
-        catch (System.Exception e)
+        catch (Exception e)
         {
 #if UNITY_EDITOR
             if (UnitTestDetector.IsInUnitTest)
@@ -301,4 +318,38 @@ public class FetchData : DataManager, ISingleton<FetchData>
             return default(T);
         }
     }
+
+    private string TryGetTestData(FetchType type, string rawData)
+    {
+#if UNITY_EDITOR
+        if (UnitTestDetector.IsInUnitTest) rawData = GetTestData(type, rawData);
+#endif
+        return rawData;
+    }
+
+    private string GetTestData(FetchType type, string rawData)
+    {
+        if (TestData.ContainsKey(type))
+        {
+            return TestData[type];
+        }
+
+        return rawData;
+    }
+}
+
+public enum FetchType
+{
+    ServerVersion,
+    UpgradePair,
+    UpgradeCard,
+    UpgradeableCards,
+    MerchantData,
+    EncounterData,
+    EncounterOption,
+    VerifyWallet,
+    WalletNfts,
+    NftMetadata,
+    GearInventory,
+    NewExpedition
 }
