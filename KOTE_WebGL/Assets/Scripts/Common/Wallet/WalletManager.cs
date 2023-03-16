@@ -95,11 +95,11 @@ public class WalletManager : ISingleton<WalletManager>
     {
         if (string.IsNullOrEmpty(ActiveWallet))
         {
-            Debug.LogWarning($"[NftManager] Can not sign message without a wallet.");
+            Debug.LogWarning($"[WalletManager] Can not sign message without a wallet.");
             return false;
         }
 #if UNITY_EDITOR
-        Debug.Log($"[NftManager] Skipping Ownership Verification.");
+        Debug.Log($"[WalletManager] Skipping Ownership Verification.");
         return true;
 #endif
         // TODO: Check backend if wallet was previously authorized and is still valid.
@@ -107,21 +107,21 @@ public class WalletManager : ISingleton<WalletManager>
         var message =
             $"Hello, welcome to Knights of the Ether.\nPlease sign this message to verify your wallet.\nThis action will not cost you any transaction fee.\n\n\nSecret Code: {Guid.NewGuid()}";
         WalletSignature walletSignature = new WalletSignature(ActiveWallet, message);
-        Debug.Log($"[NftManager] Signing Message:\n{message}");
+        Debug.Log($"[WalletManager] Signing Message:\n{message}");
         bool signSuccessful = await walletSignature.SignWallet();
         if (!signSuccessful)
         {
-            Debug.LogWarning($"[NftManager] Could not get wallet signature. Wallet not verified.");
+            Debug.LogWarning($"[WalletManager] Could not get wallet signature. Wallet not verified.");
             return false;
         }
 
         if (!await FetchData.Instance.VerifyWallet(walletSignature))
         {
-            Debug.Log($"[NftManager] Wallet was not verified by backend.");
+            Debug.Log($"[WalletManager] Wallet was not verified by backend.");
             return false;
         }
 
-        Debug.LogWarning($"[NftManager] Wallet signature verified!");
+        Debug.LogWarning($"[WalletManager] Wallet signature verified!");
         return true;
     }
 
