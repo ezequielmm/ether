@@ -131,7 +131,6 @@ public class WalletManager : ISingleton<WalletManager>
         {
             return NftsInWallet[tokenType].Contains(nftId);
         }
-
         return false;
     }
 

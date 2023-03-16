@@ -8,7 +8,7 @@ public class MainMenuManager : MonoBehaviour
 {
     public TMP_Text nameText, moneyText, koteLabel;
 
-    [Tooltip("the entire button panel's canvas group for controling them all")]
+    [Tooltip("the entire button panel's canvas group for controlling them all")]
     public CanvasGroup buttonPanel;
 
     [Tooltip("Main menu buttons for individual control")]
@@ -28,16 +28,15 @@ public class MainMenuManager : MonoBehaviour
     private WalletManager wallet => WalletManager.Instance;
     private UserDataManager userData => UserDataManager.Instance;
 
-    private bool _hasWallet => !string.IsNullOrEmpty(WalletManager.Instance.ActiveWallet);
+    private bool _hasWallet => !string.IsNullOrEmpty(wallet.ActiveWallet);
 
     // we need to confirm all verification values before showing the play button
-    private bool _hasExpedition => UserDataManager.Instance.HasExpedition;
+    private bool _hasExpedition => userData.HasExpedition;
     private bool _expeditionStatusReceived;
     private bool _walletDataReceived;
 
     // verification that the player still owns the continuing nft
     private bool _ownsSavedNft => wallet.ConfirmNftOwnership(userData.ActiveNft, userData.NftContract);
-    private int _nftInExpedition => userData.ActiveNft;
     
     // verification that the connected wallet contains at least one knight
     private bool _ownsAnyNft => wallet.ConfirmOwnsNfts();
@@ -46,7 +45,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
-        UserDataManager.Instance.SetSessionToken(null);
+        userData.SetSessionToken(null);
         GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.AddListener(UpdateNameAndFief);
         GameManager.Instance.EVENT_AUTHENTICATED.AddListener(SetupPostAuthenticationButtons);
         GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
@@ -54,7 +53,7 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(false);
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(false);
 
-        WalletManager.Instance.WalletStatusModified.AddListener(UpdateUiOnWalletModification);
+        wallet.WalletStatusModified.AddListener(UpdateUiOnWalletModification);
         NftManager.Instance.NftsLoaded.AddListener(VerifyResumeExpedition);
 
         //CheckIfRegisterButtonIsEnabled();
@@ -83,7 +82,6 @@ public class MainMenuManager : MonoBehaviour
     // this can only run after ALL response have come in, due to them being able to come in at any order.
     private void VerifyResumeExpedition()
     {
-
         if (!_hasWallet || !_isWhitelisted ) 
         {
             playButton.gameObject.SetActive(false);
@@ -93,7 +91,7 @@ public class MainMenuManager : MonoBehaviour
         }
 
         
-        if (!_isWalletVerified || !_ownsAnyNft)
+        if (!_isWalletVerified || !_ownsAnyNft || !_expeditionStatusReceived)
         {
             // if no routes are available, lock the player out of the game
             playButton.gameObject.SetActive(true);
@@ -103,15 +101,14 @@ public class MainMenuManager : MonoBehaviour
             return;
         }
         
-        if (_expeditionStatusReceived && !_hasExpedition)
+        if (!_hasExpedition)
         {
             UpdatePlayButtonTextForExpedition();
             playButton.gameObject.SetActive(true);
             newExpeditionButton.gameObject.SetActive(false);
             playButton.interactable = true;
         }
-
-        if (_hasExpedition && _ownsSavedNft)
+        else if (_ownsSavedNft)
         {
             UpdatePlayButtonTextForExpedition();
             playButton.gameObject.SetActive(true);
@@ -119,9 +116,9 @@ public class MainMenuManager : MonoBehaviour
             playButton.interactable = true;
         }
         // if the player no longer owns the nft, clear the expedition
-        else if (_hasExpedition && !_ownsSavedNft)
+        else
         {
-            UserDataManager.Instance.ClearExpedition();
+            userData.ClearExpedition();
         }
     }
 
@@ -151,7 +148,6 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnLogoutSuccessful(string message)
     {
-        //koteLabel.gameObject.SetActive(true);
         GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(false);
         TogglePreLoginStatus(true);
     }
@@ -193,7 +189,6 @@ public class MainMenuManager : MonoBehaviour
         PlayerSpriteManager.Instance.SetSkin(userData.ActiveNft, userData.NftContract);
 
         VerifyResumeExpedition();
-
     }
 
     public void OnRegisterButton()
@@ -222,7 +217,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnWalletConnectButton()
     {
-        WalletManager.Instance.SetActiveWallet();
+        wallet.SetActiveWallet();
         GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Please check MetaMask to finish connecting your wallet",
             () => { });
     }
@@ -247,7 +242,7 @@ public class MainMenuManager : MonoBehaviour
             {
                 GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(
                     "No Wallet connected, would you like to add one?",
-                    () => { WalletManager.Instance.SetActiveWallet(); }, //TODO:this button was disabled for the client Demo Sept 3 2022
+                    () => { wallet.SetActiveWallet(); },
                     () => { GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true); },
                     new[] { "Manage Wallet", "Play Without Wallet" });
                 return;
@@ -268,6 +263,6 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnNewExpeditionConfirmed()
     {
-        UserDataManager.Instance.ClearExpedition();
+        userData.ClearExpedition();
     }
 }

@@ -84,12 +84,13 @@ public class Tooltip
 [Serializable]
 public class ExpeditionStatus
 {
-    public bool HasExpedition => hasExpedition == "true";
-    private string hasExpedition;
+    [JsonProperty("hasExpedition")]
+    public bool HasExpedition;
     [JsonProperty("nftId")]
     public int NftId;
     [JsonProperty("equippedGear")]
     public List<GearItemData> EquippedGear;
+    [JsonProperty]
     private string tokenType;
     public NftContract TokenType => GetContractType();
 

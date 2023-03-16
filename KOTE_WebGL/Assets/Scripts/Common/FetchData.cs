@@ -241,7 +241,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
     public async UniTask<ExpeditionStatus> GetExpeditionStatus()
     {
-        string requestUrl = webRequest.ConstructUrl(RestEndpoint.Profile);
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.ExpeditionStatus);
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
             request.SetRequestHeader("Accept", "*/*");

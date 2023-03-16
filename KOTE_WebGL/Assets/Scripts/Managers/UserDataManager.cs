@@ -38,6 +38,7 @@ public class UserDataManager : SingleTon<UserDataManager>
     private void Start()
     {
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnExpeditionUpdate);
+        GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ClearDataOnLogout);
     }
 
     public async UniTask<bool> Login(string email, string password) 
@@ -52,6 +53,13 @@ public class UserDataManager : SingleTon<UserDataManager>
         string hashedPassword = HashPassword(password);
         string token = await FetchData.Instance.GetTokenByRegistration(name, email, hashedPassword);
         return Authenticate(token);
+    }
+
+    private void ClearDataOnLogout(string _)
+    {
+        profile = null;
+        expeditionStatus = null;
+        ExpeditionId = null;
     }
 
     private bool Authenticate(string token) 
