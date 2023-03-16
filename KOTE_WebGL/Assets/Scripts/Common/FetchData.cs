@@ -100,7 +100,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
     {
         WWWForm form = walletSignature.ToWWWForm();
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.VerifyWalletSignature);
-        using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
+        using (UnityWebRequest request = UnityWebRequest.Post(requestUrl, form))
         {
             string rawJson = await MakeJsonRequest(request);
             rawJson = TryGetTestData(FetchType.VerifyWallet, rawJson);
