@@ -103,9 +103,6 @@ public class GameManager : SingleTon<GameManager>
 
     //EXPEDITION EVENTS
     [HideInInspector] public UnityEvent EVENT_EXPEDITION_SYNC { get; } = new UnityEvent();
-    [HideInInspector] public UnityEvent EVENT_REQUEST_EXPEDITON_SCORE { get; } = new UnityEvent();
-    [HideInInspector] public UnityEvent EVENT_EXPEDITION_SYNC { get; } = new UnityEvent();
-    [HideInInspector] public UnityEvent EVENT_REQUEST_EXPEDITION_CANCEL { get; } = new UnityEvent();
     
     //MAP EVENTS
     [HideInInspector]

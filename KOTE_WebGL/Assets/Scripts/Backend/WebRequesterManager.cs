@@ -69,6 +69,23 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         }
     }
 
+    private void LogRequest(Guid requestId, string url, params object[] payload) 
+    {
+        string requestIdShortened = requestId.ToString().Substring(0, LogHelper.LengthOfIdToLog);
+        string variableString = LogHelper.VariablesToHumanReadable(url, payload);
+        string jsonString = LogHelper.VariablesToJson(url, payload);
+        Debug.Log($"[WebRequesterManager] REQUEST [{requestIdShortened}] >>> {jsonString}");
+        LogHelper.SendOutgoingCommunicationLogs($"[WebRequesterManager] REQUEST [{requestIdShortened}] >>> {variableString}", jsonString);
+    }
+
+    private void LogRepsonse(Guid requestId, string url, string rawJson)
+    {
+        string requestIdShortened = requestId.ToString().Substring(0, LogHelper.LengthOfIdToLog);
+        string variableString = LogHelper.VariablesToHumanReadable(url, rawJson);
+        Debug.Log($"[WebRequesterManager] RESPONSE [{requestIdShortened}] <<< {rawJson}");
+        LogHelper.SendOutgoingCommunicationLogs($"[WebRequesterManager] RESPONSE [{requestIdShortened}] <<< {variableString}", rawJson);
+    }
+
     IEnumerator GetLogout(string token)
     {
         string loginUrl = $"{baseUrl}{RestEndpoint.Logout}";
