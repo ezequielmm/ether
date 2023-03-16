@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - MapPath
   - MapImage
+  - Missile
+  - UiParticleCamera
   layers:
   - Default
   - TransparentFX

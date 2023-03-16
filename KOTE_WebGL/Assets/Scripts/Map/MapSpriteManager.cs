@@ -11,7 +11,7 @@ namespace map
     public class MapSpriteManager : MonoBehaviour
     {
         public GameObject mapContainer;
-
+        public Canvas clickBlockCanvas;
         public NodeData nodePrefab;
 
         List<NodeData> nodes = new List<NodeData>();
@@ -147,6 +147,9 @@ namespace map
             portalAnimation.GetComponent<Renderer>().sortingLayerName = GameSettings.MAP_ELEMENTS_SORTING_LAYER_NAME;
 
             GenerateMapSeeds(22);
+            
+            // set the camera here so we don't have to assign it. This *should* block any clicks from passing through the map
+            clickBlockCanvas.worldCamera = GameObject.FindWithTag("UiParticleCamera").GetComponent<Camera>();
         }
 
         private void GenerateMapSeeds(int seed)
