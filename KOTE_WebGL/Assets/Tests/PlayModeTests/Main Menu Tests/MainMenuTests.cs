@@ -21,7 +21,6 @@ public class MainMenuTests
         {
             yield return null;
         }
-
         mainMenu = GameObject.FindObjectOfType<MainMenuManager>();
         walletManager = WalletManager.Instance;
         userData = UserDataManager.Instance;
@@ -32,7 +31,6 @@ public class MainMenuTests
     {
         walletManager.DestroyInstance();
         userData.DestroyInstance();
-        GameManager.Instance.DestroyInstance();
         yield return null;
     }
 
@@ -168,7 +166,7 @@ public class MainMenuTests
     public IEnumerator DoesPlayButtonTextChangeIfNoExpedition()
     {
         TextMeshProUGUI playButtonText = mainMenu.playButton.GetComponentInChildren<TextMeshProUGUI>();
-        UserDataManager.Instance.ClearExpedition();
+        userData.ClearExpedition();
         yield return null;
         Assert.AreEqual("PLAY", playButtonText.text);
         Assert.False(mainMenu.playButton.gameObject.activeSelf);
@@ -260,7 +258,7 @@ public class MainMenuTests
     {
         mainMenu.OnNewExpeditionConfirmed();
         yield return null;
-        Assert.AreEqual(false, UserDataManager.Instance.HasExpedition);
+        Assert.AreEqual(false, userData.HasExpedition);
     }
     
     [UnityTest]
