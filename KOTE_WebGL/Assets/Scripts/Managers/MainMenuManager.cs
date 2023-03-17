@@ -275,8 +275,10 @@ public class MainMenuManager : MonoBehaviour
             OnNewExpeditionConfirmed);
     }
 
-    public void OnNewExpeditionConfirmed()
+    public async void OnNewExpeditionConfirmed()
     {
-        userData.ClearExpedition();
+        _expeditionStatusReceived = false;
+        await userData.ClearExpedition();
+        GetExpeditionStatus();
     }
 }

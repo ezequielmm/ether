@@ -108,7 +108,7 @@ public class UserDataManager : SingleTon<UserDataManager>
         SetExpedition(await FetchData.Instance.GetExpeditionStatus());
     }
 
-    public async void ClearExpedition()
+    public async UniTask ClearExpedition()
     {
         SetExpedition(null);
         await SendData.Instance.ClearExpedition();

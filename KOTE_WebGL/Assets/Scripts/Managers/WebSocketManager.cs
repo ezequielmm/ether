@@ -84,6 +84,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     {
         if (scene == inGameScenes.MainMenu)
         {
+            doNotResuscitate = true;
             this.DestroyInstance();
         }
     }
@@ -95,7 +96,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         ManageQueuedMessages();
     }
 
-    void OnDestroy()
+    protected override void OnDestroy()
     {
         doNotResuscitate = true;
         if (rootSocket != null)
@@ -104,10 +105,11 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             rootSocket.Disconnect();
         }
 
-        if (Instance == this)
+        if (instance == this)
         {
             Debug.Log($"[WebSocketManager] Socket manager destroyed");
         }
+        base.OnDestroy();
     }
 
     private void OnEnable()

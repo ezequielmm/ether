@@ -33,7 +33,7 @@ public class SendData : DataManager, ISingleton<SendData>
     public async UniTask ClearExpedition() 
     {
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.ExpeditionCancel);
-        using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
+        using (UnityWebRequest request = UnityWebRequest.Post(requestUrl, ""))
         {
             request.AddAuthToken();
             await webRequest.MakeRequest(request);
