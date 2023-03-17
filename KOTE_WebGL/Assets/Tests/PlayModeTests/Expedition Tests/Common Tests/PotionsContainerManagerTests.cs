@@ -261,7 +261,7 @@ public class PotionsContainerManagerTests : MonoBehaviour
         GameManager.Instance.EVENT_POTION_WARNING.Invoke("potion_not_in_inventory");
         Assert.AreEqual("Potion No Longer In Inventory", _potionsContainerManager.warningText.text);
         GameManager.Instance.EVENT_POTION_WARNING.Invoke("potion_max_count_reached");
-        Assert.AreEqual("Maximum potions in inventory. Use or discard a potion to make room.",
+        Assert.AreEqual("No Space For Another Potion",
             _potionsContainerManager.warningText.text);
         GameManager.Instance.EVENT_POTION_WARNING.Invoke("potion_not_usable_outside_combat");
         Assert.AreEqual("This Potion Cannot Be Used Outside of Combat", _potionsContainerManager.warningText.text);

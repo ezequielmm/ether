@@ -118,7 +118,7 @@ public class PotionsContainerManager : MonoBehaviour
                 warningText.text = "Potion No Longer In Inventory";
                 break;
             case "potion_max_count_reached":
-                warningText.text = "Maximum potions in inventory. Use or discard a potion to make room.";
+                warningText.text = "No Space For Another Potion";
                 break;
             case "potion_not_usable_outside_combat":
                 warningText.text = "This Potion Cannot Be Used Outside of Combat";

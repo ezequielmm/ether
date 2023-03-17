@@ -200,6 +200,11 @@ namespace KOTE.UI.Armory
             ActivateContainer(false);
         }
 
+        public void OnTroveButton()
+        {
+            Application.OpenURL("https://trove.treasure.lol/games/kote");
+        }
+
         private async void OnStartExpedition()
         {
             playButton.interactable = false;
