@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using KOTE.UI.Armory;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,6 +29,7 @@ public class GearItemData
     public string name;
     public string trait;
     public string category;
+    [JsonIgnore]
     public Sprite gearImage;
 
     public async UniTask GetGearImage() 
