@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
 using TMPro;
 using UnityEngine;
@@ -9,6 +10,8 @@ using UnityEngine.TestTools;
 public class MainMenuTests
 {
     private MainMenuManager mainMenu;
+    private WalletManager walletManager;
+    private UserDataManager userData;
 
     [UnitySetUp]
     public IEnumerator Setup()
@@ -19,7 +22,17 @@ public class MainMenuTests
             yield return null;
         }
 
-        mainMenu = GameObject.Find("MainMenu").GetComponent<MainMenuManager>();
+        mainMenu = GameObject.FindObjectOfType<MainMenuManager>();
+        walletManager = WalletManager.Instance;
+        userData = UserDataManager.Instance;
+    }
+    
+    [UnityTearDown]
+    public IEnumerator Teardown()
+    {
+        walletManager.DestroyInstance();
+        userData.DestroyInstance();
+        yield return null;
     }
 
     [UnityTest]
@@ -247,5 +260,229 @@ public class MainMenuTests
         mainMenu.OnNewExpeditionConfirmed();
         yield return null;
         Assert.AreEqual(false, UserDataManager.Instance.HasExpedition);
+    }
+    
+    [Test]
+    public void HasWalletFalse()
+    {
+        SetHasWallet(false);
+        Assert.IsFalse(mainMenu._hasWallet);
+    }
+    
+    [Test]
+    public void HasWalletTrue()
+    {
+        SetHasWallet(true);
+        Assert.IsTrue(mainMenu._hasWallet);
+    }
+
+    private void SetHasWallet(bool value)
+    {
+        walletManager.ActiveWallet = value ? "0xFAKEWALLET" : null;
+    }
+    
+    [Test]
+    public void WalletVerifiedFalse()
+    {
+        SetWalletVerified(false);
+        Assert.IsFalse(mainMenu._isWalletVerified);
+    }
+    
+    [Test]
+    public void WalletVerifiedTrue()
+    {
+        SetWalletVerified(true);
+        Assert.IsTrue(mainMenu._isWalletVerified);
+    }
+    
+    private void SetWalletVerified(bool value)
+    {
+        walletManager.WalletVerified = value;
+    }
+    
+    [Test]
+    public void OwnsAnyNftFalse()
+    {
+        SetOwnsAnyNft(false);
+        Assert.IsFalse(mainMenu._ownsAnyNft);
+    }
+    
+    [Test]
+    public void OwnsAnyNftTrue()
+    {
+        SetOwnsAnyNft(true);
+        Assert.IsTrue(mainMenu._ownsAnyNft);
+    }
+    
+    private void SetOwnsAnyNft(bool value)
+    {
+        if (!value)
+        {
+            walletManager.NftsInWallet.Clear();
+            return;
+        }
+        if(!walletManager.NftsInWallet.ContainsKey(NftContract.None))
+            walletManager.NftsInWallet.Add(NftContract.None, new List<int>() { -1 });
+    }
+
+    [Test]
+    public void ExpeditionStatusReceivedFalse()
+    {
+        SetExpeditionStatusReceived(false);
+        Assert.IsFalse(mainMenu._expeditionStatusReceived);
+    }
+    
+    [Test]
+    public void ExpeditionStatusReceivedTrue()
+    {
+        SetExpeditionStatusReceived(true);
+        Assert.IsTrue(mainMenu._expeditionStatusReceived);
+    }
+    
+    private void SetExpeditionStatusReceived(bool value)
+    {
+        mainMenu._expeditionStatusReceived = value;
+    }
+    
+    [Test]
+    public void HasExpeditionFalse()
+    {
+        SetHasExpedition(false);
+        Assert.IsFalse(mainMenu._hasExpedition);
+    }
+    
+    [Test]
+    public void HasExpeditionTrue()
+    {
+        SetHasExpedition(true);
+        Assert.IsTrue(mainMenu._hasExpedition);
+    }
+    
+    private void SetHasExpedition(bool value)
+    {
+        userData.SetExpedition(new ExpeditionStatus(){ HasExpedition = value});
+    }
+    
+    [Test]
+    public void OwnsSavedNftFalse()
+    {
+        SetOwnsSavedNft(false);
+        Assert.IsFalse(mainMenu._ownsSavedNft);
+    }
+    
+    [Test]
+    public void OwnsSavedNftTrue()
+    {
+        SetOwnsSavedNft(true);
+        Assert.IsTrue(mainMenu._ownsSavedNft);
+    }
+    
+    private void SetOwnsSavedNft(bool value)
+    {
+        userData.SetExpedition(new ExpeditionStatus(){ HasExpedition = value, NftId = -1});
+        if(value && !walletManager.NftsInWallet.ContainsKey(NftContract.None))
+            walletManager.NftsInWallet.Add(NftContract.None, new List<int>() { -1 });
+    }
+    
+    [UnityTest]
+    public IEnumerator NoWalletScreen()
+    {
+        SetHasWallet(false);
+        mainMenu.VerifyResumeExpedition();
+        yield return null;
+        Assert.IsFalse(mainMenu.playButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.newExpeditionButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.playButton.interactable);
+    }
+    
+    [UnityTest]
+    public IEnumerator WalletButNotVerified()
+    {
+        SetHasWallet(true);
+        SetWalletVerified(false);
+        mainMenu.VerifyResumeExpedition();
+        yield return null;
+        Assert.IsTrue(mainMenu.playButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.newExpeditionButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.playButton.interactable);
+        Assert.AreEqual("Verifying...", mainMenu.playButton.GetComponentInChildren<TextMeshProUGUI>().text);
+    }
+    
+    [UnityTest]
+    public IEnumerator WalletVerifiedButWaitingOnExpeditionStatus()
+    {
+        SetHasWallet(true);
+        SetWalletVerified(true);
+        SetExpeditionStatusReceived(false);
+        mainMenu.VerifyResumeExpedition();
+        yield return null;
+        Assert.IsTrue(mainMenu.playButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.newExpeditionButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.playButton.interactable);
+        Assert.AreEqual("Verifying...", mainMenu.playButton.GetComponentInChildren<TextMeshProUGUI>().text);
+    }
+    
+    [UnityTest]
+    public IEnumerator WalletVerifiedButNoNfts()
+    {
+        SetHasWallet(true);
+        SetWalletVerified(true);
+        SetExpeditionStatusReceived(true);
+        SetOwnsAnyNft(false);
+        mainMenu.VerifyResumeExpedition();
+        yield return null;
+        Assert.IsFalse(mainMenu.playButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.newExpeditionButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.playButton.interactable);
+    }
+    
+    [UnityTest]
+    public IEnumerator ValidatedNoExpedition()
+    {
+        SetHasWallet(true);
+        SetWalletVerified(true);
+        SetExpeditionStatusReceived(true);
+        SetOwnsAnyNft(true);
+        SetHasExpedition(false);
+        mainMenu.VerifyResumeExpedition();
+        yield return null;
+        Assert.IsTrue(mainMenu.playButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.newExpeditionButton.gameObject.activeSelf);
+        Assert.IsTrue(mainMenu.playButton.interactable);
+        Assert.AreEqual("PLAY", mainMenu.playButton.GetComponentInChildren<TextMeshProUGUI>().text);
+    }
+    
+    [UnityTest]
+    public IEnumerator ValidatedExpeditionInvalidNft()
+    {
+        SetHasWallet(true);
+        SetWalletVerified(true);
+        SetExpeditionStatusReceived(true);
+        SetOwnsAnyNft(true);
+        SetHasExpedition(true);
+        SetOwnsSavedNft(false);
+        mainMenu.VerifyResumeExpedition();
+        yield return null;
+        Assert.IsTrue(mainMenu.playButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.newExpeditionButton.gameObject.activeSelf);
+        Assert.IsTrue(mainMenu.playButton.interactable);
+        Assert.AreEqual("PLAY", mainMenu.playButton.GetComponentInChildren<TextMeshProUGUI>().text);
+    }
+    
+    [UnityTest]
+    public IEnumerator ValidatedExpeditionValidNft()
+    {
+        SetHasWallet(true);
+        SetWalletVerified(true);
+        SetExpeditionStatusReceived(true);
+        SetOwnsAnyNft(true);
+        SetHasExpedition(true);
+        SetOwnsSavedNft(true);
+        mainMenu.VerifyResumeExpedition();
+        yield return null;
+        Assert.IsTrue(mainMenu.playButton.gameObject.activeSelf);
+        Assert.IsTrue(mainMenu.newExpeditionButton.gameObject.activeSelf);
+        Assert.IsTrue(mainMenu.playButton.interactable);
+        Assert.AreEqual("RESUME", mainMenu.playButton.GetComponentInChildren<TextMeshProUGUI>().text);
     }
 }

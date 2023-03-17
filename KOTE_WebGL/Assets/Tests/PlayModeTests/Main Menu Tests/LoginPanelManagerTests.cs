@@ -89,10 +89,13 @@ public class LoginPanelManagerTests : MonoBehaviour
     [Test]
     public void DoesShowingPasswordToggleInputFieldContentType()
     {
+        loginPanel.passwordInputField.contentType = TMP_InputField.ContentType.Password;
         Assert.AreEqual(TMP_InputField.ContentType.Password, loginPanel.passwordInputField.contentType);
         loginPanel.showPassword.isOn = true;
+        loginPanel.OnShowPassword();
         Assert.AreEqual(TMP_InputField.ContentType.Standard, loginPanel.passwordInputField.contentType);
         loginPanel.showPassword.isOn = false;
+        loginPanel.OnShowPassword();
         Assert.AreEqual(TMP_InputField.ContentType.Password, loginPanel.passwordInputField.contentType);
     }
 
@@ -240,4 +243,14 @@ public class LoginPanelManagerTests : MonoBehaviour
         Assert.AreEqual(String.Empty, loginPanel.passwordInputField.text);
     }
     
+    [Test]
+    public void UpdatePanelOnAuthenticatedRememberAndClose()
+    {
+        string testEmail = "andrewtest@gmail.com";
+        loginPanel.emailInputField.text = testEmail;
+        loginPanel.rememberMe.isOn = true;
+        loginPanel.UpdatePanelOnAuthenticated(true);
+        
+        Assert.AreEqual(testEmail, PlayerPrefs.GetString("email_reme_login"));
+    }
 }

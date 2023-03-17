@@ -29,6 +29,7 @@ public class UserDataManager : SingleTon<UserDataManager>
                 Guid newId = Guid.NewGuid();
                 id = newId.ToString();
                 PlayerPrefs.SetString("client_id", newId.ToString());
+                PlayerPrefs.Save();
             }
 
             return id;
@@ -99,20 +100,24 @@ public class UserDataManager : SingleTon<UserDataManager>
     public async UniTask UpdatePlayerProfile() 
     {
         profile = await FetchData.Instance.GetPlayerProfile();
-        GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.Invoke(profile.name, profile.fief);
+        GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.Invoke(profile?.name ?? string.Empty, profile?.fief ?? -1);
     }
 
     public async UniTask UpdateExpeditionStatus() 
     {
-        expeditionStatus = await FetchData.Instance.GetExpeditionStatus();
+        SetExpedition(await FetchData.Instance.GetExpeditionStatus());
     }
 
     public async void ClearExpedition()
     {
-        expeditionStatus = null;
+        SetExpedition(null);
         await SendData.Instance.ClearExpedition();
     }
 
+    public void SetExpedition(ExpeditionStatus newStatus)
+    {
+        expeditionStatus = newStatus;
+    }
 
     private void OnExpeditionUpdate(PlayerStateData playerState)
     {

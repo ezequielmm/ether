@@ -28,20 +28,22 @@ public class MainMenuManager : MonoBehaviour
     private WalletManager wallet => WalletManager.Instance;
     private UserDataManager userData => UserDataManager.Instance;
 
-    private bool _hasWallet => !string.IsNullOrEmpty(wallet.ActiveWallet);
+    public bool _hasWallet => !string.IsNullOrEmpty(wallet.ActiveWallet);
 
     // we need to confirm all verification values before showing the play button
-    private bool _hasExpedition => userData.HasExpedition;
-    private bool _expeditionStatusReceived;
-    private bool _walletDataReceived;
+    public bool _hasExpedition => userData.HasExpedition;
+    [HideInInspector]
+    public bool _expeditionStatusReceived;
+    [HideInInspector]
+    public bool _walletDataReceived;
 
     // verification that the player still owns the continuing nft
-    private bool _ownsSavedNft => wallet.ConfirmNftOwnership(userData.ActiveNft, userData.NftContract);
+    public bool _ownsSavedNft => wallet.ConfirmNftOwnership(userData.ActiveNft, userData.NftContract);
     
     // verification that the connected wallet contains at least one knight
-    private bool _ownsAnyNft => wallet.ConfirmOwnsNfts();
-    private bool _isWalletVerified => wallet.WalletVerified;
-    private bool _isWhitelisted => true;
+    public bool _ownsAnyNft => wallet.ConfirmOwnsNfts();
+    public bool _isWalletVerified => wallet.WalletVerified;
+    public bool _isWhitelisted => true;
 
     private void Start()
     {
@@ -80,7 +82,7 @@ public class MainMenuManager : MonoBehaviour
 
     // we need to verify that the player can actually resume or start a new game before presenting those options
     // this can only run after ALL response have come in, due to them being able to come in at any order.
-    private void VerifyResumeExpedition()
+    public void VerifyResumeExpedition()
     {
         if (!_hasWallet || !_isWhitelisted ) 
         {
@@ -91,11 +93,19 @@ public class MainMenuManager : MonoBehaviour
         }
 
         
-        if (!_isWalletVerified || !_ownsAnyNft || !_expeditionStatusReceived)
+        if (!_isWalletVerified || !_expeditionStatusReceived)
         {
             // if no routes are available, lock the player out of the game
             playButton.gameObject.SetActive(true);
             UpdatePlayButtonText("Verifying...");
+            newExpeditionButton.gameObject.SetActive(false);
+            playButton.interactable = false;
+            return;
+        }
+        
+        if (!_ownsAnyNft ) 
+        {
+            playButton.gameObject.SetActive(false);
             newExpeditionButton.gameObject.SetActive(false);
             playButton.interactable = false;
             return;
@@ -119,6 +129,10 @@ public class MainMenuManager : MonoBehaviour
         else
         {
             userData.ClearExpedition();
+            UpdatePlayButtonTextForExpedition();
+            playButton.gameObject.SetActive(true);
+            newExpeditionButton.gameObject.SetActive(false);
+            playButton.interactable = true;
         }
     }
 
@@ -131,7 +145,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void UpdatePlayButtonText(string value)
     {
-        TextMeshProUGUI textField = playButton.gameObject.GetComponentInChildren<TextMeshProUGUI>();
+        TextMeshProUGUI textField = playButton.GetComponentInChildren<TextMeshProUGUI>();
         textField?.SetText(value);
     }
 
