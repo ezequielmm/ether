@@ -41,7 +41,8 @@ public class NftManager : ISingleton<NftManager>
         {
             return nfts;
         }
-        return new List<Nft>();
+        Nfts.Add(nftContract, new List<Nft>());
+        return Nfts[nftContract];
     }
 
     public List<Nft> GetAllNfts()

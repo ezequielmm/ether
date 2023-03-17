@@ -25,6 +25,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     private void Start()
     {
         GameManager.Instance.EVENT_NFT_SELECTED.AddListener(BuildPlayer);
+        GameManager.Instance.EVENT_UPDATE_NFT.AddListener(UpdateNftTrait);
     }
 
     public void SetSkin(int nftToken, NftContract contract, List<GearItemData> equippedGear = null)

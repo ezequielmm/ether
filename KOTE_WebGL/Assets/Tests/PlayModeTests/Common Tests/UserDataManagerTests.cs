@@ -48,7 +48,7 @@ public class UserDataManagerTests : MonoBehaviour
     public void SessionTokenSet()
     {
         string token = "token";
-        userData.SetSessionToken(token);
+        AuthenticationManager.Instance.SetSessionToken(token);
         Assert.AreEqual(token, PlayerPrefs.GetString("session_token"));
     }
     
@@ -56,7 +56,7 @@ public class UserDataManagerTests : MonoBehaviour
     public void SessionTokenGet()
     {
         string token = "token";
-        userData.SetSessionToken(token);
-        Assert.AreEqual(PlayerPrefs.GetString("session_token"), userData.GetSessionToken());
+        AuthenticationManager.Instance.SetSessionToken(token);
+        Assert.AreEqual(PlayerPrefs.GetString("session_token"), AuthenticationManager.Instance.GetSessionToken());
     }
 }

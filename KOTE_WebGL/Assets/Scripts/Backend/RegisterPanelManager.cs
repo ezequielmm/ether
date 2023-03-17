@@ -167,7 +167,7 @@ public class RegisterPanelManager : MonoBehaviour
         string name = nameInputField.text;
         string email = emailInputField.text;
         string password = passwordInputField.text;
-        bool Authenticated = await UserDataManager.Instance.Register(name, email, password);
+        bool Authenticated = await AuthenticationManager.Instance.Register(name, email, password);
         if(Authenticated) 
         {
             CloseRegistrationPanel();

@@ -89,13 +89,17 @@ public class LoginPanelManagerTests : MonoBehaviour
     [Test]
     public void DoesShowingPasswordToggleInputFieldContentType()
     {
-        loginPanel.passwordInputField.contentType = TMP_InputField.ContentType.Password;
-        Assert.AreEqual(TMP_InputField.ContentType.Password, loginPanel.passwordInputField.contentType);
         loginPanel.showPassword.isOn = true;
         loginPanel.OnShowPassword();
         Assert.AreEqual(TMP_InputField.ContentType.Standard, loginPanel.passwordInputField.contentType);
         loginPanel.showPassword.isOn = false;
         loginPanel.OnShowPassword();
+        Assert.AreEqual(TMP_InputField.ContentType.Password, loginPanel.passwordInputField.contentType);
+    }
+    
+    [Test]
+    public void DoesShowingPasswordToggleDefaultToOff()
+    {
         Assert.AreEqual(TMP_InputField.ContentType.Password, loginPanel.passwordInputField.contentType);
     }
 

@@ -137,7 +137,7 @@ public class LoginPanelManager : MonoBehaviour
             return;
         }
 
-        bool successfulLogin = await UserDataManager.Instance.Login(emailInputField.text, passwordInputField.text);
+        bool successfulLogin = await AuthenticationManager.Instance.Login(emailInputField.text, passwordInputField.text);
         UpdatePanelOnAuthenticated(successfulLogin);
     }
 

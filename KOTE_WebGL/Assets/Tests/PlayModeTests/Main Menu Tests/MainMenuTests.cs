@@ -32,6 +32,7 @@ public class MainMenuTests
     {
         walletManager.DestroyInstance();
         userData.DestroyInstance();
+        GameManager.Instance.DestroyInstance();
         yield return null;
     }
 
@@ -262,128 +263,6 @@ public class MainMenuTests
         Assert.AreEqual(false, UserDataManager.Instance.HasExpedition);
     }
     
-    [Test]
-    public void HasWalletFalse()
-    {
-        SetHasWallet(false);
-        Assert.IsFalse(mainMenu._hasWallet);
-    }
-    
-    [Test]
-    public void HasWalletTrue()
-    {
-        SetHasWallet(true);
-        Assert.IsTrue(mainMenu._hasWallet);
-    }
-
-    private void SetHasWallet(bool value)
-    {
-        walletManager.ActiveWallet = value ? "0xFAKEWALLET" : null;
-    }
-    
-    [Test]
-    public void WalletVerifiedFalse()
-    {
-        SetWalletVerified(false);
-        Assert.IsFalse(mainMenu._isWalletVerified);
-    }
-    
-    [Test]
-    public void WalletVerifiedTrue()
-    {
-        SetWalletVerified(true);
-        Assert.IsTrue(mainMenu._isWalletVerified);
-    }
-    
-    private void SetWalletVerified(bool value)
-    {
-        walletManager.WalletVerified = value;
-    }
-    
-    [Test]
-    public void OwnsAnyNftFalse()
-    {
-        SetOwnsAnyNft(false);
-        Assert.IsFalse(mainMenu._ownsAnyNft);
-    }
-    
-    [Test]
-    public void OwnsAnyNftTrue()
-    {
-        SetOwnsAnyNft(true);
-        Assert.IsTrue(mainMenu._ownsAnyNft);
-    }
-    
-    private void SetOwnsAnyNft(bool value)
-    {
-        if (!value)
-        {
-            walletManager.NftsInWallet.Clear();
-            return;
-        }
-        if(!walletManager.NftsInWallet.ContainsKey(NftContract.None))
-            walletManager.NftsInWallet.Add(NftContract.None, new List<int>() { -1 });
-    }
-
-    [Test]
-    public void ExpeditionStatusReceivedFalse()
-    {
-        SetExpeditionStatusReceived(false);
-        Assert.IsFalse(mainMenu._expeditionStatusReceived);
-    }
-    
-    [Test]
-    public void ExpeditionStatusReceivedTrue()
-    {
-        SetExpeditionStatusReceived(true);
-        Assert.IsTrue(mainMenu._expeditionStatusReceived);
-    }
-    
-    private void SetExpeditionStatusReceived(bool value)
-    {
-        mainMenu._expeditionStatusReceived = value;
-    }
-    
-    [Test]
-    public void HasExpeditionFalse()
-    {
-        SetHasExpedition(false);
-        Assert.IsFalse(mainMenu._hasExpedition);
-    }
-    
-    [Test]
-    public void HasExpeditionTrue()
-    {
-        SetHasExpedition(true);
-        Assert.IsTrue(mainMenu._hasExpedition);
-    }
-    
-    private void SetHasExpedition(bool value)
-    {
-        userData.SetExpedition(new ExpeditionStatus(){ HasExpedition = value});
-    }
-    
-    [Test]
-    public void OwnsSavedNftFalse()
-    {
-        SetOwnsSavedNft(false);
-        Assert.IsFalse(mainMenu._ownsSavedNft);
-    }
-    
-    [Test]
-    public void OwnsSavedNftTrue()
-    {
-        SetOwnsSavedNft(true);
-        Assert.IsTrue(mainMenu._ownsSavedNft);
-    }
-    
-    private void SetOwnsSavedNft(bool value)
-    {
-        userData.SetExpedition(new ExpeditionStatus(){ HasExpedition = value, NftId = -1});
-        if(value && !walletManager.NftsInWallet.ContainsKey(NftContract.None))
-            walletManager.NftsInWallet.Add(NftContract.None, new List<int>() { -1 });
-    }
-    
     [UnityTest]
     public IEnumerator NoWalletScreen()
     {
@@ -485,4 +364,113 @@ public class MainMenuTests
         Assert.IsTrue(mainMenu.playButton.interactable);
         Assert.AreEqual("RESUME", mainMenu.playButton.GetComponentInChildren<TextMeshProUGUI>().text);
     }
+
+    #region HelperSpecificTests
+    [Test]
+    public void HasWalletFalse()
+    {
+        SetHasWallet(false);
+        Assert.IsFalse(mainMenu._hasWallet);
+    }
+    [Test]
+    public void HasWalletTrue()
+    {
+        SetHasWallet(true);
+        Assert.IsTrue(mainMenu._hasWallet);
+    }
+    [Test]
+    public void WalletVerifiedFalse()
+    {
+        SetWalletVerified(false);
+        Assert.IsFalse(mainMenu._isWalletVerified);
+    }
+    [Test]
+    public void WalletVerifiedTrue()
+    {
+        SetWalletVerified(true);
+        Assert.IsTrue(mainMenu._isWalletVerified);
+    }
+    [Test]
+    public void OwnsAnyNftFalse()
+    {
+        SetOwnsAnyNft(false);
+        Assert.IsFalse(mainMenu._ownsAnyNft);
+    }
+    [Test]
+    public void OwnsAnyNftTrue()
+    {
+        SetOwnsAnyNft(true);
+        Assert.IsTrue(mainMenu._ownsAnyNft);
+    }
+    [Test]
+    public void ExpeditionStatusReceivedFalse()
+    {
+        SetExpeditionStatusReceived(false);
+        Assert.IsFalse(mainMenu._expeditionStatusReceived);
+    }
+    [Test]
+    public void ExpeditionStatusReceivedTrue()
+    {
+        SetExpeditionStatusReceived(true);
+        Assert.IsTrue(mainMenu._expeditionStatusReceived);
+    }
+    [Test]
+    public void HasExpeditionFalse()
+    {
+        SetHasExpedition(false);
+        Assert.IsFalse(mainMenu._hasExpedition);
+    }
+    [Test]
+    public void HasExpeditionTrue()
+    {
+        SetHasExpedition(true);
+        Assert.IsTrue(mainMenu._hasExpedition);
+    }
+    [Test]
+    public void OwnsSavedNftFalse()
+    {
+        SetOwnsSavedNft(false);
+        Assert.IsFalse(mainMenu._ownsSavedNft);
+    }
+    [Test]
+    public void OwnsSavedNftTrue()
+    {
+        SetOwnsSavedNft(true);
+        Assert.IsTrue(mainMenu._ownsSavedNft);
+    }
+    #endregion
+    #region MainMenuProgressionBoolHelpers
+    private void SetHasWallet(bool value)
+    {
+        walletManager.ActiveWallet = value ? "0xFAKEWALLET" : null;
+    }
+    private void SetWalletVerified(bool value)
+    {
+        walletManager.WalletVerified = value;
+    }
+    private void SetOwnsAnyNft(bool value)
+    {
+        if (!value)
+        {
+            walletManager.NftsInWallet.Clear();
+            return;
+        }
+        if(!walletManager.NftsInWallet.ContainsKey(NftContract.None))
+            walletManager.NftsInWallet.Add(NftContract.None, new List<int>() { -1 });
+    }
+    private void SetExpeditionStatusReceived(bool value)
+    {
+        mainMenu._expeditionStatusReceived = value;
+    }
+    private void SetHasExpedition(bool value)
+    {
+        userData.SetExpedition(new ExpeditionStatus(){ HasExpedition = value});
+    }
+    private void SetOwnsSavedNft(bool value)
+    {
+        userData.SetExpedition(new ExpeditionStatus(){ HasExpedition = value, NftId = -1});
+        if(value && !walletManager.NftsInWallet.ContainsKey(NftContract.None))
+            walletManager.NftsInWallet.Add(NftContract.None, new List<int>() { -1 });
+    }
+    #endregion
 }

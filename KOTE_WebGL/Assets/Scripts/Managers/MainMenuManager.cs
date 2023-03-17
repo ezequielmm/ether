@@ -47,7 +47,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
-        userData.SetSessionToken(null);
+        AuthenticationManager.Instance.SetSessionToken(null);
         GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.AddListener(UpdateNameAndFief);
         GameManager.Instance.EVENT_AUTHENTICATED.AddListener(SetupPostAuthenticationButtons);
         GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
@@ -80,9 +80,7 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    // we need to verify that the player can actually resume or start a new game before presenting those options
-    // this can only run after ALL response have come in, due to them being able to come in at any order.
-    public void VerifyResumeExpedition()
+    public async void VerifyResumeExpedition()
     {
         if (!_hasWallet || !_isWhitelisted ) 
         {
@@ -95,7 +93,6 @@ public class MainMenuManager : MonoBehaviour
         
         if (!_isWalletVerified || !_expeditionStatusReceived)
         {
-            // if no routes are available, lock the player out of the game
             playButton.gameObject.SetActive(true);
             UpdatePlayButtonText("Verifying...");
             newExpeditionButton.gameObject.SetActive(false);
@@ -128,11 +125,8 @@ public class MainMenuManager : MonoBehaviour
         // if the player no longer owns the nft, clear the expedition
         else
         {
-            userData.ClearExpedition();
-            UpdatePlayButtonTextForExpedition();
-            playButton.gameObject.SetActive(true);
-            newExpeditionButton.gameObject.SetActive(false);
-            playButton.interactable = true;
+            await userData.ClearExpedition();
+            VerifyResumeExpedition();
         }
     }
 
