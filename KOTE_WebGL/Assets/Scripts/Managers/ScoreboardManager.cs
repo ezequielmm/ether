@@ -66,11 +66,11 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
         Lootbox.Populate(ScoreData.Lootbox);
         if (ScoreData.Lootbox.Count == 0)
         {
-            ToggleLootPanel(true);
+            ToggleScorePanel(true);
         }
         else 
         {
-            ToggleScorePanel(true);
+            ToggleLootPanel(true);
         }
     }
 
