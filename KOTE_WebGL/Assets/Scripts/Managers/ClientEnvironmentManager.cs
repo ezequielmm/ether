@@ -73,6 +73,7 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
     {
         switch(currentEnvironment) 
         {
+            // unknown usually means a local build, so we want it pointing to villagers
             case Environments.Unknown:
             case Environments.Snapshot:
                 WebRequestURL = $"https://gateway.villagers.dev.kote.robotseamonster.com";
