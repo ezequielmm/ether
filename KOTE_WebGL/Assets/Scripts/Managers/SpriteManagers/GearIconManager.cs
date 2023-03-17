@@ -16,9 +16,12 @@ namespace KOTE.UI.Armory
             {
                 return iconCache[gearType][itemName];
             }
+            
+            Sprite curSprite = await GetIcon($"{gearType}/{itemName}");
+            if(curSprite == null) return defaultImage;
 
-            //TODO request correct image
-            return defaultImage;
+            CacheIcon(gearType, itemName, curSprite);
+            return curSprite;
         }
 
         private bool IsIconCached(Trait gearType, string itemName)
