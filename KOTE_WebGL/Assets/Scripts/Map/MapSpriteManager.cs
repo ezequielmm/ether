@@ -11,7 +11,7 @@ namespace map
     public class MapSpriteManager : MonoBehaviour
     {
         public GameObject mapContainer;
-
+        public Canvas clickBlockCanvas;
         public NodeData nodePrefab;
 
         List<NodeData> nodes = new List<NodeData>();
@@ -147,6 +147,9 @@ namespace map
             portalAnimation.GetComponent<Renderer>().sortingLayerName = GameSettings.MAP_ELEMENTS_SORTING_LAYER_NAME;
 
             GenerateMapSeeds(22);
+            
+            // set the camera here so we don't have to assign it. This *should* block any clicks from passing through the map
+            clickBlockCanvas.worldCamera = GameObject.FindWithTag("UiParticleCamera").GetComponent<Camera>();
         }
 
         private void GenerateMapSeeds(int seed)
@@ -162,6 +165,7 @@ namespace map
         private void OnToggleMap(bool data)
         {
             mapContainer.SetActive(data);
+            clickBlockCanvas.enabled = data;
         }
 
         private void OnMaskDoubleClick()
@@ -292,12 +296,14 @@ namespace map
             if (mapContainer.activeSelf)
             {
                 mapContainer.SetActive(false);
+                clickBlockCanvas.enabled = false;
                 GameManager.Instance.EVENT_TOGGLE_COMBAT_UI.Invoke();
                 GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
             }
             else
             {
                 mapContainer.SetActive(true);
+                clickBlockCanvas.enabled = true;
                 GameManager.Instance.EVENT_TOGGLE_COMBAT_UI.Invoke();
                 GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(true);
             }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4123488319546926646}
   m_Layer: 0
   m_Name: UI Particle Camera
-  m_TagString: Untagged
+  m_TagString: UiParticleCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
