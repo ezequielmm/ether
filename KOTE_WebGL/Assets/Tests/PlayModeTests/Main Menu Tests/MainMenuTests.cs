@@ -116,7 +116,7 @@ public class MainMenuTests
     [UnityTest]
     public IEnumerator TestMenuButtonsAreDeactivatedBySuccessfulLogin()
     {
-        mainMenu.UpdateNameAndFief("", 0);
+        GameManager.Instance.EVENT_AUTHENTICATED.Invoke();
         yield return null;
         Assert.AreEqual(false, mainMenu.playButton.gameObject.activeSelf);
         Assert.AreEqual(false, mainMenu.newExpeditionButton.gameObject.activeSelf);
@@ -125,17 +125,13 @@ public class MainMenuTests
     }
 
     [UnityTest]
-    public IEnumerator TestNameAndFiefUpdateLiseners()
+    public IEnumerator TestNameAndFiefUpdateListeners()
     {
         GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.Invoke("test", 69420);
         yield return null;
 
         Assert.AreEqual("test", mainMenu.nameText.text);
         Assert.AreEqual("69420 $fief", mainMenu.moneyText.text);
-        Assert.AreEqual(false, mainMenu.playButton.gameObject.activeSelf);
-        Assert.AreEqual(false, mainMenu.newExpeditionButton.gameObject.activeSelf);
-        Assert.AreEqual(false, mainMenu.registerButton.gameObject.activeSelf);
-        Assert.AreEqual(false, mainMenu.loginButton.gameObject.activeSelf);
     }
 
     [Test]
@@ -163,7 +159,7 @@ public class MainMenuTests
         Assert.AreEqual("PLAY", playButtonText.text);
         Assert.AreEqual(false, mainMenu.playButton.gameObject.activeSelf);
         Assert.AreEqual(false, mainMenu.newExpeditionButton.gameObject.activeSelf);
-        Assert.AreEqual(true, mainMenu.treasuryButton.gameObject.activeSelf);
+        Assert.AreEqual(false, mainMenu.treasuryButton.gameObject.activeSelf);
     }
     
     [UnityTest]

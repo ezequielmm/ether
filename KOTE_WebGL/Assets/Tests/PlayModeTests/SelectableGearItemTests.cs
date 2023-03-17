@@ -42,7 +42,7 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoesGearImageExist()
         {
-            Assert.NotNull(_itemManager.Image);
+            Assert.NotNull(_itemManager.GearImage);
         }
 
         [Test]

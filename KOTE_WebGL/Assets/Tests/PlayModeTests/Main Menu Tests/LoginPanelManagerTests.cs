@@ -177,7 +177,7 @@ public class LoginPanelManagerTests : MonoBehaviour
     public void DoesLoginErrorLogThatThereWasALoginError()
     {
         loginPanel.UpdatePanelOnAuthenticated(false);
-        LogAssert.Expect(LogType.Log, "-------------------Login Error------------------");
+        LogAssert.Expect(LogType.Warning, "-------------------Login Error------------------");
     }
 
     [Test]

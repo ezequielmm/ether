@@ -292,6 +292,10 @@ public class FetchData : DataManager, ISingleton<FetchData>
     private async UniTask<Texture2D> MakeTextureRequest(UnityWebRequest request)
     {
         Texture2D texture = ((DownloadHandlerTexture)await webRequest.MakeRequest(request))?.texture;
+        if (texture == null)
+        {
+            texture = new Texture2D(1,1);
+        }
         return texture;
     }
 

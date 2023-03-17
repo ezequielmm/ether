@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using KOTE.UI.Armory;
 using UnityEngine;
@@ -18,6 +19,11 @@ public class GearItem : MonoBehaviour
             await ItemData.GetGearImage();
         }
         Sprite ImageSprite = ItemData.gearImage;
+        if (GearImage == null)
+        {
+            Debug.LogError($"[GearItem] GearImage on gameobject [{gameObject.name}] is null.");
+            return;
+        }
         GearImage.sprite = ImageSprite;
     }
 }
