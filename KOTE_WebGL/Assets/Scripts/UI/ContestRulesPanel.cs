@@ -14,11 +14,14 @@ public class ContestRulesPanel : MonoBehaviour
     GameObject RulePrefab;
 
     private bool shownPanelPreviously = false;
-    private const string StaticRules = "1. Each character can only win once a Map.\n" +
-        "2. Map refeshes at UTC midnight.\n" +
-        "3. A character gets only 1 reward for each of the major nodes: Elite & Boss.\n" +
-        "4. If you finish a map after UTC midnight it will be valid for the daily " +
-        "contest up to 6 hours after UTC midnight. After that YOU GET NOTHING (except the joy of playing.)";
+
+    private const string StaticRules =
+        "1. Each Leaderboard and Map lasts for 24 hours. These reset every 24 hours at UTC Midnight.\n" +
+        "2. Villagers and Blessed Villagers get to complete 1 full expedition per 24 hour period. Knights get 2,"+
+        " Genesis Knights get 3. A full expedition is defined as beating the Stage 1 boss and receiving loot. Each "+
+        "character gets unlimited attempts each day to complete their allotted expeditions.\n" +
+        "3. If you are in the middle of an expedition at UTC Midnight you will have up to 6 hours afterwards to"+
+        " complete the expedition and receive rewards, after this time you will have to start a new expedition on the new daily map.";
 
     void Awake()
     {
