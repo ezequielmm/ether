@@ -11,6 +11,7 @@ public class UserDataManager : SingleTon<UserDataManager>
     public string ExpeditionId { get; private set; } = "";
     public bool HasExpedition => expeditionStatus?.HasExpedition ?? false;
     public int ActiveNft => expeditionStatus?.NftId ?? -1;
+    public List<GearItemData> EquippedGear => expeditionStatus?.EquippedGear ?? null;
     public NftContract NftContract => expeditionStatus?.TokenType ?? NftContract.None;
     public List<string> VerifiedWallets => profile?.ownedWallets ?? new();
 

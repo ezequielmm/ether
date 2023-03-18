@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using KOTE.UI.Armory;
 using Spine;
 using Spine.Unity;
 using UnityEngine;
@@ -56,9 +55,12 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
             return;
         }
 
-        if (equippedGear != null)
+        if (equippedGear == null)
         {
-            EquipGearToStartingNft(curNft, equippedGear);
+            if (curNft.TokenId == UserDataManager.Instance.ActiveNft && UserDataManager.Instance.EquippedGear != null)
+            {
+                EquipGearToStartingNft(curNft, UserDataManager.Instance.EquippedGear);
+            }
         }
 
         BuildPlayer(curNft);
