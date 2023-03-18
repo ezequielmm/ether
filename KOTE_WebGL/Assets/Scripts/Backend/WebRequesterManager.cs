@@ -93,7 +93,9 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             }
             else
             {
-                LogRepsonse(requestId, request.uri.ToString(), request?.downloadHandler?.text ?? string.Empty);
+                bool logText = IsResponseJson(request) && request?.downloadHandler?.text != null;
+                LogRepsonse(requestId, request.uri.ToString(), logText ? request.downloadHandler.text : 
+                    $"<Cannot Display: {request.GetResponseHeader("Content-Type")}>");
                 return request.downloadHandler;
             }
         }
@@ -104,6 +106,14 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             ServerCommunicationLogger.Instance.LogCommunication($"[{request.method}][{request.uri}] Data Not Retrieved: {request?.error}", CommunicationDirection.Incoming);
             return null;
         }
+    }
+
+    List<string> jsonCarryingFormats = new List<string>() { "application/json", "text/plain", "text/json" };
+    private bool IsResponseJson(UnityWebRequest response)
+    {
+        string responseType = response.GetResponseHeader("Content-Type")?.ToLower().Split(';')?
+            .GetValue(0)?.ToString() ?? string.Empty;
+        return jsonCarryingFormats.Contains(responseType);
     }
 
     private void LogRequest(Guid requestId, string url, params object[] payload) 
