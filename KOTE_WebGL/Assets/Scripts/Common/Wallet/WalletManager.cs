@@ -62,8 +62,9 @@ public class WalletManager : ISingleton<WalletManager>
             return;
         }
 
-        if (NftsInWallet[NftContract.Knights].Count <= 0 && NftsInWallet[NftContract.Villager].Count <= 0 &&
-            NftsInWallet[NftContract.BlessedVillager].Count <= 0)
+        
+        
+        if (!WalletHasNfts())
         {
             // No Knights
             GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
@@ -74,6 +75,20 @@ public class WalletManager : ISingleton<WalletManager>
         WalletVerified = true;
         NewWalletConfirmed.Invoke(walletData);
         WalletStatusModified.Invoke();
+    }
+
+    private bool WalletHasNfts()
+    {
+        bool hasNfts = false;
+        foreach (NftContract contract in NftsInWallet.Keys)
+        {
+            if (NftsInWallet[contract] != null && NftsInWallet[contract].Count > 0)
+            {
+                hasNfts = true;
+            } 
+        }
+
+        return hasNfts;
     }
 
     public async UniTask ConnectWallet()

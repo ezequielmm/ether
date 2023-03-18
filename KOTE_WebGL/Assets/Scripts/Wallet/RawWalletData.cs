@@ -17,7 +17,7 @@ public class ContractData
     public List<TokenData> tokens = new();
 
     [JsonIgnore]
-    public NftContract ContractType => (tokens[0] == null)
+    public NftContract ContractType => (tokens?.Count <= 0 || tokens[0] == null)
         ? NftContract.None
         : tokens[0].name.ParseToEnum<NftContract>();
 }

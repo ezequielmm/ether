@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Events;
 
 public class NftManager : ISingleton<NftManager>
@@ -68,9 +69,17 @@ public class NftManager : ISingleton<NftManager>
         var NftTokenMap = WalletManager.Instance.NftsInWallet;
         foreach (ContractData contract in walletData.Contracts)
         {
+            if (contract.ContractType == NftContract.None) continue;
             Nfts[contract.ContractType] = new List<Nft>();
             foreach (TokenData token in contract.tokens)
             {
+                // if the metadata is null then the backend detected bad data and didn't send anything
+                if (token.metadata == null)
+                {
+                    Debug.LogWarning($"[NftManager] No Metadata Found for the {contract.ContractType} {token.token_id} From The Server");
+                    continue;
+                }
+                
                 token.metadata.TokenId = int.Parse(token.token_id);
                 token.metadata.Contract = contract.ContractType;
                 token.metadata.CanPlay = token.can_play;

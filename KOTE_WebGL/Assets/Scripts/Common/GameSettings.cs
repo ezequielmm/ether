@@ -89,7 +89,7 @@ public static class GameSettings
 
 
 #if UNITY_EDITOR
-    public const string EDITOR_WALLET = "0x66956Fe08D7Bc88fe70216502fD8a6e4b7f269c5";
+    public const string EDITOR_WALLET = "0x3e98aea7a1e837aa52467499a1b122224f5e247a";
 #endif
 
     // Player Skin Defaults
