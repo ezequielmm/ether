@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class SendData : DataManager, ISingleton<SendData>
 {
@@ -23,9 +24,19 @@ public class SendData : DataManager, ISingleton<SendData>
         instance = null;
     }
 
-    public void SendCardsSelected(List<string> cardIds)
+    public async UniTask SendCardsSelected(List<string> cardIds)
     {
         CardsSelectedList cardList = new CardsSelectedList { cardsToTake = cardIds };
-        socketRequest.SendData(SocketEvent.MoveSelectedCard, cardList);
+        await socketRequest.SendData(SocketEvent.MoveSelectedCard, cardList);
+    }
+
+    public async UniTask ClearExpedition() 
+    {
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.ExpeditionCancel);
+        using (UnityWebRequest request = UnityWebRequest.Post(requestUrl, ""))
+        {
+            request.AddAuthToken();
+            await webRequest.MakeRequest(request);
+        }
     }
 }

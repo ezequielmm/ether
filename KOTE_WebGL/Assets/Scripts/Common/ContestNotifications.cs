@@ -62,10 +62,11 @@ public class ContestNotifications : MonoBehaviour
 
     public void GiveContestEnded()
     {
-        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(EndOfContestText, () => {
-            GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.Invoke();
-            GameManager.Instance.LoadScene(inGameScenes.MainMenu);
-        }, () => { },
+        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(EndOfContestText, () =>
+            {
+                UserDataManager.Instance.ClearExpedition();
+                GameManager.Instance.LoadScene(inGameScenes.MainMenu);
+            }, () => { },
             new string[] { "Back to Main Menu", null });
     }
 

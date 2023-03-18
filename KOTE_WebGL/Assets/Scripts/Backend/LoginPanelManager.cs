@@ -33,8 +33,6 @@ public class LoginPanelManager : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLoginSucessful);
-        GameManager.Instance.EVENT_REQUEST_LOGIN_ERROR.AddListener(OnLoginError);
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerLoginPanel);
         GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
 
@@ -69,30 +67,41 @@ public class LoginPanelManager : MonoBehaviour
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
-    private void OnLoginSucessful(string userName, int fiefAmount)
+    public void RememberAndCloseLoginPanel()
     {
         if (rememberMe.isOn)
-        {
-            PlayerPrefs.SetString("email_reme_login", emailInputField.text);
-            PlayerPrefs.SetString("date_reme_login", DateTime.Today.ToString(CultureInfo.InvariantCulture));
-            PlayerPrefs.Save();
-        }
-
+            RememberLoginInfo();
+        else
+            ForgetLoginInfo();
         ActivateInnerLoginPanel(false);
-
-        WalletManager.Instance.SetActiveWallet();
+        validLoginPassword.gameObject.SetActive(false);
     }
 
-    private void OnLoginError(string errorMessage)
+    private void RememberLoginInfo() 
     {
-        validLoginPassword.gameObject.SetActive(true);
-        passwordInputField.text = "";
+        PlayerPrefs.SetString("email_reme_login", emailInputField.text);
+        PlayerPrefs.SetString("date_reme_login", DateTime.Today.ToString(CultureInfo.InvariantCulture));
+        PlayerPrefs.Save();
+    }
 
+    private void ForgetLoginInfo()
+    {
         PlayerPrefs.DeleteKey("email_reme_login");
         PlayerPrefs.DeleteKey("date_reme_login");
         PlayerPrefs.Save();
+    }
 
-        Debug.Log("-------------------Login Error------------------");
+    private void ClearLoginInfo() 
+    {
+        PlayerPrefs.DeleteKey("session_token");
+        PlayerPrefs.Save();
+        ForgetLoginInfo();
+    }
+
+    private void OpenLoginErrorPanel()
+    {
+        validLoginPassword.gameObject.SetActive(true);
+        passwordInputField.text = "";
     }
 
     private void Start()
@@ -117,15 +126,32 @@ public class LoginPanelManager : MonoBehaviour
         validEmailLabel.gameObject.SetActive(!validEmail);
     }
 
-    public void OnLogin()
+    public async void OnLogin()
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         validLoginEmail.gameObject.SetActive(false);
         validLoginPassword.gameObject.SetActive(false);
 
-        if (validEmail)
+        if (!validEmail)
         {
-            GameManager.Instance.EVENT_REQUEST_LOGIN.Invoke(emailInputField.text, passwordInputField.text);
+            return;
+        }
+
+        bool successfulLogin = await AuthenticationManager.Instance.Login(emailInputField.text, passwordInputField.text);
+        UpdatePanelOnAuthenticated(successfulLogin);
+    }
+
+    public void UpdatePanelOnAuthenticated(bool successfulLogin) 
+    {
+        if (successfulLogin)
+        {
+            RememberAndCloseLoginPanel();
+        }
+        else
+        {
+            Debug.LogWarning("-------------------Login Error------------------");
+            OpenLoginErrorPanel();
+            ClearLoginInfo();
         }
     }
 

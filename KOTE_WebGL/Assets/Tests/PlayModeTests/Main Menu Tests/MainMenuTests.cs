@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
 using TMPro;
 using UnityEngine;
@@ -9,6 +10,8 @@ using UnityEngine.TestTools;
 public class MainMenuTests
 {
     private MainMenuManager mainMenu;
+    private WalletManager walletManager;
+    private UserDataManager userData;
 
     [UnitySetUp]
     public IEnumerator Setup()
@@ -18,8 +21,17 @@ public class MainMenuTests
         {
             yield return null;
         }
-
-        mainMenu = GameObject.Find("MainMenu").GetComponent<MainMenuManager>();
+        mainMenu = GameObject.FindObjectOfType<MainMenuManager>();
+        walletManager = WalletManager.Instance;
+        userData = UserDataManager.Instance;
+    }
+    
+    [UnityTearDown]
+    public IEnumerator Teardown()
+    {
+        walletManager.DestroyInstance();
+        userData.DestroyInstance();
+        yield return null;
     }
 
     [UnityTest]
@@ -40,11 +52,9 @@ public class MainMenuTests
     public IEnumerator UsedUnityEventsExist()
     {
         yield return null;
-        Assert.IsNotNull(GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL);
         Assert.IsNotNull(GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL);
         Assert.IsNotNull(GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST);
         Assert.IsNotNull(GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST);
-        Assert.IsNotNull(GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE);
     }
 
     [UnityTest]
@@ -96,10 +106,10 @@ public class MainMenuTests
     [UnityTest]
     public IEnumerator TestNameIsUpdatedOnSuccessfulLogin()
     {
-        mainMenu.OnLoginSuccessful("test", 0);
+        mainMenu.UpdateNameAndFief("test", 0);
         yield return null;
         Assert.AreEqual("test", mainMenu.nameText.text);
-        mainMenu.OnLoginSuccessful("No One Can Stop the Ping Pong in the Bayou", 0);
+        mainMenu.UpdateNameAndFief("No One Can Stop the Ping Pong in the Bayou", 0);
         yield return null;
         Assert.AreEqual("No One Can Stop the Ping Pong in the Bayou", mainMenu.nameText.text);
     }
@@ -107,10 +117,10 @@ public class MainMenuTests
     [UnityTest]
     public IEnumerator TestFiefIsUpdatedOnSuccessfulLogin()
     {
-        mainMenu.OnLoginSuccessful("", 0);
+        mainMenu.UpdateNameAndFief("", 0);
         yield return null;
         Assert.AreEqual("0 $fief", mainMenu.moneyText.text);
-        mainMenu.OnLoginSuccessful("", 45342);
+        mainMenu.UpdateNameAndFief("", 45342);
         yield return null;
         Assert.AreEqual("45342 $fief", mainMenu.moneyText.text);
     }
@@ -118,7 +128,7 @@ public class MainMenuTests
     [UnityTest]
     public IEnumerator TestMenuButtonsAreDeactivatedBySuccessfulLogin()
     {
-        mainMenu.OnLoginSuccessful("", 0);
+        GameManager.Instance.EVENT_AUTHENTICATED.Invoke();
         yield return null;
         Assert.AreEqual(false, mainMenu.playButton.gameObject.activeSelf);
         Assert.AreEqual(false, mainMenu.newExpeditionButton.gameObject.activeSelf);
@@ -127,17 +137,13 @@ public class MainMenuTests
     }
 
     [UnityTest]
-    public IEnumerator TestOnLoginSuccessfulListener()
+    public IEnumerator TestNameAndFiefUpdateListeners()
     {
-        GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.Invoke("test", 69420);
+        GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.Invoke("test", 69420);
         yield return null;
 
         Assert.AreEqual("test", mainMenu.nameText.text);
         Assert.AreEqual("69420 $fief", mainMenu.moneyText.text);
-        Assert.AreEqual(false, mainMenu.playButton.gameObject.activeSelf);
-        Assert.AreEqual(false, mainMenu.newExpeditionButton.gameObject.activeSelf);
-        Assert.AreEqual(false, mainMenu.registerButton.gameObject.activeSelf);
-        Assert.AreEqual(false, mainMenu.loginButton.gameObject.activeSelf);
     }
 
     [Test]
@@ -160,11 +166,7 @@ public class MainMenuTests
     public IEnumerator DoesPlayButtonTextChangeIfNoExpedition()
     {
         TextMeshProUGUI playButtonText = mainMenu.playButton.GetComponentInChildren<TextMeshProUGUI>();
-        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.Invoke(new ExpeditionStatusData
-        {
-            hasExpedition = false,
-            nftId = -1
-        });
+        userData.ClearExpedition();
         yield return null;
         Assert.AreEqual("PLAY", playButtonText.text);
         Assert.False(mainMenu.playButton.gameObject.activeSelf);
@@ -252,12 +254,221 @@ public class MainMenuTests
     }
 
     [UnityTest]
-    public IEnumerator DoesOnNewExpeditionConfirmedFireEvent()
+    public IEnumerator DoesOnNewExpeditionClearExpedition()
     {
-        bool eventFired = false;
-        GameManager.Instance.EVENT_REQUEST_EXPEDITION_CANCEL.AddListener(() => { eventFired = true; });
         mainMenu.OnNewExpeditionConfirmed();
         yield return null;
-        Assert.AreEqual(true, eventFired);
+        Assert.AreEqual(false, userData.HasExpedition);
     }
+    
+    [UnityTest]
+    public IEnumerator NoWalletScreen()
+    {
+        SetHasWallet(false);
+        mainMenu.VerifyResumeExpedition();
+        yield return null;
+        Assert.IsFalse(mainMenu.playButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.newExpeditionButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.playButton.interactable);
+    }
+    
+    [UnityTest]
+    public IEnumerator WalletButNotVerified()
+    {
+        SetHasWallet(true);
+        SetWalletVerified(false);
+        mainMenu.VerifyResumeExpedition();
+        yield return null;
+        Assert.IsTrue(mainMenu.playButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.newExpeditionButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.playButton.interactable);
+        Assert.AreEqual("Verifying...", mainMenu.playButton.GetComponentInChildren<TextMeshProUGUI>().text);
+    }
+    
+    [UnityTest]
+    public IEnumerator WalletVerifiedButWaitingOnExpeditionStatus()
+    {
+        SetHasWallet(true);
+        SetWalletVerified(true);
+        SetExpeditionStatusReceived(false);
+        mainMenu.VerifyResumeExpedition();
+        yield return null;
+        Assert.IsTrue(mainMenu.playButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.newExpeditionButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.playButton.interactable);
+        Assert.AreEqual("Verifying...", mainMenu.playButton.GetComponentInChildren<TextMeshProUGUI>().text);
+    }
+    
+    [UnityTest]
+    public IEnumerator WalletVerifiedButNoNfts()
+    {
+        SetHasWallet(true);
+        SetWalletVerified(true);
+        SetExpeditionStatusReceived(true);
+        SetOwnsAnyNft(false);
+        mainMenu.VerifyResumeExpedition();
+        yield return null;
+        Assert.IsFalse(mainMenu.playButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.newExpeditionButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.playButton.interactable);
+    }
+    
+    [UnityTest]
+    public IEnumerator ValidatedNoExpedition()
+    {
+        SetHasWallet(true);
+        SetWalletVerified(true);
+        SetExpeditionStatusReceived(true);
+        SetOwnsAnyNft(true);
+        SetHasExpedition(false);
+        mainMenu.VerifyResumeExpedition();
+        yield return null;
+        Assert.IsTrue(mainMenu.playButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.newExpeditionButton.gameObject.activeSelf);
+        Assert.IsTrue(mainMenu.playButton.interactable);
+        Assert.AreEqual("PLAY", mainMenu.playButton.GetComponentInChildren<TextMeshProUGUI>().text);
+    }
+    
+    [UnityTest]
+    public IEnumerator ValidatedExpeditionInvalidNft()
+    {
+        SetHasWallet(true);
+        SetWalletVerified(true);
+        SetExpeditionStatusReceived(true);
+        SetOwnsAnyNft(true);
+        SetHasExpedition(true);
+        SetOwnsSavedNft(false);
+        mainMenu.VerifyResumeExpedition();
+        yield return null;
+        Assert.IsTrue(mainMenu.playButton.gameObject.activeSelf);
+        Assert.IsFalse(mainMenu.newExpeditionButton.gameObject.activeSelf);
+        Assert.IsTrue(mainMenu.playButton.interactable);
+        Assert.AreEqual("PLAY", mainMenu.playButton.GetComponentInChildren<TextMeshProUGUI>().text);
+    }
+    
+    [UnityTest]
+    public IEnumerator ValidatedExpeditionValidNft()
+    {
+        SetHasWallet(true);
+        SetWalletVerified(true);
+        SetExpeditionStatusReceived(true);
+        SetOwnsAnyNft(true);
+        SetHasExpedition(true);
+        SetOwnsSavedNft(true);
+        mainMenu.VerifyResumeExpedition();
+        yield return null;
+        Assert.IsTrue(mainMenu.playButton.gameObject.activeSelf);
+        Assert.IsTrue(mainMenu.newExpeditionButton.gameObject.activeSelf);
+        Assert.IsTrue(mainMenu.playButton.interactable);
+        Assert.AreEqual("RESUME", mainMenu.playButton.GetComponentInChildren<TextMeshProUGUI>().text);
+    }
+
+    #region HelperSpecificTests
+    [Test]
+    public void HasWalletFalse()
+    {
+        SetHasWallet(false);
+        Assert.IsFalse(mainMenu._hasWallet);
+    }
+    [Test]
+    public void HasWalletTrue()
+    {
+        SetHasWallet(true);
+        Assert.IsTrue(mainMenu._hasWallet);
+    }
+    [Test]
+    public void WalletVerifiedFalse()
+    {
+        SetWalletVerified(false);
+        Assert.IsFalse(mainMenu._isWalletVerified);
+    }
+    [Test]
+    public void WalletVerifiedTrue()
+    {
+        SetWalletVerified(true);
+        Assert.IsTrue(mainMenu._isWalletVerified);
+    }
+    [Test]
+    public void OwnsAnyNftFalse()
+    {
+        SetOwnsAnyNft(false);
+        Assert.IsFalse(mainMenu._ownsAnyNft);
+    }
+    [Test]
+    public void OwnsAnyNftTrue()
+    {
+        SetOwnsAnyNft(true);
+        Assert.IsTrue(mainMenu._ownsAnyNft);
+    }
+    [Test]
+    public void ExpeditionStatusReceivedFalse()
+    {
+        SetExpeditionStatusReceived(false);
+        Assert.IsFalse(mainMenu._expeditionStatusReceived);
+    }
+    [Test]
+    public void ExpeditionStatusReceivedTrue()
+    {
+        SetExpeditionStatusReceived(true);
+        Assert.IsTrue(mainMenu._expeditionStatusReceived);
+    }
+    [Test]
+    public void HasExpeditionFalse()
+    {
+        SetHasExpedition(false);
+        Assert.IsFalse(mainMenu._hasExpedition);
+    }
+    [Test]
+    public void HasExpeditionTrue()
+    {
+        SetHasExpedition(true);
+        Assert.IsTrue(mainMenu._hasExpedition);
+    }
+    [Test]
+    public void OwnsSavedNftFalse()
+    {
+        SetOwnsSavedNft(false);
+        Assert.IsFalse(mainMenu._ownsSavedNft);
+    }
+    [Test]
+    public void OwnsSavedNftTrue()
+    {
+        SetOwnsSavedNft(true);
+        Assert.IsTrue(mainMenu._ownsSavedNft);
+    }
+    #endregion
+    #region MainMenuProgressionBoolHelpers
+    private void SetHasWallet(bool value)
+    {
+        walletManager.ActiveWallet = value ? "0xFAKEWALLET" : null;
+    }
+    private void SetWalletVerified(bool value)
+    {
+        walletManager.WalletVerified = value;
+    }
+    private void SetOwnsAnyNft(bool value)
+    {
+        if (!value)
+        {
+            walletManager.NftsInWallet.Clear();
+            return;
+        }
+        if(!walletManager.NftsInWallet.ContainsKey(NftContract.None))
+            walletManager.NftsInWallet.Add(NftContract.None, new List<int>() { -1 });
+    }
+    private void SetExpeditionStatusReceived(bool value)
+    {
+        mainMenu._expeditionStatusReceived = value;
+    }
+    private void SetHasExpedition(bool value)
+    {
+        userData.SetExpedition(new ExpeditionStatus(){ HasExpedition = value});
+    }
+    private void SetOwnsSavedNft(bool value)
+    {
+        userData.SetExpedition(new ExpeditionStatus(){ HasExpedition = value, NftId = -1});
+        if(value && !walletManager.NftsInWallet.ContainsKey(NftContract.None))
+            walletManager.NftsInWallet.Add(NftContract.None, new List<int>() { -1 });
+    }
+    #endregion
 }

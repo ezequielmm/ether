@@ -36,17 +36,19 @@ public class LootBoxPanelTests : MonoBehaviour
         yield return null;
     }
 
-    [Test]
-    public void ClearItemsOnPopulate() 
+    [UnityTest]
+    public IEnumerator ClearItemsOnPopulate() 
     {
         lootboxPanel.Populate(new List<GearItemData>());
+        yield return null;
         Assert.AreEqual(0, lootboxPanel.LootContainer.transform.childCount);
     }
 
-    [Test]
-    public void CorrectItemCount()
+    [UnityTest]
+    public IEnumerator CorrectItemCount()
     {
         lootboxPanel.Populate(tempData);
+        yield return null;
         Assert.AreEqual(1, lootboxPanel.LootContainer.transform.childCount);
     }
 

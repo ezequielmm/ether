@@ -14,12 +14,6 @@ public class MapSpriteManagerTests
     [UnitySetUp]
     public IEnumerator Setup()
     {
-        /*
-        GameObject mapPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Map/MapElements.prefab");
-        mapPrefab.SetActive(true);
-        _mapSpriteManager = mapPrefab.GetComponent<MapSpriteManager>();
-        yield return null;
-        */
         PlayerPrefs.DeleteKey("session_token");
         AsyncOperation sceneLoad = SceneManager.LoadSceneAsync("Scenes/Expedition");
         while (!sceneLoad.isDone)
@@ -27,7 +21,7 @@ public class MapSpriteManagerTests
             yield return null;
         }
 
-        _mapSpriteManager = GameObject.Find("MapElements").GetComponent<MapSpriteManager>();
+        _mapSpriteManager = GameObject.FindObjectOfType<MapSpriteManager>();
     }
 
     [Test]

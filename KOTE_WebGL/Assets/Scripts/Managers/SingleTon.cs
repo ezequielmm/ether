@@ -5,7 +5,7 @@ public abstract class SingleTon<T> : MonoBehaviour, ISingleton<T> where T : Comp
     /// <summary>
     /// The instance.
     /// </summary>
-    private static T instance;
+    protected static T instance;
 
     //TODO this needs to be set dynamically when a gameobject is created for the instance
     private bool createdGameobject = true;

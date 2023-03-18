@@ -84,23 +84,17 @@ public class Tooltip
 [Serializable]
 public class ExpeditionStatus
 {
-    public ExpeditionStatusData data = new();
+    [JsonProperty("hasExpedition")]
+    public bool HasExpedition;
+    [JsonProperty("nftId")]
+    public int NftId;
+    [JsonProperty("equippedGear")]
+    public List<GearItemData> EquippedGear;
+    [JsonProperty]
+    private string tokenType;
+    public NftContract TokenType => GetContractType();
 
-    public bool GetHasExpedition()
-    {
-        return this.data.hasExpedition;
-    }
-}
-
-[Serializable]
-public class ExpeditionStatusData
-{
-    public bool hasExpedition;
-    public int nftId;
-    public List<GearItemData> equippedGear;
-    public string tokenType;
-
-    public NftContract GetContractType()
+    private NftContract GetContractType()
     {
         switch (tokenType)
         {
@@ -129,57 +123,13 @@ public class RandomNameData
 }
 
 [Serializable]
-public class RegisterData
-{
-    public Data data = new();
-
-    [Serializable]
-    public class Data
-    {
-        public string token;
-        public string name;
-    }
-}
-
-
-[Serializable]
-public class LoginData
-{
-    public Data data = new();
-
-    [Serializable]
-    public class Data
-    {
-        public string token;
-    }
-}
-
-[Serializable]
 public class ProfileData
 {
-    public Data data = new();
-
-    [Serializable]
-    public class Data
-    {
-        public string id;
-        public string name;
-        public string email;
-        public List<string> wallets = new();
-        public int coins;
-        public int fief;
-        public int experience;
-        public int level;
-        public int act;
-        public ActMap act_map = new();
-
-        [Serializable]
-        public class ActMap
-        {
-            public string id;
-            public string currentNode;
-        }
-    }
+    public string name { get; set; }
+    public string email { get; set; }
+    [JsonProperty("wallets")]
+    public List<string> ownedWallets { get; set; } = new();
+    public int fief { get; set; }
 }
 
 [Serializable]
@@ -896,7 +846,7 @@ public class BugReportData
     public const string service = "Frontend";
     public string clientId;
     public string account;
-    public string knightId;
+    public int knightId;
     public string expeditionId;
     public string userDescription;
     public string userTitle;

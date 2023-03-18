@@ -193,12 +193,70 @@ public class FetchData : DataManager, ISingleton<FetchData>
     }
 
 
+    public async UniTask<string> GetTokenByLogin(string email, string hashedPassword)
+    {
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.Login);
+        WWWForm form = new WWWForm();
+        form.AddField("email", email);
+        form.AddField("password", hashedPassword);
+        using (UnityWebRequest request = UnityWebRequest.Post(requestUrl, form))
+        {
+            // Logging disabled to hide sensitive information (Password)
+            ServerCommunicationLogger.Instance.DisableDataLogging();
+            string rawJson = await MakeJsonRequest(request);
+            ServerCommunicationLogger.Instance.EnableDataLogging();
+            return ParseJsonWithPath<string>(rawJson, "data.token");
+        }
+    }
+
+    public async UniTask<string> GetTokenByRegistration(string name, string email, string hashedPassword)
+    {
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.Register);
+        WWWForm form = new WWWForm();
+        form.AddField("name", name);
+        form.AddField("email", email);
+        form.AddField("email_confirmation", email);
+        form.AddField("password", hashedPassword);
+        form.AddField("password_confirmation", hashedPassword);
+        using (UnityWebRequest request = UnityWebRequest.Post(requestUrl, form))
+        {
+            // Logging disabled to hide sensitive information (Password)
+            ServerCommunicationLogger.Instance.DisableDataLogging();
+            string rawJson = await MakeJsonRequest(request);
+            ServerCommunicationLogger.Instance.EnableDataLogging();
+            return ParseJsonWithPath<string>(rawJson, "data.token");
+        }
+    }
+
+    public async UniTask<ProfileData> GetPlayerProfile()
+    {
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.Profile);
+        using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
+        {
+            request.AddAuthToken();
+            string rawJson = await MakeJsonRequest(request);
+            return ParseJsonWithPath<ProfileData>(rawJson, "data");
+        }
+    }
+
+    public async UniTask<ExpeditionStatus> GetExpeditionStatus()
+    {
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.ExpeditionStatus);
+        using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
+        {
+            request.SetRequestHeader("Accept", "*/*");
+            request.AddAuthToken();
+            string rawJson = await MakeJsonRequest(request);
+            return ParseJsonWithPath<ExpeditionStatus>(rawJson, "data");
+        }
+    }
+
     public async UniTask<ScoreboardData> GetExpeditionScore()
     {
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.ExpeditionScore);
-
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
+            request.SetRequestHeader("Accept", "*/*");
             request.AddAuthToken();
             string rawJson = await MakeJsonRequest(request);
             if (string.IsNullOrEmpty(rawJson)) return null;
@@ -206,7 +264,8 @@ public class FetchData : DataManager, ISingleton<FetchData>
         }
     }
 
-    private async UniTask<string> KeepRetryingRequest(UnityWebRequest request, int tryLimit = 10, float retryDelaySeconds = 3) 
+    private async UniTask<string> KeepRetryingRequest(UnityWebRequest request, int tryLimit = 10,
+        float retryDelaySeconds = 3)
     {
         bool successful = false;
         int trys = 0;
@@ -233,6 +292,10 @@ public class FetchData : DataManager, ISingleton<FetchData>
     private async UniTask<Texture2D> MakeTextureRequest(UnityWebRequest request)
     {
         Texture2D texture = ((DownloadHandlerTexture)await webRequest.MakeRequest(request))?.texture;
+        if (texture == null)
+        {
+            texture = new Texture2D(1,1);
+        }
         return texture;
     }
 

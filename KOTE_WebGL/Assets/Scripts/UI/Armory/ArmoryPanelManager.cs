@@ -30,7 +30,7 @@ namespace KOTE.UI.Armory
 
         private void Awake()
         {
-            GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLogin);
+            GameManager.Instance.EVENT_AUTHENTICATED.AddListener(PopulatePlayerGearInventory);
             NftManager.Instance.NftsLoaded.AddListener(PopulateCharacterList);
         }
 
@@ -71,7 +71,7 @@ namespace KOTE.UI.Armory
             UpdatePanelOnNftUpdate();
         }
 
-        private async void UpdatePanelOnNftUpdate()
+        private void UpdatePanelOnNftUpdate()
         {
             // TODO reactivate this once correct image route is found
             //nftImage.sprite = await curNode.Value.MetaData.GetImage();
@@ -85,18 +85,12 @@ namespace KOTE.UI.Armory
             if (curNode.Value.MetaData.isKnight) ClearGearSlots();
             else PopulateEquippedGear();
         }
-
-        private void OnLogin(string data, int data2)
-        {
-            PopulatePlayerGearInventory();
-        }
-
+        
         private async void PopulatePlayerGearInventory()
         {
             GearData data = await FetchData.Instance.GetGearInventory();
             if (data == null) return;
             await GearIconManager.Instance.RequestGearIcons(data);
-            //villagerEquippedGear[10] = data.equippedGear;
             PopulateGearList(data.ownedGear);
 
             GenerateHeaders();

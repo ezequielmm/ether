@@ -30,8 +30,8 @@ public class WalletManager : ISingleton<WalletManager>
     public UnityEvent<string> DisconnectingWallet { get; } = new();
     public UnityEvent WalletStatusModified { get; } = new();
 
-    public string ActiveWallet { get; private set; }
-    public bool WalletVerified { get; private set; } = false;
+    public string ActiveWallet { get; set; }
+    public bool WalletVerified { get; set; } = false;
     public Dictionary<NftContract, List<int>> NftsInWallet = new();
 
     private MetaMask metaMask;
@@ -131,7 +131,6 @@ public class WalletManager : ISingleton<WalletManager>
         {
             return NftsInWallet[tokenType].Contains(nftId);
         }
-
         return false;
     }
 

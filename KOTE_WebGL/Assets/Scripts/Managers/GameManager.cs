@@ -11,25 +11,18 @@ using Random = UnityEngine.Random;
 public class GameManager : SingleTon<GameManager>
 {
     //REGISTER ACCOUNT EVENTS
-    [HideInInspector]
-    public UnityEvent<string, string, string> EVENT_REQUEST_REGISTER = new UnityEvent<string, string, string>();
-
-    [HideInInspector] public UnityEvent<string> EVENT_REQUEST_REGISTER_ERROR = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<bool> EVENT_REGISTERPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
-    [HideInInspector] public UnityEvent<string> EVENT_REQUEST_NAME_SUCESSFUL = new UnityEvent<string>();
-    [HideInInspector] public UnityEvent<string> EVENT_REQUEST_NAME_ERROR = new UnityEvent<string>();
 
 
     //LOGIN EVENTS
-    [HideInInspector] public UnityEvent<string, string> EVENT_REQUEST_LOGIN = new UnityEvent<string, string>();
-    [HideInInspector] public UnityEvent<string, int> EVENT_REQUEST_LOGIN_SUCESSFUL = new UnityEvent<string, int>();
-    [HideInInspector] public UnityEvent<string> EVENT_REQUEST_LOGIN_ERROR = new UnityEvent<string>();
-    [HideInInspector] public UnityEvent<bool> EVENT_LOGINPANEL_ACTIVATION_REQUEST { get; } = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<bool> EVENT_LOGINPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent EVENT_AUTHENTICATED = new UnityEvent();
 
     //PROFILE EVENTS
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_PROFILE { get; } = new UnityEvent<string>();
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_PROFILE_ERROR = new UnityEvent<string>();
-    [HideInInspector] public UnityEvent<ProfileData> EVENT_REQUEST_PROFILE_SUCCESSFUL = new UnityEvent<ProfileData>();
+    [HideInInspector] public UnityEvent<ProfileData> EVENT_REQUEST_PROFILE_SUCCESSFUL { get; } = new UnityEvent<ProfileData>();
+    [HideInInspector] public UnityEvent<string, int> EVENT_UPDATE_NAME_AND_FIEF = new UnityEvent<string, int>();
 
 
     //SETTINGS EVENTS
@@ -109,9 +102,7 @@ public class GameManager : SingleTon<GameManager>
    
 
     //EXPEDITION EVENTS
-    [HideInInspector] public UnityEvent EVENT_EXPEDITION_SYNC = new UnityEvent();
-    [HideInInspector] public UnityEvent<ExpeditionStatusData> EVENT_EXPEDITION_STATUS_UPDATE { get; } = new();
-    [HideInInspector] public UnityEvent EVENT_REQUEST_EXPEDITION_CANCEL = new UnityEvent();
+    [HideInInspector] public UnityEvent EVENT_EXPEDITION_SYNC { get; } = new UnityEvent();
     
     //MAP EVENTS
     [HideInInspector]

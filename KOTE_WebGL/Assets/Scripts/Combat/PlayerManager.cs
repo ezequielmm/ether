@@ -40,7 +40,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         GameManager.Instance.EVENT_ENCOUNTER_DAMAGE.AddListener(OnEncounterDamage);
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Players);
 
-        GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(SetNameFromProfile);
+        GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.AddListener(SetNameAndFief);
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(SetNameFromUpdate);
 
         collider = GetComponent<Collider2D>();
@@ -67,9 +67,9 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         spineAnimationsManagement.PlayAnimationSequence("Idle");
     }
 
-    public void SetNameFromProfile(ProfileData profileData)
+    public void SetNameAndFief(string name, int fief)
     {
-        SetName(profileData.data.name);
+        SetName(name);
     }
     public void SetNameFromUpdate(PlayerStateData playerState)
     {

@@ -504,7 +504,7 @@ namespace KOTE.UI.Armory
         public void DoesPopulatingGearCreateHeadersWithNoItems()
         {
             FetchData.Instance.TestData[FetchType.GearInventory] = JsonConvert.SerializeObject(new TestGearData{data = testData});
-            GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.Invoke("", -1);
+            GameManager.Instance.EVENT_AUTHENTICATED.Invoke();
             ArmoryHeaderManager[] headers =
                 _armoryPanelManager.gearListTransform.GetComponentsInChildren<ArmoryHeaderManager>();
             Assert.AreEqual(10, headers.Length);

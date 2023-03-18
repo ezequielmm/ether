@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,16 +7,17 @@ using UnityEngine.SceneManagement;
 
 public class UserDataManager : SingleTon<UserDataManager>
 {
-    [HideInInspector]
-    // Active User account email
-    public string UserAccount = "";
-    [HideInInspector]
-    // Active Expedition Id
-    public string ExpeditionId = "";
-    
-    [HideInInspector] 
-    public string ActiveNft = "";
-    
+    public string UserEmail => profile?.email ?? string.Empty;
+    public string ExpeditionId { get; private set; } = "";
+    public bool HasExpedition => expeditionStatus?.HasExpedition ?? false;
+    public int ActiveNft => expeditionStatus?.NftId ?? -1;
+    public List<GearItemData> EquippedGear => expeditionStatus?.EquippedGear ?? null;
+    public NftContract NftContract => expeditionStatus?.TokenType ?? NftContract.None;
+    public List<string> VerifiedWallets => profile?.ownedWallets ?? new();
+
+    ProfileData profile = null;
+    ExpeditionStatus expeditionStatus = null;
+
     // get the unique identifier for this instance of the client
     public string ClientId
     {
@@ -28,40 +30,45 @@ public class UserDataManager : SingleTon<UserDataManager>
                 Guid newId = Guid.NewGuid();
                 id = newId.ToString();
                 PlayerPrefs.SetString("client_id", newId.ToString());
+                PlayerPrefs.Save();
             }
 
             return id;
         }
     }
 
-    private void Awake()
-    {
-        base.Awake();
-    }
-    
     private void Start()
     {
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnExpeditionUpdate);
-        GameManager.Instance.EVENT_REQUEST_PROFILE_SUCCESSFUL.AddListener(OnPlayerProfileReceived);
-        GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogout);
-        GameManager.Instance.EVENT_EXPEDITION_STATUS_UPDATE.AddListener(OnExpeditionStatus);
+        GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ClearDataOnLogout);
     }
 
-   
-
-    private void OnExpeditionStatus(ExpeditionStatusData data)
+    private void ClearDataOnLogout(string _)
     {
-        ActiveNft = data.nftId.ToString();
+        profile = null;
+        expeditionStatus = null;
+        ExpeditionId = null;
     }
-    
-    private void OnPlayerProfileReceived(ProfileData profile)
+    public async UniTask UpdatePlayerProfile() 
     {
-        UserAccount = profile.data.email;
+        profile = await FetchData.Instance.GetPlayerProfile();
+        GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.Invoke(profile?.name ?? string.Empty, profile?.fief ?? -1);
     }
 
-    private void OnLogout(string data)
+    public async UniTask UpdateExpeditionStatus() 
     {
-        UserAccount = "";
+        SetExpedition(await FetchData.Instance.GetExpeditionStatus());
+    }
+
+    public async UniTask ClearExpedition()
+    {
+        SetExpedition(null);
+        await SendData.Instance.ClearExpedition();
+    }
+
+    public void SetExpedition(ExpeditionStatus newStatus)
+    {
+        expeditionStatus = newStatus;
     }
 
     private void OnExpeditionUpdate(PlayerStateData playerState)

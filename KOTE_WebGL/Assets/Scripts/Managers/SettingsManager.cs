@@ -28,7 +28,7 @@ public class SettingsManager : MonoBehaviour
 
         GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerSettingsPanel);
 
-        GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLogin);
+        GameManager.Instance.EVENT_AUTHENTICATED.AddListener(EnableLogoutAndWalletsButtons);
         GameManager.Instance.EVENT_REQUEST_LOGOUT_ERROR.AddListener(OnLogoutError);
         GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
 
@@ -109,7 +109,7 @@ public class SettingsManager : MonoBehaviour
             });
     }
 
-    public void OnLogin(string name, int fief)
+    public void EnableLogoutAndWalletsButtons()
     {
         logoutHyperlink.interactable = true;
         manageWallets.interactable = true;

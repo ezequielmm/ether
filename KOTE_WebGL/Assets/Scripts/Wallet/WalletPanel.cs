@@ -20,15 +20,14 @@ public class WalletPanel : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.AddListener(ToggleInnerWalletContainer);
+        GameManager.Instance.EVENT_AUTHENTICATED.AddListener(UpdateWalletInfo);
     }
-
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    private async UniTask<List<string>> GetVerifiedWallets()
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+    private void UpdateWalletInfo() 
     {
-        // TODO: Get previously connected wallets. For now, we don't persist connections
-        // so this section stays blank. This will require backend support.
-        return new List<string>();
+        foreach(var walletAddress in UserDataManager.Instance.VerifiedWallets) 
+        {
+            AddWallet(walletAddress);
+        }
     }
 
     public void ConnectNewWallet(string walletAddress)
