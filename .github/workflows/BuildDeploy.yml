@@ -227,7 +227,7 @@ jobs:
         url: ${{ secrets.SLACK_WEBHOOK }}
         method: "POST"
         headers: '{ "Content-type": "application/json" }'
-        body: '{ "text": "GitHub Action: Now pushing to ${{ needs.selectEnvName.outputs.deployEnv }} [${{ steps.buildAction.outputs.buildVersion }}]. The server may be down for upto 5 minutes." }'
+        body: '{ "text": "GitHub Action: Now pushing to ${{ needs.selectEnvName.outputs.deployEnv }}. The server may be down for upto 5 minutes." }'
 
     - name: Deploy to server
       uses: appleboy/scp-action@master
@@ -246,7 +246,7 @@ jobs:
         url: ${{ secrets.SLACK_WEBHOOK }}
         method: "POST"
         headers: '{ "Content-type": "application/json" }'
-        body: '{ "text": "GitHub Action: Push to ${{ needs.selectEnvName.outputs.deployEnv }} [${{ steps.buildAction.outputs.buildVersion }}] is successful." }'
+        body: '{ "text": "GitHub Action: Push to ${{ needs.selectEnvName.outputs.deployEnv }} is successful." }'
       
     - name: Notify Push Failure
       uses: indiesdev/curl@v1.1
@@ -255,4 +255,4 @@ jobs:
         url: ${{ secrets.SLACK_WEBHOOK }}
         method: "POST"
         headers: '{ "Content-type": "application/json" }'
-        body: '{ "text": "GitHub Action: Push to ${{ needs.selectEnvName.outputs.deployEnv }} [${{ steps.buildAction.outputs.buildVersion }}] has failed. Please vist the GitHub Repository for more information." }'
+        body: '{ "text": "GitHub Action: Push to ${{ needs.selectEnvName.outputs.deployEnv }} has failed. Please vist the GitHub Repository for more information." }'
