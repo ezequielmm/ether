@@ -1,11 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Toggle = UnityEngine.UI.Toggle;
-using UnityEngine.EventSystems;
 
 public class RegisterPanelManager : MonoBehaviour
 {
@@ -15,15 +10,13 @@ public class RegisterPanelManager : MonoBehaviour
     public TMP_InputField passwordInputField;
     public TMP_InputField confirmPasswordInputField;
 
-    [Space(20)]
-    public TMP_Text invalidNameVariable;
+    [Space(20)] public TMP_Text invalidNameVariable;
     public TMP_Text validEmailLabel;
     public TMP_Text emailNotMatchLabel;
     public TMP_Text validPasswordLabel;
     public TMP_Text passwordNotMatchLabel;
 
-    [Space(20)] 
-    public Toggle termsAndConditions;
+    [Space(20)] public Toggle termsAndConditions;
 
     public Button registerButton;
     public GameObject registerContainer;
@@ -42,6 +35,19 @@ public class RegisterPanelManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_AUTHENTICATED.AddListener(CloseRegistrationPanel);
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerRegisterPanel);
+    }
+
+    private void Start()
+    {
+        DeactivateAllErrorLabels();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return) && registerButton.interactable && registerContainer.activeSelf)
+        {
+            OnRegister();
+        }
     }
 
     public void OnShowPassword()
@@ -64,11 +70,6 @@ public class RegisterPanelManager : MonoBehaviour
     private void CloseRegistrationPanel()
     {
         ActivateInnerRegisterPanel(false);
-    }
-
-    private void Start()
-    {
-        DeactivateAllErrorLabels();
     }
 
     private void DeactivateAllErrorLabels()
@@ -117,21 +118,23 @@ public class RegisterPanelManager : MonoBehaviour
         nameInputField.text = nameInputField.text.Trim();
         validUsername = true;
         // is long enough && short enough
-        if(nameInputField.text.Length < 2 || nameInputField.text.Length > 20) 
+        if (nameInputField.text.Length < 2 || nameInputField.text.Length > 20)
         {
             validUsername = false;
             invalidNameVariable.text = "Username must be between 2 and 20 characters long.";
         }
-        if (nameInputField.text.Length == 0) 
+
+        if (nameInputField.text.Length == 0)
         {
             validUsername = false;
             invalidNameVariable.text = "Username can not be blank.";
         }
+
         invalidNameVariable.gameObject.SetActive(!validUsername);
         return validUsername;
     }
 
-    public void VerifyValue(int field) 
+    public void VerifyValue(int field)
     {
         switch (field)
         {
@@ -168,7 +171,7 @@ public class RegisterPanelManager : MonoBehaviour
         string email = emailInputField.text;
         string password = passwordInputField.text;
         bool Authenticated = await AuthenticationManager.Instance.Register(name, email, password);
-        if(Authenticated) 
+        if (Authenticated)
         {
             CloseRegistrationPanel();
         }
@@ -187,7 +190,7 @@ public class RegisterPanelManager : MonoBehaviour
         registerContainer.SetActive(activate);
     }
 
-    public void ClearRegisterPanel() 
+    public void ClearRegisterPanel()
     {
         nameInputField.text = "";
         emailInputField.text = "";
@@ -198,7 +201,8 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void CheckIfCanActivateRegisterButton()
     {
-        if (!VerifyUsername() || emailInputField.text.Length < 8 || passwordInputField.text.Length < 8 || !termsAndConditions.isOn)
+        if (!VerifyUsername() || emailInputField.text.Length < 8 || passwordInputField.text.Length < 8 ||
+            !termsAndConditions.isOn)
         {
             registerButton.interactable = false;
             return;
