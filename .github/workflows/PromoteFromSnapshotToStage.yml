@@ -1,0 +1,113 @@
+on: 
+  workflow_dispatch:
+  
+jobs:
+  downloadFromLastBranch:
+    name: Download from Snapshot
+    environment: snapshot
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Notify Pull from Snapshot
+      uses: indiesdev/curl@v1.1
+      with:
+        url: ${{ secrets.SLACK_WEBHOOK }}
+        method: "POST"
+        headers: '{ "Content-type": "application/json" }'
+        body: '{ "text": "GitHub Action: Now pulling from Snapshot for promotion to Stage." }'
+
+    - run: mkdir ./build
+
+    - name: Download Build from Snapshot
+      uses: alinz/ssh-scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        user: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_PRIV_KEY }}
+        scp: |
+          -r ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ vars.PUBLISH_PATH }}/${{ vars.BUILD_DIRECTORY }} ./build
+
+    - name: Upload build as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-WebGL
+        path: ./build/${{ vars.BUILD_DIRECTORY }}
+
+    - name: Notify Pull Success
+      uses: indiesdev/curl@v1.1
+      if: success()
+      with:
+        url: ${{ secrets.SLACK_WEBHOOK }}
+        method: "POST"
+        headers: '{ "Content-type": "application/json" }'
+        body: '{ "text": "GitHub Action: Pull from Snapshot was successful!" }'
+
+    - name: Notify Push Failure
+      uses: indiesdev/curl@v1.1
+      if: failure()
+      with:
+        url: ${{ secrets.SLACK_WEBHOOK }}
+        method: "POST"
+        headers: '{ "Content-type": "application/json" }'
+        body: '{ "text": "GitHub Action: Pull from Snapshot has failed. Could not update Stage. Please vist the GitHub Repository for more information." }'
+
+  uploadToStage:
+    name: Upload to Stage
+    needs: downloadFromLastBranch
+    environment: staging
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Download WebGL Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: build-WebGL
+        path: "${{ vars.BUILD_DIRECTORY }}"
+
+    - name: Notify Push to Server
+      uses: indiesdev/curl@v1.1
+      with:
+        url: ${{ secrets.SLACK_WEBHOOK }}
+        method: "POST"
+        headers: '{ "Content-type": "application/json" }'
+        body: '{ "text": "GitHub Action: Now pushing to Stage. The server may be down for upto 5 minutes." }'
+
+    - name: Deploy to server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key : ${{ secrets.SSH_PRIV_KEY }}
+        source: "${{ vars.BUILD_DIRECTORY }}"
+        target: "${{ vars.PUBLISH_PATH }}"
+        overwrite: true
+
+    - name: Notify Push Success
+      uses: indiesdev/curl@v1.1
+      if: success()
+      with:
+        url: ${{ secrets.SLACK_WEBHOOK }}
+        method: "POST"
+        headers: '{ "Content-type": "application/json" }'
+        body: '{ "text": "GitHub Action: Push to Stage is successful." }'
+      
+    - name: Notify Push Failure
+      uses: indiesdev/curl@v1.1
+      if: failure()
+      with:
+        url: ${{ secrets.SLACK_WEBHOOK }}
+        method: "POST"
+        headers: '{ "Content-type": "application/json" }'
+        body: '{ "text": "GitHub Action: Push to Stage has failed. Please vist the GitHub Repository for more information." }'
+
+    - name: Delete Artifacts
+      uses: geekyeggo/delete-artifact@v2
+      if: always()
+      with:
+        name: build-WebGL
