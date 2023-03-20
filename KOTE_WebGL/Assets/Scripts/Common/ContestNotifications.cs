@@ -67,7 +67,7 @@ public class ContestNotifications : MonoBehaviour
                 UserDataManager.Instance.ClearExpedition();
                 GameManager.Instance.LoadScene(inGameScenes.MainMenu);
             }, () => { },
-            new string[] { "Back to Main Menu", null });
+            new string[] { "Back to Main Menu", "Continue (No Lootbox)" });
     }
 
     private string FormatTimeInMessage(int seconds, string text) 

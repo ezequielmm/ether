@@ -51,6 +51,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countDownTimer: {fileID: 4773993129063932738}
+  endSource: 1
+  textBlurb: until end of contest ({hour}:{minute} UTC)
   CountdownBlurb: {fileID: 4773993129267845210}
 --- !u!1001 &6100365103923952544
 PrefabInstance:

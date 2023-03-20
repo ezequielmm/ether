@@ -487,6 +487,8 @@ MonoBehaviour:
   settingButton: {fileID: 2563560112582612212}
   connectWalletButton: {fileID: 3695826306827981678}
   ContestTimer: {fileID: 1633775433410673248}
+  _expeditionStatusReceived: 0
+  _walletDataReceived: 0
 --- !u!1 &2210478339609055012
 GameObject:
   m_ObjectHideFlags: 0
@@ -2849,6 +2851,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4773993128978443476, guid: 623ab04dd0b8de04c954f90719100983,
+        type: 3}
+      propertyPath: endSource
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4773993128978443476, guid: 623ab04dd0b8de04c954f90719100983,
+        type: 3}
+      propertyPath: textBlurb
+      value: to join the contest ({hour}:{minute} UTC)
       objectReference: {fileID: 0}
     - target: {fileID: 4773993128978443477, guid: 623ab04dd0b8de04c954f90719100983,
         type: 3}

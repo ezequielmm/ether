@@ -10,6 +10,8 @@ public class ContestCountdownManager : MonoBehaviour
     [SerializeField]
     ClockManager countDownTimer;
     ContestManager contest;
+    [SerializeField] string inContestBlurb = "until end of contest ({hour}:{minute} UTC)";
+    [SerializeField] string noContestBlurb = "to join the contest ({hour}:{minute} UTC)";
 
     [SerializeField]
     TMP_Text CountdownBlurb;
@@ -42,13 +44,55 @@ public class ContestCountdownManager : MonoBehaviour
         countDownTimer.gameObject.SetActive(active);
         if(active) 
         {
-            DateTime endOfContest = contest.ContestEndTimeUtc;
-            CountdownBlurb.text = $"until end of contest ({endOfContest.Hour:00}:{endOfContest.Minute:00} UTC)";
+            DateTime endOfContest = GetEndTime();
+            CountdownBlurb.text = GenerateText(endOfContest);
+        }
+    }
+
+    private string GenerateText(DateTime time)
+    {
+        string textBlurb = noContestBlurb;
+        if (contest.InContest)
+        {
+            textBlurb = inContestBlurb;
+        }
+        string hour = $"{time.Hour:00}";
+        string minute = $"{time.Minute:00}";
+        return textBlurb.Replace("{hour}", hour).Replace("{minute}", minute);
+    }
+
+    private DateTime GetEndTime()
+    {
+        if (contest.InContest)
+        {
+            return contest.ContestEndTimeUtc;
+        }
+        else
+        {
+            return contest.LastSubmissionTimeUtc;
+        }
+    }
+    
+    private double GetTimeLeft()
+    {
+        if (contest.InContest)
+        {
+            return contest.TimeUntilEnd.TotalSeconds;
+        }
+        else
+        {
+            return contest.TimeUntilLastSubmission.TotalSeconds;
         }
     }
 
     private void Update()
     {
-        countDownTimer.TotalSeconds = Mathf.Max(0, (float)contest.TimeUntilEnd.TotalSeconds);   
+        countDownTimer.TotalSeconds = Mathf.Max(0, (float)GetTimeLeft());   
+    }
+    
+    public enum CounterEndSource
+    {
+        EndAtEndOfSubmissions,
+        EndAtEndOfContest
     }
 }
