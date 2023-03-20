@@ -1,32 +1,25 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using Toggle = UnityEngine.UI.Toggle;
-using UnityEngine.EventSystems;
 
 public class LoginPanelManager : MonoBehaviour
 {
     public TMP_InputField emailInputField;
     public TMP_InputField passwordInputField;
 
-    [Space(20)]
-    public TMP_Text validEmailLabel;
+    [Space(20)] public TMP_Text validEmailLabel;
 
     public TMP_Text validLoginEmail;
     public TMP_Text validLoginPassword;
 
-    [Space(20)]
-    public Toggle rememberMe;
+    [Space(20)] public Toggle rememberMe;
 
     public Toggle showPassword;
     public Button loginButton;
 
-    [Space(20)]
-    public GameObject loginContainer;
+    [Space(20)] public GameObject loginContainer;
 
     private bool validEmail;
     private bool validLogin;
@@ -41,7 +34,7 @@ public class LoginPanelManager : MonoBehaviour
 
         if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(date))
         {
-            float days = (float) (DateTime.ParseExact(date, "MM/dd/yyyy HH:mm:ss",
+            float days = (float)(DateTime.ParseExact(date, "MM/dd/yyyy HH:mm:ss",
                 CultureInfo.InvariantCulture) - DateTime.Today).TotalDays;
 
             if (!(Mathf.Abs(days) >= 15))
@@ -53,10 +46,29 @@ public class LoginPanelManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        validEmailLabel.gameObject.SetActive(false);
+        validLoginEmail.gameObject.SetActive(false);
+        validLoginPassword.gameObject.SetActive(false);
+
+        loginButton.interactable = false;
+    }
+
+    private void Update()
+    {
+        loginButton.interactable = validEmail && !string.IsNullOrEmpty(passwordInputField.text);
+        if (Input.GetKeyDown(KeyCode.Return) && loginButton.interactable && loginContainer.activeSelf)
+        {
+            OnLogin();
+        }
+    }
+
     public void OnShowPassword()
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-        passwordInputField.contentType = showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
+        passwordInputField.contentType =
+            showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
         passwordInputField.ForceLabelUpdate();
     }
 
@@ -77,7 +89,7 @@ public class LoginPanelManager : MonoBehaviour
         validLoginPassword.gameObject.SetActive(false);
     }
 
-    private void RememberLoginInfo() 
+    private void RememberLoginInfo()
     {
         PlayerPrefs.SetString("email_reme_login", emailInputField.text);
         PlayerPrefs.SetString("date_reme_login", DateTime.Today.ToString(CultureInfo.InvariantCulture));
@@ -91,7 +103,7 @@ public class LoginPanelManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    private void ClearLoginInfo() 
+    private void ClearLoginInfo()
     {
         PlayerPrefs.DeleteKey("session_token");
         PlayerPrefs.Save();
@@ -102,20 +114,6 @@ public class LoginPanelManager : MonoBehaviour
     {
         validLoginPassword.gameObject.SetActive(true);
         passwordInputField.text = "";
-    }
-
-    private void Start()
-    {
-        validEmailLabel.gameObject.SetActive(false);
-        validLoginEmail.gameObject.SetActive(false);
-        validLoginPassword.gameObject.SetActive(false);
-
-        loginButton.interactable = false;
-    }
-
-    private void Update()
-    {
-        loginButton.interactable = validEmail && !string.IsNullOrEmpty(passwordInputField.text);
     }
 
     public void VerifyEmail()
@@ -137,11 +135,12 @@ public class LoginPanelManager : MonoBehaviour
             return;
         }
 
-        bool successfulLogin = await AuthenticationManager.Instance.Login(emailInputField.text, passwordInputField.text);
+        bool successfulLogin =
+            await AuthenticationManager.Instance.Login(emailInputField.text, passwordInputField.text);
         UpdatePanelOnAuthenticated(successfulLogin);
     }
 
-    public void UpdatePanelOnAuthenticated(bool successfulLogin) 
+    public void UpdatePanelOnAuthenticated(bool successfulLogin)
     {
         if (successfulLogin)
         {
