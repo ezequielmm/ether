@@ -5,7 +5,6 @@ namespace KOTE.UI.Armory
 {
     public class GearSlot : MonoBehaviour
     {
-        [SerializeField] internal GearCategories gearCategory;
         public Trait gearTrait;
         public Image icon;
         private GearItemData selectedGear;
@@ -13,7 +12,7 @@ namespace KOTE.UI.Armory
         public void OnClick()
         {
             ResetSlot();
-            ArmoryPanelManager.OnSlotCleared.Invoke(gearTrait, gearCategory);
+            ArmoryPanelManager.OnSlotCleared.Invoke(gearTrait);
         }
 
         internal GearItemData GetEquippedGear()

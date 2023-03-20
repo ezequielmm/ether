@@ -10,7 +10,7 @@ namespace KOTE.UI.Armory
     public class ArmoryPanelManager : MonoBehaviour
     {
         internal static UnityEvent<GearItemData> OnGearSelected { get; } = new();
-        internal static UnityEvent<Trait, GearCategories> OnSlotCleared{ get; } = new();
+        internal static UnityEvent<Trait> OnSlotCleared{ get; } = new();
 
         public GameObject panelContainer;
         public Button playButton;
@@ -18,13 +18,13 @@ namespace KOTE.UI.Armory
         public Image nftImage;
         public ArmoryHeaderManager headerPrefab;
         public Transform gearListTransform;
-        public GearSlot[] gearSlots;
+        public List<GearSlot> gearSlots;
         public GameObject[] gearPanels;
 
         private LinkedListNode<ArmoryTokenData> curNode;
         private LinkedList<ArmoryTokenData> nftList = new();
         private Dictionary<string, List<GearItemData>> categoryLists = new();
-        private Dictionary<GearCategories, GearItemData> equippedGear = new();
+        private Dictionary<Trait, GearItemData> equippedGear = new();
         private Dictionary<int, List<GearItemData>> villagerEquippedGear = new();
         private Dictionary<int, List<GearItemData>> blessedVillagerEquippedGear = new();
 
@@ -114,8 +114,7 @@ namespace KOTE.UI.Armory
 
         private void GenerateHeaders()
         {
-            string[] categories = Enum.GetNames(typeof(GearCategories));
-            foreach (string category in categories)
+            foreach (string category in categoryLists.Keys)
             {
                 ArmoryHeaderManager header = Instantiate(headerPrefab, gearListTransform);
                 if (categoryLists.ContainsKey(category))
@@ -231,33 +230,20 @@ namespace KOTE.UI.Armory
         private void OnGearItemSelected(GearItemData activeItem)
         {
             if (curNode.Value.MetaData.Contract == NftContract.Knights) return;
-            GearCategories category = activeItem.category.ParseToEnum<GearCategories>();
-            gearSlots[(int)category].SetGearInSlot(activeItem);
-            equippedGear[activeItem.category.ParseToEnum<GearCategories>()] = activeItem;
+            Trait itemTrait = activeItem.trait.ParseToEnum<Trait>();
+            gearSlots.Find(x => x.gearTrait == itemTrait).SetGearInSlot(activeItem);
+            equippedGear[itemTrait] = activeItem;
             GameManager.Instance.EVENT_UPDATE_NFT.Invoke(Enum.Parse<Trait>(activeItem.trait), activeItem.name);
         }
 
-        private void OnGearItemRemoved(Trait gearTrait, GearCategories category)
+        private void OnGearItemRemoved(Trait gearTrait)
         {
-            equippedGear.Remove(category);
+            equippedGear.Remove(gearTrait);
             GameManager.Instance.EVENT_UPDATE_NFT.Invoke(gearTrait, "");
 
         }
     }
-
-    internal enum GearCategories
-    {
-        Helmet = 0,
-        Pauldrons = 1,
-        Breastplate = 2,
-        Legguard = 3,
-        Boots = 4,
-        Weapon = 5,
-        Shield = 6,
-        Padding = 7,
-        Vambraces = 8,
-        Gauntlets = 9,
-    }
+    
 
     public class GearData
     {
