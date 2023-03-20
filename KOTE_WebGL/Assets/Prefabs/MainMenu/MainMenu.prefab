@@ -487,6 +487,8 @@ MonoBehaviour:
   settingButton: {fileID: 2563560112582612212}
   connectWalletButton: {fileID: 3695826306827981678}
   ContestTimer: {fileID: 1633775433410673248}
+  _expeditionStatusReceived: 0
+  _walletDataReceived: 0
 --- !u!1 &2210478339609055012
 GameObject:
   m_ObjectHideFlags: 0
@@ -2282,7 +2284,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ARMORY
+  m_text: TREASURY
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 498f6c917a308a24f9808660f1e0b631, type: 2}
   m_sharedMaterial: {fileID: -8945685614816413018, guid: 498f6c917a308a24f9808660f1e0b631,

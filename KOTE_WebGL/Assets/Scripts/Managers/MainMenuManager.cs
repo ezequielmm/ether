@@ -193,7 +193,6 @@ public class MainMenuManager : MonoBehaviour
         await userData.UpdateExpeditionStatus();
 
         _expeditionStatusReceived = true;
-        treasuryButton.gameObject.SetActive(true);
         PlayerSpriteManager.Instance.SetSkin(userData.ActiveNft, userData.NftContract);
 
         VerifyResumeExpedition();
