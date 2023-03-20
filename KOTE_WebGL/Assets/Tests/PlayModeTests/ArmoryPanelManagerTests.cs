@@ -212,13 +212,13 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoGearSlotsExist()
         {
-            Assert.Greater(_armoryPanelManager.gearSlots.Length, 0);
+            Assert.Greater(_armoryPanelManager.gearSlots.Count, 0);
         }
 
         [Test]
         public void AreThereCorrectNumberOfGearSlots()
         {
-            Assert.AreEqual(10, _armoryPanelManager.gearSlots.Length);
+            Assert.AreEqual(10, _armoryPanelManager.gearSlots.Count);
         }
 
         [Test]
@@ -438,10 +438,10 @@ namespace KOTE.UI.Armory
         public void DoesCallingGearSelectedNotChangeSlotImageIfKnight()
         {
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
-            _armoryPanelManager.gearSlots[(int)GearCategories.Helmet].icon.sprite = null;
+            _armoryPanelManager.gearSlots[0].icon.sprite = null;
 
             ArmoryPanelManager.OnGearSelected.Invoke(testData.ownedGear[0]);
-            Assert.IsNull(_armoryPanelManager.gearSlots[(int)GearCategories.Helmet].icon.sprite);
+            Assert.IsNull(_armoryPanelManager.gearSlots[0].icon.sprite);
         }
 
         [Test]
@@ -454,7 +454,7 @@ namespace KOTE.UI.Armory
 
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             ArmoryPanelManager.OnGearSelected.Invoke(testData.ownedGear[0]);
-            Assert.IsNull(_armoryPanelManager.gearSlots[(int)GearCategories.Helmet].icon.sprite);
+            Assert.IsNull(_armoryPanelManager.gearSlots[0].icon.sprite);
         }
 
         [Test]
