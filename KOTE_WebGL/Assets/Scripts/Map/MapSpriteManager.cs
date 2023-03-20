@@ -322,6 +322,7 @@ namespace map
 
         private void OnMapNodesDataUpdated(SWSM_MapData mapData)
         {
+            
             GenerateMap(mapData);
             StartCoroutine(Scroll());
         }
@@ -339,7 +340,7 @@ namespace map
         //we will get to this point once the backend give us the node data
         void GenerateMap(SWSM_MapData expeditionMapData)
         {
-            Debug.Log("[MapSpriteManager | OnMapNodesDataUpdated] " + expeditionMapData);
+            Debug.Log("[MapSpriteManager] " + expeditionMapData);
             
             if (!mapContainer.activeSelf)
             {
@@ -678,18 +679,20 @@ namespace map
             }
         }
 
-        private void AdjustPlayerIcon(Vector3 newPos, Vector3 iconPos)
+        private void AdjustPlayerIcon(Vector3 newPos, Vector3 iconAbsPos)
         {
-            float xDifference = iconPos.x - playerIcon.transform.position.x;
-            float yDifference = iconPos.y - playerIcon.transform.position.y;
+            Transform playerTransform = playerIcon.transform;
+            Vector3 iconPos = playerTransform.InverseTransformPoint(iconAbsPos);
+            float xDifference = iconPos.x - playerTransform.position.x;
+            float yDifference = iconPos.y - playerTransform.position.y;
             if (xDifference.Equals(-0.25f) && Mathf.Abs(yDifference).Equals(0.25f))
             {
-                playerIcon.transform.position = newPos += playerIconOffset;
+                playerTransform.position = newPos += playerIconOffset;
             }
 
             if (xDifference.Equals(0.25f) && Mathf.Abs(yDifference).Equals(0.25f))
             {
-                playerIcon.transform.localPosition = new Vector3(newPos.x - playerIconOffset.x,
+                playerTransform.localPosition = new Vector3(newPos.x - playerIconOffset.x,
                     newPos.y + playerIconOffset.y, newPos.z);
             }
         }
