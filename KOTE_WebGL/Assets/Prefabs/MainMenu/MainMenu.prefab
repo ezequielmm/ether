@@ -2852,6 +2852,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4773993128978443476, guid: 623ab04dd0b8de04c954f90719100983,
+        type: 3}
+      propertyPath: endSource
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4773993128978443476, guid: 623ab04dd0b8de04c954f90719100983,
+        type: 3}
+      propertyPath: textBlurb
+      value: to join the contest ({hour}:{minute} UTC)
+      objectReference: {fileID: 0}
     - target: {fileID: 4773993128978443477, guid: 623ab04dd0b8de04c954f90719100983,
         type: 3}
       propertyPath: m_Pivot.x

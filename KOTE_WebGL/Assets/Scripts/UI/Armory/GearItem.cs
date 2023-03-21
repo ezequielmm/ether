@@ -35,6 +35,7 @@ public class GearItemData
     public string name;
     public string trait;
     public string category;
+    public string rarity; // TODO: should be an enum
     [JsonIgnore]
     public Sprite gearImage;
 

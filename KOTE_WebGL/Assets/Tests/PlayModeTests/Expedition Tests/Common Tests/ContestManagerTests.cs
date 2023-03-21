@@ -29,7 +29,7 @@ public class ContestManagerTests : MonoBehaviour
     public void EndTimeSet() 
     {
         DateTime endTime = DateTime.Now.AddDays(1);
-        contestManager.SetNewContestTime(endTime);
+        contestManager.SetNewContestEndTime(endTime);
 
         Assert.AreEqual(endTime, contestManager.ContestEndTimeUtc);
     }
@@ -40,7 +40,7 @@ public class ContestManagerTests : MonoBehaviour
         double dayInSeconds = 86400;
 
         DateTime endTime = DateTime.UtcNow.AddSeconds(dayInSeconds);
-        contestManager.SetNewContestTime(endTime);
+        contestManager.SetNewContestEndTime(endTime);
 
         Assert.AreEqual(dayInSeconds, contestManager.TimeUntilEnd.TotalSeconds, 5);
     }
