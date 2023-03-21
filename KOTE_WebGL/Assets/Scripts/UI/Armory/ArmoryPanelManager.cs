@@ -4,6 +4,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
+using Image = UnityEngine.UI.Image;
 
 namespace KOTE.UI.Armory
 {
@@ -20,6 +23,8 @@ namespace KOTE.UI.Armory
         public Transform gearListTransform;
         public List<GearSlot> gearSlots;
         public GameObject[] gearPanels;
+        // making a reference to this since GetComponentInChildren only works on active gameObjects
+        public ScrollRect gearListScroll;
 
         private LinkedListNode<ArmoryTokenData> curNode;
         private LinkedList<ArmoryTokenData> nftList = new();
@@ -41,6 +46,7 @@ namespace KOTE.UI.Armory
             // listen for successful login to get the player's gear
             OnGearSelected.AddListener(OnGearItemSelected);
             OnSlotCleared.AddListener(OnGearItemRemoved);
+            gearListScroll.scrollSensitivity = GameSettings.PANEL_SCROLL_SPEED;
         }
 
         private void ActivateContainer(bool show)

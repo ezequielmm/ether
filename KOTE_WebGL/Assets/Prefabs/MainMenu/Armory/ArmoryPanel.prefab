@@ -1278,7 +1278,7 @@ MonoBehaviour:
   m_Content: {fileID: 5654539426470512704}
   m_Horizontal: 0
   m_Vertical: 1
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -2452,6 +2452,7 @@ MonoBehaviour:
   - {fileID: 3640251270229046520}
   - {fileID: 6841770010625878433}
   - {fileID: 8848254487179275150}
+  gearListScroll: {fileID: 6485485633858526359}
 --- !u!1 &6567153663409820806
 GameObject:
   m_ObjectHideFlags: 0
