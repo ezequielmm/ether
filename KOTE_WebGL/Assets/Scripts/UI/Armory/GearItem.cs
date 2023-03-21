@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using KOTE.UI.Armory;
 using Newtonsoft.Json;
@@ -9,8 +10,11 @@ public class GearItem : MonoBehaviour
 {
     [SerializeField]
     public Image GearImage;
+
+    public TooltipAtCursor tooltip;
     [HideInInspector]
     public GearItemData ItemData;
+    
 
     public async virtual void Populate(GearItemData newItemData)
     {
@@ -26,6 +30,20 @@ public class GearItem : MonoBehaviour
             return;
         }
         GearImage.sprite = ImageSprite;
+        
+        tooltip.SetTooltips(new List<Tooltip>
+        {
+            new Tooltip
+            {
+                title = $"{ItemData.name}{FormatTraitText()}"
+            }
+        });
+    }
+    
+    private string FormatTraitText()
+    {
+        if (ItemData.trait == "Weapon") return "";
+        return " " + ItemData.trait;
     }
 }
 

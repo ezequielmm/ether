@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3376792803056825847}
   - component: {fileID: 4311748700341919605}
   - component: {fileID: 5799802440743348737}
+  - component: {fileID: 6059914710903545663}
   m_Layer: 5
   m_Name: GearItem
   m_TagString: Untagged
@@ -91,6 +92,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GearImage: {fileID: 5177136336473858955}
+  tooltip: {fileID: 6059914710903545663}
+--- !u!114 &6059914710903545663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1968260376980154379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d564c94f5ffeef74e9bb166a65247142, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltipName: 
+  anchor: 0
+  limit: {x: -1, y: -1}
 --- !u!1 &6753767544192105648
 GameObject:
   m_ObjectHideFlags: 0
