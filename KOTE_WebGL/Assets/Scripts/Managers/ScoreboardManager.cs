@@ -12,6 +12,9 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
     ScoreboardPanelManager Scoreboard;
     [SerializeField]
     LootboxPanelManager Lootbox;
+    [SerializeField]
+    string ExpiredLootMessage = $"The contest has ended before you had the chance to beat the boss. " +
+                                $"As such, all loot has been forfeited.";
 
     ScoreboardData ScoreData;
 
@@ -67,6 +70,11 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
         if (ScoreData.Lootbox.Count == 0)
         {
             ToggleScorePanel(true);
+            if (ScoreData.NotifyNoLoot)
+            {
+                GameManager.instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(ExpiredLootMessage,
+                    () => { }, () => { }, new []{"It was fun while it lasted.", null});
+            }
         }
         else 
         {
