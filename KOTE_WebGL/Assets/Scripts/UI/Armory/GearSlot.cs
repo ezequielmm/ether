@@ -29,7 +29,6 @@ namespace KOTE.UI.Armory
         internal void ResetSlot()
         {
             icon.sprite = GearIconManager.Instance.defaultImage;
-            Debug.LogError(GearIconManager.Instance.defaultImage.name);
             selectedGear = null;
         }
     }
