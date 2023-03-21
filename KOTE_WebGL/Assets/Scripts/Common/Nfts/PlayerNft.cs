@@ -137,12 +137,16 @@ public abstract class PlayerNft
             imagePath = ((RegionAttachment)skinEntry.Attachment).Path;
         }
 
-        if (string.IsNullOrEmpty(imagePath) || !imagePath.Contains("undergarment"))
+        if (string.IsNullOrEmpty(imagePath) || (!imagePath.Contains("undergarment") && !imagePath.Contains("FX")))
+        {
             imagePath = skinEntry.Attachment.Name;
+        }
+
         string[] baseImageName = imagePath.Split('/');
-        string imageName = (baseImageName.Length > 1) ? baseImageName[1] : baseImageName[0];
+        if (baseImageName.Length > 2 && baseImageName[2].Contains("FX")) return baseImageName[2];
+            string imageName = (baseImageName.Length > 1) ? baseImageName[1] : baseImageName[0];
         imageName = imageName.TrimEnd(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });
-        if (imageName.Contains("placeholder") || imageName.Contains("FX")) return null;
+        if (imageName.Contains("placeholder")) return null;
 
         return imageName;
     }
