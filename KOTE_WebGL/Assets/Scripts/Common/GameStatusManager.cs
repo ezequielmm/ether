@@ -9,6 +9,7 @@ public class GameStatusManager : MonoBehaviour
     private PlayerStateData playerStateData;
 
     GameStatuses preppingStatus;
+    private float preppingSince;
 
 
     void Start()
@@ -27,6 +28,14 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_COMBAT_QUEUE_EMPTY.AddListener(CheckForHangingStatuses);
     }
 
+    private void Update()
+    {
+        if (preppingStatus != GameStatuses.None && Time.time - preppingSince > 5)
+        {
+            CheckForHangingStatuses();
+        }
+    }
+
     private void OnNodeDataUpdate(NodeStateData nodeState, WS_QUERY_TYPE wsType)
     {
         lastNodeStatusData = nodeState;
@@ -37,6 +46,7 @@ public class GameStatusManager : MonoBehaviour
     public void OnPrepareStatusChange(GameStatuses newGameStatus)
     {
         preppingStatus = newGameStatus;
+        preppingSince = Time.time;
     }
 
     public void CheckForHangingStatuses()
