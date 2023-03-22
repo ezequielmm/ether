@@ -79,7 +79,7 @@ namespace KOTE.UI.Armory
             bool eventFired = false;
             ArmoryPanelManager.OnGearSelected.AddListener((data) => { eventFired = true; });
             _itemManager.Populate(testItemData);
-            _itemManager.SendItemToArmoryPanel();
+            _itemManager.OnPointerDown(null);
             Assert.True(eventFired);
         }
 
@@ -89,7 +89,7 @@ namespace KOTE.UI.Armory
             GearItemData receivedData = null;
             ArmoryPanelManager.OnGearSelected.AddListener((data) => { receivedData = data; });
             _itemManager.Populate(testItemData);
-            _itemManager.SendItemToArmoryPanel();
+            _itemManager.OnPointerDown(null);
             Assert.AreEqual(testItemData, receivedData);
         }
     }
