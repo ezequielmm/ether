@@ -20,6 +20,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     private const string WS_MESSAGE_INIT_COMBAT = "InitCombat";
     private const string WS_MESSAGE_ENEMY_INTENTS = "EnemiesIntents";
     private const string WS_MESSAGE_PUT_DATA = "PutData";
+    private const string WS_MESSAGE_REWARD_LIST = "RewardList";
 
 
     [SerializeField] private string SocketStatus = "Unknown";
@@ -216,6 +217,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         rootSocket.On<string>(WS_MESSAGE_INIT_COMBAT, GenericParserWithoutCallback);
         //rootSocket.On<string>(WS_MESSAGE_ENEMY_INTENTS, GenericParserWithoutCallback);
         rootSocket.On<string>(WS_MESSAGE_PUT_DATA, GenericParserWithoutCallback);
+        rootSocket.On<string>(WS_MESSAGE_REWARD_LIST, GenericParserWithoutCallback);
 
 
         //  manager.Open();
@@ -364,7 +366,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     void OnRewardSelected(string rewardId)
     {
-        EmitWithResponse(SocketEvent.RewardSelected, rewardId);
+        Emit(SocketEvent.RewardSelected, rewardId);
     }
 
     private void OnCampHealSelected()
