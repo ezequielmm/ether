@@ -185,8 +185,11 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<Card> EVENT_CARD_UPDATE_TEXT = new UnityEvent<Card>();
     
     //Gameplay events
-    [HideInInspector] public UnityEvent<GameStatuses> EVENT_PREPARE_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
+    [HideInInspector]
+    public UnityEvent<GameStatuses> EVENT_PREPARE_GAME_STATUS_CHANGE { get; } = new UnityEvent<GameStatuses>();
+
     [HideInInspector] public UnityEvent<GameStatuses> EVENT_GAME_STATUS_CHANGE = new UnityEvent<GameStatuses>();
+    [HideInInspector] public UnityEvent EVENT_GAME_STATUS_CONFIRM = new UnityEvent();
     [HideInInspector] public UnityEvent<string, string> EVENT_CARD_PLAYED = new UnityEvent<string, string>(); // cardID, targetID
     [HideInInspector] public UnityEvent EVENT_END_TURN_CLICKED = new UnityEvent();
     [HideInInspector] public UnityEvent<Type, string> EVENT_CONFIRM_EVENT = new UnityEvent<Type, string>();
