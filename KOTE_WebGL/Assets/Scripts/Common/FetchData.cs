@@ -147,7 +147,9 @@ public class FetchData : DataManager, ISingleton<FetchData>
         ExpeditionStartData startData = new ExpeditionStartData
         {tokenType = characterType.ToString(),
             nftId = selectedNft,
-            equippedGear = equippedGear
+            equippedGear = equippedGear,
+             walletId = WalletManager.Instance.ActiveWallet,
+             contractId = NftManager.Instance.GetContractAddress(characterType)
         };
 
         string data = JsonConvert.SerializeObject(startData);
