@@ -68,6 +68,12 @@ public class NftManager : ISingleton<NftManager>
         etheriumNftContractMap[contract] = address;
     }
 
+    public string GetContractAddress(NftContract contract)
+    {
+        if (IsTestNet) return testNetNftContractMap[contract];
+        return etheriumNftContractMap[contract];
+    }
+
     private void UpdateNfts(RawWalletData walletData)
     {
         Nfts.Clear();

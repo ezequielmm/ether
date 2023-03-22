@@ -62,6 +62,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Scoreboard: {fileID: 1339996918720247326}
   Lootbox: {fileID: 8597633955071374145}
+  ExpiredLootMessage: The contest has ended before you had the chance to beat the
+    boss. As such, all loot has been forfeited.
 --- !u!1001 &4972464747350929027
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -192,7 +194,7 @@ PrefabInstance:
     - target: {fileID: 7639357212218799984, guid: 13688820924bc8647b58e9f24fe197f0,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7639357212218799984, guid: 13688820924bc8647b58e9f24fe197f0,
         type: 3}
@@ -207,12 +209,17 @@ PrefabInstance:
     - target: {fileID: 7639357212218799984, guid: 13688820924bc8647b58e9f24fe197f0,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ShowScore
+      value: ToggleScorePanel
       objectReference: {fileID: 0}
     - target: {fileID: 7639357212218799984, guid: 13688820924bc8647b58e9f24fe197f0,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: ScoreboardManager, GameAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639357212218799984, guid: 13688820924bc8647b58e9f24fe197f0,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7639357212218799984, guid: 13688820924bc8647b58e9f24fe197f0,
         type: 3}
