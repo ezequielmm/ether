@@ -30,7 +30,7 @@ public class GameStatusManager : MonoBehaviour
 
     private void Update()
     {
-        if (preppingStatus != GameStatuses.None && Time.time - preppingSince > 5)
+        if (preppingStatus != GameStatuses.None && Time.time - preppingSince > GameSettings.END_WAIT_TIMEOUT)
         {
             CheckForHangingStatuses();
         }
