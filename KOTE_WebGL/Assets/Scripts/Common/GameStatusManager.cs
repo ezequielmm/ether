@@ -23,6 +23,8 @@ public class GameStatusManager : MonoBehaviour
         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(OnChangeGameStatus);
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.AddListener(OnPrepareStatusChange);
         GameManager.Instance.EVENT_CONFIRM_EVENT.AddListener(OnEventConfirmation);
+        GameManager.Instance.EVENT_GAME_STATUS_CONFIRM.AddListener(CheckForHangingStatuses);
+        GameManager.Instance.EVENT_COMBAT_QUEUE_EMPTY.AddListener(CheckForHangingStatuses);
     }
 
     private void OnNodeDataUpdate(NodeStateData nodeState, WS_QUERY_TYPE wsType)
@@ -37,61 +39,38 @@ public class GameStatusManager : MonoBehaviour
         preppingStatus = newGameStatus;
     }
 
+    public void CheckForHangingStatuses()
+    {
+        if (preppingStatus == GameStatuses.None) return;
+        
+        Debug.LogWarning($"[GameStatusManager] Hanging Status ({preppingStatus}) has not been taken care of. Resolving now...");
+        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(preppingStatus);
+    }
+
     public void OnEventConfirmation(Type enumType, string eventName)
     {
-        if (enumType == typeof(PlayerState))
+        if (preppingStatus is not (GameStatuses.GameOver or GameStatuses.RewardsPanel))
         {
-            switch (eventName)
-            {
-                case nameof(PlayerState.dying):
-                    if (preppingStatus == GameStatuses.GameOver)
-                    {
-                        // Prevent Game-Level Interaction (UI Only)
-                        GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(true);
-                    }
-
-                    break;
-                case nameof(PlayerState.dead):
-                    if (preppingStatus == GameStatuses.GameOver)
-                    {
-                        // End game when last player dies
-                        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
-                    }
-
-                    break;
-            }
+            return;
         }
-        else if (enumType == typeof(EnemyState))
-        {
-            switch (eventName)
-            {
-                case nameof(EnemyState.dying):
-                    if (preppingStatus == GameStatuses.RewardsPanel)
-                    {
-                        // Prevent Game-Level Interaction (UI Only)
-                        GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(true);
-                    }
 
-                    break;
-                case nameof(EnemyState.dead):
-                    if (preppingStatus == GameStatuses.RewardsPanel)
-                    {
-                        // Reward panel when enemy dies
-                        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
-                    }
-
-                    break;
-            }
-        }
-        else
+        switch (eventName)
         {
-            Debug.LogWarning("[GameStatusManager] Event called without setting a prep status!");
+            case nameof(PlayerState.dying) or nameof(EnemyState.dying):
+                // Prevent Game-Level Interaction (UI Only)
+                GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.Invoke(true);
+                break;
+            case nameof(PlayerState.dead) or nameof(EnemyState.dead):
+                // Fulfils prepping status
+                GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(preppingStatus);
+                break;
         }
     }
 
     public void OnChangeGameStatus(GameStatuses newGameStatus)
     {
         currentGameStatus = newGameStatus;
+        preppingStatus = GameStatuses.None;
         switch (newGameStatus)
         {
             case GameStatuses.Combat:
@@ -121,9 +100,6 @@ public class GameStatusManager : MonoBehaviour
                 Debug.LogWarning("[GameStatusManager] This game status is not implemented!");
                 break;
         }
-
-
-        preppingStatus = GameStatuses.None;
     }
 
     private void InitializeMapMode()
