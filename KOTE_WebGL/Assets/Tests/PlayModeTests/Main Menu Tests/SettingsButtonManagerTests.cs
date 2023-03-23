@@ -13,7 +13,7 @@ public class SettingsButtonManagerTests : MonoBehaviour
     public IEnumerator Setup()
     {
         GameObject SettingsButtonPrefab =
-            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/MainMenu/Armory/GearListHeader.prefab");
+            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/MainMenu/SettingsBT.prefab");
         settingsButton = Instantiate(SettingsButtonPrefab);
         _buttonManager = settingsButton.GetComponent<SettingsButtonManager>();
         yield return null;
@@ -43,7 +43,7 @@ public class SettingsButtonManagerTests : MonoBehaviour
     public void DoesOnLogoutSuccessfulDeactivateSettingsButton()
     {
         settingsButton.SetActive(true);
-        GameManager.Instance.EVENT_AUTHENTICATED.Invoke();
+        GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.Invoke(null);
         Assert.False(_buttonManager.button.activeSelf);
     }
     
