@@ -46,6 +46,11 @@ public class SettingsManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
     }
+
+    public void OnBackButton()
+    {
+        GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.Invoke(false);
+    }
     
     public void OnVolumeChanged(string volumeType)
     {

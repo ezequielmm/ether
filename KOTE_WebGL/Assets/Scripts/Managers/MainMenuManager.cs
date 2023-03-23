@@ -19,7 +19,6 @@ public class MainMenuManager : MonoBehaviour
         loginButton,
         nameButton,
         fiefButton,
-        settingButton,
         connectWalletButton;
 
     [SerializeField]
@@ -171,7 +170,6 @@ public class MainMenuManager : MonoBehaviour
         loginButton.gameObject.SetActive(preLoginStatus);
         nameButton.gameObject.SetActive(!preLoginStatus);
         fiefButton.gameObject.SetActive(!preLoginStatus);
-        settingButton.gameObject.SetActive(!preLoginStatus);
         connectWalletButton.gameObject.SetActive(!preLoginStatus);
         ContestTimer.SetActive(!preLoginStatus);
     }
@@ -183,7 +181,6 @@ public class MainMenuManager : MonoBehaviour
         registerButton.gameObject.SetActive(false);
         loginButton.gameObject.SetActive(false);
         connectWalletButton.gameObject.SetActive(!_hasWallet);
-        settingButton.gameObject.SetActive(true);
         ContestTimer.SetActive(true);
         GetExpeditionStatus();
     }
@@ -208,12 +205,6 @@ public class MainMenuManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(true);
-    }
-
-    public void OnSettingsButton()
-    {
-        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-        GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
     public void OnTreasuryButton()
