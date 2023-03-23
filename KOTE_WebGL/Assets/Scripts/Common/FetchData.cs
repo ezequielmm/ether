@@ -180,6 +180,13 @@ public class FetchData : DataManager, ISingleton<FetchData>
         }
     }
 
+    public async UniTask<Texture2D> GetVillagerPortraitElement(string elementName)
+    {
+        string spriteName = elementName + ".png";
+        string requestUrl = ClientEnvironmentManager.Instance.PortraitElementURL + spriteName;
+        return await GetTexture(requestUrl);
+    }
+
     public async UniTask<Texture2D> GetNftSkinElement(TraitSprite spriteData)
     {
         string spriteName = spriteData.ImageName + ".png";

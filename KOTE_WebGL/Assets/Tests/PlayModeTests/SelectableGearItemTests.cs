@@ -70,7 +70,7 @@ namespace KOTE.UI.Armory
         public void DoesPopulatingItemSetItemImage()
         {
             _itemManager.Populate(testItemData);
-            Assert.IsNull(_itemManager.Image);
+            Assert.IsNotNull(_itemManager.Image);
         }
 
         [Test]

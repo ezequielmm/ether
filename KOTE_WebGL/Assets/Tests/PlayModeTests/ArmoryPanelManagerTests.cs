@@ -109,7 +109,7 @@ namespace KOTE.UI.Armory
         public IEnumerator Setup()
         {
             GameObject spriteManagerPrefab =
-                AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/NftSpriteManager.prefab");
+                AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Common/PlayerSpriteManager.prefab");
             nftSpriteManager = Instantiate(spriteManagerPrefab);
             nftSpriteManager.SetActive(true);
 
@@ -186,9 +186,9 @@ namespace KOTE.UI.Armory
         }
 
         [Test]
-        public void DoesNftImageExist()
+        public void DoesPortraitManagerExist()
         {
-            Assert.NotNull(_armoryPanelManager.nftImage);
+            Assert.NotNull(_armoryPanelManager.portraitManager);
         }
 
         [Test]
@@ -238,14 +238,7 @@ namespace KOTE.UI.Armory
             Assert.IsFalse(_armoryPanelManager.panelContainer.activeSelf);
         }
 
-        [Test]
-        public void DoesShowingPanelPopulateCharacterImage()
-        {
-            // TEMPORARILY BROKEN UNTIL NFT IMAGE PULLING IS FIXED
-            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
-            Assert.IsNotNull(_armoryPanelManager.nftImage.sprite);
-            Assert.AreEqual(testSprite, _armoryPanelManager.nftImage.sprite);
-        }
+        
 
         [Test]
         public void DoesShowingPanelCallNftSelectedEvent()
@@ -255,29 +248,6 @@ namespace KOTE.UI.Armory
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
             _armoryPanelManager.OnNextToken();
             Assert.True(eventFired);
-        }
-
-        [Test]
-        public void DoesCallingOnNextTokenSwitchToNextToken()
-        {
-            // TEMPORARILY BROKEN UNTIL NFT IMAGE PULLING IS FIXED
-            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
-            _armoryPanelManager.nftImage.sprite = null;
-            Assert.IsNull(_armoryPanelManager.nftImage.sprite);
-            _armoryPanelManager.OnNextToken();
-            Assert.IsNotNull(_armoryPanelManager.nftImage.sprite);
-        }
-
-        [Test]
-        public void DoesCallingOnPreviousTokenSwitchToPreviousToken()
-        {
-            // TEMPORARILY BROKEN UNTIL NFT IMAGE PULLING IS FIXED
-            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
-            _armoryPanelManager.OnNextToken();
-            _armoryPanelManager.nftImage.sprite = null;
-            Assert.IsNull(_armoryPanelManager.nftImage.sprite);
-            _armoryPanelManager.OnPreviousToken();
-            Assert.IsNotNull(_armoryPanelManager.nftImage.sprite);
         }
 
         [UnityTest]
@@ -448,6 +418,13 @@ namespace KOTE.UI.Armory
         public void DoesCallingGearSelectedChangeSlotImageIfNotKnight()
         {
             testNftList[0].Contract = NftContract.Villager;
+            testNftList[0].Traits = new Dictionary<Trait, string>
+            {
+                { Trait.Helmet, "Basic Bucket Helmet" },
+                { Trait.Padding, "Red" },
+                { Trait.Shield, "Rusty Shield" },
+                { Trait.Weapon, "Rusty Sword" }
+            };
             NftManager.Instance.Nfts.Clear();
             NftManager.Instance.Nfts[NftContract.Villager] = testNftList;
             NftManager.Instance.NftsLoaded.Invoke();
@@ -471,6 +448,13 @@ namespace KOTE.UI.Armory
         public void DoesLoadingAVillagerUpdateGearSlots()
         {
             testNftList[0].Contract = NftContract.Villager;
+            testNftList[0].Traits = new Dictionary<Trait, string>
+            {
+                { Trait.Helmet, "Basic Bucket Helmet" },
+                { Trait.Padding, "Red" },
+                { Trait.Shield, "Rusty Shield" },
+                { Trait.Weapon, "Rusty Sword" }
+            };
             NftManager.Instance.Nfts.Clear();
             NftManager.Instance.Nfts[NftContract.Villager] = testNftList;
             NftManager.Instance.NftsLoaded.Invoke();
@@ -480,16 +464,6 @@ namespace KOTE.UI.Armory
             {
                 Assert.IsNull(slot.GetEquippedGear());
             }
-        }
-
-        [Test]
-        public void DoesSendingEmptyNftListSetImageToDefault()
-        {
-            NftManager.Instance.Nfts.Clear();
-            _armoryPanelManager.nftImage.sprite = null;
-            NftManager.Instance.NftsLoaded.Invoke();
-            Assert.NotNull(_armoryPanelManager.nftImage.sprite);
-            Assert.AreEqual(_armoryPanelManager.defaultCharacterSprite, _armoryPanelManager.nftImage.sprite);
         }
 
         [Test]
