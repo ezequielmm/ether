@@ -71,7 +71,6 @@ public class MainMenuTests
         Assert.IsNotNull(mainMenu.loginButton);
         Assert.IsNotNull(mainMenu.nameButton);
         Assert.IsNotNull(mainMenu.fiefButton);
-        Assert.IsNotNull(mainMenu.settingButton);
     }
 
     [UnityTest]
@@ -88,7 +87,6 @@ public class MainMenuTests
         Assert.AreEqual(true, mainMenu.loginButton.gameObject.activeSelf);
         Assert.AreEqual(false, mainMenu.nameButton.gameObject.activeSelf);
         Assert.AreEqual(false, mainMenu.fiefButton.gameObject.activeSelf);
-        Assert.AreEqual(false, mainMenu.settingButton.gameObject.activeSelf);
         mainMenu.TogglePreLoginStatus(false);
         yield return null;
         Assert.AreEqual(true, mainMenu.nameText.gameObject.activeSelf);
@@ -100,7 +98,6 @@ public class MainMenuTests
         Assert.AreEqual(false, mainMenu.loginButton.gameObject.activeSelf);
         Assert.AreEqual(true, mainMenu.nameButton.gameObject.activeSelf);
         Assert.AreEqual(true, mainMenu.fiefButton.gameObject.activeSelf);
-        Assert.AreEqual(true, mainMenu.settingButton.gameObject.activeSelf);
     }
 
     [UnityTest]
@@ -159,7 +156,6 @@ public class MainMenuTests
         Assert.AreEqual(true, mainMenu.loginButton.gameObject.activeSelf);
         Assert.AreEqual(false, mainMenu.nameButton.gameObject.activeSelf);
         Assert.AreEqual(false, mainMenu.fiefButton.gameObject.activeSelf);
-        Assert.AreEqual(false, mainMenu.settingButton.gameObject.activeSelf);
     }
 
     [UnityTest]
@@ -200,16 +196,6 @@ public class MainMenuTests
         bool eventFired = false;
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.AddListener((bool show) => { eventFired = true; });
         mainMenu.OnLoginButton();
-        yield return null;
-        Assert.AreEqual(true, eventFired);
-    }
-
-    [UnityTest]
-    public IEnumerator DoesOnSettingsButtonFireEvent()
-    {
-        bool eventFired = false;
-        GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.AddListener((bool show) => { eventFired = true; });
-        mainMenu.OnSettingsButton();
         yield return null;
         Assert.AreEqual(true, eventFired);
     }
