@@ -46,9 +46,15 @@ public class ContestManager : SingleTon<ContestManager>
         LastSubmissionTimeUtc = UtcDateTime;
     }
 
+    public void SetContestTimes(DateTime StartTime, DateTime EndTime, DateTime SubmissionEndTime)
+    {
+        SetNewContestEndTime(EndTime);
+        SetNewContestSubmissionTime(SubmissionEndTime);
+    }
+
     void Start()
     {
-        ResetContestOnEnd();
+        UserDataManager.Instance.ExpeditionStatusUpdated.AddListener(UpdateContestTimes);
         reportedEndOfContest = false;
         OnContestEnded.AddListener(ResetContestOnEnd);
     }
@@ -63,9 +69,18 @@ public class ContestManager : SingleTon<ContestManager>
         await CheckContestStatus();
         if (HasContest)
         {
-            SetNewContestEndTime(Next6AmUtc());
-            SetNewContestSubmissionTime(NextDay0AmUtc());
+            await UserDataManager.Instance.UpdateExpeditionStatus();
+            UpdateContestTimes();
         }
+    }
+
+    private async void UpdateContestTimes()
+    {
+        await UniTask.WaitUntil(() => UserDataManager.Instance.ContestData != null);
+        var ContestData = UserDataManager.Instance.ContestData;
+        SetContestTimes(ContestData.StartTime, ContestData.EndTime,
+            ContestData.SubmissionsUntilTime);
+        InContest = UserDataManager.Instance.HasExpedition; // TODO: Get this info directly from the backend.
     }
 
     private void Update()
