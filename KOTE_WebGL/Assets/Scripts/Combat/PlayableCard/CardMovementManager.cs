@@ -375,8 +375,6 @@ namespace KOTE.Expedition.Combat.Cards
         {
             yield return null;
 
-            // SFX
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Exhaust");
             float effectLength = GameSettings.EXHAUST_EFFECT_DURATION;
 
             // Temp fade animation
