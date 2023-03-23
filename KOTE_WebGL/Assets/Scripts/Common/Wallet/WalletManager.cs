@@ -142,6 +142,11 @@ public class WalletManager : ISingleton<WalletManager>
 
     public bool ConfirmNftOwnership(int nftId, NftContract tokenType)
     {
+        if (tokenType == NftContract.None)
+        {
+            Debug.Log($"[WalletManager] Player will never own a [{NftContract.None}] token type.");
+        }
+
         if (NftsInWallet.ContainsKey(tokenType))
         {
             return NftsInWallet[tokenType].Contains(nftId);

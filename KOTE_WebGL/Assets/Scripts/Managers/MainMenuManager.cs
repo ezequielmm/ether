@@ -33,10 +33,9 @@ public class MainMenuManager : MonoBehaviour
     public bool _hasExpedition => userData.HasExpedition;
     [HideInInspector]
     public bool _expeditionStatusReceived;
-    [HideInInspector]
-    public bool _walletDataReceived;
 
     // verification that the player still owns the continuing nft
+    [HideInInspector]
     public bool _ownsSavedNft => wallet.ConfirmNftOwnership(userData.ActiveNft, userData.NftContract);
     
     // verification that the connected wallet contains at least one knight
