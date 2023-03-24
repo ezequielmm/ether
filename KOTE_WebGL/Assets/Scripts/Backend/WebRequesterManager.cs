@@ -229,4 +229,5 @@ public static class RestEndpoint
     public static readonly string BugReport = "/gsrv/v1/bug/report";
     public static readonly string ServerVersion = "/gsrv/v1/showversion";
     public static readonly string PlayerGear = "/gsrv/v1/playergear";
+    public static readonly string CurrentContest = "/gsrv/v1/showcontest";
 }

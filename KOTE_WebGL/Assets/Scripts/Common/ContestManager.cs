@@ -20,6 +20,11 @@ public class ContestManager : SingleTon<ContestManager>
     public TimeSpan TimeUntilLastSubmission => LastSubmissionTimeUtc - DateTime.UtcNow;
     public TimeSpan TimeUntilEnd => ContestEndTimeUtc - DateTime.UtcNow;
 
+    public ContestData ContestData => InContest ? CurrentContest : OngoingContest;
+    
+    private ContestData OngoingContest;
+    private ContestData CurrentContest => UserDataManager.Instance.ContestData;
+
     private DateTime NextDay0AmUtc()
     {
         var time = DateTime.UtcNow;
@@ -57,10 +62,12 @@ public class ContestManager : SingleTon<ContestManager>
         UserDataManager.Instance.ExpeditionStatusUpdated.AddListener(UpdateContestTimes);
         reportedEndOfContest = false;
         OnContestEnded.AddListener(ResetContestOnEnd);
+        UpdateContestTimes();
     }
 
     private async UniTask CheckContestStatus() 
     {
+        OngoingContest = await FetchData.Instance.GetOngoingContest();
         HasContest = true;
     }
 
@@ -76,8 +83,7 @@ public class ContestManager : SingleTon<ContestManager>
 
     private async void UpdateContestTimes()
     {
-        await UniTask.WaitUntil(() => UserDataManager.Instance.ContestData != null);
-        var ContestData = UserDataManager.Instance.ContestData;
+        await UniTask.WaitUntil(() => ContestData != null);
         SetContestTimes(ContestData.StartTime, ContestData.EndTime,
             ContestData.SubmissionsUntilTime);
         InContest = UserDataManager.Instance.HasExpedition; // TODO: Get this info directly from the backend.

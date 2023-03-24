@@ -15,7 +15,7 @@ public class UserDataManager : SingleTon<UserDataManager>
     public List<GearItemData> EquippedGear => expeditionStatus?.EquippedGear ?? null;
     public NftContract NftContract => expeditionStatus?.TokenType ?? NftContract.None;
     public List<string> VerifiedWallets => profile?.ownedWallets ?? new();
-    public ExpeditionStatus.ContestData ContestData => expeditionStatus?.Contest;
+    public ContestData ContestData => expeditionStatus?.Contest;
     
     ProfileData profile = null;
     ExpeditionStatus expeditionStatus = null;
@@ -60,7 +60,7 @@ public class UserDataManager : SingleTon<UserDataManager>
         GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.Invoke(profile?.name ?? string.Empty, profile?.fief ?? -1);
     }
 
-    public async UniTask UpdateExpeditionStatus() 
+    public async UniTask UpdateExpeditionStatus()
     {
         SetExpedition(await FetchData.Instance.GetExpeditionStatus());
     }

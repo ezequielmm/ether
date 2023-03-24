@@ -109,15 +109,16 @@ public class ExpeditionStatus
 
         return NftContract.None;
     }
+}
 
-    public class ContestData
-    {
-        [JsonProperty("map_id")] public string MapId;
-        [JsonProperty("event_id")] public string EventId;
-        [JsonProperty("available_at")] public DateTime StartTime;
-        [JsonProperty("ends_at")] public DateTime SubmissionsUntilTime;
-        [JsonProperty("valid_until")] public DateTime EndTime;
-    }
+[Serializable]
+public class ContestData
+{
+    [JsonProperty("map_id")] public string MapId;
+    [JsonProperty("event_id")] public string EventId;
+    [JsonProperty("available_at")] public DateTime StartTime;
+    [JsonProperty("ends_at")] public DateTime SubmissionsUntilTime;
+    [JsonProperty("valid_until")] public DateTime EndTime;
 }
 
 [Serializable]
