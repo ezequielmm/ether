@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -25,6 +22,7 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
     public string WebRequestURL { get; private set; }
     public string SkinURL { get; private set; }
     public string GearIconURL { get; private set; }
+    public string PortraitElementURL { get; private set; }
     public string WebSocketURL { get; private set; }
     public Environments Environment { get; private set; } = Environments.Unknown;
 
@@ -79,23 +77,27 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
                 WebRequestURL = $"https://gateway.villagers.dev.kote.robotseamonster.com";
                 SkinURL = $"https://koteskins.robotseamonster.com/";
                 GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/";
+                PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/";
                 WebSocketURL = $"https://api.villagers.dev.kote.robotseamonster.com";
                 break;
             case Environments.Stage:
                 WebRequestURL = $"https://gateway.stage.kote.robotseamonster.com";
                 SkinURL = $"https://koteskins.robotseamonster.com/";
                 GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/";
+                PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/";
                 WebSocketURL = $"https://api.stage.kote.robotseamonster.com";
                 break;
             case Environments.TestAlpha:
                 WebRequestURL = $"https://gateway.alpha.kote.robotseamonster.com";
                 SkinURL = $"https://koteskins.robotseamonster.com/";
-                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/";
+                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/";               
+                PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/";
                 WebSocketURL = $"https://api.alpha.kote.robotseamonster.com";
                 break;
             case Environments.Alpha:
                 WebRequestURL = $"https://gateway.alpha.knightsoftheether.com";
                 SkinURL = $"https://s3.amazonaws.com/koteskins.knightsoftheether.com/";
+                PortraitElementURL = "https://s3.amazonaws.com/koteskins.robotseamonster.com/Portraits/";
                 GearIconURL = $"https://s3.amazonaws.com/koteskins.knightsoftheether.com/GearIcons";
                 WebSocketURL = $"https://api.alpha.knightsoftheether.com:443";
                 break;

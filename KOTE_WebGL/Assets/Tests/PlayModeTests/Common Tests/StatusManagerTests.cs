@@ -37,7 +37,7 @@ public class StatusManagerTests : MonoBehaviour
         player.SetActive(true);
         
         GameObject nftManagerPrefab =
-            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/NftSpriteManager.prefab");
+            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Common/PlayerSpriteManager.prefab");
         nftManager = Instantiate(nftManagerPrefab);
         
         GameObject spriteManagerPrefab =

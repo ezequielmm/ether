@@ -27,7 +27,7 @@ namespace KOTE.UI.Armory
         public IEnumerator Setup()
         {
             GameObject spriteManagerPrefab =
-                AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/NftSpriteManager.prefab");
+                AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Common/PlayerSpriteManager.prefab");
            GameObject nftSpriteManager = Instantiate(spriteManagerPrefab);
             nftSpriteManager.SetActive(true);
             _tokenData = new ArmoryTokenData(testMetaData);

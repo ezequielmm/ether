@@ -18,7 +18,7 @@ namespace KOTE.UI.Armory
         public GameObject panelContainer;
         public Button playButton;
         public Sprite defaultCharacterSprite;
-        public Image nftImage;
+        public CharacterPortraitManager portraitManager;
         public ArmoryHeaderManager headerPrefab;
         public Transform gearListTransform;
         public List<GearSlot> gearSlots;
@@ -51,17 +51,20 @@ namespace KOTE.UI.Armory
 
         private void ActivateContainer(bool show)
         {
+            // run this whe the panel is opened, instead of when nfts load, so images are cached
+            UpdatePanelOnNftUpdate();
             panelContainer.SetActive(show);
         }
 
         private void PopulateCharacterList()
         {
             List<Nft> nfts = NftManager.Instance.GetAllNfts();
+            PortraitSpriteManager.Instance.CacheAllSprites();
             nftList.Clear();
 
             if (nfts.Count == 0)
             {
-                nftImage.sprite = defaultCharacterSprite;
+                portraitManager.SetDefault();
                 curNode = null;
                 playButton.interactable = false;
                 return;
@@ -74,19 +77,15 @@ namespace KOTE.UI.Armory
 
             curNode = nftList.First;
             GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
-            UpdatePanelOnNftUpdate();
         }
 
         private void UpdatePanelOnNftUpdate()
         {
-            // TODO reactivate this once correct image route is found
-            //nftImage.sprite = await curNode.Value.MetaData.GetImage();
+            portraitManager.SetPortrait(curNode.Value.MetaData);
             foreach (GameObject panel in gearPanels)
             {
                 panel.SetActive(!curNode.Value.MetaData.isKnight);
             }
-
-            nftImage.color = (curNode.Value.MetaData.CanPlay) ? Color.white : Color.gray;
             playButton.interactable = curNode.Value.MetaData.CanPlay;
             if (curNode.Value.MetaData.isKnight) ClearGearSlots();
             else PopulateEquippedGear();
