@@ -103,7 +103,7 @@ public class ExpeditionStatus
                 return NftContract.Knights;
             case "villager":
                 return NftContract.Villager;
-            case "blessed_villager":
+            case "blessed-villager":
                 return NftContract.BlessedVillager;
         }
 

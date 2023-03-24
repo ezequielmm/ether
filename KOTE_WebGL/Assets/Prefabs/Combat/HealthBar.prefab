@@ -318,6 +318,7 @@ MonoBehaviour:
   fill: {fileID: 2546257528236138866}
   fillArea: {fileID: 3315660161110088701}
   healthBar: {fileID: 7047883798869629962}
+  defaultSize: 0
   widthAdjustment: 0
 --- !u!1 &6321544228692412590
 GameObject:
@@ -421,6 +422,7 @@ GameObject:
   - component: {fileID: 8335523957067287982}
   - component: {fileID: 4879760034406251843}
   - component: {fileID: 3569780985861222150}
+  - component: {fileID: 8389065312974872291}
   m_Layer: 5
   m_Name: HealthText
   m_TagString: Untagged
@@ -546,6 +548,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8389065312974872291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7977566236732789805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a02ca5a639468c4f8b5c69d602d526e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textObj: {fileID: 0}
 --- !u!1 &8062585879537623411
 GameObject:
   m_ObjectHideFlags: 0
