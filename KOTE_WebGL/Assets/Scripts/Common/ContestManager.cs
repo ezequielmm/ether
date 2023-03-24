@@ -76,7 +76,8 @@ public class ContestManager : SingleTon<ContestManager>
         await CheckContestStatus();
         if (HasContest)
         {
-            await UserDataManager.Instance.UpdateExpeditionStatus();
+            if(AuthenticationManager.Instance.Authenticated)
+                await UserDataManager.Instance.UpdateExpeditionStatus();
             UpdateContestTimes();
         }
     }
