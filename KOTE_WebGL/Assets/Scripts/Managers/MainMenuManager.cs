@@ -45,7 +45,20 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
-        AuthenticationManager.Instance.SetSessionToken(null);
+        // default the play button to not being interactable
+        playButton.interactable = false;
+        
+        if (!GameManager.Instance.ShowArmory)
+        {
+            AuthenticationManager.Instance.SetSessionToken(null);
+            TogglePreLoginStatus(true);
+        }
+        else
+        {
+            SetupPostAuthenticationButtons();
+            GameManager.Instance.ShowArmory = false;
+            
+        }
         GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.AddListener(UpdateNameAndFief);
         GameManager.Instance.EVENT_AUTHENTICATED.AddListener(SetupPostAuthenticationButtons);
         GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
@@ -58,11 +71,6 @@ public class MainMenuManager : MonoBehaviour
 
         //CheckIfRegisterButtonIsEnabled();
         CheckIfArmoryButtonIsEnabled();
-
-        TogglePreLoginStatus(true);
-        
-        // default the play button to not being interactable
-        playButton.interactable = false;
     }
 
     private void CheckIfArmoryButtonIsEnabled()

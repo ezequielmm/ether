@@ -263,6 +263,8 @@ public class GameManager : SingleTon<GameManager>
     
     public static string ServerVersion { get; private set; }
 
+    public bool ShowArmory = false;
+
     // Start is called before the first frame update
     void Start()
     {
