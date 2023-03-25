@@ -45,20 +45,8 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
-        // default the play button to not being interactable
-        playButton.interactable = false;
         
-        if (!GameManager.Instance.ShowArmory)
-        {
-            AuthenticationManager.Instance.ClearSessionToken();
-            TogglePreLoginStatus(true);
-        }
-        else
-        {
-            SetupPostAuthenticationButtons();
-            GameManager.Instance.ShowArmory = false;
-            
-        }
+        
         GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.AddListener(UpdateNameAndFief);
         GameManager.Instance.EVENT_AUTHENTICATED.AddListener(SetupPostAuthenticationButtons);
         GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(OnLogoutSuccessful);
@@ -70,6 +58,18 @@ public class MainMenuManager : MonoBehaviour
         NftManager.Instance.NftsLoaded.AddListener(VerifyResumeExpedition);
 
         //CheckIfRegisterButtonIsEnabled();
+        
+        if (string.IsNullOrEmpty(AuthenticationManager.Instance.GetSessionToken()))
+        {
+            TogglePreLoginStatus(true);
+        }
+        else
+        {
+            AuthenticationManager.Instance.AuthenticateOnResume();
+        }
+        
+        // default the play button to not being interactable
+        playButton.interactable = false;
         CheckIfArmoryButtonIsEnabled();
     }
 

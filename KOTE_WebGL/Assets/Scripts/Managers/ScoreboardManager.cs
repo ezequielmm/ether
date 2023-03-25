@@ -78,7 +78,6 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
         }
         else 
         {
-            GameManager.Instance.ShowArmory = true;
             ToggleLootPanel(true);
         }
     }

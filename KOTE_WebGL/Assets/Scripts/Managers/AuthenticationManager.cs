@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
@@ -17,6 +18,11 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
         string hashedPassword = HashPassword(password);
         string token = await FetchData.Instance.GetTokenByRegistration(name, email, hashedPassword);
         return Authenticate(token);
+    }
+
+    public bool AuthenticateOnResume()
+    {
+        return Authenticate(GetSessionToken());
     }
 
     public async void Logout()
@@ -48,7 +54,10 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
         if (string.IsNullOrEmpty(token))
             PlayerPrefs.DeleteKey("session_token");
         else
+        {
             PlayerPrefs.SetString("session_token", token);
+            PlayerPrefs.SetString("login_time", DateTime.UtcNow.ToString());
+        }
         PlayerPrefs.Save();
     }
 
@@ -58,9 +67,30 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
         PlayerPrefs.Save();
     }
 
-    public string GetSessionToken() 
+    public string GetSessionToken()
     {
+        string savedLoginTime = PlayerPrefs.GetString("login_time");
+        if (string.IsNullOrEmpty(savedLoginTime)) return null;
+
+        int hoursElapsed = CalculateHoursSinceLastLoginTime(savedLoginTime);
+        
+        if (hoursElapsed >= 6)
+        {
+            Debug.Log("Login Token Expired");
+            ClearSessionToken();
+            return null;
+        }
+        
+        // update the cache time, since the player is still active.
+        PlayerPrefs.SetString("login_time", DateTime.UtcNow.ToString());
         return PlayerPrefs.GetString("session_token");
+    }
+
+    private int CalculateHoursSinceLastLoginTime(string savedTime)
+    {
+        DateTime time = DateTime.Parse(savedTime);
+        TimeSpan timeElapsed = DateTime.Now - time;
+        return timeElapsed.Hours;
     }
     
     private string HashPassword(string password) 
