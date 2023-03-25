@@ -52,7 +52,7 @@ public class MainMenuTests
     public IEnumerator UsedUnityEventsExist()
     {
         yield return null;
-        Assert.IsNotNull(GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL);
+        Assert.IsNotNull(GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED);
         Assert.IsNotNull(GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST);
         Assert.IsNotNull(GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST);
     }
@@ -146,7 +146,7 @@ public class MainMenuTests
     [Test]
     public void TestOnLogoutSuccessfulListener()
     {
-        GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.Invoke("message");
+        GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.Invoke("message");
         Assert.AreEqual(false, mainMenu.nameText.gameObject.activeSelf);
         Assert.AreEqual(false, mainMenu.moneyText.gameObject.activeSelf);
         Assert.AreEqual(false, mainMenu.playButton.gameObject.activeSelf);

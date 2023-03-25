@@ -40,7 +40,7 @@ public class UserDataManager : SingleTon<UserDataManager>
     private void Start()
     {
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnExpeditionUpdate);
-        GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ClearDataOnLogout);
+        GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(ClearDataOnLogout);
     }
 
     private void ClearDataOnLogout(string _)

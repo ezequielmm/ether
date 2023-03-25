@@ -50,7 +50,7 @@ public class MainMenuManager : MonoBehaviour
         
         if (!GameManager.Instance.ShowArmory)
         {
-            AuthenticationManager.Instance.SetSessionToken(null);
+            AuthenticationManager.Instance.ClearSessionToken();
             TogglePreLoginStatus(true);
         }
         else
@@ -61,7 +61,7 @@ public class MainMenuManager : MonoBehaviour
         }
         GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.AddListener(UpdateNameAndFief);
         GameManager.Instance.EVENT_AUTHENTICATED.AddListener(SetupPostAuthenticationButtons);
-        GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
+        GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(OnLogoutSuccessful);
 
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(false);
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(false);

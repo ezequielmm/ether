@@ -18,7 +18,13 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
         string token = await FetchData.Instance.GetTokenByRegistration(name, email, hashedPassword);
         return Authenticate(token);
     }
-    
+
+    public async void Logout()
+    {
+        await FetchData.Instance.Logout();
+        ClearSessionToken();
+    }
+
     private bool Authenticate(string token) 
     {
         SetSessionToken(token);
@@ -43,6 +49,12 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
             PlayerPrefs.DeleteKey("session_token");
         else
             PlayerPrefs.SetString("session_token", token);
+        PlayerPrefs.Save();
+    }
+
+    public void ClearSessionToken()
+    {
+        PlayerPrefs.DeleteKey("session_token");
         PlayerPrefs.Save();
     }
 

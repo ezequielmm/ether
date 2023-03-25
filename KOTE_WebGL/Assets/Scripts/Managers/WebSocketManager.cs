@@ -188,7 +188,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     {
         //BestHTTP.HTTPManager.UseAlternateSSLDefaultValue = true; 
 
-        string token = PlayerPrefs.GetString("session_token");
+        string token = AuthenticationManager.Instance.GetSessionToken();
 
         // Debug.Log("Connecting socket using token: " + token);
 

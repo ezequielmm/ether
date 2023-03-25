@@ -8,7 +8,7 @@ public class SettingsButtonManager : MonoBehaviour
     void Start()
     {
         button.SetActive(false);
-        GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
+        GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(OnLogout);
         GameManager.Instance.EVENT_AUTHENTICATED.AddListener(OnAuthenticated);
         GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.AddListener(OnSettingsActivated);
     }
@@ -29,7 +29,7 @@ public class SettingsButtonManager : MonoBehaviour
         button.SetActive(true);
     }
 
-    private void OnLogoutSuccessful(string data)
+    private void OnLogout(string data)
     {
         button.SetActive(false);
     }
