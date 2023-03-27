@@ -118,7 +118,7 @@ public class WalletManager : ISingleton<WalletManager>
         return true;
 #endif
         // TODO: Check backend if wallet was previously authorized and is still valid.
-
+        if (WalletVerified) return true;
         var message =
             $"Hello, welcome to Knights of the Ether.\nPlease sign this message to verify your wallet.\nThis action will not cost you any transaction fee.\n\n\nSecret Code: {Guid.NewGuid()}";
         WalletSignature walletSignature = new WalletSignature(ActiveWallet, message);
@@ -185,8 +185,12 @@ public class WalletManager : ISingleton<WalletManager>
 
     private void SetWallet(string newAddress)
     {
-        WalletVerified = false;
-        ActiveWallet = newAddress;
+        if (newAddress != ActiveWallet)
+        {
+            WalletVerified = false;
+            ActiveWallet = newAddress;
+        }
+
         NftsInWallet.Clear();
     }
 

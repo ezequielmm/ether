@@ -1,12 +1,8 @@
 using System;
 using System.Collections.Generic;
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
-using Random = UnityEngine.Random;
-
 
 public class GameManager : SingleTon<GameManager>
 {
@@ -252,9 +248,9 @@ public class GameManager : SingleTon<GameManager>
         EVENT_SHOW_COMBAT_OVERLAY_TEXT_WITH_ON_COMPLETE = new UnityEvent<string, Action>();
 
     [HideInInspector]
-    public UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>
+    public UnityEvent<List<Tooltip>, TooltipController.Anchor, Vector3, Transform>
         EVENT_SET_TOOLTIPS { get; } =
-        new UnityEvent<System.Collections.Generic.List<Tooltip>, TooltipController.Anchor, Vector3, Transform>();
+        new UnityEvent<List<Tooltip>, TooltipController.Anchor, Vector3, Transform>();
 
     [HideInInspector] public UnityEvent<string, int> EVENT_HEAL = new UnityEvent<string, int>(); // id, healed amount
 
@@ -309,7 +305,8 @@ public class GameManager : SingleTon<GameManager>
     } // maybe we can encapsulate this variable to control who can set it and allow all to get the value? Depending on the scene that is loaded there might be a change for a cheat
 
     public inGameScenes CurrentScene { get; private set; } = inGameScenes.Loader;
-
+ 
+    public bool ShowArmory { get; set; }
     public static string ServerVersion { get; private set; }
     
     // Start is called before the first frame update

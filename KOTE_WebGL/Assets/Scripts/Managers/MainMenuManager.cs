@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -57,7 +55,6 @@ public class MainMenuManager : MonoBehaviour
         wallet.WalletStatusModified.AddListener(UpdateUiOnWalletModification);
         NftManager.Instance.NftsLoaded.AddListener(VerifyResumeExpedition);
 
-        //CheckIfRegisterButtonIsEnabled();
         
         if (string.IsNullOrEmpty(AuthenticationManager.Instance.GetSessionToken()))
         {
@@ -88,6 +85,12 @@ public class MainMenuManager : MonoBehaviour
 
     public async void VerifyResumeExpedition()
     {
+        if (GameManager.Instance.ShowArmory)
+        {
+            GameManager.Instance.ShowArmory = false;
+            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
+        }
+        
         if (!_hasWallet || !_isWhitelisted ) 
         {
             playButton.gameObject.SetActive(false);
@@ -108,7 +111,7 @@ public class MainMenuManager : MonoBehaviour
         
         if (!_ownsAnyNft ) 
         {
-            playButton.gameObject.SetActive(false);
+            //playButton.gameObject.SetActive(false);
             newExpeditionButton.gameObject.SetActive(false);
             playButton.interactable = false;
             return;
@@ -183,7 +186,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void SetupPostAuthenticationButtons()
     {
-        playButton.gameObject.SetActive(false);
+        //playButton.gameObject.SetActive(false);
         newExpeditionButton.gameObject.SetActive(false);
         registerButton.gameObject.SetActive(false);
         loginButton.gameObject.SetActive(false);

@@ -1,20 +1,16 @@
-using Cysharp.Threading.Tasks;
-using KOTE.UI.Armory;
-using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public class ScoreboardManager : SingleTon<ScoreboardManager>
 {
-    [SerializeField]
-    ScoreboardPanelManager Scoreboard;
-    [SerializeField]
-    LootboxPanelManager Lootbox;
-    [SerializeField]
-    string ExpiredLootMessage = $"The contest has ended before you had the chance to beat the boss. " +
-                                $"As such, all loot has been forfeited.";
+    [SerializeField] ScoreboardPanelManager Scoreboard;
+    [SerializeField] LootboxPanelManager Lootbox;
+
+    [SerializeField] string ExpiredLootMessage = $"The contest has ended before you had the chance to beat the boss. " +
+                                                 $"As such, all loot has been forfeited.";
 
     ScoreboardData ScoreData;
 
@@ -25,14 +21,16 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
 
     void Start()
     {
-        if (Scoreboard == null) 
+        if (Scoreboard == null)
         {
             Scoreboard = GetComponent<ScoreboardPanelManager>();
         }
+
         if (Lootbox == null)
         {
             Lootbox = GetComponent<LootboxPanelManager>();
         }
+
         ToggleLootPanel(false);
         ToggleScorePanel(false);
     }
@@ -41,12 +39,13 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
     {
         Scoreboard.TogglePanel(enable);
     }
+
     public void ToggleLootPanel(bool enable)
     {
         Lootbox.TogglePanel(enable);
     }
 
-    public async void UpdateAndShow() 
+    public async void UpdateAndShow()
     {
         Debug.Log("[ScoreboardManager] Updating Score");
         await UpdateScore();
@@ -73,11 +72,12 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
             if (ScoreData.NotifyNoLoot)
             {
                 GameManager.instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(ExpiredLootMessage,
-                    () => { }, () => { }, new []{"It was fun while it lasted.", null});
+                    () => { }, () => { }, new[] { "It was fun while it lasted.", null });
             }
         }
-        else 
+        else
         {
+            GameManager.Instance.ShowArmory = true;
             ToggleLootPanel(true);
         }
     }
@@ -93,25 +93,17 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
 [Serializable]
 public class ScoreboardData
 {
-    [JsonProperty("outcome")]
-    public string Outcome;
-    [JsonProperty("expeditionType")]
-    public string ExpeditionType;
-    [JsonProperty("totalScore")]
-    public int TotalScore;
-    [JsonProperty("achievements")]
-    public List<Achievement> Achievements = new();
-    [JsonProperty("notifyNoLoot")]
-    public bool NotifyNoLoot;
-    [JsonProperty("lootbox")]
-    public List<GearItemData> Lootbox = new();
+    [JsonProperty("outcome")] public string Outcome;
+    [JsonProperty("expeditionType")] public string ExpeditionType;
+    [JsonProperty("totalScore")] public int TotalScore;
+    [JsonProperty("achievements")] public List<Achievement> Achievements = new();
+    [JsonProperty("notifyNoLoot")] public bool NotifyNoLoot;
+    [JsonProperty("lootbox")] public List<GearItemData> Lootbox = new();
 }
 
 [Serializable]
 public class Achievement
 {
-    [JsonProperty("name")]
-    public string Name;
-    [JsonProperty("score")]
-    public int Score;
+    [JsonProperty("name")] public string Name;
+    [JsonProperty("score")] public int Score;
 }

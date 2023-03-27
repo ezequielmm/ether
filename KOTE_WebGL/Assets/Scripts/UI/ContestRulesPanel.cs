@@ -13,7 +13,8 @@ public class ContestRulesPanel : MonoBehaviour
     [SerializeField]
     GameObject RulePrefab;
 
-    private bool shownPanelPreviously = false;
+    // static to persist across the play session
+    private static bool shownPanelPreviously = false;
 
     private const string StaticRules =
         "1. Each Leaderboard and Map lasts for 24 hours. These reset every 24 hours at UTC Midnight.\n" +
