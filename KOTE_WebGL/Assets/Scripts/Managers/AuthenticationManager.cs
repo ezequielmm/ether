@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class AuthenticationManager : SingleTon<AuthenticationManager>
 {
-    public async UniTask<bool> Login(string email, string password)
+    public bool Authenticated => !string.IsNullOrEmpty(GetSessionToken());
+    public async UniTask<bool> Login(string email, string password) 
     {
         string hashedPassword = HashPassword(password);
         string token = await FetchData.Instance.GetTokenByLogin(email, hashedPassword);
