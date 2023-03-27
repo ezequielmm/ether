@@ -85,12 +85,7 @@ public class MainMenuManager : MonoBehaviour
 
     public async void VerifyResumeExpedition()
     {
-        if (GameManager.Instance.ShowArmory)
-        {
-            GameManager.Instance.ShowArmory = false;
-            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
-        }
-        
+
         if (!_hasWallet || !_isWhitelisted ) 
         {
             playButton.gameObject.SetActive(false);
@@ -111,7 +106,6 @@ public class MainMenuManager : MonoBehaviour
         
         if (!_ownsAnyNft ) 
         {
-            //playButton.gameObject.SetActive(false);
             newExpeditionButton.gameObject.SetActive(false);
             playButton.interactable = false;
             return;
