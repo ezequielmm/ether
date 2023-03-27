@@ -259,6 +259,17 @@ public class FetchData : DataManager, ISingleton<FetchData>
             return ParseJsonWithPath<ExpeditionStatus>(rawJson, "data");
         }
     }
+    
+    public async UniTask<ContestData> GetOngoingContest()
+    {
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.CurrentContest);
+        using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
+        {
+            request.SetRequestHeader("Accept", "*/*");
+            string rawJson = await MakeJsonRequest(request);
+            return ParseJsonWithPath<ContestData>(rawJson, "data");
+        }
+    }
 
     public async UniTask<ScoreboardData> GetExpeditionScore()
     {

@@ -93,6 +93,7 @@ public class ExpeditionStatus
     [JsonProperty]
     private string tokenType;
     public NftContract TokenType => GetContractType();
+    [JsonProperty("contest")] public ContestData Contest = new ContestData();
 
     private NftContract GetContractType()
     {
@@ -108,6 +109,16 @@ public class ExpeditionStatus
 
         return NftContract.None;
     }
+}
+
+[Serializable]
+public class ContestData
+{
+    [JsonProperty("map_id")] public string MapId;
+    [JsonProperty("event_id")] public string EventId;
+    [JsonProperty("available_at")] public DateTime StartTime;
+    [JsonProperty("ends_at")] public DateTime SubmissionsUntilTime;
+    [JsonProperty("valid_until")] public DateTime EndTime;
 }
 
 [Serializable]

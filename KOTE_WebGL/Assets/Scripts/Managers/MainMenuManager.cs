@@ -21,9 +21,6 @@ public class MainMenuManager : MonoBehaviour
         fiefButton,
         connectWalletButton;
 
-    [SerializeField]
-    private GameObject ContestTimer;
-
     private WalletManager wallet => WalletManager.Instance;
     private UserDataManager userData => UserDataManager.Instance;
 
@@ -170,7 +167,6 @@ public class MainMenuManager : MonoBehaviour
         nameButton.gameObject.SetActive(!preLoginStatus);
         fiefButton.gameObject.SetActive(!preLoginStatus);
         connectWalletButton.gameObject.SetActive(!preLoginStatus);
-        ContestTimer.SetActive(!preLoginStatus);
     }
 
     private void SetupPostAuthenticationButtons()
@@ -180,7 +176,6 @@ public class MainMenuManager : MonoBehaviour
         registerButton.gameObject.SetActive(false);
         loginButton.gameObject.SetActive(false);
         connectWalletButton.gameObject.SetActive(!_hasWallet);
-        ContestTimer.SetActive(true);
         GetExpeditionStatus();
     }
 

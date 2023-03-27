@@ -20,6 +20,11 @@ public class ContestManager : SingleTon<ContestManager>
     public TimeSpan TimeUntilLastSubmission => LastSubmissionTimeUtc - DateTime.UtcNow;
     public TimeSpan TimeUntilEnd => ContestEndTimeUtc - DateTime.UtcNow;
 
+    public ContestData ContestData => InContest ? CurrentContest : OngoingContest;
+    
+    private ContestData OngoingContest;
+    private ContestData CurrentContest => UserDataManager.Instance.ContestData;
+
     private DateTime NextDay0AmUtc()
     {
         var time = DateTime.UtcNow;
@@ -46,15 +51,23 @@ public class ContestManager : SingleTon<ContestManager>
         LastSubmissionTimeUtc = UtcDateTime;
     }
 
+    public void SetContestTimes(DateTime StartTime, DateTime EndTime, DateTime SubmissionEndTime)
+    {
+        SetNewContestEndTime(EndTime);
+        SetNewContestSubmissionTime(SubmissionEndTime);
+    }
+
     void Start()
     {
-        ResetContestOnEnd();
+        UserDataManager.Instance.ExpeditionStatusUpdated.AddListener(UpdateContestTimes);
         reportedEndOfContest = false;
         OnContestEnded.AddListener(ResetContestOnEnd);
+        UpdateContestTimes();
     }
 
     private async UniTask CheckContestStatus() 
     {
+        OngoingContest = await FetchData.Instance.GetOngoingContest();
         HasContest = true;
     }
 
@@ -63,9 +76,18 @@ public class ContestManager : SingleTon<ContestManager>
         await CheckContestStatus();
         if (HasContest)
         {
-            SetNewContestEndTime(Next6AmUtc());
-            SetNewContestSubmissionTime(NextDay0AmUtc());
+            if(AuthenticationManager.Instance.Authenticated)
+                await UserDataManager.Instance.UpdateExpeditionStatus();
+            UpdateContestTimes();
         }
+    }
+
+    private async void UpdateContestTimes()
+    {
+        await UniTask.WaitUntil(() => ContestData != null);
+        SetContestTimes(ContestData.StartTime, ContestData.EndTime,
+            ContestData.SubmissionsUntilTime);
+        InContest = UserDataManager.Instance.HasExpedition; // TODO: Get this info directly from the backend.
     }
 
     private void Update()
