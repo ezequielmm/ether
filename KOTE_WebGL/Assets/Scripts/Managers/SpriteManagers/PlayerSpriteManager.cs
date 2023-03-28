@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Spine;
 using Spine.Unity;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 {
     public SkeletonDataAsset KinghtData;
     public SpriteList DefaultSkinImages;
+    public UnityEvent skinLoading { get; } = new();
 
     private PlayerNft _curNft;
     private List<PlayerNft> characterList = new List<PlayerNft>();
@@ -93,12 +95,37 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     private void BuildPlayer(Nft selectedNft)
     {
         _curNft = GetNftBasedOnMetadata(selectedNft);
+        int curNftIndex = characterList.FindIndex(x => x == _curNft);
+        if (curNftIndex != -1 && curNftIndex != characterList.Count - 1)
+        {
+            CacheSkin(characterList[curNftIndex + 1]);
+        }
+
         Debug.Log($"[PlayerSpriteManager] Nft #{selectedNft.TokenId} has been selected.");
         UpdatePlayerSkin();
     }
 
+    public async void CachePlayerSkinsAtStartup(List<Nft> tokens)
+    {
+        for (int i = 0; i < tokens.Count; i++)
+        {
+            PlayerNft curNft = GetNftBasedOnMetadata(tokens[i]);
+            if (i < GameSettings.INITIAL_SKIN_CACHE)
+            {
+                await CacheSkin(curNft);
+            }
+        }
+    }
+
+    private async UniTask CacheSkin(PlayerNft skin)
+    {
+        await skin.GetDefaultSprites(knightSkeletonData);
+        await skin.GetNftSprites(knightSkeletonData);
+    }
+
     private async void UpdatePlayerSkin()
     {
+        skinLoading.Invoke();
         await _curNft.GetDefaultSprites(knightSkeletonData);
         await _curNft.GetNftSprites(knightSkeletonData);
         GameManager.Instance.EVENT_UPDATE_PLAYER_SKIN.Invoke();

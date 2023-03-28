@@ -4,16 +4,13 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
-using Button = UnityEngine.UI.Button;
-using Image = UnityEngine.UI.Image;
 
 namespace KOTE.UI.Armory
 {
     public class ArmoryPanelManager : MonoBehaviour
     {
         internal static UnityEvent<GearItemData> OnGearSelected { get; } = new();
-        internal static UnityEvent<Trait> OnSlotCleared{ get; } = new();
+        internal static UnityEvent<Trait> OnSlotCleared { get; } = new();
 
         public GameObject panelContainer;
         public Button playButton;
@@ -22,7 +19,9 @@ namespace KOTE.UI.Armory
         public ArmoryHeaderManager headerPrefab;
         public Transform gearListTransform;
         public List<GearSlot> gearSlots;
+
         public GameObject[] gearPanels;
+
         // making a reference to this since GetComponentInChildren only works on active gameObjects
         public ScrollRect gearListScroll;
 
@@ -59,6 +58,7 @@ namespace KOTE.UI.Armory
         private void PopulateCharacterList()
         {
             List<Nft> nfts = NftManager.Instance.GetAllNfts();
+            PlayerSpriteManager.Instance.CachePlayerSkinsAtStartup(nfts);
             PortraitSpriteManager.Instance.CacheAllSprites();
             nftList.Clear();
 
@@ -86,11 +86,12 @@ namespace KOTE.UI.Armory
             {
                 panel.SetActive(!curNode.Value.MetaData.isKnight);
             }
+
             playButton.interactable = curNode.Value.MetaData.CanPlay;
             if (curNode.Value.MetaData.isKnight) ClearGearSlots();
             else PopulateEquippedGear();
         }
-        
+
         private async void PopulatePlayerGearInventory()
         {
             GearData data = await FetchData.Instance.GetGearInventory();
@@ -214,7 +215,8 @@ namespace KOTE.UI.Armory
             playButton.interactable = false;
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             bool success =
-                await FetchData.Instance.RequestNewExpedition(curNode.Value.MetaData.Contract, curNode.Value.Id, equippedGear.Values.ToList());
+                await FetchData.Instance.RequestNewExpedition(curNode.Value.MetaData.Contract, curNode.Value.Id,
+                    equippedGear.Values.ToList());
             if (success)
             {
                 OnExpeditionConfirmed();
@@ -245,10 +247,9 @@ namespace KOTE.UI.Armory
         {
             equippedGear.Remove(gearTrait);
             GameManager.Instance.EVENT_UPDATE_NFT.Invoke(gearTrait, "");
-
         }
     }
-    
+
 
     public class GearData
     {
