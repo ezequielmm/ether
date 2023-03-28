@@ -246,14 +246,14 @@ MonoBehaviour:
   - sequenceName: brace
     sequence:
     - track: 1
-      name: cast1
+      name: brace_start
       loop: 0
       delay: 0
       animationEvent: 1
   - sequenceName: braceIdle
     sequence:
     - track: 1
-      name: idle2
+      name: brace_idle
       loop: 1
       delay: 0
       animationEvent: 0

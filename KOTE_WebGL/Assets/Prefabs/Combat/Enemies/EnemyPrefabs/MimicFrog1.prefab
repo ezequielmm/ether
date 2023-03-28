@@ -247,7 +247,7 @@ MonoBehaviour:
   - sequenceName: croak
     sequence:
     - track: 1
-      name: cast1
+      name: attack2
       loop: 0
       delay: 0
       animationEvent: 1
@@ -261,14 +261,14 @@ MonoBehaviour:
   - sequenceName: lick
     sequence:
     - track: 1
-      name: attack2
+      name: cast1
       loop: 0
       delay: 0
       animationEvent: 1
-  - sequenceName: enterHide
+  - sequenceName: hide
     sequence:
     - track: 1
-      name: cast2
+      name: hide_start
       loop: 0
       delay: 0
       animationEvent: 1

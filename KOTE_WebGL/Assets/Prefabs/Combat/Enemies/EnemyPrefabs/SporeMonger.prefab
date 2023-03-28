@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.17, y: 0.91, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7839970432105090531}
   m_RootOrder: 1
@@ -56,6 +57,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 4.96, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7839970432105090531}
   m_RootOrder: 0
@@ -93,6 +95,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6018179547981109339}
   - {fileID: 3813565034362172044}
@@ -118,6 +121,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -239,10 +243,24 @@ MonoBehaviour:
       loop: 0
       delay: 0
       animationEvent: 1
-  - sequenceName: spit
+  - sequenceName: swipe
     sequence:
     - track: 1
-      name: attack2
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: rattle
+    sequence:
+    - track: 1
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: toxic spit
+    sequence:
+    - track: 1
+      name: slime
       loop: 0
       delay: 0
       animationEvent: 1
