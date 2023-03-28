@@ -365,22 +365,23 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
     public float PlayAnimation(string animationSequence, string fallbackAnimation)
     {
-       if(!string.IsNullOrEmpty(animationSequence)) animationSequence = animationSequence.ToLower();
-        string animationName = "";
-        if (!string.IsNullOrEmpty(animationSequence) &&
-            spine.animations.Exists(x => x.sequenceName == animationSequence))
-        {
-            animationName = animationSequence;
-        }
-        else
-        {
-            Debug.LogWarning($"[EnemyManager] Warning! enemy {enemyData.name} has no animation for {animationSequence}");
-            animationName = fallbackAnimation;
-        }
-            
+        string animationName = CheckAnimationName(animationSequence, fallbackAnimation);
+
         float length = spine.PlayAnimationSequence(animationName);
         spine.PlayAnimationSequence("Idle");
         return length;
+    }
+
+    private string CheckAnimationName(string animationSequence, string defaultAnimation)
+    {
+        if (string.IsNullOrEmpty(animationSequence))
+        {
+            Debug.LogWarning(
+                $"[EnemyManager] Warning! enemy {enemyData.name} received a null or empty animation request");
+            return defaultAnimation;
+        }
+
+        return animationSequence.ToLower();
     }
 
     private float OnDeath()
