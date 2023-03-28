@@ -13,7 +13,7 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
     public SkeletonDataAsset skeletonDataAsset;
 
     public List<Sprite> spritesArray = new List<Sprite>();
-    public UnityEvent skinLoaded;
+    public UnityEvent skinLoaded = new();
     SkeletonDataAsset IHasSkeletonDataAsset.SkeletonDataAsset => skeletonDataAsset;
 
     private Skin equipsSkin;

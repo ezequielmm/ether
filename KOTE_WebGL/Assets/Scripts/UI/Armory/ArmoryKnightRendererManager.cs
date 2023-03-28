@@ -7,11 +7,11 @@ public class ArmoryKnightRendererManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.EVENT_NFT_SELECTED.AddListener(OnSkinLoading);
+        PlayerSpriteManager.Instance.skinLoading.AddListener(OnSkinLoading);
         knightManager.skinLoaded.AddListener(OnSkinLoaded);
     }
 
-    private void OnSkinLoading(Nft data)
+    private void OnSkinLoading()
     {
         knight.SetActive(false);
         loadingText.SetActive(true);
