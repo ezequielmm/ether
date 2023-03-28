@@ -243,10 +243,10 @@ MonoBehaviour:
       loop: 0
       delay: 0
       animationEvent: 1
-  - sequenceName: claw
+  - sequenceName: bite
     sequence:
     - track: 1
-      name: attack2
+      name: attack1
       loop: 0
       delay: 0
       animationEvent: 1
@@ -257,10 +257,24 @@ MonoBehaviour:
       loop: 0
       delay: 0
       animationEvent: 1
+  - sequenceName: claw
+    sequence:
+    - track: 1
+      name: attack2
+      loop: 0
+      delay: 0
+      animationEvent: 1
   - sequenceName: howl
     sequence:
     - track: 1
       name: cast2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: flee
+    sequence:
+    - track: 1
+      name: flee
       loop: 0
       delay: 0
       animationEvent: 1

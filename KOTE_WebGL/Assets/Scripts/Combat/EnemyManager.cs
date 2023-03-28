@@ -1,11 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
-using System.Security.Cryptography;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyManager : MonoBehaviour, ITooltipSetter
 {
@@ -42,12 +41,13 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         get { return enemyData; }
     }
 
-    public void SetEnemeyData(EnemyData data) 
+    public void SetEnemeyData(EnemyData data)
     {
-        if (enemyData != null) 
+        if (enemyData != null)
         {
             Debug.LogWarning($"[EnemyManager] Overwriting exisiting Enemy Data.");
         }
+
         enemyData = data;
         ProcessNewData(null, enemyData);
     }
@@ -131,7 +131,9 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             {
                 runningEvents.Add(attack.attackId);
                 // Run Attack
-                var f = Attack();
+                Debug.Log("+++++++++++++++[Enemy]Attack");
+
+                var f = PlayAnimation(attack.action?.name, "Attack");
                 if (f > afterEvent) afterEvent = f;
                 endCalled = true;
                 RunAfterEvent(() =>
@@ -143,7 +145,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
             {
                 runningEvents.Add(attack.attackId);
-                var f = PlayAnimation("Cast");
+                var f = PlayAnimation(attack.action?.name, "Cast");
                 if (f > afterEvent) afterEvent = f;
                 endCalled = true;
                 RunAfterEvent(() =>
@@ -155,7 +157,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.heal)) // Health Up
             {
                 runningEvents.Add(attack.attackId);
-                var f = PlayAnimation("Cast");
+                var f = PlayAnimation(attack.action?.name, "Cast");
                 if (f > afterEvent) afterEvent = f;
                 endCalled = true;
                 RunAfterEvent(() =>
@@ -170,7 +172,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
         {
             runningEvents.Add(attack.attackId); // If no conditions met, pass onto the target and play cast
-            var f = PlayAnimation("Cast");
+            var f = PlayAnimation(attack.action?.name, "Cast");
             if (f > afterEvent) afterEvent = f;
             endCalled = true;
             RunAfterEvent(() =>
@@ -213,7 +215,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         {
             // Play Attack audio
             // Can be specific, but we'll default to "Attack"
-            waitDuration += OnHit();
+            waitDuration += PlayAnimation(attack.action?.name, "Hit");
         }
 
         if (target.healthDelta > 0) // Healed!
@@ -361,27 +363,25 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         }
     }
 
-    public float PlayAnimation(string animationSequence)
+    public float PlayAnimation(string animationSequence, string fallbackAnimation)
     {
-        float length = spine.PlayAnimationSequence(animationSequence);
+        string animationName = CheckAnimationName(animationSequence, fallbackAnimation);
+
+        float length = spine.PlayAnimationSequence(animationName);
         spine.PlayAnimationSequence("Idle");
         return length;
     }
 
-    private float Attack()
+    private string CheckAnimationName(string animationSequence, string defaultAnimation)
     {
-        Debug.Log("+++++++++++++++[Enemy]Attack");
+        if (string.IsNullOrEmpty(animationSequence))
+        {
+            Debug.LogWarning(
+                $"[EnemyManager] Warning! enemy {enemyData.name} received a null or empty animation request");
+            return defaultAnimation;
+        }
 
-        float length = spine.PlayAnimationSequence("Attack");
-        spine.PlayAnimationSequence("Idle");
-        return length;
-    }
-
-    private float OnHit()
-    {
-        float length = spine.PlayAnimationSequence("Hit");
-        spine.PlayAnimationSequence("Idle");
-        return length;
+        return animationSequence.ToLower();
     }
 
     private float OnDeath()

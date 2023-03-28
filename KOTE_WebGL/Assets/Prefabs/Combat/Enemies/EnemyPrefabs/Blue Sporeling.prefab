@@ -250,6 +250,13 @@ MonoBehaviour:
       loop: 0
       delay: 0
       animationEvent: 1
+  - sequenceName: infect
+    sequence:
+    - track: 1
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
   availableAnimations:
   - attack1
   - cast1

@@ -11,6 +11,7 @@ public class CombatTurnData
     public List<Target> targets = new();
     public float delay = GameSettings.COMBAT_ANIMATION_DELAY;
     public Guid attackId = Guid.NewGuid();
+    public QueueActionData action = new();
 
     public CombatTurnData() { }
 
@@ -64,6 +65,13 @@ public class CombatTurnData
         {
             return $"[{targetType} | {targetId} | {effectType}]";
         }
+    }
+
+    [Serializable]
+    public class QueueActionData
+    {
+        public string name = string.Empty;
+        public string hint = string.Empty;
     }
 
     public override string ToString()
