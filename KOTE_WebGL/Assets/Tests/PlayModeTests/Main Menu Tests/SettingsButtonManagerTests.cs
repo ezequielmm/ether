@@ -43,7 +43,7 @@ public class SettingsButtonManagerTests : MonoBehaviour
     public void DoesOnLogoutSuccessfulDeactivateSettingsButton()
     {
         settingsButton.SetActive(true);
-        GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.Invoke(null);
+        GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.Invoke(null);
         Assert.False(_buttonManager.button.activeSelf);
     }
     

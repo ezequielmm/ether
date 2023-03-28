@@ -27,7 +27,7 @@ public class LoginPanelManager : MonoBehaviour
     private void Awake()
     {
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerLoginPanel);
-        GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
+        GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(OnLogoutSuccessful);
 
         string email = PlayerPrefs.GetString("email_reme_login");
         string date = PlayerPrefs.GetString("date_reme_login");
@@ -105,8 +105,7 @@ public class LoginPanelManager : MonoBehaviour
 
     private void ClearLoginInfo()
     {
-        PlayerPrefs.DeleteKey("session_token");
-        PlayerPrefs.Save();
+        AuthenticationManager.Instance.ClearSessionToken();
         ForgetLoginInfo();
     }
 

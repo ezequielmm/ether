@@ -160,7 +160,7 @@ public class HiddenConsoleManager : MonoBehaviour
                 PublicLog(apiUrl);
                 break;
             case ConsoleCommands.player_token:
-                string token = PlayerPrefs.GetString("session_token");
+                string token = AuthenticationManager.Instance.GetSessionToken();
                 if (token == "") token = "No token has been generated yet.";
                 PublicLog(token);
                 break;

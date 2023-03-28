@@ -48,7 +48,7 @@ public class UserActivityMonitor : SingleTon<UserActivityMonitor>
             currentSeconds++;
             yield return new WaitForSeconds(AfkCheckInterval);
             // if the player isn't logged in, dont do anything
-            string token = PlayerPrefs.GetString("session_token");
+            string token = AuthenticationManager.Instance.GetSessionToken();
             if (string.IsNullOrEmpty(token))
             {
                 continue;
@@ -59,7 +59,7 @@ public class UserActivityMonitor : SingleTon<UserActivityMonitor>
             {
                 Debug.Log("[UserActivityMonitor] Afk logout activated");
 
-                GameManager.Instance.EVENT_REQUEST_LOGOUT.Invoke(token);
+                AuthenticationManager.Instance.Logout();
             }
 
             if (afkSeconds - currentSeconds <= 10)

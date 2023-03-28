@@ -145,11 +145,12 @@ public class FetchData : DataManager, ISingleton<FetchData>
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.ExpeditionRequest);
 
         ExpeditionStartData startData = new ExpeditionStartData
-        {tokenType = characterType.ToString(),
+        {
+            tokenType = characterType.ToString(),
             nftId = selectedNft,
             equippedGear = equippedGear,
-             walletId = WalletManager.Instance.ActiveWallet,
-             contractId = NftManager.Instance.GetContractAddress(characterType)
+            walletId = WalletManager.Instance.ActiveWallet,
+            contractId = NftManager.Instance.GetContractAddress(characterType)
         };
 
         string data = JsonConvert.SerializeObject(startData);
@@ -237,6 +238,39 @@ public class FetchData : DataManager, ISingleton<FetchData>
         }
     }
 
+    public async UniTask Logout()
+    {
+        string loginUrl = webRequest.ConstructUrl(RestEndpoint.Logout);
+
+        ServerCommunicationLogger.Instance.LogCommunication(
+            $"Logout request. token: {AuthenticationManager.Instance.GetSessionToken()}",
+            CommunicationDirection.Outgoing);
+
+        WWWForm form = new WWWForm();
+
+        using (UnityWebRequest request = UnityWebRequest.Post(loginUrl, form))
+        {
+            request.AddAuthToken();
+
+            string rawData = await MakeJsonRequest(request);
+
+            ServerCommunicationLogger.Instance.LogCommunication(
+                $"Logout request result: " +
+                ((request.result == UnityWebRequest.Result.Success) ? request.downloadHandler.text : request.error), 
+                CommunicationDirection.Incoming);
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.Invoke(request.error);
+                return;
+            }
+            LogoutData logoutData = ParseJsonWithPath<LogoutData>(rawData);
+            string message = logoutData.data.message;
+
+            GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.Invoke(message);
+        }
+    }
+
     public async UniTask<ProfileData> GetPlayerProfile()
     {
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.Profile);
@@ -314,8 +348,9 @@ public class FetchData : DataManager, ISingleton<FetchData>
         Texture2D texture = ((DownloadHandlerTexture)await webRequest.MakeRequest(request))?.texture;
         if (texture == null)
         {
-            texture = new Texture2D(1,1);
+            texture = new Texture2D(1, 1);
         }
+
         return texture;
     }
 

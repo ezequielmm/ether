@@ -22,13 +22,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
 
         PlayerPrefs.SetString("api_url", baseUrl);
 
-        GameManager.Instance.EVENT_REQUEST_LOGOUT.AddListener(RequestLogout);
         GameManager.Instance.EVENT_SEND_BUG_FEEDBACK.AddListener(SendBugReport);
-    }
-
-    public void RequestLogout(string token)
-    {
-        StartCoroutine(GetLogout(token));
     }
 
     public void RequestCharacterList()
@@ -96,42 +90,9 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         LogHelper.SendOutgoingCommunicationLogs($"[WebRequesterManager] RESPONSE [{requestIdShortened}] <<< {variableString}", rawJson);
     }
 
-    IEnumerator GetLogout(string token)
-    {
-        string loginUrl = $"{baseUrl}{RestEndpoint.Logout}";
-        WWWForm form = new WWWForm();
-
-        ServerCommunicationLogger.Instance.LogCommunication($"Logout request. token: {token}",
-            CommunicationDirection.Outgoing);
-        using (UnityWebRequest request = UnityWebRequest.Post(loginUrl, form))
-        {
-            request.SetRequestHeader("Authorization", $"Bearer {token}");
-
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.ConnectionError ||
-                request.result == UnityWebRequest.Result.ProtocolError)
-            {
-                ServerCommunicationLogger.Instance.LogCommunication($"Logout request error: {request.error}",
-                    CommunicationDirection.Incoming);
-                GameManager.Instance.EVENT_REQUEST_LOGOUT_ERROR.Invoke(request.error);
-                yield break;
-            }
-
-            ServerCommunicationLogger.Instance.LogCommunication($"Logout Success: {request.downloadHandler.text}",
-                CommunicationDirection.Incoming);
-            LogoutData logoutData = JsonConvert.DeserializeObject<LogoutData>(request.downloadHandler.text);
-            string message = logoutData.data.message;
-
-            //TODO: check for errors even on sucessful result
-
-            GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.Invoke(message);
-        }
-    }
-
     IEnumerator GetCharacterList()
     {
-        string token = PlayerPrefs.GetString("session_token");
+        string token = AuthenticationManager.Instance.GetSessionToken();
 
         Debug.Log("[GetCharacterList] with token " + token);
         ServerCommunicationLogger.Instance.LogCommunication("Character list request. token: " + token,
