@@ -93,6 +93,7 @@ public static class GameSettings
     public const string EDITOR_WALLET = "0x3e98aea7a1e837aa52467499a1b122224f5e247a";
 #endif
 
+    public const int INITIAL_SKIN_CACHE = 3;
     // Player Skin Defaults
     public static List<TraitSprite> DEFAULT_SKIN_DATA = new List<TraitSprite>
     {
