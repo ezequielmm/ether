@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
+using Spine.Unity.Examples;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,6 +35,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     new private Collider2D collider;
     private Bounds enemyBounds;
     private StatusManager statusManager;
+    private SkeletonRenderTextureFadeout spineFadeout;
 
 
     public EnemyData EnemyData
@@ -91,6 +94,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         if (prefab != null)
         {
             activeEnemy = Instantiate(prefab, transform);
+            GrabEnemyFadeout(activeEnemy);
             activeEnemy.transform.localPosition = Vector3.zero;
             enemyPlacementData = activeEnemy.GetComponent<EnemyPrefab>();
             enemyPlacementData.FitColliderToArt();
@@ -366,7 +370,6 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     public float PlayAnimation(string animationSequence, string fallbackAnimation)
     {
         string animationName = CheckAnimationName(animationSequence, fallbackAnimation);
-
         float length = spine.PlayAnimationSequence(animationName);
         spine.PlayAnimationSequence("Idle");
         return length;
@@ -416,12 +419,18 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             // Play animation
             RunAfterTime(OnDeath(), () =>
             {
-                // Tell game that a player is dead
-                GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), nameof(EnemyState.dead));
-                Destroy(explodePS.gameObject);
-                Destroy(this.gameObject);
+                spineFadeout.OnFadeoutComplete += DestroyOnFadeout;
+                spineFadeout.enabled = true;
             });
         }
+    }
+
+    private void DestroyOnFadeout(SkeletonRenderTextureFadeout target)
+    {
+        // Tell game that a player is dead
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), nameof(EnemyState.dead));
+        Destroy(explodePS.gameObject);
+        Destroy(this.gameObject);
     }
 
     private void RunAfterEvent(Action toRun)
@@ -458,12 +467,18 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
         var enemy = FindPrefab(enemyName);
         if (enemy != null) return enemy;
+
         Debug.LogError($"[EnemyManager] Missing {enemyName} prefab. Using SporeMonger as a backup");
         enemyName = "SporeMonger";
         enemy = FindPrefab(enemyName);
         if (enemy != null) return enemy;
         Debug.LogError($"[EnemyManager] Missing {enemyName} prefab.");
         return null;
+    }
+
+    private void GrabEnemyFadeout(GameObject enemy)
+    {
+        spineFadeout = enemy.GetComponent<SkeletonRenderTextureFadeout>();
     }
 
     public void SetTooltip(List<Tooltip> tooltips)

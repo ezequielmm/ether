@@ -104,7 +104,9 @@ public class GameStatusManager : MonoBehaviour
             case GameStatuses.RewardsPanel:
                 InitializeRewards();
                 break;
-            case GameStatuses.GameOver: break;
+            case GameStatuses.GameOver:
+                ScoreboardManager.Instance.UpdateAndShow();
+                break;
             case GameStatuses.RoyalHouse:
             default:
                 Debug.LogWarning("[GameStatusManager] This game status is not implemented!");
