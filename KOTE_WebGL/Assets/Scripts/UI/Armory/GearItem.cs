@@ -53,13 +53,24 @@ public class GearItemData
     public string name;
     public string trait;
     public string category;
-    public string rarity; // TODO: should be an enum
+    public GearRarity rarity; // TODO: should be an enum
     [JsonIgnore]
     public Sprite gearImage;
+
+    [JsonIgnore] public bool CanVillagerEquip => rarity == GearRarity.Common || rarity == GearRarity.Uncommon;
 
     public async UniTask GetGearImage() 
     {
         gearImage = 
             await GearIconManager.Instance.GetGearSprite(trait.ParseToEnum<Trait>(), name);
     }
+}
+
+public enum GearRarity
+{
+    Common,
+    Uncommon,
+    Rare,
+    Epic,
+    Legendary
 }

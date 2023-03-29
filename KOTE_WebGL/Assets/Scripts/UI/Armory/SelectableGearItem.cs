@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace KOTE.UI.Armory
 {
@@ -14,10 +10,43 @@ namespace KOTE.UI.Armory
         public Sprite Image => ItemData.gearImage;
         public string Trait => ItemData.trait;
 
+        private bool isInteractable = true;
+
+        public void UpdateSelectableBasedOnTokenType(NftContract curTokenType)
+        {
+            switch (curTokenType)
+            {
+                case NftContract.Villager:
+                    SetInteractiveForVillager();
+                    break;
+                case NftContract.Knights:
+                    isInteractable = false;
+                    break;
+                case NftContract.BlessedVillager:
+                    isInteractable = true;
+                    break;
+                default:
+                    isInteractable = false;
+                    break;
+            }
+        }
+
+        private void SetInteractiveForVillager()
+        {
+            if (ItemData.rarity != GearRarity.Common && ItemData.rarity != GearRarity.Uncommon)
+            {
+                isInteractable = false;
+            }
+            else
+            {
+                isInteractable = true;
+            }
+        }
+
         public void OnPointerDown(PointerEventData data)
         {
             // TODO: Abstract out more
-            ArmoryPanelManager.OnGearSelected.Invoke(ItemData);
+            if (isInteractable) ArmoryPanelManager.OnGearSelected.Invoke(ItemData);
         }
     }
 }
