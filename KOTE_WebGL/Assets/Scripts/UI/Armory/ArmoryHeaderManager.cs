@@ -14,6 +14,8 @@ namespace KOTE.UI.Armory
         public TMP_Text title;
         public SelectableGearItem gearPrefab;
 
+        private List<SelectableGearItem> gearItems = new();
+
         public void Start()
         {
             // set the the dropdown to the 'default' values
@@ -35,6 +37,15 @@ namespace KOTE.UI.Armory
             {
                 SelectableGearItem item = Instantiate(gearPrefab, gearList.transform);
                 item.Populate(gearItem);
+                gearItems.Add(item);
+            }
+        }
+
+        internal void UpdateGearSelectableStatus(NftContract tokenType)
+        {
+            foreach (SelectableGearItem item in gearItems)
+            {
+                item.UpdateSelectableBasedOnTokenType(tokenType);
             }
         }
 
