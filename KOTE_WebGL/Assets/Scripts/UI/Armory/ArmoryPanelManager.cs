@@ -31,6 +31,7 @@ namespace KOTE.UI.Armory
         private Dictionary<Trait, GearItemData> equippedGear = new();
         private Dictionary<int, List<GearItemData>> villagerEquippedGear = new();
         private Dictionary<int, List<GearItemData>> blessedVillagerEquippedGear = new();
+        private List<ArmoryHeaderManager> gearHeaders = new();
 
         private void Awake()
         {
@@ -90,6 +91,8 @@ namespace KOTE.UI.Armory
             playButton.interactable = curNode.Value.MetaData.CanPlay;
             if (curNode.Value.MetaData.isKnight) ClearGearSlots();
             else PopulateEquippedGear();
+
+            UpdateGearListBasedOnToken();
         }
 
         private async void PopulatePlayerGearInventory()
@@ -116,6 +119,16 @@ namespace KOTE.UI.Armory
 
                 categoryLists[itemData.category] = new List<GearItemData> { itemData };
             }
+
+            UpdateGearListBasedOnToken();
+        }
+
+        private void UpdateGearListBasedOnToken()
+        {
+            foreach (ArmoryHeaderManager header in gearHeaders)
+            {
+                header.UpdateGearSelectableStatus(curNode.Value.MetaData.Contract);
+            }
         }
 
         private void GenerateHeaders()
@@ -126,6 +139,7 @@ namespace KOTE.UI.Armory
                 if (categoryLists.ContainsKey(category))
                 {
                     header.Populate(category, categoryLists[category]);
+                    gearHeaders.Add(header);
                 }
             }
         }
@@ -236,7 +250,9 @@ namespace KOTE.UI.Armory
 
         private void OnGearItemSelected(GearItemData activeItem)
         {
-            if (curNode.Value.MetaData.Contract == NftContract.Knights) return;
+            if (curNode.Value.MetaData.Contract == NftContract.Knights ||
+                (curNode.Value.MetaData.Contract == NftContract.Villager && !activeItem.CanVillagerEquip)) return;
+
             Trait itemTrait = activeItem.trait.ParseToEnum<Trait>();
             gearSlots.Find(x => x.gearTrait == itemTrait).SetGearInSlot(activeItem);
             equippedGear[itemTrait] = activeItem;
