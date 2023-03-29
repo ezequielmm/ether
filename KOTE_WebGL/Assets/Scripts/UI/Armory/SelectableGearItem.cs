@@ -21,12 +21,16 @@ namespace KOTE.UI.Armory
                     break;
                 case NftContract.Knights:
                     isInteractable = false;
+                    GearImage.color = Color.gray;
+
                     break;
                 case NftContract.BlessedVillager:
                     isInteractable = true;
+                    GearImage.color = Color.white;
                     break;
                 default:
                     isInteractable = false;
+                    GearImage.color = Color.gray;
                     break;
             }
         }
@@ -36,10 +40,12 @@ namespace KOTE.UI.Armory
             if (ItemData.rarity != GearRarity.Common && ItemData.rarity != GearRarity.Uncommon)
             {
                 isInteractable = false;
+                GearImage.color = Color.gray;
             }
             else
             {
                 isInteractable = true;
+                GearImage.color = Color.white;
             }
         }
 
