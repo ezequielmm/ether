@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.32, y: 12.09, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7839970432105090531}
   m_RootOrder: 0
@@ -56,6 +57,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.24, y: -1.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7839970432105090531}
   m_RootOrder: 1
@@ -76,6 +78,8 @@ GameObject:
   - component: {fileID: 8177492210074112307}
   - component: {fileID: 160662151681782555}
   - component: {fileID: 18208913509664201}
+  - component: {fileID: 6524790252693120108}
+  - component: {fileID: -9026943013854554688}
   m_Layer: 0
   m_Name: FungalBrute
   m_TagString: Enemy
@@ -93,6 +97,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4338361204017918868}
   - {fileID: 8755465690906622651}
@@ -118,6 +123,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -354,3 +360,34 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &6524790252693120108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25e6ceb271c9af848ae53f2af1073d0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 1, g: 1, b: 1, a: 1}
+  quadMaterial: {fileID: 2100000, guid: 4c507f887c6274a44a603d96e0eabf2a, type: 2}
+  targetCamera: {fileID: 0}
+  maxRenderTextureSize: 1024
+  quad: {fileID: 0}
+  renderTexture: {fileID: 0}
+--- !u!114 &-9026943013854554688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fc94f89310427643babb41e000a8462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeoutSeconds: 2

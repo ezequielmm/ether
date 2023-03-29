@@ -78,6 +78,8 @@ GameObject:
   - component: {fileID: 8703712778393250611}
   - component: {fileID: 3716198279223779207}
   - component: {fileID: 6272650766991654147}
+  - component: {fileID: 9085233980361808639}
+  - component: {fileID: 6312139001353586845}
   m_Layer: 0
   m_Name: SwampGoblin1
   m_TagString: Enemy
@@ -342,3 +344,34 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &9085233980361808639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25e6ceb271c9af848ae53f2af1073d0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 1, g: 1, b: 1, a: 1}
+  quadMaterial: {fileID: 2100000, guid: 4c507f887c6274a44a603d96e0eabf2a, type: 2}
+  targetCamera: {fileID: 0}
+  maxRenderTextureSize: 1024
+  quad: {fileID: 0}
+  renderTexture: {fileID: 0}
+--- !u!114 &6312139001353586845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fc94f89310427643babb41e000a8462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeoutSeconds: 2
