@@ -14,6 +14,8 @@ public class PortraitSpriteManager : SingleTon<PortraitSpriteManager>
 
         foreach (Nft nft in nfts)
         {
+            //TODO update this to work with knights
+            if(nft.isKnight) continue;
             foreach (KeyValuePair<Trait,string> traitPair in nft.Traits)
             {
                 if (traitPair.Value.Contains("None")) continue;
