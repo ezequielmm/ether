@@ -28,6 +28,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7797539488213526577}
   m_RootOrder: 0
@@ -103,6 +104,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 361164104971550267}
   m_RootOrder: 0
@@ -179,6 +181,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7797539488213526577}
   m_RootOrder: 2
@@ -298,6 +301,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 361164104971550267}
   m_RootOrder: 3
@@ -373,6 +377,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 361164104971550267}
   m_RootOrder: 6
@@ -508,6 +513,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 361164104971550267}
   m_RootOrder: 2
@@ -583,6 +589,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 361164104971550267}
   m_RootOrder: 4
@@ -648,7 +655,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 53.8
+  m_fontSize: 33.25
   m_fontSizeBase: 48.45
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -716,6 +723,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4201654848172156124}
   - {fileID: 5815318254356184715}
@@ -761,6 +769,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 361164104971550267}
   m_RootOrder: 1
@@ -836,6 +845,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 361164104971550267}
   m_RootOrder: 7
@@ -954,6 +964,7 @@ GameObject:
   - component: {fileID: 7797539488213526577}
   - component: {fileID: 7797539488213526583}
   - component: {fileID: 8653138555521536643}
+  - component: {fileID: 7716935016839716502}
   m_Layer: 5
   m_Name: UICardPrefab
   m_TagString: Untagged
@@ -971,6 +982,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6121133141804507377}
   - {fileID: 361164104971550267}
@@ -1003,6 +1015,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b24cccc23e322584e87594578f978f06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tooltipManager: {fileID: 7716935016839716502}
   energyTF: {fileID: 968633137891374195}
   nameTF: {fileID: 6625659712368198433}
   rarityTF: {fileID: 9152422689340285198}
@@ -1011,9 +1024,6 @@ MonoBehaviour:
   frameSprite: {fileID: 2856697094203813554}
   bannerSprite: {fileID: 4772262746730516357}
   cardImage: {fileID: 5662762459062378238}
-  managerReference: {fileID: 8572111283056100763, guid: 4912c08d2b3482c44800e4ee984fc359,
-    type: 3}
-  id: 
   scaleCardOnHover: 1
   scaleOnHover: 1.2
   cardBackground: {fileID: 21300000, guid: e945465d32e5596409aded32149449a1, type: 3}
@@ -1021,6 +1031,21 @@ MonoBehaviour:
     type: 3}
   cardBackgroundImage: {fileID: 9139466233118832734}
   useBackgroundImage: 0
+--- !u!114 &7716935016839716502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7797539488213526578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d564c94f5ffeef74e9bb166a65247142, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltipName: 
+  anchor: 0
+  limit: {x: -1, y: -1}
 --- !u!1 &8464894079045545550
 GameObject:
   m_ObjectHideFlags: 0
@@ -1049,6 +1074,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 361164104971550267}
   m_RootOrder: 5
