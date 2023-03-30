@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -49,11 +50,12 @@ public class NftManager : ISingleton<NftManager>
     public List<Nft> GetAllNfts()
     {
         List<Nft> returnList = new List<Nft>();
-        foreach (NftContract contract in Nfts.Keys)
+        // make sure the lists are always return in the order from the enum
+        foreach (NftContract contract in Enum.GetValues(typeof(NftContract)))
         {
+            if (contract == NftContract.None || !Nfts.ContainsKey(contract)) continue;
             returnList.AddRange(GetContractNfts(contract));
         }
-
         return returnList;
     }
 
@@ -120,6 +122,6 @@ public enum NftContract
 {
     None, // default so we can have a bad contract check
     Knights,
-    Villager,
-    BlessedVillager
+    BlessedVillager,
+    Villager
 }

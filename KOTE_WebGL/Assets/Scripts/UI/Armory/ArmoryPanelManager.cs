@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -14,8 +15,8 @@ namespace KOTE.UI.Armory
 
         public GameObject panelContainer;
         public Button playButton;
-        public Sprite defaultCharacterSprite;
         public CharacterPortraitManager portraitManager;
+        public TMP_Text TokenNameText;
         public ArmoryHeaderManager headerPrefab;
         public Transform gearListTransform;
         public List<GearSlot> gearSlots;
@@ -83,17 +84,38 @@ namespace KOTE.UI.Armory
 
         private void UpdatePanelOnNftUpdate()
         {
-            portraitManager.SetPortrait(curNode.Value.MetaData);
+            Nft curMetadata = curNode.Value.MetaData;
+            TokenNameText.text = FormatTokenName(curMetadata);
+            portraitManager.SetPortrait(curMetadata);
             foreach (GameObject panel in gearPanels)
             {
-                panel.SetActive(!curNode.Value.MetaData.isKnight);
+                panel.SetActive(!curMetadata.isKnight);
             }
 
-            playButton.interactable = curNode.Value.MetaData.CanPlay;
-            if (curNode.Value.MetaData.isKnight) ClearGearSlots();
+            playButton.interactable = curMetadata.CanPlay;
+            if (curMetadata.isKnight) ClearGearSlots();
             else PopulateEquippedGear();
 
             UpdateGearListBasedOnToken();
+        }
+
+        private string FormatTokenName(Nft tokenData)
+        {
+            string contractName = "";
+            switch (tokenData.Contract)
+            {
+                case NftContract.Knights:
+                    contractName = tokenData.Contract.ToString().TrimEnd('s');
+                    break;
+                case NftContract.Villager:
+                    contractName = tokenData.Contract.ToString();
+                    break;
+                case NftContract.BlessedVillager:
+                    contractName = "Blessed Villager";
+                    break;
+            }
+
+            return contractName + " #" + tokenData.TokenId;
         }
 
         private async void PopulatePlayerGearInventory()
