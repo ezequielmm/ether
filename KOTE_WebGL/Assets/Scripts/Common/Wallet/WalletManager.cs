@@ -216,9 +216,21 @@ public class WalletManager : ISingleton<WalletManager>
     }
 
 
-    public async UniTask<int> GetNftCountPerContract(NftContract contract, string walletAddress)
+    public async UniTask<Dictionary<NftContract, int>> GetNftCounts(string walletAddress)
     {
+        Dictionary<NftContract, int> returnDict = new Dictionary<NftContract, int>();
         await GetNftsInWallet(walletAddress);
-        return NftsInWallet[contract].Count;
+        foreach (NftContract contract in Enum.GetValues(typeof(NftContract)))
+        {
+            if (contract == NftContract.None) continue;
+            if (!NftsInWallet.ContainsKey(contract))
+            {
+                returnDict[contract] = 0;
+                continue;
+            }
+            returnDict[contract] = NftsInWallet[contract].Count;
+        }
+
+        return returnDict;
     }
 }

@@ -1,5 +1,3 @@
-using Cysharp.Threading.Tasks;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -24,10 +22,9 @@ public class WalletPanel : MonoBehaviour
     }
     private void UpdateWalletInfo() 
     {
-        foreach(var walletAddress in UserDataManager.Instance.VerifiedWallets) 
-        {
-            AddWallet(walletAddress);
-        }
+        
+            AddWallet(WalletManager.Instance.ActiveWallet);
+        
     }
 
     public void ConnectNewWallet(string walletAddress)
@@ -52,16 +49,17 @@ public class WalletPanel : MonoBehaviour
         {
             return;
         }
-        int knightCount = await WalletManager.Instance.GetNftCountPerContract(NftContract.Knights, walletAddress);
-        WalletItem wallet = CreateWalletItem(walletAddress, knightCount);
+
+        Dictionary<NftContract, int> tokenCounts = await WalletManager.Instance.GetNftCounts(walletAddress);
+        WalletItem wallet = CreateWalletItem(walletAddress, tokenCounts);
         wallets.Add(wallet);
     }
 
-    private WalletItem CreateWalletItem(string walletAddress, int knightCount) 
+    private WalletItem CreateWalletItem(string walletAddress, Dictionary<NftContract, int> tokenCounts ) 
     {
         GameObject walletGameObject = Instantiate(walletDataPrefab, informationContent.transform);
         var walletItem = walletGameObject.GetComponent<WalletItem>();
-        walletItem.Populate(walletAddress, knightCount);
+        walletItem.Populate(walletAddress,tokenCounts );
         return walletItem;
     }
 
