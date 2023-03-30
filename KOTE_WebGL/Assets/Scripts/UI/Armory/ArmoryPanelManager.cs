@@ -52,6 +52,7 @@ namespace KOTE.UI.Armory
         private void ActivateContainer(bool show)
         {
             // run this whe the panel is opened, instead of when nfts load, so images are cached
+            GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
             UpdatePanelOnNftUpdate();
             panelContainer.SetActive(show);
         }
