@@ -49,18 +49,17 @@ public class WalletPanel : MonoBehaviour
         {
             return;
         }
-        int knightCount = await WalletManager.Instance.GetNftCountPerContract(NftContract.Knights, walletAddress);
-        int villagerCount = await WalletManager.Instance.GetNftCountPerContract(NftContract.Villager, walletAddress);
-        int bVillagerCount = await WalletManager.Instance.GetNftCountPerContract(NftContract.BlessedVillager, walletAddress);
-        WalletItem wallet = CreateWalletItem(walletAddress, knightCount, villagerCount, bVillagerCount);
+
+        Dictionary<NftContract, int> tokenCounts = await WalletManager.Instance.GetNftCounts(walletAddress);
+        WalletItem wallet = CreateWalletItem(walletAddress, tokenCounts);
         wallets.Add(wallet);
     }
 
-    private WalletItem CreateWalletItem(string walletAddress, int knightCount, int villagerCount, int bVillagerCount) 
+    private WalletItem CreateWalletItem(string walletAddress, Dictionary<NftContract, int> tokenCounts ) 
     {
         GameObject walletGameObject = Instantiate(walletDataPrefab, informationContent.transform);
         var walletItem = walletGameObject.GetComponent<WalletItem>();
-        walletItem.Populate(walletAddress, knightCount, villagerCount, bVillagerCount);
+        walletItem.Populate(walletAddress,tokenCounts );
         return walletItem;
     }
 

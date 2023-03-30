@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -18,17 +19,17 @@ public class WalletItem : MonoBehaviour
         WalletAddress = wallet;
     }
 
-    public void SetTokenCounts(int knightCount, int villagerCount, int bVillagerCount)
+    public void SetTokenCounts(Dictionary<NftContract, int> tokenCounts )
     {
-        knightCountText.text = knightCount + " Knights";
-        villagerCountText.text = villagerCount + " Villagers";
-        blessedVillagerCountText.text = bVillagerCount + " Blessed Villagers";
+        knightCountText.text = tokenCounts[NftContract.Knights] + " Knights";
+        villagerCountText.text = tokenCounts[NftContract.Villager] + " Villagers";
+        blessedVillagerCountText.text = tokenCounts[NftContract.BlessedVillager] + " Blessed Villagers";
     }
 
-    public void Populate(string wallet, int knights, int villagers, int blessedVillagers)
+    public void Populate(string wallet, Dictionary<NftContract, int> tokenCounts )
     {
         SetWalletAddress(wallet);
-        SetTokenCounts(knights, villagers, blessedVillagers);
+        SetTokenCounts(tokenCounts );
     }
 
     public void RemoveWallet()
