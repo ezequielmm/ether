@@ -17,7 +17,15 @@ public class NodeData : MonoBehaviour, ITooltipSetter
         public GameObject imageGo;
     }
 
+    [Serializable]
+    public struct BossImage
+    {
+        public string bossName;
+        public GameObject imageGo;
+    }
+
     [Header("Background sprites")] public List<BackgroundImage> bgSprites = new List<BackgroundImage>();
+    public List<BossImage> bossSprites = new List<BossImage>();
 
     public int act;
     public int step;
@@ -179,39 +187,63 @@ public class NodeData : MonoBehaviour, ITooltipSetter
         string[] split = tooltipDesc.Split('_');
         if (split.Length > 1) return Utils.PrettyText(split[1] + " " + split[0]);
         split = tooltipDesc.Split();
-        if(split.Length> 1) return Utils.PrettyText(split[0] + split[1]);
+        if (split.Length > 1) return Utils.PrettyText(split[0] + split[1]);
         return Utils.PrettyText(split[0]);
     }
 
     private void SelectNodeImage()
     {
-        BackgroundImage bgi = bgSprites.Find(x => x.type == subType);
-        if (bgi.imageGo != null)
+        GameObject nodeIcon = GetNodeIcon();
+
+        if (nodeIcon != null)
         {
-            bgi.imageGo.SetActive(true);
-            activeIconImage = bgi.imageGo;
+            nodeIcon.SetActive(true);
+            activeIconImage = nodeIcon;
 
             // resize the node depending on the status
             if (status == NODE_STATUS.disabled || status == NODE_STATUS.completed)
             {
-                bgi.imageGo.transform.localScale *= GameSettings.COMPLETED_NODE_SCALE;
+                nodeIcon.transform.localScale *= GameSettings.COMPLETED_NODE_SCALE;
                 if (GameSettings.COLOR_UNAVAILABLE_MAP_NODES == false)
                 {
-                    bgi.imageGo.GetComponent<SpriteRenderer>().material = grayscaleMaterial;
+                    nodeIcon.GetComponent<SpriteRenderer>().material = grayscaleMaterial;
                 }
             }
             else if (status == NODE_STATUS.active || status == NODE_STATUS.available)
             {
-                bgi.imageGo.transform.localScale *= 1.2f;
-                PlayActiveNodeAnimation(bgi.imageGo);
+                nodeIcon.transform.localScale *= 1.2f;
+                PlayActiveNodeAnimation(nodeIcon);
             }
 
-            originalScale = bgi.imageGo.transform.localScale;
+            originalScale = nodeIcon.transform.localScale;
         }
         else
         {
             Debug.Log(" nodeData.type " + type + " not found ");
         }
+    }
+
+    private GameObject GetNodeIcon()
+    {
+        GameObject nodeIcon;
+
+        if (subType != NODE_SUBTYPES.combat_boss)
+        {
+            nodeIcon = bgSprites.Find(x => x.type == subType).imageGo;
+        }
+        else
+        {
+            string bossType = title.Split(':')[1];
+            bossType = bossType.Trim();
+            nodeIcon = bossSprites.Find(x => x.bossName == bossType).imageGo;
+            if (nodeIcon == null)
+            {
+                Debug.LogWarning($"[NodeData] No Boss node image found for {bossType}");
+                nodeIcon = bgSprites.Find(x => x.type == subType).imageGo;
+            }
+        }
+
+        return nodeIcon;
     }
 
     private void UpdateNodeStatusVisuals()

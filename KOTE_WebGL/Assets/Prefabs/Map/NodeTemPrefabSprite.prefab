@@ -11061,6 +11061,11 @@ MonoBehaviour:
     imageGo: {fileID: 2172254499105225716}
   - type: 13
     imageGo: {fileID: 4855249461534791823}
+  bossSprites:
+  - bossName: Fungal Brute
+    imageGo: {fileID: 4250975384216146778}
+  - bossName: Treant
+    imageGo: {fileID: 1819223120539597689}
   act: 0
   step: 0
   id: 0
