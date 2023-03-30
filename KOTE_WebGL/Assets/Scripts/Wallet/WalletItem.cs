@@ -1,34 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class WalletItem : MonoBehaviour
 {
     public string WalletAddress { get; private set; }
-    public int KnightCount { get; private set; }
+    
     public bool IsActiveWallet => WalletManager.Instance.ActiveWallet == WalletAddress;
 
-    [SerializeField]
-    private TMP_Text walletAddressText;
-    [SerializeField]
-    private TMP_Text knightCountText;
+    [SerializeField] private TMP_Text walletAddressText;
+    [SerializeField] private TMP_Text knightCountText;
+    [SerializeField] private TMP_Text villagerCountText;
+    [SerializeField] private TMP_Text blessedVillagerCountText;
 
     public void SetWalletAddress(string wallet)
     {
         walletAddressText.text = wallet;
         WalletAddress = wallet;
     }
-    public void SetKnightCount(int count)
+
+    public void SetTokenCounts(int knightCount, int villagerCount, int bVillagerCount)
     {
-        knightCountText.text = count + " Knights";
-        KnightCount = count;
+        knightCountText.text = knightCount + " Knights";
+        villagerCountText.text = villagerCount + " Villagers";
+        blessedVillagerCountText.text = bVillagerCount + " Blessed Villagers";
     }
-    public void Populate(string wallet, int knights) 
+
+    public void Populate(string wallet, int knights, int villagers, int blessedVillagers)
     {
         SetWalletAddress(wallet);
-        SetKnightCount(knights);
+        SetTokenCounts(knights, villagers, blessedVillagers);
     }
 
     public void RemoveWallet()
