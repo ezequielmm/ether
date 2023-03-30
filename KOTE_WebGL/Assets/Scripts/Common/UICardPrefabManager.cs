@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -6,6 +7,8 @@ using UnityEngine.UI;
 
 public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    public TooltipAtCursor tooltipManager;
+
     public TextMeshProUGUI energyTF;
     public TextMeshProUGUI nameTF;
     public TextMeshProUGUI rarityTF;
@@ -71,8 +74,35 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
         cardImage.sprite = cardAssetManager.GetCardImage(card.cardId);
 
         this.card = card;
+        PopulateToolTips();
 
         Deselect();
+    }
+
+    private void PopulateToolTips()
+    {
+        List<Tooltip> tooltips = new();
+        if (card.properties.statuses != null && card.properties.statuses.Count != 0)
+        {
+            foreach (var status in card.properties.statuses)
+            {
+                if (!string.IsNullOrEmpty(status.tooltip.title))
+                {
+                    tooltips.Add(status.tooltip);
+                }
+                else
+                {
+                    var description = status.args.description ?? "TODO // Add Description";
+                    tooltips.Add(new Tooltip()
+                    {
+                        title = Utils.PrettyText(status.name),
+                        description = description
+                    });
+                }
+            }
+        }
+
+        tooltipManager.SetTooltips(tooltips);
     }
 
     public void Select()
@@ -100,6 +130,7 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        tooltipManager.OnPointerEnter(eventData);
         if (scaleCardOnHover == false) return;
         DOTween.Kill(this.transform);
         transform.DOScale(scaleOnHover, 0.3f);
@@ -107,6 +138,7 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        tooltipManager.OnPointerExit(eventData);
         if (scaleCardOnHover == false) return;
         DOTween.Kill(this.transform);
         transform.DOScale(originalScale, 0.3f);
