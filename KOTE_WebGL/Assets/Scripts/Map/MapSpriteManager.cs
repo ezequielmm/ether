@@ -1230,31 +1230,6 @@ namespace map
             ScrollBackToPlayerIcon(GameSettings.MAP_SCROLL_ANIMATION_DURATION, 0);
         }
 
-        // get the boss node so we can move to it
-        private NodeData GetBossNode()
-        {
-            for (int i = nodes.Count - 1; i >= 0; i--)
-            {
-                if (nodes[i].subType == NODE_SUBTYPES.combat_boss)
-                {
-                    return nodes[i];
-                }
-            }
-
-            return null;
-        }
-
-        private void HideAllNodesInAct(int act)
-        {
-            foreach (NodeData node in nodes)
-            {
-                if (node.act == act)
-                {
-                    node.HideNode();
-                }
-            }
-        }
-
         private void OnPortalActivated(SWSM_MapData mapData)
         {
             // the portal is always the last node when we receive the portal activate event
