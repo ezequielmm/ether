@@ -9,7 +9,6 @@ public class LootboxPanelManager : MonoBehaviour
     [SerializeField] public GameObject LootContainer;
     [SerializeField] GameObject ReturnToLootButton;
     public RectTransform RadiantBackground;
-    private Tween bgRotation;
 
     public void Populate(List<GearItemData> items)
     {
@@ -45,7 +44,7 @@ public class LootboxPanelManager : MonoBehaviour
         lootboxPanel.SetActive(enable);
         if (enable)
         {
-            bgRotation = RadiantBackground.DOLocalRotate(new Vector3(0.0f, 0.0f, 1), 1.0f).SetRelative()
+            RadiantBackground.DOLocalRotate(new Vector3(0.0f, 0.0f, 1), 1.0f).SetRelative()
                 .SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear);
         }
         
