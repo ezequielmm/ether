@@ -148,7 +148,6 @@ namespace KOTE.UI.Armory
                 nft.Image = testSprite;
             }
 
-            _armoryPanelManager.defaultCharacterSprite = testSprite;
             NftManager.Instance.Nfts = new Dictionary<NftContract, List<Nft>>();
             NftManager.Instance.Nfts[NftContract.Knights] = testNftList;
             NftManager.Instance.NftsLoaded.Invoke();
@@ -238,7 +237,6 @@ namespace KOTE.UI.Armory
             Assert.IsFalse(_armoryPanelManager.panelContainer.activeSelf);
         }
 
-        
 
         [Test]
         public void DoesShowingPanelCallNftSelectedEvent()
@@ -477,7 +475,8 @@ namespace KOTE.UI.Armory
         [Test]
         public void DoesPopulatingGearCreateHeadersWithNoItems()
         {
-            FetchData.Instance.TestData[FetchType.GearInventory] = JsonConvert.SerializeObject(new TestGearData{data = testData});
+            FetchData.Instance.TestData[FetchType.GearInventory] =
+                JsonConvert.SerializeObject(new TestGearData { data = testData });
             GameManager.Instance.EVENT_AUTHENTICATED.Invoke();
             ArmoryHeaderManager[] headers =
                 _armoryPanelManager.gearListTransform.GetComponentsInChildren<ArmoryHeaderManager>();
