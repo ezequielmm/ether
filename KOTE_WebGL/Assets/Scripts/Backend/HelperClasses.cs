@@ -13,7 +13,7 @@ using UnityEngine;
 public class ExpeditionMapData
 {
     public int seed;
-    public NodeDataHelper[] data;
+    [JsonProperty("data")]public NodeDataHelper[] nodeList;
 }
 
 [Serializable]
@@ -33,13 +33,13 @@ public class NodeDataHelper
 [Serializable]
 public class MapStructure
 {
-    public List<Act> acts = new List<Act>();
+    public Dictionary<int, Act> acts = new ();
 }
 
 [Serializable]
 public class Act
 {
-    public List<Step> steps = new List<Step>();
+    public Dictionary<int, Step> steps = new();
 }
 
 [Serializable]
@@ -477,7 +477,7 @@ public class CardUpgrade
 [Serializable]
 public class SWSM_MapData
 {
-    public ExpeditionMapData data = new();
+    [JsonProperty("data")]public ExpeditionMapData expeditionData = new();
 }
 
 [Serializable]

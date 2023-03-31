@@ -280,9 +280,9 @@ public static class TestUtils
         if (activeNodeNumber >= numberOfNodes) activeNodeNumber = 0;
         SWSM_MapData mapData = new SWSM_MapData
         {
-            data = new ExpeditionMapData
+            expeditionData = new ExpeditionMapData
             {
-                data = new NodeDataHelper[numberOfNodes]
+                nodeList = new NodeDataHelper[numberOfNodes]
             }
         };
 
@@ -304,7 +304,7 @@ public static class TestUtils
             else nodeData.exits = Array.Empty<int>();
             if (i == activeNodeNumber) nodeData.status = "active";
             else if (i > activeNodeNumber) nodeData.status = "disabled";
-            mapData.data.data[i] = nodeData;
+            mapData.expeditionData.nodeList[i] = nodeData;
         }
 
         return mapData;
@@ -314,9 +314,9 @@ public static class TestUtils
     {
         SWSM_MapData mapData = new SWSM_MapData
         {
-            data = new ExpeditionMapData
+            expeditionData = new ExpeditionMapData
             {
-                data = new[]
+                nodeList = new[]
                 {
                     new NodeDataHelper
                     {

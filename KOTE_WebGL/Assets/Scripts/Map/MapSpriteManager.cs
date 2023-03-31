@@ -353,8 +353,8 @@ namespace map
             DetermineTilesToUse(expeditionMapData);
 
             // Set Seed
-            GenerateMapSeeds(expeditionMapData.data.seed);
-            Debug.Log($"[MapSpriteManager] Map Seed: {expeditionMapData.data.seed}");
+            GenerateMapSeeds(expeditionMapData.expeditionData.seed);
+            Debug.Log($"[MapSpriteManager] Map Seed: {expeditionMapData.expeditionData.seed}");
 
             MapStructure mapStructure = GenerateMapStructure(expeditionMapData);
 
@@ -379,7 +379,7 @@ namespace map
 
         private void DetermineTilesToUse(SWSM_MapData expeditionData)
         {
-            int currentMapAct = expeditionData.data.data[0].act;
+            int currentMapAct = expeditionData.expeditionData.nodeList[0].act;
 
             // if the current act of the map is not act 0 and we have a tile list for that act, use it
             if (currentMapAct > 0 && currentMapAct - 1 < actTileLists.Length)
@@ -513,23 +513,20 @@ namespace map
         {
             MapStructure mapStructure = new MapStructure();
             //parse nodes data
-            for (int i = 0; i < expeditionMapData.data.data.Length; i++)
+            for (int i = 0; i < expeditionMapData.expeditionData.nodeList.Length; i++)
             {
-                NodeDataHelper nodeData = expeditionMapData.data.data[i];
+                NodeDataHelper nodeData = expeditionMapData.expeditionData.nodeList[i];
 
                 //acts
-                if (mapStructure.acts.Count == 0 || mapStructure.acts.Count < (nodeData.act + 1))
+                if ( !mapStructure.acts.ContainsKey(nodeData.act))
                 {
-                    Act newAct = new Act();
-                    mapStructure.acts.Add(newAct);
+                    mapStructure.acts[nodeData.act] = new Act();
                 }
 
                 //steps
-                if (mapStructure.acts[nodeData.act].steps.Count == 0 ||
-                    mapStructure.acts[nodeData.act].steps.Count < (nodeData.step + 1))
+                if (!mapStructure.acts[nodeData.act].steps.ContainsKey(nodeData.step))
                 {
-                    Step newStep = new Step();
-                    mapStructure.acts[nodeData.act].steps.Add(newStep);
+                    mapStructure.acts[nodeData.act].steps[nodeData.step] = new Step();
                 }
 
                 //add id
@@ -545,12 +542,21 @@ namespace map
             float columnOffsetCounter = 0;
             float columnIncrement = GameSettings.MAP_SPRITE_NODE_X_OFFSET;
 
+            List<int> acts = mapStructure.acts.Keys.ToList();
+            acts.Sort();
+
             //generate the map
-            foreach (Act act in mapStructure.acts)
+            foreach (int actIndex in acts)
             {
+                Act act = mapStructure.acts[actIndex];
+
+                List<int> steps = act.steps.Keys.ToList();
+                steps.Sort();
+                
                 //areas
-                foreach (Step step in act.steps)
+                foreach (int stepIndex in steps)
                 {
+                    Step step = act.steps[stepIndex];
                     //columns
                     float rows = step.nodesData.Count;
                     float rowsMaxSpace = 8 / rows;
@@ -1233,7 +1239,7 @@ namespace map
         private void OnPortalActivated(SWSM_MapData mapData)
         {
             // the portal is always the last node when we receive the portal activate event
-            int nodeId = mapData.data.data[mapData.data.data.Length - 1].id;
+            int nodeId = mapData.expeditionData.nodeList[mapData.expeditionData.nodeList.Length - 1].id;
 
             // move the particle system to the correct portal
             NodeData exitNode = nodes.Find(x => x.id == nodeId);
