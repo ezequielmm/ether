@@ -340,7 +340,7 @@ public class GameManager : SingleTon<GameManager>
     {
         EVENT_SCENE_LOADING.Invoke();
         nextSceneToLoad = scene;
-        if (scene == inGameScenes.Expedition)
+        if (scene == inGameScenes.Expedition && CurrentScene != inGameScenes.MainMenu)
         {
             RequestExpeditionSync();
         }
