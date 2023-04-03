@@ -630,7 +630,7 @@ namespace map
             foreach (NodeData curNode in nodes)
             {
                 //Debug.Log("[MapSpriteManager] Searching :" + go.GetComponent<NodeData>().id);
-
+                //Debug.Log($"node {curNode.id} position is: {MapGrid.WorldToCell(curNode.transform.position)}");
                 foreach (int exitId in curNode.GetComponent<NodeData>().exits)
                 {
                     NodeData exitNode = nodes.Find(x => x.id == exitId);
