@@ -30,7 +30,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         StartCoroutine(GetCharacterList());
     }
 
-    public async UniTask<DownloadHandler> MakeRequest(UnityWebRequest request) 
+    public async UniTask<DownloadHandler> MakeRequest(UnityWebRequest request)
     {
 #if UNITY_EDITOR
         if (UnitTestDetector.IsInUnitTest)
@@ -51,21 +51,27 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             else
             {
                 bool logText = IsResponseJson(request) && request?.downloadHandler?.text != null;
-                LogRepsonse(requestId, request.uri.ToString(), logText ? request.downloadHandler.text : 
-                    $"<Cannot Display: {request.GetResponseHeader("Content-Type")}>");
+                LogRepsonse(requestId, request.uri.ToString(),
+                    logText
+                        ? request.downloadHandler.text
+                        : $"<Cannot Display: {request.GetResponseHeader("Content-Type")}>");
                 return request.downloadHandler;
             }
         }
-        catch(Exception e) 
+        catch (Exception e)
         {
             Debug.LogException(e);
-            Debug.LogError($"[WebRequesterManager] Error sending [{request.method}] request to [{request.uri}]\n{request?.error}");
-            ServerCommunicationLogger.Instance.LogCommunication($"[{request.method}][{request.uri}] Data Not Retrieved: {request?.error}", CommunicationDirection.Incoming);
+            Debug.LogError(
+                $"[WebRequesterManager] Error sending [{request.method}] request to [{request.uri}]\n{request?.error}");
+            ServerCommunicationLogger.Instance.LogCommunication(
+                $"[{request.method}][{request.uri}] Data Not Retrieved: {request?.error}",
+                CommunicationDirection.Incoming);
             return null;
         }
     }
 
     List<string> jsonCarryingFormats = new List<string>() { "application/json", "text/plain", "text/json" };
+
     private bool IsResponseJson(UnityWebRequest response)
     {
         string responseType = response.GetResponseHeader("Content-Type")?.ToLower().Split(';')?
@@ -73,13 +79,14 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         return jsonCarryingFormats.Contains(responseType);
     }
 
-    private void LogRequest(Guid requestId, string url, params object[] payload) 
+    private void LogRequest(Guid requestId, string url, params object[] payload)
     {
         string requestIdShortened = requestId.ToString().Substring(0, LogHelper.LengthOfIdToLog);
         string variableString = LogHelper.VariablesToHumanReadable(url, payload);
         string jsonString = LogHelper.VariablesToJson(url, payload);
         Debug.Log($"[WebRequesterManager] REQUEST [{requestIdShortened}] >>> {jsonString}");
-        LogHelper.SendOutgoingCommunicationLogs($"[WebRequesterManager] REQUEST [{requestIdShortened}] >>> {variableString}", jsonString);
+        LogHelper.SendOutgoingCommunicationLogs(
+            $"[WebRequesterManager] REQUEST [{requestIdShortened}] >>> {variableString}", jsonString);
     }
 
     private void LogRepsonse(Guid requestId, string url, string rawJson)
@@ -87,7 +94,8 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         string requestIdShortened = requestId.ToString().Substring(0, LogHelper.LengthOfIdToLog);
         string variableString = LogHelper.VariablesToHumanReadable(url, rawJson);
         Debug.Log($"[WebRequesterManager] RESPONSE [{requestIdShortened}] <<< {rawJson}");
-        LogHelper.SendOutgoingCommunicationLogs($"[WebRequesterManager] RESPONSE [{requestIdShortened}] <<< {variableString}", rawJson);
+        LogHelper.SendOutgoingCommunicationLogs(
+            $"[WebRequesterManager] RESPONSE [{requestIdShortened}] <<< {variableString}", rawJson);
     }
 
     IEnumerator GetCharacterList()
@@ -159,10 +167,11 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             await MakeRequest(request);
             uploadHandler.Dispose();
         }
+
         Debug.Log($"[WebRequesterManager] Bug Report Sent!");
     }
 
-    public string ConstructUrl(string path) 
+    public string ConstructUrl(string path)
     {
         string host = ClientEnvironmentManager.Instance.WebRequestURL;
         //TODO TEMP CODE UNTIL SERVER UPDATES
@@ -172,13 +181,15 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
 }
 
 
-public static class RestEndpoint 
+public static class RestEndpoint
 {
     public static readonly string RandomName = "/auth/v1/generate/username";
     public static readonly string Register = "/auth/v1/register";
     public static readonly string Login = "/auth/v1/login";
     public static readonly string Logout = "/auth/v1/logout";
+
     public static readonly string Profile = "/gsrv/v1/profile";
+
     //public static readonly string WalletData = "/gsrv/v1/wallets"; TODO restore when merged to main
     public static readonly string WalletData = "/v1/wallets";
     public static readonly string VerifyWalletSignature = "/gsrv/v1/tokens/verify";

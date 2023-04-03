@@ -1,9 +1,10 @@
 using UnityEditor;
 using UnityEngine;
 
-public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
+public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
 {
     private static ClientEnvironmentManager instance;
+
     public static ClientEnvironmentManager Instance
     {
         get
@@ -12,6 +13,7 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
             {
                 instance = new ClientEnvironmentManager();
             }
+
             return instance;
         }
     }
@@ -47,7 +49,7 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
         if (hostName.Contains("villager") || hostName.Contains("snapshot"))
         {
             return Environments.Snapshot;
-        } 
+        }
         else if (hostName.Contains("dev"))
         {
             return Environments.Dev;
@@ -64,13 +66,22 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
         {
             return Environments.Alpha;
         }
+
         return Environments.Unknown;
     }
 
-    private void UpdateUrls(Environments currentEnvironment) 
+    private void UpdateUrls(Environments currentEnvironment)
     {
-        switch(currentEnvironment) 
+        switch (currentEnvironment)
         {
+            case Environments.Dev:
+            default:
+                WebRequestURL = $"https://gateway.dev.kote.robotseamonster.com";
+                SkinURL = $"https://koteskins.robotseamonster.com/";
+                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/";
+                PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/";
+                WebSocketURL = $"https://api.dev.kote.robotseamonster.com";
+                break;
             // unknown usually means a local build, so we want it pointing to villagers
             case Environments.Unknown:
             case Environments.Snapshot:
@@ -90,7 +101,7 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
             case Environments.TestAlpha:
                 WebRequestURL = $"https://gateway.alpha.kote.robotseamonster.com";
                 SkinURL = $"https://koteskins.robotseamonster.com/";
-                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/";               
+                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/";
                 PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/";
                 WebSocketURL = $"https://api.alpha.kote.robotseamonster.com";
                 break;
@@ -103,19 +114,13 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
                 break;
 #if UNITY_EDITOR
             case Environments.Unity:
-                Environments emulate = AssetDatabase.LoadAssetAtPath<UnityEnvironment>("Assets/UnityEnvironment.asset").EnvironmentToEmulate;
+                Environments emulate = AssetDatabase.LoadAssetAtPath<UnityEnvironment>("Assets/UnityEnvironment.asset")
+                    .EnvironmentToEmulate;
                 if (emulate == Environments.Unity)
                     emulate = Environments.Dev;
                 UpdateUrls(emulate);
                 break;
 #endif
-            case Environments.Dev:
-            default:
-                WebRequestURL = $"https://gateway.dev.kote.robotseamonster.com";
-                SkinURL = $"https://koteskins.robotseamonster.com/";
-                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/";
-                WebSocketURL = $"https://api.dev.kote.robotseamonster.com";
-                break;
         }
     }
 
@@ -124,7 +129,7 @@ public class ClientEnvironmentManager: ISingleton<ClientEnvironmentManager>
         instance = null;
     }
 
-    public enum Environments 
+    public enum Environments
     {
         Unknown,
 #if UNITY_EDITOR
