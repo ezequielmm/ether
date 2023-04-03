@@ -174,8 +174,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
     public string ConstructUrl(string path)
     {
         string host = ClientEnvironmentManager.Instance.WebRequestURL;
-        //TODO TEMP CODE UNTIL SERVER UPDATES
-        if (path == RestEndpoint.WalletData) host = ClientEnvironmentManager.Instance.WebSocketURL;
+      
         return $"{host}{path}";
     }
 }
@@ -190,8 +189,7 @@ public static class RestEndpoint
 
     public static readonly string Profile = "/gsrv/v1/profile";
 
-    //public static readonly string WalletData = "/gsrv/v1/wallets"; TODO restore when merged to main
-    public static readonly string WalletData = "/v1/wallets";
+    public static readonly string WalletData = "/gsrv/v1/wallets";
     public static readonly string VerifyWalletSignature = "/gsrv/v1/tokens/verify";
     public static readonly string CharactersList = "/gsrv/v1/characters";
     public static readonly string ExpeditionStatus = "/gsrv/v1/expeditions/status";

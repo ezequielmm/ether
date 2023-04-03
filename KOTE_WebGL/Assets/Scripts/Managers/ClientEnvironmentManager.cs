@@ -82,7 +82,7 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
                 PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/";
                 WebSocketURL = $"https://api.dev.kote.robotseamonster.com";
                 break;
-            // unknown usually means a local build, so we want it pointing to villagers
+            // unknown usually means a local build
             case Environments.Unknown:
             case Environments.Snapshot:
                 WebRequestURL = $"https://gateway.villagers.dev.kote.robotseamonster.com";
