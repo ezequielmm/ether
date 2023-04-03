@@ -363,6 +363,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rewardText: {fileID: 1512704674656341924}
+  cardText: {fileID: 8464575263284024999}
   rewardItemType: 0
   rewardImage: {fileID: 8495531943339981627}
   tooltipController: {fileID: 6643783074752643595}
