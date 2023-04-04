@@ -121,7 +121,7 @@ public class GameStatusManager : MonoBehaviour
         //tell top bar to hide the map icon
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(false);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(true);
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
+        GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.Invoke(false);
         GameManager.Instance.EVENT_TOOGLE_TREASURE_ELEMENTS.Invoke(false);
     }
 
@@ -130,7 +130,7 @@ public class GameStatusManager : MonoBehaviour
         //tell top bar to show the map icon
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(true);
+        GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.Invoke(true);
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Battle Start");
         GameManager.Instance.EVENT_TOOGLE_TREASURE_ELEMENTS.Invoke(false);
         Invoke("InvokeDrawCards", 0.2f);
@@ -149,7 +149,7 @@ public class GameStatusManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
+        GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.Invoke(false);
         GameManager.Instance.EVENT_SHOW_ENCOUNTER_PANEL.Invoke();
     }
 
@@ -157,7 +157,7 @@ public class GameStatusManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
+        GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.Invoke(false);
         GameManager.Instance.EVENT_TOGGLE_MERCHANT_PANEL.Invoke(true);
     }
 
@@ -165,7 +165,7 @@ public class GameStatusManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
+        GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.Invoke(false);
         GameManager.Instance.EVENT_CAMP_SHOW_PANEL.Invoke();
     }
 
@@ -173,13 +173,14 @@ public class GameStatusManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
+        GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.Invoke(false);
     }
 
     private void InitializeRewards()
     {
         GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.Invoke(true);
         GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
+        GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.Invoke(false);
         GameManager.Instance.EVENT_GENERIC_WS_DATA.Invoke(WS_DATA_REQUEST_TYPES.Rewards);
     }
 

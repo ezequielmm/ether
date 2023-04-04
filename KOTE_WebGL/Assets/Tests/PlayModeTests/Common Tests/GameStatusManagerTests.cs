@@ -297,7 +297,7 @@ public class GameStatusManagerTests : MonoBehaviour
         bool eventFired = false;
         bool correctStatus = false;
 
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.AddListener((toggleStatus) =>
+        GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.AddListener((toggleStatus) =>
         {
             eventFired = true;
             if (toggleStatus) correctStatus = true;
@@ -370,7 +370,7 @@ public class GameStatusManagerTests : MonoBehaviour
         bool eventFired = false;
         bool correctStatus = false;
 
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.AddListener((toggleStatus) =>
+        GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.AddListener((toggleStatus) =>
         {
             eventFired = true;
             if (!toggleStatus) correctStatus = true;
@@ -493,7 +493,7 @@ public class GameStatusManagerTests : MonoBehaviour
         bool eventFired = false;
         bool correctStatus = false;
 
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.AddListener((toggleStatus) =>
+        GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.AddListener((toggleStatus) =>
         {
             eventFired = true;
             if (!toggleStatus) correctStatus = true;
@@ -553,7 +553,7 @@ public class GameStatusManagerTests : MonoBehaviour
         bool eventFired = false;
         bool correctStatus = false;
 
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.AddListener((toggleStatus) =>
+        GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.AddListener((toggleStatus) =>
         {
             eventFired = true;
             if (!toggleStatus) correctStatus = true;
@@ -613,7 +613,7 @@ public class GameStatusManagerTests : MonoBehaviour
         bool eventFired = false;
         bool correctStatus = false;
 
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.AddListener((toggleStatus) =>
+        GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.AddListener((toggleStatus) =>
         {
             eventFired = true;
             if (!toggleStatus) correctStatus = true;

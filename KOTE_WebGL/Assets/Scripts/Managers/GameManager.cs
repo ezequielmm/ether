@@ -220,8 +220,9 @@ public class GameManager : SingleTon<GameManager>
 
     //Combat events
     [HideInInspector] public UnityEvent EVENT_START_COMBAT_ENCOUNTER = new UnityEvent();
-    [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();
-    [HideInInspector] public UnityEvent EVENT_TOGGLE_COMBAT_UI = new UnityEvent();
+    [HideInInspector] public UnityEvent<bool> EVENT_TOGGLE_COMBAT_ELEMENTS = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<bool> EVENT_TOGGLE_COMBAT_UI = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent EVENT_FADE_OUT_UI = new UnityEvent();
     [HideInInspector] public UnityEvent EVENT_SHOW_PLAYER_CHARACTER = new UnityEvent();
 
     [HideInInspector]
