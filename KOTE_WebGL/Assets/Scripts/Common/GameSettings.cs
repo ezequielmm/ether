@@ -65,6 +65,7 @@ public static class GameSettings
     public static float HEALTH_HEIGHT = 0.9f;
     public static bool SHOW_PLAYER_INJURED_IDLE = false;
     public static float END_WAIT_TIMEOUT = 5;
+    public const float UI_FADEOUT_TIME = 1.0f;
 
     // Text Effects
     public static Color DEFAUT_TEXTEFFECT_COLOR = Color.green;
@@ -90,7 +91,7 @@ public static class GameSettings
 
 
 #if UNITY_EDITOR
-    public const string EDITOR_WALLET = "0x3e98aea7a1e837aa52467499a1b122224f5e247a";
+    public const string EDITOR_WALLET = "0x66956Fe08D7Bc88fe70216502fD8a6e4b7f269c5";
 #endif
 
     public const int INITIAL_SKIN_CACHE = 3;

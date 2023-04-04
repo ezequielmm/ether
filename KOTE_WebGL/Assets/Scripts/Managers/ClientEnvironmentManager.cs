@@ -1,10 +1,14 @@
+using System;
+using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
 {
     private static ClientEnvironmentManager instance;
-
+    
     public static ClientEnvironmentManager Instance
     {
         get
@@ -17,22 +21,65 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
             return instance;
         }
     }
+    
+    // this is the first thing called when the game starts
+    public async UniTask StartEnvironmentManger()
+    {
+#if UNITY_WEBGL
+        using (UnityWebRequest request =
+               UnityWebRequest.Get($"{Application.absoluteURL}/environment.json"))
+        {
+            await request.SendWebRequest();
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                SetEnvironmentData(null);
+                return;
+            }
+
+            try
+            {
+                EnvironmentUrls environmentUrls =
+                    JsonConvert.DeserializeObject<EnvironmentUrls>(request.downloadHandler.text);
+                SetEnvironmentData(environmentUrls);
+            }
+            catch (ArgumentNullException ex)
+            {
+                SetEnvironmentData(null);
+            }
+        }
+#endif
+    }
+
 
 #if UNITY_EDITOR
     public bool InUnity = false;
 #endif
-    public string WebRequestURL { get; private set; }
-    public string SkinURL { get; private set; }
-    public string GearIconURL { get; private set; }
-    public string PortraitElementURL { get; private set; }
-    public string WebSocketURL { get; private set; }
+    public string WebRequestURL => _environmentUrls.WebRequestURL;
+    public string SkinURL => _environmentUrls.SkinURL;
+    public string GearIconURL => _environmentUrls.GearIconURL;
+    public string PortraitElementURL => _environmentUrls.PortraitElementURL;
+    public string WebSocketURL => _environmentUrls.WebSocketURL;
+
+    private EnvironmentUrls _environmentUrls;
     public Environments Environment { get; private set; } = Environments.Unknown;
 
     private ClientEnvironmentManager()
     {
 #if UNITY_EDITOR
         InUnity = true;
+        Environment = DetermineEnvironment(Application.absoluteURL);
+        UpdateUrls(Environment);
 #endif
+    }
+
+    public void SetEnvironmentData(EnvironmentUrls urls)
+    {
+        if (urls != null)
+        {
+            _environmentUrls = urls;
+            return;
+        }
+        
         Environment = DetermineEnvironment(Application.absoluteURL);
         UpdateUrls(Environment);
     }
@@ -76,41 +123,56 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
         {
             case Environments.Dev:
             default:
-                WebRequestURL = $"https://gateway.dev.kote.robotseamonster.com";
-                SkinURL = $"https://koteskins.robotseamonster.com/";
-                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/";
-                PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/";
-                WebSocketURL = $"https://api.dev.kote.robotseamonster.com";
+                _environmentUrls = new EnvironmentUrls
+                {
+                    WebRequestURL = $"https://gateway.dev.kote.robotseamonster.com",
+                    SkinURL = $"https://koteskins.robotseamonster.com/",
+                    GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/",
+                    PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/",
+                    WebSocketURL = $"https://api.dev.kote.robotseamonster.com"
+                };
                 break;
             // unknown usually means a local build
             case Environments.Unknown:
             case Environments.Snapshot:
-                WebRequestURL = $"https://gateway.villagers.dev.kote.robotseamonster.com";
-                SkinURL = $"https://koteskins.robotseamonster.com/";
-                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/";
-                PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/";
-                WebSocketURL = $"https://api.villagers.dev.kote.robotseamonster.com";
+                _environmentUrls = new EnvironmentUrls
+                {
+                WebRequestURL = $"https://gateway.villagers.dev.kote.robotseamonster.com",
+                SkinURL = $"https://koteskins.robotseamonster.com/",
+                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/",
+                PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/",
+                WebSocketURL = $"https://api.villagers.dev.kote.robotseamonster.com"
+                };
                 break;
             case Environments.Stage:
-                WebRequestURL = $"https://gateway.stage.kote.robotseamonster.com";
-                SkinURL = $"https://koteskins.robotseamonster.com/";
-                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/";
-                PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/";
-                WebSocketURL = $"https://api.stage.kote.robotseamonster.com";
+                _environmentUrls = new EnvironmentUrls
+                {
+                WebRequestURL = $"https://gateway.stage.kote.robotseamonster.com",
+                SkinURL = $"https://koteskins.robotseamonster.com/",
+                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/",
+                PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/",
+                WebSocketURL = $"https://api.stage.kote.robotseamonster.com"
+                };
                 break;
             case Environments.TestAlpha:
-                WebRequestURL = $"https://gateway.alpha.kote.robotseamonster.com";
-                SkinURL = $"https://koteskins.robotseamonster.com/";
-                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/";
-                PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/";
-                WebSocketURL = $"https://api.alpha.kote.robotseamonster.com";
+                _environmentUrls = new EnvironmentUrls
+                {
+                WebRequestURL = $"https://gateway.alpha.kote.robotseamonster.com",
+                SkinURL = $"https://koteskins.robotseamonster.com/",
+                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/",
+                PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/",
+                WebSocketURL = $"https://api.alpha.kote.robotseamonster.com"
+                };
                 break;
             case Environments.Alpha:
-                WebRequestURL = $"https://gateway.alpha.knightsoftheether.com";
-                SkinURL = $"https://s3.amazonaws.com/koteskins.knightsoftheether.com/";
-                PortraitElementURL = "https://s3.amazonaws.com/koteskins.robotseamonster.com/Portraits/";
-                GearIconURL = $"https://s3.amazonaws.com/koteskins.knightsoftheether.com/GearIcons";
-                WebSocketURL = $"https://api.alpha.knightsoftheether.com:443";
+                _environmentUrls = new EnvironmentUrls
+                {
+                WebRequestURL = $"https://gateway.alpha.knightsoftheether.com",
+                SkinURL = $"https://s3.amazonaws.com/koteskins.knightsoftheether.com/",
+                PortraitElementURL = "https://s3.amazonaws.com/koteskins.robotseamonster.com/Portraits/",
+                GearIconURL = $"https://s3.amazonaws.com/koteskins.knightsoftheether.com/GearIcons",
+                WebSocketURL = $"https://api.alpha.knightsoftheether.com:443"
+                };
                 break;
 #if UNITY_EDITOR
             case Environments.Unity:
@@ -141,4 +203,14 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
         TestAlpha,
         Alpha
     }
+}
+
+[Serializable]
+public class EnvironmentUrls
+{
+    [JsonProperty("request_url")] public string WebRequestURL;
+    [JsonProperty("skin_url")] public string SkinURL;
+    [JsonProperty("gear_icon_url")] public string GearIconURL;
+    [JsonProperty("portrait_url")] public string PortraitElementURL;
+    [JsonProperty("socket_url")] public string WebSocketURL;
 }
