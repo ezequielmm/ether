@@ -78,8 +78,8 @@ GameObject:
   - component: {fileID: 8486959473553199590}
   - component: {fileID: 8614223045460397576}
   - component: {fileID: 6232052209567427606}
-  - component: {fileID: -7491149719034910533}
-  - component: {fileID: 5242949678305733574}
+  - component: {fileID: -932439066369498142}
+  - component: {fileID: 6372047873750598841}
   m_Layer: 0
   m_Name: Trapelican
   m_TagString: Enemy
@@ -367,7 +367,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-7491149719034910533
+--- !u!114 &-932439066369498142
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -380,12 +380,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 1, a: 1}
-  quadMaterial: {fileID: 2100000, guid: 4c507f887c6274a44a603d96e0eabf2a, type: 2}
+  quadMaterial: {fileID: 2100000, guid: 76086f6bdbbd1fe4b9b1b8b62b360df2, type: 2}
   targetCamera: {fileID: 0}
   maxRenderTextureSize: 1024
   quad: {fileID: 0}
   renderTexture: {fileID: 0}
---- !u!114 &5242949678305733574
+--- !u!114 &6372047873750598841
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

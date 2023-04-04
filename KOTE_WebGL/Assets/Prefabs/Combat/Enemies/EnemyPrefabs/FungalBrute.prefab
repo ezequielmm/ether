@@ -78,8 +78,8 @@ GameObject:
   - component: {fileID: 8177492210074112307}
   - component: {fileID: 160662151681782555}
   - component: {fileID: 18208913509664201}
-  - component: {fileID: 6524790252693120108}
-  - component: {fileID: -9026943013854554688}
+  - component: {fileID: -7315168677046499938}
+  - component: {fileID: 1523925969734529166}
   m_Layer: 0
   m_Name: FungalBrute
   m_TagString: Enemy
@@ -360,7 +360,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &6524790252693120108
+--- !u!114 &-7315168677046499938
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -373,12 +373,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 1, a: 1}
-  quadMaterial: {fileID: 2100000, guid: 4c507f887c6274a44a603d96e0eabf2a, type: 2}
+  quadMaterial: {fileID: 2100000, guid: 76086f6bdbbd1fe4b9b1b8b62b360df2, type: 2}
   targetCamera: {fileID: 0}
   maxRenderTextureSize: 1024
   quad: {fileID: 0}
   renderTexture: {fileID: 0}
---- !u!114 &-9026943013854554688
+--- !u!114 &1523925969734529166
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

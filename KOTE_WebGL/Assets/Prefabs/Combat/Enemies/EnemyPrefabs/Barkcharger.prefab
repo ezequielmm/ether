@@ -78,8 +78,8 @@ GameObject:
   - component: {fileID: 4793001383302049008}
   - component: {fileID: 9078346242316842544}
   - component: {fileID: 6012766712841953859}
-  - component: {fileID: -6663955754305664291}
-  - component: {fileID: -1488164780908252940}
+  - component: {fileID: 2651505389290961210}
+  - component: {fileID: 4294891446227277480}
   m_Layer: 0
   m_Name: Barkcharger
   m_TagString: Enemy
@@ -368,7 +368,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-6663955754305664291
+--- !u!114 &2651505389290961210
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -381,12 +381,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 1, a: 1}
-  quadMaterial: {fileID: 2100000, guid: 4c507f887c6274a44a603d96e0eabf2a, type: 2}
+  quadMaterial: {fileID: 2100000, guid: 76086f6bdbbd1fe4b9b1b8b62b360df2, type: 2}
   targetCamera: {fileID: 0}
   maxRenderTextureSize: 1024
   quad: {fileID: 0}
   renderTexture: {fileID: 0}
---- !u!114 &-1488164780908252940
+--- !u!114 &4294891446227277480
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

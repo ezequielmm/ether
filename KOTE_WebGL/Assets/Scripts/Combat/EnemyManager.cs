@@ -1,9 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using DG.Tweening;
-using Spine.Unity.Examples;
+using Spine.Unity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -94,8 +93,8 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         if (prefab != null)
         {
             activeEnemy = Instantiate(prefab, transform);
-            GrabEnemyFadeout(activeEnemy);
             activeEnemy.transform.localPosition = Vector3.zero;
+            GrabEnemyFadeout(activeEnemy);
             enemyPlacementData = activeEnemy.GetComponent<EnemyPrefab>();
             enemyPlacementData.FitColliderToArt();
             // Add the cursorEnter and Exit for tooltips

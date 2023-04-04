@@ -37,7 +37,7 @@
 
 using UnityEngine;
 
-namespace Spine.Unity.Examples {
+namespace Spine.Unity {
 
 	/// <summary>
 	/// A simple fadeout component that uses a <see cref="SkeletonRenderTexture"/> for transparency fadeout.

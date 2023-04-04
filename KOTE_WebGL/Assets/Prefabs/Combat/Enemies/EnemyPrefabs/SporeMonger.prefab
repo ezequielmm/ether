@@ -78,8 +78,8 @@ GameObject:
   - component: {fileID: 5353402391200997286}
   - component: {fileID: 4968164574047234282}
   - component: {fileID: 8226951231972184851}
-  - component: {fileID: -3245017509602122826}
-  - component: {fileID: 19458754235484560}
+  - component: {fileID: -3646489678348487561}
+  - component: {fileID: -7022020336936469600}
   m_Layer: 0
   m_Name: SporeMonger
   m_TagString: Enemy
@@ -345,7 +345,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-3245017509602122826
+--- !u!114 &-3646489678348487561
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -358,12 +358,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 1, a: 1}
-  quadMaterial: {fileID: 2100000, guid: 4c507f887c6274a44a603d96e0eabf2a, type: 2}
+  quadMaterial: {fileID: 2100000, guid: 76086f6bdbbd1fe4b9b1b8b62b360df2, type: 2}
   targetCamera: {fileID: 0}
   maxRenderTextureSize: 1024
   quad: {fileID: 0}
   renderTexture: {fileID: 0}
---- !u!114 &19458754235484560
+--- !u!114 &-7022020336936469600
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

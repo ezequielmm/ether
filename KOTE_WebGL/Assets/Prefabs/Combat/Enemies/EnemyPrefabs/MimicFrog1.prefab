@@ -78,8 +78,8 @@ GameObject:
   - component: {fileID: 1698277156229044708}
   - component: {fileID: 4729424181796650413}
   - component: {fileID: 8908123049069103932}
-  - component: {fileID: -3816044124155952783}
-  - component: {fileID: -7212539953421725580}
+  - component: {fileID: 2691280980861204781}
+  - component: {fileID: -8291394814827193980}
   m_Layer: 0
   m_Name: MimicFrog1
   m_TagString: Enemy
@@ -370,7 +370,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-3816044124155952783
+--- !u!114 &2691280980861204781
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -383,12 +383,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 1, a: 1}
-  quadMaterial: {fileID: 2100000, guid: 4c507f887c6274a44a603d96e0eabf2a, type: 2}
+  quadMaterial: {fileID: 2100000, guid: 76086f6bdbbd1fe4b9b1b8b62b360df2, type: 2}
   targetCamera: {fileID: 0}
   maxRenderTextureSize: 1024
   quad: {fileID: 0}
   renderTexture: {fileID: 0}
---- !u!114 &-7212539953421725580
+--- !u!114 &-8291394814827193980
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

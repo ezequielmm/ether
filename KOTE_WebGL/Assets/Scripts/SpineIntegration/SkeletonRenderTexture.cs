@@ -39,7 +39,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Spine.Unity.Examples {
+namespace Spine.Unity {
 
 	/// <summary>
 	/// When enabled, this component renders a skeleton to a RenderTexture and

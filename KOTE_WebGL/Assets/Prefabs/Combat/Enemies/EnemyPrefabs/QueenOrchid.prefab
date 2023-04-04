@@ -78,8 +78,8 @@ GameObject:
   - component: {fileID: 317532141913891766}
   - component: {fileID: 446662036047182490}
   - component: {fileID: 6089881018909539269}
-  - component: {fileID: -1662433117777468317}
-  - component: {fileID: -3844922744157748122}
+  - component: {fileID: -1254386609179736474}
+  - component: {fileID: 3959007722768598406}
   m_Layer: 0
   m_Name: QueenOrchid
   m_TagString: Enemy
@@ -345,7 +345,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-1662433117777468317
+--- !u!114 &-1254386609179736474
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -358,12 +358,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 1, a: 1}
-  quadMaterial: {fileID: 2100000, guid: 4c507f887c6274a44a603d96e0eabf2a, type: 2}
+  quadMaterial: {fileID: 2100000, guid: 76086f6bdbbd1fe4b9b1b8b62b360df2, type: 2}
   targetCamera: {fileID: 0}
   maxRenderTextureSize: 1024
   quad: {fileID: 0}
   renderTexture: {fileID: 0}
---- !u!114 &-3844922744157748122
+--- !u!114 &3959007722768598406
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

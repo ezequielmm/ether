@@ -78,8 +78,8 @@ GameObject:
   - component: {fileID: 3916822406634664814}
   - component: {fileID: 5420527440306874998}
   - component: {fileID: 8406717301304214992}
-  - component: {fileID: 6524172785952236066}
-  - component: {fileID: 6281389002900340987}
+  - component: {fileID: 7105682889924924472}
+  - component: {fileID: 1271455304798122601}
   m_Layer: 0
   m_Name: ThornWolfPup
   m_TagString: Enemy
@@ -361,7 +361,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &6524172785952236066
+--- !u!114 &7105682889924924472
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -374,12 +374,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 1, a: 1}
-  quadMaterial: {fileID: 2100000, guid: 4c507f887c6274a44a603d96e0eabf2a, type: 2}
+  quadMaterial: {fileID: 2100000, guid: 76086f6bdbbd1fe4b9b1b8b62b360df2, type: 2}
   targetCamera: {fileID: 0}
   maxRenderTextureSize: 1024
   quad: {fileID: 0}
   renderTexture: {fileID: 0}
---- !u!114 &6281389002900340987
+--- !u!114 &1271455304798122601
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

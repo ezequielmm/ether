@@ -78,8 +78,8 @@ GameObject:
   - component: {fileID: 8703712778393250611}
   - component: {fileID: 3716198279223779207}
   - component: {fileID: 6272650766991654147}
-  - component: {fileID: 9085233980361808639}
-  - component: {fileID: 6312139001353586845}
+  - component: {fileID: -4651032013022517843}
+  - component: {fileID: 8086067968543871048}
   m_Layer: 0
   m_Name: SwampGoblin1
   m_TagString: Enemy
@@ -344,7 +344,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &9085233980361808639
+--- !u!114 &-4651032013022517843
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -357,12 +357,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 1, a: 1}
-  quadMaterial: {fileID: 2100000, guid: 4c507f887c6274a44a603d96e0eabf2a, type: 2}
+  quadMaterial: {fileID: 2100000, guid: 76086f6bdbbd1fe4b9b1b8b62b360df2, type: 2}
   targetCamera: {fileID: 0}
   maxRenderTextureSize: 1024
   quad: {fileID: 0}
   renderTexture: {fileID: 0}
---- !u!114 &6312139001353586845
+--- !u!114 &8086067968543871048
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
