@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.Networking;
 
 
 public class LoadingManager : MonoBehaviour
@@ -19,6 +21,7 @@ public class LoadingManager : MonoBehaviour
 
     IEnumerator LoadAsynchronously(string sceneName)
     {
+        yield return ClientEnvironmentManager.Instance.StartEnvironmentManger();
 
         // The Application loads the Scene in the background as the current Scene runs.
 
@@ -32,12 +35,12 @@ public class LoadingManager : MonoBehaviour
                 loadingText.text = "Loading...\n(" + 100 * asyncLoad.progress + "%)"; //shows percentage
                 slideBar.value = asyncLoad.progress; //charges the load bar
             }
-            
+
             //Debug.Log(asyncLoad.progress);
             yield return null;
         }
+
         GameManager.Instance.SceneLoaded();
         Destroy(gameObject);
     }
-
 }
