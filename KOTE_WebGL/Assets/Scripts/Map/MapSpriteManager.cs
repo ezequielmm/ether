@@ -297,14 +297,14 @@ namespace map
             {
                 mapContainer.SetActive(false);
                 clickBlockCanvas.enabled = false;
-                GameManager.Instance.EVENT_TOGGLE_COMBAT_UI.Invoke();
+                GameManager.Instance.EVENT_TOGGLE_COMBAT_UI.Invoke(true);
                 GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
             }
             else
             {
                 mapContainer.SetActive(true);
                 clickBlockCanvas.enabled = true;
-                GameManager.Instance.EVENT_TOGGLE_COMBAT_UI.Invoke();
+                GameManager.Instance.EVENT_TOGGLE_COMBAT_UI.Invoke(false);
                 GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(true);
             }
         }

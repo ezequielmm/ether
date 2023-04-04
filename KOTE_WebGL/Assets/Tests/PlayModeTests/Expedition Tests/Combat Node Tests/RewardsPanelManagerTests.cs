@@ -116,7 +116,7 @@ public class RewardsPanelManagerTests : MonoBehaviour
     public void DoesCallingShowRewardsMangerDeactivateCombatElements()
     {
         bool eventFired = false;
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.AddListener((data) => { eventFired = true; });
+        GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.AddListener((data) => { eventFired = true; });
         GameManager.Instance.EVENT_SHOW_REWARDS_PANEL.Invoke(true);
         Assert.True(eventFired);
     }

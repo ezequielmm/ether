@@ -14,7 +14,7 @@ public class CombatManager : MonoBehaviour
     private void Start()
     {
         combatContainer.SetActive(false);
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.AddListener(OnToggleCombatElements);
+        GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.AddListener(OnToggleCombatElements);
         GameManager.Instance.EVENT_SHOW_PLAYER_CHARACTER.AddListener(OnShowPlayerCharacter);
     }
 

@@ -134,7 +134,7 @@ public class RewardsPanelManager : MonoBehaviour
     {
         rewardsContainer.SetActive(activate);
         // deactivate the combat ui
-        GameManager.Instance.EVENT_TOOGLE_COMBAT_ELEMENTS.Invoke(false);
+        GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.Invoke(false);
     }
 
     public void ActivateCardSelectPanel(bool activate)

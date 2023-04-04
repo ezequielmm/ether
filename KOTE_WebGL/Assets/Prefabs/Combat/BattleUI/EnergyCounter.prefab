@@ -28,6 +28,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2518776252281658689}
   m_RootOrder: 0
@@ -147,6 +148,7 @@ GameObject:
   - component: {fileID: 7256967107385000254}
   - component: {fileID: 1727332112763960012}
   - component: {fileID: 8597060050796834387}
+  - component: {fileID: 284311045620853842}
   m_Layer: 5
   m_Name: EnergyCounter
   m_TagString: Untagged
@@ -164,6 +166,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8787055317050662723}
   m_Father: {fileID: 0}
@@ -225,3 +228,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   energyTF: {fileID: 6059100000262900639}
+--- !u!114 &284311045620853842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7953490002629705565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39cbf740b6d5c6d4fba9b85f1c14f0a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiImage: {fileID: 1727332112763960012}
+  uiText: {fileID: 6059100000262900639}
