@@ -30,9 +30,22 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
                UnityWebRequest.Get($"{Application.absoluteURL}/environment.json"))
         {
             await request.SendWebRequest();
-            EnvironmentUrls environmentUrls =
-                JsonConvert.DeserializeObject<EnvironmentUrls>(request.downloadHandler.text);
-            SetEnvironmentData(environmentUrls);
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                SetEnvironmentData(null);
+                return;
+            }
+
+            try
+            {
+                EnvironmentUrls environmentUrls =
+                    JsonConvert.DeserializeObject<EnvironmentUrls>(request.downloadHandler.text);
+                SetEnvironmentData(environmentUrls);
+            }
+            catch (ArgumentNullException ex)
+            {
+                SetEnvironmentData(null);
+            }
         }
 #endif
     }
