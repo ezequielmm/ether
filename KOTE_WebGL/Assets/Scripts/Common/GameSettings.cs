@@ -128,6 +128,24 @@ public static class GameSettings
         }
     };
 
+    public static Nft DEFAULT_PLAYER = new Nft
+    {
+        CanPlay = true,
+        Contract = NftContract.NonTokenVillager,
+        Description = "The default player character",
+        Image = null,
+        ImageUrl = "",
+        Name = "Basic Villager",
+        TokenId = 1,
+        Traits = new Dictionary<Trait, string>
+        {
+            { Trait.Padding, "Brown" },
+            { Trait.Helmet, "None" },
+            { Trait.Shield, "Rusty Shield" },
+            { Trait.Weapon, "Rusty Sword" },
+        }
+    };
+
 /*//////////////  
 ///Debug
 //*/

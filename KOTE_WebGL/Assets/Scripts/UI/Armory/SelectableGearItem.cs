@@ -17,6 +17,7 @@ namespace KOTE.UI.Armory
             switch (curTokenType)
             {
                 case NftContract.Villager:
+                case NftContract.NonTokenVillager:
                     SetInteractiveForVillager();
                     break;
                 case NftContract.Knights:

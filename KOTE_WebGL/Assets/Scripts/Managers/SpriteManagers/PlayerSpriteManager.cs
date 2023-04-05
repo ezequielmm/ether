@@ -153,6 +153,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
                 return new Knight(metadata);
             case NftContract.Villager:
             case NftContract.BlessedVillager:
+            case NftContract.NonTokenVillager:
                 return new Villager(metadata);
             default:
                 return null;
