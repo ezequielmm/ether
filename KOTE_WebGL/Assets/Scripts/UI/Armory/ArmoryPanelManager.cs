@@ -113,6 +113,9 @@ namespace KOTE.UI.Armory
                 case NftContract.BlessedVillager:
                     contractName = "Blessed Villager";
                     break;
+                case NftContract.NonTokenVillager:
+                    return "Basic Villager";
+                    
             }
 
             return contractName + " #" + tokenData.TokenId;

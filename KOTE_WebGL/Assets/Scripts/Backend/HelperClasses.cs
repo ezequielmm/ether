@@ -105,6 +105,8 @@ public class ExpeditionStatus
                 return NftContract.Villager;
             case "blessed-villager":
                 return NftContract.BlessedVillager;
+            case "non-token-villager":
+                return NftContract.NonTokenVillager;
         }
 
         return NftContract.None;

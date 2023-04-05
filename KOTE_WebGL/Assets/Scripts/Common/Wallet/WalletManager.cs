@@ -147,6 +147,12 @@ public class WalletManager : ISingleton<WalletManager>
             Debug.Log($"[WalletManager] Player will never own a [{NftContract.None}] token type.");
         }
 
+        // default non-contest token
+        if (tokenType == NftContract.NonTokenVillager)
+        {
+            return true;
+        }
+
         if (NftsInWallet.ContainsKey(tokenType))
         {
             return NftsInWallet[tokenType].Contains(nftId);
