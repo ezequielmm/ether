@@ -22,6 +22,8 @@ public class Villager : PlayerNft
         {
             Traits[trait.Key] = trait.Value;
         }
+
+        ReplacePaddingTraitWithSplit();
     }
 
     public override void ChangeGear(Trait trait, string traitValue)
@@ -31,6 +33,7 @@ public class Villager : PlayerNft
             EquippedTraits.Remove(trait);
             return;
         }
+
         EquippedTraits[trait] = traitValue;
     }
 
@@ -39,7 +42,7 @@ public class Villager : PlayerNft
         foreach (Trait trait in Enum.GetValues(typeof(Trait)))
         {
             string traitValue;
-            
+
             if (EquippedTraits.ContainsKey(trait))
             {
                 traitValue = EquippedTraits[trait];
@@ -54,7 +57,7 @@ public class Villager : PlayerNft
             }
 
             string skinName;
-            
+
             if (trait != Trait.Base && trait != Trait.Shadow)
             {
                 skinName = GetSkinName(trait, traitValue);
@@ -63,7 +66,8 @@ public class Villager : PlayerNft
             {
                 skinName = GameSettings.DEFAULT_SKIN_DATA.Find(x => x.TraitType == trait).SkinName;
             }
-        
+
+            Debug.Log("");
             Skin traitSkin = playerSkeleton.Skins.Find(x => x.Name.Contains(skinName));
             if (traitSkin == null)
             {
@@ -80,8 +84,8 @@ public class Villager : PlayerNft
                     continue;
                 }
 
-                if (SkinSprites.Find(x => x.ImageName == spriteData.ImageName) != null ||
-                    DefaultSprites.Find(x => x.ImageName == spriteData.ImageName) != null)
+
+                if (DoesSkinSpriteExist(spriteData) || DoesDefaultSpriteExist(spriteData))
                 {
                     // Sprite already fetched
                     continue;
@@ -99,4 +103,6 @@ public class Villager : PlayerNft
             }
         }
     }
+
+    
 }

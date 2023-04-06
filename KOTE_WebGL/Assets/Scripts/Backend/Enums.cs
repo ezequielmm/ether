@@ -397,7 +397,9 @@ public enum Trait
     Boots,
     Legguard,
     Shadow,
-    Base
+    Base,
+    Upper_Padding,
+    Lower_Padding
 }
 
 [Serializable]

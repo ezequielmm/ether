@@ -96,6 +96,14 @@ public abstract class PlayerNft
         return allSprites;
     }
 
+    protected void ReplacePaddingTraitWithSplit()
+    {
+        string paddingColor = Traits[Trait.Padding];
+        Traits.Remove(Trait.Padding);
+        Traits[Trait.Upper_Padding] = paddingColor;
+        Traits[Trait.Lower_Padding] = paddingColor;
+    }
+
     protected async UniTask<Sprite> GetPlayerSkin(TraitSprite spriteData)
     {
         Texture2D texture = await FetchData.Instance.GetNftSkinElement(spriteData);
@@ -149,6 +157,31 @@ public abstract class PlayerNft
         if (imageName.Contains("placeholder")) return null;
 
         return imageName;
+    }
+    
+    protected bool DoesSkinSpriteExist(TraitSprite spriteData)
+    {
+        TraitSprite skinSprite = SkinSprites.Find(x => x.ImageName == spriteData.ImageName);
+        
+
+        if (skinSprite == null)
+        {
+            return false;
+        }
+
+        return skinSprite.AttachmentIndex == spriteData.AttachmentIndex;
+    }
+
+    protected bool DoesDefaultSpriteExist(TraitSprite spriteData)
+    {
+        TraitSprite defaultSprite = SkinSprites.Find(x => x.ImageName == spriteData.ImageName);
+        if (defaultSprite == null)
+        {
+            return false;
+        }
+        
+        return defaultSprite.AttachmentIndex == spriteData.AttachmentIndex;
+
     }
 
     protected string GetSkinName(Trait trait, string value)

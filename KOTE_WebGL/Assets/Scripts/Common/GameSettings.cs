@@ -83,7 +83,7 @@ public static class GameSettings
     public const float UNSTABLE_CONNECTION_SECONDS = 2;
     public const float DISCONNECTED_CONNECTION_SECONDS = UNSTABLE_CONNECTION_SECONDS + 5;
     public const float MAX_TIMEOUT_SECONDS = DISCONNECTED_CONNECTION_SECONDS + 20;
-    
+
     // Logging
     public static LogType FilterLogType = LogType.Log;
 
@@ -95,23 +95,32 @@ public static class GameSettings
 #endif
 
     public const int INITIAL_SKIN_CACHE = 3;
+
     // Player Skin Defaults
     public static List<TraitSprite> DEFAULT_SKIN_DATA = new List<TraitSprite>
     {
-        new TraitSprite{SkinName ="Padding/Padding_Brown",
-        TraitValue = "Brown",
-        TraitType = Trait.Padding
+        new TraitSprite
+        {
+            SkinName = "Padding/Lower_Padding_Brown",
+            TraitValue = "Brown",
+            TraitType = Trait.Lower_Padding
+        },
+        new TraitSprite
+        {
+            SkinName = "Padding/Upper_Padding_Brown",
+            TraitValue = "Brown",
+            TraitType = Trait.Upper_Padding
         },
         new TraitSprite
         {
             SkinName = "Weapon/Weapon_Rusty_Sword",
-            TraitValue =  "Rusty Sword",
+            TraitValue = "Rusty Sword",
             TraitType = Trait.Weapon
         },
         new TraitSprite
         {
             SkinName = "Shield/Shield_Rusty_Shield",
-            TraitValue =   "Rusty Shield",
+            TraitValue = "Rusty Shield",
             TraitType = Trait.Shield
         },
         new TraitSprite
@@ -150,6 +159,4 @@ public static class GameSettings
 ///Debug
 //*/
     public const bool DEBUG_MODE_ON = false;
-
-    
 }
