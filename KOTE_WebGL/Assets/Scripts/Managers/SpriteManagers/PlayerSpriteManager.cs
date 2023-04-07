@@ -88,7 +88,15 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 
     private void UpdateNftTrait(Trait trait, string traitValue)
     {
-        _curNft.ChangeGear(trait, traitValue);
+        if (trait == Trait.Padding)
+        {
+            _curNft.ChangeGear(Trait.Upper_Padding, traitValue);
+            _curNft.ChangeGear(Trait.Lower_Padding, traitValue);
+        }
+        else
+        {
+            _curNft.ChangeGear(trait, traitValue);
+        }
         UpdatePlayerSkin();
     }
 
