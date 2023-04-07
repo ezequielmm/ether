@@ -10,6 +10,7 @@ public class Knight : PlayerNft
     {
         Metadata = nftData;
         Traits = Metadata.Traits;
+        ReplacePaddingTraitWithSplit();
         InjectTempTraits();
     }
 
@@ -46,7 +47,7 @@ public class Knight : PlayerNft
                     continue;
                 }
 
-                if (SkinSprites.Find(x => x.ImageName == spriteData.ImageName) != null)
+                if (DoesSkinSpriteExist(spriteData))
                 {
                     // Sprite already fetched
                     continue;

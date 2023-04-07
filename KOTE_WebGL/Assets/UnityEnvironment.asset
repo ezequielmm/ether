@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 679bd3b8b48165d4d8e4fe4d6cf23818, type: 3}
   m_Name: UnityEnvironment
   m_EditorClassIdentifier: 
-  EnvironmentToEmulate: 2
+  EnvironmentToEmulate: 3
