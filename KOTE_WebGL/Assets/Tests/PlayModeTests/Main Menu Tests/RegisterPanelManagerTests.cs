@@ -52,35 +52,14 @@ public class RegisterPanelManagerTests : MonoBehaviour
     {
         registerPanel.ActivateInnerRegisterPanel(true);
         Assert.True(registerPanel.registerContainer.activeSelf);
-        GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.Invoke("", 0);
+        GameManager.Instance.EVENT_AUTHENTICATED.Invoke();
         Assert.False(registerPanel.registerContainer.activeSelf);
-    }
-
-    [Test]
-    public void DoesLoginErrorLogTheError()
-    {
-        GameManager.Instance.EVENT_REQUEST_LOGIN_ERROR.Invoke("test");
-        LogAssert.Expect(LogType.Log, "Register Error:test");
     }
 
     [Test]
     public void DoesStartSetRegisterButtonInteractableToFalse()
     {
         Assert.False(registerPanel.registerButton.interactable);
-    }
-
-    [UnityTest]
-    public IEnumerator DoesStartFireRequestNameEvent()
-    {
-        bool eventFired = false;
-        GameManager.Instance.EVENT_REQUEST_NAME.AddListener((data) => { eventFired = true; });
-        GameObject registerPanelPrefab =
-            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/MainMenu/RegisterPanel.prefab");
-        GameObject registerManager = Instantiate(registerPanelPrefab);
-        registerPanel = registerManager.GetComponent<RegisterPanelManager>();
-        registerManager.SetActive(true);
-        yield return null;
-        Assert.True(eventFired);
     }
 
     [Test]
@@ -208,43 +187,6 @@ public class RegisterPanelManagerTests : MonoBehaviour
         registerPanel.VerifyPassword();
         registerPanel.ConfirmPassword();
         Assert.False(registerPanel.passwordNotMatchLabel.gameObject.activeSelf);
-    }
-
-    [Test]
-    public void DoesClickingRegisterFireRequestRegisterEvent()
-    {
-        registerPanel.nameInputField.text = "TestUsername";
-        registerPanel.emailInputField.text = "test@gmail.com";
-        registerPanel.confirmEmailInputField.text = "test@gmail.com";
-        registerPanel.passwordInputField.text = "P@ssw0rd";
-        registerPanel.confirmPasswordInputField.text = "P@ssw0rd";
-        bool eventFired = false;
-        GameManager.Instance.EVENT_REQUEST_REGISTER.AddListener((data1, data2, data3) => { eventFired = true; });
-        registerPanel.OnRegister();
-        Assert.True(eventFired);
-    }
-
-    [Test]
-    public void DoesClickingRegisterSendCorrectInformation()
-    {
-        registerPanel.nameInputField.text = "Gertrude";
-        registerPanel.emailInputField.text = "test@gmail.com";
-        registerPanel.confirmEmailInputField.text = "test@gmail.com";
-        registerPanel.passwordInputField.text = "P@ssw0rd";
-        registerPanel.confirmPasswordInputField.text = "P@ssw0rd";
-        bool correctName = false;
-        bool correctEmail = false;
-        bool correctPassword = false;
-        GameManager.Instance.EVENT_REQUEST_REGISTER.AddListener((sentName, sentEmail, sentPassword) =>
-        {
-            correctName = (sentName == "Gertrude");
-            correctEmail = (sentEmail == "test@gmail.com");
-            correctPassword = (sentPassword == "P@ssw0rd");
-        });
-        registerPanel.OnRegister();
-        Assert.True(correctName);
-        Assert.True(correctEmail);
-        Assert.True(correctPassword);
     }
 
     [Test]

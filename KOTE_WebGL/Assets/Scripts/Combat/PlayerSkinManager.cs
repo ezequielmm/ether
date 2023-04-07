@@ -4,22 +4,20 @@ using Spine;
 using Spine.Unity;
 using Spine.Unity.AttachmentTools;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
 {
     public SkeletonAnimation skeletonAnimation;
     public Material skeletonMaterial;
-
-    private SkeletonData _skeletonData;
-
     public SkeletonDataAsset skeletonDataAsset;
 
     public List<Sprite> spritesArray = new List<Sprite>();
+    public UnityEvent skinLoaded = new();
     SkeletonDataAsset IHasSkeletonDataAsset.SkeletonDataAsset => skeletonDataAsset;
 
-    Skin equipsSkin;
-    SkeletonData skeletonData;
-
+    private Skin equipsSkin;
+    private SkeletonData skeletonData;
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +26,7 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
         SkinReset();
     }
 
-    private void SkinReset() 
+    private void SkinReset()
     {
         equipsSkin = new Skin("Equips");
         skeletonAnimation.Skeleton.SetSkin(equipsSkin);
@@ -42,22 +40,33 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
         //equip
         skeletonData = skeletonDataAsset.GetSkeletonData(true);
         Debug.Log("[UpdateSkin] skeletonData:" + skeletonData);
-
+        
         List<TraitSprite> skinSprites = PlayerSpriteManager.Instance.GetAllTraitSprites();
-        foreach (var traitType in Enum.GetNames(typeof(TraitTypes)))
+
+        // some dark magic due to the way Flails are set up in spine
+        bool flailFound = TryStartWithFlailSkin(skinSprites, out equipsSkin);
+
+        foreach (var traitType in Enum.GetNames(typeof(Trait)))
         {
-            TraitSprite traitSprite = skinSprites.Find(x => x.traitType == traitType);
-            if (string.IsNullOrEmpty(traitSprite.skinName)) continue;
-            Debug.Log("[UpdateSkin] traitSprite.skinName:" + traitSprite.skinName);
-            Skin skin = skeletonData.FindSkin(traitSprite.skinName);
+            if (traitType == "Weapon" && flailFound) continue;
+
+            TraitSprite traitSprite = skinSprites.Find(x => x.TraitType.ToString() == traitType);
+            if (string.IsNullOrEmpty(traitSprite?.SkinName))
+            {
+                Debug.LogWarning($"[PlayerSkinManager] Can't apply Sprite of type [{traitType}]: {traitSprite}");
+                continue;
+            }
+
+            Debug.Log("[UpdateSkin] traitSprite.skinName:" + traitSprite.SkinName);
+            Skin skin = skeletonData.FindSkin(traitSprite.SkinName);
             if (skin == null)
             {
-                Debug.Log("[UpdateSkin] skin" + traitSprite.skinName + "NOT FOUND");
+                Debug.Log("[UpdateSkin] skin" + traitSprite.SkinName + "NOT FOUND");
             }
             else
             {
                 Debug.Log(
-                    $"[UpdateSkin] ADDING SKIN : {traitSprite.skinName} WITH ATTACHMENT {traitSprite.attachmentIndex} AND IMAGE {traitSprite.imageName}");
+                    $"[UpdateSkin] ADDING SKIN : {traitSprite.SkinName} WITH ATTACHMENT {traitSprite.AttachmentIndex} AND IMAGE {traitSprite.ImageName}");
                 equipsSkin.AddSkin(skin);
             }
         }
@@ -66,10 +75,11 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
 
         foreach (Skin.SkinEntry skinAttachment in equipsSkin.Attachments)
         {
-            TraitSprite traitSprite = skinSprites.Find(x => x.attachmentIndex == skinAttachment.SlotIndex);
+            TraitSprite traitSprite = skinSprites.Find(x => x.AttachmentIndex == skinAttachment.SlotIndex);
+            if (traitSprite == null) continue;
             // Debug.Log("[UpdateSkin] Attachment name is : " + skinAttachment.Attachment.Name);
-            Sprite attachmentSprite = traitSprite.sprite;
-            string templateSkinName = traitSprite.skinName;
+            Sprite attachmentSprite = traitSprite.Sprite;
+            string templateSkinName = traitSprite.SkinName;
 
             spritesArray.Add(attachmentSprite);
 
@@ -85,10 +95,34 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
         foreach ((Skin.SkinEntry, Attachment) attachmentData in generatedAttachments)
         {
             equipsSkin.SetAttachment(attachmentData.Item1.SlotIndex, attachmentData.Item1.Name, attachmentData.Item2);
-            skeletonAnimation.Skeleton.SetSkin(equipsSkin);
         }
 
+        skeletonAnimation.Skeleton.SetSkin(equipsSkin);
         RefreshSkeletonAttachments();
+        skinLoaded.Invoke();
+    }
+
+    /*
+     * this is an extremely annoying case, but if the character is using a flail, the base skin
+     * HAS to be the flail, or the bones won't exist, and the flail won't animate.
+     * In all other cases it's perfectly fine to start from an empty skin
+    */
+    private bool TryStartWithFlailSkin(List<TraitSprite> skinSprites, out Skin outSkin)
+    {
+        TraitSprite traitSprite = skinSprites
+            .Find(x => x.TraitType == Trait.Weapon && x.SkinName.Contains("Flail"));
+        if (traitSprite != null)
+        {
+            Skin flailSkin = skeletonData.FindSkin(traitSprite?.SkinName);
+            if (flailSkin != null)
+            {
+                outSkin = flailSkin;
+                return true;
+            }
+        }
+
+        outSkin = equipsSkin;
+        return false;
     }
 
     Attachment GenerateAttachmentFromEquipAsset(Sprite sprite, int slotIndex, string templateSkinName,
@@ -151,7 +185,6 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
         newAttachment.Edges = baseAttachment.Edges;
         newAttachment.RegionUVs = baseAttachment.RegionUVs;
 
-
         newAttachment.UpdateUVs();
         return attachment;
     }
@@ -159,7 +192,6 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
     void RefreshSkeletonAttachments()
     {
         skeletonAnimation.Skeleton.SetSlotsToSetupPose();
-        //skeletonAnimation.AnimationState.Apply(skeletonAnimation.Skeleton);
         skeletonAnimation.Update(0);
     }
 }

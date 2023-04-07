@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using KOTE.UI.Armory;
 using UnityEngine;
 
 /// <summary>
@@ -12,7 +13,7 @@ using UnityEngine;
 public class ExpeditionMapData
 {
     public int seed;
-    public NodeDataHelper[] data;
+    [JsonProperty("data")]public NodeDataHelper[] nodeList;
 }
 
 [Serializable]
@@ -32,13 +33,13 @@ public class NodeDataHelper
 [Serializable]
 public class MapStructure
 {
-    public List<Act> acts = new List<Act>();
+    public Dictionary<int, Act> acts = new ();
 }
 
 [Serializable]
 public class Act
 {
-    public List<Step> steps = new List<Step>();
+    public Dictionary<int, Step> steps = new();
 }
 
 [Serializable]
@@ -81,38 +82,45 @@ public class Tooltip
 
 
 [Serializable]
-public class ExpeditionStatusData
+public class ExpeditionStatus
 {
-    public Data data = new();
+    [JsonProperty("hasExpedition")]
+    public bool HasExpedition;
+    [JsonProperty("nftId")]
+    public int NftId;
+    [JsonProperty("equippedGear")]
+    public List<GearItemData> EquippedGear;
+    [JsonProperty]
+    private string tokenType;
+    public NftContract TokenType => GetContractType();
+    [JsonProperty("contest")] public ContestData Contest = new ContestData();
 
-    public bool GetHasExpedition()
+    private NftContract GetContractType()
     {
-        return this.data.hasExpedition == "true";
-    }
+        switch (tokenType)
+        {
+            case "knight":
+                return NftContract.Knights;
+            case "villager":
+                return NftContract.Villager;
+            case "blessed-villager":
+                return NftContract.BlessedVillager;
+            case "non-token-villager":
+                return NftContract.NonTokenVillager;
+        }
 
-    [Serializable]
-    public class Data
-    {
-        public string hasExpedition;
-        public int nftId;
+        return NftContract.None;
     }
 }
 
 [Serializable]
-public class ExpeditionRequestData
+public class ContestData
 {
-    public Data data = new();
-
-    public bool GetExpeditionStarted()
-    {
-        return this.data.expeditionCreated == "true";
-    }
-
-    [Serializable]
-    public class Data
-    {
-        public string expeditionCreated;
-    }
+    [JsonProperty("map_id")] public string MapId;
+    [JsonProperty("event_id")] public string EventId;
+    [JsonProperty("available_at")] public DateTime StartTime;
+    [JsonProperty("ends_at")] public DateTime SubmissionsUntilTime;
+    [JsonProperty("valid_until")] public DateTime EndTime;
 }
 
 [Serializable]
@@ -128,58 +136,13 @@ public class RandomNameData
 }
 
 [Serializable]
-public class RegisterData
-{
-    public Data data = new();
-
-    [Serializable]
-    public class Data
-    {
-        public string token;
-        public string name;
-    }
-}
-
-
-
-[Serializable]
-public class LoginData
-{
-    public Data data = new();
-
-    [Serializable]
-    public class Data
-    {
-        public string token;
-    }
-}
-
-[Serializable]
 public class ProfileData
 {
-    public Data data = new();
-
-    [Serializable]
-    public class Data
-    {
-        public string id;
-        public string name;
-        public string email;
-        public List<string> wallets = new();
-        public int coins;
-        public int fief;
-        public int experience;
-        public int level;
-        public int act;
-        public ActMap act_map = new();
-
-        [Serializable]
-        public class ActMap
-        {
-            public string id;
-            public string currentNode;
-        }
-    }
+    public string name { get; set; }
+    public string email { get; set; }
+    [JsonProperty("wallets")]
+    public List<string> ownedWallets { get; set; } = new();
+    public int fief { get; set; }
 }
 
 [Serializable]
@@ -217,8 +180,7 @@ public class PlayerData
     /// <summary>
     /// Index of Player
     /// </summary>
-    [Obsolete("Int IDs are phased out.")]
-    public int playerId;
+    [Obsolete("Int IDs are phased out.")] public int playerId;
 
     public string id;
     public int hpCurrent;
@@ -252,7 +214,7 @@ public class Card
 }
 
 [Serializable]
-public class Trinket 
+public class Trinket
 {
     public string id;
     public int trinketId;
@@ -310,11 +272,15 @@ public class Effect
 [Serializable]
 public class Deck
 {
-    public Deck() { }
-    public Deck(List<Card> cards) 
+    public Deck()
+    {
+    }
+
+    public Deck(List<Card> cards)
     {
         this.cards = cards;
     }
+
     public List<Card> cards = new();
 }
 
@@ -440,6 +406,7 @@ public class SWSM_TreasureData
         public string data;
     }
 }
+
 [Serializable]
 public class SWSM_ChestResult
 {
@@ -505,16 +472,14 @@ public class DeckData
 [Serializable]
 public class CardUpgrade
 {
-    [JsonProperty("cardIdToDelete")]
-    public string CardIdToDelete;
-    [JsonProperty("newCard")]
-    public Card NewCard;
+    [JsonProperty("cardIdToDelete")] public string CardIdToDelete;
+    [JsonProperty("newCard")] public Card NewCard;
 }
 
 [Serializable]
 public class SWSM_MapData
 {
-    public ExpeditionMapData data = new();
+    [JsonProperty("data")]public ExpeditionMapData expeditionData = new();
 }
 
 [Serializable]
@@ -625,6 +590,7 @@ public class SWSM_CardUpdateData
     public class CardUpdateData
     {
         public UpdateCardData data = new();
+
         [Serializable]
         public class UpdateCardData
         {
@@ -712,8 +678,8 @@ public class EnemyData
     /// <summary>
     /// Index of enemy
     /// </summary>
-    [Obsolete("Int IDs are phased out.")]
-    public int enemyId;
+    [Obsolete("Int IDs are phased out.")] public int enemyId;
+
     public int defense;
     public int hpCurrent; //current
     public int hpMax;
@@ -859,22 +825,9 @@ public class TrinketData
 {
     public List<Trinket> trinkets = new();
 }
-public class NftData
-{
-    public NftMetaData[] assets;
-    
-}
 
 [Serializable]
-public class NftMetaData
-{
-    public string token_id;
-    public string image_url;
-    public Trait[] traits;
-}
-
-[Serializable]
-public class Trait
+public class TraitValue
 {
     public string trait_type;
     public string value;
@@ -884,40 +837,6 @@ public class Trait
 public class WalletKnightIds
 {
     public int[] data;
-}
-
-// this is to pass along data needed for each individual skin image downloaded from the server
-[Serializable]
-public struct TraitSprite
-{
-    public string skinName;
-    public string traitType;
-    public int attachmentIndex;
-    public string imageName;
-    public Sprite sprite;
-    public bool isDefault;
-}
-
-[Serializable]
-public class SWSM_ScoreboardData
-{
-    public ScoreboardData data;
-
-    [Serializable]
-    public class ScoreboardData
-    {
-        public string outcome;
-        public string expeditionType;
-        public int totalScore;
-        public Achievement[] achievements;
-    }
-}
-
-[Serializable]
-public class Achievement
-{
-    public string name;
-    public int score;
 }
 
 [Serializable]
@@ -940,7 +859,7 @@ public class BugReportData
     public const string service = "Frontend";
     public string clientId;
     public string account;
-    public string knightId;
+    public int knightId;
     public string expeditionId;
     public string userDescription;
     public string userTitle;
@@ -948,4 +867,14 @@ public class BugReportData
     public string frontendVersion;
     public string backendVersion = "???";
     public List<ServerCommunicationLogger.ServerCommunicationLog> messageLog = new();
+}
+
+[Serializable]
+public class ExpeditionStartData
+{
+    public string tokenType;
+    public int nftId;
+    public List<GearItemData> equippedGear;
+    public string walletId;
+    public string contractId;
 }

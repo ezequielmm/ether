@@ -57,7 +57,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dc69b9ba17eccbb41bce83063eac909e, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -93,8 +93,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skeletonAnimation: {fileID: 9032002354893603797}
   skeletonMaterial: {fileID: 2100000, guid: 7c6832fc74eb7fc409b7ab0a6491c54f, type: 2}
-  skeletonDataAsset: {fileID: 0}
+  skeletonDataAsset: {fileID: 11400000, guid: 0833cefecbb1e774184077143e73eb05, type: 2}
   spritesArray: []
+  skinLoaded:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!33 &9032002354893603803
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -119,7 +122,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   animationJson: {fileID: 4900000, guid: 5fa14dfdac046c24b9d0674e57e10c4a, type: 3}
-  atlasAssetBase: {fileID: 11400000, guid: ab76fe77814ea1343817af2d9497b5dd, type: 2}
+  atlasAssetBase: {fileID: 0}
   animations:
   - sequenceName: Idle
     sequence:

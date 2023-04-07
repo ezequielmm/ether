@@ -99,8 +99,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36113ef39d2a3de4faeae0d3a68434ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  internalPrefab: {fileID: 7656494422256884090}
+  internalPrefab: {fileID: 8214470780326679786}
   toggle: {fileID: 1618321275122894871}
+  isSelected: 0
 --- !u!1001 &6595271206345824216
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -238,15 +239,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7656494422256884090 stripped
+--- !u!114 &8214470780326679786 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3586634574311673506, guid: 5ccce59e9c81d6340b9ab71dfc750228,
+  m_CorrespondingSourceObject: {fileID: 3060395641380815666, guid: 5ccce59e9c81d6340b9ab71dfc750228,
     type: 3}
   m_PrefabInstance: {fileID: 6595271206345824216}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8575e0ad5e0593341a9f0e10aca76a3f, type: 3}
+  m_Script: {fileID: 11500000, guid: f19f4e5c88ea5784096f64b62f0e08cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

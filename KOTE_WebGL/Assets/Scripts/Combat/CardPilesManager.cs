@@ -43,19 +43,39 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             GameManager.Instance.EVENT_CARDS_PILES_UPDATED.AddListener(OnCardsPilesUpdated);
             GameManager.Instance.EVENT_CARD_ADD.AddListener(GameplayCardSpawn);
             GameManager.Instance.EVENT_CARD_DISABLED.AddListener(OnCardDestroyed);
-            GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(OnGameOver);
+            GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(OnGameStatusChange);
             
             pileOrthoPositionArray[0] = TransformUIToOrtho(drawManager.gameObject);
             pileOrthoPositionArray[1] = TransformUIToOrtho(discardManager.gameObject);
             pileOrthoPositionArray[2] = TransformUIToOrtho(exhaustManager.gameObject);
         }
 
-        private void OnGameOver(GameStatuses gameStatus)
+        private void OnGameStatusChange(GameStatuses gameStatus)
         {
             if (gameStatus == GameStatuses.GameOver)
             {
                 gameOver = true;
             }
+
+            if (gameStatus == GameStatuses.RewardsPanel)
+            {
+                DiscardHand();
+            }
+        }
+
+        private void DiscardHand()
+        {
+            List<(CardToMoveData, float)> discardList = new List<(CardToMoveData, float)>();
+            foreach (CardManager cardManager in handManager.handDeck)
+            {
+                discardList.Add((new CardToMoveData
+                {
+                    destination = "discard",
+                    id = cardManager.id,
+                    source = "hand"
+                }, 0));
+            }
+            GameManager.Instance.EVENT_MOVE_CARDS.Invoke(discardList);
         }
 
         private void OnDrawCards()
@@ -141,8 +161,8 @@ namespace KOTE.Expedition.Combat.Cards.Piles
 
         internal void UpdatePilesOnMove(string cardId, string originType, string destinationType)
         {
-            CARDS_POSITIONS_TYPES origin = Utils.ParseEnum<CARDS_POSITIONS_TYPES>(originType);
-            CARDS_POSITIONS_TYPES destination = Utils.ParseEnum<CARDS_POSITIONS_TYPES>(destinationType);
+            CARDS_POSITIONS_TYPES origin = originType.ParseToEnum<CARDS_POSITIONS_TYPES>();
+            CARDS_POSITIONS_TYPES destination = destinationType.ParseToEnum<CARDS_POSITIONS_TYPES>();
             CardManager curCard = MasterCardList[cardId];
             List<CardManager> originPile = GetCardPileFromType(origin);
             List<CardManager> destinationPile = GetCardPileFromType(destination);

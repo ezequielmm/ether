@@ -6,7 +6,8 @@
         "UnityEditor.TestRunner",
         "GameAssembly",
         "Unity.TextMeshPro",
-        "DOTweenAssembly"
+        "DOTweenAssembly",
+        "UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

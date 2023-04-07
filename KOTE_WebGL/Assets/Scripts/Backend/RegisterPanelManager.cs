@@ -1,11 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Toggle = UnityEngine.UI.Toggle;
-using UnityEngine.EventSystems;
 
 public class RegisterPanelManager : MonoBehaviour
 {
@@ -15,15 +10,13 @@ public class RegisterPanelManager : MonoBehaviour
     public TMP_InputField passwordInputField;
     public TMP_InputField confirmPasswordInputField;
 
-    [Space(20)]
-    public TMP_Text invalidNameVariable;
+    [Space(20)] public TMP_Text invalidNameVariable;
     public TMP_Text validEmailLabel;
     public TMP_Text emailNotMatchLabel;
     public TMP_Text validPasswordLabel;
     public TMP_Text passwordNotMatchLabel;
 
-    [Space(20)] 
-    public Toggle termsAndConditions;
+    [Space(20)] public Toggle termsAndConditions;
 
     public Button registerButton;
     public GameObject registerContainer;
@@ -40,21 +33,20 @@ public class RegisterPanelManager : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLoginSucessful);
-        GameManager.Instance.EVENT_REQUEST_LOGIN_ERROR.AddListener(OnLoginError);
+        GameManager.Instance.EVENT_AUTHENTICATED.AddListener(CloseRegistrationPanel);
         GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerRegisterPanel);
     }
 
-    private void CheckIfRegisterButtonIsEnabled()
+    private void Start()
     {
-        int enableRegistration = PlayerPrefs.GetInt("enable_registration");
-        if (enableRegistration == 1)
+        DeactivateAllErrorLabels();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return) && registerButton.interactable && registerContainer.activeSelf)
         {
-            registerButton.interactable = true;
-        }
-        else
-        {
-            registerButton.interactable = false;
+            OnRegister();
         }
     }
 
@@ -75,20 +67,9 @@ public class RegisterPanelManager : MonoBehaviour
         confirmPasswordInputField.ForceLabelUpdate();
     }
 
-    private void OnLoginSucessful(string userName, int fief)
+    private void CloseRegistrationPanel()
     {
         ActivateInnerRegisterPanel(false);
-    }
-
-    private void OnLoginError(string errorMessage)
-    {
-        Debug.Log("Register Error:" + errorMessage);
-    }
-
-    private void Start()
-    {
-        DeactivateAllErrorLabels();
-        GameManager.Instance.EVENT_REQUEST_NAME.Invoke("");
     }
 
     private void DeactivateAllErrorLabels()
@@ -137,21 +118,23 @@ public class RegisterPanelManager : MonoBehaviour
         nameInputField.text = nameInputField.text.Trim();
         validUsername = true;
         // is long enough && short enough
-        if(nameInputField.text.Length < 2 || nameInputField.text.Length > 20) 
+        if (nameInputField.text.Length < 2 || nameInputField.text.Length > 20)
         {
             validUsername = false;
             invalidNameVariable.text = "Username must be between 2 and 20 characters long.";
         }
-        if (nameInputField.text.Length == 0) 
+
+        if (nameInputField.text.Length == 0)
         {
             validUsername = false;
             invalidNameVariable.text = "Username can not be blank.";
         }
+
         invalidNameVariable.gameObject.SetActive(!validUsername);
         return validUsername;
     }
 
-    public void VerifyValue(int field) 
+    public void VerifyValue(int field)
     {
         switch (field)
         {
@@ -175,7 +158,7 @@ public class RegisterPanelManager : MonoBehaviour
 
     #endregion
 
-    public void OnRegister()
+    public async void OnRegister()
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         if (!VerifyUsername()) return;
@@ -187,7 +170,11 @@ public class RegisterPanelManager : MonoBehaviour
         string name = nameInputField.text;
         string email = emailInputField.text;
         string password = passwordInputField.text;
-        GameManager.Instance.EVENT_REQUEST_REGISTER.Invoke(name, email, password);
+        bool Authenticated = await AuthenticationManager.Instance.Register(name, email, password);
+        if (Authenticated)
+        {
+            CloseRegistrationPanel();
+        }
     }
 
     public void LoginHyperlink()
@@ -199,17 +186,23 @@ public class RegisterPanelManager : MonoBehaviour
 
     public void ActivateInnerRegisterPanel(bool activate)
     {
+        ClearRegisterPanel();
+        registerContainer.SetActive(activate);
+    }
+
+    public void ClearRegisterPanel()
+    {
         nameInputField.text = "";
         emailInputField.text = "";
         confirmEmailInputField.text = "";
         passwordInputField.text = "";
         confirmPasswordInputField.text = "";
-        registerContainer.SetActive(activate);
     }
 
     public void CheckIfCanActivateRegisterButton()
     {
-        if (!VerifyUsername() || emailInputField.text.Length < 8 || passwordInputField.text.Length < 8 || !termsAndConditions.isOn)
+        if (!VerifyUsername() || emailInputField.text.Length < 8 || passwordInputField.text.Length < 8 ||
+            !termsAndConditions.isOn)
         {
             registerButton.interactable = false;
             return;

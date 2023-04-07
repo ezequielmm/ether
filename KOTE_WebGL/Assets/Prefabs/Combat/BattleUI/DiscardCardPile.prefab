@@ -28,6 +28,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7644009079688517511}
   m_RootOrder: 0
@@ -148,6 +149,7 @@ GameObject:
   - component: {fileID: 2228270681145680478}
   - component: {fileID: 5807075397000720931}
   - component: {fileID: 5384422764620344649}
+  - component: {fileID: 1543281735822929042}
   m_Layer: 5
   m_Name: DiscardCardPile
   m_TagString: Untagged
@@ -165,6 +167,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5124920239233080196}
   m_Father: {fileID: 0}
@@ -282,3 +285,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amountOfCardsTF: {fileID: 4237696130636725184}
+  discardDeck: []
+--- !u!114 &1543281735822929042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7989084763129757437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39cbf740b6d5c6d4fba9b85f1c14f0a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiImage: {fileID: 2228270681145680478}
+  uiText: {fileID: 4237696130636725184}

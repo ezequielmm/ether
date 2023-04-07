@@ -137,6 +137,7 @@ namespace KOTE.Expedition.Combat.Cards
 
                 if (card.properties.statuses != null)
                 {
+                    tooltips.Clear();
                     foreach (var status in card.properties.statuses)
                     {
                         if (!string.IsNullOrEmpty(status.tooltip.title))

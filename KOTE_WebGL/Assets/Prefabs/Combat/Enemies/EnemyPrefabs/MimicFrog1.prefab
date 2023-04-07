@@ -78,6 +78,8 @@ GameObject:
   - component: {fileID: 1698277156229044708}
   - component: {fileID: 4729424181796650413}
   - component: {fileID: 8908123049069103932}
+  - component: {fileID: 2691280980861204781}
+  - component: {fileID: -8291394814827193980}
   m_Layer: 0
   m_Name: MimicFrog1
   m_TagString: Enemy
@@ -247,7 +249,7 @@ MonoBehaviour:
   - sequenceName: croak
     sequence:
     - track: 1
-      name: cast1
+      name: attack2
       loop: 0
       delay: 0
       animationEvent: 1
@@ -261,14 +263,14 @@ MonoBehaviour:
   - sequenceName: lick
     sequence:
     - track: 1
-      name: attack2
+      name: cast1
       loop: 0
       delay: 0
       animationEvent: 1
-  - sequenceName: enterHide
+  - sequenceName: hide
     sequence:
     - track: 1
-      name: cast2
+      name: hide_start
       loop: 0
       delay: 0
       animationEvent: 1
@@ -368,3 +370,34 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &2691280980861204781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25e6ceb271c9af848ae53f2af1073d0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 1, g: 1, b: 1, a: 1}
+  quadMaterial: {fileID: 2100000, guid: 76086f6bdbbd1fe4b9b1b8b62b360df2, type: 2}
+  targetCamera: {fileID: 0}
+  maxRenderTextureSize: 1024
+  quad: {fileID: 0}
+  renderTexture: {fileID: 0}
+--- !u!114 &-8291394814827193980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fc94f89310427643babb41e000a8462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeoutSeconds: 1

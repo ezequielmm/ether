@@ -22,7 +22,7 @@ public class TimerManager : MonoBehaviour
     {
         if(playerState.data.expeditionCreatedAt == default(DateTime)) 
         {
-            Debug.LogError($"[TimerManager] Datetime was NOT SET in player state message.");
+            Debug.LogWarning($"[TimerManager] Datetime was NOT SET in player state message.");
             return;
         }
         SetTimerStartTime(playerState.data.expeditionCreatedAt);
@@ -53,6 +53,6 @@ public class TimerManager : MonoBehaviour
 
     void Update()
     {
-        clock.Seconds = TimePassed;
+        clock.TotalSeconds = TimePassed;
     }
 }

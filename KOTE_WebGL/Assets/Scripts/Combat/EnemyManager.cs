@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
+using Spine.Unity;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
-using TMPro;
-using System.Security.Cryptography;
 
 public class EnemyManager : MonoBehaviour, ITooltipSetter
 {
@@ -34,6 +34,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     new private Collider2D collider;
     private Bounds enemyBounds;
     private StatusManager statusManager;
+    private SkeletonRenderTextureFadeout spineFadeout;
 
 
     public EnemyData EnemyData
@@ -42,12 +43,13 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         get { return enemyData; }
     }
 
-    public void SetEnemeyData(EnemyData data) 
+    public void SetEnemeyData(EnemyData data)
     {
-        if (enemyData != null) 
+        if (enemyData != null)
         {
             Debug.LogWarning($"[EnemyManager] Overwriting exisiting Enemy Data.");
         }
+
         enemyData = data;
         ProcessNewData(null, enemyData);
     }
@@ -92,6 +94,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         {
             activeEnemy = Instantiate(prefab, transform);
             activeEnemy.transform.localPosition = Vector3.zero;
+            GrabEnemyFadeout(activeEnemy);
             enemyPlacementData = activeEnemy.GetComponent<EnemyPrefab>();
             enemyPlacementData.FitColliderToArt();
             // Add the cursorEnter and Exit for tooltips
@@ -107,7 +110,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             enemyBounds = collider.bounds;
             collider.enabled = false;
 
-            this.enemyType = Utils.ParseEnum<EnemyTypes>(enemyType);
+            this.enemyType = enemyType.ParseToEnum<EnemyTypes>();
             gameObject.name = Enum.GetName(typeof(EnemyTypes), this.enemyType);
 
             Instantiate();
@@ -131,7 +134,9 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             {
                 runningEvents.Add(attack.attackId);
                 // Run Attack
-                var f = Attack();
+                Debug.Log("+++++++++++++++[Enemy]Attack");
+
+                var f = PlayAnimation(attack.action?.name, "Attack");
                 if (f > afterEvent) afterEvent = f;
                 endCalled = true;
                 RunAfterEvent(() =>
@@ -143,7 +148,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
             {
                 runningEvents.Add(attack.attackId);
-                var f = PlayAnimation("Cast");
+                var f = PlayAnimation(attack.action?.name, "Cast");
                 if (f > afterEvent) afterEvent = f;
                 endCalled = true;
                 RunAfterEvent(() =>
@@ -155,7 +160,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.heal)) // Health Up
             {
                 runningEvents.Add(attack.attackId);
-                var f = PlayAnimation("Cast");
+                var f = PlayAnimation(attack.action?.name, "Cast");
                 if (f > afterEvent) afterEvent = f;
                 endCalled = true;
                 RunAfterEvent(() =>
@@ -170,7 +175,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
         {
             runningEvents.Add(attack.attackId); // If no conditions met, pass onto the target and play cast
-            var f = PlayAnimation("Cast");
+            var f = PlayAnimation(attack.action?.name, "Cast");
             if (f > afterEvent) afterEvent = f;
             endCalled = true;
             RunAfterEvent(() =>
@@ -213,7 +218,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         {
             // Play Attack audio
             // Can be specific, but we'll default to "Attack"
-            waitDuration += OnHit();
+            waitDuration += PlayAnimation(attack.action?.name, "Hit");
         }
 
         if (target.healthDelta > 0) // Healed!
@@ -330,7 +335,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     {
         if (!string.IsNullOrEmpty(enemyData.size))
         {
-            float size = Utils.GetSceneSize(Utils.ParseEnum<Size>(enemyData.size));
+            float size = Utils.GetSceneSize(enemyData.size.ParseToEnum<Size>());
             Gizmos.color = Color.cyan;
             GizmoExtensions.DrawBox(size, size * 2, (Vector3.up * size) + transform.position);
         }
@@ -361,27 +366,24 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         }
     }
 
-    public float PlayAnimation(string animationSequence)
+    public float PlayAnimation(string animationSequence, string fallbackAnimation)
     {
-        float length = spine.PlayAnimationSequence(animationSequence);
+        string animationName = CheckAnimationName(animationSequence, fallbackAnimation);
+        float length = spine.PlayAnimationSequence(animationName);
         spine.PlayAnimationSequence("Idle");
         return length;
     }
 
-    private float Attack()
+    private string CheckAnimationName(string animationSequence, string defaultAnimation)
     {
-        Debug.Log("+++++++++++++++[Enemy]Attack");
+        if (string.IsNullOrEmpty(animationSequence))
+        {
+            Debug.LogWarning(
+                $"[EnemyManager] Warning! enemy {enemyData.name} received a null or empty animation request");
+            return defaultAnimation;
+        }
 
-        float length = spine.PlayAnimationSequence("Attack");
-        spine.PlayAnimationSequence("Idle");
-        return length;
-    }
-
-    private float OnHit()
-    {
-        float length = spine.PlayAnimationSequence("Hit");
-        spine.PlayAnimationSequence("Idle");
-        return length;
+        return animationSequence.ToLower();
     }
 
     private float OnDeath()
@@ -416,12 +418,18 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             // Play animation
             RunAfterTime(OnDeath(), () =>
             {
-                // Tell game that a player is dead
-                GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), nameof(EnemyState.dead));
-                Destroy(explodePS.gameObject);
-                Destroy(this.gameObject);
+                spineFadeout.OnFadeoutComplete += DestroyOnFadeout;
+                spineFadeout.enabled = true;
             });
         }
+    }
+
+    private void DestroyOnFadeout(SkeletonRenderTextureFadeout target)
+    {
+        // Tell game that a player is dead
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), nameof(EnemyState.dead));
+        Destroy(explodePS.gameObject);
+        Destroy(this.gameObject);
     }
 
     private void RunAfterEvent(Action toRun)
@@ -458,12 +466,18 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
         var enemy = FindPrefab(enemyName);
         if (enemy != null) return enemy;
+
         Debug.LogError($"[EnemyManager] Missing {enemyName} prefab. Using SporeMonger as a backup");
         enemyName = "SporeMonger";
         enemy = FindPrefab(enemyName);
         if (enemy != null) return enemy;
         Debug.LogError($"[EnemyManager] Missing {enemyName} prefab.");
         return null;
+    }
+
+    private void GrabEnemyFadeout(GameObject enemy)
+    {
+        spineFadeout = enemy.GetComponent<SkeletonRenderTextureFadeout>();
     }
 
     public void SetTooltip(List<Tooltip> tooltips)

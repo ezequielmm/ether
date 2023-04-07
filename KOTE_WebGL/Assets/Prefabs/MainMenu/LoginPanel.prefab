@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 4
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 6511355503823795559}
     m_SelectOnDown: {fileID: 2168699279653196832}
@@ -1044,7 +1044,7 @@ MonoBehaviour:
   m_Navigation:
     m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 6043711864758805976}
+    m_SelectOnUp: {fileID: 2168699279653196832}
     m_SelectOnDown: {fileID: 3469061942977515173}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
@@ -1074,7 +1074,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6486409805944885769}
-        m_TargetAssemblyTypeName: LoginPanelManager, Assembly-CSharp
+        m_TargetAssemblyTypeName: LoginPanelManager, GameAssembly
         m_MethodName: OnLogin
         m_Mode: 1
         m_Arguments:
@@ -1515,7 +1515,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &459104645217203836
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2254,7 +2254,7 @@ MonoBehaviour:
     m_Mode: 4
     m_WrapAround: 1
     m_SelectOnUp: {fileID: 3469061942977515173}
-    m_SelectOnDown: {fileID: 1222095265914327213}
+    m_SelectOnDown: {fileID: 2168699279653196832}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -2921,7 +2921,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 4
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 3948259946520810667}
     m_SelectOnDown: {fileID: 7587338378050913995}
@@ -3535,7 +3535,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 4
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 2168699279653196832}
     m_SelectOnDown: {fileID: 6043711864758805976}
@@ -3691,8 +3691,8 @@ MonoBehaviour:
   m_Navigation:
     m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 1222095265914327213}
-    m_SelectOnDown: {fileID: 3948259946520810667}
+    m_SelectOnUp: {fileID: 6511355503823795559}
+    m_SelectOnDown: {fileID: 7587338378050913995}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1

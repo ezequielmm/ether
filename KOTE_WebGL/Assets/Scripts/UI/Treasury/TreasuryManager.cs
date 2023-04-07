@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,9 +27,8 @@ public class TreasuryManager : MonoBehaviour
         }
 
         GameManager.Instance.EVENT_TREASURYPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerTreasuryPanel);
-        GameManager.Instance.EVENT_NFT_METADATA_RECEIVED.AddListener(SetNftPanelContent);
-        GameManager.Instance.EVENT_REQUEST_NFT_METADATA.AddListener(OnMetadataRequested);
-        GameManager.Instance.EVENT_WALLET_DISCONNECTED.AddListener(OnWalletDisconnected);
+        WalletManager.Instance.DisconnectingWallet.AddListener(ClearOutNfts);
+        WalletManager.Instance.NewWalletConfirmed.AddListener(ClearOutNfts);
         Button firstCharacterButton = characterList.transform.GetChild(0)?.GetComponent<Button>();
         if (firstCharacterButton != null) firstCharacterButton.onClick?.Invoke();
     }
@@ -43,13 +43,12 @@ public class TreasuryManager : MonoBehaviour
         SetArmorPanelContent();
     }
 
-    private void OnWalletDisconnected()
+    private void ClearOutNfts(string walletAddress)
     {
         ClearNfts();
     }
     
-    // when a new wallet is received clear the panel
-    private void OnMetadataRequested(int[] ids)
+    private void ClearOutNfts(RawWalletData walletData)
     {
         ClearNfts();
     }
@@ -61,14 +60,13 @@ public class TreasuryManager : MonoBehaviour
             Destroy(nftPanel.transform.GetChild(i).gameObject);
         }
     }
-    
-    
-    private void SetNftPanelContent(NftData heldNftData)
+
+    private void AddNftItem(List<Nft> nftList) 
     {
-        foreach (NftMetaData metaData in heldNftData.assets)
+        foreach(Nft nft in nftList) 
         {
-            GameObject localObject = Instantiate(treasuryNftPrefab, nftPanel);
-            localObject.GetComponent<TreasuryNftItem>().Populate(metaData);
+            GameObject nftItem = Instantiate(treasuryNftPrefab, nftPanel);
+            nftItem.GetComponent<NftItem>().Populate(nft);
         }
     }
 

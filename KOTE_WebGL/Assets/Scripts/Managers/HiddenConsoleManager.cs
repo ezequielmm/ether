@@ -1,6 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using KOTE.UI.Armory;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -119,9 +118,20 @@ public class HiddenConsoleManager : MonoBehaviour
                 GameManager.Instance.LoadScene(inGameScenes.Expedition);
                 break;
             case ConsoleCommands.use_nft:
+                if(args.Length != 2){
+                    PublicLog("Please enter only the nft id and contract type.\n "+ 
+                                               "Contract options are: Knights, Villager, BlessedVillager");
+                    break;
+                }
                 int nftNum = int.Parse(args[0]);
+                NftContract contract = args[1].ParseToEnum<NftContract>();
+                if (contract == NftContract.None)
+                {
+                    PublicLog("Invalid Contract entered");
+                    break;
+                }
                 PublicLog($"Setting skin to #{nftNum}.");
-                GameManager.Instance.EVENT_REQUEST_NFT_SET_SKIN.Invoke(nftNum);
+                PlayerSpriteManager.Instance.SetSkin(nftNum, contract);
                 break;
         }
     }
@@ -150,7 +160,7 @@ public class HiddenConsoleManager : MonoBehaviour
                 PublicLog(apiUrl);
                 break;
             case ConsoleCommands.player_token:
-                string token = PlayerPrefs.GetString("session_token");
+                string token = AuthenticationManager.Instance.GetSessionToken();
                 if (token == "") token = "No token has been generated yet.";
                 PublicLog(token);
                 break;
@@ -235,9 +245,9 @@ public class HiddenConsoleManager : MonoBehaviour
                 PublicLog("Injured idle animation disabled");
                 break;
              case ConsoleCommands.get_score:
-                 GameManager.Instance.EVENT_REQUEST_EXPEDITON_SCORE.Invoke();
-                 PublicLog("Current expedition score requested");
-                 break;
+                ScoreboardManager.Instance.UpdateAndShow();
+                PublicLog("Current expedition score requested");
+                break;
             case ConsoleCommands.reset_all:
                 PlayerPrefs.SetInt("enable_registration", 0);
                 PlayerPrefs.SetInt("enable_armory", 0);

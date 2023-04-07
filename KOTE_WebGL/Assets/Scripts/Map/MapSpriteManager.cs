@@ -11,7 +11,7 @@ namespace map
     public class MapSpriteManager : MonoBehaviour
     {
         public GameObject mapContainer;
-
+        public Canvas clickBlockCanvas;
         public NodeData nodePrefab;
 
         List<NodeData> nodes = new List<NodeData>();
@@ -147,6 +147,9 @@ namespace map
             portalAnimation.GetComponent<Renderer>().sortingLayerName = GameSettings.MAP_ELEMENTS_SORTING_LAYER_NAME;
 
             GenerateMapSeeds(22);
+            
+            // set the camera here so we don't have to assign it. This *should* block any clicks from passing through the map
+            clickBlockCanvas.worldCamera = GameObject.FindWithTag("UiParticleCamera").GetComponent<Camera>();
         }
 
         private void GenerateMapSeeds(int seed)
@@ -162,6 +165,7 @@ namespace map
         private void OnToggleMap(bool data)
         {
             mapContainer.SetActive(data);
+            clickBlockCanvas.enabled = data;
         }
 
         private void OnMaskDoubleClick()
@@ -292,13 +296,15 @@ namespace map
             if (mapContainer.activeSelf)
             {
                 mapContainer.SetActive(false);
-                GameManager.Instance.EVENT_TOGGLE_COMBAT_UI.Invoke();
+                clickBlockCanvas.enabled = false;
+                GameManager.Instance.EVENT_TOGGLE_COMBAT_UI.Invoke(true);
                 GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(false);
             }
             else
             {
                 mapContainer.SetActive(true);
-                GameManager.Instance.EVENT_TOGGLE_COMBAT_UI.Invoke();
+                clickBlockCanvas.enabled = true;
+                GameManager.Instance.EVENT_TOGGLE_COMBAT_UI.Invoke(false);
                 GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(true);
             }
         }
@@ -316,6 +322,7 @@ namespace map
 
         private void OnMapNodesDataUpdated(SWSM_MapData mapData)
         {
+            
             GenerateMap(mapData);
             StartCoroutine(Scroll());
         }
@@ -333,7 +340,7 @@ namespace map
         //we will get to this point once the backend give us the node data
         void GenerateMap(SWSM_MapData expeditionMapData)
         {
-            Debug.Log("[MapSpriteManager | OnMapNodesDataUpdated] " + expeditionMapData);
+            Debug.Log("[MapSpriteManager] " + expeditionMapData);
             
             if (!mapContainer.activeSelf)
             {
@@ -346,8 +353,8 @@ namespace map
             DetermineTilesToUse(expeditionMapData);
 
             // Set Seed
-            GenerateMapSeeds(expeditionMapData.data.seed);
-            Debug.Log($"[MapSpriteManager] Map Seed: {expeditionMapData.data.seed}");
+            GenerateMapSeeds(expeditionMapData.expeditionData.seed);
+            Debug.Log($"[MapSpriteManager] Map Seed: {expeditionMapData.expeditionData.seed}");
 
             MapStructure mapStructure = GenerateMapStructure(expeditionMapData);
 
@@ -372,7 +379,7 @@ namespace map
 
         private void DetermineTilesToUse(SWSM_MapData expeditionData)
         {
-            int currentMapAct = expeditionData.data.data[0].act;
+            int currentMapAct = expeditionData.expeditionData.nodeList[0].act;
 
             // if the current act of the map is not act 0 and we have a tile list for that act, use it
             if (currentMapAct > 0 && currentMapAct - 1 < actTileLists.Length)
@@ -506,23 +513,20 @@ namespace map
         {
             MapStructure mapStructure = new MapStructure();
             //parse nodes data
-            for (int i = 0; i < expeditionMapData.data.data.Length; i++)
+            for (int i = 0; i < expeditionMapData.expeditionData.nodeList.Length; i++)
             {
-                NodeDataHelper nodeData = expeditionMapData.data.data[i];
+                NodeDataHelper nodeData = expeditionMapData.expeditionData.nodeList[i];
 
                 //acts
-                if (mapStructure.acts.Count == 0 || mapStructure.acts.Count < (nodeData.act + 1))
+                if ( !mapStructure.acts.ContainsKey(nodeData.act))
                 {
-                    Act newAct = new Act();
-                    mapStructure.acts.Add(newAct);
+                    mapStructure.acts[nodeData.act] = new Act();
                 }
 
                 //steps
-                if (mapStructure.acts[nodeData.act].steps.Count == 0 ||
-                    mapStructure.acts[nodeData.act].steps.Count < (nodeData.step + 1))
+                if (!mapStructure.acts[nodeData.act].steps.ContainsKey(nodeData.step))
                 {
-                    Step newStep = new Step();
-                    mapStructure.acts[nodeData.act].steps.Add(newStep);
+                    mapStructure.acts[nodeData.act].steps[nodeData.step] = new Step();
                 }
 
                 //add id
@@ -538,12 +542,21 @@ namespace map
             float columnOffsetCounter = 0;
             float columnIncrement = GameSettings.MAP_SPRITE_NODE_X_OFFSET;
 
+            List<int> acts = mapStructure.acts.Keys.ToList();
+            acts.Sort();
+
             //generate the map
-            foreach (Act act in mapStructure.acts)
+            foreach (int actIndex in acts)
             {
+                Act act = mapStructure.acts[actIndex];
+
+                List<int> steps = act.steps.Keys.ToList();
+                steps.Sort();
+                
                 //areas
-                foreach (Step step in act.steps)
+                foreach (int stepIndex in steps)
                 {
+                    Step step = act.steps[stepIndex];
                     //columns
                     float rows = step.nodesData.Count;
                     float rowsMaxSpace = 8 / rows;
@@ -617,7 +630,7 @@ namespace map
             foreach (NodeData curNode in nodes)
             {
                 //Debug.Log("[MapSpriteManager] Searching :" + go.GetComponent<NodeData>().id);
-
+                //Debug.Log($"node {curNode.id} position is: {MapGrid.WorldToCell(curNode.transform.position)}");
                 foreach (int exitId in curNode.GetComponent<NodeData>().exits)
                 {
                     NodeData exitNode = nodes.Find(x => x.id == exitId);
@@ -672,18 +685,20 @@ namespace map
             }
         }
 
-        private void AdjustPlayerIcon(Vector3 newPos, Vector3 iconPos)
+        private void AdjustPlayerIcon(Vector3 newPos, Vector3 iconAbsPos)
         {
-            float xDifference = iconPos.x - playerIcon.transform.position.x;
-            float yDifference = iconPos.y - playerIcon.transform.position.y;
+            Transform playerTransform = playerIcon.transform;
+            Vector3 iconPos = playerTransform.InverseTransformPoint(iconAbsPos);
+            float xDifference = iconPos.x - playerTransform.position.x;
+            float yDifference = iconPos.y - playerTransform.position.y;
             if (xDifference.Equals(-0.25f) && Mathf.Abs(yDifference).Equals(0.25f))
             {
-                playerIcon.transform.position = newPos += playerIconOffset;
+                playerTransform.position = newPos += playerIconOffset;
             }
 
             if (xDifference.Equals(0.25f) && Mathf.Abs(yDifference).Equals(0.25f))
             {
-                playerIcon.transform.localPosition = new Vector3(newPos.x - playerIconOffset.x,
+                playerTransform.localPosition = new Vector3(newPos.x - playerIconOffset.x,
                     newPos.y + playerIconOffset.y, newPos.z);
             }
         }
@@ -1221,35 +1236,10 @@ namespace map
             ScrollBackToPlayerIcon(GameSettings.MAP_SCROLL_ANIMATION_DURATION, 0);
         }
 
-        // get the boss node so we can move to it
-        private NodeData GetBossNode()
-        {
-            for (int i = nodes.Count - 1; i >= 0; i--)
-            {
-                if (nodes[i].subType == NODE_SUBTYPES.combat_boss)
-                {
-                    return nodes[i];
-                }
-            }
-
-            return null;
-        }
-
-        private void HideAllNodesInAct(int act)
-        {
-            foreach (NodeData node in nodes)
-            {
-                if (node.act == act)
-                {
-                    node.HideNode();
-                }
-            }
-        }
-
         private void OnPortalActivated(SWSM_MapData mapData)
         {
             // the portal is always the last node when we receive the portal activate event
-            int nodeId = mapData.data.data[mapData.data.data.Length - 1].id;
+            int nodeId = mapData.expeditionData.nodeList[mapData.expeditionData.nodeList.Length - 1].id;
 
             // move the particle system to the correct portal
             NodeData exitNode = nodes.Find(x => x.id == nodeId);

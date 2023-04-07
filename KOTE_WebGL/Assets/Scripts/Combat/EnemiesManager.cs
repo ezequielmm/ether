@@ -77,11 +77,16 @@ public class EnemiesManager : MonoBehaviour
 
     private float GetSize(string size) 
     {
-        return Utils.GetSceneSize(Utils.ParseEnum<Size>(size));
+        return Utils.GetSceneSize(size.ParseToEnum<Size>());
     }
 
     private void OnEnemiesUpdate(EnemiesData enemiesData)
     {
+        if (enemiesData.data.Count == 0)
+        {
+            GameManager.Instance.EVENT_GAME_STATUS_CONFIRM.Invoke();
+        }
+
         List<GameObject> newEnemyList = new List<GameObject>();
         foreach (EnemyData data in enemiesData.data)
         {

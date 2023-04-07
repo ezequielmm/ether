@@ -179,16 +179,6 @@ public class ClientEnvironmentManagerTest
     }
 
     [Test]
-    public void VariableSet_OpenSeasURL()
-    {
-        // Arrange
-        // Act
-        ClientEnvironmentManager env = ClientEnvironmentManager.Instance;
-        // Assert
-        Assert.IsFalse(string.IsNullOrWhiteSpace(env.OpenSeasURL));
-    }
-
-    [Test]
     public void VariableSet_EnvironmentName()
     {
         // Arrange

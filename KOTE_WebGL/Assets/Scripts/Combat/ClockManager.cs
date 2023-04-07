@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using static UnityEngine.UI.CanvasScaler;
 
-public class ClockManager : MonoBehaviour
+public abstract class ClockManager : MonoBehaviour
 {
     [SerializeField]
     public bool ShowMilliSeconds = true;
@@ -21,35 +21,28 @@ public class ClockManager : MonoBehaviour
     [SerializeField]
     public bool AlwaysShowUnits = false;
 
-    public float Seconds;
+    public float TotalSeconds;
 
-    [SerializeField]
-    TMP_Text clockText;
-
-    void Start()
+    void Update()
     {
-        if(clockText == null) 
-        {
-            clockText = GetComponent<TMP_Text>();
-        }
+        UpdateClock();
     }
 
-    private void Update()
-    {
-        if (clockText != null)
-        {
-            clockText.text = ToString();
-        }
-    }
+    protected abstract void UpdateClock();
+
+    protected int Hours => Mathf.FloorToInt(TotalSeconds / 3600);
+    protected int Minutes => Mathf.FloorToInt(TotalSeconds / 60 % 60);
+    protected int Seconds => Mathf.FloorToInt(TotalSeconds % 60);
+    protected int Milliseconds => Mathf.FloorToInt(TotalSeconds * 1000 % 1000);
+
+
 
     public override string ToString()
     {
-        var s = Mathf.Abs(Seconds);
-
-        int millis = Mathf.FloorToInt(s*1000 % 1000);
-        int sec = Mathf.FloorToInt(s % 60);
-        int min = Mathf.FloorToInt((s / 60) % 60);
-        int hour = Mathf.FloorToInt(s / 3600);
+        int millis = Milliseconds;
+        int sec = Seconds;
+        int min = Minutes;
+        int hour = Hours;
 
         string unit = string.Empty;
 
@@ -94,6 +87,6 @@ public class ClockManager : MonoBehaviour
             unit = "s";
         }
 
-        return (Seconds < 0 ? "-" : "") + string.Join(":", places) + (places.Count == 1 || AlwaysShowUnits ? unit : "");
+        return (TotalSeconds < 0 ? "-" : "") + string.Join(":", places) + (places.Count == 1 || AlwaysShowUnits ? unit : "");
     }
 }

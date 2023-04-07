@@ -382,7 +382,7 @@ public enum MusicTypes
 }
 
 [Serializable]
-public enum TraitTypes
+public enum Trait
 {
     Breastplate,
     Helmet,
@@ -397,7 +397,9 @@ public enum TraitTypes
     Boots,
     Legguard,
     Shadow,
-    Base
+    Base,
+    Upper_Padding,
+    Lower_Padding
 }
 
 [Serializable]

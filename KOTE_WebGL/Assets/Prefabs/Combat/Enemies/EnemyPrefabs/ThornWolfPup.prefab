@@ -78,6 +78,8 @@ GameObject:
   - component: {fileID: 3916822406634664814}
   - component: {fileID: 5420527440306874998}
   - component: {fileID: 8406717301304214992}
+  - component: {fileID: 7105682889924924472}
+  - component: {fileID: 1271455304798122601}
   m_Layer: 0
   m_Name: ThornWolfPup
   m_TagString: Enemy
@@ -243,10 +245,10 @@ MonoBehaviour:
       loop: 0
       delay: 0
       animationEvent: 1
-  - sequenceName: claw
+  - sequenceName: bite
     sequence:
     - track: 1
-      name: attack2
+      name: attack1
       loop: 0
       delay: 0
       animationEvent: 1
@@ -257,10 +259,24 @@ MonoBehaviour:
       loop: 0
       delay: 0
       animationEvent: 1
+  - sequenceName: claw
+    sequence:
+    - track: 1
+      name: attack2
+      loop: 0
+      delay: 0
+      animationEvent: 1
   - sequenceName: howl
     sequence:
     - track: 1
       name: cast2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+  - sequenceName: flee
+    sequence:
+    - track: 1
+      name: flee
       loop: 0
       delay: 0
       animationEvent: 1
@@ -345,3 +361,34 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &7105682889924924472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25e6ceb271c9af848ae53f2af1073d0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 1, g: 1, b: 1, a: 1}
+  quadMaterial: {fileID: 2100000, guid: 76086f6bdbbd1fe4b9b1b8b62b360df2, type: 2}
+  targetCamera: {fileID: 0}
+  maxRenderTextureSize: 1024
+  quad: {fileID: 0}
+  renderTexture: {fileID: 0}
+--- !u!114 &1271455304798122601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fc94f89310427643babb41e000a8462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeoutSeconds: 1

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class GameSettings
@@ -63,6 +64,8 @@ public static class GameSettings
     public static float INTENT_HEIGHT = 1.1f;
     public static float HEALTH_HEIGHT = 0.9f;
     public static bool SHOW_PLAYER_INJURED_IDLE = false;
+    public static float END_WAIT_TIMEOUT = 5;
+    public const float UI_FADEOUT_TIME = 1.0f;
 
     // Text Effects
     public static Color DEFAUT_TEXTEFFECT_COLOR = Color.green;
@@ -80,38 +83,75 @@ public static class GameSettings
     public const float UNSTABLE_CONNECTION_SECONDS = 2;
     public const float DISCONNECTED_CONNECTION_SECONDS = UNSTABLE_CONNECTION_SECONDS + 5;
     public const float MAX_TIMEOUT_SECONDS = DISCONNECTED_CONNECTION_SECONDS + 20;
-    
+
     // Logging
     public static LogType FilterLogType = LogType.Log;
 
+    public static int MAX_OPENSEA_CONTENT_REQUEST = 20;
+
 
 #if UNITY_EDITOR
-    public const string EDITOR_WALLET = "0x1Ef6Ccf27f778dbb37241e6fD86eD69f79300F84";
+    public const string EDITOR_WALLET = "0x66956Fe08D7Bc88fe70216502fD8a6e4b7f269c5";
 #endif
 
+    public const int INITIAL_SKIN_CACHE = 3;
+
     // Player Skin Defaults
-    public static TraitSprite[] DEFAULT_SKIN_DATA = new[]
+    public static List<TraitSprite> DEFAULT_SKIN_DATA = new List<TraitSprite>
     {
-        new TraitSprite{skinName ="Padding/Padding_Brown",
-        traitType = nameof(TraitTypes.Padding)
-        },
-        new TraitSprite{skinName ="Helmet/Helmet_Bucket",
-        traitType = nameof(TraitTypes.Helmet)
+        new TraitSprite
+        {
+            SkinName = "Padding/Lower_Padding_Brown",
+            TraitValue = "Brown",
+            TraitType = Trait.Lower_Padding
         },
         new TraitSprite
         {
-            skinName = "Weapon/Weapon_Rusty_Sword",
-            traitType =  nameof(TraitTypes.Weapon)
+            SkinName = "Padding/Upper_Padding_Brown",
+            TraitValue = "Brown",
+            TraitType = Trait.Upper_Padding
         },
         new TraitSprite
         {
-            skinName = "character_shadow",
-            traitType = nameof(TraitTypes.Shadow)
+            SkinName = "Weapon/Weapon_Rusty_Sword",
+            TraitValue = "Rusty Sword",
+            TraitType = Trait.Weapon
         },
         new TraitSprite
         {
-            skinName = "character-nude",
-            traitType = nameof(TraitTypes.Base)
+            SkinName = "Shield/Shield_Rusty_Shield",
+            TraitValue = "Rusty Shield",
+            TraitType = Trait.Shield
+        },
+        new TraitSprite
+        {
+            SkinName = "character_shadow",
+            TraitValue = nameof(Trait.Shadow),
+            TraitType = Trait.Shadow
+        },
+        new TraitSprite
+        {
+            SkinName = "character-nude",
+            TraitValue = nameof(Trait.Base),
+            TraitType = Trait.Base
+        }
+    };
+
+    public static Nft DEFAULT_PLAYER = new Nft
+    {
+        CanPlay = true,
+        Contract = NftContract.NonTokenVillager,
+        Description = "The default player character",
+        Image = null,
+        ImageUrl = "",
+        Name = "Basic Villager",
+        TokenId = 1,
+        Traits = new Dictionary<Trait, string>
+        {
+            { Trait.Padding, "Brown" },
+            { Trait.Helmet, "None" },
+            { Trait.Shield, "Rusty Shield" },
+            { Trait.Weapon, "Rusty Sword" },
         }
     };
 
@@ -119,6 +159,4 @@ public static class GameSettings
 ///Debug
 //*/
     public const bool DEBUG_MODE_ON = false;
-
-    
 }

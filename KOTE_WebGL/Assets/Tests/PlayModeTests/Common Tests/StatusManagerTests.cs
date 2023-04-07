@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -36,7 +37,7 @@ public class StatusManagerTests : MonoBehaviour
         player.SetActive(true);
         
         GameObject nftManagerPrefab =
-            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Combat/NftSpriteManager.prefab");
+            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Common/PlayerSpriteManager.prefab");
         nftManager = Instantiate(nftManagerPrefab);
         
         GameObject spriteManagerPrefab =
@@ -51,6 +52,7 @@ public class StatusManagerTests : MonoBehaviour
     [UnityTearDown]
     public IEnumerator TearDown()
     {
+        DOTween.Clear(true);
         Destroy(player);
         Destroy(nftManager);
         Destroy(spriteManager);

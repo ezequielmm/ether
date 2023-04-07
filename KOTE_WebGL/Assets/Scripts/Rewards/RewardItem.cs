@@ -11,6 +11,7 @@ using Debug = UnityEngine.Debug;
 public class RewardItem : MonoBehaviour //, IPointerClickHandler
 {
     public TMP_Text rewardText;
+    public TMP_Text cardText; // card text has to be centered TODO remove if image for cards appears
     public RewardItemType rewardItemType;
     public Image rewardImage;
     public TooltipAtCursor tooltipController;
@@ -35,14 +36,15 @@ public class RewardItem : MonoBehaviour //, IPointerClickHandler
             onRewardSelected = onAddACard;
         }
 
-        rewardItemType = Utils.ParseEnum<RewardItemType>(reward.type);
+        rewardItemType = reward.type.ParseToEnum<RewardItemType>();
         rewardData = reward;
         List<Tooltip> tooltips = new List<Tooltip>();
         switch (rewardItemType)
         {
             case RewardItemType.card:
                 tooltipController.enabled = false;
-                rewardText.text = "Add a card to your deck";
+                cardText.enabled = true;
+                rewardText.enabled = false;
                 rewardImage.enabled = false;
                 break;
 

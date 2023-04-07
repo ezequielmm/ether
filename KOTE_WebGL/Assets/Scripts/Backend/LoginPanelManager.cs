@@ -1,49 +1,40 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using Toggle = UnityEngine.UI.Toggle;
-using UnityEngine.EventSystems;
 
 public class LoginPanelManager : MonoBehaviour
 {
     public TMP_InputField emailInputField;
     public TMP_InputField passwordInputField;
 
-    [Space(20)]
-    public TMP_Text validEmailLabel;
+    [Space(20)] public TMP_Text validEmailLabel;
 
     public TMP_Text validLoginEmail;
     public TMP_Text validLoginPassword;
 
-    [Space(20)]
-    public Toggle rememberMe;
+    [Space(20)] public Toggle rememberMe;
 
     public Toggle showPassword;
     public Button loginButton;
 
-    [Space(20)]
-    public GameObject loginContainer;
+    [Space(20)] public GameObject loginContainer;
 
     private bool validEmail;
     private bool validLogin;
 
     private void Awake()
     {
-        GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLoginSucessful);
-        GameManager.Instance.EVENT_REQUEST_LOGIN_ERROR.AddListener(OnLoginError);
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerLoginPanel);
-        GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
+        GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(OnLogoutSuccessful);
 
         string email = PlayerPrefs.GetString("email_reme_login");
         string date = PlayerPrefs.GetString("date_reme_login");
 
         if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(date))
         {
-            float days = (float) (DateTime.ParseExact(date, "MM/dd/yyyy HH:mm:ss",
+            float days = (float)(DateTime.ParseExact(date, "MM/dd/yyyy HH:mm:ss",
                 CultureInfo.InvariantCulture) - DateTime.Today).TotalDays;
 
             if (!(Mathf.Abs(days) >= 15))
@@ -53,54 +44,6 @@ public class LoginPanelManager : MonoBehaviour
                 rememberMe.isOn = true;
             }
         }
-    }
-
-    public void OnShowPassword()
-    {
-        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-        passwordInputField.contentType = showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
-        passwordInputField.ForceLabelUpdate();
-    }
-
-    public void OnRegisterButton()
-    {
-        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-        ActivateInnerLoginPanel(false);
-        GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(true);
-    }
-
-    private void OnLoginSucessful(string userName, int fiefAmount)
-    {
-        if (rememberMe.isOn)
-        {
-            PlayerPrefs.SetString("email_reme_login", emailInputField.text);
-            PlayerPrefs.SetString("date_reme_login", DateTime.Today.ToString(CultureInfo.InvariantCulture));
-            PlayerPrefs.Save();
-        }
-
-        ActivateInnerLoginPanel(false);
-
-        if (MetaMaskAdapter.Instance.HasMetamask())
-        {
-            MetaMaskAdapter.Instance.RequestWallet();
-        }
-        
-        // hardcoded wallet data for testing, metamask doesn't exist in editor so we have to send a wallet id manually
-#if UNITY_EDITOR
-        GameManager.Instance.EVENT_WALLET_ADDRESS_RECEIVED.Invoke(GameSettings.EDITOR_WALLET);
-#endif
-    }
-
-    private void OnLoginError(string errorMessage)
-    {
-        validLoginPassword.gameObject.SetActive(true);
-        passwordInputField.text = "";
-
-        PlayerPrefs.DeleteKey("email_reme_login");
-        PlayerPrefs.DeleteKey("date_reme_login");
-        PlayerPrefs.Save();
-
-        Debug.Log("-------------------Login Error------------------");
     }
 
     private void Start()
@@ -115,6 +58,61 @@ public class LoginPanelManager : MonoBehaviour
     private void Update()
     {
         loginButton.interactable = validEmail && !string.IsNullOrEmpty(passwordInputField.text);
+        if (Input.GetKeyDown(KeyCode.Return) && loginButton.interactable && loginContainer.activeSelf)
+        {
+            OnLogin();
+        }
+    }
+
+    public void OnShowPassword()
+    {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
+        passwordInputField.contentType =
+            showPassword.isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
+        passwordInputField.ForceLabelUpdate();
+    }
+
+    public void OnRegisterButton()
+    {
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
+        ActivateInnerLoginPanel(false);
+        GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(true);
+    }
+
+    public void RememberAndCloseLoginPanel()
+    {
+        if (rememberMe.isOn)
+            RememberLoginInfo();
+        else
+            ForgetLoginInfo();
+        ActivateInnerLoginPanel(false);
+        validLoginPassword.gameObject.SetActive(false);
+    }
+
+    private void RememberLoginInfo()
+    {
+        PlayerPrefs.SetString("email_reme_login", emailInputField.text);
+        PlayerPrefs.SetString("date_reme_login", DateTime.Today.ToString(CultureInfo.InvariantCulture));
+        PlayerPrefs.Save();
+    }
+
+    private void ForgetLoginInfo()
+    {
+        PlayerPrefs.DeleteKey("email_reme_login");
+        PlayerPrefs.DeleteKey("date_reme_login");
+        PlayerPrefs.Save();
+    }
+
+    private void ClearLoginInfo()
+    {
+        AuthenticationManager.Instance.ClearSessionToken();
+        ForgetLoginInfo();
+    }
+
+    private void OpenLoginErrorPanel()
+    {
+        validLoginPassword.gameObject.SetActive(true);
+        passwordInputField.text = "";
     }
 
     public void VerifyEmail()
@@ -125,15 +123,33 @@ public class LoginPanelManager : MonoBehaviour
         validEmailLabel.gameObject.SetActive(!validEmail);
     }
 
-    public void OnLogin()
+    public async void OnLogin()
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         validLoginEmail.gameObject.SetActive(false);
         validLoginPassword.gameObject.SetActive(false);
 
-        if (validEmail)
+        if (!validEmail)
         {
-            GameManager.Instance.EVENT_REQUEST_LOGIN.Invoke(emailInputField.text, passwordInputField.text);
+            return;
+        }
+
+        bool successfulLogin =
+            await AuthenticationManager.Instance.Login(emailInputField.text, passwordInputField.text);
+        UpdatePanelOnAuthenticated(successfulLogin);
+    }
+
+    public void UpdatePanelOnAuthenticated(bool successfulLogin)
+    {
+        if (successfulLogin)
+        {
+            RememberAndCloseLoginPanel();
+        }
+        else
+        {
+            Debug.LogWarning("-------------------Login Error------------------");
+            OpenLoginErrorPanel();
+            ClearLoginInfo();
         }
     }
 

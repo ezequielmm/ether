@@ -50,7 +50,7 @@ public class ClockManagerTests
         clockManager.ShowMilliSeconds = true;
         clockManager.ShowSeconds = true;
 
-        clockManager.Seconds = time;
+        clockManager.TotalSeconds = time;
         string clockTime = clockManager.ToString();
         Assert.AreEqual(expectedString, clockTime);
     }
@@ -67,7 +67,7 @@ public class ClockManagerTests
     [TestCase(86400, "24:00:00")]
     public void RawClockBehavior(float time, string expectedString)
     {
-        clockManager.Seconds = time;
+        clockManager.TotalSeconds = time;
         string clockTime = clockManager.ToString();
         Assert.AreEqual(expectedString, clockTime);
     }
@@ -84,7 +84,7 @@ public class ClockManagerTests
     {
         clockManager.AlwaysShowMinutes = true;
 
-        clockManager.Seconds = time;
+        clockManager.TotalSeconds = time;
         string clockTime = clockManager.ToString();
         Assert.AreEqual(expectedString, clockTime);
     }
@@ -102,7 +102,7 @@ public class ClockManagerTests
     {
         clockManager.AlwaysShowHours = true;
 
-        clockManager.Seconds = time;
+        clockManager.TotalSeconds = time;
         string clockTime = clockManager.ToString();
         Assert.AreEqual(expectedString, clockTime);
     }
@@ -121,7 +121,7 @@ public class ClockManagerTests
         clockManager.AlwaysShowHours = true;
         clockManager.AlwaysShowMinutes = true;
 
-        clockManager.Seconds = time;
+        clockManager.TotalSeconds = time;
         string clockTime = clockManager.ToString();
         Assert.AreEqual(expectedString, clockTime);
     }
@@ -133,7 +133,7 @@ public class ClockManagerTests
     {
         clockManager.AlwaysShowUnits = true;
 
-        clockManager.Seconds = time;
+        clockManager.TotalSeconds = time;
         string clockTime = clockManager.ToString();
         Assert.AreEqual(expectedString, clockTime);
     }
@@ -146,7 +146,7 @@ public class ClockManagerTests
         clockManager.AlwaysShowUnits = true;
         clockManager.AlwaysShowMinutes = true;
 
-        clockManager.Seconds = time;
+        clockManager.TotalSeconds = time;
         string clockTime = clockManager.ToString();
         Assert.AreEqual(expectedString, clockTime);
     }
@@ -159,7 +159,7 @@ public class ClockManagerTests
         clockManager.AlwaysShowUnits = true;
         clockManager.AlwaysShowHours = true;
 
-        clockManager.Seconds = time;
+        clockManager.TotalSeconds = time;
         string clockTime = clockManager.ToString();
         Assert.AreEqual(expectedString, clockTime);
     }

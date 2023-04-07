@@ -1,26 +1,39 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class WalletItem : MonoBehaviour
 {
-    public TMP_Text walletAddressText;
-    public TMP_Text knightCountText;
+    public string WalletAddress { get; private set; }
+    
+    public bool IsActiveWallet => WalletManager.Instance.ActiveWallet == WalletAddress;
 
-    public void SetWalletAddress(string address)
+    [SerializeField] private TMP_Text walletAddressText;
+    [SerializeField] private TMP_Text knightCountText;
+    [SerializeField] private TMP_Text villagerCountText;
+    [SerializeField] private TMP_Text blessedVillagerCountText;
+
+    public void SetWalletAddress(string wallet)
     {
-        walletAddressText.text = address;
+        walletAddressText.text = wallet;
+        WalletAddress = wallet;
     }
 
-    public void SetKnightCount(int count)
+    public void SetTokenCounts(Dictionary<NftContract, int> tokenCounts )
     {
-        knightCountText.text = count + " Knights";
+        knightCountText.text = tokenCounts[NftContract.Knights] + " Knights";
+        villagerCountText.text = tokenCounts[NftContract.Villager] + " Villagers";
+        blessedVillagerCountText.text = tokenCounts[NftContract.BlessedVillager] + " Blessed Villagers";
     }
 
-    public void ActivateConfirmation()
+    public void Populate(string wallet, Dictionary<NftContract, int> tokenCounts )
     {
-        GameManager.Instance.EVENT_DISCONNECT_WALLET_PANEL_ACTIVATION_REQUEST.Invoke(true, gameObject);
+        SetWalletAddress(wallet);
+        SetTokenCounts(tokenCounts );
+    }
+
+    public void RemoveWallet()
+    {
+        WalletManager.Instance.ForgetWallet(WalletAddress);
     }
 }

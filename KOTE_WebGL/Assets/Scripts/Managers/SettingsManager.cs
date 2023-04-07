@@ -28,9 +28,7 @@ public class SettingsManager : MonoBehaviour
 
         GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerSettingsPanel);
 
-        GameManager.Instance.EVENT_REQUEST_LOGIN_SUCESSFUL.AddListener(OnLogin);
-        GameManager.Instance.EVENT_REQUEST_LOGOUT_ERROR.AddListener(OnLogoutError);
-        GameManager.Instance.EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(OnLogoutSuccessful);
+        GameManager.Instance.EVENT_AUTHENTICATED.AddListener(EnableLogoutAndWalletsButtons);
 
         logoutHyperlink.interactable = true;
                
@@ -45,6 +43,11 @@ public class SettingsManager : MonoBehaviour
     public void OnVolumeClicked()
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
+    }
+
+    public void OnBackButton()
+    {
+        GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.Invoke(false);
     }
     
     public void OnVolumeChanged(string volumeType)
@@ -105,26 +108,13 @@ public class SettingsManager : MonoBehaviour
             {
                 logoutHyperlink.interactable = false;
                 manageWallets.interactable = false;
-                GameManager.Instance.EVENT_REQUEST_LOGOUT.Invoke(PlayerPrefs.GetString("session_token"));
+                AuthenticationManager.Instance.Logout();
             });
     }
 
-    public void OnLogin(string name, int fief)
+    public void EnableLogoutAndWalletsButtons()
     {
         logoutHyperlink.interactable = true;
         manageWallets.interactable = true;
-    }
-
-    public void OnLogoutError(string errorMessage)
-    {
-        Debug.Log($"Logout error: {errorMessage}");
-    }
-
-    public void OnLogoutSuccessful(string message)
-    {
-        PlayerPrefs.SetString("session_token", "");
-        PlayerPrefs.Save();
-
-        Debug.Log($"{message}");
     }
 }
