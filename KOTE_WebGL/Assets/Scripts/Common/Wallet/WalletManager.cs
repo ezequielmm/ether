@@ -45,6 +45,11 @@ public class WalletManager : ISingleton<WalletManager>
     {
         await ConnectWallet();
         WalletStatusModified.Invoke();
+        if (string.IsNullOrEmpty(ActiveWallet))
+        {
+            Debug.LogWarning("[WalletManager] no active wallet received!");
+            return;
+        }
         bool ownWallet = await ConfirmActiveWalletOwnership();
         WalletStatusModified.Invoke();
         if (!ownWallet)
@@ -53,7 +58,12 @@ public class WalletManager : ISingleton<WalletManager>
         }
 
         RawWalletData walletData = await GetNftsInWallet(ActiveWallet);
+        
         WalletStatusModified.Invoke();
+        if (walletData == null)
+        {
+            Debug.LogWarning("No Wallet Contents retrieved");
+        }
         if (NftsInWallet.Keys.Count == 0)
         {
             // Could not get knights
@@ -204,6 +214,10 @@ public class WalletManager : ISingleton<WalletManager>
     {
         Debug.Log($"[WalletManager] Fetching Wallet Contents...");
         RawWalletData nftData = await FetchData.Instance.GetNftsInWallet(walletAddress);
+        if (nftData == null)
+        {
+            Debug.LogWarning("No Wallet Contents Received");
+        }
         Debug.Log($"[WalletManager] Wallet Contents Received.");
         foreach (ContractData contractData in nftData.Contracts)
         {

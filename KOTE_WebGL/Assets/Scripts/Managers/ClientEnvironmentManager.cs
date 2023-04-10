@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
 {
     private static ClientEnvironmentManager instance;
-    
+
     public static ClientEnvironmentManager Instance
     {
         get
@@ -21,11 +21,17 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
             return instance;
         }
     }
-    
+
     // this is the first thing called when the game starts
     public async UniTask StartEnvironmentManger()
     {
 #if UNITY_WEBGL
+        if (Application.absoluteURL.Contains("localhost"))
+        {
+            SetEnvironmentData(null);
+            return;
+        }
+
         using (UnityWebRequest request =
                UnityWebRequest.Get($"{Application.absoluteURL}/environment.json"))
         {
@@ -74,12 +80,12 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
 
     public void SetEnvironmentData(EnvironmentUrls urls)
     {
-        if (urls != null)
+        if (urls != null && urls.DoAllUrlsExist())
         {
             _environmentUrls = urls;
             return;
         }
-        
+
         Environment = DetermineEnvironment(Application.absoluteURL);
         UpdateUrls(Environment);
     }
@@ -137,41 +143,41 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
             case Environments.Snapshot:
                 _environmentUrls = new EnvironmentUrls
                 {
-                WebRequestURL = $"https://gateway.villagers.dev.kote.robotseamonster.com",
-                SkinURL = $"https://koteskins.robotseamonster.com/",
-                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/",
-                PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/",
-                WebSocketURL = $"https://api.villagers.dev.kote.robotseamonster.com"
+                    WebRequestURL = $"https://gateway.villagers.dev.kote.robotseamonster.com",
+                    SkinURL = $"https://koteskins.robotseamonster.com/",
+                    GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/",
+                    PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/",
+                    WebSocketURL = $"https://api.villagers.dev.kote.robotseamonster.com"
                 };
                 break;
             case Environments.Stage:
                 _environmentUrls = new EnvironmentUrls
                 {
-                WebRequestURL = $"https://gateway.stage.kote.robotseamonster.com",
-                SkinURL = $"https://koteskins.robotseamonster.com/",
-                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/",
-                PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/",
-                WebSocketURL = $"https://api.stage.kote.robotseamonster.com"
+                    WebRequestURL = $"https://gateway.stage.kote.robotseamonster.com",
+                    SkinURL = $"https://koteskins.robotseamonster.com/",
+                    GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/",
+                    PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/",
+                    WebSocketURL = $"https://api.stage.kote.robotseamonster.com"
                 };
                 break;
             case Environments.TestAlpha:
                 _environmentUrls = new EnvironmentUrls
                 {
-                WebRequestURL = $"https://gateway.alpha.kote.robotseamonster.com",
-                SkinURL = $"https://koteskins.robotseamonster.com/",
-                GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/",
-                PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/",
-                WebSocketURL = $"https://api.alpha.kote.robotseamonster.com"
+                    WebRequestURL = $"https://gateway.alpha.kote.robotseamonster.com",
+                    SkinURL = $"https://koteskins.robotseamonster.com/",
+                    GearIconURL = "https://koteskins.robotseamonster.com/GearIcons/",
+                    PortraitElementURL = "https://koteskins.robotseamonster.com/Portraits/",
+                    WebSocketURL = $"https://api.alpha.kote.robotseamonster.com"
                 };
                 break;
             case Environments.Alpha:
                 _environmentUrls = new EnvironmentUrls
                 {
-                WebRequestURL = $"https://gateway.alpha.knightsoftheether.com",
-                SkinURL = $"https://s3.amazonaws.com/koteskins.knightsoftheether.com/",
-                PortraitElementURL = "https://s3.amazonaws.com/koteskins.robotseamonster.com/Portraits/",
-                GearIconURL = $"https://s3.amazonaws.com/koteskins.knightsoftheether.com/GearIcons",
-                WebSocketURL = $"https://api.alpha.knightsoftheether.com:443"
+                    WebRequestURL = $"https://gateway.alpha.knightsoftheether.com",
+                    SkinURL = $"https://s3.amazonaws.com/koteskins.knightsoftheether.com/",
+                    PortraitElementURL = "https://s3.amazonaws.com/koteskins.robotseamonster.com/Portraits/",
+                    GearIconURL = $"https://s3.amazonaws.com/koteskins.knightsoftheether.com/GearIcons",
+                    WebSocketURL = $"https://api.alpha.knightsoftheether.com:443"
                 };
                 break;
 #if UNITY_EDITOR
@@ -213,4 +219,16 @@ public class EnvironmentUrls
     [JsonProperty("gear_icon_url")] public string GearIconURL;
     [JsonProperty("portrait_url")] public string PortraitElementURL;
     [JsonProperty("socket_url")] public string WebSocketURL;
+
+    public bool DoAllUrlsExist()
+    {
+        bool allExist = true;
+        if (string.IsNullOrEmpty(WebRequestURL)) allExist = false;
+        if (string.IsNullOrEmpty(SkinURL)) allExist = false;
+        if (string.IsNullOrEmpty(GearIconURL)) allExist = false;
+        if (string.IsNullOrEmpty(PortraitElementURL)) allExist = false;
+        if (string.IsNullOrEmpty(WebSocketURL)) allExist = false;
+
+        return allExist;
+    }
 }

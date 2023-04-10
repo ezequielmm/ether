@@ -111,6 +111,11 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
     public async UniTask<RawWalletData> GetNftsInWallet(string wallet)
     {
+        if (string.IsNullOrEmpty(wallet))
+        {
+            Debug.LogError("Wallet contents were requested without a valid wallet");
+            return null;
+        }
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.WalletData) + $"/{wallet}";
         Debug.Log(requestUrl);
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))

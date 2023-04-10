@@ -23,7 +23,8 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
     void Start()
     {
         GameManager.Instance.EVENT_UPDATE_PLAYER_SKIN.AddListener(SkinReset);
-        SkinReset();
+        // only load a skin if there's data to go off of.
+        if(NftManager.Instance.GetAllNfts().Count > 0) SkinReset();
     }
 
     private void SkinReset()
