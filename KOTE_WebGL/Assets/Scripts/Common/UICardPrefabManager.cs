@@ -92,7 +92,8 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
                 }
                 else
                 {
-                    var description = status.args.description ?? "TODO // Add Description";
+                    var description = status.args.description ?? "";
+                    if (string.IsNullOrEmpty(description)) continue;
                     tooltips.Add(new Tooltip()
                     {
                         title = Utils.PrettyText(status.name),
