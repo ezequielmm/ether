@@ -28,7 +28,8 @@ public enum GameStatuses
     Camp,
     RoyalHouse,
     RewardsPanel,
-    GameOver
+    GameOver,
+    ScoreBoard
 }
 
 [Serializable]
