@@ -5,21 +5,40 @@ using Newtonsoft.Json;
 [Serializable]
 public class RawWalletData
 {
-    [JsonProperty("tokens")]
-    public List<ContractData> Contracts = new();
+    [JsonProperty("tokens")] public List<ContractData> Contracts = new();
 }
 
 [Serializable]
 public class ContractData
 {
     public string contract_address;
+    public string characterClass;
     public int token_count;
     public List<TokenData> tokens = new();
 
     [JsonIgnore]
-    public NftContract ContractType => (tokens?.Count <= 0 || tokens[0] == null)
-        ? NftContract.None
-        : tokens[0].name.ParseToEnum<NftContract>();
+    public NftContract ContractType
+    {
+        get
+        {
+            if (tokens?.Count <= 0) return NftContract.None;
+            switch (characterClass)
+            {
+                case "BlessedVillager":
+                case "blessed-villager":
+                    return NftContract.BlessedVillager;
+                case "Villager":
+                case "villager":
+                    return NftContract.Villager;
+                case "KnightsOfTheEther":
+                case "Knights":
+                case "knight":
+                    return NftContract.Knights;
+                default:
+                    return NftContract.None;
+            }
+        }
+    }
 }
 
 [Serializable]
