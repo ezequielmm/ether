@@ -124,6 +124,7 @@ namespace KOTE.UI.Armory
                 new Nft()
                 {
                     ImageUrl = "test.com",
+                    adaptedImageURI = "test.com",
                     TokenId = 0,
                     Traits = new Dictionary<Trait, string>()
                     {
@@ -134,6 +135,7 @@ namespace KOTE.UI.Armory
                 new Nft()
                 {
                     ImageUrl = "nope",
+                    adaptedImageURI = "nope",
                     TokenId = 9999,
                     Traits = new Dictionary<Trait, string>()
                     {

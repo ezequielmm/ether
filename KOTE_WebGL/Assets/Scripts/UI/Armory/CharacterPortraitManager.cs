@@ -45,13 +45,12 @@ public class CharacterPortraitManager : MonoBehaviour
         inactiveOverlay.SetActive(true);
     }
 
-    private void ShowKnightPortrait(Nft metadata)
+    private async void ShowKnightPortrait(Nft metadata)
     {
         villager.SetActive(false);
         knight.SetActive(true);
 
-        //TODO get correct knight image
-        SetDefault();
+        knightImage.sprite = await PortraitSpriteManager.Instance.GetKnightPortrait(metadata);
     }
 
     private async void ShowVillagerPortrait(Nft metadata)
