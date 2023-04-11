@@ -48,4 +48,5 @@ public class TokenData
     public string name;
     public bool can_play;
     public Nft metadata;
+    public string adaptedImageURI;
 }

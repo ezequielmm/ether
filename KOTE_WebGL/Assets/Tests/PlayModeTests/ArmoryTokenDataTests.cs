@@ -14,6 +14,7 @@ namespace KOTE.UI.Armory
         private Nft testMetaData = new Nft()
         {
             ImageUrl = "test.com",
+            adaptedImageURI = "test.com",
             TokenId = 0,
             Traits = new Dictionary<Trait, string>()
             {

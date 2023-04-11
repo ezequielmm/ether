@@ -176,7 +176,7 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
                     WebRequestURL = $"https://gateway.alpha.knightsoftheether.com",
                     SkinURL = $"https://s3.amazonaws.com/koteskins.knightsoftheether.com/",
                     PortraitElementURL = "https://s3.amazonaws.com/koteskins.robotseamonster.com/Portraits/",
-                    GearIconURL = $"https://s3.amazonaws.com/koteskins.knightsoftheether.com/GearIcons",
+                    GearIconURL = $"https://s3.amazonaws.com/koteskins.knightsoftheether.com/GearIcons/",
                     WebSocketURL = $"https://api.alpha.knightsoftheether.com:443"
                 };
                 break;

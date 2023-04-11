@@ -6,7 +6,8 @@ using UnityEngine.Events;
 
 public class PortraitSpriteManager : SingleTon<PortraitSpriteManager>
 {
-    private Dictionary<Trait, Dictionary<string, Sprite>> spriteCache = new();
+    private Dictionary<Trait, Dictionary<string, Sprite>> villagerCache = new();
+    private Dictionary<int, Sprite> knightCache = new();
 
     public async void CacheAllSprites()
     {
@@ -14,8 +15,11 @@ public class PortraitSpriteManager : SingleTon<PortraitSpriteManager>
 
         foreach (Nft nft in nfts)
         {
-            //TODO update this to work with knights
-            if(nft.isKnight) continue;
+            if(nft.isKnight)
+            {
+                await GetKnightPortrait(nft);
+                continue;
+            }
             foreach (KeyValuePair<Trait,string> traitPair in nft.Traits)
             {
                 if (traitPair.Value.Contains("None")) continue;
@@ -23,12 +27,20 @@ public class PortraitSpriteManager : SingleTon<PortraitSpriteManager>
             }
         }
     }
+
+    public async UniTask<Sprite> GetKnightPortrait(Nft nft)
+    {
+        if (knightCache.ContainsKey(nft.TokenId)) return knightCache[nft.TokenId];
+        Sprite nftPortrait = await nft.GetImage();
+        knightCache[nft.TokenId] = nftPortrait;
+        return nftPortrait;
+    }
     
     public async UniTask<Sprite> GetPortraitSprite(Trait trait, string spriteName)
     {
-        if (spriteCache.ContainsKey(trait) && spriteCache[trait].ContainsKey(spriteName))
+        if (villagerCache.ContainsKey(trait) && villagerCache[trait].ContainsKey(spriteName))
         {
-            return spriteCache[trait][spriteName];
+            return villagerCache[trait][spriteName];
         }
 
         return await RequestPortraitSprite(trait, spriteName);
@@ -46,19 +58,19 @@ public class PortraitSpriteManager : SingleTon<PortraitSpriteManager>
         }
 
         CacheSprite(spriteTexture, trait, spriteName);
-        return spriteCache[trait][spriteName];
+        return villagerCache[trait][spriteName];
     }
 
     private void CacheSprite(Texture2D spriteTexture, Trait trait, string spriteName)
     {
-        if (spriteCache.ContainsKey(trait))
+        if (villagerCache.ContainsKey(trait))
         {
-            spriteCache[trait][spriteName] = spriteTexture.ToSprite();
+            villagerCache[trait][spriteName] = spriteTexture.ToSprite();
         }
         else
         {
-            spriteCache[trait] = new Dictionary<string, Sprite>();
-            spriteCache[trait][spriteName] = spriteTexture.ToSprite();
+            villagerCache[trait] = new Dictionary<string, Sprite>();
+            villagerCache[trait][spriteName] = spriteTexture.ToSprite();
         }
     }
 }

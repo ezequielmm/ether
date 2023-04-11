@@ -9,12 +9,11 @@ public class NftItem : MonoBehaviour
     public async void Populate(Nft _nft)
     {
         this.Nft = _nft;
-        // TODO Reactivate this once correct route is found
-        /*Sprite image = await Nft.GetImage();
+        Sprite image = await Nft.GetImage();
         if (image != null)
         {
             nftImage.sprite = image;
             return;
-        }*/
+        }
     }
 }

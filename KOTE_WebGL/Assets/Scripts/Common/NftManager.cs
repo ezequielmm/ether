@@ -98,6 +98,7 @@ public class NftManager : ISingleton<NftManager>
 
                 token.metadata.TokenId = int.Parse(token.token_id);
                 token.metadata.Contract = contract.ContractType;
+                token.metadata.adaptedImageURI = token.adaptedImageURI;
                 token.metadata.CanPlay = token.can_play;
                 Nfts[contract.ContractType].Add(token.metadata);
             }

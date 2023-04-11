@@ -20,20 +20,24 @@ public class Nft
     [JsonProperty("attributes")]
     [JsonConverter(typeof(TraitDictionaryConverter))]
     public Dictionary<Trait, string> Traits;
+    [JsonProperty("can_play")]
     public bool CanPlay;
+    public string adaptedImageURI;
 
     [JsonIgnore]
     public Sprite Image = null;
     
     public bool isKnight => Contract == NftContract.Knights;
 
-    private async UniTask<Sprite> GetImage() 
+    public async UniTask<Sprite> GetImage() 
     {
         if (Image != null) 
         {
             return Image;
         }
-        Texture2D texture = await FetchData.Instance.GetTexture(ImageUrl);
+
+        if (string.IsNullOrEmpty(adaptedImageURI)) return null;
+        Texture2D texture = await FetchData.Instance.GetTexture(adaptedImageURI);
         if (texture == null)
             return null;
         Image = texture.ToSprite();
