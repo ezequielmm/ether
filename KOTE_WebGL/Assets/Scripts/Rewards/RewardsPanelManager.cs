@@ -89,6 +89,7 @@ public class RewardsPanelManager : MonoBehaviour
         newCard.Populate(reward.card);
         newCard.cardSelectorToggle.onValueChanged.AddListener((isOn) =>
         {
+            GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
             GameManager.Instance.EVENT_REWARD_SELECTED.Invoke(reward.id);
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Reward");
             ActivateCardSelectPanel(false);
