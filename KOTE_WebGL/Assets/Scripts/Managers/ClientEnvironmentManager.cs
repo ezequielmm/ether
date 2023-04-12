@@ -27,7 +27,7 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
     {
 #if UNITY_WEBGL
         using (UnityWebRequest request =
-               UnityWebRequest.Get($"{Application.absoluteURL}/environment.json"))
+               UnityWebRequest.Get($"{Application.absoluteURL}environment.json"))
         {
             try
             {
