@@ -15,14 +15,24 @@ public class LoadingManager : MonoBehaviour
 
     private void Start()
     {
+        if (GameManager.Instance.firstLoad)
+        {
+            LoadWithEnvironmentCheck();
+            return;
+        }
         StartCoroutine(LoadAsynchronously(GameManager.Instance.nextSceneToLoad.ToString()));
         DontDestroyOnLoad(gameObject);
     }
 
+    private async void LoadWithEnvironmentCheck()
+    {
+        await ClientEnvironmentManager.Instance.StartEnvironmentManger();
+        StartCoroutine(LoadAsynchronously(GameManager.Instance.nextSceneToLoad.ToString()));
+        GameManager.Instance.firstLoad = false;
+    }
+
     IEnumerator LoadAsynchronously(string sceneName)
     {
-        yield return ClientEnvironmentManager.Instance.StartEnvironmentManger();
-
         // The Application loads the Scene in the background as the current Scene runs.
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);

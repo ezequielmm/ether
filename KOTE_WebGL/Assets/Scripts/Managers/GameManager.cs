@@ -297,6 +297,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector]
     public UnityEvent<string, string, string> EVENT_SEND_BUG_FEEDBACK = new UnityEvent<string, string, string>();
 
+    public bool firstLoad = true;
 
     public inGameScenes
         nextSceneToLoad
