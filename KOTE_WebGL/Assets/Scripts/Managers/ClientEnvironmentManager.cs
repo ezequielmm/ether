@@ -26,29 +26,30 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
     public async UniTask StartEnvironmentManger()
     {
 #if UNITY_WEBGL
-        if (Application.absoluteURL.Contains("localhost"))
-        {
-            SetEnvironmentData(null);
-            return;
-        }
-
         using (UnityWebRequest request =
-               UnityWebRequest.Get($"{Application.absoluteURL}/environment.json"))
+               UnityWebRequest.Get($"{Application.absoluteURL}environment.json"))
         {
-            await request.SendWebRequest();
-            if (request.result != UnityWebRequest.Result.Success)
-            {
-                SetEnvironmentData(null);
-                return;
-            }
-
             try
             {
-                EnvironmentUrls environmentUrls =
-                    JsonConvert.DeserializeObject<EnvironmentUrls>(request.downloadHandler.text);
-                SetEnvironmentData(environmentUrls);
+                await request.SendWebRequest();
+                if (request.result != UnityWebRequest.Result.Success)
+                {
+                    SetEnvironmentData(null);
+                    return;
+                }
+
+                try
+                {
+                    EnvironmentUrls environmentUrls =
+                        JsonConvert.DeserializeObject<EnvironmentUrls>(request.downloadHandler.text);
+                    SetEnvironmentData(environmentUrls);
+                }
+                catch (ArgumentNullException ex)
+                {
+                    SetEnvironmentData(null);
+                }
             }
-            catch (ArgumentNullException ex)
+            catch (UnityWebRequestException e)
             {
                 SetEnvironmentData(null);
             }
@@ -128,6 +129,8 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
         switch (currentEnvironment)
         {
             case Environments.Dev:
+            // unknown usually means a local build
+            case Environments.Unknown:
             default:
                 _environmentUrls = new EnvironmentUrls
                 {
@@ -138,8 +141,6 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
                     WebSocketURL = $"https://api.dev.kote.robotseamonster.com"
                 };
                 break;
-            // unknown usually means a local build
-            case Environments.Unknown:
             case Environments.Snapshot:
                 _environmentUrls = new EnvironmentUrls
                 {
