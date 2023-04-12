@@ -1,8 +1,7 @@
-using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using Newtonsoft.Json;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +21,7 @@ public class MerchantNodeManager : MonoBehaviour
 
     [Header("Shop Keeper")]
     public GameObject SpeachBubbleContainer;
-    public TMPro.TextMeshProUGUI SpeachBubbleText;
+    public TextMeshProUGUI SpeachBubbleText;
 
     public Image ShopKeepImage;
     public List<Sprite> ShopKeepSprites = new List<Sprite>();
@@ -31,11 +30,11 @@ public class MerchantNodeManager : MonoBehaviour
 
     [Header("Checkout")]
     [SerializeField]
-    private TMPro.TextMeshProUGUI totalText;
+    private TextMeshProUGUI totalText;
     [SerializeField]
     private Button buyButton;
     [SerializeField]
-    private TMPro.TextMeshProUGUI buyButtonText;
+    private TextMeshProUGUI buyButtonText;
 
     [Header("Services")]
     [SerializeField]
@@ -47,7 +46,11 @@ public class MerchantNodeManager : MonoBehaviour
     [SerializeField]
     private Button upgradeButton;
     [SerializeField]
+    private TMP_Text upgradeCost;
+    [SerializeField]
     private Button removeButton;
+    [SerializeField]
+    private TMP_Text removeCost;
 
     private List<MerchantItem<MerchantData.Merchant<Card>>> cardItems = new List<MerchantItem<MerchantData.Merchant<Card>>>();
     private List<MerchantItem<MerchantData.Merchant<PotionData>>> potionItems = new List<MerchantItem<MerchantData.Merchant<PotionData>>>();
@@ -103,6 +106,7 @@ public class MerchantNodeManager : MonoBehaviour
         PopulatePotions();
         PopulateTrinkets();
         PopulateShopKeep();
+        PopulateButtonCosts();
 
         ResetItems();
     }
@@ -146,6 +150,12 @@ public class MerchantNodeManager : MonoBehaviour
         }
     }
 
+    private void PopulateButtonCosts()
+    {
+        upgradeCost.text = merchant.upgradeCost.ToString();
+        removeCost.text = merchant.destroyCost.ToString();
+    }
+
     /// <summary>
     /// Removes all cards, potions, and trinkets from the store
     /// </summary>
@@ -154,19 +164,19 @@ public class MerchantNodeManager : MonoBehaviour
         // Clear cards
         foreach (Transform child in cardPanel)
         {
-            GameObject.Destroy(child.gameObject);
+            Destroy(child.gameObject);
         }
 
         // Clear potions
         foreach (Transform child in potionPanel)
         {
-            GameObject.Destroy(child.gameObject);
+            Destroy(child.gameObject);
         }
 
         // Clear trinkets
         foreach (Transform child in trinketPanel)
         {
-            GameObject.Destroy(child.gameObject);
+            Destroy(child.gameObject);
         }
         cardItems.Clear();
         trinketItems.Clear();
