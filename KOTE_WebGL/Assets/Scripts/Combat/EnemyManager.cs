@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class EnemyManager : MonoBehaviour, ITooltipSetter
 {
-    private EnemyData enemyData;
+    public CanvasGroupFade barFader;
     public ParticleSystem hitPS;
     public ParticleSystem explodePS;
     public Slider healthBar;
@@ -23,6 +23,8 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     public bool setEnemy = false;
 
     [SerializeField] private List<GameObject> enemyMap;
+    
+    private EnemyData enemyData;
     private EnemyPrefab enemyPlacementData;
     private GameObject activeEnemy;
 
@@ -421,6 +423,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
                 spineFadeout.OnFadeoutComplete += DestroyOnFadeout;
                 spineFadeout.enabled = true;
             });
+            barFader.FadeOutUi();
         }
     }
 
