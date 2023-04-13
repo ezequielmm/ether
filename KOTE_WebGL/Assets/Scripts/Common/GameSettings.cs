@@ -91,7 +91,7 @@ public static class GameSettings
 
 
 #if UNITY_EDITOR
-    public const string EDITOR_WALLET = "0x66956Fe08D7Bc88fe70216502fD8a6e4b7f269c5";
+    public const string EDITOR_WALLET = "0x55178F15aC073Af664DE9e7EbC4cd3Ba739ec7E6";
 #endif
 
     public const int INITIAL_SKIN_CACHE = 3;
@@ -144,6 +144,7 @@ public static class GameSettings
         Description = "The default player character",
         Image = null,
         ImageUrl = "",
+        adaptedImageURI = "",
         Name = "Basic Villager",
         TokenId = 1,
         Traits = new Dictionary<Trait, string>
