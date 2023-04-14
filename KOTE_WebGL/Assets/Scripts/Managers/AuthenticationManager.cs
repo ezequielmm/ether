@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class AuthenticationManager : SingleTon<AuthenticationManager>
 {
+    private void Start()
+    {
+        GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(ClearSessionToken);
+    }
+    
     public bool Authenticated => !string.IsNullOrEmpty(GetSessionToken());
     public async UniTask<bool> Login(string email, string password) 
     {
@@ -66,6 +71,12 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
     {
         PlayerPrefs.DeleteKey("session_token");
         PlayerPrefs.Save();
+    }
+    
+    // override for listener
+    public void ClearSessionToken(string data)
+    {
+        ClearSessionToken();
     }
 
     public string GetSessionToken()
