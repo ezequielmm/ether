@@ -88,12 +88,6 @@ public static class GameSettings
     public static LogType FilterLogType = LogType.Log;
 
     public static int MAX_OPENSEA_CONTENT_REQUEST = 20;
-
-
-#if UNITY_EDITOR
-    public const string EDITOR_WALLET = "0x55178F15aC073Af664DE9e7EbC4cd3Ba739ec7E6";
-#endif
-
     public const int INITIAL_SKIN_CACHE = 3;
 
     // Player Skin Defaults
