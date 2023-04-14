@@ -115,7 +115,6 @@ namespace KOTE.UI.Armory
                     break;
                 case NftContract.NonTokenVillager:
                     return "Basic Villager";
-                    
             }
 
             return contractName + " #" + tokenData.TokenId;
@@ -254,13 +253,19 @@ namespace KOTE.UI.Armory
         {
             playButton.interactable = false;
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-            bool success =
+            ExpeditionStartData startData =
                 await FetchData.Instance.RequestNewExpedition(curNode.Value.MetaData.Contract, curNode.Value.Id,
                     equippedGear.Values.ToList());
-            if (success)
+            if (startData.expeditionCreated)
             {
                 OnExpeditionConfirmed();
                 return;
+            }
+
+            if (!string.IsNullOrEmpty(startData.reason))
+            {
+                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(startData.reason, () => { },
+                    () => { }, new[] { "Close", "" });
             }
 
             playButton.interactable = curNode.Value.MetaData.CanPlay;
