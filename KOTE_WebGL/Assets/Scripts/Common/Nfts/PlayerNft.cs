@@ -152,17 +152,17 @@ public abstract class PlayerNft
 
         string[] baseImageName = imagePath.Split('/');
         if (baseImageName.Length > 2 && baseImageName[2].Contains("FX")) return baseImageName[2];
-            string imageName = (baseImageName.Length > 1) ? baseImageName[1] : baseImageName[0];
+        string imageName = (baseImageName.Length > 1) ? baseImageName[1] : baseImageName[0];
         imageName = imageName.TrimEnd(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });
         if (imageName.Contains("placeholder")) return null;
 
         return imageName;
     }
-    
+
     protected bool DoesSkinSpriteExist(TraitSprite spriteData)
     {
         TraitSprite skinSprite = SkinSprites.Find(x => x.ImageName == spriteData.ImageName);
-        
+
 
         if (skinSprite == null)
         {
@@ -179,9 +179,8 @@ public abstract class PlayerNft
         {
             return false;
         }
-        
-        return defaultSprite.AttachmentIndex == spriteData.AttachmentIndex;
 
+        return defaultSprite.AttachmentIndex == spriteData.AttachmentIndex;
     }
 
     protected string GetSkinName(Trait trait, string value)
@@ -200,7 +199,7 @@ public abstract class PlayerNft
             skinName = "Bucket";
         }
 
-        skinName = $"{trait}_{skinName}";
+        skinName = (trait == Trait.Crest) ? $"{trait}s_{skinName}" : $"{trait}_{skinName}";
         return skinName;
     }
 
