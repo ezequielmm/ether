@@ -54,6 +54,13 @@ public class DestroyOnGameStatus : MonoBehaviour
                 {
                     transform.parent = null;
                 }
+                // if the object isn't active, just destroy it immediately
+                if (!gameObject.activeInHierarchy)
+                {
+                    Destroy(death.DisableNotDestroy);
+                    return;
+                }
+                // else animate it out
                 StartCoroutine(DestroySelf(death));
             }
         }
@@ -61,6 +68,7 @@ public class DestroyOnGameStatus : MonoBehaviour
 
     IEnumerator DestroySelf(CauseOfDeath death) 
     {
+        
         if (death.ShrinkToDie) 
         {
             transform.DOScale(Vector3.zero, death.AnimationTime).OnComplete(() => { Destroy(death.DisableNotDestroy); });
