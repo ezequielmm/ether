@@ -116,6 +116,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
             Debug.LogError("Wallet contents were requested without a valid wallet");
             return null;
         }
+
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.WalletData) + $"/{wallet}";
         Debug.Log(requestUrl);
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
@@ -144,12 +145,16 @@ public class FetchData : DataManager, ISingleton<FetchData>
         }
     }
 
-    public async UniTask<bool> RequestNewExpedition(NftContract characterType, int selectedNft,
+    public async UniTask<ExpeditionStartData> RequestNewExpedition(NftContract characterType, int selectedNft,
         List<GearItemData> equippedGear)
     {
+        if (!UserDataManager.Instance.VerifyAccountExists()) return new ExpeditionStartData
+        {
+            expeditionCreated = false
+        };
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.ExpeditionRequest);
 
-        ExpeditionStartData startData = new ExpeditionStartData
+        ExpeditionStartSendData startData = new ExpeditionStartSendData
         {
             tokenType = characterType.ToString(),
             nftId = selectedNft,
@@ -171,10 +176,14 @@ public class FetchData : DataManager, ISingleton<FetchData>
             request.downloadHandler = new DownloadHandlerBuffer();
             string rawJson = await MakeJsonRequest(request);
 
-            if (string.IsNullOrEmpty(rawJson)) return false;
+            if (string.IsNullOrEmpty(rawJson)) return new ExpeditionStartData
+            {
+                expeditionCreated = false,
+                reason = "No Data Received"
+            };;
             rawJson = TryGetTestData(FetchType.NewExpedition, rawJson);
 
-            return ParseJsonWithPath<bool>(rawJson, "data.expeditionCreated");
+            return ParseJsonWithPath<ExpeditionStartData>(rawJson, "data");
         }
     }
 
@@ -261,7 +270,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
             ServerCommunicationLogger.Instance.LogCommunication(
                 $"Logout request result: " +
-                ((request.result == UnityWebRequest.Result.Success) ? request.downloadHandler.text : request.error), 
+                ((request.result == UnityWebRequest.Result.Success) ? request.downloadHandler.text : request.error),
                 CommunicationDirection.Incoming);
 
             if (request.result != UnityWebRequest.Result.Success)
@@ -269,6 +278,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
                 GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.Invoke(request.error);
                 return;
             }
+
             LogoutData logoutData = ParseJsonWithPath<LogoutData>(rawData);
             string message = logoutData.data.message;
 
@@ -283,7 +293,18 @@ public class FetchData : DataManager, ISingleton<FetchData>
         {
             request.AddAuthToken();
             string rawJson = await MakeJsonRequest(request);
-            return ParseJsonWithPath<ProfileData>(rawJson, "data");
+            if (request.result == UnityWebRequest.Result.ConnectionError ||
+                request.result == UnityWebRequest.Result.ProtocolError ||
+                request.result == UnityWebRequest.Result.DataProcessingError)
+            {
+                string pannelMessage = "Error Retrieving profile, please log in again.";
+                string[] buttons = { "Return To Login screen", string.Empty };
+                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(pannelMessage, () =>
+                {
+                    Logout();
+                }, null, buttons);
+            }
+                return ParseJsonWithPath<ProfileData>(rawJson, "data");
         }
     }
 
@@ -298,7 +319,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
             return ParseJsonWithPath<ExpeditionStatus>(rawJson, "data");
         }
     }
-    
+
     public async UniTask<ContestData> GetOngoingContest()
     {
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.CurrentContest);

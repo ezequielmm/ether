@@ -870,11 +870,18 @@ public class BugReportData
 }
 
 [Serializable]
-public class ExpeditionStartData
+public class ExpeditionStartSendData
 {
     public string tokenType;
     public int nftId;
     public List<GearItemData> equippedGear;
     public string walletId;
     public string contractId;
+}
+
+[Serializable]
+public class ExpeditionStartData
+{
+    public bool expeditionCreated;
+    public string reason;
 }
