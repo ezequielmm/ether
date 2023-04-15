@@ -31,6 +31,7 @@ public class ConfirmationPanelManager : MonoBehaviour
 
     private void ShowConfirmationPanel(string displayText, Action onConfirmFunction)
     {
+        if (confirmationPanelContainer.activeSelf) return;
         confirmButton.SetActive(true);
         cancelButton.SetActive(true);
 
@@ -46,6 +47,7 @@ public class ConfirmationPanelManager : MonoBehaviour
     //override to allow the back button to do more than hide the confirmation window
     private void ShowConfirmationPanelWithBackAction(string displayText, Action onConfirmFunction, Action onCancelFunction)
     {
+        if (confirmationPanelContainer.activeSelf) return;
         confirmButton.SetActive(true);
         cancelButton.SetActive(true);
 
@@ -62,6 +64,7 @@ public class ConfirmationPanelManager : MonoBehaviour
     private void ShowConfirmationPanelWIthFullControl(string displayText, Action onConfirmFunction,
         Action onCancelFunction, string[] buttonTexts)
     {
+        if (confirmationPanelContainer.activeSelf) return;
         if(buttonTexts.Length != 2) 
         {
             Debug.LogError($"[ConfirmationPanelManager] ShowConfirmationPanelWIthFullControl: buttonTexts must have 2 items.");

@@ -1,10 +1,8 @@
-using Cysharp.Threading.Tasks;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
 public class UserDataManager : SingleTon<UserDataManager>
 {
@@ -16,7 +14,7 @@ public class UserDataManager : SingleTon<UserDataManager>
     public NftContract NftContract => expeditionStatus?.TokenType ?? NftContract.None;
     public List<string> VerifiedWallets => profile?.ownedWallets ?? new();
     public ContestData ContestData => expeditionStatus?.Contest;
-    
+
     ProfileData profile = null;
     ExpeditionStatus expeditionStatus = null;
 
@@ -54,7 +52,8 @@ public class UserDataManager : SingleTon<UserDataManager>
         expeditionStatus = null;
         ExpeditionId = null;
     }
-    public async UniTask UpdatePlayerProfile() 
+
+    public async UniTask UpdatePlayerProfile()
     {
         profile = await FetchData.Instance.GetPlayerProfile();
         GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.Invoke(profile?.name ?? string.Empty, profile?.fief ?? -1);
@@ -91,14 +90,15 @@ public class UserDataManager : SingleTon<UserDataManager>
     public bool VerifyAccountExists()
     {
         bool noAccount = profile == null || string.IsNullOrEmpty(UserEmail);
-        
-        string pannelMessage = "Account Error. Please log in again.";
-        string[] buttons = { "Return To Login screen", string.Empty };
-        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(pannelMessage, () =>
+
+        if (noAccount)
         {
-            FetchData.Instance.Logout();
-        }, null, buttons);
-        
+            string pannelMessage = "Account Error. Please log in again.";
+            string[] buttons = { "Return To Login screen", string.Empty };
+            GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(pannelMessage,
+                () => { FetchData.Instance.Logout(); }, null, buttons);
+        }
+
         return !noAccount;
     }
 }
