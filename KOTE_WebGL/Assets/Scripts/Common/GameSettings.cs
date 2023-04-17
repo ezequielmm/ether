@@ -66,6 +66,7 @@ public static class GameSettings
     public static bool SHOW_PLAYER_INJURED_IDLE = false;
     public static float END_WAIT_TIMEOUT = 5;
     public const float UI_FADEOUT_TIME = 1.0f;
+    public const float POINTER_MOUSE_OFFSET = 1f;
 
     // Text Effects
     public static Color DEFAUT_TEXTEFFECT_COLOR = Color.green;
