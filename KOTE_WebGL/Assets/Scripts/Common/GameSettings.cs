@@ -5,6 +5,9 @@ public static class GameSettings
 {
     //MAP
     public const float COMPLETED_NODE_SCALE = 0.9f;
+    public const float BOSS_NODE_SCALE = 1.5f;
+    public const float ACTIVE_NODE_SCALE_MODIFIER = 1.2f;
+    public const float ACTIVE_BOSS_NODE_SCALE_MODIFER = 1.5f;
     public const bool COLOR_UNAVAILABLE_MAP_NODES = true;
     public const float MAP_SPRITE_ELEMENTS_Z = -20f;
     public const float MAP_SPRITE_NODE_X_OFFSET = 4.5f;

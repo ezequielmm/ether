@@ -1,11 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.U2D;
 
 [Serializable]
 public class NodeData : MonoBehaviour, ITooltipSetter
@@ -199,6 +197,7 @@ public class NodeData : MonoBehaviour, ITooltipSetter
         {
             nodeIcon.SetActive(true);
             activeIconImage = nodeIcon;
+            if (subType == NODE_SUBTYPES.combat_boss) nodeIcon.transform.localScale *= GameSettings.BOSS_NODE_SCALE;
 
             // resize the node depending on the status
             if (status == NODE_STATUS.disabled || status == NODE_STATUS.completed)
@@ -211,7 +210,9 @@ public class NodeData : MonoBehaviour, ITooltipSetter
             }
             else if (status == NODE_STATUS.active || status == NODE_STATUS.available)
             {
-                nodeIcon.transform.localScale *= 1.2f;
+                nodeIcon.transform.localScale *= (subType == NODE_SUBTYPES.combat_boss)
+                    ? GameSettings.ACTIVE_BOSS_NODE_SCALE_MODIFER
+                    : GameSettings.ACTIVE_NODE_SCALE_MODIFIER;
                 PlayActiveNodeAnimation(nodeIcon);
             }
 
