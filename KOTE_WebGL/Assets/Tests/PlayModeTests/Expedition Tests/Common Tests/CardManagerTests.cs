@@ -303,7 +303,7 @@ public class CardManagerTests : MonoBehaviour
     [Test]
     public void DoesMoveFromExhaustShrinkLocalScale()
     {
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.discard).Play();
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhausted, CARDS_POSITIONS_TYPES.discard).Play();
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.x);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.y);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.z);
@@ -314,7 +314,7 @@ public class CardManagerTests : MonoBehaviour
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_CARD_SHUFFLE.AddListener(() => eventFired = true);
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.draw);
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhausted, CARDS_POSITIONS_TYPES.draw);
         Assert.True(eventFired);
     }
 
@@ -323,7 +323,7 @@ public class CardManagerTests : MonoBehaviour
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_CARD_DISCARD.AddListener(() => eventFired = true);
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.discard);
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhausted, CARDS_POSITIONS_TYPES.discard);
         Assert.True(eventFired);
     }
 
@@ -332,7 +332,7 @@ public class CardManagerTests : MonoBehaviour
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_CARD_DRAW.AddListener(() => eventFired = true);
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.hand);
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhausted, CARDS_POSITIONS_TYPES.hand);
         Assert.True(eventFired);
     }
 
@@ -341,7 +341,7 @@ public class CardManagerTests : MonoBehaviour
     {
         bool eventFired = false;
         GameManager.Instance.EVENT_CARD_EXHAUST.AddListener(() => eventFired = true);
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.exhaust);
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.exhausted);
         Assert.True(eventFired);
     }
 
@@ -357,7 +357,7 @@ public class CardManagerTests : MonoBehaviour
     {
         Vector3 originPos = TransformUIToOrtho("DrawCardPile");
         cardManager.Populate(testCard, 0, new[] { originPos, originPos, originPos });
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.exhaust, moveDelay: 0.5f).Play();
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.draw, CARDS_POSITIONS_TYPES.exhausted, moveDelay: 0.5f).Play();
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(originPos.x, cardManager.transform.position.x, 0.01f);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(originPos.y, cardManager.transform.position.y, 0.01f);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(originPos.z, cardManager.transform.position.z, 0.01f);
@@ -410,7 +410,7 @@ public class CardManagerTests : MonoBehaviour
     public IEnumerator DoesMovingCardWithDelayScaleDownToZero()
     {
         Vector3 currentScale = cardManager.transform.localScale;
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.exhaust, moveDelay: 0.5f).Play();
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.discard, CARDS_POSITIONS_TYPES.exhausted, moveDelay: 0.5f).Play();
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.x);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.y);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.z);
@@ -473,7 +473,7 @@ public class CardManagerTests : MonoBehaviour
     [UnityTest]
     public IEnumerator DoesMovingCardScaleDownToZero()
     {
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.discard).Play();
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhausted, CARDS_POSITIONS_TYPES.discard).Play();
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.x);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.y);
         UnityEngine.Assertions.Assert.AreApproximatelyEqual(0.2f, cardManager.transform.localScale.z);
@@ -538,7 +538,7 @@ public class CardManagerTests : MonoBehaviour
     [UnityTest]
     public IEnumerator DoesMovingCardWithDelaProcessHideAndDeactivateCard()
     {
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.hand, moveDelay: 0.5f);
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhausted, CARDS_POSITIONS_TYPES.hand, moveDelay: 0.5f);
         //TODO return to this once HideAndDeactivateCard tests are written
         yield break;
     }
@@ -546,7 +546,7 @@ public class CardManagerTests : MonoBehaviour
     [UnityTest]
     public IEnumerator DoesMovingCardProcessHideAndDeactivateCard()
     {
-        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.hand);
+        cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhausted, CARDS_POSITIONS_TYPES.hand);
         //TODO return to this once HideAndDeactivateCard tests are written
         yield break;
     }
@@ -554,7 +554,7 @@ public class CardManagerTests : MonoBehaviour
     [Test]
     public void DoesMoveCardReturnSequence()
     {
-        Sequence sequence = cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhaust, CARDS_POSITIONS_TYPES.hand);
+        Sequence sequence = cardManager.MoveCard(CARDS_POSITIONS_TYPES.exhausted, CARDS_POSITIONS_TYPES.hand);
         Assert.NotNull(sequence);
     }
     

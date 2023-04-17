@@ -148,7 +148,7 @@ namespace KOTE.Expedition.Combat.Cards
                 case CARDS_POSITIONS_TYPES.hand:
                     origin = this.transform.position;
                     break;
-                case CARDS_POSITIONS_TYPES.exhaust:
+                case CARDS_POSITIONS_TYPES.exhausted:
                     origin = exhaustPileOrthoPosition;
                     break;
             }
@@ -198,7 +198,7 @@ namespace KOTE.Expedition.Combat.Cards
                 case CARDS_POSITIONS_TYPES.hand:
                     origin = this.transform.position;
                     break;
-                case CARDS_POSITIONS_TYPES.exhaust:
+                case CARDS_POSITIONS_TYPES.exhausted:
                     origin = exhaustPileOrthoPosition;
                     transform.localScale = Vector3.one * 0.2f;
                     break;
@@ -236,7 +236,7 @@ namespace KOTE.Expedition.Combat.Cards
                         destination.z = GameSettings.HAND_CARD_SHOW_UP_Z;
                         activateCardAfterMove = true;
                         break;
-                    case CARDS_POSITIONS_TYPES.exhaust:
+                    case CARDS_POSITIONS_TYPES.exhausted:
                         destination = Vector2.zero;
                         destination.z = GameSettings.HAND_CARD_SHOW_UP_Z;
                         discardAfterMove = true;
@@ -257,7 +257,7 @@ namespace KOTE.Expedition.Combat.Cards
                     case CARDS_POSITIONS_TYPES.hand:
                         GameManager.Instance.EVENT_CARD_DRAW.Invoke();
                         break;
-                    case CARDS_POSITIONS_TYPES.exhaust:
+                    case CARDS_POSITIONS_TYPES.exhausted:
                         GameManager.Instance.EVENT_CARD_EXHAUST.Invoke();
                         break;
                 }
@@ -301,7 +301,7 @@ namespace KOTE.Expedition.Combat.Cards
                 }
                 else
                 {
-                    if (destinationType == CARDS_POSITIONS_TYPES.exhaust)
+                    if (destinationType == CARDS_POSITIONS_TYPES.exhausted)
                     {
                         visualsManager.StopCardParticles(CARD_PARTICLE_TYPES.Move);
                         cardManager.cardActive = false;
@@ -349,7 +349,7 @@ namespace KOTE.Expedition.Combat.Cards
 
             cardManager.inTransit = false;
 
-            if (cardManager.currentPosition == CARDS_POSITIONS_TYPES.exhaust)
+            if (cardManager.currentPosition == CARDS_POSITIONS_TYPES.exhausted)
             {
                 StartCoroutine(ExhaustEffect());
                 return;

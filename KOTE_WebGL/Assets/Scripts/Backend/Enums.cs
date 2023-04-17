@@ -306,7 +306,7 @@ public enum CARDS_POSITIONS_TYPES
     none = 0,
     discard,
     hand,
-    exhaust,
+    exhausted,
     draw
 }
 
