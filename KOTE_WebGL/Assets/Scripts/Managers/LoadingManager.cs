@@ -1,12 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using TMPro;
-using UnityEngine.Networking;
-
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LoadingManager : MonoBehaviour
 {
@@ -20,6 +16,7 @@ public class LoadingManager : MonoBehaviour
             LoadWithEnvironmentCheck();
             return;
         }
+
         StartCoroutine(LoadAsynchronously(GameManager.Instance.nextSceneToLoad.ToString()));
         DontDestroyOnLoad(gameObject);
     }
@@ -50,7 +47,7 @@ public class LoadingManager : MonoBehaviour
             yield return null;
         }
 
-        GameManager.Instance.SceneLoaded();
+        // Game manager is now listening for the sceneLoaded event from SceneManager, instead of calling it directly
         Destroy(gameObject);
     }
 }
