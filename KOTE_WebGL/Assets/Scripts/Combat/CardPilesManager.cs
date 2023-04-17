@@ -155,7 +155,7 @@ namespace KOTE.Expedition.Combat.Cards.Piles
 
             foreach (Card card in data.data.exhausted)
             {
-                VerifyCardPosition(card, CARDS_POSITIONS_TYPES.exhaust, exhaustManager.exhaustDeck);
+                VerifyCardPosition(card, CARDS_POSITIONS_TYPES.exhausted, exhaustManager.exhaustDeck);
             }
         }
 
@@ -167,7 +167,10 @@ namespace KOTE.Expedition.Combat.Cards.Piles
             List<CardManager> originPile = GetCardPileFromType(origin);
             List<CardManager> destinationPile = GetCardPileFromType(destination);
 
-            originPile.Remove(curCard);
+            if (origin != CARDS_POSITIONS_TYPES.none)
+            {
+                originPile.Remove(curCard);
+            }
             destinationPile.Add(curCard);
         }
 
@@ -242,7 +245,7 @@ namespace KOTE.Expedition.Combat.Cards.Piles
                     return handManager.handDeck;
                 case CARDS_POSITIONS_TYPES.discard:
                     return discardManager.discardDeck;
-                case CARDS_POSITIONS_TYPES.exhaust:
+                case CARDS_POSITIONS_TYPES.exhausted:
                     return exhaustManager.exhaustDeck;
                 default:
                     return null;
