@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -316,6 +317,7 @@ public class GameManager : SingleTon<GameManager>
         EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(OnLogout);
         EVENT_SCENE_LOADED.AddListener(OnSceneLoad);
         SceneManager.activeSceneChanged += UpdateSoundVolume;
+        SceneManager.sceneLoaded += SceneLoaded;
         //EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ReturnToMainMenu);
     }
 
@@ -325,17 +327,21 @@ public class GameManager : SingleTon<GameManager>
         EVENT_VERSION_UPDATED.Invoke();
     }
 
-    public void SceneLoaded()
+    private void SceneLoaded(Scene scene, LoadSceneMode loadMode)
     {
-        if (CurrentScene == nextSceneToLoad)
+        inGameScenes loadedScene = scene.name.ParseToEnum<inGameScenes>();
+        if (nextSceneToLoad == loadedScene && CurrentScene == nextSceneToLoad)
         {
             //TODO this needs to be addressed better. This can cause false failures for tests if testing the same function multiple times
             Debug.LogError($"[GameManager] SceneLoaded Called Twice. Not running Event Scene Loaded.");
             return;
         }
 
-        CurrentScene = nextSceneToLoad;
-        EVENT_SCENE_LOADED.Invoke(nextSceneToLoad);
+        if (nextSceneToLoad == loadedScene)
+        {
+            CurrentScene = nextSceneToLoad;
+            EVENT_SCENE_LOADED.Invoke(nextSceneToLoad);
+        }
     }
 
     public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene
