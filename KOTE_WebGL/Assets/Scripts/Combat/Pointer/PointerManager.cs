@@ -8,6 +8,7 @@ using UnityEngine.U2D;
 public class PointerManager : MonoBehaviour
 {
     public GameObject pointerContainer;
+    public GameObject pointerArrow;
     public GameObject pointerTarget;
     public SpriteShapeController PointerLine;
 
@@ -78,15 +79,16 @@ public class PointerManager : MonoBehaviour
         Vector3 arrowPosition = mousePosition;
         if (mousePosition.x > pointerOrigin.x)
         {
-            arrowPosition.x -= 0.2f;
+            arrowPosition.x -= GameSettings.POINTER_MOUSE_OFFSET;
         }
 
         if (mousePosition.x < pointerOrigin.x)
         {
-            arrowPosition.x += 0.2f;
+            arrowPosition.x += GameSettings.POINTER_MOUSE_OFFSET;
         }
 
-        pointerTarget.transform.position = arrowPosition;
+        pointerArrow.transform.position = arrowPosition;
+        pointerTarget.transform.position = mousePosition;
         RotateArrowTowardsMouse(mousePosition, pointerOrigin);
 
         // Find which runable to use
@@ -140,7 +142,7 @@ public class PointerManager : MonoBehaviour
 
     private void RotateArrowTowardsMouse(Vector3 mousePosition, Vector3 cardPosition)
     {
-        Quaternion rotation = pointerTarget.transform.rotation;
+        Quaternion rotation = pointerArrow.transform.rotation;
         if (mousePosition.x < cardPosition.x)
         {
             rotation.z = -Mathf.Abs(rotation.z);
@@ -151,7 +153,7 @@ public class PointerManager : MonoBehaviour
             rotation.z = Mathf.Abs(rotation.z);
         }
 
-        pointerTarget.transform.rotation = rotation;
+        pointerArrow.transform.rotation = rotation;
     }
 
     private void MoveLine(Vector3 mousePosition, Vector3 cardPosition)
@@ -236,11 +238,11 @@ public class PointerManager : MonoBehaviour
     {
         if (localMousePosition.x < localCardPosition.x)
         {
-            localMousePosition.x += 0.2f;
+            localMousePosition.x += GameSettings.POINTER_MOUSE_OFFSET;
         }
         else
         {
-            localMousePosition.x -= 0.2f;
+            localMousePosition.x -= GameSettings.POINTER_MOUSE_OFFSET;
         }
 
         spline.SetPosition(splinePointCount - 1, localMousePosition);
