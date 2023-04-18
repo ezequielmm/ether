@@ -605,8 +605,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2861019503067169033}
   - {fileID: 4741796879764908620}
+  - {fileID: 2861019503067169033}
   m_Father: {fileID: 5587173521213615958}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -828,10 +828,10 @@ RectTransform:
   m_Father: {fileID: 2861019503067169033}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.023867566, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.98}
-  m_AnchoredPosition: {x: -0.23760986, y: -0.11340332}
-  m_SizeDelta: {x: 0.4750061, y: -0.22697061}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7605952267345259497
 CanvasRenderer:
@@ -1904,7 +1904,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1304551665820640842}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -2418,9 +2418,13 @@ MonoBehaviour:
   SpeachBubbleContainer: {fileID: 775310981461161461}
   SpeachBubbleText: {fileID: 548467716023032539}
   ShopKeepImage: {fileID: 7178956834778653290}
-  ShopKeepSprites:
-  - {fileID: 21300000, guid: 8a3d016a1bc059141ba4eb148f93b771, type: 3}
-  - {fileID: 21300000, guid: 09447c4b641533d4a917ac97ae35bec2, type: 3}
+  ShopKeepImages:
+  - image: {fileID: 21300000, guid: 8a3d016a1bc059141ba4eb148f93b771, type: 3}
+    anchorMin: {x: 0.02386757, y: 0}
+    anchorMax: {x: 1, y: 0.98}
+  - image: {fileID: 21300000, guid: 09447c4b641533d4a917ac97ae35bec2, type: 3}
+    anchorMin: {x: -0.15, y: 0}
+    anchorMax: {x: 1, y: 0.98}
   totalText: {fileID: 8047827205367564267}
   buyButton: {fileID: 6953822594447292803}
   buyButtonText: {fileID: 6072218185304727978}
@@ -3251,7 +3255,7 @@ RectTransform:
   - {fileID: 8737957673146214610}
   - {fileID: 3314933987964355721}
   m_Father: {fileID: 1304551665820640842}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.028262908, y: 0.028105756}
   m_AnchorMax: {x: 0.9781607, y: 0.97317207}
@@ -3273,7 +3277,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8508269496467480138}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -3303,7 +3307,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8508269496467480138}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 

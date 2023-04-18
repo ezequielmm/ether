@@ -24,7 +24,7 @@ public class MerchantNodeManager : MonoBehaviour
     public TextMeshProUGUI SpeachBubbleText;
 
     public Image ShopKeepImage;
-    public List<Sprite> ShopKeepSprites = new List<Sprite>();
+    public List<ShopkeepImageData> ShopKeepImages = new List<ShopkeepImageData>();
 
     MerchantData merchant;
 
@@ -111,9 +111,12 @@ public class MerchantNodeManager : MonoBehaviour
         ResetItems();
     }
 
-    private void PopulateShopKeep() 
+    private void PopulateShopKeep()
     {
-        ShopKeepImage.sprite = ShopKeepSprites[(int)Mathf.Clamp(merchant.shopkeeper, 0, ShopKeepSprites.Count - 1)];
+        int shopkeepIndex = (int)Mathf.Clamp(merchant.shopkeeper, 0, ShopKeepImages.Count - 1);
+        ShopKeepImage.sprite = ShopKeepImages[shopkeepIndex].image;
+        ShopKeepImage.rectTransform.anchorMin = ShopKeepImages[shopkeepIndex].anchorMin;
+        ShopKeepImage.rectTransform.anchorMax = ShopKeepImages[shopkeepIndex].anchorMax;
         SetSpeachBubble(merchant.speechBubble);
     }
 
@@ -343,6 +346,14 @@ public class MerchantNodeManager : MonoBehaviour
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
     }
+}
+
+[Serializable]
+public class ShopkeepImageData
+{
+    public Sprite image;
+    public Vector2 anchorMin;
+    public Vector2 anchorMax;
 }
 
 [Serializable]
