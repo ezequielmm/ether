@@ -69,12 +69,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3859afef1b536bd48959fe947e392495, type: 2}
   - {fileID: 11400000, guid: 1341f10191ae905489b15615418cba68, type: 2}
   - {fileID: 11400000, guid: c8a01ccf25469014a9072563e7d96557, type: 2}
-  trinketImageList:
-  - {fileID: 11400000, guid: e6c649da2d3ef4f4480ddd1a6e1268c4, type: 2}
-  - {fileID: 11400000, guid: 9ee3973eb1faa9e46ac6aa4b1ce64f6f, type: 2}
-  - {fileID: 11400000, guid: 02b8b74284bd9304b945ec54786b40ba, type: 2}
-  - {fileID: 11400000, guid: de98c7cdac64a0340984e74f14a49dab, type: 2}
-  - {fileID: 11400000, guid: 92b7cbedfa5bf6e43a86dcd614c54e23, type: 2}
+  trinketImageList: {fileID: 11400000, guid: e6c649da2d3ef4f4480ddd1a6e1268c4, type: 2}
   combatBackgroundList:
   - {fileID: 11400000, guid: 11f71193e73e7be42810fc75a9e09422, type: 2}
   - {fileID: 11400000, guid: 4f6ea6a8aee73794a93bd5c165b0e268, type: 2}
