@@ -19,6 +19,7 @@ public static class GameSettings
     public const float MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON = 2; // For continues
     public const float MAP_SCROLL_ANIMATION_DURATION = 5f; // For reveals
     public const float MAP_SCROLL_HOLD_DELAY_DURATION = 0f; // Button press before constant scroll
+    public const float MAP_MOUSE_SCROLL_SMOOTHING_MODIFIER = 0.2f; // higher is smoother
     public const float MAP_SCROLL_SPEED_CUTOFF = 0.01f; // Lowend cutoff when ending a scroll
     public const float MAP_REVEAL_ANIMATION_SPEED = 0.1f;
     public const float MAP_LEFT_EDGE_MULTIPLIER = 1f;
@@ -31,8 +32,8 @@ public static class GameSettings
     public const bool SHOW_MAP_REVEAL_ON_PORTAL = false;
 
     /// <summary>
-    /// Negitive to go to the left, positive for the right. Between -1 and 1. -1 is left edge, 1 is right edge, and 0 is center.
-    /// This affects where the knight is attepted to be put on the screen when focused.
+    /// Negative to go to the left, positive for the right. Between -1 and 1. -1 is left edge, 1 is right edge, and 0 is center.
+    /// This affects where the knight is attempted to be put on the screen when focused.
     /// </summary>
     public const float KNIGHT_SCREEN_POSITION_ON_CENTER = -0.5f;
 
