@@ -301,7 +301,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
                 string[] buttons = { "Return To Login screen", string.Empty };
                 GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(pannelMessage, () =>
                 {
-                    Logout();
+                    AuthenticationManager.Instance.Logout();
                 }, null, buttons);
             }
                 return ParseJsonWithPath<ProfileData>(rawJson, "data");
