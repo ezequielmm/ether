@@ -18,7 +18,7 @@ namespace map
 
         // we need a list of the path spriteshapes to use with the background grid
         private List<PathManager> pathManagers = new List<PathManager>();
-        
+
         public GameObject playerIcon;
         public ParticleSystem portalAnimation;
         public GameObject nodesHolder;
@@ -56,7 +56,8 @@ namespace map
         public Bounds mapBounds;
         private Bounds maskBounds;
 
-        private bool scrollMap;
+        private bool buttonScroll;
+        private bool mouseScroll;
         private bool scrollDirection;
 
         private Tween activeTween;
@@ -147,7 +148,7 @@ namespace map
             portalAnimation.GetComponent<Renderer>().sortingLayerName = GameSettings.MAP_ELEMENTS_SORTING_LAYER_NAME;
 
             GenerateMapSeeds(22);
-            
+
             // set the camera here so we don't have to assign it. This *should* block any clicks from passing through the map
             clickBlockCanvas.worldCamera = GameObject.FindWithTag("UiParticleCamera").GetComponent<Camera>();
         }
@@ -176,24 +177,39 @@ namespace map
         private void Update()
         {
             float currentScrollSpeed = 0;
-            if (scrollMap)
+
+            if (buttonScroll)
             {
                 currentScrollSpeed =
                     Mathf.SmoothStep(scrollDirection ? -GameSettings.MAP_SCROLL_SPEED : GameSettings.MAP_SCROLL_SPEED,
                         0, scrollTime / GameSettings.MAP_SCROLL_BUTTON_TIME);
                 if (scrollTime >= GameSettings.MAP_SCROLL_BUTTON_TIME)
                 {
-                    scrollMap = false;
+                    buttonScroll = false;
                     scrollTime = 0;
                 }
 
                 scrollTime += Time.deltaTime;
             }
 
+            // scroll wheel input needs to be handled differently
+            if (Input.mouseScrollDelta.y != 0)
+            {
+                mouseScroll = true;
+                buttonScroll = false;
+                scrollTime = 0;
+                if (Input.mouseScrollDelta.y < 0)
+                    currentScrollSpeed = Mathf.SmoothStep(-GameSettings.MAP_SCROLL_SPEED,
+                        0, scrollTime / GameSettings.MAP_SCROLL_BUTTON_TIME);
+                if (Input.mouseScrollDelta.y > 0)
+                    currentScrollSpeed = Mathf.SmoothStep(GameSettings.MAP_SCROLL_SPEED,
+                        0, scrollTime / GameSettings.MAP_SCROLL_BUTTON_TIME);
+            }
+
             if (Mathf.Abs(currentScrollSpeed) < GameSettings.MAP_SCROLL_SPEED_CUTOFF)
             {
                 currentScrollSpeed = 0;
-                scrollMap = false;
+                buttonScroll = false;
             }
 
             Vector3 velocity = Vector3.zero;
@@ -202,8 +218,13 @@ namespace map
             Vector3 newPos = nodesHolder.transform.localPosition;
 
 
-            if (scrollMap)
+            if (buttonScroll)
                 newPos.x += currentScrollSpeed;
+
+            if (mouseScroll)
+            {
+                newPos.x += currentScrollSpeed;
+            }
 
             Vector3 limitPos = currentMapPos;
 
@@ -239,12 +260,17 @@ namespace map
                 overHardLimit = true;
             }
 
-            if (overEdge || scrollMap)
+            if (overEdge || buttonScroll)
             {
                 nodesHolder.transform.localPosition = Vector3.SmoothDamp(currentMapPos, newPos, ref velocity, 0.03f);
             }
 
-            if (overHardLimit && !scrollMap)
+            if (mouseScroll)
+            {
+                nodesHolder.transform.DOLocalMoveX(newPos.x, GameSettings.MAP_MOUSE_SCROLL_SMOOTHING_MODIFIER);
+            }
+
+            if (overHardLimit && !buttonScroll)
             {
                 nodesHolder.transform.localPosition = limitPos;
             }
@@ -253,6 +279,8 @@ namespace map
             {
                 nodesHolder.transform.localPosition = newPos;
             }
+
+            mouseScroll = false;
         }
 
 
@@ -260,7 +288,7 @@ namespace map
         {
             if (active)
             {
-                scrollMap = true;
+                buttonScroll = true;
                 KillActiveTween();
                 scrollDirection = direction;
                 scrollTime = 0;
@@ -322,7 +350,6 @@ namespace map
 
         private void OnMapNodesDataUpdated(SWSM_MapData mapData)
         {
-            
             GenerateMap(mapData);
             StartCoroutine(Scroll());
         }
@@ -341,7 +368,7 @@ namespace map
         void GenerateMap(SWSM_MapData expeditionMapData)
         {
             Debug.Log("[MapSpriteManager] " + expeditionMapData);
-            
+
             if (!mapContainer.activeSelf)
             {
                 Debug.LogError($"[MapSpriteManager] The map is not currently being shown. Can not generate.");
@@ -387,6 +414,7 @@ namespace map
                 currentActTiles = actTileLists[currentMapAct - 1];
                 return;
             }
+
             // else default to the act 1 tiles
             currentActTiles = actTileLists[0];
         }
@@ -518,7 +546,7 @@ namespace map
                 NodeDataHelper nodeData = expeditionMapData.expeditionData.nodeList[i];
 
                 //acts
-                if ( !mapStructure.acts.ContainsKey(nodeData.act))
+                if (!mapStructure.acts.ContainsKey(nodeData.act))
                 {
                     mapStructure.acts[nodeData.act] = new Act();
                 }
@@ -552,7 +580,7 @@ namespace map
 
                 List<int> steps = act.steps.Keys.ToList();
                 steps.Sort();
-                
+
                 //areas
                 foreach (int stepIndex in steps)
                 {
