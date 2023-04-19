@@ -60,6 +60,8 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
 
 #if UNITY_EDITOR
     public bool InUnity = false;
+    public UnityEnvironment UnityEnvironment =>
+        AssetDatabase.LoadAssetAtPath<UnityEnvironment>("Assets/UnityEnvironment.asset");
 #endif
     public string WebRequestURL => _environmentUrls.WebRequestURL;
     public string SkinURL => _environmentUrls.SkinURL;
@@ -183,8 +185,7 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
                 break;
 #if UNITY_EDITOR
             case Environments.Unity:
-                Environments emulate = AssetDatabase.LoadAssetAtPath<UnityEnvironment>("Assets/UnityEnvironment.asset")
-                    .EnvironmentToEmulate;
+                Environments emulate = UnityEnvironment.EnvironmentToEmulate;
                 if (emulate == Environments.Unity)
                     emulate = Environments.Dev;
                 UpdateUrls(emulate);
