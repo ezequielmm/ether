@@ -13,7 +13,7 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
     public NamedSpriteList miscImages;
     public NamedSpriteList statusIcons;
     private List<(int, int)> _potionListRanges = new List<(int, int)>();
-    private List<(int, int)> _trinketListRanges = new List<(int, int)>();
+    private Dictionary<int, Sprite> trinketMap = new Dictionary<int, Sprite>();
 
     private void Start()
     {
@@ -26,8 +26,18 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
                 int.Parse(imageList.entityImages[imageList.entityImages.Count - 1].name)));
         }
 
-        _trinketListRanges.Add((int.Parse(trinketImageList.entityImages[0].name),
-            int.Parse(trinketImageList.entityImages[trinketImageList.entityImages.Count - 1].name)));
+        foreach (var sprite in trinketImageList.entityImages)
+        {
+            // get sprite name
+            var name = sprite.name;
+            var id = int.TryParse(name, out var idInt) ? idInt : -1;
+            if (id == -1)
+            {
+                Debug.LogWarning($"[SpriteAssetManager] Trinket {name} is not a valid trinket id");
+                continue;
+            }
+            trinketMap.Add(id, sprite);
+        }
     }
 
     public Sprite GetStatusIcon(STATUS status)
@@ -63,27 +73,17 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
             }
         }
 
-        Debug.LogWarning($"No potion image for potion ID {potionId} found. You probably need to pester the backend");
+        Debug.LogWarning($"[SpriteAssetManager] No potion image for potion ID {potionId} found. You probably need to pester the backend");
         return defaultImage;
     }
     public Sprite GetTrinketImage(int trinketId)
     {
-        for (int i = 0; i < trinketImageList.Count; i++)
+        trinketMap.TryGetValue(trinketId, out var sprite);
+        if (sprite != null)
         {
-            var range = _trinketListRanges[i];
-            if (trinketId < range.Item1 || trinketId > range.Item2)
-            {
-                continue;
-            }
-
-            List<Sprite> cardImages = trinketImageList[i].entityImages;
-            if (cardImages.Exists(image => int.Parse(image.name) == trinketId))
-            {
-                return cardImages.Find(image => int.Parse(image.name) == trinketId);
-            }
+            return sprite;
         }
-
-        Debug.LogWarning($"No trinket image for trinket ID {trinketId} found. You probably need to pester the backend");
+        Debug.LogWarning($"[SpriteAssetManager] No trinket image for trinket ID {trinketId} found. You probably need to pester the backend");
         return defaultImage;
     }
 
