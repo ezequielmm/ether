@@ -267,7 +267,7 @@ namespace map
 
             if (mouseScroll)
             {
-                nodesHolder.transform.DOLocalMoveX(newPos.x, 0.03f);
+                nodesHolder.transform.DOLocalMoveX(newPos.x, GameSettings.MAP_MOUSE_SCROLL_SMOOTHING_MODIFIER);
             }
 
             if (overHardLimit && !buttonScroll)
