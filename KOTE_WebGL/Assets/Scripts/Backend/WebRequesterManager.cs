@@ -6,6 +6,11 @@ using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 using Cysharp.Threading.Tasks;
+#if UNITY_EDITOR
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+#endif
 
 /// <summary>
 /// Check HelperClasses.cs for the classes usaed to hold JSON data
@@ -37,6 +42,12 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         {
             Debug.Log($"[WebRequesterManager] Can't make a webrequest while testing.");
             return null;
+        }
+
+        if (ClientEnvironmentManager.Instance.UnityEnvironment.AllowUnsafeCertificates)
+        {
+            Debug.LogWarning($"[WebRequesterManager] Allowing unsafe certificates.");
+            ServicePointManager.ServerCertificateValidationCallback = TrustCertificate;
         }
 #endif
         try
@@ -177,6 +188,13 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
       
         return $"{host}{path}";
     }
+    #if UNITY_EDITOR
+    private static bool TrustCertificate(object sender, X509Certificate x509Certificate, X509Chain x509Chain, SslPolicyErrors sslPolicyErrors)
+    {
+        // all Certificates are accepted
+        return true;
+    }
+    #endif 
 }
 
 

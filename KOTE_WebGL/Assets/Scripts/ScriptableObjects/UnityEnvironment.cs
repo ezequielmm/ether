@@ -8,4 +8,5 @@ public class UnityEnvironment : ScriptableObject
 {
     public Environments EnvironmentToEmulate = Environments.Dev;
     public string EditorWallet;
+    public bool AllowUnsafeCertificates = false;
 }
