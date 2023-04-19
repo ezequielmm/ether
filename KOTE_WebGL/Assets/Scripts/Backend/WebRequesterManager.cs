@@ -77,6 +77,15 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             ServerCommunicationLogger.Instance.LogCommunication(
                 $"[{request.method}][{request.uri}] Data Not Retrieved: {request?.error}",
                 CommunicationDirection.Incoming);
+            // logout if token is invalid
+            if ((request?.error?.Contains("401") ?? false) || (request?.error?.Contains("403") ?? false))
+            {
+                Debug.Log($"[WebRequesterManager] Token is invalid. Logging out.");
+                AuthenticationManager.Instance.Logout();
+                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
+                    "Your session has expired. Please log in again.",
+                    () => { GameManager.Instance.LoadScene(inGameScenes.MainMenu); });
+            }
             return null;
         }
     }
