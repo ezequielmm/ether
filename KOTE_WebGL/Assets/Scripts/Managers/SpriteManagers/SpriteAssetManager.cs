@@ -7,7 +7,7 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
 {
     public Sprite defaultImage;
     public List<SpriteList> potionImageList;
-    public List<SpriteList> trinketImageList;
+    public SpriteList trinketImageList;
     public List<NamedSpriteList> combatBackgroundList;
     public NamedSpriteList encounterCreatureList;
     public NamedSpriteList miscImages;
@@ -26,11 +26,8 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
                 int.Parse(imageList.entityImages[imageList.entityImages.Count - 1].name)));
         }
 
-        foreach (SpriteList imageList in trinketImageList)
-        {
-            _trinketListRanges.Add((int.Parse(imageList.entityImages[0].name),
-                int.Parse(imageList.entityImages[imageList.entityImages.Count - 1].name)));
-        }
+        _trinketListRanges.Add((int.Parse(trinketImageList.entityImages[0].name),
+            int.Parse(trinketImageList.entityImages[trinketImageList.entityImages.Count - 1].name)));
     }
 
     public Sprite GetStatusIcon(STATUS status)
