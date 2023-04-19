@@ -153,7 +153,8 @@ public abstract class PlayerNft
         string[] baseImageName = imagePath.Split('/');
         if (baseImageName.Length > 2 && baseImageName[2].Contains("FX")) return baseImageName[2];
         string imageName = (baseImageName.Length > 1) ? baseImageName[1] : baseImageName[0];
-        imageName = imageName.TrimEnd(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });
+        if (!imageName.Contains("TortoiseShield_straps"))
+            imageName = imageName.TrimEnd(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });
         if (imageName.Contains("placeholder")) return null;
 
         return imageName;
