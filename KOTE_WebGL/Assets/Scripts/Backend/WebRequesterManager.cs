@@ -6,6 +6,11 @@ using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 using Cysharp.Threading.Tasks;
+#if UNITY_EDITOR
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+#endif
 
 /// <summary>
 /// Check HelperClasses.cs for the classes usaed to hold JSON data
@@ -38,6 +43,12 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             Debug.Log($"[WebRequesterManager] Can't make a webrequest while testing.");
             return null;
         }
+
+        if (ClientEnvironmentManager.Instance.UnityEnvironment.AllowUnsafeCertificates)
+        {
+            Debug.LogWarning($"[WebRequesterManager] Allowing unsafe certificates.");
+            ServicePointManager.ServerCertificateValidationCallback = TrustCertificate;
+        }
 #endif
         try
         {
@@ -66,6 +77,15 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             ServerCommunicationLogger.Instance.LogCommunication(
                 $"[{request.method}][{request.uri}] Data Not Retrieved: {request?.error}",
                 CommunicationDirection.Incoming);
+            // logout if token is invalid
+            if (!request.url.Contains("logout") &&
+                 ((request?.error?.Contains("401") ?? false) || (request?.error?.Contains("403") ?? false)))
+            {
+                Debug.Log($"[WebRequesterManager] Token is invalid. Logging out.");
+                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
+                    "Your session has expired. Please log in again.",
+                    () => { AuthenticationManager.Instance.Logout(); });
+            }
             return null;
         }
     }
@@ -177,6 +197,13 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
       
         return $"{host}{path}";
     }
+    #if UNITY_EDITOR
+    private static bool TrustCertificate(object sender, X509Certificate x509Certificate, X509Chain x509Chain, SslPolicyErrors sslPolicyErrors)
+    {
+        // all Certificates are accepted
+        return true;
+    }
+    #endif 
 }
 
 
