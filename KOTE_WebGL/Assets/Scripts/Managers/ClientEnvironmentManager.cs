@@ -83,13 +83,14 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
 
     public void SetEnvironmentData(EnvironmentUrls urls)
     {
+        Environment = DetermineEnvironment(Application.absoluteURL);
+
         if (urls != null && urls.DoAllUrlsExist())
         {
             _environmentUrls = urls;
             return;
         }
 
-        Environment = DetermineEnvironment(Application.absoluteURL);
         UpdateUrls(Environment);
     }
 
