@@ -27,6 +27,20 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     {
         GameManager.Instance.EVENT_NFT_SELECTED.AddListener(BuildPlayer);
         GameManager.Instance.EVENT_UPDATE_NFT.AddListener(UpdateNftTrait);
+        
+        UserDataManager.Instance.ExpeditionStatusUpdated.AddListener(ClearEquippedGearIfNoExpedition);
+    }
+
+    private void ClearEquippedGearIfNoExpedition()
+    {
+        if (UserDataManager.Instance.EquippedGear == null || UserDataManager.Instance.EquippedGear.Count == 0)
+        {
+            foreach (PlayerNft nft in characterList)
+            {
+                nft.ClearEquippedGear();
+            }
+        }
+        if(_curNft != null) UpdatePlayerSkin();
     }
 
     public void SetSkin(int nftToken, NftContract contract, List<GearItemData> equippedGear = null)
