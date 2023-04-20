@@ -59,8 +59,10 @@ jobs:
     needs: downloadFromLastBranch
     environment: alpha
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
-
     - name: Checkout Repository
       uses: actions/checkout@v2
 
@@ -79,14 +81,11 @@ jobs:
         body: '{ "text": "GitHub Action: Now pushing to Alpha. The server may be down for upto 5 minutes." }'
 
     - name: Deploy to server
-      uses: appleboy/scp-action@master
+      uses: reggionick/s3-deploy@v3
       with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key : ${{ secrets.SSH_PRIV_KEY }}
-        source: "${{ vars.BUILD_DIRECTORY }}"
-        target: "${{ vars.PUBLISH_PATH }}"
-        overwrite: true
+        folder: "${{ vars.BUILD_DIRECTORY }}"
+        bucket: ${{ vars.S3_BUCKET }}
+        bucket-region: ${{ vars.S3_BUCKET_REGION }}
 
     - name: Notify Push Success
       uses: indiesdev/curl@v1.1
