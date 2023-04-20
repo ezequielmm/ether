@@ -219,9 +219,9 @@ public class EnvironmentUrls
 {
     [JsonProperty("request_url")] public string WebRequestURL;
     [JsonProperty("socket_url")] public string WebSocketURL;
-    public string skin_url;
-    public string gear_icon_url;
-    public string portrait_url;
+    [JsonIgnore] public string skin_url;
+    [JsonIgnore] public string gear_icon_url;
+    [JsonIgnore] public string portrait_url;
 
     [JsonIgnore]
     public string SkinURL
@@ -231,7 +231,7 @@ public class EnvironmentUrls
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             return skin_url;
 #endif
-            return Application.streamingAssetsPath + "/skinSprites/";
+            return Application.streamingAssetsPath + "/SkinSprites/";
         }
     }
 
@@ -243,17 +243,19 @@ public class EnvironmentUrls
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             return gear_icon_url;
 #endif
-            return Application.streamingAssetsPath + "/skinSprites/";
+            return Application.streamingAssetsPath + "/GearIcons/";
         }
     }
 
-    [JsonIgnore] public string PortraitElementURL{
+    [JsonIgnore]
+    public string PortraitElementURL
+    {
         get
         {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             return portrait_url;
 #endif
-            return Application.streamingAssetsPath + "/GearIcons/";
+            return Application.streamingAssetsPath + "/Portraits/";
         }
     }
 
