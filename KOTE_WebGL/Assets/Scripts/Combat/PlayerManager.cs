@@ -225,12 +225,6 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
     {
         foreach (var target in attack.targets)
         {
-            if (target.defenseDelta < 0 || target.healthDelta < 0)
-            {
-                Debug.LogWarning("Commented out sending an event from a PlaySound method??");
-               // GameManager.Instance.EVENT_DAMAGE.Invoke(target);
-            }
-
             if (target.defenseDelta < 0 &&
                 target.healthDelta >= 0) // Hit and defence didn't fall or it did and no damage
             {

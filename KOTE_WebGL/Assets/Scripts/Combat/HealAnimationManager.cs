@@ -35,6 +35,8 @@ public class HealAnimationManager : MonoBehaviour
 
     IEnumerator GetEntity() 
     {
+        // don't throw an error if it's the camp, since there's no entity to check
+        if (gameObject.name == "CampHealEffect") yield break;
         yield return null;
         entityId = Utils.FindEntityId(gameObject);
         for (int i = 0; i < 20; i++) 
@@ -49,6 +51,7 @@ public class HealAnimationManager : MonoBehaviour
                 break;
             }
         }
+        
         if (entityId == "unknown")
         {
             Debug.LogError($"[HealAnimationManager] An enemy/player could not be found. This is on the [{gameObject.name}] object which is a child of [{transform.parent.name}].");

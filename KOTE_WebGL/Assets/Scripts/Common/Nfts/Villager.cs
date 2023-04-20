@@ -56,6 +56,12 @@ public class Villager : PlayerNft
                 continue;
             }
 
+            if (traitValue.Equals("None"))
+            {
+                // don't worry about processing this since there's no skin
+                continue;
+            }
+
             string skinName;
 
             if (trait != Trait.Base && trait != Trait.Shadow)
