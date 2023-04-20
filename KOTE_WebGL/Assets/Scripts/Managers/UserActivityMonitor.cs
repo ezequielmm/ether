@@ -25,12 +25,13 @@ public class UserActivityMonitor : SingleTon<UserActivityMonitor>
 #endif
     }
 
-    public void OnDestroy()
+    public new void OnDestroy()
     {
         if (afkTimer != null)
         {
             StopCoroutine(afkTimer);
         }
+        base.OnDestroy();
     }
 
     private IEnumerator AfkLogoutTimer()

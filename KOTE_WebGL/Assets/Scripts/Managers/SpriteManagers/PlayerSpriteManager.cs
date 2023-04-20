@@ -36,7 +36,6 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
             return;
         }
 
-        bool nftLoaded = false;
         if (NftManager.Instance.Nfts.Keys.Count == 0)
         {
             nftLoadedListener = () => { WaitForNftLoad(nftToken, contract, equippedGear); };
