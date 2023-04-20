@@ -19,6 +19,11 @@ public abstract class PlayerNft
 
     public abstract void ChangeGear(Trait trait, string traitValue);
 
+    public void ClearEquippedGear()
+    {
+        EquippedTraits.Clear();
+    }
+
     public async UniTask GetDefaultSprites(SkeletonData playerSkeleton)
     {
         for (int i = 0; i < GameSettings.DEFAULT_SKIN_DATA.Count; i++)
