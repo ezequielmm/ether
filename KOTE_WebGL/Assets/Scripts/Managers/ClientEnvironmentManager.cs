@@ -203,11 +203,12 @@ public class EnvironmentUrls
 {
     [JsonProperty("request_url")] public string WebRequestURL;
     [JsonProperty("socket_url")] public string WebSocketURL;
+    [JsonProperty("asset_url")] public string ArtAssetURL;
     
     private string AssetsUrl;
     public EnvironmentUrls()
     {
-        AssetsUrl = Application.streamingAssetsPath;
+        AssetsUrl = (string.IsNullOrEmpty(ArtAssetURL)) ? Application.streamingAssetsPath : ArtAssetURL;
         #if UNITY_EDITOR || DEVELOPMENT_BUILD || !UNITY_WEBGL
             AssetsUrl =  $"https://koteskins.robotseamonster.com/";
         #endif
@@ -227,9 +228,6 @@ public class EnvironmentUrls
     {
         bool allExist = true;
         if (string.IsNullOrEmpty(WebRequestURL)) allExist = false;
-        if (string.IsNullOrEmpty(SkinURL)) allExist = false;
-        if (string.IsNullOrEmpty(GearIconURL)) allExist = false;
-        if (string.IsNullOrEmpty(PortraitElementURL)) allExist = false;
         if (string.IsNullOrEmpty(WebSocketURL)) allExist = false;
 
         return allExist;
