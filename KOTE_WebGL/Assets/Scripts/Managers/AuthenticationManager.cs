@@ -8,9 +8,10 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
     {
         GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(ClearSessionToken);
     }
-    
+
     public bool Authenticated => !string.IsNullOrEmpty(GetSessionToken());
-    public async UniTask<bool> Login(string email, string password) 
+
+    public async UniTask<bool> Login(string email, string password)
     {
         string hashedPassword = HashPassword(password);
         string token = await FetchData.Instance.GetTokenByLogin(email, hashedPassword);
@@ -72,7 +73,7 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
         PlayerPrefs.DeleteKey("session_token");
         PlayerPrefs.Save();
     }
-    
+
     // override for listener
     public void ClearSessionToken(string data)
     {
@@ -86,9 +87,10 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
 
         int hoursElapsed = CalculateHoursSinceLastLoginTime(savedLoginTime);
 
-        if (hoursElapsed >= 6)
+        if (hoursElapsed >= GameSettings.TOKEN_EXPIRATION_HOURS)
         {
-            Debug.Log("Login Token Expired");
+            Debug.Log(
+                $"Login Token Expired. Token Created At: {DateTime.Parse(savedLoginTime)} Expired at: {DateTime.Parse(savedLoginTime).AddHours(6)} Current Time is {DateTime.UtcNow}");
             ClearSessionToken();
             return null;
         }
@@ -101,7 +103,7 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
     private int CalculateHoursSinceLastLoginTime(string savedTime)
     {
         DateTime time = DateTime.Parse(savedTime);
-        TimeSpan timeElapsed = DateTime.Now - time;
+        TimeSpan timeElapsed = DateTime.UtcNow - time;
         return timeElapsed.Hours;
     }
 

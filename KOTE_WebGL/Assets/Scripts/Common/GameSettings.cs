@@ -84,6 +84,9 @@ public static class GameSettings
     public const float PANEL_SCROLL_SPEED = 30f;
     public const int ENCOUNTER_TEXT_BOX_CHARACTER_COUNT = 500;
 
+    // Player Login
+    public const int TOKEN_EXPIRATION_HOURS = 6; 
+    
     // Connection
     public const float UNSTABLE_CONNECTION_SECONDS = 2;
     public const float DISCONNECTED_CONNECTION_SECONDS = UNSTABLE_CONNECTION_SECONDS + 5;
