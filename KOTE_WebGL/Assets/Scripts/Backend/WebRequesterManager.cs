@@ -78,7 +78,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
                 $"[{request.method}][{request.uri}] Data Not Retrieved: {request?.error}",
                 CommunicationDirection.Incoming);
             // logout if token is invalid
-            if (!request.url.Contains("logout") &&
+            if (!request.url.Contains("logout") && AuthenticationManager.Instance.Authenticated &&
                  ((request?.error?.Contains("401") ?? false) || (request?.error?.Contains("403") ?? false)))
             {
                 Debug.Log($"[WebRequesterManager] Token is invalid. Logging out.");
