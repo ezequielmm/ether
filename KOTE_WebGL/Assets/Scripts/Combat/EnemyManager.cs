@@ -97,7 +97,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             activeEnemy = Instantiate(prefab, transform);
             activeEnemy.transform.localPosition = Vector3.zero;
             GrabEnemyFadeout(activeEnemy);
-            enemyPlacementData = activeEnemy.GetComponent<EnemyPrefab>();
+            enemyPlacementData = activeEnemy.GetComponentInChildren<EnemyPrefab>();
             enemyPlacementData.FitColliderToArt();
             // Add the cursorEnter and Exit for tooltips
             // Set mounting points
@@ -108,7 +108,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             bottom.y = Mathf.Max(transform.position.y, bottom.y);
             BottomBar.position = bottom;
 
-            collider = activeEnemy.GetComponent<Collider2D>();
+            collider = activeEnemy.GetComponentInChildren<Collider2D>();
             enemyBounds = collider.bounds;
             collider.enabled = false;
 
@@ -318,7 +318,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
         if (activeEnemy != null)
         {
-            spine = activeEnemy.GetComponent<SpineAnimationsManagement>();
+            spine = activeEnemy.GetComponentInChildren<SpineAnimationsManagement>();
             spine.ANIMATION_EVENT.AddListener(OnAnimationEvent);
             spine.PlayAnimationSequence("Idle");
         }
@@ -480,7 +480,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
     private void GrabEnemyFadeout(GameObject enemy)
     {
-        spineFadeout = enemy.GetComponent<SkeletonRenderTextureFadeout>();
+        spineFadeout = enemy.GetComponentInChildren<SkeletonRenderTextureFadeout>();
     }
 
     public void SetTooltip(List<Tooltip> tooltips)
