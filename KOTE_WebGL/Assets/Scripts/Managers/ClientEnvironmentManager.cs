@@ -138,9 +138,6 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
                 _environmentUrls = new EnvironmentUrls
                 {
                     WebRequestURL = $"https://gateway.dev.kote.robotseamonster.com",
-                    skin_url = $"https://koteskins.robotseamonster.com/",
-                    gear_icon_url = "https://koteskins.robotseamonster.com/GearIcons/",
-                    portrait_url = "https://koteskins.robotseamonster.com/Portraits/",
                     WebSocketURL = $"https://api.dev.kote.robotseamonster.com"
                 };
                 break;
@@ -148,9 +145,6 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
                 _environmentUrls = new EnvironmentUrls
                 {
                     WebRequestURL = $"https://gateway.villagers.dev.kote.robotseamonster.com",
-                    skin_url = $"https://koteskins.robotseamonster.com/",
-                    gear_icon_url = "https://koteskins.robotseamonster.com/GearIcons/",
-                    portrait_url = "https://koteskins.robotseamonster.com/Portraits/",
                     WebSocketURL = $"https://api.villagers.dev.kote.robotseamonster.com"
                 };
                 break;
@@ -158,19 +152,12 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
                 _environmentUrls = new EnvironmentUrls
                 {
                     WebRequestURL = $"https://gateway.stage.kote.robotseamonster.com",
-                    skin_url = $"https://koteskins.robotseamonster.com/",
-                    gear_icon_url = "https://koteskins.robotseamonster.com/GearIcons/",
-                    portrait_url = "https://koteskins.robotseamonster.com/Portraits/",
-                    WebSocketURL = $"https://api.stage.kote.robotseamonster.com"
                 };
                 break;
             case Environments.TestAlpha:
                 _environmentUrls = new EnvironmentUrls
                 {
                     WebRequestURL = $"https://gateway.alpha.kote.robotseamonster.com",
-                    skin_url = $"https://koteskins.robotseamonster.com/",
-                    gear_icon_url = "https://koteskins.robotseamonster.com/GearIcons/",
-                    portrait_url = "https://koteskins.robotseamonster.com/Portraits/",
                     WebSocketURL = $"https://api.alpha.kote.robotseamonster.com"
                 };
                 break;
@@ -178,10 +165,7 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
                 _environmentUrls = new EnvironmentUrls
                 {
                     WebRequestURL = $"https://gateway.alpha.knightsoftheether.com",
-                    skin_url = $"https://s3.amazonaws.com/koteskins.knightsoftheether.com/",
-                    portrait_url = "https://s3.amazonaws.com/koteskins.robotseamonster.com/Portraits/",
-                    gear_icon_url = $"https://s3.amazonaws.com/koteskins.knightsoftheether.com/GearIcons/",
-                    WebSocketURL = $"https://api.alpha.knightsoftheether.com:443"
+                    WebSocketURL = $"https://api.alpha.knightsoftheether.com"
                 };
                 break;
 #if UNITY_EDITOR
@@ -219,46 +203,24 @@ public class EnvironmentUrls
 {
     [JsonProperty("request_url")] public string WebRequestURL;
     [JsonProperty("socket_url")] public string WebSocketURL;
-    // these are now internal only
-    [JsonIgnore] public string skin_url;
-    [JsonIgnore] public string gear_icon_url;
-    [JsonIgnore] public string portrait_url;
-
-    [JsonIgnore]
-    public string SkinURL
+    
+    private string AssetsUrl;
+    public EnvironmentUrls()
     {
-        get
-        {
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-            return skin_url;
-#endif
-            return Application.streamingAssetsPath + "/SkinSprites/";
-        }
+        AssetsUrl = Application.streamingAssetsPath;
+        #if UNITY_EDITOR || DEVELOPMENT_BUILD || !UNITY_WEBGL
+            AssetsUrl =  $"https://koteskins.robotseamonster.com/";
+        #endif
     }
 
     [JsonIgnore]
-    public string GearIconURL
-    {
-        get
-        {
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-            return gear_icon_url;
-#endif
-            return Application.streamingAssetsPath + "/GearIcons/";
-        }
-    }
+    public string SkinURL => AssetsUrl.AddPath("SkinSprites");
 
     [JsonIgnore]
-    public string PortraitElementURL
-    {
-        get
-        {
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-            return portrait_url;
-#endif
-            return Application.streamingAssetsPath + "/Portraits/";
-        }
-    }
+    public string GearIconURL => AssetsUrl.AddPath("GearIcons");
+
+    [JsonIgnore]
+    public string PortraitElementURL => AssetsUrl.AddPath("Portraits");
 
 
     public bool DoAllUrlsExist()

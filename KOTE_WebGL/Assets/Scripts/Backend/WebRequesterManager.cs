@@ -195,7 +195,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
     {
         string host = ClientEnvironmentManager.Instance.WebRequestURL;
       
-        return $"{host}{path}";
+        return host.AddPath(path);
     }
     #if UNITY_EDITOR
     private static bool TrustCertificate(object sender, X509Certificate x509Certificate, X509Chain x509Chain, SslPolicyErrors sslPolicyErrors)
