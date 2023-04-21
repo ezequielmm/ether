@@ -15,7 +15,7 @@ public class EnemyPrefab : MonoBehaviour
     public Bounds setBounds;
     private void Awake()
     {
-        spineAnimationsManagement = GetComponent<SpineAnimationsManagement>();
+        spineAnimationsManagement = GetComponentInChildren<SpineAnimationsManagement>();
         FitColliderToArt();
     }
 
@@ -31,7 +31,7 @@ public class EnemyPrefab : MonoBehaviour
         transform.localScale = Vector3.one;
 
         // Get Collider
-        BoxCollider2D collider = GetComponent<BoxCollider2D>();
+        BoxCollider2D collider = GetComponentInChildren<BoxCollider2D>();
 
         // Find bounds of art
         Bounds bounds = new Bounds();
