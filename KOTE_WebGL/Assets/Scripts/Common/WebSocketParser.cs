@@ -79,6 +79,9 @@ public class WebSocketParser
             case nameof(WS_MESSAGE_TYPES.card_updated):
                 ProcessCardUpdated(swsm.data.action, data);
                 break;
+            case nameof(WS_MESSAGE_TYPES.trinket_triggered):
+                ProcessTrinketTriggered(swsm.data.action, data);
+                break;
             default:
                 Debug.LogWarning("[SWSM Parser] Unknown message_type: " + swsm.data.message_type + " , data:" + data);
                 break;
@@ -361,6 +364,20 @@ public class WebSocketParser
                 break;
             default:
                 Debug.LogWarning("[ProcessCardUpdated] unknown action: " + action + " , data: " + data);
+                break;
+        }
+    }
+
+    private static void ProcessTrinketTriggered(string action, string data)
+    {
+        switch (action)
+        {
+            case "flash_trinket_icon":
+                TrinketTriggeredData trinketData = JsonConvert.DeserializeObject<TrinketTriggeredData>(data);
+                GameManager.Instance.EVENT_TRINKET_ACTIVATED.Invoke(trinketData.data.trinket);
+                break;
+            default:
+                Debug.LogWarning("[ProcessTrinketTriggered] unknown action: " + action + " , data: " + data);
                 break;
         }
     }

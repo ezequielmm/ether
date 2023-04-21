@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -25,6 +26,7 @@ public class TrinketItemManager : MonoBehaviour, IPointerClickHandler
     private void Start()
     {
         selectFrame.gameObject.SetActive(false);
+        GameManager.Instance.EVENT_TRINKET_ACTIVATED.AddListener(OnTrinketTriggered);
     }
 
     // uses string values for right now, will probably need to change once we parse trinket data
@@ -53,6 +55,18 @@ public class TrinketItemManager : MonoBehaviour, IPointerClickHandler
     public void UpdateToggleStatus()
     {
         selectFrame.gameObject.SetActive(isToggled);
+    }
+
+    private void OnTrinketTriggered(Trinket triggeredTrinket)
+    {
+        if (_trinket.trinketId == triggeredTrinket.trinketId && _trinket.id == triggeredTrinket.id)
+        {
+            float oldScale = trinketImage.transform.localScale.x;
+            trinketImage.transform.DOScale(2f, 1).OnComplete(() =>
+            {
+                trinketImage.transform.DOScale(oldScale, 1);
+            });
+        }
     }
 
     public void OnPointerClick(PointerEventData pointerEventData)

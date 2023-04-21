@@ -262,7 +262,8 @@ public enum WS_MESSAGE_TYPES
     add_potion,
     use_potion,
     add_trinket,
-    card_updated
+    card_updated,
+    trinket_triggered
 }
 
 [Serializable]

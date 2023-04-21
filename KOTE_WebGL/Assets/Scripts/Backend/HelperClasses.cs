@@ -885,3 +885,15 @@ public class ExpeditionStartData
     public bool expeditionCreated;
     public string reason;
 }
+
+[Serializable]
+public class TrinketTriggeredData
+{
+    public TrinketInfo data;
+
+    [Serializable]
+    public class TrinketInfo
+    {
+        [JsonProperty("data")] public Trinket trinket;
+    }
+}

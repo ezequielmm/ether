@@ -148,6 +148,7 @@ public class GameManager : SingleTon<GameManager>
     /// </summary>
     [HideInInspector] public UnityEvent<bool?> EVENT_TOGGLE_GAME_CLICK = new UnityEvent<bool?>();
 
+    [HideInInspector] public UnityEvent<Trinket> EVENT_TRINKET_ACTIVATED = new UnityEvent<Trinket>();
     //PLAYER DATA EVENTS
     [HideInInspector]
     public UnityEvent<PlayerStateData> EVENT_PLAYER_STATUS_UPDATE { get; } = new UnityEvent<PlayerStateData>();
