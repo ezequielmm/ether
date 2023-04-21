@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -54,5 +55,18 @@ public static class Extensions
                              "Falling back to default value");
             return default(TEnum);
         }
+    }
+    
+    public static string AddPath(this string url, params string[] paths)
+    {
+        if (paths == null || paths.Length == 0) return url;
+        StringBuilder sb = new StringBuilder();
+        sb.Append(url.Trim('/').Trim('\\'));
+        foreach (var path in paths)
+        {
+            sb.Append("/");
+            sb.Append(path.Trim('/').Trim('\\'));
+        }
+        return sb.ToString();
     }
 }

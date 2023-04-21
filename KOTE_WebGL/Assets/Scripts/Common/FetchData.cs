@@ -198,21 +198,21 @@ public class FetchData : DataManager, ISingleton<FetchData>
     public async UniTask<Texture2D> GetVillagerPortraitElement(string elementName)
     {
         string spriteName = elementName + ".png";
-        string requestUrl = ClientEnvironmentManager.Instance.PortraitElementURL + spriteName;
+        string requestUrl = ClientEnvironmentManager.Instance.PortraitElementURL.AddPath(spriteName);
         return await GetTexture(requestUrl);
     }
 
     public async UniTask<Texture2D> GetNftSkinElement(TraitSprite spriteData)
     {
         string spriteName = spriteData.ImageName + ".png";
-        string requestUrl = ClientEnvironmentManager.Instance.SkinURL + spriteName;
+        string requestUrl = ClientEnvironmentManager.Instance.SkinURL.AddPath(spriteName);
         return await GetTexture(requestUrl);
     }
 
     public async UniTask<Texture2D> GetArmoryGearImage(string gearName)
     {
         string spriteName = gearName + ".png";
-        string requestUrl = ClientEnvironmentManager.Instance.GearIconURL + spriteName;
+        string requestUrl = ClientEnvironmentManager.Instance.GearIconURL.AddPath(spriteName);
         return await GetTexture(requestUrl);
     }
 
