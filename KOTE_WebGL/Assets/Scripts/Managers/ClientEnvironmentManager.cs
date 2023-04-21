@@ -219,6 +219,7 @@ public class EnvironmentUrls
 {
     [JsonProperty("request_url")] public string WebRequestURL;
     [JsonProperty("socket_url")] public string WebSocketURL;
+    // these are now internal only
     [JsonIgnore] public string skin_url;
     [JsonIgnore] public string gear_icon_url;
     [JsonIgnore] public string portrait_url;
