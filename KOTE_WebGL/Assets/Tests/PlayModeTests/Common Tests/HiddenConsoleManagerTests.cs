@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using NUnit.Framework;
 using UnityEditor;
@@ -123,6 +124,7 @@ public class HiddenConsoleManagerTests : MonoBehaviour
     public void DoesSendingPlayerTokenCommandLogPlayerToken()
     {
         PlayerPrefs.SetString("session_token", "ArandomToken");
+        PlayerPrefs.SetString("login_time", DateTime.UtcNow.ToString());
         HiddenConsoleManager.OnTextInput("player_token");
         LogAssert.Expect(LogType.Log, "ArandomToken");
     }
