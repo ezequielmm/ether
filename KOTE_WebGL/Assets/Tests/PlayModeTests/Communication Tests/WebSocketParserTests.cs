@@ -13,6 +13,7 @@ public class WebSocketParserTests
     public void DoesUpdateMapActionPickerInvokeShowMapEvents()
     {
         bool eventFired = false;
+        GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(true);
         GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.AddListener((data) => { eventFired = true; });
         WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("map_update", "show_map"));
 
@@ -35,6 +36,7 @@ public class WebSocketParserTests
     public void DoesUpdateMapActionPickerInvokeExtendMapEvents()
     {
         bool eventFired = false;
+        GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.Invoke(true);
         GameManager.Instance.EVENT_MAP_REVEAL.AddListener((data) => { eventFired = true; });
         WebSocketParser.ParseJSON(TestUtils.BuildTestSwsmData("map_update", "extend_map"));
 
