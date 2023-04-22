@@ -131,8 +131,13 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         RunAfterTime(0.1f, () => { CalledEvent = false; });
         foreach (CombatTurnData.Target target in attack.targets)
         {
+            if (attack.action == null || string.IsNullOrEmpty(attack.action.hint))
+            {
+                endCalled = true;
+                GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack);
+            }
             // Run Attack Animation Or Status effects
-            if (target.effectType == nameof(ATTACK_EFFECT_TYPES.damage))
+            else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.damage))
             {
                 runningEvents.Add(attack.attackId);
                 // Run Attack
