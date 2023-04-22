@@ -16,6 +16,11 @@ public class EnemyPrefab : MonoBehaviour
     private void Awake()
     {
         spineAnimationsManagement = GetComponentInChildren<SpineAnimationsManagement>();
+    }
+
+    private void Start()
+    {
+        // calling this in Awake throws an error
         FitColliderToArt();
     }
 
