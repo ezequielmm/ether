@@ -103,6 +103,7 @@ public abstract class PlayerNft
 
     protected void ReplacePaddingTraitWithSplit()
     {
+        if (!Traits.ContainsKey(Trait.Padding)) return;
         string paddingColor = Traits[Trait.Padding];
         Traits.Remove(Trait.Padding);
         Traits[Trait.Upper_Padding] = paddingColor;

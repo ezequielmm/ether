@@ -74,14 +74,6 @@ namespace KOTE.UI.Armory
                 },
                 new GearItemData
                 {
-                    category = "Padding",
-                    gearId = 1,
-                    gearImage = null,
-                    name = "Test",
-                    trait = "Padding"
-                },
-                new GearItemData
-                {
                     category = "Vambraces",
                     gearId = 1,
                     gearImage = null,
@@ -103,11 +95,19 @@ namespace KOTE.UI.Armory
         private GameObject nftSpriteManager;
         private ArmoryPanelManager _armoryPanelManager;
         private Sprite testSprite;
+        private GameObject camera;
 
 
         [UnitySetUp]
         public IEnumerator Setup()
         {
+            GameObject cameraObject = Instantiate(new GameObject());
+            cameraObject.SetActive(true);
+            cameraObject.AddComponent<Camera>();
+            cameraObject.tag = "MainCamera";
+            
+            camera = cameraObject;
+            
             GameObject spriteManagerPrefab =
                 AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Common/PlayerSpriteManager.prefab");
             nftSpriteManager = Instantiate(spriteManagerPrefab);
@@ -153,15 +153,16 @@ namespace KOTE.UI.Armory
             NftManager.Instance.Nfts = new Dictionary<NftContract, List<Nft>>();
             NftManager.Instance.Nfts[NftContract.Knights] = testNftList;
             NftManager.Instance.NftsLoaded.Invoke();
-
             yield return null;
         }
 
         [UnityTearDown]
         public IEnumerator TearDown()
         {
+            Destroy(GameObject.FindObjectOfType<Cursor>());
             Destroy(nftSpriteManager);
             Destroy(armoryPanel);
+            Destroy(camera);
             _armoryPanelManager = null;
             GameManager.Instance.DestroyInstance();
             GearIconManager.Instance.DestroyInstance();
@@ -482,7 +483,7 @@ namespace KOTE.UI.Armory
             GameManager.Instance.EVENT_AUTHENTICATED.Invoke();
             ArmoryHeaderManager[] headers =
                 _armoryPanelManager.gearListTransform.GetComponentsInChildren<ArmoryHeaderManager>();
-            Assert.AreEqual(10, headers.Length);
+            Assert.AreEqual(9, headers.Length);
             foreach (ArmoryHeaderManager header in headers)
             {
                 Assert.AreEqual(0, header.gameObject.GetComponentsInChildren<SelectableGearItem>().Length);

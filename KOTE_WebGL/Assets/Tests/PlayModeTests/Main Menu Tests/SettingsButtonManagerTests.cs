@@ -23,6 +23,8 @@ public class SettingsButtonManagerTests : MonoBehaviour
     public void TearDown()
     {
         Destroy(settingsButton);
+        WalletManager.Instance.DestroyInstance();
+        GameManager.Instance.DestroyInstance();
     }
 
     [Test]
