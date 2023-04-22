@@ -1,11 +1,13 @@
 using System.Collections;
 using NUnit.Framework;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
 public class GameStatusManagerTests : MonoBehaviour
 {
     private GameStatusManager _gameStatusManager;
+    private GameObject scoreboardObject;
 
     [UnitySetUp]
     public IEnumerator Setup()
@@ -16,13 +18,18 @@ public class GameStatusManagerTests : MonoBehaviour
         mapPrefab.SetActive(true);
         _gameStatusManager = mapPrefab.GetComponent<GameStatusManager>();
         mapPrefab.SetActive(true);
+
+        GameObject scoreboard =
+            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Common/EndOfGamePanel.prefab");
+        scoreboardObject = Instantiate(scoreboard);
         yield return null;
     }
-    
+
     [UnityTearDown]
     public IEnumerator TearDown()
     {
         Destroy(_gameStatusManager.gameObject);
+        Destroy(scoreboardObject);
         yield return null;
     }
 
@@ -49,63 +56,6 @@ public class GameStatusManagerTests : MonoBehaviour
         bool eventFired = false;
         GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.AddListener((data) => { eventFired = true; });
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.Camp);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState),"dying");
-        Assert.False(eventFired);
-
-        eventFired = false;
-        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");
-        Assert.True(eventFired);
-    }
-    
-    [Test]
-    public void DoesEventConfirmationWithEnemyStateActivateToggleGameClick()
-    {
-        // this is very similar to testing event confirmation, as we need to test the status of a private variable
-        bool eventFired = false;
-        GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.AddListener((data) => { eventFired = true; });
-        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState),"dying");
-        Assert.False(eventFired);
-
-        eventFired = false;
-        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");
-        Assert.True(eventFired);
-    }
-    
-    [Test]
-    public void DoesEventConfirmationWithPlayerStateActivateGameAboutToEndOnlyOnGameOverStatus()
-    {
-        // this is very similar to testing event confirmation, as we need to test the status of a private variable
-        bool eventFired = false;
-        GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.AddListener((data) => { eventFired = true; });
-        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.Camp);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");        
-        Assert.False(eventFired);
-        
-        eventFired = false;
-        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.Combat);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");
-        Assert.False(eventFired);
-        
-        eventFired = false;
-        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.Encounter);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");
-        Assert.False(eventFired);
-        
-        eventFired = false;
-        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.Merchant);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");
-        Assert.False(eventFired);
-        
-        eventFired = false;
-        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RoyalHouse);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");
-        Assert.False(eventFired);
-        
-        eventFired = false;
-        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
         GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");
         Assert.False(eventFired);
 
@@ -114,42 +64,20 @@ public class GameStatusManagerTests : MonoBehaviour
         GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");
         Assert.True(eventFired);
     }
-    
+
     [Test]
-    public void DoesEventConfirmationWithEnemyStateActivateGameAboutToEndOnlyOnGameOverStatus()
+    public void DoesEventConfirmationOnlyFireClickEventWhenEntityIsDying()
     {
         // this is very similar to testing event confirmation, as we need to test the status of a private variable
         bool eventFired = false;
         GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.AddListener((data) => { eventFired = true; });
-        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.Camp);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");        
-        Assert.False(eventFired);
         
-        eventFired = false;
-        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.Combat);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");
-        Assert.False(eventFired);
-        
-        eventFired = false;
-        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.Encounter);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");
-        Assert.False(eventFired);
-        
-        eventFired = false;
-        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.Merchant);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");
-        Assert.False(eventFired);
-        
-        eventFired = false;
-        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RoyalHouse);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");
-        Assert.False(eventFired);
 
         eventFired = false;
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dead");
         Assert.False(eventFired);
-        
+
         eventFired = false;
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
         GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");
@@ -163,7 +91,7 @@ public class GameStatusManagerTests : MonoBehaviour
         GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.AddListener((data) => { eventFired = true; });
 
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");   
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");
         Assert.True(eventFired);
 
         eventFired = false;
@@ -171,7 +99,7 @@ public class GameStatusManagerTests : MonoBehaviour
         GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dead");
         Assert.False(eventFired);
     }
-    
+
     [Test]
     public void DoesConfirmEventWithEnemyStatusFireConfirmEvent()
     {
@@ -179,7 +107,7 @@ public class GameStatusManagerTests : MonoBehaviour
         GameManager.Instance.EVENT_TOGGLE_GAME_CLICK.AddListener((data) => { eventFired = true; });
 
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");   
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");
         Assert.True(eventFired);
 
         eventFired = false;
@@ -195,15 +123,15 @@ public class GameStatusManagerTests : MonoBehaviour
         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener((data) => { eventFired = true; });
 
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState),"dying");
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dying");
         Assert.False(eventFired);
 
         eventFired = false;
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState),"dead");
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dead");
         Assert.True(eventFired);
     }
-    
+
     [Test]
     public void DoesConfirmEventWithEnemyStateFireGameStatusChange()
     {
@@ -211,52 +139,33 @@ public class GameStatusManagerTests : MonoBehaviour
         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener((data) => { eventFired = true; });
 
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState),"dying");
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dying");
         Assert.False(eventFired);
 
         eventFired = false;
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState),"dead");
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dead");
         Assert.True(eventFired);
     }
 
     [Test]
-    public void DoesConfirmEventWithPlayerStateSwitchToGameOver()
+    public void DoesConfirmEventSwitchToNewStatus()
     {
         bool eventFired = false;
         GameStatuses newStatus = GameStatuses.None;
-        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener((data) => { eventFired = true;
-            newStatus = data;
-        });
-        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState),"dead");
-        Assert.False(eventFired);
-        Assert.AreNotEqual(GameStatuses.GameOver, newStatus);
-
-        eventFired = false;
-        newStatus = GameStatuses.None;
-        GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.GameOver);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState),"dead");
-        Assert.AreEqual(GameStatuses.GameOver, newStatus);
-    }
-    
-    [Test]
-    public void DoesConfirmEventWithEnemyStateSwitchToRewardsPanel()
-    {
-        bool eventFired = false;
-        GameStatuses newStatus = GameStatuses.None;
-        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener((data) => { eventFired = true;
+        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener((data) =>
+        {
+            eventFired = true;
             newStatus = data;
         });
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState),"dead");
-        Assert.False(eventFired);
-        Assert.AreNotEqual(GameStatuses.RewardsPanel, newStatus);
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(PlayerState), "dead");
+        Assert.AreEqual(GameStatuses.RewardsPanel, newStatus);
 
         eventFired = false;
         newStatus = GameStatuses.None;
         GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
-        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState),"dead");
+        GameManager.Instance.EVENT_CONFIRM_EVENT.Invoke(typeof(EnemyState), "dead");
         Assert.AreEqual(GameStatuses.RewardsPanel, newStatus);
     }
 
@@ -347,7 +256,7 @@ public class GameStatusManagerTests : MonoBehaviour
         Assert.True(eventFired);
         Assert.True(correctStatus);
     }
-    
+
     [Test]
     public void DoesGameStatusChangeToMapToggleMapPanelOn()
     {
@@ -363,7 +272,7 @@ public class GameStatusManagerTests : MonoBehaviour
         Assert.True(eventFired);
         Assert.True(correctStatus);
     }
-    
+
     [Test]
     public void DoesGameStatusChangeToMapToggleCombatElementsOff()
     {
@@ -395,8 +304,8 @@ public class GameStatusManagerTests : MonoBehaviour
         Assert.True(eventFired);
         Assert.True(correctStatus);
     }
-    
-     [Test]
+
+    [Test]
     public void DoesGameStatusChangeToTreasureToggleTopBarMapIconOn()
     {
         bool eventFired = false;
@@ -410,7 +319,7 @@ public class GameStatusManagerTests : MonoBehaviour
         Assert.True(eventFired);
         Assert.True(correctStatus);
     }
-    
+
     [Test]
     public void DoesGameStatusChangeToTreasureToggleMapPanelOff()
     {
@@ -426,16 +335,13 @@ public class GameStatusManagerTests : MonoBehaviour
         Assert.True(eventFired);
         Assert.True(correctStatus);
     }
-    
+
     [Test]
     public void DoesGameStatusChangeToTreasureOnlyShowPlayer()
     {
         bool eventFired = false;
 
-        GameManager.Instance.EVENT_SHOW_PLAYER_CHARACTER.AddListener(() =>
-        {
-            eventFired = true;
-        });
+        GameManager.Instance.EVENT_SHOW_PLAYER_CHARACTER.AddListener(() => { eventFired = true; });
         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Treasure);
         Assert.True(eventFired);
     }
@@ -455,7 +361,7 @@ public class GameStatusManagerTests : MonoBehaviour
         Assert.True(eventFired);
         Assert.True(correctStatus);
     }
-    
+
     [Test]
     public void DoesGameStatusChangeToEncounterToggleTopBarMapIconOn()
     {
@@ -470,7 +376,7 @@ public class GameStatusManagerTests : MonoBehaviour
         Assert.True(eventFired);
         Assert.True(correctStatus);
     }
-    
+
     [Test]
     public void DoesGameStatusChangeToEncounterToggleMapPanelOff()
     {
@@ -486,7 +392,7 @@ public class GameStatusManagerTests : MonoBehaviour
         Assert.True(eventFired);
         Assert.True(correctStatus);
     }
-    
+
     [Test]
     public void DoesGameStatusChangeToEncounterToggleCombatElementsOff()
     {
@@ -508,14 +414,11 @@ public class GameStatusManagerTests : MonoBehaviour
     {
         bool eventFired = false;
 
-        GameManager.Instance.EVENT_SHOW_ENCOUNTER_PANEL.AddListener(() =>
-        {
-            eventFired = true;
-        });
+        GameManager.Instance.EVENT_SHOW_ENCOUNTER_PANEL.AddListener(() => { eventFired = true; });
         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Encounter);
         Assert.True(eventFired);
     }
-    
+
     [Test]
     public void DoesGameStatusChangeToMerchantToggleTopBarMapIconOn()
     {
@@ -530,7 +433,7 @@ public class GameStatusManagerTests : MonoBehaviour
         Assert.True(eventFired);
         Assert.True(correctStatus);
     }
-    
+
     [Test]
     public void DoesGameStatusChangeToMerchantToggleMapPanelOff()
     {
@@ -546,7 +449,7 @@ public class GameStatusManagerTests : MonoBehaviour
         Assert.True(eventFired);
         Assert.True(correctStatus);
     }
-    
+
     [Test]
     public void DoesGameStatusChangeToMerchantToggleCombatElementsOff()
     {
@@ -568,14 +471,11 @@ public class GameStatusManagerTests : MonoBehaviour
     {
         bool eventFired = false;
 
-        GameManager.Instance.EVENT_TOGGLE_MERCHANT_PANEL.AddListener((data) =>
-        {
-            eventFired = true;
-        });
+        GameManager.Instance.EVENT_TOGGLE_MERCHANT_PANEL.AddListener((data) => { eventFired = true; });
         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Merchant);
         Assert.True(eventFired);
     }
-    
+
     [Test]
     public void DoesGameStatusChangeToCampToggleTopBarMapIconOn()
     {
@@ -590,7 +490,7 @@ public class GameStatusManagerTests : MonoBehaviour
         Assert.True(eventFired);
         Assert.True(correctStatus);
     }
-    
+
     [Test]
     public void DoesGameStatusChangeToCampToggleMapPanelOff()
     {
@@ -606,7 +506,7 @@ public class GameStatusManagerTests : MonoBehaviour
         Assert.True(eventFired);
         Assert.True(correctStatus);
     }
-    
+
     [Test]
     public void DoesGameStatusChangeToCampToggleCombatElementsOff()
     {
@@ -628,10 +528,7 @@ public class GameStatusManagerTests : MonoBehaviour
     {
         bool eventFired = false;
 
-        GameManager.Instance.EVENT_CAMP_SHOW_PANEL.AddListener(() =>
-        {
-            eventFired = true;
-        });
+        GameManager.Instance.EVENT_CAMP_SHOW_PANEL.AddListener(() => { eventFired = true; });
         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.Camp);
         Assert.True(eventFired);
     }
