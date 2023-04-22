@@ -23,6 +23,8 @@ public class RegisterPanelManagerTests : MonoBehaviour
     [UnityTearDown]
     public IEnumerator TearDown()
     {
+        WalletManager.Instance.DestroyInstance();
+        GameManager.Instance.DestroyInstance();
         Destroy(registerPanel.gameObject);
         yield return null;
     }
