@@ -120,6 +120,7 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<SWSM_MapData> EVENT_ALL_MAP_NODES_UPDATE = new UnityEvent<SWSM_MapData>();
     [HideInInspector] public UnityEvent<int> EVENT_MAP_NODE_SELECTED = new UnityEvent<int>();
     [HideInInspector] public UnityEvent<int> EVENT_MAP_NODE_MOUSE_OVER = new UnityEvent<int>();
+    [HideInInspector] public UnityEvent<int> OnNodeTransitionEnd = new UnityEvent<int>();
 
 
     // map animation events
@@ -344,7 +345,7 @@ public class GameManager : SingleTon<GameManager>
         }
     }
 
-    public void LoadScene(inGameScenes scene) //Loads the target scene passing through the LoaderScene
+    public void LoadScene(inGameScenes scene, bool async = false) //Loads the target scene passing through the LoaderScene
     {
         EVENT_SCENE_LOADING.Invoke();
         nextSceneToLoad = scene;
@@ -358,7 +359,10 @@ public class GameManager : SingleTon<GameManager>
             EVENT_STOP_MUSIC.Invoke();
         }
 
-        SceneManager.LoadScene(inGameScenes.Loader.ToString());
+        if (async)
+            SceneManager.LoadSceneAsync(inGameScenes.Loader.ToString());
+        else
+            SceneManager.LoadScene(inGameScenes.Loader.ToString());
         CurrentScene = inGameScenes.Loader;
     }
 

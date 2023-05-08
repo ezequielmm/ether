@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using DG.Tweening;
+using Random = UnityEngine.Random;
 
 public class SoundManager : SingleTon<SoundManager>
 {
@@ -12,16 +14,25 @@ public class SoundManager : SingleTon<SoundManager>
     [SerializeField] private AudioSource SfxSource;
     [SerializeField] private AudioSource AmbienceSource;
     [SerializeField] private List<NamedSoundList> BackgroundMusic;
-    [SerializeField] private NamedSoundList KnightSounds;
-    [SerializeField] private NamedSoundList EnemyDefensiveSounds;
-    [SerializeField] private NamedSoundList EnemyOffensiveSounds;
-    [SerializeField] private NamedSoundList CardSounds;
-    [SerializeField] private NamedSoundList UiSounds;
+
+    [SerializeField] private List<SoundListMapper> _soundsListMap;
+    [System.Serializable]
+    private struct SoundListMapper {
+        public SoundTypes Type;
+        public NamedSoundList SoundList;
+    }
+    private Dictionary<SoundTypes, NamedSoundList> _soundDictionary = new();
 
     [SerializeField] bool showSoundDebugs = true;
 
     private float SfxVolume => PlayerPrefs.GetFloat("sfx_volume", 1);
     private float MusicVolume => PlayerPrefs.GetFloat("music_volume", 0.5f);
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _soundDictionary = _soundsListMap.ToDictionary(k => k.Type, v => v.SoundList);
+    }
 
     public void Start()
     {
@@ -56,39 +67,13 @@ public class SoundManager : SingleTon<SoundManager>
 
     private AudioClip GetAudioClip(SoundTypes soundType, string soundName)
     {
-        List<NamedSoundList.SoundClip> soundClipList;
-        switch (soundType)
-        {
-            case SoundTypes.Card:
-                soundClipList = CardSounds.soundClips;
-                break;
-            case SoundTypes.EnemyOffensive:
-                soundClipList = EnemyOffensiveSounds.soundClips;
-                break;
-            case SoundTypes.EnemyDefensive:
-                soundClipList = EnemyDefensiveSounds.soundClips;
-                break;
-            case SoundTypes.Knight:
-                soundClipList = KnightSounds.soundClips;
-                break;
-            case SoundTypes.UI:
-                soundClipList = UiSounds.soundClips;
-                break;
-            default:
-                Debug.LogError($"No Sound List Found for Sound Type {soundType}");
-                return null;
-        }
+        var clip = _soundDictionary[soundType].GetRandomSound(soundName);
 
-        NamedSoundList.SoundClip relatedClip =
-            soundClipList.FirstOrDefault(sc => sc.name.ToLower() == soundName.ToLower());
-
-        if (relatedClip.clips == null || relatedClip.clips.Count == 0)
-        {
-            Debug.LogError($"No Audio Clips for Sound Type {soundType} and Sound Name {soundName}");
-            return null;
-        }
-
-        return relatedClip.clips[Random.Range(0, relatedClip.clips.Count)];
+        if (clip != null)
+            return clip;
+        
+        Debug.LogError($"No Audio Clips for Sound Type {soundType} and Sound Name {soundName}");
+        return null;
     }
 
     private void OnPlayMusic(MusicTypes type, int act)

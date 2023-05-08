@@ -18,7 +18,7 @@ namespace map
 
         // we need a list of the path spriteshapes to use with the background grid
         private List<PathManager> pathManagers = new List<PathManager>();
-
+        
         public GameObject playerIcon;
         public ParticleSystem portalAnimation;
         public GameObject nodesHolder;
@@ -148,7 +148,7 @@ namespace map
             portalAnimation.GetComponent<Renderer>().sortingLayerName = GameSettings.MAP_ELEMENTS_SORTING_LAYER_NAME;
 
             GenerateMapSeeds(22);
-
+            
             // set the camera here so we don't have to assign it. This *should* block any clicks from passing through the map
             clickBlockCanvas.worldCamera = GameObject.FindWithTag("UiParticleCamera").GetComponent<Camera>();
         }
@@ -414,7 +414,6 @@ namespace map
                 currentActTiles = actTileLists[currentMapAct - 1];
                 return;
             }
-
             // else default to the act 1 tiles
             currentActTiles = actTileLists[0];
         }
@@ -1371,6 +1370,32 @@ namespace map
             if (activeTween != null && activeTween.active)
             {
                 activeTween.Kill();
+            }
+        }
+        
+        public void GoToNode(Transform node)
+        {
+            Debug.Log($"Going to node: {node}");
+            float knightPositionOnScreen = GameSettings.KNIGHT_SCREEN_POSITION_ON_CENTER;
+            float scrollTime = GameSettings.MAP_DURATION_TO_SCROLLBACK_TO_PLAYER_ICON;
+            // Put knight to center
+            // Distance between knight and node origin.
+            float disToKnight = node.position.x - nodesHolder.transform.position.x;
+            // Subtract desired knight position by distance to get node position.
+            float targetx = (halfScreenWidth * knightPositionOnScreen) - disToKnight;
+            targetx = (halfScreenWidth * -0.01f) - disToKnight;
+            
+            if ((mapBounds.max.x < halfScreenWidth * 2) == false)
+            {
+                if (GameSettings.MAP_AUTO_SCROLL_ACTIVE)
+                {
+                    activeTween = nodesHolder.transform.DOLocalMoveX(targetx, scrollTime);
+                }
+                else
+                {
+                    nodesHolder.transform.localPosition = new Vector3(targetx, nodesHolder.transform.localPosition.y,
+                        nodesHolder.transform.localPosition.z);
+                }
             }
         }
 

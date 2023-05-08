@@ -372,7 +372,8 @@ public enum SoundTypes
     EnemyOffensive,
     EnemyDefensive,
     Knight,
-    UI
+    UI,
+    MapElements
 }
 
 [Serializable]

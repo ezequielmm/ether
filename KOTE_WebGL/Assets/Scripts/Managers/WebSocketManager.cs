@@ -53,7 +53,8 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
             // Connect Events
             GameManager.Instance.EVENT_EXPEDITION_SYNC.AddListener(OnRequestSync);
-            GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnNodeClicked);
+            //GameManager.Instance.EVENT_MAP_NODE_SELECTED.AddListener(OnNodeClicked);
+            GameManager.Instance.OnNodeTransitionEnd.AddListener(OnNodeClicked); // TODO: A transition now controls the flow of the map
             GameManager.Instance.EVENT_CARD_PLAYED.AddListener(OnCardPlayed);
             GameManager.Instance.EVENT_END_TURN_CLICKED.AddListener(OnEndTurn);
             GameManager.Instance.EVENT_GENERIC_WS_DATA.AddListener(OnGenericWSDataRequest);
