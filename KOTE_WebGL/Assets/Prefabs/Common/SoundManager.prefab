@@ -53,13 +53,19 @@ MonoBehaviour:
   BackgroundMusic:
   - {fileID: 11400000, guid: 74ff5c3fd93ff9041ba8fb0fc4eaee40, type: 2}
   - {fileID: 11400000, guid: 574440d970935f24785959ac3900c0d1, type: 2}
-  KnightSounds: {fileID: 11400000, guid: d82104d6e67fa964697d0f193057bd5f, type: 2}
-  EnemyDefensiveSounds: {fileID: 11400000, guid: 855bbf1ecbeef0f4c80358faa62d0062,
-    type: 2}
-  EnemyOffensiveSounds: {fileID: 11400000, guid: 4189e3f669ce1604491f44b4c5de9748,
-    type: 2}
-  CardSounds: {fileID: 11400000, guid: 40153f211a5d85a4ab5c540bb6e696d0, type: 2}
-  UiSounds: {fileID: 11400000, guid: 7e4f7671cfff1e143b50808544663628, type: 2}
+  _soundsListMap:
+  - Type: 0
+    SoundList: {fileID: 11400000, guid: 40153f211a5d85a4ab5c540bb6e696d0, type: 2}
+  - Type: 1
+    SoundList: {fileID: 11400000, guid: 4189e3f669ce1604491f44b4c5de9748, type: 2}
+  - Type: 2
+    SoundList: {fileID: 11400000, guid: 855bbf1ecbeef0f4c80358faa62d0062, type: 2}
+  - Type: 3
+    SoundList: {fileID: 11400000, guid: d82104d6e67fa964697d0f193057bd5f, type: 2}
+  - Type: 4
+    SoundList: {fileID: 11400000, guid: 7e4f7671cfff1e143b50808544663628, type: 2}
+  - Type: 5
+    SoundList: {fileID: 11400000, guid: 4776a615b89b0de4992b1b4ba21bf228, type: 2}
   showSoundDebugs: 1
 --- !u!82 &4876010967604876366
 AudioSource:

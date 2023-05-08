@@ -1,17 +1,18 @@
 using System;
 using System.Collections.Generic;
-using Spine;
-using Spine.Unity;
 using UnityEngine;
 using UnityEngine.U2D;
 
 public class PointerManager : MonoBehaviour
 {
     public GameObject pointerContainer;
-    public GameObject pointerArrow;
     public GameObject pointerTarget;
+    public GameObject lineTarget;
     public SpriteShapeController PointerLine;
-
+    
+    public Transform targetPoint;
+    public Transform originPoint;
+    
     [SerializeField]
     public TargetProfile TargetProfile { get; private set; }
 
@@ -28,6 +29,8 @@ public class PointerManager : MonoBehaviour
 
     IPointerRunable activePointer;
     private List<IPointerRunable> runables;
+    
+    private readonly Vector3 plane = new Vector3(1,1,0);
 
     private void OnEnable()
     {
@@ -41,6 +44,7 @@ public class PointerManager : MonoBehaviour
         {
             runables.Add(runable);
         }
+        originPoint.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -71,26 +75,33 @@ public class PointerManager : MonoBehaviour
         TargetProfile = data.Targets;
 
         pointerContainer.SetActive(true);
+        originPoint.gameObject.SetActive(true);
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
 
-        MoveLine(mousePosition, pointerOrigin);
+        //MoveLine(mousePosition, pointerOrigin);
 
         Vector3 arrowPosition = mousePosition;
         if (mousePosition.x > pointerOrigin.x)
         {
-            arrowPosition.x -= GameSettings.POINTER_MOUSE_OFFSET;
+            arrowPosition.x -= 0.2f;
         }
 
         if (mousePosition.x < pointerOrigin.x)
         {
-            arrowPosition.x += GameSettings.POINTER_MOUSE_OFFSET;
+            arrowPosition.x += 0.2f;
         }
 
-        pointerArrow.transform.position = arrowPosition;
-        pointerTarget.transform.position = mousePosition;
+        pointerTarget.transform.position = arrowPosition;
         RotateArrowTowardsMouse(mousePosition, pointerOrigin);
-
+        
+        if(lineTarget != null)
+            MoveLine(lineTarget.transform.position, pointerOrigin);
+        if(originPoint != null)
+            originPoint.transform.position = Vector3.Scale(pointerOrigin, plane);
+        if(targetPoint != null)
+            targetPoint.transform.position = Vector3.Scale(mousePosition, plane);
+        
         // Find which runable to use
         activePointer = null;
         foreach (var pointer in runables) 
@@ -138,11 +149,12 @@ public class PointerManager : MonoBehaviour
         // else return it to the deck
         //GameManager.Instance.EVENT_CARD_MOUSE_EXIT.Invoke(id);
         pointerContainer.SetActive(false);
+        originPoint.gameObject.SetActive(false);
     }
 
     private void RotateArrowTowardsMouse(Vector3 mousePosition, Vector3 cardPosition)
     {
-        Quaternion rotation = pointerArrow.transform.rotation;
+        Quaternion rotation = pointerTarget.transform.rotation;
         if (mousePosition.x < cardPosition.x)
         {
             rotation.z = -Mathf.Abs(rotation.z);
@@ -153,7 +165,7 @@ public class PointerManager : MonoBehaviour
             rotation.z = Mathf.Abs(rotation.z);
         }
 
-        pointerArrow.transform.rotation = rotation;
+        pointerTarget.transform.rotation = rotation;
     }
 
     private void MoveLine(Vector3 mousePosition, Vector3 cardPosition)
@@ -238,11 +250,11 @@ public class PointerManager : MonoBehaviour
     {
         if (localMousePosition.x < localCardPosition.x)
         {
-            localMousePosition.x += GameSettings.POINTER_MOUSE_OFFSET;
+            localMousePosition.x += 0.2f;
         }
         else
         {
-            localMousePosition.x -= GameSettings.POINTER_MOUSE_OFFSET;
+            localMousePosition.x -= 0.2f;
         }
 
         spline.SetPosition(splinePointCount - 1, localMousePosition);

@@ -55,7 +55,7 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
             if (string.IsNullOrEmpty(traitSprite?.SkinName))
             {
                 // if this is called, nothing's going wrong, this nft doesn't have a skin for this trait, leaving for debugging
-                //Debug.LogWarning($"[PlayerSkinManager] Can't apply Sprite of type [{traitType}]: {traitSprite}");
+                Debug.LogWarning($"[PlayerSkinManager] Can't apply Sprite of type [{traitType}]: {traitSprite}");
                 continue;
             }
 

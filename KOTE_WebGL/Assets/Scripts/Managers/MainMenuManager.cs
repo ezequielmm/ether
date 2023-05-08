@@ -1,5 +1,8 @@
+using DefaultNamespace;
+using map;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
@@ -38,10 +41,10 @@ public class MainMenuManager : MonoBehaviour
     public bool _isWalletVerified => wallet.WalletVerified;
     public bool _isWhitelisted => true;
 
+    [SerializeField] PostProcessingTransition postProcessingTransition;
+
     private void Start()
     {
-        
-        
         GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.AddListener(UpdateNameAndFief);
         GameManager.Instance.EVENT_AUTHENTICATED.AddListener(SetupPostAuthenticationButtons);
         GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(OnLogoutSuccessful);
@@ -52,7 +55,6 @@ public class MainMenuManager : MonoBehaviour
         wallet.WalletStatusModified.AddListener(UpdateUiOnWalletModification);
         NftManager.Instance.NftsLoaded.AddListener(VerifyResumeExpedition);
 
-        
         if (string.IsNullOrEmpty(AuthenticationManager.Instance.GetSessionToken()))
         {
             TogglePreLoginStatus(true);
@@ -100,7 +102,7 @@ public class MainMenuManager : MonoBehaviour
             playButton.interactable = false;
             return;
         }
-        
+
         if (!_ownsAnyNft ) 
         {
             newExpeditionButton.gameObject.SetActive(false);
@@ -230,7 +232,9 @@ public class MainMenuManager : MonoBehaviour
             // play the correct music depending on where the player is
             GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Music, 1);
             GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Ambient, 1);
-            GameManager.Instance.LoadScene(inGameScenes.Expedition);
+            //GameManager.Instance.LoadScene(inGameScenes.Expedition);
+            postProcessingTransition.OnTransitionInEnd.AddListener(() => GameManager.Instance.LoadScene(inGameScenes.Expedition, true));
+            postProcessingTransition.StartTransition();
         }
         else
         {

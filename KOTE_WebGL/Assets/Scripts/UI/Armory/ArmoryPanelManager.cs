@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using map;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -34,6 +35,8 @@ namespace KOTE.UI.Armory
         private Dictionary<int, List<GearItemData>> blessedVillagerEquippedGear = new();
         private List<ArmoryHeaderManager> gearHeaders = new();
 
+        [SerializeField] private PostProcessingTransition postProcessingTransition;
+        
         private void Awake()
         {
             GameManager.Instance.EVENT_AUTHENTICATED.AddListener(PopulatePlayerGearInventory);
@@ -276,7 +279,9 @@ namespace KOTE.UI.Armory
             // play the correct music depending on where the player is
             GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Music, 1);
             GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Ambient, 1);
-            GameManager.Instance.LoadScene(inGameScenes.Expedition);
+            //GameManager.Instance.LoadScene(inGameScenes.Expedition);
+            postProcessingTransition.OnTransitionInEnd.AddListener(() => GameManager.Instance.LoadScene(inGameScenes.Expedition, true));
+            postProcessingTransition.StartTransition();
         }
 
         private void OnGearItemSelected(GearItemData activeItem)

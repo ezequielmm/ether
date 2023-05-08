@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8871622810412069435
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3886808220035349955}
+  - component: {fileID: 911822462107192733}
+  m_Layer: 5
+  m_Name: CloudsParallax
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3886808220035349955
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8871622810412069435}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &911822462107192733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8871622810412069435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a57fae1c6abe4955b4b7594c3d65fce3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startPlayDelay: 2
+  _cloudsPoolAmount: 8
+  _cloudsSimultaneous: 4
+  _minRandomSpeed: 0.4
+  _maxRandomSpeed: 0.8
+  _minRandomNewCloudDelay: 0.2
+  _maxRandomNewCloudDelay: 1
+  _maskCollider: {fileID: 0}
+  _cloudPrefab: {fileID: 3474911896994985886, guid: 80515b45614c0dd4ead402a2e4b25bba,
+    type: 3}
+  _cloudSprites:
+  - {fileID: 21300000, guid: aef980ee2265e7f469f0326827603dfd, type: 3}
+  - {fileID: 21300000, guid: 049960c1d219dd843bdf93715da6dd3c, type: 3}
+  - {fileID: 21300000, guid: 58387440a43bc024d80120e34a6da802, type: 3}
+  - {fileID: 21300000, guid: 0185842ef2cbafb48a4034c1f50de19d, type: 3}
+  - {fileID: 21300000, guid: df08fb3bd6881d347bda90ba23587995, type: 3}

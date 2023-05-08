@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.U2D;
 
 [Serializable]
 public class NodeData : MonoBehaviour, ITooltipSetter
@@ -12,7 +14,7 @@ public class NodeData : MonoBehaviour, ITooltipSetter
     public struct BackgroundImage
     {
         public NODE_SUBTYPES type;
-        public GameObject imageGo;
+        public NodeView NodeView;
     }
 
     [Serializable]
@@ -22,6 +24,8 @@ public class NodeData : MonoBehaviour, ITooltipSetter
         public GameObject imageGo;
     }
 
+    private NodeView myNodeView;
+    
     [Header("Background sprites")] public List<BackgroundImage> bgSprites = new List<BackgroundImage>();
     public List<BossImage> bossSprites = new List<BossImage>();
 
@@ -69,40 +73,32 @@ public class NodeData : MonoBehaviour, ITooltipSetter
 
     private void OnMouseDown()
     {
-        if (!nodeClickDisabled)
+        if (nodeClickDisabled) return;
+        
+        Debug.Log("click");
+        // if clicking on a royal house node, we want to ask the player for confirmation before activating the node
+        if (type == NODE_TYPES.royal_house)
         {
-            Debug.Log("click");
-            // if clicking on a royal house node, we want to ask the player for confirmation before activating the node
-            if (type == NODE_TYPES.royal_house)
-            {
-                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
-                    "Do you want to enter " + title + "?", OnConfirmRoyalHouse);
-                return;
-            }
-            else
-            {
-                if (type == NODE_TYPES.combat)
-                {
-                    GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Combat Selected");
-                }
-
-                if (subType == NODE_SUBTYPES.combat_boss)
-                {
-                    GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Boss, act);
-                }
-
-                GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(id);
-                GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.Invoke(act, step);
-                GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
-                StopActiveNodeAnimation();
-                activeIconImage.transform.localScale = originalScale;
-            }
+            GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
+                "Do you want to enter " + title + "?", OnConfirmRoyalHouse);
+            return;
         }
-    }
+        
+        if (type == NODE_TYPES.combat)
+        {
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Combat Selected");
+        }
 
-    private void OnDestroy()
-    {
-        DOTween.Kill(activeIconImage.transform);
+        if (subType == NODE_SUBTYPES.combat_boss)
+        {
+            GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Boss, act);
+        }
+
+        GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(id);
+        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.Invoke(act, step);
+        GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
+        StopActiveNodeAnimation();
+    
     }
 
     private void OnMouseEnter()
@@ -112,21 +108,13 @@ public class NodeData : MonoBehaviour, ITooltipSetter
 
     private void OnMouseOver()
     {
-        if ((status == NODE_STATUS.available || status == NODE_STATUS.active) && playHoverAnimation)
-        {
-            activeIconImage.transform.DOScale(new Vector3(originalScale.x * 1.2f, originalScale.y * 1.2f), 0.5f);
-        }
-
+        myNodeView.OnHover();
         GameManager.Instance.EVENT_MAP_NODE_MOUSE_OVER.Invoke(id);
     }
 
     private void OnMouseExit()
     {
-        if (status == NODE_STATUS.available || status == NODE_STATUS.active)
-        {
-            activeIconImage.transform.DOScale(originalScale, 0.5f);
-        }
-
+        myNodeView.OnUnHover();
         GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
         GameManager.Instance.EVENT_MAP_NODE_MOUSE_OVER.Invoke(-1);
     }
@@ -137,7 +125,7 @@ public class NodeData : MonoBehaviour, ITooltipSetter
     {
         foreach (BackgroundImage bgimg in bgSprites)
         {
-            bgimg.imageGo.SetActive(false);
+            bgimg.NodeView.Hide();
         }
 
         idText.gameObject.SetActive(false);
@@ -191,60 +179,18 @@ public class NodeData : MonoBehaviour, ITooltipSetter
 
     private void SelectNodeImage()
     {
-        GameObject nodeIcon = GetNodeIcon();
-
-        if (nodeIcon != null)
-        {
-            nodeIcon.SetActive(true);
-            activeIconImage = nodeIcon;
-            if (subType == NODE_SUBTYPES.combat_boss) nodeIcon.transform.localScale *= GameSettings.BOSS_NODE_SCALE;
-
-            // resize the node depending on the status
-            if (status == NODE_STATUS.disabled || status == NODE_STATUS.completed)
-            {
-                nodeIcon.transform.localScale *= GameSettings.COMPLETED_NODE_SCALE;
-                if (GameSettings.COLOR_UNAVAILABLE_MAP_NODES == false)
-                {
-                    nodeIcon.GetComponent<SpriteRenderer>().material = grayscaleMaterial;
-                }
-            }
-            else if (status == NODE_STATUS.active || status == NODE_STATUS.available)
-            {
-                nodeIcon.transform.localScale *= (subType == NODE_SUBTYPES.combat_boss)
-                    ? GameSettings.ACTIVE_BOSS_NODE_SCALE_MODIFER
-                    : GameSettings.ACTIVE_NODE_SCALE_MODIFIER;
-                PlayActiveNodeAnimation(nodeIcon);
-            }
-
-            originalScale = nodeIcon.transform.localScale;
-        }
-        else
+        myNodeView = bgSprites.Find(x => x.type == subType).NodeView;
+        if (myNodeView == null)
         {
             Debug.Log(" nodeData.type " + type + " not found ");
-        }
-    }
-
-    private GameObject GetNodeIcon()
-    {
-        GameObject nodeIcon;
-
-        if (subType != NODE_SUBTYPES.combat_boss)
-        {
-            nodeIcon = bgSprites.Find(x => x.type == subType).imageGo;
-        }
-        else
-        {
-            string bossType = title.Split(':')[1];
-            bossType = bossType.Trim();
-            nodeIcon = bossSprites.Find(x => x.bossName == bossType).imageGo;
-            if (nodeIcon == null)
-            {
-                Debug.LogWarning($"[NodeData] No Boss node image found for {bossType}");
-                nodeIcon = bgSprites.Find(x => x.type == subType).imageGo;
-            }
+            return;
         }
 
-        return nodeIcon;
+        myNodeView.Init(status);
+        myNodeView.Show();
+
+        // resize the node depending on the status
+        myNodeView.SetResize();
     }
 
     private void UpdateNodeStatusVisuals()
@@ -288,13 +234,12 @@ public class NodeData : MonoBehaviour, ITooltipSetter
 
     private void StopActiveNodeAnimation()
     {
-        activeAnimation.Kill();
+        myNodeView.Stop();
     }
 
     private void OnShowMapPanel()
     {
-        playHoverAnimation = false;
-        activeAnimation.Rewind();
+        myNodeView.Rewind();
     }
 
 

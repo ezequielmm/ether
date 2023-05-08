@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class LoginPanelManager : MonoBehaviour
@@ -24,6 +25,9 @@ public class LoginPanelManager : MonoBehaviour
     private bool validEmail;
     private bool validLogin;
 
+    public UnityEvent OnLoadingRequest;
+    public UnityEvent OnLoadingResponse;
+    
     private void Awake()
     {
         GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerLoginPanel);
@@ -129,13 +133,16 @@ public class LoginPanelManager : MonoBehaviour
         validLoginEmail.gameObject.SetActive(false);
         validLoginPassword.gameObject.SetActive(false);
 
+        OnLoadingRequest?.Invoke();
         if (!validEmail)
         {
+            OnLoadingResponse?.Invoke();
             return;
         }
 
         bool successfulLogin =
             await AuthenticationManager.Instance.Login(emailInputField.text, passwordInputField.text);
+        OnLoadingResponse?.Invoke();
         UpdatePanelOnAuthenticated(successfulLogin);
     }
 
