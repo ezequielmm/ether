@@ -15,12 +15,13 @@ public class GrabCommitHash : IPreprocessBuildWithReport
 
     public void OnPreprocessBuild(BuildReport report)
     {
-        Version();
+        //TODO: This breaks the building process. Need to figure out how to make it work?.
+        //Version();
     }
 
     static GrabCommitHash()
     {
-        Version();
+        //Version();
     }
 
     /// <summary>
