@@ -149,6 +149,10 @@ public class FetchData : DataManager, ISingleton<FetchData>
     public async UniTask<ExpeditionStartData> RequestNewExpedition(NftContract characterType, int selectedNft,
         List<GearItemData> equippedGear)
     {
+        /*
+         
+         
+        */
         if (!UserDataManager.Instance.VerifyAccountExists()) return new ExpeditionStartData
         {
             expeditionCreated = false
@@ -289,15 +293,20 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
     public async UniTask<ProfileData> GetPlayerProfile()
     {
+        Debug.Log("Start get profile");
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.Profile);
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
             request.AddAuthToken();
             string rawJson = await MakeJsonRequest(request);
+            Debug.Log("Raw json " + rawJson);
+            Debug.Log("Request result to check " + request.error);
+            Debug.Log("Request " + request.result);
             if (request.result == UnityWebRequest.Result.ConnectionError ||
                 request.result == UnityWebRequest.Result.ProtocolError ||
                 request.result == UnityWebRequest.Result.DataProcessingError)
             {
+                Debug.Log("no profile");
                 string pannelMessage = "Error Retrieving profile, please log in again.";
                 string[] buttons = { "Return To Login screen", string.Empty };
                 GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(pannelMessage, () =>

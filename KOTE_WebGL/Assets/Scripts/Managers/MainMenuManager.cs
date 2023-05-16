@@ -241,6 +241,7 @@ public class MainMenuManager : MonoBehaviour
             // if there's no wallet, ask if they want to connect one
             if (!_hasWallet)
             {
+                Debug.LogError("no wallet");
                 GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(
                     "No Wallet connected, would you like to add one?",
                     () => { wallet.SetActiveWallet(); },

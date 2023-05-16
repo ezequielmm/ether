@@ -290,6 +290,7 @@ namespace Papertrail
         /// </summary>
         private void LogInternal(Facility facility, Severity severity, string msg)
         {
+            return;
             // Early out if the client's logging level is lower than the log message
             if (string.IsNullOrEmpty(msg) || severity > minimumLoggingLevel)
                 return;
@@ -383,9 +384,9 @@ public class PapertrailLogData
 
     private string GetAccount()
     {
-        if (!string.IsNullOrEmpty(UserDataManager.Instance.UserEmail))
+        if (!string.IsNullOrEmpty(UserDataManager.Instance.Profile.UserAddress))
         {
-            return UserDataManager.Instance.UserEmail;
+            return UserDataManager.Instance.Profile.UserAddress;
         }
         return string.Empty;
     }

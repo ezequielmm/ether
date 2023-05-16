@@ -167,7 +167,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             reportId = Guid.NewGuid().ToString(),
             environment = ClientEnvironmentManager.Instance.Environment.ToString(),
             clientId = UserDataManager.Instance.ClientId,
-            account = UserDataManager.Instance.UserEmail,
+            account = UserDataManager.Instance.Profile.UserAddress,
             knightId = UserDataManager.Instance.ActiveNft,
             expeditionId = UserDataManager.Instance.ExpeditionId,
             userTitle = title,

@@ -12,6 +12,8 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
 
     public bool Authenticated => !string.IsNullOrEmpty(GetSessionToken());
 
+    public string Wallet = "0x43B841A7535FD310BbedfCF54DeDf5DC4685E55B";
+
     public async UniTask<bool> Login()
     {
         string token = await FetchData.Instance.GetToken();
