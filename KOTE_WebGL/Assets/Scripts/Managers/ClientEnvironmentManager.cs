@@ -129,6 +129,12 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
 
     private void UpdateUrls(Environments currentEnvironment)
     {
+        _environmentUrls = new EnvironmentUrls
+        {
+            WebRequestURL = $"http://localhost:3000",
+            WebSocketURL = $"http://localhost:3000"
+        };
+        return;
         switch (currentEnvironment)
         {
             case Environments.Dev:

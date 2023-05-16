@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AuthenticationManager : SingleTon<AuthenticationManager>
 {
+    public string Token;
     private void Start()
     {
         GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(ClearSessionToken);
@@ -11,10 +12,9 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
 
     public bool Authenticated => !string.IsNullOrEmpty(GetSessionToken());
 
-    public async UniTask<bool> Login(string email, string password)
+    public async UniTask<bool> Login()
     {
-        string hashedPassword = HashPassword(password);
-        string token = await FetchData.Instance.GetTokenByLogin(email, hashedPassword);
+        string token = await FetchData.Instance.GetToken();
         return Authenticate(token);
     }
 

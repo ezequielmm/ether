@@ -66,6 +66,11 @@ public class LoginPanelManager : MonoBehaviour
         {
             OnLogin();
         }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Debug.Log("Force login");
+            OnLogin();
+        }
     }
 
     public void OnShowPassword()
@@ -141,7 +146,7 @@ public class LoginPanelManager : MonoBehaviour
         }
 
         bool successfulLogin =
-            await AuthenticationManager.Instance.Login(emailInputField.text, passwordInputField.text);
+            await AuthenticationManager.Instance.Login();
         OnLoadingResponse?.Invoke();
         UpdatePanelOnAuthenticated(successfulLogin);
     }

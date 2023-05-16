@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using KOTE.UI.Armory;
 using Newtonsoft.Json;
@@ -425,6 +426,12 @@ public class FetchData : DataManager, ISingleton<FetchData>
         }
 
         return rawData;
+    }
+
+    internal Task<string> GetToken()
+    {
+         
+        return Task.FromResult(AuthenticationManager.Instance.Token);
     }
 }
 
