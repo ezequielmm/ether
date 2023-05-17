@@ -12,7 +12,7 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
 
     public bool Authenticated => !string.IsNullOrEmpty(GetSessionToken());
 
-    public string Wallet = "0x43B841A7535FD310BbedfCF54DeDf5DC4685E55B";
+    public string Wallet = "0xAFeBa5DD120a3Ea8b44BBB13c5190715772dc9aB";
 
     public async UniTask<bool> Login()
     {
