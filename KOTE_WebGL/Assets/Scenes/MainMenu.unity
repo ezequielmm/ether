@@ -394,51 +394,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 111048378}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &111120955
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 111120957}
-  - component: {fileID: 111120956}
-  m_Layer: 0
-  m_Name: GearIconManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &111120956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 111120955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2031e5eb10a17f04e8b9e5da31d24c72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultImage: {fileID: 0}
---- !u!4 &111120957
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 111120955}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 16
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &166665745
 GameObject:
   m_ObjectHideFlags: 0
@@ -481,7 +436,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &184198671
 PrefabInstance:
@@ -552,52 +507,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca1c2a5f6ae3ea046ab142874dbb63b5, type: 3}
---- !u!1 &192792771
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 192792773}
-  - component: {fileID: 192792772}
-  m_Layer: 0
-  m_Name: PlayerSpriteManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &192792772
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 192792771}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bce15e6f3d810149851620def90261a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  KinghtData: {fileID: 0}
-  DefaultSkinImages: {fileID: 0}
---- !u!4 &192792773
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 192792771}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 17
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &237093127
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3200,7 +3109,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1382033301 stripped
 RectTransform:
@@ -5058,6 +4967,405 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1947301370
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1947301372}
+  - component: {fileID: 1947301371}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1947301371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1947301370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5ed93504eb9d8f41ad728b09418cced, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EVENT_REGISTERPANEL_ACTIVATION_REQUEST:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_LOGINPANEL_ACTIVATION_REQUEST:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_AUTHENTICATED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_REQUEST_PROFILE_ERROR:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_UPDATE_NAME_AND_FIEF:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SETTINGSPANEL_ACTIVATION_REQUEST:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_REQUEST_LOGOUT_COMPLETED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_VERSION_UPDATED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_TREASURYPANEL_ACTIVATION_REQUEST:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SHOW_ARMORY_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SHOW_CONFIRMATION_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SHOW_CONFIRMATION_PANEL_WITH_BACK_ACTION:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SHOW_WARNING_MESSAGE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_HIDE_WARNING_MESSAGE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CHARACTERSELECTED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SHOW_REWARDS_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_POPULATE_REWARDS_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_REWARD_SELECTED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CONTINUE_EXPEDITION:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_POTION_USED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_POTION_DISCARDED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_POTION_SHOW_POTION_MENU:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_POTION_WARNING:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_ROYALHOUSES_ACTIVATION_REQUEST:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SELECTARMORY_ITEM:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SELECTBLESSING_ITEM:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SHOW_ENCOUNTER_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_TOGGLE_MERCHANT_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_MERCHANT_BUY:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_MERCHANT_PURCHASE_SUCCESS:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CAMP_SHOW_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CAMP_HEAL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CAMP_FINISH:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_TOOGLE_TREASURE_ELEMENTS:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_TREASURE_CHEST_SIZE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_TREASURE_OPEN_CHEST:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_TREASURE_CHEST_RESULT:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_ENCOUNTER_DAMAGE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_NODE_DATA_UPDATE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_ALL_MAP_NODES_UPDATE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_MAP_NODE_SELECTED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_MAP_NODE_MOUSE_OVER:
+    m_PersistentCalls:
+      m_Calls: []
+  OnNodeTransitionEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_MAP_REVEAL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_MAP_ANIMATE_STEP:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_MAP_ACTIVATE_PORTAL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_MAP_SCROLL_CLICK:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_MAP_SCROLL_DRAG:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_MAP_MASK_DOUBLECLICK:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_MAP_PANEL_TOOGLE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_MAP_PANEL_TOGGLE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_TOGGLE_GAME_CLICK:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_TRINKET_ACTIVATED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_UPDATE_PLAYER:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_MAP_ICON_CLICKED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_TOOGLE_TOPBAR_MAP_ICON:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_UPDATE_CURRENT_STEP_INFORMATION:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_PILE_SHOW_DECK:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SHOW_SELECT_TRINKET_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_HIDE_COMMON_CARD_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_TRINKETS_SELECTED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_PILE_CLICKED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_MOUSE_ENTER:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_SHOWING_UP:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_MOUSE_EXIT:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_DRAW_CARDS:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARDS_PILES_UPDATED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_MOVE_CARDS:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_REARRANGE_HAND:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_DISABLED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_NO_ENERGY:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_DRAW:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_DISCARD:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_SHUFFLE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_ADD:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_UPDATE_TEXT:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_GAME_STATUS_CHANGE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_GAME_STATUS_CONFIRM:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CARD_PLAYED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_END_TURN_CLICKED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CONFIRM_EVENT:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_START_COMBAT_ENCOUNTER:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_TOGGLE_COMBAT_ELEMENTS:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_TOGGLE_COMBAT_UI:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_FADE_OUT_UI:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SHOW_PLAYER_CHARACTER:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_UPDATE_ENERGY:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_UPDATE_PLAYER_HEALTH:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_ATTACK_RESPONSE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_COMBAT_TURN_ENQUEUE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_COMBAT_FORCE_CLEAR:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_COMBAT_TURN_END:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_COMBAT_QUEUE_EMPTY:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_COMBAT_ORIGIN_CHANGE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_UPDATE_STATUS_EFFECTS:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CLEAR_TOOLTIPS:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_TOGGLE_TOOLTIPS:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SHOW_COMBAT_OVERLAY_TEXT:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SHOW_COMBAT_OVERLAY_TEXT_WITH_ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_HEAL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_DAMAGE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_DEACTIVATE_POINTER:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_WS_CONNECTED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_CHANGE_TURN:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_ADD_ENEMIES:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_UPDATE_ENEMY:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_UPDATE_INTENT:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_PLAY_SFX:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_PLAY_MUSIC:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_VOLUME_CHANGED:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_STOP_MUSIC:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SHOW_CONSOLE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SKIP_NODE:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SCENE_LOADING:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SHOW_FEEDBACK_PANEL:
+    m_PersistentCalls:
+      m_Calls: []
+  EVENT_SEND_BUG_FEEDBACK:
+    m_PersistentCalls:
+      m_Calls: []
+  firstLoad: 1
+--- !u!4 &1947301372
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1947301370}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &2018061548 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7042207118271053235, guid: d2e06bd1a4ff8264ea5e7faae64b81e5,

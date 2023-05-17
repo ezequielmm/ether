@@ -10,6 +10,8 @@ namespace KOTE.UI.Armory
         // cache for already downloaded images
         private Dictionary<Trait, Dictionary<string, Sprite>> iconCache = new();
 
+        public List<Sprite> sprites;
+
         public async UniTask<Sprite> GetGearSprite(Trait gearType, string itemName)
         {
             if (IsIconCached(gearType, itemName))
@@ -50,6 +52,9 @@ namespace KOTE.UI.Armory
                 Sprite curSprite = await GetIcon($"{item.trait}/{item.name}");
                 CacheIcon(itemTrait, item.name, curSprite);
             }
+
+            foreach (var VARIABLE in iconCache.Values)
+                sprites.AddRange(VARIABLE.Values);
         }
         
         internal async UniTask RequestGearIcons(Nft metadata)

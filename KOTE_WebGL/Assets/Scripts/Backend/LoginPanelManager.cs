@@ -71,6 +71,13 @@ public class LoginPanelManager : MonoBehaviour
             Debug.Log("Force login");
             OnLogin();
         }
+        
+        #if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            OnLogin();
+        }
+        #endif
     }
 
     public void OnShowPassword()
@@ -139,11 +146,11 @@ public class LoginPanelManager : MonoBehaviour
         validLoginPassword.gameObject.SetActive(false);
 
         OnLoadingRequest?.Invoke();
-        if (!validEmail)
-        {
-            OnLoadingResponse?.Invoke();
-            return;
-        }
+        // if (!validEmail)
+        // {
+        //     OnLoadingResponse?.Invoke();
+        //     return;
+        // }
 
         bool successfulLogin =
             await AuthenticationManager.Instance.Login();

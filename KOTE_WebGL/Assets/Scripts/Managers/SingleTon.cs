@@ -21,13 +21,21 @@ public abstract class SingleTon<T> : MonoBehaviour, ISingleton<T> where T : Comp
         {
             if (instance == null)
             {
-                GameObject obj = new GameObject();
-                obj.name = typeof(T).Name;
-                instance = obj.AddComponent<T>();
-
-                DontDestroyOnLoad(instance.gameObject);
+                var findInstanceInScene = FindObjectOfType<T>();
+                if (findInstanceInScene)
+                {
+                    instance = findInstanceInScene;
+                    DontDestroyOnLoad(instance.gameObject);
+                }
+                else
+                {
+                    GameObject obj = new GameObject();
+                    obj.name = typeof(T).Name;
+                    instance = obj.AddComponent<T>();
+                    DontDestroyOnLoad(instance.gameObject);
+                }
             }
-
+            
             return instance;
         }
     }
