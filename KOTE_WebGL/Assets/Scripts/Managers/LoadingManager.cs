@@ -29,7 +29,7 @@ public class LoadingManager : MonoBehaviour
 
     private async void LoadWithEnvironmentCheck()
     {
-        await ClientEnvironmentManager.Instance.StartEnvironmentManger();
+        await ClientEnvironmentManager.Instance.StartEnvironmentManger(true);
         StartCoroutine(LoadAsynchronously(GameManager.Instance.nextSceneToLoad.ToString()));
         GameManager.Instance.firstLoad = false;
     }

@@ -72,15 +72,14 @@ public class Villager : PlayerNft
             {
                 skinName = GameSettings.DEFAULT_SKIN_DATA.Find(x => x.TraitType == trait).SkinName;
             }
-
-            Debug.Log("");
+            
             Skin traitSkin = playerSkeleton.Skins.Find(x => x.Name.Contains(skinName));
             if (traitSkin == null)
             {
                 Debug.LogWarning($"[PlayerNft] {trait} skin not found for {traitValue}");
                 continue;
             }
-
+            
             foreach (Skin.SkinEntry skinEntry in traitSkin.Attachments)
             {
                 TraitSprite spriteData = GenerateSpriteData(skinEntry, traitSkin.Name, traitValue, trait);

@@ -35,25 +35,12 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         StartCoroutine(GetCharacterList());
     }
 
-    public async UniTask<DownloadHandler> MakeRequest(UnityWebRequest request)
+    public async UniTask<DownloadHandler> MakeRequest(UnityWebRequest request, bool allowLogs = true)
     {
-#if UNITY_EDITOR
-        if (UnitTestDetector.IsInUnitTest)
-        {
-            Debug.Log($"[WebRequesterManager] Can't make a webrequest while testing.");
-            return null;
-        }
-
-        if (ClientEnvironmentManager.Instance.UnityEnvironment.AllowUnsafeCertificates)
-        {
-            Debug.LogWarning($"[WebRequesterManager] Allowing unsafe certificates.");
-            ServicePointManager.ServerCertificateValidationCallback = TrustCertificate;
-        }
-#endif
         try
         {
             Guid requestId = Guid.NewGuid();
-            LogRequest(requestId, request.uri.ToString());
+            if (allowLogs) LogRequest(requestId, request.uri.ToString());
             await request.SendWebRequest();
             if (request.result != UnityWebRequest.Result.Success)
             {
@@ -62,7 +49,8 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             else
             {
                 bool logText = IsResponseJson(request) && request?.downloadHandler?.text != null;
-                LogRepsonse(requestId, request.uri.ToString(),
+                if (allowLogs)
+                    LogRepsonse(requestId, request.uri.ToString(),
                     logText
                         ? request.downloadHandler.text
                         : $"<Cannot Display: {request.GetResponseHeader("Content-Type")}>");
