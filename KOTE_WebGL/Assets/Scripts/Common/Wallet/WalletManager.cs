@@ -104,7 +104,7 @@ public class WalletManager : ISingleton<WalletManager>
     public async UniTask ConnectWallet()
     {
 #if UNITY_EDITOR
-        SetWallet(AuthenticationManager.Instance.Wallet);
+        SetWallet(AuthenticationManager.Instance.LoginData.Wallet);
         return;
 #endif
         string activeAccount = await metaMask.RequestAccount();

@@ -15,6 +15,8 @@ public class LoadingManager : MonoBehaviour
     [SerializeField] Slider slideBar;
     [SerializeField] private Loader loader;
 
+    [SerializeField] private bool startLocalEnvironment;
+    
     private void Start()
     {
         loader.Show();
@@ -29,7 +31,7 @@ public class LoadingManager : MonoBehaviour
 
     private async void LoadWithEnvironmentCheck()
     {
-        await ClientEnvironmentManager.Instance.StartEnvironmentManger(true);
+        await ClientEnvironmentManager.Instance.StartEnvironmentManger(startLocalEnvironment);
         StartCoroutine(LoadAsynchronously(GameManager.Instance.nextSceneToLoad.ToString()));
         GameManager.Instance.firstLoad = false;
     }

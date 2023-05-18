@@ -199,6 +199,11 @@ PrefabInstance:
       propertyPath: loader
       value: 
       objectReference: {fileID: 635684407}
+    - target: {fileID: 5889864488466076952, guid: 58706a5f453ebec4a8ccf728bc8a3ba6,
+        type: 3}
+      propertyPath: startLocalEnvironment
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5889864488466076953, guid: 58706a5f453ebec4a8ccf728bc8a3ba6,
         type: 3}
       propertyPath: m_Pivot.x

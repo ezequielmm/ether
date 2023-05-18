@@ -1,23 +1,45 @@
 using System;
+using System.Collections;
+using System.Text;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
+
+[System.Serializable]
+public class LoginData
+{
+    [JsonProperty("token")] public string Token;
+    [JsonProperty("wallet")] public string Wallet;
+}
 
 public class AuthenticationManager : SingleTon<AuthenticationManager>
 {
-    public string Token;
+    public LoginData LoginData;
+
     private void Start()
     {
         GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(ClearSessionToken);
+#if UNITY_EDITOR
+        StartCoroutine(LoginDelay());
+        IEnumerator LoginDelay()
+        {
+            yield return new WaitForSeconds(2f);
+            Login(JsonConvert.SerializeObject(LoginData));
+        }
+#endif
     }
 
     public bool Authenticated => !string.IsNullOrEmpty(GetSessionToken());
 
-    public string Wallet = "0xAFeBa5DD120a3Ea8b44BBB13c5190715772dc9aB";
-
-    public async UniTask<bool> Login()
+    public async UniTask<bool> Login(string loginJson)
     {
-        string token = await FetchData.Instance.GetToken();
-        return Authenticate(token);
+        var utf8Bytes = Encoding.UTF8.GetBytes(loginJson);
+        string jsonText = Encoding.UTF8.GetString(utf8Bytes);
+            
+        var deserializeObject = JsonConvert.DeserializeObject<LoginData>(jsonText);
+        this.LoginData = deserializeObject;
+        
+        return Authenticate(LoginData.Token);
     }
 
     public async UniTask<bool> Register(string name, string email, string password)

@@ -16,8 +16,6 @@ public class MainMenuManager : MonoBehaviour
     public Button playButton,
         newExpeditionButton,
         treasuryButton,
-        registerButton,
-        loginButton,
         nameButton,
         fiefButton,
         connectWalletButton;
@@ -49,21 +47,9 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_AUTHENTICATED.AddListener(SetupPostAuthenticationButtons);
         GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(OnLogoutSuccessful);
 
-        GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(false);
-        GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(false);
-
         wallet.WalletStatusModified.AddListener(UpdateUiOnWalletModification);
         NftManager.Instance.NftsLoaded.AddListener(VerifyResumeExpedition);
 
-        if (string.IsNullOrEmpty(AuthenticationManager.Instance.GetSessionToken()))
-        {
-            TogglePreLoginStatus(true);
-        }
-        else
-        {
-            AuthenticationManager.Instance.AuthenticateOnResume();
-        }
-        
         // default the play button to not being interactable
         playButton.interactable = false;
         CheckIfArmoryButtonIsEnabled();
@@ -159,29 +145,13 @@ public class MainMenuManager : MonoBehaviour
     public void OnLogoutSuccessful(string message)
     {
         GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(false);
-        TogglePreLoginStatus(true);
-    }
-
-    public void TogglePreLoginStatus(bool preLoginStatus)
-    {
-        nameText.gameObject.SetActive(!preLoginStatus);
-        moneyText.gameObject.SetActive(!preLoginStatus);
-        playButton.gameObject.SetActive(!preLoginStatus);
-        treasuryButton.gameObject.SetActive(!preLoginStatus);
-        newExpeditionButton.gameObject.SetActive(!preLoginStatus);
-        registerButton.gameObject.SetActive(preLoginStatus);
-        loginButton.gameObject.SetActive(preLoginStatus);
-        nameButton.gameObject.SetActive(!preLoginStatus);
-        fiefButton.gameObject.SetActive(!preLoginStatus);
-        connectWalletButton.gameObject.SetActive(!preLoginStatus);
+        //TODO: possible issue here, before removing panels this opens login, register again
     }
 
     private void SetupPostAuthenticationButtons()
     {
         //playButton.gameObject.SetActive(false);
         newExpeditionButton.gameObject.SetActive(false);
-        registerButton.gameObject.SetActive(false);
-        loginButton.gameObject.SetActive(false);
         connectWalletButton.gameObject.SetActive(!_hasWallet);
         GetExpeditionStatus();
     }
@@ -194,18 +164,6 @@ public class MainMenuManager : MonoBehaviour
         PlayerSpriteManager.Instance.SetSkin(userData.ActiveNft, userData.NftContract);
 
         VerifyResumeExpedition();
-    }
-
-    public void OnRegisterButton()
-    {
-        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-        GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(true);
-    }
-
-    public void OnLoginButton()
-    {
-        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-        GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
     public void OnTreasuryButton()
