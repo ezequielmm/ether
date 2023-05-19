@@ -60,6 +60,7 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
 #endif
 
         using UnityWebRequest request = UnityWebRequest.Get(url);
+        request.SetRequestHeader("Access-Control-Allow-Origin", "*");
         await request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success)
