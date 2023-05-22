@@ -308,6 +308,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd9aeb50c8fc5fe468f95867b44a9fff, type: 3}
+--- !u!114 &76876517 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6884174074760212587, guid: fd9aeb50c8fc5fe468f95867b44a9fff,
+    type: 3}
+  m_PrefabInstance: {fileID: 76876516}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &76876518 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 76876518, guid: fd9aeb50c8fc5fe468f95867b44a9fff,
@@ -3228,12 +3240,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5ed93504eb9d8f41ad728b09418cced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EVENT_REGISTERPANEL_ACTIVATION_REQUEST:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_LOGINPANEL_ACTIVATION_REQUEST:
-    m_PersistentCalls:
-      m_Calls: []
   EVENT_AUTHENTICATED:
     m_PersistentCalls:
       m_Calls: []
@@ -5489,7 +5495,7 @@ PrefabInstance:
     - target: {fileID: 6413443757216341784, guid: cfde224b6c58c614eadd85e7c967e1a0,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 73.605
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6413443757216341784, guid: cfde224b6c58c614eadd85e7c967e1a0,
         type: 3}
@@ -5660,6 +5666,11 @@ PrefabInstance:
       propertyPath: handManager
       value: 
       objectReference: {fileID: 472068669067308207}
+    - target: {fileID: 6399152120847556537, guid: f0ef4465dd03e1444a06ef7a1232c37e,
+        type: 3}
+      propertyPath: targetCamera
+      value: 
+      objectReference: {fileID: 76876517}
     - target: {fileID: 8065093879915780064, guid: f0ef4465dd03e1444a06ef7a1232c37e,
         type: 3}
       propertyPath: m_IsActive

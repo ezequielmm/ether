@@ -6,12 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : SingleTon<GameManager>
 {
-    //REGISTER ACCOUNT EVENTS
-    [HideInInspector] public UnityEvent<bool> EVENT_REGISTERPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
-
-
     //LOGIN EVENTS
-    [HideInInspector] public UnityEvent<bool> EVENT_LOGINPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent EVENT_AUTHENTICATED = new UnityEvent();
 
     //PROFILE EVENTS

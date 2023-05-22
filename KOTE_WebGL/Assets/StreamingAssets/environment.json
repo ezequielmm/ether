@@ -1,0 +1,7 @@
+{
+  "request_url" : "http://localhost:3000",
+  "skin_url": "https://koteskins.robotseamonster.com/",
+  "gear_icon_url" :"https://koteskins.robotseamonster.com/GearIcons/",
+  "portrait_url" :"https://koteskins.robotseamonster.com/Portraits/",
+  "socket_url" : "http://localhost:3000"
+}

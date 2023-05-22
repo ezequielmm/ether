@@ -6,13 +6,13 @@ using UnityEngine.Events;
 
 public class UserDataManager : SingleTon<UserDataManager>
 {
-    public string UserEmail => profile?.email ?? string.Empty;
+    public ProfileData Profile => profile;
     public string ExpeditionId { get; private set; } = "";
     public bool HasExpedition => expeditionStatus?.HasExpedition ?? false;
     public int ActiveNft => expeditionStatus?.NftId ?? -1;
     public List<GearItemData> EquippedGear => expeditionStatus?.EquippedGear ?? null;
     public NftContract NftContract => expeditionStatus?.TokenType ?? NftContract.None;
-    public List<string> VerifiedWallets => profile?.ownedWallets ?? new();
+    
     public ContestData ContestData => expeditionStatus?.Contest;
 
     ProfileData profile = null;
@@ -34,7 +34,7 @@ public class UserDataManager : SingleTon<UserDataManager>
                 PlayerPrefs.SetString("client_id", newId.ToString());
                 PlayerPrefs.Save();
             }
-
+            Debug.Log($"<B> CLIENT ID {id} </B>");
             return id;
         }
     }
@@ -56,7 +56,7 @@ public class UserDataManager : SingleTon<UserDataManager>
     public async UniTask UpdatePlayerProfile()
     {
         profile = await FetchData.Instance.GetPlayerProfile();
-        GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.Invoke(profile?.name ?? string.Empty, profile?.fief ?? -1);
+        GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.Invoke(profile.DisplayName, -1);
     }
 
     public async UniTask UpdateExpeditionStatus()
@@ -89,10 +89,12 @@ public class UserDataManager : SingleTon<UserDataManager>
 
     public bool VerifyAccountExists()
     {
-        bool noAccount = profile == null || string.IsNullOrEmpty(UserEmail);
-
+        bool noAccount = profile == null ;
+        
         if (noAccount)
         {
+            Debug.LogError("There is no account, null profile, check deserialization");
+
             string pannelMessage = "Account Error. Please log in again.";
             string[] buttons = { "Return To Login screen", string.Empty };
             GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(pannelMessage,

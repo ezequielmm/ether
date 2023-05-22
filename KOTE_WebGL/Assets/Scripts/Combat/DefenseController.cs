@@ -27,6 +27,8 @@ public class DefenseController : MonoBehaviour
     private int _defense = 0;
     bool defenseHidden = false;
 
+    [SerializeField] private Animator _shieldAnimator;
+
     public int Defense { get => _defense; 
         set 
         {
@@ -96,6 +98,8 @@ public class DefenseController : MonoBehaviour
         }
         if (newValue != 0)
         {
+            if (newValue < oldValue)
+                _shieldAnimator.SetTrigger("Hurt");
             CheckSheildStatus();
         }
     }
@@ -130,6 +134,7 @@ public class DefenseController : MonoBehaviour
 
         textMeshPro.DOFade(0, animationDuration);
         ShieldBroken.Invoke();
+        _shieldAnimator.SetTrigger("Break");
     }
 
     private void CheckSheildStatus() 

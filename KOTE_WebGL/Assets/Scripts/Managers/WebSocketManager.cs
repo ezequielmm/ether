@@ -195,7 +195,11 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
         SocketOptions options = new SocketOptions();
         //  options.AutoConnect = false;
-        options.HTTPRequestCustomizationCallback = (manager, request) => { request.AddHeader("Authorization", token); };
+        options.HTTPRequestCustomizationCallback = (manager, request) =>
+        {
+            request.AddHeader("Authorization", token);
+            request.AddHeader("UserAddress", "0xAFeBa5DD120a3Ea8b44BBB13c5190715772dc9aB");
+        };
 
         string uriStr = ClientEnvironmentManager.Instance.WebSocketURL;
 
