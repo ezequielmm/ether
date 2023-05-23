@@ -198,7 +198,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         options.HTTPRequestCustomizationCallback = (manager, request) =>
         {
             request.AddHeader("Authorization", token);
-            request.AddHeader("UserAddress", AuthenticationManager.instance.LoginData.Wallet);
+            request.AddHeader("UserAddress", AuthenticationManager.LoginData.Wallet);
         };
 
         string uriStr = ClientEnvironmentManager.Instance.WebSocketURL;

@@ -1,13 +1,9 @@
 using System.Collections;
 using TMPro;
-using System.Collections.Generic;
 using DefaultNamespace;
-using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-
 
 public class LoadingManager : MonoBehaviour
 {
@@ -16,9 +12,21 @@ public class LoadingManager : MonoBehaviour
     [SerializeField] private Loader loader;
 
     [SerializeField] private bool startLocalEnvironment;
-    
-    private void Start()
-    {
+    private bool IsBusy = false;
+
+#if UNITY_EDITOR
+    string editorToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIweDQzQjg0MUE3NTM1RkQzMTBCYmVkZkNGNTREZURmNURDNDY4NUU1NUIiLCJ0eXBlIjoic2Vzc2lvbiIsImlhdCI6MTY4NDYwMzg2MywiZXhwIjoxNjg1MjA4NjYzfQ.hhOLSksyslwPqUDQZcXM-XYSHNKkyN9uf-AS2Md6-zE";
+#endif
+
+    public void Login(string loginData)
+    {   
+        if(IsBusy)
+            return;
+
+        IsBusy = true;
+     
+
+        
         loader.Show();
         if (GameManager.Instance.firstLoad)
         {
