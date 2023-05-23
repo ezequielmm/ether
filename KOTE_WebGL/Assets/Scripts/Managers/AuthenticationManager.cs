@@ -5,7 +5,8 @@ using System.Text;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
-//using System.IdentityModel.Tokens.Jwt;
+
+using System.Text.Json;
 
 [System.Serializable]
 public class LoginData
@@ -37,11 +38,16 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
         var token = Token;
 
 
-        LoginData = new LoginData { Token = Token, Wallet = ExtractSubject(token) };
+        string wallet = ExtractSubject(token);
+        Debug.Log("Wallet is " + wallet);   
+        LoginData = new LoginData { Token = Token, Wallet = wallet };
         return Authenticate(LoginData.Token);
     }
 
-
+    private string ExtractSubject(string token)
+    {
+        return JwtTokenUtility.ParseJwtToken(token).Sub;
+    }
 
     public bool AuthenticateOnResume()
     {
@@ -125,20 +131,5 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
         return timeElapsed.Hours;
     }
 
-
-
-    public static string ExtractSubject(string token)
-    {
-        
-        /*
-JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-        JwtSecurityToken jwtToken = tokenHandler.ReadJwtToken(token);
-        
-        string subject = jwtToken.Subject;
-        
-        return subject;
-
-        */
-        return "";
-    }
 }
+

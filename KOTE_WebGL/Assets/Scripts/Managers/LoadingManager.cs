@@ -17,16 +17,28 @@ public class LoadingManager : MonoBehaviour
 #if UNITY_EDITOR
     string editorToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIweDQzQjg0MUE3NTM1RkQzMTBCYmVkZkNGNTREZURmNURDNDY4NUU1NUIiLCJ0eXBlIjoic2Vzc2lvbiIsImlhdCI6MTY4NDYwMzg2MywiZXhwIjoxNjg1MjA4NjYzfQ.hhOLSksyslwPqUDQZcXM-XYSHNKkyN9uf-AS2Md6-zE";
 #endif
+    private void Start()
+    {
+#if UNITY_EDITOR
+        StartCoroutine(MockLogin());
 
+        IEnumerator MockLogin()
+        {
+            yield return new WaitForSeconds(2);
+            Login(editorToken);
+        }
+#endif
+    }
     public void Login(string loginData)
     {   
         if(IsBusy)
             return;
 
         IsBusy = true;
-     
 
-        
+        AuthenticationManager.Token = loginData;
+
+
         loader.Show();
         if (GameManager.Instance.firstLoad)
         {
