@@ -286,7 +286,7 @@ PrefabInstance:
     - target: {fileID: 5889864488466076965, guid: 58706a5f453ebec4a8ccf728bc8a3ba6,
         type: 3}
       propertyPath: m_Name
-      value: SceneLoader
+      value: LoadingManager
       objectReference: {fileID: 0}
     - target: {fileID: 5889864488479895169, guid: 58706a5f453ebec4a8ccf728bc8a3ba6,
         type: 3}

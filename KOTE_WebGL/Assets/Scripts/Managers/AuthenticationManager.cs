@@ -6,7 +6,6 @@ using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
-using System.Text.Json;
 
 [System.Serializable]
 public class LoginData
