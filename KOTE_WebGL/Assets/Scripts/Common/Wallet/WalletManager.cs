@@ -30,15 +30,14 @@ public class WalletManager : ISingleton<WalletManager>
     public UnityEvent<string> DisconnectingWallet { get; } = new();
     public UnityEvent WalletStatusModified { get; } = new();
 
-    public string ActiveWallet { get; set; }
+    public string ActiveWallet => AuthenticationManager.LoginData.Wallet;
     public bool WalletVerified { get; set; } = false;
     public Dictionary<NftContract, List<int>> NftsInWallet = new();
 
-    private MetaMask metaMask;
+
 
     private WalletManager()
     {
-        metaMask = MetaMask.Instance;
     }
 
     public async void SetActiveWallet()
@@ -103,51 +102,13 @@ public class WalletManager : ISingleton<WalletManager>
 
     public async UniTask ConnectWallet()
     {
-#if UNITY_EDITOR
         SetWallet(AuthenticationManager.LoginData.Wallet);
-        return;
-#endif
-        string activeAccount = await metaMask.RequestAccount();
-        if (activeAccount == null)
-        {
-            return;
-        }
-
-        SetWallet(activeAccount);
+      
     }
 
 
     public async UniTask<bool> ConfirmActiveWalletOwnership()
     {
-        if (string.IsNullOrEmpty(ActiveWallet))
-        {
-            Debug.LogWarning($"[WalletManager] Can not sign message without a wallet.");
-            return false;
-        }
-#if UNITY_EDITOR
-        Debug.Log($"[WalletManager] Skipping Ownership Verification.");
-        return true;
-#endif
-        // TODO: Check backend if wallet was previously authorized and is still valid.
-        if (WalletVerified) return true;
-        var message =
-            $"Hello, welcome to Knights of the Ether.\nPlease sign this message to verify your wallet.\nThis action will not cost you any transaction fee.\n\n\nSecret Code: {Guid.NewGuid()}";
-        WalletSignature walletSignature = new WalletSignature(ActiveWallet, message);
-        Debug.Log($"[WalletManager] Signing Message:\n{message}");
-        bool signSuccessful = await walletSignature.SignWallet();
-        if (!signSuccessful)
-        {
-            Debug.LogWarning($"[WalletManager] Could not get wallet signature. Wallet not verified.");
-            return false;
-        }
-
-        if (!await FetchData.Instance.VerifyWallet(walletSignature))
-        {
-            Debug.Log($"[WalletManager] Wallet was not verified by backend.");
-            return false;
-        }
-
-        Debug.LogWarning($"[WalletManager] Wallet signature verified!");
         return true;
     }
 
@@ -202,12 +163,8 @@ public class WalletManager : ISingleton<WalletManager>
 
     private void SetWallet(string newAddress)
     {
-        if (newAddress != ActiveWallet)
-        {
-            WalletVerified = false;
-            ActiveWallet = newAddress;
-        }
 
+        WalletVerified = true;
         NftsInWallet.Clear();
     }
 

@@ -186,6 +186,7 @@ public class MainMenuManager : MonoBehaviour
         //check if we are playing a new expedition or resuming
         if (_hasExpedition)
         {
+            Debug.Log("Step 1 A: Has expedition");
             //load the expedition
             // play the correct music depending on where the player is
             GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Music, 1);
@@ -197,8 +198,13 @@ public class MainMenuManager : MonoBehaviour
         else
         {
             // if there's no wallet, ask if they want to connect one
+
+            Debug.Log("Step 1 B: No expedition");
             if (!_hasWallet)
             {
+                Debug.Log("Step 2 A: No expedition, Doesnt have wallet");
+
+
                 Debug.LogError("no wallet");
                 GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(
                     "No Wallet connected, would you like to add one?",
@@ -208,6 +214,7 @@ public class MainMenuManager : MonoBehaviour
                 return;
             }
 
+            Debug.Log("Step 2 B: No expedition, has a wallet!, what happens now?");
             // else open the armory panel
             //GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);

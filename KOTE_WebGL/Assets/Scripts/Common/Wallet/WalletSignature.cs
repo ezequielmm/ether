@@ -19,9 +19,14 @@ public class WalletSignature
 
     public async UniTask<bool> SignWallet()
     {
+        return true;
+        /*
+        Lea: Hardcoded signature sign. 
         UnixTimeOfRequest = DateTimeOffset.Now.ToUnixTimeSeconds();
         Signature = await MetaMask.Instance.SignMessageWithAccount(OriginalMessage, WalletAddress);
         return !string.IsNullOrEmpty(Signature);
+        */
+
     }
 
     public WWWForm ToWWWForm()
