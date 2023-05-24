@@ -342,10 +342,12 @@ public class GameManager : SingleTon<GameManager>
 
     public void LoadScene(inGameScenes scene, bool async = false) //Loads the target scene passing through the LoaderScene
     {
+        Debug.Log("We are going to :  " + scene + " async " + async);
         EVENT_SCENE_LOADING.Invoke();
         nextSceneToLoad = scene;
         if (scene == inGameScenes.Expedition && CurrentScene != inGameScenes.MainMenu)
         {
+            Debug.Log("RequestExpeditionSync");
             RequestExpeditionSync();
         }
 

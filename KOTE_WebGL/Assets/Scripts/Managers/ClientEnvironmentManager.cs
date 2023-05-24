@@ -55,7 +55,7 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
     {
  
         string url = $"{Application.streamingAssetsPath}/environment.json";
-
+        Debug.Log("Load from env" + url);
 
         using UnityWebRequest request = UnityWebRequest.Get(url);
         request.SetRequestHeader("Access-Control-Allow-Origin", "*");
@@ -69,6 +69,8 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
             var deserializeObject = JsonConvert.DeserializeObject<EnvironmentUrls>(jsonText);
 
             _environmentUrls = deserializeObject;
+
+            Debug.Log("got env!! " + _environmentUrls.WebRequestURL);
         }
         else
         {

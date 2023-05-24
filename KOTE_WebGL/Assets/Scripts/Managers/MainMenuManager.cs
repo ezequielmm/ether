@@ -71,6 +71,7 @@ public class MainMenuManager : MonoBehaviour
     public async void VerifyResumeExpedition()
     {
 
+        Debug.Log("VerifyResumeExpedition");
         if (!_hasWallet || !_isWhitelisted ) 
         {
             playButton.gameObject.SetActive(false);
@@ -192,7 +193,7 @@ public class MainMenuManager : MonoBehaviour
             GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Music, 1);
             GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Ambient, 1);
             //GameManager.Instance.LoadScene(inGameScenes.Expedition);
-            postProcessingTransition.OnTransitionInEnd.AddListener(() => GameManager.Instance.LoadScene(inGameScenes.Expedition, true));
+            postProcessingTransition.OnTransitionInEnd.AddListener(OnTransitionEnd);
             postProcessingTransition.StartTransition();
         }
         else
@@ -220,7 +221,11 @@ public class MainMenuManager : MonoBehaviour
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
         }
     }
-
+    void OnTransitionEnd()
+    {
+        Debug.Log("OnTransitionEnd");
+        GameManager.Instance.LoadScene(inGameScenes.Expedition, true);
+    }
     public void OnNewExpeditionButton()
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");

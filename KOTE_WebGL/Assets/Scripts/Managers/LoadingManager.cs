@@ -27,23 +27,31 @@ public class LoadingManager : MonoBehaviour
             Login(editorToken);
         }
 #endif
+
+        if (!GameManager.Instance.firstLoad)
+        {
+            Debug.Log("Not first load, we went back to loader, now use the saved token");
+            Login(AuthenticationManager.Token);
+        }
+
+       
     }
     public void Login(string loginData)
     {   
-        if(IsBusy)
-            return;
-
-        IsBusy = true;
+        
 
         AuthenticationManager.Token = loginData;
 
-
+        Debug.Log("Init login with " + loginData);
         loader.Show();
         if (GameManager.Instance.firstLoad)
         {
+            Debug.Log("load environment, first load");
             LoadWithEnvironmentCheck();
             return;
         }
+
+        Debug.Log("Login not first load ::  " + GameManager.Instance.nextSceneToLoad.ToString());
         StartCoroutine(LoadAsynchronously(GameManager.Instance.nextSceneToLoad.ToString()));
         DontDestroyOnLoad(gameObject);
     }
@@ -60,7 +68,7 @@ public class LoadingManager : MonoBehaviour
         // The Application loads the Scene in the background as the current Scene runs.
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-
+        Debug.Log(" LoadAsynchronously " + sceneName);
         // Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)
         {
