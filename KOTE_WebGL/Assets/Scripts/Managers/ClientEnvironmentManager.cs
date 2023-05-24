@@ -51,13 +51,11 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
         Alpha
     }
 
-    public async Task StartEnvironmentManger(bool localEnvironment)
+    public async Task StartEnvironmentManger()
     {
-        var url = "https://dev.knightsoftheether.com:8081/environment.json";
-#if UNITY_EDITOR
-        if (localEnvironment)
-            url = $"{Application.streamingAssetsPath}/environment.json";
-#endif
+ 
+        string url = $"{Application.streamingAssetsPath}/environment.json";
+
 
         using UnityWebRequest request = UnityWebRequest.Get(url);
         request.SetRequestHeader("Access-Control-Allow-Origin", "*");
