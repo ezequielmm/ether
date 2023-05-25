@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class LoadingManager : MonoBehaviour
 {
+    public GameObject LoadGroup;
     [SerializeField] TextMeshPro loadingText;
     [SerializeField] Slider slideBar;
     [SerializeField] private Loader loader;
@@ -34,11 +35,11 @@ public class LoadingManager : MonoBehaviour
             Login(AuthenticationManager.Token);
         }
 
-       
+
     }
     public void Login(string loginData)
-    {   
-        
+    {
+
 
         AuthenticationManager.Token = loginData;
 
@@ -54,6 +55,9 @@ public class LoadingManager : MonoBehaviour
         Debug.Log("Login not first load ::  " + GameManager.Instance.nextSceneToLoad.ToString());
         StartCoroutine(LoadAsynchronously(GameManager.Instance.nextSceneToLoad.ToString()));
         DontDestroyOnLoad(gameObject);
+
+        if (LoadGroup)
+            LoadGroup.SetActive(true);
     }
 
     private async void LoadWithEnvironmentCheck()

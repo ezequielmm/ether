@@ -53,10 +53,11 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
 
     public async Task StartEnvironmentManger()
     {
- 
+        Debug.Log("host " + URLParameters.Host);
+        Debug.Log("origin " + URLParameters.Origin);
  #if !UNITY_EDITOR
-        string path = "/client/environment.json";
-        string host = $"{URLParameters.Host}";
+        string path = "/environment.json";
+        string host = $"{URLParameters.Origin}";
         string url = host + path;
         Debug.Log("Get env from remote host " + url);
  #else
