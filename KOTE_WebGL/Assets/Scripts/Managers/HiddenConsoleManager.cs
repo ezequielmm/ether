@@ -35,7 +35,7 @@ public class HiddenConsoleManager : MonoBehaviour
 #if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
          //   DisableDebug();
 #endif
-            Debug.Log($"[Console] Debugs Disabled.");
+        //    Debug.Log($"[Console] Debugs Disabled.");
         }
         else 
         {

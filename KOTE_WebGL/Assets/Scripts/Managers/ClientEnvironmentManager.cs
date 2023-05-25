@@ -54,8 +54,20 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
     public async Task StartEnvironmentManger()
     {
  
-        string url = $"{Application.streamingAssetsPath}/environment.json";
-        Debug.Log("Load from env" + url);
+ #if !UNITY_EDITOR
+        string path = "/client/environment.json";
+        string host = $"{URLParameters.Host}";
+        string url = host + path;
+        Debug.Log("Get env from remote host " + url);
+ #else
+        string path = "/environment.json";
+        string host = $"{Application.streamingAssetsPath}";
+        string url = host + path;
+        Debug.Log("Get env from local-editor host " + url);
+ #endif
+       
+
+      
 
         using UnityWebRequest request = UnityWebRequest.Get(url);
         request.SetRequestHeader("Access-Control-Allow-Origin", "*");
