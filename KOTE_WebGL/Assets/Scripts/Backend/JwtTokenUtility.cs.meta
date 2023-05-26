@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:KOTE_WebGL/Assets/Scripts/Backend/JwtTokenUtility.cs.meta
 guid: 3dca0cbda67a1674ea82f1f064f372bb
+========
+guid: 46c272b803aa57f458c9b5e02821e266
+>>>>>>>> hotfixes:KOTE_WebGL/Assets/Scripts/Leaderboard/LeaderboardListItem.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
