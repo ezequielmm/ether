@@ -227,4 +227,10 @@ public class MainMenuManager : MonoBehaviour
         await userData.ClearExpedition();
         GetExpeditionStatus();
     }
+
+
+    public void ShowLeaderboard()
+    {
+        
+    }
 }

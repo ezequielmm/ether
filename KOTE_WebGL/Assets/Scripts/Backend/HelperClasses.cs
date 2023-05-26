@@ -896,3 +896,23 @@ public class TrinketTriggeredData
         [JsonProperty("data")] public Trinket trinket;
     }
 }
+
+[Serializable]
+public class LeaderboardData
+{
+    public LeaderboardDataItem[] data;
+}
+
+[Serializable]
+public class LeaderboardDataItem
+{
+    public string address;
+    public int score;
+
+    public LeaderboardDataItem(string address, int score)
+    {
+        this.address = address;
+        this.score = score;
+    }
+}
+

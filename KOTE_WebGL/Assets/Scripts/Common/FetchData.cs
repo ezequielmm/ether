@@ -436,6 +436,22 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
         return rawData;
     }
+    
+    public async UniTask<LeaderboardData> GetLeaderboardData()
+    {
+        await UniTask.Delay(3);
+        return new LeaderboardData
+        {
+            data = new []
+            {
+                new LeaderboardDataItem("a",100),
+                new LeaderboardDataItem("b",120),
+                new LeaderboardDataItem("c",200),
+                new LeaderboardDataItem("d",103),
+                new LeaderboardDataItem("e",400)
+            }
+        };
+    }
 }
 
 public enum FetchType
