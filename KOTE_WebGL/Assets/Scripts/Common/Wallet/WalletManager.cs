@@ -63,6 +63,7 @@ public class WalletManager : ISingleton<WalletManager>
         {
             Debug.LogWarning("No Wallet Contents retrieved");
         }
+        /*
         if (NftsInWallet.Keys.Count == 0)
         {
             // Could not get knights
@@ -80,7 +81,7 @@ public class WalletManager : ISingleton<WalletManager>
                 "No KOTE tokens found in connected wallet.\n, Please try a different wallet.", () => { });
             return;
         }
-
+*/
         WalletVerified = true;
         NewWalletConfirmed.Invoke(walletData);
         WalletStatusModified.Invoke();

@@ -90,13 +90,13 @@ public class MainMenuManager : MonoBehaviour
             return;
         }
 
-        if (!_ownsAnyNft ) 
+     /*   if (!_ownsAnyNft ) 
         {
             newExpeditionButton.gameObject.SetActive(false);
             playButton.interactable = false;
             return;
         }
-        
+       */ 
         if (!_hasExpedition)
         {
             UpdatePlayButtonTextForExpedition();

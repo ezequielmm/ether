@@ -175,6 +175,11 @@ PrefabInstance:
       objectReference: {fileID: 1782032365}
     - target: {fileID: 5889864488466076952, guid: 58706a5f453ebec4a8ccf728bc8a3ba6,
         type: 3}
+      propertyPath: editorToken
+      value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIweDQzQjg0MUE3NTM1RkQzMTBCYmVkZkNGNTREZURmNURDNDY4NUU1NUIiLCJ0eXBlIjoic2Vzc2lvbiIsImlhdCI6MTY4NTMwNzY5NiwiZXhwIjoxNjg1OTEyNDk2fQ.rknHGXC2ma08NC3cP909Kd3x-2bR9-VvWk6hsnHLrYI
+      objectReference: {fileID: 0}
+    - target: {fileID: 5889864488466076952, guid: 58706a5f453ebec4a8ccf728bc8a3ba6,
+        type: 3}
       propertyPath: startLocalEnvironment
       value: 1
       objectReference: {fileID: 0}

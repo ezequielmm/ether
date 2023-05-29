@@ -9,12 +9,12 @@ public static class LogHelper
     public static readonly int LengthOfIdToLog = 4;
     public static void SendOutgoingCommunicationLogs(string stringLog, string rawJson)
     {
-        ServerCommunicationLogger.Instance.LogCommunication(stringLog, CommunicationDirection.Outgoing, rawJson);
+       // ServerCommunicationLogger.Instance.LogCommunication(stringLog, CommunicationDirection.Outgoing, rawJson);
     }
 
     public static void SendIncomingCommunicationLogs(string stringLog, string rawJson)
     {
-        ServerCommunicationLogger.Instance.LogCommunication(stringLog, CommunicationDirection.Incoming, rawJson);
+       // ServerCommunicationLogger.Instance.LogCommunication(stringLog, CommunicationDirection.Incoming, rawJson);
     }
 
     private class OutgoingMessage

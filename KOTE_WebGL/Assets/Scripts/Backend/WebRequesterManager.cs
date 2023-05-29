@@ -25,7 +25,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
 
         if (this != Instance) return;
 
-        PlayerPrefs.SetString("api_url", baseUrl);
+//        PlayerPrefs.SetString("api_url", baseUrl);
 
         GameManager.Instance.EVENT_SEND_BUG_FEEDBACK.AddListener(SendBugReport);
     }
@@ -92,18 +92,18 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         string requestIdShortened = requestId.ToString().Substring(0, LogHelper.LengthOfIdToLog);
         string variableString = LogHelper.VariablesToHumanReadable(url, payload);
         string jsonString = LogHelper.VariablesToJson(url, payload);
-        Debug.Log($"[WebRequesterManager] REQUEST [{requestIdShortened}] >>> {jsonString}");
-        LogHelper.SendOutgoingCommunicationLogs(
-            $"[WebRequesterManager] REQUEST [{requestIdShortened}] >>> {variableString}", jsonString);
+       // Debug.Log($"[WebRequesterManager] REQUEST [{requestIdShortened}] >>> {jsonString}");
+      //  LogHelper.SendOutgoingCommunicationLogs(
+       //     $"[WebRequesterManager] REQUEST [{requestIdShortened}] >>> {variableString}", jsonString);
     }
 
     private void LogRepsonse(Guid requestId, string url, string rawJson)
     {
         string requestIdShortened = requestId.ToString().Substring(0, LogHelper.LengthOfIdToLog);
         string variableString = LogHelper.VariablesToHumanReadable(url, rawJson);
-        Debug.Log($"[WebRequesterManager] RESPONSE [{requestIdShortened}] <<< {rawJson}");
-        LogHelper.SendOutgoingCommunicationLogs(
-            $"[WebRequesterManager] RESPONSE [{requestIdShortened}] <<< {variableString}", rawJson);
+      //  Debug.Log($"[WebRequesterManager] RESPONSE [{requestIdShortened}] <<< {rawJson}");
+      //  LogHelper.SendOutgoingCommunicationLogs(
+      //      $"[WebRequesterManager] RESPONSE [{requestIdShortened}] <<< {variableString}", rawJson);
     }
 
     IEnumerator GetCharacterList()

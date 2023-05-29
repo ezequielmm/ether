@@ -21,7 +21,7 @@ public class UserDataManager : SingleTon<UserDataManager>
     public UnityEvent ExpeditionStatusUpdated { get; } = new();
 
     // get the unique identifier for this instance of the client
-    public string ClientId
+  /*  public string ClientId
     {
         get
         {
@@ -38,7 +38,8 @@ public class UserDataManager : SingleTon<UserDataManager>
             return id;
         }
     }
-
+*/
+    public string ClientId => WebSocketManager.ClientId;
     private void Start()
     {
         GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnExpeditionUpdate);
