@@ -308,7 +308,8 @@ public class GameManager : SingleTon<GameManager>
 
     public inGameScenes CurrentScene { get; private set; } = inGameScenes.Loader;
     public static string ServerVersion { get; private set; }
-    
+    public PlayerStateData PlayerStateData { get; private set; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -404,5 +405,11 @@ public class GameManager : SingleTon<GameManager>
                 SceneLoadsActions.RemoveAt(i);
             }
         }
+    }
+
+    internal void PlayerStateUpdate(PlayerStateData playerStateData)
+    {
+        this.PlayerStateData = playerStateData;
+        EVENT_PLAYER_STATUS_UPDATE.Invoke(playerStateData);
     }
 }
