@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class TopBarManager : MonoBehaviour
-{    
+{
     public string currentClass;
     public int currentHealth;
 
@@ -30,7 +30,13 @@ public class TopBarManager : MonoBehaviour
 
         // this has to be set here, as it is not visible in the inspector
         nameText.maxVisibleLines = 2;
-    }
+
+
+        
+
+        maxHealth = GameManager.Instance.PlayerStateData.data.playerState.hpMax;
+        SetHealthText(GameManager.Instance.PlayerStateData.data.playerState.hpCurrent);
+      } 
 
     private void OnToggleMapIcon(bool arg0)
     {
@@ -51,6 +57,7 @@ public class TopBarManager : MonoBehaviour
 
     public void SetHealthText(int health)
     {
+        Debug.Log("SET HEALTH " + health);
         healthBar.value = (float)(health) / maxHealth;
         healthBarText.text = $"{health}/{maxHealth}";
     }
@@ -61,21 +68,25 @@ public class TopBarManager : MonoBehaviour
         coinsText.text = coins.ToString();
     }
 
-    public void OnPlayerAttacked(CombatTurnData combatTurnData) 
-    {        
+    public void OnPlayerAttacked(CombatTurnData combatTurnData)
+    {
         var target = combatTurnData.GetTarget("player");
         if (target == null) return;
         // only update the text if the player's health has changed
         if (target.healthDelta != 0)
         {
+            Debug.Log("SetHealthText(target.finalHealth)");
+
             SetHealthText(target.finalHealth);
         }
     }
-    
-    public void OnPlayerStatusUpdate(PlayerStateData playerState) 
-    {        
+
+    public void OnPlayerStatusUpdate(PlayerStateData playerState)
+    {
+        Debug.Log(playerState.ToString());
         SetNameText(playerState.data.playerState.playerName);
         maxHealth = playerState.data.playerState.hpMax;
+        Debug.Log("(playerState.data.playerState.hpCurrent)");
         SetHealthText(playerState.data.playerState.hpCurrent);
         SetCoinsText(playerState.data.playerState.gold);
     }
@@ -88,9 +99,9 @@ public class TopBarManager : MonoBehaviour
     public void SetHealth(int health)
     {
         currentHealth = health;
-        //SetHealthText(currentHealth);
+        SetHealthText(currentHealth);
     }
-    
+
     public void OnMapButtonClicked()
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Top Bar Click");
