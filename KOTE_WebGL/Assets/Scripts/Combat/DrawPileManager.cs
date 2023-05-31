@@ -11,10 +11,11 @@ namespace KOTE.Expedition.Combat.Cards.Piles
     {
         public TextMeshProUGUI amountOfCardsTF;
         int cardsShuffled = 0;
-        bool audioRunning = false;
         RectTransform rectTransform;
         public List<CardManager> drawDeck = new();
 
+        Coroutine shuffleRoutine;
+        
         void Start()
         {
             rectTransform = transform as RectTransform;
@@ -26,34 +27,19 @@ namespace KOTE.Expedition.Combat.Cards.Piles
         {
             //Debug.Log($"[Draw Pile] Card Shuffled.");
             cardsShuffled++;
-            StartCoroutine(ShuffleCardSFX());
+            if (shuffleRoutine == null)
+                shuffleRoutine = StartCoroutine(ShuffleSFX());
         }
 
-        private IEnumerator ShuffleCardSFX()
+        IEnumerator ShuffleSFX()
         {
-            if (!audioRunning)
-            {
-                audioRunning = true;
-                for (; cardsShuffled >= 0; cardsShuffled--)
-                {
-                    if (cardsShuffled >= 1)
-                    {
-                        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Shuffle");
-                    }
-
-                    yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
-                    cardsShuffled = 0; // Forces this to only run once
-                }
-
-                if (cardsShuffled < 0)
-                {
-                    cardsShuffled = 0;
-                }
-
-                audioRunning = false;
-            }
+            yield return new WaitForSeconds(GameSettings.CARD_SFX_MIN_RATE);
+            if (cardsShuffled >= 1)
+                GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Shuffle");
+            cardsShuffled = 0;
+            shuffleRoutine = null;
         }
-
+        
         private void OnPilesUpdate(CardPiles data)
         {
             amountOfCardsTF.SetText(data.data.draw.Count!.ToString());

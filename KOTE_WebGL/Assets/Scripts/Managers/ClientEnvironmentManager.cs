@@ -51,13 +51,24 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
         Alpha
     }
 
-    public async Task StartEnvironmentManger(bool localEnvironment)
+    public async Task StartEnvironmentManger()
     {
-        var url = "https://dev.knightsoftheether.com:8081/environment.json";
-#if UNITY_EDITOR
-        if (localEnvironment)
-            url = $"{Application.streamingAssetsPath}/environment.json";
-#endif
+        Debug.Log("host " + URLParameters.Host);
+        Debug.Log("origin " + URLParameters.Origin);
+ #if !UNITY_EDITOR
+        string path = "/environment.json";
+        string host = $"{URLParameters.Origin}";
+        string url = host + path;
+        Debug.Log("Get env from remote host " + url);
+ #else
+        string path = "/environment.json";
+        string host = $"{Application.streamingAssetsPath}";
+        string url = host + path;
+        Debug.Log("Get env from local-editor host " + url);
+ #endif
+       
+
+      
 
         using UnityWebRequest request = UnityWebRequest.Get(url);
         request.SetRequestHeader("Access-Control-Allow-Origin", "*");
@@ -71,6 +82,8 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
             var deserializeObject = JsonConvert.DeserializeObject<EnvironmentUrls>(jsonText);
 
             _environmentUrls = deserializeObject;
+
+            Debug.Log("got env!! " + _environmentUrls.WebRequestURL);
         }
         else
         {

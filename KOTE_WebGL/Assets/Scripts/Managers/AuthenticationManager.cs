@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
+
 
 [System.Serializable]
 public class LoginData
@@ -14,39 +16,36 @@ public class LoginData
 
 public class AuthenticationManager : SingleTon<AuthenticationManager>
 {
-    public LoginData LoginData;
+    public static LoginData LoginData;
+    public static string Token;
+
 
     private void Start()
     {
         GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(ClearSessionToken);
-#if UNITY_EDITOR
-        StartCoroutine(LoginDelay());
-        IEnumerator LoginDelay()
-        {
-            yield return new WaitForSeconds(2f);
-            Login(JsonConvert.SerializeObject(LoginData));
-        }
-#endif
+        Login();
     }
 
     public bool Authenticated => !string.IsNullOrEmpty(GetSessionToken());
 
-    public async UniTask<bool> Login(string loginJson)
+    public async UniTask<bool> Login()
     {
-        var utf8Bytes = Encoding.UTF8.GetBytes(loginJson);
-        string jsonText = Encoding.UTF8.GetString(utf8Bytes);
-            
-        var deserializeObject = JsonConvert.DeserializeObject<LoginData>(jsonText);
-        this.LoginData = deserializeObject;
-        
+        if (Token == null)
+        {
+            Debug.LogError("Cant init with null token in auth manager");
+        }
+        var token = Token;
+
+
+        string wallet = ExtractSubject(token);
+        Debug.Log("Wallet is " + wallet);   
+        LoginData = new LoginData { Token = Token, Wallet = wallet };
         return Authenticate(LoginData.Token);
     }
 
-    public async UniTask<bool> Register(string name, string email, string password)
+    private string ExtractSubject(string token)
     {
-        string hashedPassword = HashPassword(password);
-        string token = await FetchData.Instance.GetTokenByRegistration(name, email, hashedPassword);
-        return Authenticate(token);
+        return JwtTokenUtility.ParseJwtToken(token).Sub;
     }
 
     public bool AuthenticateOnResume()
@@ -131,18 +130,5 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
         return timeElapsed.Hours;
     }
 
-    private string HashPassword(string password)
-    {
-        // TODO: In theory this should hash the password
-        // with a known algorithm to make it harder
-        // to make a Man in the Middle Attack.
-        // This needs the support of the Admin Panel 
-        // to make sure resetting a password works too.
-
-        // This warning will be here until this is implemented because it's a secutiry risk
-        Debug.LogWarning(
-            $"[UserDataManager] Warning: Passwords are not being hashed. Sending raw passwords over the internet is dangerous! (Yes, even over https!!)");
-
-        return password;
-    }
 }
+

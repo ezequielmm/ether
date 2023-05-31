@@ -13,7 +13,7 @@ public class HiddenConsoleManager : MonoBehaviour
     protected void Awake()
     {
 #if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
-            DisableDebug();
+          //  DisableDebug();
 #endif
     }
 
@@ -33,9 +33,9 @@ public class HiddenConsoleManager : MonoBehaviour
         if (!DebugEnabled)
         {
 #if !(DEVELOPMENT_BUILD || UNITY_EDITOR)
-            DisableDebug();
+         //   DisableDebug();
 #endif
-            Debug.Log($"[Console] Debugs Disabled.");
+        //    Debug.Log($"[Console] Debugs Disabled.");
         }
         else 
         {
@@ -56,7 +56,7 @@ public class HiddenConsoleManager : MonoBehaviour
     /// </summary>
     public static void DisableDebug()
     {
-        GameSettings.FilterLogType = LogType.Exception;
+    //    GameSettings.FilterLogType = LogType.Exception;
     }
 
     /// <summary>
@@ -177,7 +177,7 @@ public class HiddenConsoleManager : MonoBehaviour
                 break;
             case ConsoleCommands.disable_debug:
                 DebugEnabled = false;
-                DisableDebug();
+           //     DisableDebug();
                 PublicLog("Console Disabled.");
                 break;
             case ConsoleCommands.version:

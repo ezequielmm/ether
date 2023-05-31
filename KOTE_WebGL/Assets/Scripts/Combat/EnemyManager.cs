@@ -221,7 +221,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             GameManager.Instance.EVENT_DAMAGE.Invoke(target);
         }
 
-        else if (target.healthDelta < 0) // Damage Taken no armor
+        if (target.healthDelta < 0) // Damage Taken no armor
         {
             // Play Attack audio
             // Can be specific, but we'll default to "Attack"

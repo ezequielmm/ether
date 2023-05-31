@@ -367,7 +367,7 @@ public class PapertrailLogData
         level = severityValue;
         service = "Frontend";
         //ip = m_localIp;
-        clientId = GetClientId();
+       // clientId = GetClientId();
         account = GetAccount();
         expeditionId = GetExpeditionId();
         serverVersion = VersionManager.ServerVersion;
@@ -377,10 +377,6 @@ public class PapertrailLogData
         this.message = message;
     }
 
-    private string GetClientId()
-    {
-        return UserDataManager.Instance.ClientId;
-    }
 
     private string GetAccount()
     {
