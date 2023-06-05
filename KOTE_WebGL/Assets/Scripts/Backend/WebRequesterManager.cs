@@ -215,4 +215,5 @@ public static class RestEndpoint
     public static readonly string ServerVersion = "/v1/showversion";
     public static readonly string PlayerGear = "/v1/playergear";
     public static readonly string CurrentContest = "/v1/showcontest";
+    public static readonly string Leaderboard = "/v1/leaderboard";
 }
