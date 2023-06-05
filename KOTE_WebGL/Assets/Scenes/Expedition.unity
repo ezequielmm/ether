@@ -3588,6 +3588,9 @@ MonoBehaviour:
   EVENT_SEND_BUG_FEEDBACK:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_SHOW_LEADERBOARD:
+    m_PersistentCalls:
+      m_Calls: []
   firstLoad: 1
 --- !u!4 &1829050461
 Transform:
@@ -5495,7 +5498,7 @@ PrefabInstance:
     - target: {fileID: 6413443757216341784, guid: cfde224b6c58c614eadd85e7c967e1a0,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 73.605
       objectReference: {fileID: 0}
     - target: {fileID: 6413443757216341784, guid: cfde224b6c58c614eadd85e7c967e1a0,
         type: 3}

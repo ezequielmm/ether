@@ -2093,6 +2093,7 @@ MonoBehaviour:
   classIcon: {fileID: 3035052704644184722}
   className: {fileID: 7612459577253896926}
   showmapbutton: {fileID: 5309821371168514389}
+  PotionsContainerManager: {fileID: 1569500955320855344}
 --- !u!1001 &1402960087705879720
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2367,6 +2368,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35c91d1d004bced47aaf7f7b8bbb1726, type: 3}
+--- !u!114 &1569500955320855344 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 890576201851106402, guid: 35c91d1d004bced47aaf7f7b8bbb1726,
+    type: 3}
+  m_PrefabInstance: {fileID: 1845361612048392018}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 781831d3c643643498d2a154957f85da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &5432053895356794301 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5980361009935522543, guid: 35c91d1d004bced47aaf7f7b8bbb1726,

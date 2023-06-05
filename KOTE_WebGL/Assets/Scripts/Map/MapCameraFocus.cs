@@ -21,6 +21,12 @@ namespace map
             GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.AddListener((val) => { if (val) EndTransition(); });
             GameManager.Instance.EVENT_TOOGLE_TREASURE_ELEMENTS.AddListener((val) => { if (val) EndTransition(); });
             GameManager.Instance.EVENT_TOGGLE_MERCHANT_PANEL.AddListener((val) => { if (val) EndTransition(); });
+            GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener((data) =>
+            {
+                if (data == GameStatuses.GameOver || data == GameStatuses.RewardsPanel)
+                    EndTransition();
+            });
+            
             GameManager.Instance.EVENT_SHOW_ENCOUNTER_PANEL.AddListener(EndTransition);
             // TODO: This class controls the flow of the game, it's not the ideal solution
             postProcessingTransition.OnTransitionInEnd.AddListener(() => GameManager.Instance.OnNodeTransitionEnd?.Invoke(_currentNode));
