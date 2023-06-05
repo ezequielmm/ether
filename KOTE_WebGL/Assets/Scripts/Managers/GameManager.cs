@@ -349,6 +349,11 @@ public class GameManager : SingleTon<GameManager>
         Debug.Log("We are going to :  " + scene + " async " + async);
         EVENT_SCENE_LOADING.Invoke();
         nextSceneToLoad = scene;
+
+        //TODO: This is a hack to fix the issue with the expedition scene not loading properly
+        if (scene == inGameScenes.MainMenu) 
+            firstLoad = true;
+        
         if (scene == inGameScenes.Expedition && CurrentScene != inGameScenes.MainMenu)
         {
             Debug.Log("RequestExpeditionSync");
@@ -376,7 +381,7 @@ public class GameManager : SingleTon<GameManager>
 
     private void OnLogout(string message)
     {
-        LoadScene(inGameScenes.MainMenu);
+        Cleanup.CleanupGame();
     }
 
     // when the scene changes, update the sound volume using the value stored in PlayerPrefs

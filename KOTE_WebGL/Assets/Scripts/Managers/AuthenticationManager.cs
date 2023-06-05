@@ -55,6 +55,8 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
 
     public async void Logout()
     {
+        Token = null;
+        LoginData = null;
         await FetchData.Instance.Logout();
         ClearSessionToken();
     }

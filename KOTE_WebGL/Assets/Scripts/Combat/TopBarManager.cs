@@ -30,13 +30,11 @@ public class TopBarManager : MonoBehaviour
 
         // this has to be set here, as it is not visible in the inspector
         nameText.maxVisibleLines = 2;
-
-
         
-
         maxHealth = GameManager.Instance.PlayerStateData.data.playerState.hpMax;
         SetHealthText(GameManager.Instance.PlayerStateData.data.playerState.hpCurrent);
-      } 
+        SetCoinsText(GameManager.Instance.PlayerStateData.data.playerState.gold);
+    } 
 
     private void OnToggleMapIcon(bool arg0)
     {
