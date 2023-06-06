@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using DG.Tweening;
+using UnityEngine.Audio;
 using Random = UnityEngine.Random;
 
 public class SoundManager : SingleTon<SoundManager>
 {
     SettingsManager settingsManager;
 
+    [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private AudioSource MusicSource;
     [SerializeField] private AudioSource SfxSource;
     [SerializeField] private AudioSource AmbienceSource;
@@ -134,8 +136,17 @@ public class SoundManager : SingleTon<SoundManager>
 
     private void UpdateVolume()
     {
-        MusicSource.volume = MusicVolume;
-        SfxSource.volume = SfxVolume;
-        AmbienceSource.volume = SfxVolume;
+        audioMixer.SetFloat("music_volume", ConvertToDecibels(MusicVolume));
+        audioMixer.SetFloat("sfx_volume", ConvertToDecibels(SfxVolume));
+        audioMixer.SetFloat("ambience_volume", ConvertToDecibels(SfxVolume));
+        // MusicSource.volume = MusicVolume;
+        // SfxSource.volume = SfxVolume;
+        // AmbienceSource.volume = SfxVolume;
+    }
+    private float ConvertToDecibels(float sliderValue)
+    {
+        if (sliderValue != 0)
+            return 20.0f * Mathf.Log10(sliderValue);
+        return -80.0f;
     }
 }

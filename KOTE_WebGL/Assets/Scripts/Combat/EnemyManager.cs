@@ -37,6 +37,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     private Bounds enemyBounds;
     private StatusManager statusManager;
     private SkeletonRenderTextureFadeout spineFadeout;
+    private CharacterSound characterSound;
 
 
     public EnemyData EnemyData
@@ -327,6 +328,8 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             spine.ANIMATION_EVENT.AddListener(OnAnimationEvent);
             spine.PlayAnimationSequence("Idle");
         }
+        
+        characterSound = activeEnemy.GetComponentInChildren<CharacterSound>();
     }
 
     private void OnUpdateEnemy(EnemyData newEnemyData)
@@ -378,6 +381,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         string animationName = CheckAnimationName(animationSequence, fallbackAnimation);
         float length = spine.PlayAnimationSequence(animationName);
         spine.PlayAnimationSequence("Idle");
+        characterSound?.PlaySound(fallbackAnimation);
         return length;
     }
 
@@ -396,6 +400,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     private float OnDeath()
     {
         float length = spine.PlayAnimationSequence("Death");
+        characterSound?.PlaySound("Death");
         return length;
     }
 
