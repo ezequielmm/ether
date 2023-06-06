@@ -1,0 +1,130 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: MainMenu
+  m_EditorClassIdentifier: 
+  m_GroupName: MainMenu
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 477c22c85f850a849940622b1e300de0
+  m_SerializeEntries:
+  - m_GUID: 44b99823509014341ad879143188897f
+    m_Address: Assets/Scenes/MainMenu.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+  - m_GUID: 2f77a7e4fdf97fa4aa26ff371ac0ec73
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/$fiefButton.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7be7a6898ec613249a5d5a5f57b43bb0
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/20220727 Main Screen background.JPG
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2af9cfc79c4ed4b4ca3f43c35aa15f58
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/bt_bg_300x60.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2ee68f9cd3ec56a41a8252af8f0fa525
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/fief_bg_210x60.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6e557a2c09811114c87b75944d88a30c
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/kote_logo.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f2a40416ee23ee54a8af72b982dcd2d1
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/login_guide.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 494f6a7028101df40b341ecaec5cb0fa
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/Logo.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0ccf57a703b051d4e845cd756438cd79
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/logo_title.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6446d56129de19641b2ff38e24f23364
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/Main Screen background 1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0e50cafeb4b8ff24b85af3d92778a410
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/Main Screen background 2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2323321abdc32c6498b7f3cdaa8807be
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/Main Screen background 3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 13d05b29fad82b94ab0a8a32baf1eee9
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/Main Screen background 4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f03217f5e52358f45be887bde5b6c827
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/Main Screen background Gem.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5f59ce5e87228484e98a25f1a3e0e541
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/Main Screen layer 0.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ccf682bde4082684ba9a0b34e28af638
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/Main Screen layer 1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e3dd4271a81de554dbb93fda7b7684ac
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/Main Screen layer 2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: be161215f4d6e2543a71f1e7c4737aa4
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/main_menu_bg_1920x1080.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4eb6a22911f43614ebadbc9304ffbece
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/main_menu_guide.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 279539f824e72794a8615b597be881b3
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/name_bg_320x60.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 77d1101c8c77254458dfefd7990ab8e5
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/pop_up_bg.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 532fa2d69caf3bc419bb510ea4334401
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/pop_up_guide.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1359abac43289cb42bc2770fe32a80ee
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/Settings-Icon.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c59dd18e3dc815a4dae0be18fe8cf0d3
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/SettingsBT.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4ed11ff1327a9034aa7a90a035b167b2
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/transition_bg.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 05f0d2e881727a641b019c0913531358
+    m_Address: Assets/Sprites/Main_Menu/Main_Menu/Username_BG.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b5243524a01eab148b0a227677e45ff2, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: b4a2926f7742a53438ee50af79055815, type: 2}
+    - {fileID: 11400000, guid: 59d2962afa287ea4f96e9ee915b3492e, type: 2}

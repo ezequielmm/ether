@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Loader.unity
     guid: 579a8beebcc2e0b498b2ad9c2804af07
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainMenu.unity
     guid: 44b99823509014341ad879143188897f
   - enabled: 1
@@ -20,4 +20,6 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/MapDoNotUseToBeDeletedLater.unity
     guid: 6839215558f3b474cad1c55ec9657589
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 30cc9a8e266e5eb44bbe4c0b6a59dd47,
+      type: 2}
