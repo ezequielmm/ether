@@ -51,6 +51,7 @@ public class EndTurnManager : MonoBehaviour
 
     void onTurnChange(string who) 
     {
+        Debug.Log($"[WebSocketManager] <- not really.. Turn Change to {who}");
         if (who == "player")
         {
             endTurnButtonManager.Enable();
@@ -72,6 +73,7 @@ public class EndTurnManager : MonoBehaviour
         {
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             GameManager.Instance.EVENT_END_TURN_CLICKED.Invoke();
+            endTurnButtonManager.Disable();
         }
     }
 
