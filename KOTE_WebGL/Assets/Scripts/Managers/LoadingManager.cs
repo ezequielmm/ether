@@ -52,7 +52,7 @@ public class LoadingManager : MonoBehaviour
             return;
         }
         Debug.Log("Login not first load ::  " + GameManager.Instance.nextSceneToLoad.ToString());
-        LoadMainMenuScene();
+        LoadScene();
         DontDestroyOnLoad(gameObject);
         if (LoadGroup)
             LoadGroup.SetActive(true);
@@ -61,14 +61,15 @@ public class LoadingManager : MonoBehaviour
     private async void LoadWithEnvironmentCheck()
     {
         await ClientEnvironmentManager.Instance.StartEnvironmentManger();
-        LoadMainMenuScene();
+        LoadScene();
         GameManager.Instance.firstLoad = false;
     }
 
-    private void LoadMainMenuScene()
+    private void LoadScene()
     {
-        //StartCoroutine(LoadAsynchronously(GameManager.Instance.nextSceneToLoad.ToString()));
-        StartCoroutine(LoadAsynchronouslyFromAddressables(GameManager.Instance.nextSceneToLoad.ToString()));
+        StartCoroutine(GameManager.Instance.nextSceneToLoad.ToString() == "MainMenu"
+            ? LoadAsynchronouslyFromAddressables(GameManager.Instance.nextSceneToLoad.ToString())
+            : LoadAsynchronously(GameManager.Instance.nextSceneToLoad.ToString()));
     }
     
 
