@@ -1,9 +1,5 @@
 mergeInto(LibraryManager.library, {
-    GetUnityMessage: function (message) {
-      try {
-        window.dispatchReactUnityEvent("GetUnityMessage", message);
-      } catch (e) {
-        console.error("Failed to dispatch event");
-      }
-    },
-  });
+  GetUnityMessage: function (eventName, data) {
+    window.dispatchReactUnityEvent("GetUnityMessage", UTF8ToString(eventName), UTF8ToString(data));
+  },
+});
