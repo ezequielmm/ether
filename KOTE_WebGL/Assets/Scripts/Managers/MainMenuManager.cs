@@ -29,6 +29,7 @@ public class MainMenuManager : MonoBehaviour
     public bool _hasExpedition => userData.HasExpedition;
     [HideInInspector]
     public bool _expeditionStatusReceived;
+    public bool nftLoaded;
 
     // verification that the player still owns the continuing nft
     [HideInInspector]
@@ -48,7 +49,7 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(OnLogoutSuccessful);
 
         wallet.WalletStatusModified.AddListener(UpdateUiOnWalletModification);
-        NftManager.Instance.NftsLoaded.AddListener(VerifyResumeExpedition);
+        NftManager.Instance.NftsLoaded.AddListener(NftLoaded);
 
         // default the play button to not being interactable
         playButton.interactable = false;
@@ -68,11 +69,17 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
+    public void NftLoaded()
+    {
+        nftLoaded = true;
+        VerifyResumeExpedition();
+    }
+    
     public async void VerifyResumeExpedition()
     {
 
         Debug.Log("VerifyResumeExpedition");
-        if (!_hasWallet || !_isWhitelisted ) 
+        if (!_hasWallet || !_isWhitelisted) 
         {
             playButton.gameObject.SetActive(false);
             newExpeditionButton.gameObject.SetActive(false);
@@ -81,7 +88,7 @@ public class MainMenuManager : MonoBehaviour
         }
 
         
-        if (!_isWalletVerified || !_expeditionStatusReceived)
+        if (!_isWalletVerified || !_expeditionStatusReceived || !nftLoaded)
         {
             playButton.gameObject.SetActive(true);
             UpdatePlayButtonText("Verifying...");
