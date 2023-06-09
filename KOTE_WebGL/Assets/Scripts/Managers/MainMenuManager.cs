@@ -41,7 +41,8 @@ public class MainMenuManager : MonoBehaviour
     public bool _isWhitelisted => true;
 
     [SerializeField] PostProcessingTransition postProcessingTransition;
-
+    [SerializeField] Leaderboard leaderboard;
+    
     private void Start()
     {
         GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.AddListener(UpdateNameAndFief);
@@ -245,5 +246,13 @@ public class MainMenuManager : MonoBehaviour
         _expeditionStatusReceived = false;
         await userData.ClearExpedition();
         GetExpeditionStatus();
+    }
+
+    public void OnLeaderboardButton()
+    {
+        var show = !leaderboard.gameObject.activeSelf;
+        leaderboard.gameObject.SetActive(show);
+        if (show)
+            leaderboard.RequestLeaderboard();
     }
 }
