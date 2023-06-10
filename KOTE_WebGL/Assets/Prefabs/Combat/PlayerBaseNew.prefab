@@ -508,6 +508,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 0833cefecbb1e774184077143e73eb05,
         type: 2}
+    - target: {fileID: 5810527289466403425, guid: 00da284390956bf4aab0067a0d16eee2,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9032002354893603803, guid: 00da284390956bf4aab0067a0d16eee2,
         type: 3}
       propertyPath: m_Mesh
