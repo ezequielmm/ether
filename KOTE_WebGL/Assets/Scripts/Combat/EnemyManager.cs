@@ -308,6 +308,11 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         GameManager.Instance.EVENT_DEACTIVATE_POINTER.AddListener(DeactivateCollider);
 
         statusManager = GetComponentInChildren<StatusManager>();
+
+
+        Canvas canvas = barFader.GetComponent<Canvas>();
+        canvas.sortingOrder = 1;
+        
     }
 
     private void Instantiate()

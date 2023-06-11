@@ -42,7 +42,8 @@ public class MainMenuManager : MonoBehaviour
 
     [SerializeField] PostProcessingTransition postProcessingTransition;
     [SerializeField] Leaderboard leaderboard;
-    
+    private bool showingLeaderboard;
+
     private void Start()
     {
         GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.AddListener(UpdateNameAndFief);
@@ -256,7 +257,13 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnLeaderboardButton()
     {
-       
+        if(showingLeaderboard)
+        {
+            leaderboard.Show(false);
+            showingLeaderboard=false;
+            return;
+        }
+       this.showingLeaderboard = true;
         leaderboard.Show(true);
     }
 
