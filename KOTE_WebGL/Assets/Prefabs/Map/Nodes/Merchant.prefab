@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7367337834500535258}
   - component: {fileID: 7367337834500535259}
   - component: {fileID: 3193495354885325236}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Merchant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7367337834506819448}
   - component: {fileID: 7367337834506819449}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Ellipse 1 copy (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,9 +160,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1449054989
+  m_SortingLayer: 2
+  m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 21193400dd486e74eb17edee3bfa94e7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 7367337834707614038}
   - component: {fileID: 7367337834707614039}
   - component: {fileID: 7367337834707614032}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Ellipse 2 copy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,9 +245,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1449054989
+  m_SortingLayer: 2
+  m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: d50621a7f40998d44acb6520bc32295d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -285,7 +285,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7367337835340949007}
   - component: {fileID: 7367337835340949000}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Ellipse 1 copy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,9 +345,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1449054989
+  m_SortingLayer: 2
+  m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 21193400dd486e74eb17edee3bfa94e7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -369,7 +369,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7367337835680913930}
   - component: {fileID: 7367337835680913931}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Ellipse 1 copy (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -429,9 +429,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1449054989
+  m_SortingLayer: 2
+  m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 21193400dd486e74eb17edee3bfa94e7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -453,7 +453,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7367337835862075800}
   - component: {fileID: 7367337835862075801}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Ellipse 1 copy (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -513,9 +513,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1449054989
+  m_SortingLayer: 2
+  m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 21193400dd486e74eb17edee3bfa94e7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -537,7 +537,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7367337836289351541}
   - component: {fileID: 7367337836289351542}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Layer 17
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -597,9 +597,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1449054989
+  m_SortingLayer: 2
+  m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 623b0b668bac51b4b9059a2a49e80647, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

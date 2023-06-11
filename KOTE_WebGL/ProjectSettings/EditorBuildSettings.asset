@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Expedition.unity
     guid: 9615cdd825d16bc43bd036ea48f78520
+  - enabled: 1
+    path: Assets/Scenes/Cleanup.unity
+    guid: 3a6d75a6b94601e4a87532d31143a85c
   - enabled: 0
     path: Assets/Scenes/MapDoNotUseToBeDeletedLater.unity
     guid: 6839215558f3b474cad1c55ec9657589

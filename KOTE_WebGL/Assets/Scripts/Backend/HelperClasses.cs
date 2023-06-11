@@ -138,11 +138,10 @@ public class RandomNameData
 [Serializable]
 public class ProfileData
 {
-    public string name { get; set; }
-    public string email { get; set; }
-    [JsonProperty("wallets")]
-    public List<string> ownedWallets { get; set; } = new();
-    public int fief { get; set; }
+    [JsonProperty("userAddress")]
+    public string UserAddress = null;
+    [JsonProperty("displayName")]
+    public string DisplayName = null;
 }
 
 [Serializable]
@@ -897,3 +896,23 @@ public class TrinketTriggeredData
         [JsonProperty("data")] public Trinket trinket;
     }
 }
+
+[Serializable]
+public class LeaderboardData
+{
+    public LeaderboardDataItem[] data;
+}
+
+[Serializable]
+public class LeaderboardDataItem
+{
+    public string address;
+    public int score;
+
+    public LeaderboardDataItem(string address, int score)
+    {
+        this.address = address;
+        this.score = score;
+    }
+}
+

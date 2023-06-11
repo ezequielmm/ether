@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using DG.Tweening;
 using UnityEngine;
 
@@ -34,11 +35,13 @@ namespace KOTE.Expedition.Combat.Cards.Piles
          * [draw, discard, exhaust]
          */
         private Vector3[] pileOrthoPositionArray = new Vector3[3];
+        [SerializeField] private CinemachineVirtualCamera targetCamera;
 
 
         // Start is called before the first frame update
         void Start()
         {
+           
             GameManager.Instance.EVENT_CARD_DRAW_CARDS.AddListener(OnDrawCards);
             GameManager.Instance.EVENT_CARDS_PILES_UPDATED.AddListener(OnCardsPilesUpdated);
             GameManager.Instance.EVENT_CARD_ADD.AddListener(GameplayCardSpawn);
@@ -339,9 +342,9 @@ namespace KOTE.Expedition.Combat.Cards.Piles
         private Vector3 TransformUIToOrtho(GameObject cardPile)
         {
             Vector3 pos = cardPile.transform.position; //(1.1, 104.5, 0.0)
-
-            float height = 2 * Camera.main.orthographicSize; //10
-            float width = height * Camera.main.aspect; //21.42
+            
+            float height = 2 * targetCamera.m_Lens.OrthographicSize; //10
+            float width = height * targetCamera.m_Lens.Aspect; //21.42
 
             //transform UI coordinates to orthorgraphic coordinates
             float xx = pos.x * width / Screen.width;

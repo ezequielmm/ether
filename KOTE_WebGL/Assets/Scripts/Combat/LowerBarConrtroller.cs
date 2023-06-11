@@ -11,6 +11,9 @@ public class LowerBarConrtroller : MonoBehaviour
     private RectTransform DefenseIcon;
     [SerializeField]
     private Transform statusManager;
+    
+    
+    public bool fixedPosition = false;
 
     // we need to track the entity type because the bar is flipped depending on if it's a player or enemy
     public EntityType attachedEntity;
@@ -54,6 +57,7 @@ public class LowerBarConrtroller : MonoBehaviour
 
     public void SetSize(Size newSize)
     {
+        if (fixedPosition) return;
         healthBar.SetSize(newSize);
         float defenseWidth = DefenseIcon.sizeDelta.x - (DefenseIcon.sizeDelta.x * 0.2f);
         float healthWidth = (healthBar.transform as RectTransform).sizeDelta.x;

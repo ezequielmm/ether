@@ -6,12 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : SingleTon<GameManager>
 {
-    //REGISTER ACCOUNT EVENTS
-    [HideInInspector] public UnityEvent<bool> EVENT_REGISTERPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
-
-
     //LOGIN EVENTS
-    [HideInInspector] public UnityEvent<bool> EVENT_LOGINPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent EVENT_AUTHENTICATED = new UnityEvent();
 
     //PROFILE EVENTS
@@ -299,6 +294,9 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector]
     public UnityEvent<string, string, string> EVENT_SEND_BUG_FEEDBACK = new UnityEvent<string, string, string>();
 
+    [HideInInspector] 
+    public UnityEvent<LeaderboardData> EVENT_SHOW_LEADERBOARD = new UnityEvent<LeaderboardData>();
+    
     public bool firstLoad = true;
 
     public inGameScenes
@@ -310,7 +308,8 @@ public class GameManager : SingleTon<GameManager>
 
     public inGameScenes CurrentScene { get; private set; } = inGameScenes.Loader;
     public static string ServerVersion { get; private set; }
-    
+    public PlayerStateData PlayerStateData { get; private set; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -347,10 +346,17 @@ public class GameManager : SingleTon<GameManager>
 
     public void LoadScene(inGameScenes scene, bool async = false) //Loads the target scene passing through the LoaderScene
     {
+        Debug.Log("We are going to :  " + scene + " async " + async);
         EVENT_SCENE_LOADING.Invoke();
         nextSceneToLoad = scene;
+
+        //TODO: This is a hack to fix the issue with the expedition scene not loading properly
+        if (scene == inGameScenes.MainMenu) 
+            firstLoad = true;
+        
         if (scene == inGameScenes.Expedition && CurrentScene != inGameScenes.MainMenu)
         {
+            Debug.Log("RequestExpeditionSync");
             RequestExpeditionSync();
         }
 
@@ -375,7 +381,7 @@ public class GameManager : SingleTon<GameManager>
 
     private void OnLogout(string message)
     {
-        LoadScene(inGameScenes.MainMenu);
+        Cleanup.CleanupGame();
     }
 
     // when the scene changes, update the sound volume using the value stored in PlayerPrefs
@@ -404,5 +410,11 @@ public class GameManager : SingleTon<GameManager>
                 SceneLoadsActions.RemoveAt(i);
             }
         }
+    }
+
+    internal void PlayerStateUpdate(PlayerStateData playerStateData)
+    {
+        this.PlayerStateData = playerStateData;
+        EVENT_PLAYER_STATUS_UPDATE.Invoke(playerStateData);
     }
 }

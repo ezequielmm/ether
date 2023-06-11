@@ -16,8 +16,6 @@ public class MainMenuManager : MonoBehaviour
     public Button playButton,
         newExpeditionButton,
         treasuryButton,
-        registerButton,
-        loginButton,
         nameButton,
         fiefButton,
         connectWalletButton;
@@ -31,6 +29,7 @@ public class MainMenuManager : MonoBehaviour
     public bool _hasExpedition => userData.HasExpedition;
     [HideInInspector]
     public bool _expeditionStatusReceived;
+    public bool nftLoaded;
 
     // verification that the player still owns the continuing nft
     [HideInInspector]
@@ -42,6 +41,8 @@ public class MainMenuManager : MonoBehaviour
     public bool _isWhitelisted => true;
 
     [SerializeField] PostProcessingTransition postProcessingTransition;
+    [SerializeField] Leaderboard leaderboard;
+    private bool showingLeaderboard;
 
     private void Start()
     {
@@ -49,21 +50,9 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_AUTHENTICATED.AddListener(SetupPostAuthenticationButtons);
         GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(OnLogoutSuccessful);
 
-        GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(false);
-        GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(false);
-
         wallet.WalletStatusModified.AddListener(UpdateUiOnWalletModification);
-        NftManager.Instance.NftsLoaded.AddListener(VerifyResumeExpedition);
+        NftManager.Instance.NftsLoaded.AddListener(NftLoaded);
 
-        if (string.IsNullOrEmpty(AuthenticationManager.Instance.GetSessionToken()))
-        {
-            TogglePreLoginStatus(true);
-        }
-        else
-        {
-            AuthenticationManager.Instance.AuthenticateOnResume();
-        }
-        
         // default the play button to not being interactable
         playButton.interactable = false;
         CheckIfArmoryButtonIsEnabled();
@@ -82,10 +71,17 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
+    public void NftLoaded()
+    {
+        nftLoaded = true;
+        VerifyResumeExpedition();
+    }
+    
     public async void VerifyResumeExpedition()
     {
 
-        if (!_hasWallet || !_isWhitelisted ) 
+        Debug.Log("VerifyResumeExpedition");
+        if (!_hasWallet || !_isWhitelisted) 
         {
             playButton.gameObject.SetActive(false);
             newExpeditionButton.gameObject.SetActive(false);
@@ -94,7 +90,7 @@ public class MainMenuManager : MonoBehaviour
         }
 
         
-        if (!_isWalletVerified || !_expeditionStatusReceived)
+        if (!_isWalletVerified || !_expeditionStatusReceived || !nftLoaded)
         {
             playButton.gameObject.SetActive(true);
             UpdatePlayButtonText("Verifying...");
@@ -103,13 +99,13 @@ public class MainMenuManager : MonoBehaviour
             return;
         }
 
-        if (!_ownsAnyNft ) 
+     /*   if (!_ownsAnyNft ) 
         {
             newExpeditionButton.gameObject.SetActive(false);
             playButton.interactable = false;
             return;
         }
-        
+       */ 
         if (!_hasExpedition)
         {
             UpdatePlayButtonTextForExpedition();
@@ -159,29 +155,13 @@ public class MainMenuManager : MonoBehaviour
     public void OnLogoutSuccessful(string message)
     {
         GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(false);
-        TogglePreLoginStatus(true);
-    }
-
-    public void TogglePreLoginStatus(bool preLoginStatus)
-    {
-        nameText.gameObject.SetActive(!preLoginStatus);
-        moneyText.gameObject.SetActive(!preLoginStatus);
-        playButton.gameObject.SetActive(!preLoginStatus);
-        treasuryButton.gameObject.SetActive(!preLoginStatus);
-        newExpeditionButton.gameObject.SetActive(!preLoginStatus);
-        registerButton.gameObject.SetActive(preLoginStatus);
-        loginButton.gameObject.SetActive(preLoginStatus);
-        nameButton.gameObject.SetActive(!preLoginStatus);
-        fiefButton.gameObject.SetActive(!preLoginStatus);
-        connectWalletButton.gameObject.SetActive(!preLoginStatus);
+        //TODO: possible issue here, before removing panels this opens login, register again
     }
 
     private void SetupPostAuthenticationButtons()
     {
         //playButton.gameObject.SetActive(false);
         newExpeditionButton.gameObject.SetActive(false);
-        registerButton.gameObject.SetActive(false);
-        loginButton.gameObject.SetActive(false);
         connectWalletButton.gameObject.SetActive(!_hasWallet);
         GetExpeditionStatus();
     }
@@ -194,18 +174,6 @@ public class MainMenuManager : MonoBehaviour
         PlayerSpriteManager.Instance.SetSkin(userData.ActiveNft, userData.NftContract);
 
         VerifyResumeExpedition();
-    }
-
-    public void OnRegisterButton()
-    {
-        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-        GameManager.Instance.EVENT_REGISTERPANEL_ACTIVATION_REQUEST.Invoke(true);
-    }
-
-    public void OnLoginButton()
-    {
-        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-        GameManager.Instance.EVENT_LOGINPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
     public void OnTreasuryButton()
@@ -228,19 +196,26 @@ public class MainMenuManager : MonoBehaviour
         //check if we are playing a new expedition or resuming
         if (_hasExpedition)
         {
+            Debug.Log("Step 1 A: Has expedition");
             //load the expedition
             // play the correct music depending on where the player is
             GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Music, 1);
             GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Ambient, 1);
             //GameManager.Instance.LoadScene(inGameScenes.Expedition);
-            postProcessingTransition.OnTransitionInEnd.AddListener(() => GameManager.Instance.LoadScene(inGameScenes.Expedition, true));
+            postProcessingTransition.OnTransitionInEnd.AddListener(OnTransitionEnd);
             postProcessingTransition.StartTransition();
         }
         else
         {
             // if there's no wallet, ask if they want to connect one
+
+            Debug.Log("Step 1 B: No expedition");
             if (!_hasWallet)
             {
+                Debug.Log("Step 2 A: No expedition, Doesnt have wallet");
+
+
+                Debug.LogError("no wallet");
                 GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(
                     "No Wallet connected, would you like to add one?",
                     () => { wallet.SetActiveWallet(); },
@@ -249,17 +224,28 @@ public class MainMenuManager : MonoBehaviour
                 return;
             }
 
+            Debug.Log("Step 2 B: No expedition, has a wallet!, what happens now?");
             // else open the armory panel
             //GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
         }
-    }
 
+
+        leaderboard.Show(false);
+
+    }
+    void OnTransitionEnd()
+    {
+        Debug.Log("OnTransitionEnd");
+        GameManager.Instance.LoadScene(inGameScenes.Expedition, true);
+    }
     public void OnNewExpeditionButton()
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Do you want to cancel the current expedition?",
             OnNewExpeditionConfirmed);
+
+       leaderboard.Show(false);
     }
 
     public async void OnNewExpeditionConfirmed()
@@ -268,4 +254,18 @@ public class MainMenuManager : MonoBehaviour
         await userData.ClearExpedition();
         GetExpeditionStatus();
     }
+
+    public void OnLeaderboardButton()
+    {
+        if(showingLeaderboard)
+        {
+            leaderboard.Show(false);
+            showingLeaderboard=false;
+            return;
+        }
+       this.showingLeaderboard = true;
+        leaderboard.Show(true);
+    }
+
+  
 }

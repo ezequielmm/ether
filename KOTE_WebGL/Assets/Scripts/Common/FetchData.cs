@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using KOTE.UI.Armory;
 using Newtonsoft.Json;
@@ -81,10 +82,11 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
     public async UniTask<EncounterData> GetEncounterData()
     {
+        Debug.Log("Get encounter data here");
         string rawJson =
             await socketRequest.EmitAwaitResponse(SocketEvent.GetData, WS_DATA_REQUEST_TYPES.EncounterData.ToString());
         rawJson = TryGetTestData(FetchType.EncounterData, rawJson);
-
+        Debug.Log("Found encounter data");
         return ParseJsonWithPath<EncounterData>(rawJson, "data.data");
     }
 
@@ -148,6 +150,10 @@ public class FetchData : DataManager, ISingleton<FetchData>
     public async UniTask<ExpeditionStartData> RequestNewExpedition(NftContract characterType, int selectedNft,
         List<GearItemData> equippedGear)
     {
+        /*
+         
+         
+        */
         if (!UserDataManager.Instance.VerifyAccountExists()) return new ExpeditionStartData
         {
             expeditionCreated = false
@@ -288,15 +294,20 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
     public async UniTask<ProfileData> GetPlayerProfile()
     {
+        Debug.Log("Start get profile");
         string requestUrl = webRequest.ConstructUrl(RestEndpoint.Profile);
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
             request.AddAuthToken();
             string rawJson = await MakeJsonRequest(request);
+            Debug.Log("Raw json " + rawJson);
+            Debug.Log("Request result to check " + request.error);
+            Debug.Log("Request " + request.result);
             if (request.result == UnityWebRequest.Result.ConnectionError ||
                 request.result == UnityWebRequest.Result.ProtocolError ||
                 request.result == UnityWebRequest.Result.DataProcessingError)
             {
+                Debug.Log("no profile");
                 string pannelMessage = "Error Retrieving profile, please log in again.";
                 string[] buttons = { "Return To Login screen", string.Empty };
                 GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(pannelMessage, () =>
@@ -371,7 +382,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
     private async UniTask<Texture2D> MakeTextureRequest(UnityWebRequest request)
     {
-        Texture2D texture = ((DownloadHandlerTexture)await webRequest.MakeRequest(request))?.texture;
+        Texture2D texture = ((DownloadHandlerTexture)await webRequest.MakeRequest(request, false))?.texture;
         if (texture == null)
         {
             texture = new Texture2D(1, 1);
@@ -425,6 +436,22 @@ public class FetchData : DataManager, ISingleton<FetchData>
         }
 
         return rawData;
+    }
+    
+    public async UniTask<LeaderboardData> GetLeaderboardData()
+    {
+        await UniTask.Delay(3);
+        return new LeaderboardData
+        {
+            data = new []
+            {
+                new LeaderboardDataItem("a",100),
+                new LeaderboardDataItem("b",120),
+                new LeaderboardDataItem("c",200),
+                new LeaderboardDataItem("d",103),
+                new LeaderboardDataItem("e",400)
+            }
+        };
     }
 }
 

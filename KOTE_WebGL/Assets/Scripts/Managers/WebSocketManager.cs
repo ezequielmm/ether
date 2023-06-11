@@ -10,6 +10,8 @@ using UnityEngine;
 
 public class WebSocketManager : SingleTon<WebSocketManager>
 {
+
+    public static string ClientId;
     SocketManager manager;
     SocketOptions options;
     private Socket rootSocket;
@@ -128,8 +130,10 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             switch (manager.State)
             {
                 case SocketManager.States.Closed:
+                    Debug.LogError($"[WebSocketManager] New Socket State: {manager.State}.");
+                    break;
                 case SocketManager.States.Reconnecting:
-                    Debug.LogWarning($"[WebSocketManager] New Socket State: {manager.State}.");
+                    Debug.LogError($"[WebSocketManager] New Socket State: {manager.State}.");
                     break;
                 default:
                     Debug.Log($"[WebSocketManager] New Socket State: {manager.State}.");
@@ -195,7 +199,13 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
         SocketOptions options = new SocketOptions();
         //  options.AutoConnect = false;
-        options.HTTPRequestCustomizationCallback = (manager, request) => { request.AddHeader("Authorization", token); };
+        options.HTTPRequestCustomizationCallback = (manager, request) =>
+        {
+            request.AddHeader("Authorization", token);
+            request.AddHeader("UserAddress", AuthenticationManager.LoginData.Wallet);
+           // request.AddHeader("useraddress", AuthenticationManager.LoginData.Wallet);
+
+        };
 
         string uriStr = ClientEnvironmentManager.Instance.WebSocketURL;
 
@@ -203,6 +213,9 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         Debug.Log("[WebSocket Manager] Connecting to " + uriStr);
 
         manager = new SocketManager(new Uri(uriStr), options);
+       
+        Debug.Log($"Socket connected: ID: {manager?.Socket?.Id} Handshakes SID: {manager?.Handshake?.Sid} ");
+
 
         rootSocket = manager.Socket;
         //customNamespace = manager.GetSocket("/socket");
@@ -247,18 +260,19 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     void OnConnected(ConnectResponse resp)
     {
-        Debug.Log("Websocket Connected sucessfully!");
-
+        Debug.Log("Websocket Connected sucessfully! SID " + resp.sid);
+        ClientId = resp.sid;
         GameManager.Instance.EVENT_WS_CONNECTED.Invoke();
     }
 
     void OnError(Error resp)
     {
         // Method 1: received as parameter
-        Debug.Log("[WebSocket Manager] Error message: " + resp.message);
+        Debug.LogError("[WebSocket Manager] Error message: " + resp.message);
 
         // Method 2: access through the socket
-        Debug.Log("[WebSocket Manager] Sid through socket: " + manager.Socket.Id);
+        Debug.LogError("[WebSocket Manager] Sid through socket: " + manager.Socket.Id);
+        Debug.LogError(resp);
     }
 
     private void OnRequestSync()
@@ -446,8 +460,8 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             Debug.LogWarning($"[WebSocketManager] Socket is Unhealthy. Queuing Emission ({eventName}) for Later.");
             return;
         }
-
-        LogEmission(eventName, variables);
+        // stop logging
+        // LogEmission(eventName, variables);
         rootSocket.Emit(eventName, variables);
     }
 
@@ -458,6 +472,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     public async UniTask<string> EmitAwaitResponse(string eventName, params object[] variables)
     {
+
         UniPromise<string> promise = CreatePromise();
         if (IsSocketHealthy)
         {
@@ -472,14 +487,15 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
         await promise.WaitForFufillment();
         Debug.Log($"[WebSocketManager] RESPONSE [{promise.Id.ToString().Substring(0,4)}] <<< {promise.Data}");
-        ServerCommunicationLogger.Instance.LogCommunication($"[WebSocketManager] RESPONSE [{promise.Id.ToString().Substring(0, 4)}] <<<",
-            CommunicationDirection.Incoming, promise.Data);
+      //  ServerCommunicationLogger.Instance.LogCommunication($"[WebSocketManager] RESPONSE [{promise.Id.ToString().Substring(0, 4)}] <<<",
+    //        CommunicationDirection.Incoming, promise.Data);
         return promise.Data;
     }
 
     private void EmitPromise(UniPromise<string> promise, string eventName, params object[] variables)
     {
-        LogEmissionExpectingResponse(promise.Id, eventName, variables);
+        // stop log emit promise
+       // LogEmissionExpectingResponse(promise.Id, eventName, variables);
         rootSocket.ExpectAcknowledgement<string>((json) => { ResolvePromise(json, promise); })
             .Emit(eventName, variables);
     }
@@ -494,7 +510,8 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             return;
         }
         Guid requestId = Guid.NewGuid();
-        LogEmissionExpectingResponse(requestId, eventName, variables);
+       // stop logging
+       // LogEmissionExpectingResponse(requestId, eventName, variables);
         rootSocket.ExpectAcknowledgement<string>((json) => 
         {
             LogResponse(requestId, json);
@@ -513,22 +530,22 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     private void LogResponse(Guid requestId, string rawJson) 
     {
         string requestIdShortened = requestId.ToString().Substring(0, LogHelper.LengthOfIdToLog);
-        Debug.Log($"[WebSocketManager] RESPONSE [{requestIdShortened}] <<< {rawJson}");
-        LogHelper.SendIncomingCommunicationLogs($"[WebSocketManager] RESPONSE [{requestIdShortened}] <<<", rawJson);
+       // Debug.Log($"[WebSocketManager] RESPONSE [{requestIdShortened}] <<< {rawJson}");
+        //LogHelper.SendIncomingCommunicationLogs($"[WebSocketManager] RESPONSE [{requestIdShortened}] <<<", rawJson);
     }
 
     private void LogIncoming(string rawJson)
     {
-        Debug.Log($"[WebSocketManager] INCOMING <<< {rawJson}");
-        LogHelper.SendIncomingCommunicationLogs($"[WebSocketManager] INCOMING <<<", rawJson);
+        //Debug.Log($"[WebSocketManager] INCOMING <<< {rawJson}");
+       // LogHelper.SendIncomingCommunicationLogs($"[WebSocketManager] INCOMING <<<", rawJson);
     }
 
     private void LogEmission(string eventName, params object[] variables)
     {
         string variableString = LogHelper.VariablesToHumanReadable(eventName, variables);
         string jsonString = LogHelper.VariablesToJson(eventName, variables);
-        Debug.Log($"[WebSocketManager] EMISSION >>> {jsonString}");
-        LogHelper.SendOutgoingCommunicationLogs($"[WebSocketManager] EMISSION >>> {variableString}", jsonString);
+       // Debug.Log($"[WebSocketManager] EMISSION >>> {jsonString}");
+      //  LogHelper.SendOutgoingCommunicationLogs($"[WebSocketManager] EMISSION >>> {variableString}", jsonString);
     }
 
     private void LogEmissionExpectingResponse(Guid requestId, string eventName, params object[] variables)
@@ -536,8 +553,8 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         string requestIdShortened = requestId.ToString().Substring(0, LogHelper.LengthOfIdToLog);
         string variableString = LogHelper.VariablesToHumanReadable(eventName, variables);
         string jsonString = LogHelper.VariablesToJson(eventName, variables);
-        Debug.Log($"[WebSocketManager] EMISSION [{requestIdShortened}] >>> {jsonString}");
-        LogHelper.SendOutgoingCommunicationLogs($"[WebSocketManager] EMISSION [{requestIdShortened}] >>> {variableString}", jsonString);
+       // Debug.Log($"[WebSocketManager] EMISSION [{requestIdShortened}] >>> {jsonString}");
+       // LogHelper.SendOutgoingCommunicationLogs($"[WebSocketManager] EMISSION [{requestIdShortened}] >>> {variableString}", jsonString);
     }
 }
 

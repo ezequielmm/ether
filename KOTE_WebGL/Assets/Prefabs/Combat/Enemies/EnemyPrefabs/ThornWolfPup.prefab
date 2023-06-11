@@ -328,6 +328,8 @@ GameObject:
   - component: {fileID: 3916822406634664814}
   - component: {fileID: 5420527440306874998}
   - component: {fileID: 8406717301304214992}
+  - component: {fileID: -6200742945254319686}
+  - component: {fileID: -68559457856608892}
   m_Layer: 0
   m_Name: ThornWolfPup
   m_TagString: Enemy
@@ -424,3 +426,133 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!82 &-6200742945254319686
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -326525281691624442, guid: b636ccc80c0f6d24fa2b6ff943c11cd9,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &-68559457856608892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f58333b3ba604f1eafc1a335d68f4909, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundsListMap:
+  - Name: Attack
+    SoundList:
+    - {fileID: 8300000, guid: de530efd8eccd1e439fc6548b796e44e, type: 3}
+    - {fileID: 8300000, guid: 608121ae9e2f6ac44bdcbb8785ac4fb6, type: 3}
+    - {fileID: 8300000, guid: deb91ad5c42c8a846b0e5959c9330838, type: 3}
+    - {fileID: 8300000, guid: 59f431857d4b93646bd8f490296b36d1, type: 3}
+  - Name: Hit
+    SoundList:
+    - {fileID: 8300000, guid: 99aa92b78617a2f43846a28e22398a87, type: 3}
+    - {fileID: 8300000, guid: b2f62ee8048968e478fb34dda58bf9f4, type: 3}
+  - Name: Death
+    SoundList:
+    - {fileID: 8300000, guid: df7ba14bc918bcf4594c571989cf694d, type: 3}
+    - {fileID: 8300000, guid: 0e7dafb2fc7662d4998ce9dfbcd10d7d, type: 3}
+  - Name: Cast
+    SoundList:
+    - {fileID: 8300000, guid: 020867ecfdc49c44585e0dcca7fbb870, type: 3}
+    - {fileID: 8300000, guid: 68194af429f463f4a806c8eb14003669, type: 3}
+    - {fileID: 8300000, guid: 7e2d28b63a37057418555124ca36d8b4, type: 3}
+    - {fileID: 8300000, guid: b0d18655bc3043f4883de8bfe11cc66f, type: 3}

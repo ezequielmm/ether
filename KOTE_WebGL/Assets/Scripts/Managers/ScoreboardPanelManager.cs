@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ScoreboardPanelManager : MonoBehaviour
 {
@@ -33,7 +34,7 @@ public class ScoreboardPanelManager : MonoBehaviour
 
     public void OnContinueButton()
     {
-        GameManager.Instance.LoadScene(inGameScenes.MainMenu);
+        Cleanup.CleanupGame();
     }
 
     public void Populate(ScoreboardData scoreboard)

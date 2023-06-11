@@ -19,6 +19,8 @@ public class HealthBarController : MonoBehaviour
     [SerializeField]
     private RectTransform healthBar;
 
+    [SerializeField] 
+    private bool fixedSize = false;
     [SerializeField]
     private Size defaultSize = Size.medium;
 
@@ -45,6 +47,7 @@ public class HealthBarController : MonoBehaviour
 
     public void SetSize(Size newSize)
     {
+        if (fixedSize) return;
         background.sprite = HealthBarBg;
         fill.sprite = HealthBarFill;
         healthBar.sizeDelta = new Vector2(Utils.GetSceneSize(newSize) + widthAdjustment, healthBar.sizeDelta.y);

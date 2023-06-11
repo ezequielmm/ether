@@ -310,6 +310,7 @@ GameObject:
   - component: {fileID: 3154823427181364166}
   - component: {fileID: 3154823427181364167}
   - component: {fileID: 3154823427181364165}
+  - component: {fileID: 1314896619}
   m_Layer: 0
   m_Name: parallax
   m_TagString: Untagged
@@ -356,7 +357,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3154823427181364161}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -369,7 +370,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7be7a6898ec613249a5d5a5f57b43bb0, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -402,6 +403,19 @@ MonoBehaviour:
   rotateLayers:
   - transform: {fileID: 3154823426598643633}
     delta: 0.025
+--- !u!114 &1314896619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3154823427181364161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
 --- !u!1 &3154823427213870041
 GameObject:
   m_ObjectHideFlags: 0

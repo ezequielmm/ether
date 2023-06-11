@@ -25,7 +25,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
 
         if (this != Instance) return;
 
-        PlayerPrefs.SetString("api_url", baseUrl);
+//        PlayerPrefs.SetString("api_url", baseUrl);
 
         GameManager.Instance.EVENT_SEND_BUG_FEEDBACK.AddListener(SendBugReport);
     }
@@ -35,25 +35,12 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         StartCoroutine(GetCharacterList());
     }
 
-    public async UniTask<DownloadHandler> MakeRequest(UnityWebRequest request)
+    public async UniTask<DownloadHandler> MakeRequest(UnityWebRequest request, bool allowLogs = true)
     {
-#if UNITY_EDITOR
-        if (UnitTestDetector.IsInUnitTest)
-        {
-            Debug.Log($"[WebRequesterManager] Can't make a webrequest while testing.");
-            return null;
-        }
-
-        if (ClientEnvironmentManager.Instance.UnityEnvironment.AllowUnsafeCertificates)
-        {
-            Debug.LogWarning($"[WebRequesterManager] Allowing unsafe certificates.");
-            ServicePointManager.ServerCertificateValidationCallback = TrustCertificate;
-        }
-#endif
         try
         {
             Guid requestId = Guid.NewGuid();
-            LogRequest(requestId, request.uri.ToString());
+            if (allowLogs) LogRequest(requestId, request.uri.ToString());
             await request.SendWebRequest();
             if (request.result != UnityWebRequest.Result.Success)
             {
@@ -62,7 +49,8 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             else
             {
                 bool logText = IsResponseJson(request) && request?.downloadHandler?.text != null;
-                LogRepsonse(requestId, request.uri.ToString(),
+                if (allowLogs)
+                    LogRepsonse(requestId, request.uri.ToString(),
                     logText
                         ? request.downloadHandler.text
                         : $"<Cannot Display: {request.GetResponseHeader("Content-Type")}>");
@@ -104,18 +92,18 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         string requestIdShortened = requestId.ToString().Substring(0, LogHelper.LengthOfIdToLog);
         string variableString = LogHelper.VariablesToHumanReadable(url, payload);
         string jsonString = LogHelper.VariablesToJson(url, payload);
-        Debug.Log($"[WebRequesterManager] REQUEST [{requestIdShortened}] >>> {jsonString}");
-        LogHelper.SendOutgoingCommunicationLogs(
-            $"[WebRequesterManager] REQUEST [{requestIdShortened}] >>> {variableString}", jsonString);
+       // Debug.Log($"[WebRequesterManager] REQUEST [{requestIdShortened}] >>> {jsonString}");
+      //  LogHelper.SendOutgoingCommunicationLogs(
+       //     $"[WebRequesterManager] REQUEST [{requestIdShortened}] >>> {variableString}", jsonString);
     }
 
     private void LogRepsonse(Guid requestId, string url, string rawJson)
     {
         string requestIdShortened = requestId.ToString().Substring(0, LogHelper.LengthOfIdToLog);
         string variableString = LogHelper.VariablesToHumanReadable(url, rawJson);
-        Debug.Log($"[WebRequesterManager] RESPONSE [{requestIdShortened}] <<< {rawJson}");
-        LogHelper.SendOutgoingCommunicationLogs(
-            $"[WebRequesterManager] RESPONSE [{requestIdShortened}] <<< {variableString}", rawJson);
+      //  Debug.Log($"[WebRequesterManager] RESPONSE [{requestIdShortened}] <<< {rawJson}");
+      //  LogHelper.SendOutgoingCommunicationLogs(
+      //      $"[WebRequesterManager] RESPONSE [{requestIdShortened}] <<< {variableString}", rawJson);
     }
 
     IEnumerator GetCharacterList()
@@ -167,7 +155,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
             reportId = Guid.NewGuid().ToString(),
             environment = ClientEnvironmentManager.Instance.Environment.ToString(),
             clientId = UserDataManager.Instance.ClientId,
-            account = UserDataManager.Instance.UserEmail,
+            account = UserDataManager.Instance.Profile.UserAddress,
             knightId = UserDataManager.Instance.ActiveNft,
             expeditionId = UserDataManager.Instance.ExpeditionId,
             userTitle = title,
@@ -214,17 +202,18 @@ public static class RestEndpoint
     public static readonly string Login = "/auth/v1/login";
     public static readonly string Logout = "/auth/v1/logout";
 
-    public static readonly string Profile = "/gsrv/v1/profile";
+    public static readonly string Profile = "/v1/profile";
 
-    public static readonly string WalletData = "/gsrv/v1/wallets";
-    public static readonly string VerifyWalletSignature = "/gsrv/v1/tokens/verify";
-    public static readonly string CharactersList = "/gsrv/v1/characters";
-    public static readonly string ExpeditionStatus = "/gsrv/v1/expeditions/status";
-    public static readonly string ExpeditionRequest = "/gsrv/v1/expeditions";
-    public static readonly string ExpeditionCancel = "/gsrv/v1/expeditions/cancel";
-    public static readonly string ExpeditionScore = "/gsrv/v1/expeditions/score";
-    public static readonly string BugReport = "/gsrv/v1/bug/report";
-    public static readonly string ServerVersion = "/gsrv/v1/showversion";
-    public static readonly string PlayerGear = "/gsrv/v1/playergear";
-    public static readonly string CurrentContest = "/gsrv/v1/showcontest";
+    public static readonly string WalletData = "/v1/wallets";
+    public static readonly string VerifyWalletSignature = "/v1/tokens/verify";
+    public static readonly string CharactersList = "/v1/characters";
+    public static readonly string ExpeditionStatus = "/v1/expeditions/status";
+    public static readonly string ExpeditionRequest = "/v1/expeditions";
+    public static readonly string ExpeditionCancel = "/v1/expeditions/cancel";
+    public static readonly string ExpeditionScore = "/v1/expeditions/score";
+    public static readonly string BugReport = "/v1/bug/report";
+    public static readonly string ServerVersion = "/v1/showversion";
+    public static readonly string PlayerGear = "/v1/playergear";
+    public static readonly string CurrentContest = "/v1/showcontest";
+    public static readonly string Leaderboard = "/v1/leaderboard";
 }

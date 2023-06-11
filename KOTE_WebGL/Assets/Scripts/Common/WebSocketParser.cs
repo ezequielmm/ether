@@ -26,6 +26,7 @@ public class WebSocketParser
                 ProcessCampUpdate(swsm.data.action, data);
                 break;
             case nameof(WS_MESSAGE_TYPES.card_upgrade):
+                Debug.LogError($"{WS_MESSAGE_TYPES.card_upgrade} is not implemented, report this.");
                 throw new NotImplementedException();
                 break;
             case nameof(WS_MESSAGE_TYPES.add_potion):
@@ -150,7 +151,9 @@ public class WebSocketParser
         SWSM_PlayerState playerStateBase = JsonConvert.DeserializeObject<SWSM_PlayerState>(data);
 
         PlayerStateData playerState = playerStateBase.data;
-        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.Invoke(playerState);
+
+        Debug.Log($"Health Update is :{playerState.data.playerState.hpCurrent}/{playerState.data.playerState.hpMax}");
+        GameManager.Instance.PlayerStateUpdate(playerState);
     }
 
 
@@ -347,7 +350,7 @@ public class WebSocketParser
                 // Change to Loader Scene which will load the Map Scene
                 GameManager.Instance.LoadScene(inGameScenes.Expedition);
                 break;
-            
+
             default:
                 Debug.LogWarning("[ProcessEndCombat] unknown action: " + action + " , data: " + data);
                 break;
@@ -440,7 +443,7 @@ public class WebSocketParser
     private static void UpdateEnergy(string data)
     {
         SWSM_EnergyArray energyData = JsonConvert.DeserializeObject<SWSM_EnergyArray>(data);
-//        Debug.Log(energyData);
+        //        Debug.Log(energyData);
         GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(energyData.data.data[0], energyData.data.data[1]);
     }
 
