@@ -11,7 +11,14 @@ public class Leaderboard : MonoBehaviour
     [SerializeField] private LeaderboardListItem itemPrefab;
     [SerializeField] private Transform parent;
     private List<LeaderboardListItem> items = new();
-
+    public void Show(bool show)
+    {   
+        gameObject.SetActive(show);
+        if(show)
+        {
+            RequestLeaderboard();
+        }
+    }
     private void Update()
     {
 #if UNITY_EDITOR

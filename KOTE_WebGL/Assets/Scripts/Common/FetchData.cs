@@ -82,10 +82,11 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
     public async UniTask<EncounterData> GetEncounterData()
     {
+        Debug.Log("Get encounter data here");
         string rawJson =
             await socketRequest.EmitAwaitResponse(SocketEvent.GetData, WS_DATA_REQUEST_TYPES.EncounterData.ToString());
         rawJson = TryGetTestData(FetchType.EncounterData, rawJson);
-
+        Debug.Log("Found encounter data");
         return ParseJsonWithPath<EncounterData>(rawJson, "data.data");
     }
 
