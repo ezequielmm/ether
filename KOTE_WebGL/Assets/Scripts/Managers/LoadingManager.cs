@@ -11,11 +11,13 @@ public class LoadingManager : MonoBehaviour
     [SerializeField] TextMeshPro loadingText;
     [SerializeField] Slider slideBar;
     [SerializeField] private Loader loader;
+    public static bool Won { get; internal set; }
 
     private bool IsBusy = false;
 
 #if UNITY_EDITOR
     public string editorToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIweDQzQjg0MUE3NTM1RkQzMTBCYmVkZkNGNTREZURmNURDNDY4NUU1NUIiLCJ0eXBlIjoic2Vzc2lvbiIsImlhdCI6MTY4NDYwMzg2MywiZXhwIjoxNjg1MjA4NjYzfQ.hhOLSksyslwPqUDQZcXM-XYSHNKkyN9uf-AS2Md6-zE";
+
 #endif
     private void Start()
     {
@@ -29,7 +31,7 @@ public class LoadingManager : MonoBehaviour
         }
 #endif
 
-        if (!GameManager.Instance.firstLoad)
+        if (!GameManager.Instance.firstLoad || Won)
         {
             Debug.Log("Not first load, we went back to loader, now use the saved token");
             Login(AuthenticationManager.Token);
@@ -37,6 +39,7 @@ public class LoadingManager : MonoBehaviour
 
 
     }
+   
     public void Login(string loginData)
     {
 
