@@ -57,8 +57,16 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
     {
         Token = null;
         LoginData = null;
-        await FetchData.Instance.Logout();
+        try {
+            await FetchData.Instance.Logout();
+        }
+        catch(Exception e)
+        {
+            Debug.LogException(e);
+        }
+       
         ClearSessionToken();
+        WebBridge.SendUnityMessage("logout", "unity-client-logout");
     }
 
     private bool Authenticate(string token)

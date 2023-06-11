@@ -10,10 +10,10 @@ namespace Refactor.TopBar
         {
             topBarUI.OnDrinkPotion += DrinkPotion;
             topBarUI.OnDiscardPotion += DiscardPotion;
-            
+
             topBarUI.Init(GameManager.Instance.PlayerStateData);
             topBarUI.UpdatePlayerState(GameManager.Instance.PlayerStateData);
-            
+
             GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStatusUpdate);
 
             GameManager.Instance.EVENT_TOOGLE_TOPBAR_MAP_ICON.AddListener(OnToggleMapIcon);
@@ -63,6 +63,14 @@ namespace Refactor.TopBar
         {
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Top Bar Click");
             GameManager.Instance.EVENT_MAP_ICON_CLICKED.Invoke();
+        }
+
+        public void OnArmoryButtonClicked()
+        {
+            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Top Bar Click");
+            // que carajo es este true?
+            //GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
+            Debug.LogError("Not implemented armory toggle");
         }
 
         public void OnSettingsButton()

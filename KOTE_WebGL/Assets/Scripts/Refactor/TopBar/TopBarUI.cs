@@ -7,6 +7,7 @@ namespace Refactor.TopBar
 {
     public class TopBarUI : MonoBehaviour
     {
+
         public TMP_Text nameText;
         public TMP_Text coinsText;
         public TMP_Text stageText;

@@ -42,7 +42,8 @@ public class MainMenuManager : MonoBehaviour
 
     [SerializeField] PostProcessingTransition postProcessingTransition;
     [SerializeField] Leaderboard leaderboard;
-    
+    private bool showingLeaderboard;
+
     private void Start()
     {
         GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.AddListener(UpdateNameAndFief);
@@ -228,6 +229,10 @@ public class MainMenuManager : MonoBehaviour
             //GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
         }
+
+
+        leaderboard.Show(false);
+
     }
     void OnTransitionEnd()
     {
@@ -239,6 +244,8 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Do you want to cancel the current expedition?",
             OnNewExpeditionConfirmed);
+
+       leaderboard.Show(false);
     }
 
     public async void OnNewExpeditionConfirmed()
@@ -250,9 +257,15 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnLeaderboardButton()
     {
-        var show = !leaderboard.gameObject.activeSelf;
-        leaderboard.gameObject.SetActive(show);
-        if (show)
-            leaderboard.RequestLeaderboard();
+        if(showingLeaderboard)
+        {
+            leaderboard.Show(false);
+            showingLeaderboard=false;
+            return;
+        }
+       this.showingLeaderboard = true;
+        leaderboard.Show(true);
     }
+
+  
 }
