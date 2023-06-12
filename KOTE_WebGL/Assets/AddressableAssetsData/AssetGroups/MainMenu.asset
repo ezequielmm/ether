@@ -20,8 +20,7 @@ MonoBehaviour:
   - m_GUID: 44b99823509014341ad879143188897f
     m_Address: Assets/Scenes/MainMenu.unity
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
+    m_SerializedLabels: []
   - m_GUID: 2f77a7e4fdf97fa4aa26ff371ac0ec73
     m_Address: Assets/Sprites/Main_Menu/Main_Menu/$fiefButton.png
     m_ReadOnly: 0
@@ -120,6 +119,58 @@ MonoBehaviour:
     m_SerializedLabels: []
   - m_GUID: 05f0d2e881727a641b019c0913531358
     m_Address: Assets/Sprites/Main_Menu/Main_Menu/Username_BG.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: df06cdcb3555be745b54ff3003fa687e
+    m_Address: Assets/AllIn1SpriteShader/NotResources/AllIn1OneShaderFunctions.cginc
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a36b7719ff0465b42ab1407d67672c5f
+    m_Address: Assets/AllIn1SpriteShader/NotResources/AllIn1SpriteShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f3622b3ac1631ea409b0f5811034f3a9
+    m_Address: Assets/AllIn1SpriteShader/NotResources/AllIn1SpriteShaderScaledTime.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a53f4bb29f3644b43b5075c6dcfecb32
+    m_Address: Assets/AllIn1SpriteShader/NotResources/AllIn1SpriteShaderUiMask.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: edd46d3efdfcf0d429767fe7830c99b3
+    m_Address: Assets/Prefabs/MainMenu/Background.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e3f6054c542d7dd4c984563845267004
+    m_Address: Assets/AllIn1SpriteShader/Materials/portal.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: eeb17cb4b64af3849839a7b089360e07
+    m_Address: Assets/AllIn1SpriteShader/Materials/portal woman.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6befc178e209d8d42bd8d3b60400a7e5
+    m_Address: Assets/AllIn1SpriteShader/Materials/gem.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f8e42ff38f122ba4a80fa5292e0bfa8c
+    m_Address: Assets/AllIn1SpriteShader/Materials/glow_1.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b1b65932a4e88a2448ad3ac1be6ab28b
+    m_Address: Assets/AllIn1SpriteShader/Materials/knight aura.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a0011d84dc0d03a4a98275128c28c7e5
+    m_Address: Assets/AllIn1SpriteShader/Materials/knight.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a2b94cff399c5a9408363bcf4528d136
+    m_Address: Assets/AllIn1SpriteShader/Materials/Logo_1.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fb83ab5428ee21d43a46c491eb7609e7
+    m_Address: Assets/AllIn1SpriteShader/Materials/glow_2.mat
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0
