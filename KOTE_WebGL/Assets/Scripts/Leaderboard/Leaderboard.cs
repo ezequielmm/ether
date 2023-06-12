@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using DefaultNamespace.Leaderboard;
+using DefaultNamespace.Leaderboard.New;
+using Root = DefaultNamespace.Leaderboard.New.Root;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -11,18 +11,20 @@ public class Leaderboard : MonoBehaviour
     [SerializeField] private LeaderboardListItem itemPrefab;
     [SerializeField] private Transform parent;
     private List<LeaderboardListItem> items = new();
-
-    private void Awake()
-    {
-        // Datetime yesterday 
-
-        Debug.Log($"yesterday: {JsonConvert.SerializeObject(DateTime.Today - TimeSpan.FromHours(72))} ::: today: {JsonConvert.SerializeObject(DateTime.Today)} ::: tomorrow: {DateTime.Today + TimeSpan.FromHours(72)}");
+    public void Show(bool show)
+    {   
+        gameObject.SetActive(show);
+        if(show)
+        {
+            RequestLeaderboard();
+        }
     }
-
     private void Update()
     {
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.F8))
             RequestLeaderboard();
+#endif
     }
 
     public async void RequestLeaderboard()
@@ -46,7 +48,7 @@ public class Leaderboard : MonoBehaviour
                 Debug.LogError($"Error: {request.error}");
                 return;
             }
-            
+
             var leaderboard = JsonConvert.DeserializeObject<Root>(request.downloadHandler.text);
             Populate(leaderboard.data);
         }

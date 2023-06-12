@@ -2420,6 +2420,7 @@ MonoBehaviour:
   - {fileID: 3640251270229046520}
   - {fileID: 6841770010625878433}
   gearListScroll: {fileID: 6485485633858526359}
+  postProcessingTransition: {fileID: 0}
 --- !u!1 &6567153663409820806
 GameObject:
   m_ObjectHideFlags: 0
@@ -3906,22 +3907,22 @@ PrefabInstance:
     - target: {fileID: 52587144623693312, guid: 779511081cad5a54696b9d6e2db01d75,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1003.8774
+      value: 1249.9382
       objectReference: {fileID: 0}
     - target: {fileID: 52587144623693312, guid: 779511081cad5a54696b9d6e2db01d75,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 57.96
+      value: 43.16
       objectReference: {fileID: 0}
     - target: {fileID: 52587144623693312, guid: 779511081cad5a54696b9d6e2db01d75,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 501.9387
+      value: 624.9691
       objectReference: {fileID: 0}
     - target: {fileID: 52587144623693312, guid: 779511081cad5a54696b9d6e2db01d75,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -28.98
+      value: -21.58
       objectReference: {fileID: 0}
     - target: {fileID: 396702073555613781, guid: 779511081cad5a54696b9d6e2db01d75,
         type: 3}
@@ -4061,7 +4062,12 @@ PrefabInstance:
     - target: {fileID: 7400782294549494622, guid: 779511081cad5a54696b9d6e2db01d75,
         type: 3}
       propertyPath: m_fontSize
-      value: 76.3
+      value: 81.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 8163357186742677035, guid: 779511081cad5a54696b9d6e2db01d75,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 8716941717943705891, guid: 779511081cad5a54696b9d6e2db01d75,
         type: 3}

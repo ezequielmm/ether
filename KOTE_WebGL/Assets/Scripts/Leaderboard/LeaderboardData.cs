@@ -1,4 +1,4 @@
-﻿namespace DefaultNamespace.Leaderboard
+﻿namespace DefaultNamespace.Leaderboard.Old
 {
     using System.Collections.Generic;
 

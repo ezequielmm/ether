@@ -17,6 +17,7 @@ public class TopBarManager : MonoBehaviour
     Slider healthBar;
 
     public GameObject classIcon, className, showmapbutton;
+    public PotionsContainerManager PotionsContainerManager;
 
     // we need to keep track of this, as the attack response data doesn't relay this information
     private int maxHealth;
@@ -34,6 +35,7 @@ public class TopBarManager : MonoBehaviour
         maxHealth = GameManager.Instance.PlayerStateData.data.playerState.hpMax;
         SetHealthText(GameManager.Instance.PlayerStateData.data.playerState.hpCurrent);
         SetCoinsText(GameManager.Instance.PlayerStateData.data.playerState.gold);
+        PotionsContainerManager.OnPlayerStateUpdate(GameManager.Instance.PlayerStateData);
     } 
 
     private void OnToggleMapIcon(bool arg0)
@@ -87,6 +89,7 @@ public class TopBarManager : MonoBehaviour
         Debug.Log("(playerState.data.playerState.hpCurrent)");
         SetHealthText(playerState.data.playerState.hpCurrent);
         SetCoinsText(playerState.data.playerState.gold);
+        PotionsContainerManager.OnPlayerStateUpdate(GameManager.Instance.PlayerStateData);
     }
 
     public void SetClassSelected(string classSelected)

@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace KOTE.Expedition.Combat.Cards
 {
     public class CardManager : MonoBehaviour
     {
+        [Tooltip("Use this to programmatically set the order of card sorting")]
+        public int sortingOrder = 2;
+        public SortingGroup sortingGroup;
         public string id => cardData.id;
 
         internal Card cardData;
@@ -39,6 +43,9 @@ namespace KOTE.Expedition.Combat.Cards
             cardVisuals = GetComponent<CardVisualsManager>();
             cardMovement = GetComponent<CardMovementManager>();
             cardVisuals.DisableCardContent();
+
+            sortingGroup = GetComponent<SortingGroup>();
+            sortingGroup.sortingOrder = sortingOrder;
         }
 
         private void Start()

@@ -32,8 +32,9 @@ public class EncounterManager : MonoBehaviour
     }
 
     public async void ShowAndPopulate()
-    {
+    {;
         EncounterData encounterData = await FetchData.Instance.GetEncounterData();
+        Debug.Log(JsonUtility.ToJson(encounterData));
         Populate(encounterData);
         Show();
     }

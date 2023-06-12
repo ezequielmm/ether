@@ -472,6 +472,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     public async UniTask<string> EmitAwaitResponse(string eventName, params object[] variables)
     {
+
         UniPromise<string> promise = CreatePromise();
         if (IsSocketHealthy)
         {

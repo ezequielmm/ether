@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
@@ -21,17 +20,61 @@ public class PotionsContainerManager : MonoBehaviour
 
     // get notified of the current game status so the potions know if the player is in combat
     private GameStatuses currentGameStatus;
+    private PotionManager currentPotion;
 
     private void Start()
     {
         potionOptionPanel.SetActive(false);
-        GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStateUpdate);
+        //GameManager.Instance.EVENT_PLAYER_STATUS_UPDATE.AddListener(OnPlayerStateUpdate);
         GameManager.Instance.EVENT_POTION_SHOW_POTION_MENU.AddListener(OnShowPotionOptions);
         GameManager.Instance.EVENT_POTION_WARNING.AddListener(OnPotionWarning);
         GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(OnGameStatusChange);
+        
+        drinkButton.onClick.AddListener(DrinkPotion);
+        discardButton.onClick.AddListener(DiscardPotion);
     }
 
-    private void OnPlayerStateUpdate(PlayerStateData playerState)
+    private void DrinkPotion()
+    {
+        Debug.Log($"Drink Potion!");
+        if (!currentPotion)
+        {
+            Debug.LogWarning($"[DrinkPotion] No current potion selected");
+            return;
+        }
+        
+        if (currentPotion.ShowsPointer() == true)
+        {
+            // this turns on the pointer from the potion
+            currentPotion.pointerActive = true;
+            potionOptionPanel.SetActive(false);
+            return;
+        }
+
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Use Potion");
+        GameManager.Instance.EVENT_POTION_USED.Invoke(currentPotion.GetPotionId(), null);
+        potionOptionPanel.SetActive(false);
+        
+        currentPotion = null;
+    }
+    
+    private void DiscardPotion()
+    {
+        Debug.Log($"Discard Potion!");
+        if (!currentPotion)
+        {
+            Debug.LogWarning($"[DiscardPotion] No current potion selected");
+            return;
+        }
+        
+        GameManager.Instance.EVENT_POTION_DISCARDED.Invoke(currentPotion.GetPotionId());
+        GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
+        potionOptionPanel.SetActive(false);
+        
+        currentPotion = null;
+    }
+
+    public void OnPlayerStateUpdate(PlayerStateData playerState)
     {
         ClearPotions();
         CreateHeldPotions(playerState.data.playerState.potions);
@@ -81,26 +124,7 @@ public class PotionsContainerManager : MonoBehaviour
             drinkButton.interactable = true;
         }
 
-        drinkButton.onClick.AddListener(() =>
-        {
-            if (potion.ShowsPointer() == true)
-            {
-                // this turns on the pointer from the potion
-                potion.pointerActive = true;
-                potionOptionPanel.SetActive(false);
-                return;
-            }
-
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Use Potion");
-            GameManager.Instance.EVENT_POTION_USED.Invoke(potion.GetPotionId(), null);
-            potionOptionPanel.SetActive(false);
-        });
-        discardButton.onClick.AddListener(() =>
-        {
-            GameManager.Instance.EVENT_POTION_DISCARDED.Invoke(potion.GetPotionId());
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-            potionOptionPanel.SetActive(false);
-        });
+        currentPotion = potion;
     }
 
     private void OnPotionWarning(string action)
