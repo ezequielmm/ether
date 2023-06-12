@@ -1855,7 +1855,7 @@ PrefabInstance:
     - target: {fileID: 4773993129267845211, guid: 623ab04dd0b8de04c954f90719100983,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.42016602
+      value: -0.42019653
       objectReference: {fileID: 0}
     - target: {fileID: 4773993129267845211, guid: 623ab04dd0b8de04c954f90719100983,
         type: 3}
@@ -1881,6 +1881,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4773993130534577491, guid: 623ab04dd0b8de04c954f90719100983,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.5000305
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 623ab04dd0b8de04c954f90719100983, type: 3}
@@ -5608,6 +5613,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1118166143}
     m_Modifications:
+    - target: {fileID: 1325322342185662606, guid: 84d0035375b14914aaadb5031aae0732,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3956595393700516434, guid: 84d0035375b14914aaadb5031aae0732,
         type: 3}
       propertyPath: postProcessingTransition
