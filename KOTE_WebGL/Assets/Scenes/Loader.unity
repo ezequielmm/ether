@@ -183,6 +183,11 @@ PrefabInstance:
       propertyPath: startLocalEnvironment
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5889864488466076952, guid: 58706a5f453ebec4a8ccf728bc8a3ba6,
+        type: 3}
+      propertyPath: soundManager.m_AssetGUID
+      value: b1478249d5d3cd549b34d7d0286d7c68
+      objectReference: {fileID: 0}
     - target: {fileID: 5889864488466076953, guid: 58706a5f453ebec4a8ccf728bc8a3ba6,
         type: 3}
       propertyPath: m_Pivot.x
@@ -5714,7 +5719,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1718946775
 Transform:
   m_ObjectHideFlags: 0

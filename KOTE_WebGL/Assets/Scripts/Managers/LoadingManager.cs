@@ -14,6 +14,8 @@ public class LoadingManager : MonoBehaviour
     [SerializeField] TextMeshPro loadingText;
     [SerializeField] Slider slideBar;
     [SerializeField] private Loader loader;
+    
+    [SerializeField] private AssetReference soundManager;
     public static bool Won { get; internal set; }
 
     private bool IsBusy = false;
@@ -80,11 +82,24 @@ public class LoadingManager : MonoBehaviour
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
         Debug.Log(" LoadAsynchronously " + sceneName);
         // Wait until the asynchronous scene fully loads
+
+        var handler = soundManager.InstantiateAsync();
+        while(!handler.IsDone)
+        {
+            if (loadingText != null && slideBar != null)
+            {
+                loadingText.text = $"Loading sounds...\n({100 * asyncLoad.progress}%)"; //shows percentage
+                slideBar.value = asyncLoad.progress; //charges the load bar
+            }
+            yield return null;
+        }
+        SoundManager.Instance.PlaySfx(SoundTypes.Card, "Play");
+        
         while (!asyncLoad.isDone)
         {
-            if (asyncLoad != null && loadingText != null && slideBar != null)
+            if (loadingText != null && slideBar != null)
             {
-                loadingText.text = "Loading...\n(" + 100 * asyncLoad.progress + "%)"; //shows percentage
+                loadingText.text = $"Loading {sceneName}...\n({100 * asyncLoad.progress}%)"; //shows percentage
                 slideBar.value = asyncLoad.progress; //charges the load bar
             }
             //Debug.Log(asyncLoad.progress);
