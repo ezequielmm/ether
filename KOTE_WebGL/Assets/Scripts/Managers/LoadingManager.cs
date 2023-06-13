@@ -70,9 +70,7 @@ public class LoadingManager : MonoBehaviour
 
     private void LoadScene()
     {
-        StartCoroutine(GameManager.Instance.nextSceneToLoad.ToString() == "MainMenu"
-            ? LoadAsynchronouslyFromAddressables(GameManager.Instance.nextSceneToLoad.ToString())
-            : LoadAsynchronously(GameManager.Instance.nextSceneToLoad.ToString()));
+        StartCoroutine(LoadAsynchronously(GameManager.Instance.nextSceneToLoad.ToString()));
     }
     
 
@@ -98,7 +96,7 @@ public class LoadingManager : MonoBehaviour
     
     IEnumerator LoadAsynchronouslyFromAddressables(string sceneName)
     {
-        var asyncLoad = Addressables.LoadSceneAsync("Assets/Scenes/MainMenu.unity");
+        var asyncLoad = Addressables.LoadSceneAsync("MainMenu");
         while (!asyncLoad.IsDone)
         {
             if (loadingText != null && slideBar != null)
