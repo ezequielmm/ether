@@ -202,6 +202,7 @@ public class MainMenuManager : MonoBehaviour
             GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Music, 1);
             GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Ambient, 1);
             //GameManager.Instance.LoadScene(inGameScenes.Expedition);
+            playButton.interactable = false;
             postProcessingTransition.OnTransitionInEnd.AddListener(OnTransitionEnd);
             postProcessingTransition.StartTransition();
         }

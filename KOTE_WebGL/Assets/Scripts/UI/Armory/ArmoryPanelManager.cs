@@ -97,7 +97,7 @@ namespace KOTE.UI.Armory
         {
             Nft curMetadata = curNode.Value.MetaData;
             TokenNameText.text = FormatTokenName(curMetadata);
-            CanPlayText.text = curMetadata.CanPlay ? "" : $"Available at: {ParseTime((int)(curMetadata.PlayableAt - DateTime.UtcNow).TotalSeconds)}";
+            CanPlayText.text = curMetadata.CanPlay ? "" : $"Available in: {ParseTime((int)(curMetadata.PlayableAt - DateTime.UtcNow).TotalSeconds)}";
             CanPlayText.transform.parent.gameObject.SetActive(!curMetadata.CanPlay);
             portraitManager.SetPortrait(curMetadata);
             foreach (GameObject panel in gearPanels)
