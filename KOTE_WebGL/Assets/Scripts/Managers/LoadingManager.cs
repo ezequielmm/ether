@@ -36,7 +36,14 @@ public class LoadingManager : MonoBehaviour
         IEnumerator MockLogin()
         {
             yield return new WaitForSeconds(2);
-            Login(editorToken);
+            
+            string token = Resources.Load<TextAsset>("env/token")?.text;
+            if(string.IsNullOrEmpty(token))
+            {
+                Debug.LogError("Error in getting token from local environment, check Resources/env/token.txt (case sensitive), create token.txt please");
+            }
+            editorToken = token;
+            Login(token);
         }
 #endif
 

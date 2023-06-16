@@ -18,6 +18,7 @@ namespace KOTE.UI.Armory
         public Button playButton;
         public CharacterPortraitManager portraitManager;
         public TMP_Text TokenNameText;
+        public TMP_Text CanPlayText;
         public ArmoryHeaderManager headerPrefab;
         public Transform gearListTransform;
         public List<GearSlot> gearSlots;
@@ -96,6 +97,8 @@ namespace KOTE.UI.Armory
         {
             Nft curMetadata = curNode.Value.MetaData;
             TokenNameText.text = FormatTokenName(curMetadata);
+            CanPlayText.text = curMetadata.CanPlay ? "" : $"Available in: {ParseTime((int)(curMetadata.PlayableAt - DateTime.UtcNow).TotalSeconds)}";
+            CanPlayText.transform.parent.gameObject.SetActive(!curMetadata.CanPlay);
             portraitManager.SetPortrait(curMetadata);
             foreach (GameObject panel in gearPanels)
             {
@@ -306,6 +309,27 @@ namespace KOTE.UI.Armory
         {
             equippedGear.Remove(gearTrait);
             GameManager.Instance.EVENT_UPDATE_NFT.Invoke(gearTrait, "");
+        }
+        
+        public string ParseTime(int totalSeconds)
+        {
+            TimeSpan time = TimeSpan.FromSeconds(totalSeconds);
+
+            // Si el tiempo es menor a una hora, formatear como minutos y segundos.
+            if (time.TotalHours < 1)
+            {
+                return $"{time.Minutes:D2}:{time.Seconds:D2}";
+            }
+            // Si el tiempo es menor a un día pero mayor o igual a una hora, formatear como horas y minutos.
+            else if (time.TotalDays < 1)
+            {
+                return $"{time.Hours}Hr {time.Minutes:D2}m";
+            }
+            // Si el tiempo es mayor o igual a un día, formatear como días, horas y minutos.
+            else
+            {
+                return $"{time.Days}Ds {time.Hours}Hr";
+            }
         }
     }
 
