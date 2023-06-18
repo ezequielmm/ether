@@ -238,7 +238,11 @@ namespace KOTE.UI.Armory
 
         public void OnNextToken()
         {
-            if (curNode?.Next == null) return;
+            if (curNode?.Next == null)
+            {
+                Debug.LogError($"[OnNextToken] no cur node or next node is null");
+                return;
+            }
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             curNode = curNode.Next;
             GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);

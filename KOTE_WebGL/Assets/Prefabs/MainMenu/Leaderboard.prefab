@@ -509,7 +509,6 @@ GameObject:
   - component: {fileID: 3591258382249186765}
   - component: {fileID: 3591258382249186611}
   - component: {fileID: 3591258382249186610}
-  - component: {fileID: 3591258382249186608}
   - component: {fileID: 3591258382249186609}
   m_Layer: 5
   m_Name: Leaderboard
@@ -580,26 +579,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 2
---- !u!114 &3591258382249186608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3591258382249186764}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: 167.47
-  m_PreferredHeight: -1
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1
 --- !u!114 &3591258382249186609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -615,6 +594,34 @@ MonoBehaviour:
   itemPrefab: {fileID: 315375079502933938, guid: 3fffc4e5123a7f04c9ed1c7acd11df2f,
     type: 3}
   parent: {fileID: 3591258382850323850}
+  page: 1
+  OnLeaderboardReceived:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3591258382748300169}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
+        m_MethodName: set_interactable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 3591258383650012816}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
+        m_MethodName: set_interactable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!1 &3591258382288957656
 GameObject:
   m_ObjectHideFlags: 0
@@ -953,7 +960,7 @@ GameObject:
   - component: {fileID: 3591258382748300174}
   - component: {fileID: 3591258382748300169}
   m_Layer: 5
-  m_Name: Button (3)
+  m_Name: NextPage BTN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1028,10 +1035,34 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 3591258383329241260}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3591258382249186609}
+        m_TargetAssemblyTypeName: Leaderboard, GameAssembly
+        m_MethodName: NextPage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3591258382748300169}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
+        m_MethodName: set_interactable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3591258382804767400
 GameObject:
   m_ObjectHideFlags: 0
@@ -1456,7 +1487,7 @@ GameObject:
   - component: {fileID: 3591258383015346113}
   - component: {fileID: 3591258383015346112}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: Center BTN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1531,7 +1562,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 3591258383313261707}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -1547,7 +1578,7 @@ GameObject:
   - component: {fileID: 3591258383105204834}
   - component: {fileID: 3591258383105204861}
   m_Layer: 5
-  m_Name: Button
+  m_Name: SuperPrevPage BTN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1622,7 +1653,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 3591258382672516662}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -1638,7 +1669,7 @@ GameObject:
   - component: {fileID: 3591258383187391670}
   - component: {fileID: 3591258383187391665}
   m_Layer: 5
-  m_Name: Button (4)
+  m_Name: SuperNextPage BTN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1713,7 +1744,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 3591258381823464181}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -2358,7 +2389,7 @@ GameObject:
   - component: {fileID: 3591258383650012817}
   - component: {fileID: 3591258383650012816}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: PrevPage BTN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2433,7 +2464,31 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 3591258381642836650}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3591258382249186609}
+        m_TargetAssemblyTypeName: Leaderboard, GameAssembly
+        m_MethodName: PreviousPage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3591258383650012816}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
+        m_MethodName: set_interactable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
