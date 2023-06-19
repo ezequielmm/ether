@@ -64,7 +64,6 @@ public class ContestNotifications : MonoBehaviour
     {
         GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(EndOfContestText, () =>
             {
-                Debug.Log("GiveContestEnded");
                 UserDataManager.Instance.ClearExpedition();
                 GameManager.Instance.LoadScene(inGameScenes.MainMenu);
             }, () => { },

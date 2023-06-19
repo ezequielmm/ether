@@ -82,7 +82,7 @@ public class EndOfCombatUIManager : MonoBehaviour
 
     void LoadMainMenu()
     {
-     
+        GameManager.Instance.LoadScene(inGameScenes.MainMenu);
     }
 
 

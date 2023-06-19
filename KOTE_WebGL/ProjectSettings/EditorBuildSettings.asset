@@ -20,6 +20,4 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/MapDoNotUseToBeDeletedLater.unity
     guid: 6839215558f3b474cad1c55ec9657589
-  m_configObjects:
-    com.unity.addressableassets: {fileID: 11400000, guid: 30cc9a8e266e5eb44bbe4c0b6a59dd47,
-      type: 2}
+  m_configObjects: {}
