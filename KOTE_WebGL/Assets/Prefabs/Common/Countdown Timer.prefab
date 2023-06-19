@@ -51,8 +51,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countDownTimer: {fileID: 4773993129063932738}
-  endSource: 1
-  textBlurb: until end of contest ({hour}:{minute} UTC)
+  inContestBlurb: until end of contest ({hour}:{minute} UTC)
+  noContestBlurb: to join the contest ({hour}:{minute} UTC)
   CountdownBlurb: {fileID: 4773993129267845210}
 --- !u!1001 &6100365103923952544
 PrefabInstance:
@@ -84,32 +84,32 @@ PrefabInstance:
     - target: {fileID: 1650702066530752739, guid: 03b00741b1e8a2c4982645e8ba839bd4,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.92947924
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1650702066530752739, guid: 03b00741b1e8a2c4982645e8ba839bd4,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.33314782
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1650702066530752739, guid: 03b00741b1e8a2c4982645e8ba839bd4,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.68700004
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1650702066530752739, guid: 03b00741b1e8a2c4982645e8ba839bd4,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.115590304
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1650702066530752739, guid: 03b00741b1e8a2c4982645e8ba839bd4,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: -0.61599994
+      value: 464.94406
       objectReference: {fileID: 0}
     - target: {fileID: 1650702066530752739, guid: 03b00741b1e8a2c4982645e8ba839bd4,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: -0.2397995
+      value: 234.64935
       objectReference: {fileID: 0}
     - target: {fileID: 1650702066530752739, guid: 03b00741b1e8a2c4982645e8ba839bd4,
         type: 3}
@@ -149,12 +149,12 @@ PrefabInstance:
     - target: {fileID: 1650702066530752739, guid: 03b00741b1e8a2c4982645e8ba839bd4,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.30804443
+      value: 647
       objectReference: {fileID: 0}
     - target: {fileID: 1650702066530752739, guid: 03b00741b1e8a2c4982645e8ba839bd4,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.11999512
+      value: 182
       objectReference: {fileID: 0}
     - target: {fileID: 1650702066530752739, guid: 03b00741b1e8a2c4982645e8ba839bd4,
         type: 3}
