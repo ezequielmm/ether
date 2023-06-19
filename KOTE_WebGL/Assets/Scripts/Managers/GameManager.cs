@@ -153,9 +153,16 @@ public class GameManager : SingleTon<GameManager>
 
     // NFT SKIN EVENTS
     [HideInInspector] public UnityEvent<Nft> EVENT_NFT_SELECTED { get; } = new UnityEvent<Nft>();
-    [HideInInspector] public UnityEvent<Trait, string> EVENT_UPDATE_NFT { get; } = new UnityEvent<Trait, string>();
 
-    [HideInInspector] public UnityEvent EVENT_UPDATE_PLAYER_SKIN { get; } = new UnityEvent();
+    public void UpdateNft(Trait trait, string value)
+    {
+        FindObjectOfType<PlayerSpriteManager>(true).UpdateNftTrait(trait, value);
+    }
+    
+    public void UpdatePlayerSkin()
+    {
+        FindObjectOfType<PlayerSkinManager>(true).SkinReset();
+    }
 
     //TOP BAR EVENTS
     [HideInInspector] public UnityEvent EVENT_MAP_ICON_CLICKED = new UnityEvent();

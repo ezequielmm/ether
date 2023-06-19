@@ -22,12 +22,11 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.Instance.EVENT_UPDATE_PLAYER_SKIN.AddListener(SkinReset);
         // only load a skin if there's data to go off of.
         if(NftManager.Instance.GetAllNfts().Count > 0) SkinReset();
     }
 
-    private void SkinReset()
+    public void SkinReset()
     {
         equipsSkin = new Skin("Equips");
         skeletonAnimation.Skeleton.SetSkin(equipsSkin);

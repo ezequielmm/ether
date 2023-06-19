@@ -307,13 +307,13 @@ namespace KOTE.UI.Armory
             Trait itemTrait = activeItem.trait.ParseToEnum<Trait>();
             gearSlots.Find(x => x.gearTrait == itemTrait).SetGearInSlot(activeItem);
             equippedGear[itemTrait] = activeItem;
-            GameManager.Instance.EVENT_UPDATE_NFT.Invoke(Enum.Parse<Trait>(activeItem.trait), activeItem.name);
+            GameManager.Instance.UpdateNft(Enum.Parse<Trait>(activeItem.trait), activeItem.name);
         }
 
         public void OnGearItemRemoved(Trait gearTrait)
         {
             equippedGear.Remove(gearTrait);
-            GameManager.Instance.EVENT_UPDATE_NFT.Invoke(gearTrait, "");
+            GameManager.Instance.UpdateNft(gearTrait, "");
         }
         
         public string ParseTime(int totalSeconds)
