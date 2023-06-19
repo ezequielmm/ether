@@ -23,11 +23,9 @@ public class CombatManager : MonoBehaviour
     {
         if (status == GameStatuses.ScoreBoard)
         {
-            enemyManager.SetActive(false);
             pointer.SetActive(false);
             hand.SetActive(false);
             combatContainer.SetActive(false);
-            player.SetActive(false);
         }
     }
 

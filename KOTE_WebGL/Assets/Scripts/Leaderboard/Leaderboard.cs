@@ -15,8 +15,9 @@ public class Leaderboard : MonoBehaviour
     private List<LeaderboardListItem> items = new();
 
     public int page = 1;
-    
-    [SerializeField] private UnityEvent<bool> OnLeaderboardReceived;
+
+    public UnityEvent<bool> OnLeaderboardShow;
+    public UnityEvent<bool> OnLeaderboardReceived;
     
     public void Show(bool show)
     {   
@@ -25,6 +26,7 @@ public class Leaderboard : MonoBehaviour
         {
             RequestLeaderboard();
         }
+        OnLeaderboardShow?.Invoke(show);
     }
     
     public void NextPage()
