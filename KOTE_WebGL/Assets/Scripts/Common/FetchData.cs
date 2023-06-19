@@ -119,7 +119,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
             return null;
         }
 
-        string requestUrl = webRequest.ConstructUrl(RestEndpoint.WalletData) + $"/{wallet}";
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.WalletData) + $"/{wallet}?amount=10";
         Debug.Log(requestUrl);
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
