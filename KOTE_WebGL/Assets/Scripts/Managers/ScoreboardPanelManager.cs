@@ -34,8 +34,6 @@ public class ScoreboardPanelManager : MonoBehaviour
 
     public void OnContinueButton()
     {
-        LoadingManager.Won = true;
-        
         Cleanup.CleanupGame();
     }
 

@@ -28,7 +28,6 @@ public class Nft
     public Sprite Image = null;
     
     public bool isKnight => Contract == NftContract.Knights;
-    public DateTime PlayableAt => DateTime.Today + TimeSpan.FromHours(24);
 
     public async UniTask<Sprite> GetImage() 
     {

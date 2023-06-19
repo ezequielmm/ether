@@ -344,7 +344,6 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
     private void OnUpdatePlayer(PlayerData newPlayerData)
     {
         PlayerData = newPlayerData;
-        SetName(playerData.playerName);
     }
 
     private void OnEncounterDamage(int damageTaken)
