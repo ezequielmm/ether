@@ -1776,6 +1776,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Countdown Timer
       objectReference: {fileID: 0}
+    - target: {fileID: 4773993129063932739, guid: 623ab04dd0b8de04c954f90719100983,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4773993129063932739, guid: 623ab04dd0b8de04c954f90719100983,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4773993129063932739, guid: 623ab04dd0b8de04c954f90719100983,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -358
+      objectReference: {fileID: 0}
     - target: {fileID: 4773993129240373495, guid: 623ab04dd0b8de04c954f90719100983,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -3425,13 +3440,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8237511551386815698, guid: 25ae249582707334a9b8c7a5c92b879f,
         type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8237511551386815698, guid: 25ae249582707334a9b8c7a5c92b879f,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8237511551386815698, guid: 25ae249582707334a9b8c7a5c92b879f,
+        type: 3}
       propertyPath: m_LocalPosition.z
       value: -455
       objectReference: {fileID: 0}
     - target: {fileID: 8237511551386815698, guid: 25ae249582707334a9b8c7a5c92b879f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -472.7998
+      value: 487.2002
+      objectReference: {fileID: 0}
+    - target: {fileID: 8237511551386815699, guid: 25ae249582707334a9b8c7a5c92b879f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8237511551516871276, guid: 25ae249582707334a9b8c7a5c92b879f,
         type: 3}
