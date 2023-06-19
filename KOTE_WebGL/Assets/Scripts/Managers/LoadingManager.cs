@@ -18,7 +18,7 @@ public class LoadingManager : MonoBehaviour
     
     [SerializeField] private AssetReference soundManager;
     [SerializeField] private AssetReference spritesManager;
-    private static bool addressablesLoaded = false;
+    private bool addressablesLoaded = false;
     
     public static bool Won { get; internal set; }
 

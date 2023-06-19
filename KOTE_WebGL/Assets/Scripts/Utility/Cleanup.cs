@@ -28,6 +28,7 @@ public class Cleanup : MonoBehaviour
         SoundManager.Instance.DestroyInstance();
         UserActivityMonitor.Instance.DestroyInstance();
         GameManager.Instance.DestroyInstance();
+        PlayerSpriteManager.Instance.DestroyInstance();
         yield return null;
         SceneManager.LoadScene(0); 
     }
