@@ -1,0 +1,285 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Sound
+  m_EditorClassIdentifier: 
+  m_GroupName: Sound
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 3d97303b5f9ed08489863b910cc099d1
+  m_SerializeEntries:
+  - m_GUID: b1478249d5d3cd549b34d7d0286d7c68
+    m_Address: SoundManager
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ddbc4e7fc7ba2ee45bba253e8784fa34
+    m_Address: Assets/Audio/Sfx/UI Sounds/Click_Battle_Node.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 856840678bb76c5458d2c6b0414689d2
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/StingFae_Cast.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b00636d097517534c87a3bd75699b9ba
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/ThornWolf_Attack1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fd57bf98550723942b67e2f509334264
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Treant_Attack1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6a3d1f94fe239f14d9ce08818e5b6e56
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Treant_Attack3.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 674cbd660b8990d4dbb137406b869197
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Treant_Cast2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7e4f7671cfff1e143b50808544663628
+    m_Address: Assets/Prefabs/Common/SoundClipLists/UiSounds.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0e686c34406560c49890cdcaa80fd36d
+    m_Address: Assets/Audio/Sfx/UI Sounds/Battle_Begin.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: dec28f11a4a52cf4fa699c417396fc03
+    m_Address: Assets/Audio/Sfx/UI Sounds/Map/Nodes/SwordHit2-pitch2.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d8e91c5c126efb044b811f93948d8ad8
+    m_Address: Assets/Audio/Sfx/Act 1 Soundtracks/Act 1 Ambience.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 40153f211a5d85a4ab5c540bb6e696d0
+    m_Address: Assets/Prefabs/Common/SoundClipLists/CardSounds.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 00938cad8bb7f2d4d990ab232325b3c3
+    m_Address: Assets/Audio/Sfx/UI Sounds/Victory_Sound.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: dd5cce405fb8fc74dafe396395a89a63
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Treant_Cast1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: da844233e85fc974cbec0feb434ec422
+    m_Address: Assets/Audio/Sfx/Non-Combat Node Sounds/Open_Treasure_Chest.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 384afd06f0a53834a8d2b8f1b25f2f37
+    m_Address: Assets/Audio/Sfx/UI Sounds/Map/Nodes/SwordHit1-pitch-2.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e73ec3360bcfd044e97364562cc467bb
+    m_Address: Assets/Audio/Sfx/Card Sounds/Play_Card.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2d2adf6f6031186418338ca29a160d49
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/StingFae_Cast2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c3735369473dc604aaff347d1f66c726
+    m_Address: Assets/Audio/Sfx/UI Sounds/Coin_Reward.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d82104d6e67fa964697d0f193057bd5f
+    m_Address: Assets/Prefabs/Common/SoundClipLists/KnightSounds.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c5f90bc8b21670143a42c413b06e6ff7
+    m_Address: Assets/Audio/Sfx/UI Sounds/Confirm_Purchase_Merchant.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0fbe872fa7586a44db9ebfa22ada7eb8
+    m_Address: Assets/Audio/Sfx/UI Sounds/Use_Potion.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b636ccc80c0f6d24fa2b6ff943c11cd9
+    m_Address: Assets/Audio/Mixer.mixer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6d155a1cabf112d4786f1caa72262735
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Ancient_One_Cast.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7f9065830ea0e274d88eed1599e4f0ab
+    m_Address: Assets/Audio/Sfx/UI Sounds/Map/Nodes/SwordHit1.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f3586f99a84013d4e8994033024a65c8
+    m_Address: Assets/Audio/Sfx/UI Sounds/Button_Click.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8dde6b436e0e12342b5eca584e2973fb
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Treant_Attack2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 290cfe96eeeb32f40998a34df330e650
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/SwarmMaster_Cast1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3a5515a5422205944b402e5eaf7f0bd1
+    m_Address: Assets/Audio/Sfx/Knight Sounds/Knight_Attack1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 79f9483fc6aba6f428dc6c78b4213720
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/ThornWolf_Cast2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8c38e8cd747b2dd46a4b8050dad3a555
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/StingFae_Attack2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 259d0b79682ab70488c04f74ae0a1e36
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Fungal_Brute_Cast.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a9de91b7c2fda0643b85d7e6cc32bad3
+    m_Address: Assets/Audio/Sfx/UI Sounds/Map/Nodes/SwordHit1-pitch-1.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 855bbf1ecbeef0f4c80358faa62d0062
+    m_Address: Assets/Prefabs/Common/SoundClipLists/EnemyDefensiveSounds.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7a3b912b792d2ff4b8ab3a0384bc4dbd
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Fungal_Brute_Attack.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f45a75da5a6839043b463d6b941ca66f
+    m_Address: Assets/Audio/Sfx/UI Sounds/Map/Nodes/SwordHit2-pitch1.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2c62a41d43de67346ae2514fc8371091
+    m_Address: Assets/Audio/Sfx/UI Sounds/Map/Nodes/SwordHit2.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 66afea1e91d24574a9de830c190c3695
+    m_Address: Assets/Audio/Sfx/Act 1 Soundtracks/Act 1 Boss Music.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 21cbc1b5186f51045b3a3402771fa7c4
+    m_Address: Assets/Audio/Sfx/Card Sounds/Select_Card_Reward.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7dc45aad6d26c37469ad257016c2c042
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/AncientOne_Cast2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ace96409e0a055a429fe52ccbad1aa2e
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/SwarmMaster_Death.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 74ff5c3fd93ff9041ba8fb0fc4eaee40
+    m_Address: Assets/Prefabs/Common/SoundClipLists/Act0Music.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 00982d25c8ac7974bb15a5e5a20683f9
+    m_Address: Assets/Audio/Sfx/Card Sounds/Fire_Card.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c73251c3b426c2849b8f8cf8d9c416c4
+    m_Address: Assets/Audio/Sfx/Act 1 Soundtracks/Act 1 Music.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 52409cb3cd7d85e4bbcba30f7472b67e
+    m_Address: Assets/Audio/Sfx/Cancellation bad-click-error-SBA-300070529.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4aeacc3501f47384fb4637df3df405e5
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/StingFae_Death.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9998ef2d2a7078749bcd97126524952a
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Treant_DeathA.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4580aa7f4c576204aa15c4a76072f1d7
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/ThornWolf_Death.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 574440d970935f24785959ac3900c0d1
+    m_Address: Assets/Prefabs/Common/SoundClipLists/Act1Music.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bca0e16b50d129648816769c12be8161
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Treant_DeathB.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e167fa8ae71e0c6418db2178d3ce940e
+    m_Address: Assets/Audio/Sfx/Card Sounds/Shuffle_Cards.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4189e3f669ce1604491f44b4c5de9748
+    m_Address: Assets/Prefabs/Common/SoundClipLists/EnemyOffensiveSounds.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e8bdfde877e26fb4bb6028e1473ab5b6
+    m_Address: Assets/Audio/Sfx/Card Sounds/Draw_Multiple_Cards.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 36bf0d78650e9724097ecf52ece9f4c3
+    m_Address: Assets/Audio/Sfx/Knight Sounds/Attack_Blocked.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4776a615b89b0de4992b1b4ba21bf228
+    m_Address: Assets/Prefabs/Common/SoundClipLists/MapElementSounds.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 820c0e7c58e01fc4889b41825a38c0d9
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/StingFae_Attack.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a25d801633577ad43b05dbde3a7882d8
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/ThornWolf_Attack2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 80ed03c2b038cde44a2c4403e35b47e5
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/ThornWolf_Cast1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a228e20ae9ac6a14a8702651af7b986b
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/SwarmMaster_Attacks_Upon_Impact.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 00ba3b534a07ea74b9e7578d24f24faa
+    m_Address: Assets/Audio/Sfx/Card Sounds/Draw_Single_Card.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ceb164d06f3d8be489463fcc48709fc5
+    m_Address: Assets/Audio/Sfx/Knight Sounds/Knight_Buff.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 760640fd18fde8047ba754594860e9d4
+    m_Address: Assets/Audio/Sfx/Non-Combat Node Sounds/Rest.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6eaa37120c0547948a5ffd2a161bfea9
+    m_Address: Assets/Audio/Sfx/power down robot-power-down-abrupt-SBA-300090725.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bff7f17b63c41884eb630198d6783016
+    m_Address: Assets/Audio/Sfx/UI Sounds/Click_4_Settings_Buttons_On_Header.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4b279d7ee44c89744bb9a49718d2048f
+    m_Address: Assets/Audio/Sfx/Non-Combat Node Sounds/Upgrade_Card.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b5243524a01eab148b0a227677e45ff2, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 2abf9d339674f8b4ba43045894b00b2e, type: 2}
+    - {fileID: 11400000, guid: 96265870a3b87a641bdc46bddabbb719, type: 2}
