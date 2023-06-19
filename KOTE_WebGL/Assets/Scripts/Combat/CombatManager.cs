@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CombatManager : MonoBehaviour
@@ -13,6 +14,21 @@ public class CombatManager : MonoBehaviour
         combatContainer.SetActive(false);
         GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.AddListener(ShowCombatElements);
         GameManager.Instance.EVENT_SHOW_PLAYER_CHARACTER.AddListener(OnShowPlayerCharacter);
+        
+        // TODO: this is a hack, we need to figure out a better way to do this
+        GameManager.Instance.EVENT_GAME_STATUS_CHANGE.AddListener(OnGameStatusChange);
+    }
+
+    private void OnGameStatusChange(GameStatuses status)
+    {
+        if (status == GameStatuses.ScoreBoard)
+        {
+            enemyManager.SetActive(false);
+            pointer.SetActive(false);
+            hand.SetActive(false);
+            combatContainer.SetActive(false);
+            player.SetActive(false);
+        }
     }
 
     private void ShowCombatElements(bool data)

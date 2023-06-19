@@ -1202,7 +1202,6 @@ GameObject:
   - component: {fileID: 7377697923029897596}
   - component: {fileID: 6728141041474794821}
   - component: {fileID: 4003681557455263446}
-  - component: {fileID: 2691301460318608216}
   m_Layer: 5
   m_Name: Loot Chest animated
   m_TagString: Untagged
@@ -1268,19 +1267,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2691301460318608216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8139965369594480392}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1636e0929964d2740a1898fbe5495372, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Multiplier: 2
 --- !u!1 &8492927653551505976
 GameObject:
   m_ObjectHideFlags: 0
