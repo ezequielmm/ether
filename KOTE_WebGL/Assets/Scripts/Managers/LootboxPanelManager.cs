@@ -29,7 +29,8 @@ public class LootboxPanelManager : MonoBehaviour
 
     public void OnCollectLoot()
     {
-        GameManager.Instance.LoadScene(inGameScenes.MainMenu);
+        //GameManager.Instance.LoadScene(inGameScenes.MainMenu);
+        Cleanup.CleanupGame();
     }
 
     private void AddGearItem(GearItemData gear)
