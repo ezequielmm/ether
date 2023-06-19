@@ -93,6 +93,7 @@ public class Villager : PlayerNft
                 if (DoesSkinSpriteExist(spriteData) || DoesDefaultSpriteExist(spriteData))
                 {
                     // Sprite already fetched
+                    Debug.Log($"[GetPlayerSkin] Sprite already fetched {spriteData.ImageName}");
                     continue;
                 }
 

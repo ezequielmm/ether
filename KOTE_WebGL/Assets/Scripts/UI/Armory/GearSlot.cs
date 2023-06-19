@@ -15,7 +15,7 @@ namespace KOTE.UI.Armory
         public void OnPointerDown(PointerEventData data)
         {
             ResetSlot();
-            ArmoryPanelManager.OnSlotCleared.Invoke(gearTrait);
+            FindObjectOfType<ArmoryPanelManager>().OnGearItemRemoved(gearTrait);
         }
 
         internal GearItemData GetEquippedGear()

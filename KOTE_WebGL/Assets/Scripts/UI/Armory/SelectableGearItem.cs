@@ -53,7 +53,7 @@ namespace KOTE.UI.Armory
         public void OnPointerDown(PointerEventData data)
         {
             // TODO: Abstract out more
-            if (isInteractable) ArmoryPanelManager.OnGearSelected.Invoke(ItemData);
+            if (isInteractable) FindObjectOfType<ArmoryPanelManager>().OnGearItemSelected(ItemData);
         }
     }
 }
