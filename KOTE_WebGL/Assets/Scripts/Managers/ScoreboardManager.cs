@@ -38,11 +38,15 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
     public void ToggleScorePanel(bool enable)
     {
         Scoreboard.TogglePanel(enable);
+        if (enable)
+            GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.Invoke(false);
     }
 
     public void ToggleLootPanel(bool enable)
     {
         Lootbox.TogglePanel(enable);
+        if (enable)
+            GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.Invoke(false);
     }
 
     public async void UpdateAndShow()
