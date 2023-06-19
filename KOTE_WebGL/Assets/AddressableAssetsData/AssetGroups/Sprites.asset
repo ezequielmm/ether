@@ -1,0 +1,1161 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Sprites
+  m_EditorClassIdentifier: 
+  m_GroupName: Sprites
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 1ac257f704c5e0244af9340a82fd63b3
+  m_SerializeEntries:
+  - m_GUID: cc000a19b1ce1c2478b0dd0d551b0c32
+    m_Address: SpriteManager
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7adefac3415d0584fba44e21830d2331
+    m_Address: Assets/Sprites/Battle/Status/12_Intercept.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 428c8acdfdc095d4c9edd9c418c7c1ff
+    m_Address: Assets/Sprites/cards/CardImages/115.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0e59b0352a6d80e4d96e8827aba1f9a5
+    m_Address: Assets/Sprites/cards/CardImages/95.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: af0080ed791e9e14bb4cdaa912c6acd0
+    m_Address: Assets/Sprites/Battle/Status/33_ArmoredUp+.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 869068cdb7cc65e4a85e03601878c2ab
+    m_Address: Assets/Sprites/Encounter/06 - Three trees with old ent-like faces.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2ea6e147c7414fc44a81df8c4401248a
+    m_Address: Assets/Sprites/Trinkets/043.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6270448fcc14f9647a56bf054f95d432
+    m_Address: Assets/Sprites/Trinkets/054.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 16201259ee79f474d9f2af6280b3fe44
+    m_Address: Assets/Sprites/Trinkets/038.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 12536ba33f506a64a81954ef3b62c6d0
+    m_Address: Assets/Sprites/cards/CardImages/47.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d8df9f0894829bb4091a36e0096f01f5
+    m_Address: Assets/Sprites/cards/gems/KOTE_Asset_Gem_Defense.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f48c9ee1d333ee249bd5ae93d34ae0bc
+    m_Address: Assets/Sprites/Battle/Status/14_Herald_Delayed.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cd175d217d256454694a4fe40173687b
+    m_Address: Assets/Sprites/Trinkets/052.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a7af417e637316e42a5014f41a1a03a8
+    m_Address: Assets/Sprites/Encounter/07 - Troll.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ba86eba2382b7344fb365c8a374f8b0b
+    m_Address: Assets/Sprites/Potions/027.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2366ffc41ade2bb4ea3c8f8f6fe4ff14
+    m_Address: Assets/Sprites/Trinkets/053.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2ae6b4964fb063b4bbc793e687648cef
+    m_Address: Assets/Sprites/cards/CardImages/27.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8309a04947623e743b831496c12188b4
+    m_Address: Assets/Sprites/cards/CardImages/15.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 046c009d0a376ca4aa267aef43e38d55
+    m_Address: Assets/Sprites/cards/gems/KOTE_Asset_Gem_CurseUpgraded.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f383a8671927f53499fad44c44896ac0
+    m_Address: Assets/Sprites/cards/frames/KOTE_Asset_Frame_Curse.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3795872c6cc4586488342db5cd92bb67
+    m_Address: Assets/Sprites/Potions/015.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 769f06f16a80ac5438f3bc85e1781c24
+    m_Address: Assets/Sprites/Battle/Status/34_DewDrop.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: af817928fa05c4543baaaa83afd67bf7
+    m_Address: Assets/Sprites/Battle/Status/05_Fatigue.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 144486b59e705004cbbd1d8b5ba6d0c7
+    m_Address: Assets/Sprites/cards/CardImages/65.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2e4c49aafbdbd5d42b9cd1b50ccad581
+    m_Address: Assets/Sprites/cards/CardImages/151.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e349e31057e232241851f6459c384ec6
+    m_Address: Assets/Sprites/Battle/Status/31_FinelyEdged+.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6b7fc93dc88bb7a4eafb6b30418c57c8
+    m_Address: Assets/Sprites/cards/CardImages/123.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cee48c2357125924eaf20e921fe5089c
+    m_Address: Assets/Sprites/cards/CardImages/91.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: da06f4d7f945a4146b47760db1769176
+    m_Address: Assets/Sprites/Battle/Status/25_Praying.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 79cac8abc671d434fb81c6355c70e14e
+    m_Address: Assets/Sprites/Trinkets/040.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c7883e914b90cea4fad576164be62052
+    m_Address: Assets/Sprites/cards/CardImages/137.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 833212fb42c135741a9387567af35365
+    m_Address: Assets/Sprites/cards/CardImages/507.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 628ab8e150abdc1449a86d09dd6352a5
+    m_Address: Assets/Sprites/cards/Banners/Ether (Purple).png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 14cf73f0ebe10cf4299e6624089bc87d
+    m_Address: Assets/Sprites/Battle/Status/47_Mimic.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ed8c4a4046486844f865bd19774ce023
+    m_Address: Assets/Sprites/cards/CardImages/1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8f0be8fb1800dfd4294b358b08e30b64
+    m_Address: Assets/Sprites/cards/CardImages/79.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 858168cc9314f724e815f1608c9be96e
+    m_Address: Assets/Sprites/cards/CardImages/503.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 735fcbc825f85b24d9c9586262528537
+    m_Address: Assets/Sprites/Battle/Status/c203bb0d-42db-41e5-b343-c4f58575e47e.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 38c5683132ae48c4da20647271b99ee0
+    m_Address: Assets/Sprites/Battle/Status/08_Spikes.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3bccb04ab3a22dc429abd5bad1ac1d02
+    m_Address: Assets/Sprites/Battle/Status/38_Confused.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 07efefeb281485a428a067484f5b148d
+    m_Address: Assets/Sprites/Potions/005.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b2d78a01076b9c047a2919fff699717b
+    m_Address: Assets/Sprites/Encounter/12 - Satyr.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6e1a9dea8f011104287b46a1f7338e4c
+    m_Address: Assets/Sprites/Battle/Status/39_Stunned.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0191484b967608942884e6dd9d81b2ef
+    m_Address: Assets/Sprites/Battle/Status/19_Bolstered.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6f964a85ba65f1d459ff72f3fe64ab19
+    m_Address: Assets/Sprites/cards/gems/KOTE_Asset_Gem_StatusUpgraded.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f65167e218d2e2d47a16ab421a86d36f
+    m_Address: Assets/Sprites/Potions/028.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1bcb686879f7a6a4ba4ebae38da3ab94
+    m_Address: Assets/Sprites/cards/CardImages/25.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d34478b68abb5c6459f53c1cc0c3b8c5
+    m_Address: Assets/Sprites/cards/CardImages/39.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6a1b1d8a52ca18c459b9fe6a93798f1d
+    m_Address: Assets/Sprites/cards/gems/KOTE_Asset_Gem_PowerUpgraded.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7d4b46bbfe0607040bad9ef1c048c87f
+    m_Address: Assets/Sprites/Potions/023.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d617ca8f3e5ed854ba63099ffc89ea2b
+    m_Address: Assets/Sprites/Battle/Status/28_Enflamed.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ebdcf90464cc8224b94de100aa2e9d6c
+    m_Address: Assets/Sprites/Trinkets/013.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d653fe9f20acf1a4da068736483e07c8
+    m_Address: Assets/Sprites/Trinkets/049.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6b5215a7ae629fa4587dfdd90eb4add2
+    m_Address: Assets/Sprites/Potions/021.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b84ee2fbfcc80b1489cb0bcfdd954fc7
+    m_Address: Assets/Sprites/Encounter/05 - Runic Beehive.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 38f885db2055644489d47841d6d19d42
+    m_Address: Assets/Sprites/cards/gems/KOTE_Asset_Gem_Power.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 48264e87eae640344bc3dbe2e6e6710a
+    m_Address: Assets/Sprites/cards/CardImages/31.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4990a712567edc943b1fa1076a305655
+    m_Address: Assets/Sprites/Battle/Status/27_Trinity+.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8aa7bfbdc76b2444e87a31d765721818
+    m_Address: Assets/Sprites/Battle/Status/16_Gritted.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 500af9fbdf33f914a8c2a1b52b2fd977
+    m_Address: Assets/Sprites/cards/CardImages/109.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: eadd1a1d21ad66545ad232f6452413bd
+    m_Address: Assets/Sprites/cards/CardImages/51.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 68fb6e0ddc58d71498a85dc2959e0ad8
+    m_Address: Assets/Sprites/Trinkets/003.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8cfb7e343942b1746b010d60652ac0bc
+    m_Address: Assets/Sprites/Trinkets/035.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: abd42f63cb596a646919f63ce297756c
+    m_Address: Assets/Sprites/Trinkets/009.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6743fb35c9641664084c198ad683d8c8
+    m_Address: Assets/Sprites/cards/CardImages/59.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 63363facd1a808e4c8ce569c1ef5fce0
+    m_Address: Assets/Sprites/Trinkets/019.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8e28d90fcfe29c440b2b5cc0e693c1ea
+    m_Address: Assets/Sprites/cards/gems/KOTE_Asset_Gem_Attack.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f9446ea623ff9904b9ced583b0c09f1b
+    m_Address: Assets/Sprites/cards/CardImages/53.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a2720f694c8b1c245bf22e1c04360399
+    m_Address: Assets/Sprites/Trinkets/032.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ded8ab20e3dfb1e4d9129742c82e31cf
+    m_Address: Assets/Sprites/Potions/016.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 57e8b43998667564e990627bf15fa07e
+    m_Address: Assets/Sprites/Trinkets/036.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8a7548af130c2404db9f05d5aa50fb27
+    m_Address: Assets/Sprites/cards/CardImages/502.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d42d62727f137c84c8099cebb7efc3c2
+    m_Address: Assets/Sprites/Potions/006.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0f68feb61b8a7bc43b25a91c8d21b305
+    m_Address: Assets/Sprites/cards/CardImages/157.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0c2f7d69bec3d3542b25d8fe2d56fbf4
+    m_Address: Assets/Sprites/Trinkets/047.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e26aead0f46e3f94aa6746c657123e70
+    m_Address: Assets/Sprites/Battle/Status/50_Combustible.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2b94e08b5bb2c274a978d2c8f4a72869
+    m_Address: Assets/Sprites/cards/CardImages/551.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 956565a456586f64e86bf782d2786bfe
+    m_Address: Assets/Sprites/Trinkets/051.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 19ff0ff10ce50ca40ad68aa310210906
+    m_Address: Assets/Sprites/Battle/Status/11_Regeneration.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4bd94cffae6f4f64e8a36f7ff4ed2d66
+    m_Address: Assets/Sprites/cards/CardImages/13.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2178a27ce90e4de408b1a4e92a8e3319
+    m_Address: Assets/Sprites/Trinkets/021.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 87f55fa60045c1f4891f0e15bfb7d002
+    m_Address: Assets/Sprites/Battle/Status/18_Resolve_Expires.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6c8d3c19a30c3c248811bd0b30e50c53
+    m_Address: Assets/Sprites/Battle/Status/35_Burn.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0b3d3dfcafab5a44c83d1a2aabfe3e74
+    m_Address: Assets/Sprites/Potions/025.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f71a465012a03c941b13f7d823ee0879
+    m_Address: Assets/Sprites/Battle/Status/48_Moldy.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 100a1dc41d5ba0c448760ef5d0b78d25
+    m_Address: Assets/Sprites/cards/Banners/Blue.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 727d0ba33f0601248a9ad1b8448cdb48
+    m_Address: Assets/Sprites/cards/CardImages/107.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d0180e4063ff8cd4f853483046b7930f
+    m_Address: Assets/Sprites/Trinkets/014.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 765ba72f0ed7e204e9ea65359f043503
+    m_Address: Assets/Sprites/Battle/Status/43_Blinded.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 95bac8031c0265c418b1118a95e84d1f
+    m_Address: Assets/Sprites/cards/CardImages/141.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8b1fe4ec171a4b84a9a9b0f71ed1eda8
+    m_Address: Assets/Sprites/Encounter/08- spirit well.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 23bed2bf5bca084419fb8c32b4cb7f4c
+    m_Address: Assets/Sprites/cards/CardImages/61.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4f7f73155a57c6044b25f098ab14a310
+    m_Address: Assets/Sprites/Trinkets/033.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e863c0e6927e5f84281d847066202e44
+    m_Address: Assets/Sprites/Encounter/04 - Young Seated Wizard.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 655fd16cf09c90d49b7ef9b93a8b1e4e
+    m_Address: Assets/Sprites/Potions/012.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 155a2108c367a7f4d8630612c15f2c20
+    m_Address: Assets/Sprites/cards/CardImages/83.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 49b9bebe1ad162d4883171ea4cfe08f0
+    m_Address: Assets/Sprites/Trinkets/058.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 856aabe8dd258e842a33fe1d287ddb11
+    m_Address: Assets/Sprites/Trinkets/025.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9151f0d5deacc0744bac818fb4d098ed
+    m_Address: Assets/Sprites/cards/CardImages/129.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b71e0f7a81a60064982941c7875558f3
+    m_Address: Assets/Sprites/cards/CardImages/504.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f9a2b896402b2d24c8c779d20a8021fc
+    m_Address: Assets/Sprites/Trinkets/007.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b62425a39eff23948b434dcb48c580de
+    m_Address: Assets/Sprites/cards/Banners/Gold.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b247ac3c6f27ba448b315ab09e78b797
+    m_Address: Assets/Sprites/Battle/Status/45_Oiled.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: aad0cc1be3425f243a28198b1272bbd5
+    m_Address: Assets/Sprites/cards/CardImages/105.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cba9d5f8f9b4b8b4e975b7c9d5a6e9d8
+    m_Address: Assets/Sprites/Potions/009.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 62653d67c7b11b148b9d3ad4cdccbe24
+    m_Address: Assets/Sprites/cards/CardImages/97.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 20967e6642d0d9c4fb5a509fa3e781c1
+    m_Address: Assets/Sprites/Battle/Status/40_Drained.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c0ada8da4f8823a448ef0489a338efc1
+    m_Address: Assets/Sprites/cards/CardImages/171.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: dc3d4b0a3def9ad418007a8894e7aae8
+    m_Address: Assets/Sprites/cards/CardImages/71.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2468302d43541e94c92dc37508a5ba26
+    m_Address: Assets/Sprites/cards/frames/KOTE_Asset_Frame_Status.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 17b160ae112abbc4bafbdea643792c79
+    m_Address: Assets/Sprites/cards/gems/KOTE_Asset_Gem_AttackUpgraded.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 55473bc6b1b5a9248b593f67aa23be1d
+    m_Address: Assets/Sprites/Trinkets/004.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 14eb9a6d5a19aec44bbe2436ee341b6f
+    m_Address: Assets/Sprites/cards/CardImages/17.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 96ed5c7b1aeeb4c46b45b833db8135ae
+    m_Address: Assets/Sprites/cards/CardImages/89.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e4b9e1c75f8279942812f7abe8294b9a
+    m_Address: Assets/Sprites/Potions/022.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cd7e0bf06e909074d99b4494aeb2a48a
+    m_Address: Assets/Sprites/Battle/Status/42_Clearheaded.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0484fa796ad27b547b4db56717988dc0
+    m_Address: Assets/Sprites/cards/CardImages/143.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 65373ac347505224aabb3fb641c49979
+    m_Address: Assets/Sprites/cards/CardImages/7.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 997b08242ab322045aee235995634151
+    m_Address: Assets/Sprites/Trinkets/012.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 36037feff0900d44cb879c4d877523e8
+    m_Address: Assets/Sprites/cards/gems/KOTE_Asset_Gem_Skill.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ff1fc7dc9e7e5174c907731845cea61c
+    m_Address: Assets/Sprites/cards/CardImages/505.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d799a935ed6aad948bd7b26cc2d80792
+    m_Address: Assets/Sprites/cards/CardImages/173.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bce8ad9b5aad89f46816da35e1e65bbb
+    m_Address: Assets/Sprites/cards/Banners/Green.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 61fa13f2fcb81ee498ce33ac22988644
+    m_Address: Assets/Sprites/Potions/014.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0b24c167a8d995347bc047f90feb918b
+    m_Address: Assets/Sprites/cards/CardImages/103.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: df0a9ae9c8467ae41910e5805748f6cb
+    m_Address: Assets/Sprites/Battle/Status/26_Trinity.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 95635fcc514685b49b9dbc9df8c2dc3b
+    m_Address: Assets/Sprites/cards/frames/KOTE_Asset_Frame_Neutral.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 775f4cc36b80bed49a2836b59c174bc8
+    m_Address: Assets/Sprites/cards/CardImages/69.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 478e687a98c7af9498bca26e1cfa65be
+    m_Address: Assets/Sprites/Potions/020.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: abc503add68b95f49a1b4a72e8d2347f
+    m_Address: Assets/Sprites/Potions/018.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d0495b310d12c7f4eadc40bfb205b3a6
+    m_Address: Assets/Sprites/Trinkets/055.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7a8b71de90e811341912090e2bbae9a8
+    m_Address: Assets/Sprites/Potions/024.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6468ea8144a0c6c498d186d8bb37cf8c
+    m_Address: Assets/Sprites/cards/CardImages/159.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 98716ceccef61434285290e8173a971f
+    m_Address: Assets/Sprites/Trinkets/001.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b1c6384f7bdbd20498967f9ae260f7bc
+    m_Address: Assets/Sprites/cards/CardImages/127.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d76c6c5c334447c40b2a23ea7c96fb5b
+    m_Address: Assets/Sprites/cards/CardImages/67.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 50da98894d75f8640a2fc46e7548da94
+    m_Address: Assets/Sprites/Battle/Status/07_Spirited.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6dd24772c156d9a48b1ddcfda2bdeb40
+    m_Address: Assets/Sprites/Trinkets/039.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a185d34b7a76b5548b5fda530152e387
+    m_Address: Assets/Sprites/Trinkets/008.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2904f399fab5a1d4f9b51afd93d32eeb
+    m_Address: Assets/Sprites/Trinkets/016.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cbc9d8b849b6269489dd229d356c1d75
+    m_Address: Assets/Sprites/Potions/026.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f7e02324243fdd948826097af695638e
+    m_Address: Assets/Sprites/cards/CardImages/5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5c53e9c37cf79e443ac54a72681c284d
+    m_Address: Assets/Sprites/cards/CardImages/33.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: abcadf033d49fc7419d341943672528d
+    m_Address: Assets/Sprites/cards/CardImages/45.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 69136e9bd65c2624c9b333858160eace
+    m_Address: Assets/Sprites/Trinkets/026.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6b25c811c4eb7814ea43f43819b437be
+    m_Address: Assets/Sprites/Trinkets/028.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9cd4c53a76b68cc48a5849a9261e9dcc
+    m_Address: Assets/Sprites/Trinkets/059.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4807c1308c5deed42a969bb17e74ed71
+    m_Address: Assets/Sprites/Potions/010.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 82748755f9509f244aa336a8b0944dad
+    m_Address: Assets/Sprites/Potions/003.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e30260ad1bd6b3b4d8204f509934d5b2
+    m_Address: Assets/Sprites/Trinkets/029.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6b0f545a7cae2bf408b83bcb70ca5cae
+    m_Address: Assets/Sprites/cards/CardImages/3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ecbfbea374a434b45bccd06b369a6400
+    m_Address: Assets/Sprites/Battle/Status/02_Fortitude.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 876299da05c17fb4f94c1e753e4ee032
+    m_Address: Assets/Sprites/Trinkets/024.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a7980a5cec4578b4a9014d22bf9d1aa7
+    m_Address: Assets/Sprites/Map/NodeArt/Coin.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3c27dfd6b1781ee48a20906fb631e320
+    m_Address: Assets/Sprites/Battle/Status/21_Siphoning.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8da42d6a52ddb3c43a1ec8059ae68438
+    m_Address: Assets/Sprites/Potions/013.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 760cd753b62590440937274bd9154e8b
+    m_Address: Assets/Sprites/Battle/Status/41_Summoned.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 65190e81357c8ed4bbf37187d635beeb
+    m_Address: Assets/Sprites/Battle/Status/36_Taste of Blood.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 63102251e3a96044f9c04a83a1a10e53
+    m_Address: Assets/Sprites/Potions/008.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 34039c27376dc4c409acefb5feb28510
+    m_Address: Assets/Sprites/Battle/Status/54_EmptyFade.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 42ec895ca768d9947804c9d6b8ea8095
+    m_Address: Assets/Sprites/cards/CardImages/99.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bccf698fccdb6354bb32913fbda8de26
+    m_Address: Assets/Sprites/cards/CardImages/9.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7ea3ce96947d543469ab568bb4f00afc
+    m_Address: Assets/Sprites/cards/CardImages/101.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 163dedd6ae9d2f045afa0fa23fe2fc00
+    m_Address: Assets/Sprites/Battle/Status/49_Squishy.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e42ed00cca7009843b8cd96caebbc567
+    m_Address: Assets/Sprites/Trinkets/046.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1b0f58d3826f41a47b3e9f82d472f69e
+    m_Address: Assets/Sprites/Trinkets/060.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 312f1682a41642e4e899540c00a094a4
+    m_Address: Assets/Sprites/cards/CardImages/43.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9a0e7a9774a260c48b0f49e23ee1a5ca
+    m_Address: Assets/Sprites/cards/CardImages/55.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 19202c1ee672ff24fbba05cfbc551350
+    m_Address: Assets/Sprites/Trinkets/006.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 68e19f81d8192384ea28a8f8d459c366
+    m_Address: Assets/Sprites/Trinkets/011.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b33ff4b61c05ab0409323cbebfe68d84
+    m_Address: Assets/Sprites/cards/gems/KOTE_Asset_Gem_Status.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0674731c188fcca439a3b39a013d7b8f
+    m_Address: Assets/Sprites/cards/CardImages/506.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c6e0d978c9b9cbe4d8c7513d24e4092e
+    m_Address: Assets/Sprites/Battle/Status/09_Dodge.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e26a83f36d64cd04cb79cf55517803bc
+    m_Address: Assets/Sprites/Battle/Status/52_Reactive.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9924afd0ee05b8744a9e8a5231d2b8a6
+    m_Address: Assets/Sprites/Battle/Status/01_Resolve.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 43a41787b2ed8484f9801c26405ef5fa
+    m_Address: Assets/Sprites/Battle/Status/10_ForceField.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2623ba0d744ff3f47b624b536cbe36d6
+    m_Address: Assets/Sprites/cards/Banners/Diamond.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 65c2980c5255c8a4a9ab48ddf94dcb43
+    m_Address: Assets/Sprites/Trinkets/045.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 29c42d27f0557e04ab3b2d488bb61e0c
+    m_Address: Assets/Sprites/cards/CardImages/49.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a91f4a01e80994f48a2557aaed77a5e1
+    m_Address: Assets/Sprites/cards/gems/KOTE_Asset_Gem_Curse.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3422201207651b44499a7081e06e99ca
+    m_Address: Assets/Sprites/cards/frames/KOTE_Asset_Frame_Knight.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 16af5fd581d6b364dac4925ca31abce2
+    m_Address: Assets/Sprites/cards/CardImages/41.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f8c65507e1b959542b0fd608202087aa
+    m_Address: Assets/Sprites/Encounter/10 - Nagpra.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0fc18a4d8acc0cc4bb665aa97aa74ab1
+    m_Address: Assets/Sprites/Battle/Status/53_Mysterious Figure.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6b926c46fc39eaa42b49955e50cda270
+    m_Address: Assets/Sprites/Trinkets/044.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e3019e1249b1dde4bad443c9a29b0bf0
+    m_Address: Assets/Sprites/cards/CardImages/125.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a3fc70e130d6fdd4eb370b620c52fc73
+    m_Address: Assets/Sprites/cards/CardImages/508.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 801578395667b0746a806f260319157d
+    m_Address: Assets/Sprites/Encounter/09 - Will of Wisp.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 582240936026fee4e87556536b99ba70
+    m_Address: Assets/Sprites/Battle/Status/46_Trapping.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 21974add9c6582743b346de7dca6351a
+    m_Address: Assets/Sprites/cards/gems/KOTE_Asset_Gem_SkillUpgraded.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 02ee4f2f87cdd9844adad0ceaa0ee903
+    m_Address: Assets/Sprites/cards/CardImages/119.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 12a65af761536ae428f3488db80737cd
+    m_Address: Assets/Sprites/Potions/007.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 91e6eea7712249f49aa3535e2b914236
+    m_Address: Assets/Sprites/Battle/Status/23_Imbued.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9609936a4e4fd164fb0dbe0337b14b7e
+    m_Address: Assets/Sprites/Potions/019.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c4b8fde1242a20447b53e6e713a86b97
+    m_Address: Assets/Sprites/Potions/001.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e380e6d0ed7e7444eaccae5c0509c2a5
+    m_Address: Assets/Sprites/Trinkets/056.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fe6b1b1c41141d94aade66d1340cb7e6
+    m_Address: Assets/Sprites/cards/CardImages/145.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 78a317125834e2b4387e32533ea677cb
+    m_Address: Assets/Sprites/Battle/Status/06_Resist.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d33d79493c14b9c4abde970347ed280b
+    m_Address: Assets/Sprites/cards/CardImages/63.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: aa53a50192d05c540a213c0aca79e217
+    m_Address: Assets/Sprites/cards/CardImages/155.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 12ef4dab97a7a2d4b906b494f72e60ad
+    m_Address: Assets/Sprites/Trinkets/023.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e6533388c9757c64290e1b29bcd0e32a
+    m_Address: Assets/Sprites/Battle/Status/17_Gritted+.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1efa33064d3d7624f83fb2a20524a3f5
+    m_Address: Assets/Sprites/cards/CardImages/121.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 37fe4c8202de3244b8df4996feff3223
+    m_Address: Assets/Sprites/Trinkets/022.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8a755817d0aa6d441960465d40346695
+    m_Address: Assets/Sprites/Trinkets/018.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 491af7ed01a216d4bb2c49318ffa28a3
+    m_Address: Assets/Sprites/Trinkets/031.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 65ef0cf67adbc8b40a2d782dae85c7d4
+    m_Address: Assets/Sprites/cards/CardImages/11.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f4488beedee3ae641a3971083f4aa70f
+    m_Address: Assets/Sprites/Battle/Status/30_FinelyEdged.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 18cfcae18e3373548a69badc89c781d6
+    m_Address: Assets/Sprites/Battle/Status/15_Heralding.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e14a4a873774b8540ac2fa0e8bc78929
+    m_Address: Assets/Sprites/Battle/Status/20_Anticipating.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a1a451eb8d6f09d40a192f1eb1dd1344
+    m_Address: Assets/Sprites/cards/CardImages/501.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 13096ffa27094ed49853aa52f0852ee1
+    m_Address: Assets/Sprites/cards/CardImages/93.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: dd9eadbc3775d764bba94b87c51d9ef0
+    m_Address: Assets/Sprites/Potions/017.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 128c5ebcd471ee44c8a2ff8a34dc461d
+    m_Address: Assets/Sprites/cards/CardImages/37.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 25605611fa62b59409b95f42649d4abd
+    m_Address: Assets/Sprites/Battle/Status/29_Gifted.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 46584cf324cc18b419525e9f962c1023
+    m_Address: Assets/Sprites/Battle/Status/03_Distraught.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b1478c7d6a8064b4bbd15dc080a4dfb7
+    m_Address: Assets/Sprites/cards/CardImages/81.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e58af6555c892f847ae0c9a0bdbb141e
+    m_Address: Assets/Sprites/cards/CardImages/147.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e9d6dc805c42bf845b7ceddfdc32ff86
+    m_Address: Assets/Sprites/Potions/002.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b853f5036523e0d4090db74ddb059542
+    m_Address: Assets/Sprites/cards/CardImages/149.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0e5e2cb93d3ca8c4b88792589c11f672
+    m_Address: Assets/Sprites/cards/CardImages/57.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 94e39808d32acf4429db39783f3d3f1f
+    m_Address: Assets/Sprites/Trinkets/010.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8ddadd83f08b2f54bb208905ac13f7b9
+    m_Address: Assets/Sprites/Trinkets/037.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b5b57261114778244a0172d364efbc7e
+    m_Address: Assets/Sprites/cards/CardImages/153.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6add5ac890eaf4e479c9bc3fbbf9b54a
+    m_Address: Assets/Sprites/Encounter/02 - Giant Chameleon.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6ce0455a94fd74c409fb07e69e747456
+    m_Address: Assets/Sprites/Trinkets/050.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e5dde790e9482b944b25cc5a2e7936ce
+    m_Address: Assets/Sprites/Battle/Status/04_Feeble.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 655f0871402ca864291b97ae3610f30d
+    m_Address: Assets/Sprites/Trinkets/002.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 66dfdd217f3217348b8ea4198963d522
+    m_Address: Assets/Sprites/cards/CardImages/77.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e8cd096ca42ad2c4aaccdfa63d173ae1
+    m_Address: Assets/Sprites/cards/CardImages/75.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6c4ea5d1c2aae9b4686a177bda3fd609
+    m_Address: Assets/Sprites/Trinkets/015.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2a8f2de4c89f1674eaa07bbab41c8ec9
+    m_Address: Assets/Sprites/cards/CardImages/21.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8c0f67f04a61b3f47988e64d224518ce
+    m_Address: Assets/Sprites/cards/CardImages/133.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a197703513c209146aca89bd1c27dbb7
+    m_Address: Assets/Sprites/cards/frames/KOTE_Asset_Frame_KnightNFT.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c14fb330c6215ff4aa0378fdf06c3adc
+    m_Address: Assets/Sprites/cards/CardImages/-1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9920d57f06c875b4f9e59f207ec47506
+    m_Address: Assets/Sprites/cards/CardImages/111.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cadfd6ffec5f31e47867322eb23191bd
+    m_Address: Assets/Sprites/Battle/Status/44_Blighted.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 67c308ae7e154aa4196e87a48210ae77
+    m_Address: Assets/Sprites/cards/CardImages/139.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 086e8ef4f2c708e44a844c62069b76a5
+    m_Address: Assets/Sprites/Battle/Battle_BG_2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e53bc005833ea31479ee9810e1788066
+    m_Address: Assets/Sprites/cards/gems/KOTE_Asset_Gem_DefenseUpgraded.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1306db5b0d493a541a125c4cf4642ac1
+    m_Address: Assets/Sprites/Battle/bg.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2ff9fe522b6e7e14293e89f2dd85a45c
+    m_Address: Assets/Sprites/Battle/Status/22_Turtling.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 34f449cc2f200a441807a71a7edfcdfc
+    m_Address: Assets/Sprites/cards/CardImages/35.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a33a6bb838394f84499ffe4c767e5b14
+    m_Address: Assets/Sprites/Trinkets/005.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 71012fa0d1406334a8b07ac9356cb46e
+    m_Address: Assets/Sprites/cards/CardImages/19.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7bb89c67a8a41ed45948fbf302938ef7
+    m_Address: Assets/Sprites/cards/CardImages/29.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 566e6b97442337549b0436e679ce8c2c
+    m_Address: Assets/Sprites/Battle/Status/37_Confusion.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 77a5f1762c74ad84eb97c4bb09d64b30
+    m_Address: Assets/Sprites/Trinkets/020.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d3ee69046b4a2d6448051c879f470d76
+    m_Address: Assets/Sprites/Battle/Status/32_ArmoredUp.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 07897ff57367d404bbda15100d1efe36
+    m_Address: Assets/Sprites/Encounter/11 - Naiad.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d089f213935b62d479e49f630ea8d98e
+    m_Address: Assets/Sprites/cards/CardImages/117.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9dab33e74780dbd44b55ffa320c4fa83
+    m_Address: Assets/Sprites/Battle/Status/24_DoubleDown.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8388228ca6c809c45852ac7013a21e0a
+    m_Address: Assets/Sprites/cards/CardImages/135.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cc8fc6a13a7f4a9418df1438daa7953f
+    m_Address: Assets/Sprites/Map/TopBar/cards_topbar_icon.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b2bdc1efa0920304b8b2d49a51bbd874
+    m_Address: Assets/Sprites/Trinkets/027.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 418c3a4870d635242a7e7a32366bbf29
+    m_Address: Assets/Sprites/cards/CardImages/113.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1379bf1c0b3cbc244976ff49a689c44b
+    m_Address: Assets/Sprites/Trinkets/017.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 48f78182fc7109c4d94e1fe15f05659d
+    m_Address: Assets/Sprites/cards/CardImages/161.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4d552ca2f1cdf3f488dad1dc5e5fac5e
+    m_Address: Assets/Sprites/Trinkets/041.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3c3e5c214bb2adb4d8cb6837bbf10615
+    m_Address: Assets/Sprites/Trinkets/048.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e114905ddce382743ac8086c281229c4
+    m_Address: Assets/Sprites/Encounter/01 - Changed One.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a56aab9d71c1ac84dbc6aeac96e4004f
+    m_Address: Assets/Sprites/cards/CardImages/131.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bd7cca73bb9a5484495b1e58659d62b1
+    m_Address: Assets/Sprites/Encounter/03 - Stump Creatures.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6cecfd8c25176e44d8e9158f6637cd9c
+    m_Address: Assets/Sprites/Trinkets/034.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1939fdbdd4b69c24cbcf6545a7d19a8f
+    m_Address: Assets/Sprites/Trinkets/042.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8d8271be5e086af4a8e32bb37ae50a2b
+    m_Address: Assets/Sprites/Battle/Status/51_Hidden.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7da2523b26da948499542031fcb6b4db
+    m_Address: Assets/Sprites/cards/CardImages/23.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3569de8c378700941aa0308eef558264
+    m_Address: Assets/Sprites/cards/Banners/Silver.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d41302f222bcae3489b99e795e876237
+    m_Address: Assets/Sprites/Battle/Status/13_Enraged.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0abe18cb1651af6408f882f621b3e891
+    m_Address: Assets/Sprites/Potions/004.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 177223bb633ce574f8596f228bcb412b
+    m_Address: Assets/Prefabs/Common/SpriteLists/CardFrames.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d387e2d0bffaf704293b5cda2dd4d12b
+    m_Address: Assets/Prefabs/Common/SpriteLists/MiscSprites.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4f6ea6a8aee73794a93bd5c165b0e268
+    m_Address: Assets/Prefabs/Common/SpriteLists/Act1Backgrounds.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 98f006735d78e1d4abc0e73d410b27fb
+    m_Address: Assets/Prefabs/Common/SpriteLists/KnightCardImages.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: df679ef009f66ac4e99f7451a9dc8fc2
+    m_Address: Assets/Prefabs/Common/SpriteLists/CardBanners.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c8a01ccf25469014a9072563e7d96557
+    m_Address: Assets/Prefabs/Common/SpriteLists/Act3Potions.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5855a2731a0ec8843b512bda261791ae
+    m_Address: Assets/Prefabs/Common/SpriteLists/StatusCardImages.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 11f71193e73e7be42810fc75a9e09422
+    m_Address: Assets/Prefabs/Common/SpriteLists/Act0Backgrounds.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e6c649da2d3ef4f4480ddd1a6e1268c4
+    m_Address: Assets/Prefabs/Common/SpriteLists/Act1Trinkets.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0eb3155688a4d9d408d01bba4fcc3344
+    m_Address: Assets/Prefabs/Common/SpriteLists/EncounterSprites.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ef391eb58f468f243adf45ce8dc571df
+    m_Address: Assets/Prefabs/Common/SpriteLists/StatusIcons.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1341f10191ae905489b15615418cba68
+    m_Address: Assets/Prefabs/Common/SpriteLists/Act2Potions.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3859afef1b536bd48959fe947e392495
+    m_Address: Assets/Prefabs/Common/SpriteLists/Act1Potions.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fd61f9889f67b7a43aab950b324b0fa0
+    m_Address: Assets/Prefabs/Common/SpriteLists/CardGems.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b5243524a01eab148b0a227677e45ff2, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 1651fefe04b01804ea208a42ad9f7501, type: 2}
+    - {fileID: 11400000, guid: 766862974bd84304fba3b1f39603ac2b, type: 2}
