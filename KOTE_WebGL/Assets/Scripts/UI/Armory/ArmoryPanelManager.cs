@@ -22,6 +22,10 @@ namespace KOTE.UI.Armory
 
         public GameObject[] gearPanels;
 
+        [SerializeField] private Button leftButton;
+        [SerializeField] private Button rightButton;
+        [SerializeField] private TextMeshProUGUI loadingText;
+        
         // making a reference to this since GetComponentInChildren only works on active gameObjects
         public ScrollRect gearListScroll;
 
@@ -37,6 +41,9 @@ namespace KOTE.UI.Armory
         
         private void Awake()
         {
+            loadingText.text = "";
+            loadingText.raycastTarget = false;
+            
             GameManager.Instance.EVENT_AUTHENTICATED.AddListener(PopulatePlayerGearInventory);
             NftManager.Instance.NftsLoaded.AddListener(PopulateCharacterList);
         }
@@ -60,8 +67,11 @@ namespace KOTE.UI.Armory
             // run this whe the panel is opened, instead of when nfts load, so images are cached
             try
             {
-                GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
-                UpdatePanelOnNftUpdate();
+                if (show)
+                {
+                    GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
+                    UpdatePanelOnNftUpdate();
+                }
                 panelContainer.SetActive(show);
             }
             catch (Exception e)
@@ -72,6 +82,7 @@ namespace KOTE.UI.Armory
 
         private void PopulateCharacterList()
         {
+            Debug.Log($"[ArmoryPanelManager] PopulateCharacterList");
             List<Nft> nfts = NftManager.Instance.GetAllNfts();
             PlayerSpriteManager.Instance.CachePlayerSkinsAtStartup(nfts);
             PortraitSpriteManager.Instance.CacheAllSprites();
@@ -96,6 +107,7 @@ namespace KOTE.UI.Armory
 
         private void UpdatePanelOnNftUpdate()
         {
+            Debug.Log($"[ArmoryPanelManager] UpdatePanelOnNftUpdate");
             Nft curMetadata = curNode.Value.MetaData;
             TokenNameText.text = FormatTokenName(curMetadata);
             CanPlayText.text = curMetadata.CanPlay ? "" : $"Available in: {ParseTime((int)(curMetadata.PlayableAt - DateTime.UtcNow).TotalSeconds)}";
@@ -113,6 +125,13 @@ namespace KOTE.UI.Armory
             UpdateGearListBasedOnToken();
         }
 
+        public void ResetCharacterSelectionUI()
+        {
+            loadingText.text = "";
+            leftButton.interactable = true;
+            rightButton.interactable = true;
+        }
+        
         private string FormatTokenName(Nft tokenData)
         {
             string contractName = "";
@@ -136,6 +155,7 @@ namespace KOTE.UI.Armory
 
         private async void PopulatePlayerGearInventory()
         {
+            Debug.Log($"[ArmoryPanelManager] PopulatePlayerGearInventory");
             GearData data = await FetchData.Instance.GetGearInventory();
             if (data == null) return;
             await GearIconManager.Instance.RequestGearIcons(data);
@@ -231,6 +251,8 @@ namespace KOTE.UI.Armory
         public void OnPreviousToken()
         {
             if (curNode?.Previous == null) return;
+            rightButton.interactable = false;
+            loadingText.text = "Loading...";
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             curNode = curNode.Previous;
             GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
@@ -239,11 +261,14 @@ namespace KOTE.UI.Armory
 
         public void OnNextToken()
         {
+            Debug.Log($"[ArmoryPanelManager] OnNextToken");
             if (curNode?.Next == null)
             {
                 Debug.LogError($"[OnNextToken] no cur node or next node is null");
                 return;
             }
+            rightButton.interactable = false;
+            loadingText.text = "Loading...";
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             curNode = curNode.Next;
             GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);

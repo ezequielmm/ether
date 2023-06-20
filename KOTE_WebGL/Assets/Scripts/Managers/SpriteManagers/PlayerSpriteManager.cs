@@ -16,6 +16,8 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     private UnityAction nftLoadedListener;
 
 
+    public UnityEvent OnSkinLoaded;
+    
     private SkeletonData knightSkeletonData => KinghtData.GetSkeletonData(true);
 
     protected override void Awake()
@@ -145,12 +147,14 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 
     private async void UpdatePlayerSkin()
     {
+        Debug.Log($"[{this.GetType().Name}] Updating Player Skin");
         // TODO: Totally a Memory Leak
         skinLoading.Invoke();
         await _curNft.GetDefaultSprites(knightSkeletonData);
         await _curNft.GetNftSprites(knightSkeletonData);
         
         GameManager.Instance.UpdatePlayerSkin();
+        OnSkinLoaded.Invoke();
     }
 
     private PlayerNft GetNftBasedOnMetadata(Nft selectedNft)

@@ -25,18 +25,6 @@ public class ContestCountdownManager : MonoBehaviour
     private void Start()
     {
         contest.OnContestStarted.AddListener(EnableTimer);
-        GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.AddListener(
-            value =>
-            ((Action)(value ? DisableTimer : EnableTimer))()
-        );
-        GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.AddListener(
-            value =>
-                ((Action)(value ? DisableTimer : EnableTimer))()
-        );
-        leaderboard.OnLeaderboardShow.AddListener(
-            value =>
-                ((Action)(value ? DisableTimer : EnableTimer))()
-        );
     }
 
     private void OnEnable()
