@@ -48,7 +48,8 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
 
         foreach (var mat in GetComponent<Renderer>().materials)
         {
-            Destroy(mat.mainTexture);
+            if (mat == null)
+                continue;
             Destroy(mat);
         }
 
