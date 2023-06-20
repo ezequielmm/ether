@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
@@ -377,9 +378,30 @@ public class FetchData : DataManager, ISingleton<FetchData>
     private async UniTask<string> MakeJsonRequest(UnityWebRequest request)
     {
         string rawJson = (await webRequest.MakeRequest(request))?.text;
+#if UNITY_EDITOR
+        SaveTextAsJson(rawJson);
+#endif
         return rawJson;
     }
+    public void SaveTextAsJson(string text)
+    {
+        // Create the directories if they don't exist
+        string directoryPath = Path.Combine(Application.persistentDataPath, "responses", "jsons");
+        Directory.CreateDirectory(directoryPath);
 
+        // Generate a unique file name using a timestamp
+        string fileName = $"response_{System.DateTime.Now:yyyyMMdd_HHmmss}.json";
+
+        // Combine the directory path and file name
+        string filePath = Path.Combine(directoryPath, fileName);
+
+        // Format the text as JSON
+      
+
+        // Save the JSON file
+        File.WriteAllText(filePath, text);
+
+    }
     private async UniTask<Texture2D> MakeTextureRequest(UnityWebRequest request)
     {
         Texture2D texture = ((DownloadHandlerTexture)await webRequest.MakeRequest(request, false))?.texture;
