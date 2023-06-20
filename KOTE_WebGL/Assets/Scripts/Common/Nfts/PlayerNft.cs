@@ -113,6 +113,7 @@ public abstract class PlayerNft
     protected async UniTask<Sprite> GetPlayerSkin(TraitSprite spriteData)
     {
         Texture2D texture = await FetchData.Instance.GetNftSkinElement(spriteData);
+        Debug.Log($"[GetPlayerSkin] downloading {spriteData.ImageName}");
         if (texture == null)
         {
             Debug.LogWarning($"Skin image not found on server for {spriteData.ImageName}");

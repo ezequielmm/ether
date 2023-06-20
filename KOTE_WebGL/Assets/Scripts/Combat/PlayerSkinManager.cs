@@ -11,23 +11,22 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
     public SkeletonAnimation skeletonAnimation;
     public Material skeletonMaterial;
     public SkeletonDataAsset skeletonDataAsset;
-
-    public List<Sprite> spritesArray = new List<Sprite>();
+    
     public UnityEvent skinLoaded = new();
     SkeletonDataAsset IHasSkeletonDataAsset.SkeletonDataAsset => skeletonDataAsset;
 
     private Skin equipsSkin;
     private SkeletonData skeletonData;
+    private List<(Skin.SkinEntry, Attachment)> generatedAttachments;
 
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.Instance.EVENT_UPDATE_PLAYER_SKIN.AddListener(SkinReset);
         // only load a skin if there's data to go off of.
         if(NftManager.Instance.GetAllNfts().Count > 0) SkinReset();
     }
 
-    private void SkinReset()
+    public void SkinReset()
     {
         equipsSkin = new Skin("Equips");
         skeletonAnimation.Skeleton.SetSkin(equipsSkin);
@@ -46,6 +45,13 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
 
         // some dark magic due to the way Flails are set up in spine
         bool flailFound = TryStartWithFlailSkin(skinSprites, out equipsSkin);
+
+        foreach (var mat in GetComponent<Renderer>().materials)
+        {
+            if (mat == null)
+                continue;
+            Destroy(mat);
+        }
 
         foreach (var traitType in Enum.GetNames(typeof(Trait)))
         {
@@ -73,7 +79,7 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
             }
         }
 
-        List<(Skin.SkinEntry, Attachment)> generatedAttachments = new List<(Skin.SkinEntry, Attachment)>();
+        generatedAttachments = new List<(Skin.SkinEntry, Attachment)>();
 
         foreach (Skin.SkinEntry skinAttachment in equipsSkin.Attachments)
         {
@@ -83,7 +89,7 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
             Sprite attachmentSprite = traitSprite.Sprite;
             string templateSkinName = traitSprite.SkinName;
 
-            spritesArray.Add(attachmentSprite);
+            attachmentSprite.name = traitSprite.ImageName;
 
             if (templateSkinName != null)
             {
@@ -102,6 +108,9 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
         skeletonAnimation.Skeleton.SetSkin(equipsSkin);
         RefreshSkeletonAttachments();
         skinLoaded.Invoke();
+        
+        Resources.UnloadUnusedAssets();
+        System.GC.Collect();
     }
 
     /*

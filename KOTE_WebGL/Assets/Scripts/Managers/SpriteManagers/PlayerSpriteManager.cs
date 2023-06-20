@@ -16,6 +16,8 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     private UnityAction nftLoadedListener;
 
 
+    public UnityEvent OnSkinLoaded;
+    
     private SkeletonData knightSkeletonData => KinghtData.GetSkeletonData(true);
 
     protected override void Awake()
@@ -26,8 +28,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     private void Start()
     {
         GameManager.Instance.EVENT_NFT_SELECTED.AddListener(BuildPlayer);
-        GameManager.Instance.EVENT_UPDATE_NFT.AddListener(UpdateNftTrait);
-        
+
         UserDataManager.Instance.ExpeditionStatusUpdated.AddListener(ClearEquippedGearIfNoExpedition);
     }
 
@@ -99,7 +100,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     }
 
 
-    private void UpdateNftTrait(Trait trait, string traitValue)
+    public void UpdateNftTrait(Trait trait, string traitValue)
     {
         if (trait == Trait.Padding)
         {
@@ -121,8 +122,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         {
             CacheSkin(characterList[curNftIndex + 1]);
         }
-
-        Debug.Log($"[PlayerSpriteManager] Nft #{selectedNft.TokenId} has been selected.");
+        
         UpdatePlayerSkin();
     }
 
@@ -146,10 +146,13 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 
     private async void UpdatePlayerSkin()
     {
+        // TODO: Totally a Memory Leak
         skinLoading.Invoke();
         await _curNft.GetDefaultSprites(knightSkeletonData);
         await _curNft.GetNftSprites(knightSkeletonData);
-        GameManager.Instance.EVENT_UPDATE_PLAYER_SKIN.Invoke();
+        
+        GameManager.Instance.UpdatePlayerSkin();
+        OnSkinLoaded.Invoke();
     }
 
     private PlayerNft GetNftBasedOnMetadata(Nft selectedNft)

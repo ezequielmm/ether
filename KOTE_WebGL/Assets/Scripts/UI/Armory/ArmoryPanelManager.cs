@@ -11,9 +11,6 @@ namespace KOTE.UI.Armory
 {
     public class ArmoryPanelManager : MonoBehaviour
     {
-        internal static UnityEvent<GearItemData> OnGearSelected { get; } = new();
-        internal static UnityEvent<Trait> OnSlotCleared { get; } = new();
-
         public GameObject panelContainer;
         public Button playButton;
         public CharacterPortraitManager portraitManager;
@@ -25,6 +22,10 @@ namespace KOTE.UI.Armory
 
         public GameObject[] gearPanels;
 
+        [SerializeField] private Button leftButton;
+        [SerializeField] private Button rightButton;
+        [SerializeField] private TextMeshProUGUI loadingText;
+        
         // making a reference to this since GetComponentInChildren only works on active gameObjects
         public ScrollRect gearListScroll;
 
@@ -40,6 +41,9 @@ namespace KOTE.UI.Armory
         
         private void Awake()
         {
+            loadingText.text = "";
+            loadingText.raycastTarget = false;
+            
             GameManager.Instance.EVENT_AUTHENTICATED.AddListener(PopulatePlayerGearInventory);
             NftManager.Instance.NftsLoaded.AddListener(PopulateCharacterList);
         }
@@ -49,9 +53,13 @@ namespace KOTE.UI.Armory
             panelContainer.SetActive(false);
             GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.AddListener(ActivateContainer);
             // listen for successful login to get the player's gear
-            OnGearSelected.AddListener(OnGearItemSelected);
-            OnSlotCleared.AddListener(OnGearItemRemoved);
+            
             gearListScroll.scrollSensitivity = GameSettings.PANEL_SCROLL_SPEED;
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.RemoveListener(ActivateContainer);
         }
 
         private void ActivateContainer(bool show)
@@ -59,8 +67,11 @@ namespace KOTE.UI.Armory
             // run this whe the panel is opened, instead of when nfts load, so images are cached
             try
             {
-                GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
-                UpdatePanelOnNftUpdate();
+                if (show)
+                {
+                    GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
+                    UpdatePanelOnNftUpdate();
+                }
                 panelContainer.SetActive(show);
             }
             catch (Exception e)
@@ -112,6 +123,13 @@ namespace KOTE.UI.Armory
             UpdateGearListBasedOnToken();
         }
 
+        public void ResetCharacterSelectionUI()
+        {
+            loadingText.text = "";
+            leftButton.interactable = true;
+            rightButton.interactable = true;
+        }
+        
         private string FormatTokenName(Nft tokenData)
         {
             string contractName = "";
@@ -230,6 +248,8 @@ namespace KOTE.UI.Armory
         public void OnPreviousToken()
         {
             if (curNode?.Previous == null) return;
+            rightButton.interactable = false;
+            loadingText.text = "Loading...";
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             curNode = curNode.Previous;
             GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
@@ -243,6 +263,8 @@ namespace KOTE.UI.Armory
                 Debug.LogError($"[OnNextToken] no cur node or next node is null");
                 return;
             }
+            rightButton.interactable = false;
+            loadingText.text = "Loading...";
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             curNode = curNode.Next;
             GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
@@ -298,7 +320,7 @@ namespace KOTE.UI.Armory
             postProcessingTransition.StartTransition();
         }
 
-        private void OnGearItemSelected(GearItemData activeItem)
+        public void OnGearItemSelected(GearItemData activeItem)
         {
             if (curNode.Value.MetaData.Contract == NftContract.Knights ||
                 (curNode.Value.MetaData.Contract == NftContract.Villager && !activeItem.CanVillagerEquip)) return;
@@ -306,13 +328,13 @@ namespace KOTE.UI.Armory
             Trait itemTrait = activeItem.trait.ParseToEnum<Trait>();
             gearSlots.Find(x => x.gearTrait == itemTrait).SetGearInSlot(activeItem);
             equippedGear[itemTrait] = activeItem;
-            GameManager.Instance.EVENT_UPDATE_NFT.Invoke(Enum.Parse<Trait>(activeItem.trait), activeItem.name);
+            GameManager.Instance.UpdateNft(Enum.Parse<Trait>(activeItem.trait), activeItem.name);
         }
 
-        private void OnGearItemRemoved(Trait gearTrait)
+        public void OnGearItemRemoved(Trait gearTrait)
         {
             equippedGear.Remove(gearTrait);
-            GameManager.Instance.EVENT_UPDATE_NFT.Invoke(gearTrait, "");
+            GameManager.Instance.UpdateNft(gearTrait, "");
         }
         
         public string ParseTime(int totalSeconds)

@@ -50,8 +50,6 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_AUTHENTICATED.AddListener(SetupPostAuthenticationButtons);
         GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(OnLogoutSuccessful);
 
-        GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.AddListener(value => leaderboard.Show(!value));
-        
         wallet.WalletStatusModified.AddListener(UpdateUiOnWalletModification);
         NftManager.Instance.NftsLoaded.AddListener(NftLoaded);
 

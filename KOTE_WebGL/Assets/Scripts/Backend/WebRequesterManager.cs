@@ -92,7 +92,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         string requestIdShortened = requestId.ToString().Substring(0, LogHelper.LengthOfIdToLog);
         string variableString = LogHelper.VariablesToHumanReadable(url, payload);
         string jsonString = LogHelper.VariablesToJson(url, payload);
-       // Debug.Log($"[WebRequesterManager] REQUEST [{requestIdShortened}] >>> {jsonString}");
+        Debug.Log($"[WebRequesterManager] REQUEST [{requestIdShortened}] >>> {jsonString}");
       //  LogHelper.SendOutgoingCommunicationLogs(
        //     $"[WebRequesterManager] REQUEST [{requestIdShortened}] >>> {variableString}", jsonString);
     }
