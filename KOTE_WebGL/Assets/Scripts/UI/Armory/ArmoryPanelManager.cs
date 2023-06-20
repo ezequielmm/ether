@@ -82,7 +82,6 @@ namespace KOTE.UI.Armory
 
         private void PopulateCharacterList()
         {
-            Debug.Log($"[ArmoryPanelManager] PopulateCharacterList");
             List<Nft> nfts = NftManager.Instance.GetAllNfts();
             PlayerSpriteManager.Instance.CachePlayerSkinsAtStartup(nfts);
             PortraitSpriteManager.Instance.CacheAllSprites();
@@ -107,7 +106,6 @@ namespace KOTE.UI.Armory
 
         private void UpdatePanelOnNftUpdate()
         {
-            Debug.Log($"[ArmoryPanelManager] UpdatePanelOnNftUpdate");
             Nft curMetadata = curNode.Value.MetaData;
             TokenNameText.text = FormatTokenName(curMetadata);
             CanPlayText.text = curMetadata.CanPlay ? "" : $"Available in: {ParseTime((int)(curMetadata.PlayableAt - DateTime.UtcNow).TotalSeconds)}";
@@ -155,7 +153,6 @@ namespace KOTE.UI.Armory
 
         private async void PopulatePlayerGearInventory()
         {
-            Debug.Log($"[ArmoryPanelManager] PopulatePlayerGearInventory");
             GearData data = await FetchData.Instance.GetGearInventory();
             if (data == null) return;
             await GearIconManager.Instance.RequestGearIcons(data);
@@ -261,7 +258,6 @@ namespace KOTE.UI.Armory
 
         public void OnNextToken()
         {
-            Debug.Log($"[ArmoryPanelManager] OnNextToken");
             if (curNode?.Next == null)
             {
                 Debug.LogError($"[OnNextToken] no cur node or next node is null");

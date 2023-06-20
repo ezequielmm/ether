@@ -122,8 +122,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         {
             CacheSkin(characterList[curNftIndex + 1]);
         }
-
-        Debug.Log($"[PlayerSpriteManager] Nft #{selectedNft.TokenId} has been selected.");
+        
         UpdatePlayerSkin();
     }
 
@@ -147,7 +146,6 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 
     private async void UpdatePlayerSkin()
     {
-        Debug.Log($"[{this.GetType().Name}] Updating Player Skin");
         // TODO: Totally a Memory Leak
         skinLoading.Invoke();
         await _curNft.GetDefaultSprites(knightSkeletonData);
