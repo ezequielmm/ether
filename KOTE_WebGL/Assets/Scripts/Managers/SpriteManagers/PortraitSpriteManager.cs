@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,7 +9,6 @@ using UnityEngine.Events;
 public class PortraitSpriteManager : SingleTon<PortraitSpriteManager>
 {
     private Dictionary<Trait, Dictionary<string, Sprite>> villagerCache = new();
-    private Dictionary<int, Sprite> knightCache = new();
 
     public async void CacheAllSprites()
     {
@@ -28,11 +29,19 @@ public class PortraitSpriteManager : SingleTon<PortraitSpriteManager>
         }
     }
 
+    public void ClearCache()
+    {
+        // var portraits = knightCache.Values.ToList();
+        // while (portraits.Count > 0){
+        //     Destroy(portraits[0]);
+        //     portraits.Remove(portraits[0]);
+        // }
+        // knightCache.Clear();
+    }
+    
     public async UniTask<Sprite> GetKnightPortrait(Nft nft)
     {
-        if (knightCache.ContainsKey(nft.TokenId)) return knightCache[nft.TokenId];
         Sprite nftPortrait = await nft.GetImage();
-        knightCache[nft.TokenId] = nftPortrait;
         return nftPortrait;
     }
     

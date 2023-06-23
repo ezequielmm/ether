@@ -44,47 +44,40 @@ namespace KOTE.UI.Armory
             loadingText.text = "";
             loadingText.raycastTarget = false;
             
-            GameManager.Instance.EVENT_AUTHENTICATED.AddListener(PopulatePlayerGearInventory);
             NftManager.Instance.NftsLoaded.AddListener(PopulateCharacterList);
         }
 
         private void Start()
         {
             panelContainer.SetActive(false);
-            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.AddListener(ActivateContainer);
             // listen for successful login to get the player's gear
             
             gearListScroll.scrollSensitivity = GameSettings.PANEL_SCROLL_SPEED;
         }
 
-        private void OnDestroy()
-        {
-            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.RemoveListener(ActivateContainer);
-        }
-
-        private void ActivateContainer(bool show)
+        public void ActivateContainer(bool show)
         {
             // run this whe the panel is opened, instead of when nfts load, so images are cached
             try
             {
                 if (show)
                 {
-                    GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
+                    GameManager.Instance.NftSelected(curNode.Value.MetaData);
                     UpdatePanelOnNftUpdate();
                 }
                 panelContainer.SetActive(show);
             }
             catch (Exception e)
             {
-                Debug.LogException(e);
+                
             }
         }
 
         private void PopulateCharacterList()
         {
             List<Nft> nfts = NftManager.Instance.GetAllNfts();
-            PlayerSpriteManager.Instance.CachePlayerSkinsAtStartup(nfts);
-            PortraitSpriteManager.Instance.CacheAllSprites();
+            //PlayerSpriteManager.Instance.CachePlayerSkinsAtStartup(nfts);
+            //PortraitSpriteManager.Instance.CacheAllSprites();
             nftList.Clear();
 
             if (nfts.Count == 0)
@@ -101,7 +94,7 @@ namespace KOTE.UI.Armory
             }
 
             curNode = nftList.First;
-            GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
+            //GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
         }
 
         private void UpdatePanelOnNftUpdate()
@@ -151,7 +144,7 @@ namespace KOTE.UI.Armory
             return contractName + " #" + tokenData.TokenId;
         }
 
-        private async void PopulatePlayerGearInventory()
+        public async void PopulatePlayerGearInventory()
         {
             GearData data = await FetchData.Instance.GetGearInventory();
             if (data == null) return;
@@ -252,7 +245,7 @@ namespace KOTE.UI.Armory
             loadingText.text = "Loading...";
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             curNode = curNode.Previous;
-            GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
+            GameManager.Instance.NftSelected(curNode.Value.MetaData);
             UpdatePanelOnNftUpdate();
         }
 
@@ -267,7 +260,7 @@ namespace KOTE.UI.Armory
             loadingText.text = "Loading...";
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             curNode = curNode.Next;
-            GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
+            GameManager.Instance.NftSelected(curNode.Value.MetaData);
             UpdatePanelOnNftUpdate();
         }
 

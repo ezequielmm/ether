@@ -97,7 +97,7 @@ public class CharacterSelectionManager : MonoBehaviour
         Debug.Log($"[{this.GetType().Name}] OnArmoryButton");
         return;
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-        GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
+        GameManager.Instance.ShowArmoryPanel(true);
         ActivateInnerCharacterSelectionPanel(false);
     }
 

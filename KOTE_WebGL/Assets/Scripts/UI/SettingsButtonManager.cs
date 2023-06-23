@@ -8,7 +8,6 @@ public class SettingsButtonManager : MonoBehaviour
     void Start()
     {
         GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(OnLogout);
-        GameManager.Instance.EVENT_AUTHENTICATED.AddListener(OnAuthenticated);
     }
 
     public void OnSettingsButton()
@@ -17,7 +16,7 @@ public class SettingsButtonManager : MonoBehaviour
         GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.Invoke(true);
     }
 
-    private void OnAuthenticated()
+    public void OnAuthenticated()
     {
         button.SetActive(true);
     }

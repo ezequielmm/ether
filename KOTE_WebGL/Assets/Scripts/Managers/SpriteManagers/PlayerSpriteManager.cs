@@ -27,8 +27,6 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 
     private void Start()
     {
-        GameManager.Instance.EVENT_NFT_SELECTED.AddListener(BuildPlayer);
-
         UserDataManager.Instance.ExpeditionStatusUpdated.AddListener(ClearEquippedGearIfNoExpedition);
     }
 
@@ -53,6 +51,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 
         if (NftManager.Instance.Nfts.Keys.Count == 0)
         {
+            if(nftLoadedListener != null) NftManager.Instance.NftsLoaded.RemoveListener(nftLoadedListener);
             nftLoadedListener = () => { WaitForNftLoad(nftToken, contract, equippedGear); };
             NftManager.Instance.NftsLoaded.AddListener(nftLoadedListener);
             return;
@@ -114,8 +113,10 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         UpdatePlayerSkin();
     }
 
-    private void BuildPlayer(Nft selectedNft)
+    public void BuildPlayer(Nft selectedNft)
     {
+        PlayerNft.ClearCache();
+
         _curNft = GetNftBasedOnMetadata(selectedNft);
         int curNftIndex = characterList.FindIndex(x => x == _curNft);
         if (curNftIndex != -1 && curNftIndex != characterList.Count - 1)

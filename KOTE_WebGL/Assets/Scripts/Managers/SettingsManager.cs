@@ -28,8 +28,6 @@ public class SettingsManager : MonoBehaviour
 
         GameManager.Instance.EVENT_SETTINGSPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerSettingsPanel);
 
-        GameManager.Instance.EVENT_AUTHENTICATED.AddListener(EnableLogoutAndWalletsButtons);
-
         logoutHyperlink.interactable = true;
                
         volumeSlider.value = PlayerPrefs.GetFloat("settings_volume", 1);

@@ -18,9 +18,8 @@ public class WalletPanel : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.EVENT_WALLETSPANEL_ACTIVATION_REQUEST.AddListener(ToggleInnerWalletContainer);
-        GameManager.Instance.EVENT_AUTHENTICATED.AddListener(UpdateWalletInfo);
     }
-    private void UpdateWalletInfo() 
+    public void UpdateWalletInfo() 
     {
         
             AddWallet(WalletManager.Instance.ActiveWallet);

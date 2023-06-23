@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Spine;
 using UnityEngine;
@@ -113,7 +114,6 @@ public abstract class PlayerNft
     protected async UniTask<Sprite> GetPlayerSkin(TraitSprite spriteData)
     {
         Texture2D texture = await FetchData.Instance.GetNftSkinElement(spriteData);
-        Debug.Log($"[GetPlayerSkin] downloading {spriteData.ImageName}");
         if (texture == null)
         {
             Debug.LogWarning($"Skin image not found on server for {spriteData.ImageName}");
@@ -170,8 +170,7 @@ public abstract class PlayerNft
     protected bool DoesSkinSpriteExist(TraitSprite spriteData)
     {
         TraitSprite skinSprite = SkinSprites.Find(x => x.ImageName == spriteData.ImageName);
-
-
+        
         if (skinSprite == null)
         {
             return false;
@@ -226,5 +225,17 @@ public abstract class PlayerNft
             return "TShield";
         Debug.LogWarning($"Warning! Invalid Shield/Sigil combination for nft");
         return string.Empty;
+    }
+
+    public static void ClearCache()
+    {
+        foreach (var ts in SkinSprites)
+        {
+            MonoBehaviour.Destroy(ts.Sprite);
+        }
+        SkinSprites.Clear();
+        SkinSprites = new List<TraitSprite>();
+        DefaultSprites.Clear();
+        DefaultSprites = new List<TraitSprite>();
     }
 }

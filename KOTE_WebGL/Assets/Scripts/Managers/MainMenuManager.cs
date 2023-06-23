@@ -47,7 +47,6 @@ public class MainMenuManager : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.EVENT_UPDATE_NAME_AND_FIEF.AddListener(UpdateNameAndFief);
-        GameManager.Instance.EVENT_AUTHENTICATED.AddListener(SetupPostAuthenticationButtons);
         GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(OnLogoutSuccessful);
 
         wallet.WalletStatusModified.AddListener(UpdateUiOnWalletModification);
@@ -158,7 +157,7 @@ public class MainMenuManager : MonoBehaviour
         //TODO: possible issue here, before removing panels this opens login, register again
     }
 
-    private void SetupPostAuthenticationButtons()
+    public void SetupPostAuthenticationButtons()
     {
         //playButton.gameObject.SetActive(false);
         newExpeditionButton.gameObject.SetActive(false);
@@ -228,7 +227,7 @@ public class MainMenuManager : MonoBehaviour
             Debug.Log("Step 2 B: No expedition, has a wallet!, what happens now?");
             // else open the armory panel
             //GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
-            GameManager.Instance.EVENT_SHOW_ARMORY_PANEL.Invoke(true);
+            GameManager.Instance.ShowArmoryPanel(true);
         }
 
 

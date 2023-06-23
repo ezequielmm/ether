@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Spine;
 using UnityEngine;
@@ -79,8 +80,9 @@ public class Villager : PlayerNft
                 Debug.LogWarning($"[PlayerNft] {trait} skin not found for {traitValue}");
                 continue;
             }
-            
-            foreach (Skin.SkinEntry skinEntry in traitSkin.Attachments)
+
+            var list = traitSkin.Attachments.ToArray();
+            foreach (Skin.SkinEntry skinEntry in list)
             {
                 TraitSprite spriteData = GenerateSpriteData(skinEntry, traitSkin.Name, traitValue, trait);
                 if (spriteData == null)
@@ -93,7 +95,6 @@ public class Villager : PlayerNft
                 if (DoesSkinSpriteExist(spriteData) || DoesDefaultSpriteExist(spriteData))
                 {
                     // Sprite already fetched
-                    Debug.Log($"[GetPlayerSkin] Sprite already fetched {spriteData.ImageName}");
                     continue;
                 }
 

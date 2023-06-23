@@ -29,6 +29,11 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
     public void SkinReset()
     {
         equipsSkin = new Skin("Equips");
+        if (skeletonAnimation.skeleton == null)
+        {
+            Debug.LogWarning($"[PlayerSkinManager] Skeleton is null, can't apply skin");
+            return;
+        }
         skeletonAnimation.Skeleton.SetSkin(equipsSkin);
 
         RefreshSkeletonAttachments();

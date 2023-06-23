@@ -7,8 +7,14 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : SingleTon<GameManager>
 {
-    //LOGIN EVENTS
-    [HideInInspector] public UnityEvent EVENT_AUTHENTICATED = new UnityEvent();
+    public void OnAuthenticated()
+    {
+        FindObjectOfType<MainMenuManager>().SetupPostAuthenticationButtons();
+        FindObjectOfType<SettingsManager>().EnableLogoutAndWalletsButtons();
+        FindObjectOfType<SettingsButtonManager>().OnAuthenticated();
+        FindObjectOfType<WalletPanel>().UpdateWalletInfo();
+        FindObjectOfType<ArmoryPanelManager>().PopulatePlayerGearInventory();
+    }
 
     //PROFILE EVENTS
     [HideInInspector] public UnityEvent<string> EVENT_REQUEST_PROFILE { get; } = new UnityEvent<string>();
@@ -34,7 +40,11 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<bool> EVENT_TREASURYPANEL_ACTIVATION_REQUEST = new UnityEvent<bool>();
 
     //ARMORY EVENTS
-    [HideInInspector] public UnityEvent<bool> EVENT_SHOW_ARMORY_PANEL = new UnityEvent<bool>();
+    //[HideInInspector] public UnityEvent<bool> EVENT_SHOW_ARMORY_PANEL = new UnityEvent<bool>();
+    public void ShowArmoryPanel(bool show)
+    {
+        FindObjectOfType<ArmoryPanelManager>().ActivateContainer(show);
+    }
 
     //CONFIRMATION PANEL EVENTS
     [HideInInspector]
@@ -151,9 +161,12 @@ public class GameManager : SingleTon<GameManager>
     public UnityEvent<PlayerStateData> EVENT_PLAYER_STATUS_UPDATE { get; } = new UnityEvent<PlayerStateData>();
 
     [HideInInspector] public UnityEvent<PlayerData> EVENT_UPDATE_PLAYER = new UnityEvent<PlayerData>();
-
-    // NFT SKIN EVENTS
-    [HideInInspector] public UnityEvent<Nft> EVENT_NFT_SELECTED { get; } = new UnityEvent<Nft>();
+    
+    
+    public void NftSelected(Nft nft)
+    {
+        PlayerSpriteManager.Instance.BuildPlayer(nft);
+    }
 
     public void UpdateNft(Trait trait, string value)
     {
@@ -162,8 +175,15 @@ public class GameManager : SingleTon<GameManager>
     
     public void UpdatePlayerSkin()
     {
-        FindObjectOfType<PlayerSkinManager>(true).SkinReset();
-        FindObjectOfType<ArmoryPanelManager>().ResetCharacterSelectionUI();
+        if (CurrentScene == inGameScenes.MainMenu)
+        {
+            FindObjectOfType<PlayerSkinManager>(true)?.SkinReset();
+        }
+        else if (CurrentScene == inGameScenes.Expedition)
+        {
+            FindObjectOfType<PlayerSkinManager>()?.SkinReset();
+        }
+        FindObjectOfType<ArmoryPanelManager>()?.ResetCharacterSelectionUI();
     }
 
     //TOP BAR EVENTS

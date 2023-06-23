@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1828510403443548
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4319126302100030}
+  - component: {fileID: 114377207886805800}
+  m_Layer: 0
+  m_Name: ImageQLoader_Demo_Prefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4319126302100030
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828510403443548}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114377207886805800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828510403443548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b78b77e220314858be002a00748b02c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_DestroyOnComplete: 1
+  m_AutoClearLoadHistory: 1
+  m_MaxLoaderNum: 3
+  m_MaxQueueSize: 0
+  LMGT:
+    IsDebug: 1
+    CacheMode: 1
+    CacheDirectoryEnum: 0
+    FolderName: QLoader Demo
+    CacheAsPerUrl: 0
+    FileNamePrefix: Pic
+    FileExtension: .png
+    FileIndexFormatDigitsCount: 4
+    FileNameStartingIndex: 0
+    FileNameAndIndexSeparator: _
+    MaxCacheFilePerFolder: 0
+    MinTimeForKeepingFiles: 0
+    MaxTimeForKeepingFiles: 0
+    LoadingRetry: 0
+    LoadingTimeOut: 0
+    AllowDuplicateDownload: 1
+    KeepImageData: 0
+  m_UrlObjects:
+  - imageUrl: https://wonderfulengineering.com/wp-content/uploads/2016/01/Desktop-Wallpaper-4.jpg
+    customFilename: 
+    overrideFilename: 
+    loaded: 0
+  - imageUrl: https://cdn.pixabay.com/photo/2017/02/21/04/46/scene-2084652_960_720.jpg
+    customFilename: MyFileName_B
+    overrideFilename: MyFileName_B
+    loaded: 0
+  - imageUrl: https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500
+    customFilename: 
+    overrideFilename: 
+    loaded: 0
+  - imageUrl: https://infinityside8.files.wordpress.com/2014/03/finlandia.jpg
+    customFilename: MyFileName_A
+    overrideFilename: MyFileName_A
+    loaded: 0
+  - imageUrl: https://static.wixstatic.com/media/40145e_b09f3e4c91714659a5fbbc69b3d1c76a~mv2.png
+    customFilename: ImageLoaderCover
+    overrideFilename: 
+    loaded: 0
+  - imageUrl: https://images-na.ssl-images-amazon.com/images/I/61kr-B2yU7L._SY450_.jpg
+    customFilename: 
+    overrideFilename: 
+    loaded: 0
+  - imageUrl: https://i.pinimg.com/originals/b4/f7/38/b4f7388203082d91b5a76b768587f193.jpg
+    customFilename: MyFileName_D
+    overrideFilename: MyFileName_D
+    loaded: 0
+  - imageUrl: https://cdn.vox-cdn.com/thumbor/ij3w3ZbVR5-vqsDk9W4_wZCbLrI=/cdn.vox-cdn.com/uploads/chorus_asset/file/3847972/11379249_1467686426858468_402561493_n.0.jpg
+    customFilename: 
+    overrideFilename: 
+    loaded: 0
+  - imageUrl: https://cdn.vox-cdn.com/thumbor/s6cI4NEU9hgaUFjXfyVPMmMc044=/cdn.vox-cdn.com/uploads/chorus_asset/file/3847870/11376655_479893395513491_201556343_n.0.jpg
+    customFilename: 
+    overrideFilename: 
+    loaded: 0

@@ -85,7 +85,7 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
     {
         await UserDataManager.Instance.UpdatePlayerProfile();
         WalletManager.Instance.SetActiveWallet();
-        GameManager.Instance.EVENT_AUTHENTICATED.Invoke();
+        GameManager.Instance.OnAuthenticated();
     }
 
     public void SetSessionToken(string token)
