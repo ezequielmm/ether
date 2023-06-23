@@ -4949,9 +4949,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5ed93504eb9d8f41ad728b09418cced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EVENT_AUTHENTICATED:
-    m_PersistentCalls:
-      m_Calls: []
   EVENT_REQUEST_PROFILE_ERROR:
     m_PersistentCalls:
       m_Calls: []
@@ -4968,9 +4965,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   EVENT_TREASURYPANEL_ACTIVATION_REQUEST:
-    m_PersistentCalls:
-      m_Calls: []
-  EVENT_SHOW_ARMORY_PANEL:
     m_PersistentCalls:
       m_Calls: []
   EVENT_SHOW_CONFIRMATION_PANEL:
@@ -5598,7 +5592,7 @@ PrefabInstance:
     - target: {fileID: 1325322342185662606, guid: 84d0035375b14914aaadb5031aae0732,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3956595393700516434, guid: 84d0035375b14914aaadb5031aae0732,
         type: 3}

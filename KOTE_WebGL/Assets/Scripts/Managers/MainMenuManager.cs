@@ -41,7 +41,6 @@ public class MainMenuManager : MonoBehaviour
     public bool _isWhitelisted => true;
 
     [SerializeField] PostProcessingTransition postProcessingTransition;
-    [SerializeField] Leaderboard leaderboard;
     private bool showingLeaderboard;
 
     private void Start()
@@ -229,10 +228,6 @@ public class MainMenuManager : MonoBehaviour
             //GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);
             GameManager.Instance.ShowArmoryPanel(true);
         }
-
-
-        leaderboard.Show(false);
-
     }
     void OnTransitionEnd()
     {
@@ -244,8 +239,6 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
         GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Do you want to cancel the current expedition?",
             OnNewExpeditionConfirmed);
-
-       leaderboard.Show(false);
     }
 
     public async void OnNewExpeditionConfirmed()
@@ -257,15 +250,6 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnLeaderboardButton()
     {
-        if(showingLeaderboard)
-        {
-            leaderboard.Show(false);
-            showingLeaderboard=false;
-            return;
-        }
-       this.showingLeaderboard = true;
-        leaderboard.Show(true);
+        Application.OpenURL(ClientEnvironmentManager.Instance.LeaderboardURL);
     }
-
-  
 }

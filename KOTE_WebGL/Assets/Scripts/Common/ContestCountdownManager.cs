@@ -16,8 +16,6 @@ public class ContestCountdownManager : MonoBehaviour
     [SerializeField]
     TMP_Text CountdownBlurb;
 
-    [SerializeField] private Leaderboard leaderboard;
-    
     private void Awake()
     {
         contest = ContestManager.Instance;
