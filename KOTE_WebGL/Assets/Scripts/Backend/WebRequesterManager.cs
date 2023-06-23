@@ -70,9 +70,9 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
                  ((request?.error?.Contains("401") ?? false) || (request?.error?.Contains("403") ?? false)))
             {
                 Debug.Log($"[WebRequesterManager] Token is invalid. Logging out.");
-                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
-                    "Your session has expired. Please log in again.",
-                    () => { AuthenticationManager.Instance.Logout(); });
+                GameManager.Instance.ShowConfirmationPanel(
+                    "Your session has expired. Please log in again.", 
+                    () => { AuthenticationManager.Instance.Logout(); }, false);
             }
             return null;
         }

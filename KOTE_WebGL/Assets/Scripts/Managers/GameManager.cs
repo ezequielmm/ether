@@ -47,8 +47,13 @@ public class GameManager : SingleTon<GameManager>
     }
 
     //CONFIRMATION PANEL EVENTS
-    [HideInInspector]
-    public UnityEvent<string, Action> EVENT_SHOW_CONFIRMATION_PANEL = new UnityEvent<string, Action>();
+    public void ShowConfirmationPanel(string text, Action function, bool showBack = true)
+    {
+        var confirmationPanelManager = FindObjectOfType<ConfirmationPanelManager>();
+        
+        confirmationPanelManager.ShowConfirmationPanel(text, function);
+        confirmationPanelManager.ShowBackButton(showBack);
+    }
 
     [HideInInspector] public UnityEvent<string, Action, Action> EVENT_SHOW_CONFIRMATION_PANEL_WITH_BACK_ACTION =
         new UnityEvent<string, Action, Action>();

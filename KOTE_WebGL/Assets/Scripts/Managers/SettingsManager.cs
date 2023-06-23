@@ -101,7 +101,7 @@ public class SettingsManager : MonoBehaviour
 
     public void ActivateLogoutConfirmPanel()
     {
-        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Do you want to logout?",
+        GameManager.Instance.ShowConfirmationPanel("Do you want to logout?",
             () =>
             {
                 logoutHyperlink.interactable = false;

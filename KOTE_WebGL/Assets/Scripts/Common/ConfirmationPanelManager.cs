@@ -23,13 +23,17 @@ public class ConfirmationPanelManager : MonoBehaviour
     private void Start()
     {
         confirmationPanelContainer.SetActive(false);
-        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.AddListener(ShowConfirmationPanel);
         GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_BACK_ACTION.AddListener(ShowConfirmationPanelWithBackAction);
         GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.AddListener(ShowConfirmationPanelWIthFullControl);
 
     }
 
-    private void ShowConfirmationPanel(string displayText, Action onConfirmFunction)
+    public void ShowBackButton(bool showBack)
+    {
+        cancelButton.SetActive(showBack);
+    }
+    
+    public void ShowConfirmationPanel(string displayText, Action onConfirmFunction)
     {
         if (confirmationPanelContainer.activeSelf) return;
         confirmButton.SetActive(true);

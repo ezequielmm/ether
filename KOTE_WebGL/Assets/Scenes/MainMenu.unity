@@ -1665,7 +1665,7 @@ PrefabInstance:
         type: 3}
       propertyPath: leaderboard
       value: 
-      objectReference: {fileID: 1532804568}
+      objectReference: {fileID: 0}
     - target: {fileID: 4773993128978443477, guid: 623ab04dd0b8de04c954f90719100983,
         type: 3}
       propertyPath: m_Pivot.x
@@ -2823,6 +2823,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -37.65
       objectReference: {fileID: 0}
+    - target: {fileID: 3586124927175046008, guid: d2e06bd1a4ff8264ea5e7faae64b81e5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3779016675993651453, guid: d2e06bd1a4ff8264ea5e7faae64b81e5,
         type: 3}
       propertyPath: m_IsActive
@@ -3768,18 +3773,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1532804566}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1532804568 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8237511551386815534, guid: 25ae249582707334a9b8c7a5c92b879f,
-    type: 3}
-  m_PrefabInstance: {fileID: 1532804566}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7143cfc56c84e1b42a4b06073d260cc1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &1602439724 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7986825379624671967, guid: 06a86a70f65420f4796a8a6dfd201f79,

@@ -79,8 +79,7 @@ public class NodeData : MonoBehaviour, ITooltipSetter
         // if clicking on a royal house node, we want to ask the player for confirmation before activating the node
         if (type == NODE_TYPES.royal_house)
         {
-            GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
-                "Do you want to enter " + title + "?", OnConfirmRoyalHouse);
+            GameManager.Instance.ShowConfirmationPanel("Do you want to enter " + title + "?", OnConfirmRoyalHouse);
             return;
         }
         

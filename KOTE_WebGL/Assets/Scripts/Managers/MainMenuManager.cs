@@ -183,7 +183,7 @@ public class MainMenuManager : MonoBehaviour
     public void OnWalletConnectButton()
     {
         wallet.SetActiveWallet();
-        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Please check MetaMask to finish connecting your wallet",
+        GameManager.Instance.ShowConfirmationPanel("Please check MetaMask to finish connecting your wallet",
             () => { });
     }
 
@@ -237,7 +237,7 @@ public class MainMenuManager : MonoBehaviour
     public void OnNewExpeditionButton()
     {
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-        GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke("Do you want to cancel the current expedition?",
+        GameManager.Instance.ShowConfirmationPanel("Do you want to cancel the current expedition?",
             OnNewExpeditionConfirmed);
     }
 
