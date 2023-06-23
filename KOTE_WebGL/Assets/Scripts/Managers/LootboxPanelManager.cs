@@ -30,6 +30,7 @@ public class LootboxPanelManager : MonoBehaviour
     public void OnCollectLoot()
     {
         //GameManager.Instance.LoadScene(inGameScenes.MainMenu);
+        LoadingManager.Won = true;
         Cleanup.CleanupGame();
     }
 
