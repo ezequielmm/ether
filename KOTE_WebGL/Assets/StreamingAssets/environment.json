@@ -1,8 +1,8 @@
 {
-  "request_url" : "https://api.test.knightsoftheether.com/",
-  "skin_url": "https://koteskins.robotseamonster.com/",
-  "gear_icon_url" :"https://koteskins.robotseamonster.com/GearIcons/",
-  "portrait_url" :"https://koteskins.robotseamonster.com/Portraits/",
-  "socket_url" : "https://api.test.knightsoftheether.com/",
+  "request_url" : "https://api.dev.knightsoftheether.com/",
+  "skin_url": "https://dev.knightsoftheether.com/",
+  "gear_icon_url" :"https://dev.knightsoftheether.com/GearIcons/",
+  "portrait_url" :"https://dev.knightsoftheether.com/Portraits/",
+  "socket_url" : "https://api.dev.knightsoftheether.com/",
   "leaderboard_url" : "https://app.treasure.lol/tournaments/mydsummer-madness"
 }

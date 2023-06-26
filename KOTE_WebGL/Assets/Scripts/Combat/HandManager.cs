@@ -9,8 +9,6 @@ namespace KOTE.Expedition.Combat.Cards.Piles
     {
          public List<CardManager> handDeck = new();
 
-        public GameObject explosionEffectPrefab;
-
         int cardsDrawn = 0;
         bool audioRunning = false;
 

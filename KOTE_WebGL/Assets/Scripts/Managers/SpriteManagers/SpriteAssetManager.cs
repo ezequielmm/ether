@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public class SpriteAssetManager : SingleTon<SpriteAssetManager>
 {
@@ -14,6 +15,8 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
     public NamedSpriteList statusIcons;
     private List<(int, int)> _potionListRanges = new List<(int, int)>();
     private Dictionary<int, Sprite> trinketMap = new Dictionary<int, Sprite>();
+    
+    Dictionary<string, Sprite> cache = new Dictionary<string, Sprite>();
 
     private void Start()
     {
@@ -121,14 +124,49 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
         return defaultImage;
     }
 
-    public Sprite GetEncounterCreature(string name)
+    public void GetEncounterCreature(string name, Action<Sprite> onSuccess)
     {
+        if (cache.ContainsKey(name))
+        {
+            onSuccess?.Invoke(cache[name]);
+            return;
+        }
+        
         if (encounterCreatureList.SpriteList.Exists(item => item.name == name))
         {
-            return encounterCreatureList.SpriteList.Find(x => x.name == name).image;
+            Debug.Log($"Found: {name}");
+            var namedSprite = encounterCreatureList.SpriteList.Find(x => x.name == name);
+            if (namedSprite.image != null)
+            {
+                cache.Add(name, namedSprite.image);
+                onSuccess?.Invoke(namedSprite.image);
+            }
+            else
+            {
+                StartCoroutine(LoadSprite(
+                    namedSprite.imageRef,
+                    (sprite) =>
+                    {
+                        onSuccess?.Invoke(sprite);
+                        cache.Add(name, sprite);
+                    }));
+            }
         }
+        else
+        {
+            Debug.LogError($"No image found for encounter creature {name}");
+            onSuccess?.Invoke(encounterCreatureList.SpriteList[0].image);
+            cache.Add(name, encounterCreatureList.SpriteList[0].image);
+        }
+    }
 
-        Debug.LogError($"No image found for encounter creature {name}");
-        return encounterCreatureList.SpriteList[0].image;
+    IEnumerator LoadSprite(AssetReference assetReference, Action<Sprite> onSuccess)
+    {
+        var async = assetReference.LoadAssetAsync<Sprite>();
+        while (!async.IsDone)
+            yield return null;
+
+        Debug.Log($"Rresult: {async.Result}");
+        onSuccess.Invoke(async.Result);
     }
 }

@@ -14,26 +14,86 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpriteList:
   - name: changedone
-    image: {fileID: 21300000, guid: e114905ddce382743ac8086c281229c4, type: 3}
+    image: {fileID: 0}
+    imageRef:
+      m_AssetGUID: e114905ddce382743ac8086c281229c4
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: giantchameleon
-    image: {fileID: 21300000, guid: 6add5ac890eaf4e479c9bc3fbbf9b54a, type: 3}
+    image: {fileID: 0}
+    imageRef:
+      m_AssetGUID: 6add5ac890eaf4e479c9bc3fbbf9b54a
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: stumpcreatures
-    image: {fileID: 21300000, guid: bd7cca73bb9a5484495b1e58659d62b1, type: 3}
+    image: {fileID: 0}
+    imageRef:
+      m_AssetGUID: bd7cca73bb9a5484495b1e58659d62b1
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: youngseatedwizard
-    image: {fileID: 21300000, guid: e863c0e6927e5f84281d847066202e44, type: 3}
+    image: {fileID: 0}
+    imageRef:
+      m_AssetGUID: e863c0e6927e5f84281d847066202e44
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: runicbeehive
-    image: {fileID: 21300000, guid: b84ee2fbfcc80b1489cb0bcfdd954fc7, type: 3}
+    image: {fileID: 0}
+    imageRef:
+      m_AssetGUID: b84ee2fbfcc80b1489cb0bcfdd954fc7
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: ents
-    image: {fileID: 21300000, guid: 869068cdb7cc65e4a85e03601878c2ab, type: 3}
+    image: {fileID: 0}
+    imageRef:
+      m_AssetGUID: 869068cdb7cc65e4a85e03601878c2ab
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: troll
-    image: {fileID: 21300000, guid: a7af417e637316e42a5014f41a1a03a8, type: 3}
+    image: {fileID: 0}
+    imageRef:
+      m_AssetGUID: a7af417e637316e42a5014f41a1a03a8
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: spiritwell
-    image: {fileID: 21300000, guid: 8b1fe4ec171a4b84a9a9b0f71ed1eda8, type: 3}
+    image: {fileID: 0}
+    imageRef:
+      m_AssetGUID: 8b1fe4ec171a4b84a9a9b0f71ed1eda8
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: willowisp
-    image: {fileID: 21300000, guid: 801578395667b0746a806f260319157d, type: 3}
+    image: {fileID: 0}
+    imageRef:
+      m_AssetGUID: 801578395667b0746a806f260319157d
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: nagpra
-    image: {fileID: 21300000, guid: f8c65507e1b959542b0fd608202087aa, type: 3}
+    image: {fileID: 0}
+    imageRef:
+      m_AssetGUID: f8c65507e1b959542b0fd608202087aa
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: naiad
-    image: {fileID: 21300000, guid: 07897ff57367d404bbda15100d1efe36, type: 3}
+    image: {fileID: 0}
+    imageRef:
+      m_AssetGUID: 07897ff57367d404bbda15100d1efe36
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: satyr
-    image: {fileID: 21300000, guid: b2d78a01076b9c047a2919fff699717b, type: 3}
+    image: {fileID: 0}
+    imageRef:
+      m_AssetGUID: b2d78a01076b9c047a2919fff699717b
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0

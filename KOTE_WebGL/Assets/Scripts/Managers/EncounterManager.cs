@@ -154,8 +154,16 @@ public class EncounterManager : MonoBehaviour
 
     private void Populate(EncounterData encounterData)
     {
-        creatureImage.sprite = SpriteAssetManager.Instance.GetEncounterCreature(encounterData.imageId);
-        creatureImage.SetNativeSize();
+        creatureImage.enabled = false;
+        SpriteAssetManager.Instance.GetEncounterCreature(encounterData.imageId, (sprite) =>
+        {
+            creatureImage.enabled = true;
+            creatureImage.sprite = sprite;
+            creatureImage.SetNativeSize();
+        });
+    
+        
+        
         titleText.text = encounterData.encounterName;
         SetDialogueText(encounterData.displayText);
         SetButtons(encounterData.buttons);

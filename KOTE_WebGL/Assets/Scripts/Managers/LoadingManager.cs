@@ -38,6 +38,7 @@ public class LoadingManager : MonoBehaviour
             yield return new WaitForSeconds(2);
             
             string token = Resources.Load<TextAsset>("env/token")?.text;
+            Debug.Log($"token: {token}");
             if(string.IsNullOrEmpty(token))
             {
                 Debug.LogError("Error in getting token from local environment, check Resources/env/token.txt (case sensitive), create token.txt please");
@@ -69,7 +70,6 @@ public class LoadingManager : MonoBehaviour
         }
         Debug.Log("Login not first load ::  " + GameManager.Instance.nextSceneToLoad.ToString());
         LoadScene();
-        DontDestroyOnLoad(gameObject);
         if (LoadGroup)
             LoadGroup.SetActive(true);
     }
@@ -89,16 +89,16 @@ public class LoadingManager : MonoBehaviour
 
     IEnumerator LoadAsynchronously(string sceneName)
     {
-        // The Application loads the Scene in the background as the current Scene runs.
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-        Debug.Log(" LoadAsynchronously " + sceneName);
-        // Wait until the asynchronous scene fully loads
-
         if (!addressablesLoaded)
         {
             yield return LoadAddressables();
             addressablesLoaded = true;
         }
+        
+        // The Application loads the Scene in the background as the current Scene runs.
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+        Debug.Log(" LoadAsynchronously " + sceneName);
+        // Wait until the asynchronous scene fully loads
         
         while (!asyncLoad.isDone)
         {
