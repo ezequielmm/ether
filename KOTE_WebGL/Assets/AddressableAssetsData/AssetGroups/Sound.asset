@@ -105,10 +105,6 @@ MonoBehaviour:
     m_Address: Assets/Audio/Sfx/UI Sounds/Use_Potion.ogg
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: b636ccc80c0f6d24fa2b6ff943c11cd9
-    m_Address: Assets/Audio/Mixer.mixer
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: 6d155a1cabf112d4786f1caa72262735
     m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Ancient_One_Cast.ogg
     m_ReadOnly: 0

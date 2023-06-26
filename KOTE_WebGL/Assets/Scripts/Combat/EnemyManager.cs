@@ -5,6 +5,7 @@ using DG.Tweening;
 using Spine.Unity;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
 public class EnemyManager : MonoBehaviour, ITooltipSetter
@@ -23,6 +24,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     public bool setEnemy = false;
 
     [SerializeField] private List<GameObject> enemyMap;
+    [SerializeField] private List<AssetReference> enemyMapAssets;
     
     private EnemyData enemyData;
     private EnemyPrefab enemyPlacementData;
@@ -39,6 +41,8 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     private SkeletonRenderTextureFadeout spineFadeout;
     private CharacterSound characterSound;
 
+    public static Dictionary<string, GameObject> InstantiatedEnemiesCache = new Dictionary<string, GameObject>();
+    public static Dictionary<string, List<Action<GameObject>>> ThePainTrain = new Dictionary<string, List<Action<GameObject>>>();
 
     public EnemyData EnemyData
     {
@@ -87,12 +91,13 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         }
     }
 
-    private void SetEnemyPrefab(string enemyType)
+    private void SetEnemyPrefabOLD(string enemyType)
     {
         var currentPrefab = GetComponentInChildren<EnemyPrefab>();
         if (currentPrefab != null)
             Destroy(currentPrefab.gameObject);
         var prefab = GetEnemyPrefab(enemyType);
+        
         if (prefab != null)
         {
             activeEnemy = Instantiate(prefab, transform);
@@ -120,6 +125,76 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         }
     }
 
+    private void SetEnemyPrefab(string enemyType)
+    {
+        var currentPrefab = GetComponentInChildren<EnemyPrefab>();
+        if (currentPrefab != null)
+            Destroy(currentPrefab.gameObject);
+
+        enemyType = enemyType.ToLower().Replace(" ", "").Trim();
+        Debug.Log($"enemyType: {enemyType}");
+        LoadEnemyPrefab(enemyType, (instance) =>
+        {
+            activeEnemy = instance;
+            activeEnemy.transform.SetParent(transform);
+            activeEnemy.transform.localPosition = Vector3.zero;
+            GrabEnemyFadeout(activeEnemy);
+            enemyPlacementData = activeEnemy.GetComponentInChildren<EnemyPrefab>();
+            enemyPlacementData.FitColliderToArt();
+            // Add the cursorEnter and Exit for tooltips
+            // Set mounting points
+            Vector3 top = enemyPlacementData.intentMountingPoint.position;
+            top.y = Mathf.Min(GameSettings.INTENT_MAX_HEIGHT, top.y);
+            TopBar.position = top;
+            Vector3 bottom = enemyPlacementData.healthMountingPoint.position;
+            bottom.y = Mathf.Max(transform.position.y, bottom.y);
+            BottomBar.position = bottom;
+
+            collider = activeEnemy.GetComponentInChildren<Collider2D>();
+            enemyBounds = collider.bounds;
+            collider.enabled = false;
+
+            this.enemyType = enemyType.ParseToEnum<EnemyTypes>();
+            gameObject.name = Enum.GetName(typeof(EnemyTypes), this.enemyType);
+
+            Instantiate();
+        });
+        
+        
+    }
+
+    private void LoadEnemyPrefab(string enemyName, Action<GameObject> onSuccess)
+    {
+        if (InstantiatedEnemiesCache.ContainsKey(enemyName))
+        {
+            onSuccess?.Invoke(Instantiate(InstantiatedEnemiesCache[enemyName]));
+        }
+        else
+        {
+            if (!ThePainTrain.ContainsKey(enemyName))
+                ThePainTrain.Add(enemyName, new List<Action<GameObject>>());
+
+            ThePainTrain[enemyName].Add(onSuccess);
+            
+            StartCoroutine(Load(enemyName));   
+        }
+    }
+    IEnumerator Load(string enemyName)
+    {
+        var handle = Addressables.LoadAssetAsync<GameObject>(enemyName);
+        while (!handle.IsDone)
+            yield return null;
+        
+        if (!InstantiatedEnemiesCache.ContainsKey(enemyName))
+            InstantiatedEnemiesCache.Add(enemyName, handle.Result);
+        
+        foreach (var callback in ThePainTrain[enemyName])
+        {
+            callback?.Invoke(Instantiate(handle.Result));
+        }
+        ThePainTrain[enemyName].Clear();
+    }
+    
     private void OnAttackRequest(CombatTurnData attack)
     {
         // TODO: Ensure that the player sets the correct enemy when attacked.
@@ -315,6 +390,15 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         
     }
 
+    public static void ClearCache()
+    {
+        // foreach (var kv in InstantiatedEnemiesCache)
+        // {
+        //     Addressables.Release(kv.Value);
+        // }
+        // InstantiatedEnemiesCache.Clear();
+    }
+    
     private void Instantiate()
     {
         // Grab first spine animation management script we find. This is a default. We'll set this when spawning the enemy usually.

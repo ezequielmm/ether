@@ -349,6 +349,7 @@ public class WebSocketParser
             case nameof(WS_MESSAGE_ACTIONS.show_map):
                 // Change to Loader Scene which will load the Map Scene
                 GameManager.Instance.LoadScene(inGameScenes.Expedition);
+                EnemyManager.ClearCache();
                 break;
 
             default:

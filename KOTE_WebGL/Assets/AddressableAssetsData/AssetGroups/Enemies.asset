@@ -1,0 +1,844 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Enemies
+  m_EditorClassIdentifier: 
+  m_GroupName: Enemies
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 65b9c2ee9572f4b4c97e438c79b9adb4
+  m_SerializeEntries:
+  - m_GUID: f4691dbdbef40ab45afd73a67ad0ecfc
+    m_Address: Assets/Animations/Enemies/Act 1/AncientOne/AncientOne.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c9859df4dba0fa4469219213f2bab42d
+    m_Address: Assets/Animations/Enemies/Act 1/AncientOne/AncientOne.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e459fd70946b0d24ea5699407441725a
+    m_Address: Assets/Animations/Enemies/Act 1/AncientOne/AncientOne.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d78b9d6bdd882ba41a8aa21928442f29
+    m_Address: Assets/Animations/Enemies/Act 1/AncientOne/AncientOne_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 21eae771fb18b654b9b4209be6c72ae9
+    m_Address: Assets/Animations/Enemies/Act 1/AncientOne/AncientOne_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4242ce5df28c4a548a62d0d0b13101bf
+    m_Address: Assets/Animations/Enemies/Act 1/Barkcharger/Barkcharger.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 37207029ca18c6d44b5a7cbd2f9cbe50
+    m_Address: Assets/Animations/Enemies/Act 1/Barkcharger/Barkcharger.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3bd490c98c281fc46919f0db81b77bf8
+    m_Address: Assets/Animations/Enemies/Act 1/Barkcharger/Barkcharger.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 61109ad8db9aad24694fba06aaed167e
+    m_Address: Assets/Animations/Enemies/Act 1/Barkcharger/Barkcharger_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 546dbc511d17bf849bf811494e1f7616
+    m_Address: Assets/Animations/Enemies/Act 1/Barkcharger/Barkcharger_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5b09f4276d01e1640a6a7ef47c90e0fd
+    m_Address: Assets/Animations/Enemies/Act 1/FungalBrute/FungalBrute.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2ecd34dd189cf7a46b40bb6b8824b6d8
+    m_Address: Assets/Animations/Enemies/Act 1/FungalBrute/FungalBrute.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cd7c2758e0a39cf4eb88a8bc9b05f628
+    m_Address: Assets/Animations/Enemies/Act 1/FungalBrute/FungalBrute.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: df0d957f662fc49408b2c8d563215465
+    m_Address: Assets/Animations/Enemies/Act 1/FungalBrute/FungalBrute_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b52ec3ece9642594d852e9a274d47046
+    m_Address: Assets/Animations/Enemies/Act 1/FungalBrute/FungalBrute_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 99557e5f3ea91d94a8b132ac6d7e5472
+    m_Address: Assets/Animations/Enemies/Act 1/FungalBrute_Minions/FungalBrute_Minions.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9f897ef57a8509a40b3410ff6db929cb
+    m_Address: Assets/Animations/Enemies/Act 1/FungalBrute_Minions/FungalBrute_Minions.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 674c2fa2713a26f499edb98840670341
+    m_Address: Assets/Animations/Enemies/Act 1/FungalBrute_Minions/FungalBrute_Minions.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4c8f1f38f9026554a9d8de9fda606ef4
+    m_Address: Assets/Animations/Enemies/Act 1/FungalBrute_Minions/FungalBrute_Minions_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d8a59a05a93400f4e81bcc2d5b27a72a
+    m_Address: Assets/Animations/Enemies/Act 1/FungalBrute_Minions/FungalBrute_Minions_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4149e273d61089f46b5a55dd1ec58167
+    m_Address: Assets/Animations/Enemies/Act 1/GroundMoth/GroundMoth.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 15c6220e7b38e3a4cb6a0aea6eb33fc0
+    m_Address: Assets/Animations/Enemies/Act 1/GroundMoth/GroundMoth.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d8bc48f319afb1943be3b8020ab6f297
+    m_Address: Assets/Animations/Enemies/Act 1/GroundMoth/GroundMoth.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fd38bd64cd3148d47bcee1fd1430e743
+    m_Address: Assets/Animations/Enemies/Act 1/GroundMoth/GroundMoth_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c6b4eebf07582b448b1264bf7b37eaf1
+    m_Address: Assets/Animations/Enemies/Act 1/GroundMoth/GroundMoth_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 71a1b464c93f786478f6c3a3ab037c81
+    m_Address: Assets/Animations/Enemies/Act 1/MimicFrog1/MimicFrog1.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 25763b8654a27d147920fec7a5239a5e
+    m_Address: Assets/Animations/Enemies/Act 1/MimicFrog1/MimicFrog1.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9efc5f6bfd4034742810fd0c28891fef
+    m_Address: Assets/Animations/Enemies/Act 1/MimicFrog1/MimicFrog1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 19e3f814de4c1b04ab59e92e5a326277
+    m_Address: Assets/Animations/Enemies/Act 1/MimicFrog1/MimicFrog1_2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e933c819e71e2ab43b2846b131100828
+    m_Address: Assets/Animations/Enemies/Act 1/MimicFrog1/MimicFrog1_3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d00f7c204a690d545b5128c3fca9da80
+    m_Address: Assets/Animations/Enemies/Act 1/MimicFrog1/MimicFrog1_4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 640227ca04edced42a52b8644d1bac7e
+    m_Address: Assets/Animations/Enemies/Act 1/MimicFrog1/MimicFrog1_5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3566d480837313246b8c8557945ea157
+    m_Address: Assets/Animations/Enemies/Act 1/MimicFrog1/MimicFrog1_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0cb38b372cabc114d860d579f0980472
+    m_Address: Assets/Animations/Enemies/Act 1/MimicFrog1/MimicFrog1_MimicFrog1.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 54c8602b0bde1cf4498da8cb48028fdc
+    m_Address: Assets/Animations/Enemies/Act 1/MimicFrog1/MimicFrog1_MimicFrog1_2.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ba06fd0cea48ec04bb85d2f11c01da0b
+    m_Address: Assets/Animations/Enemies/Act 1/MimicFrog1/MimicFrog1_MimicFrog1_3.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4b33b3e51c5dc2141865565799b58a7a
+    m_Address: Assets/Animations/Enemies/Act 1/MimicFrog1/MimicFrog1_MimicFrog1_4.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6f41ca1e038c12349ab2ccb5c898d88c
+    m_Address: Assets/Animations/Enemies/Act 1/MimicFrog1/MimicFrog1_MimicFrog1_5.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1694412ae1962434e8c0ba59772ada3f
+    m_Address: Assets/Animations/Enemies/Act 1/QueenOrchid/QueenOrchid.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8f4bd5e6e6f0b3f41875870a6850f615
+    m_Address: Assets/Animations/Enemies/Act 1/QueenOrchid/QueenOrchid.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7e966b13c7aa1e14f968b8413847ffdd
+    m_Address: Assets/Animations/Enemies/Act 1/QueenOrchid/QueenOrchid.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 30d7cef557ac8224ab44baa8f78fafe2
+    m_Address: Assets/Animations/Enemies/Act 1/QueenOrchid/QueenOrchid_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 277c256f76e68d9448201de0bd14f00d
+    m_Address: Assets/Animations/Enemies/Act 1/QueenOrchid/QueenOrchid_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7fd02aea39eee47ec8aea351242e4932
+    m_Address: Assets/Animations/Enemies/Act 1/SporeMonger/SporeMonger.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: db4f030ee69bd444da7fcbfb65a4a715
+    m_Address: Assets/Animations/Enemies/Act 1/SporeMonger/SporeMonger.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 247e77ebba02c4cc8bf281ded8b135a0
+    m_Address: Assets/Animations/Enemies/Act 1/SporeMonger/SporeMonger.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: eaec6c3ab294e49a5b14a597bcc9dc3e
+    m_Address: Assets/Animations/Enemies/Act 1/SporeMonger/SporeMonger_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1dd931316cdb4485fac891ad4e0418b4
+    m_Address: Assets/Animations/Enemies/Act 1/SporeMonger/SporeMonger_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b1c538f4314ea1c40a1e8db5e2e27a7c
+    m_Address: Assets/Animations/Enemies/Act 1/StingFae1/StingFae1.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 54bb12f0c8ca1b54cbe3b2e1a26cc0d2
+    m_Address: Assets/Animations/Enemies/Act 1/StingFae1/StingFae1.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 324b5c8920de88644a64a3ad651739bb
+    m_Address: Assets/Animations/Enemies/Act 1/StingFae1/StingFae1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9c10099806a9bb144b99ede561d5c937
+    m_Address: Assets/Animations/Enemies/Act 1/StingFae1/StingFae1_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9484f0bdaf2f6d040b6a55de2c360386
+    m_Address: Assets/Animations/Enemies/Act 1/StingFae1/StingFae1_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 97a6634ecd48ede4cbfc039acd9bc9cc
+    m_Address: Assets/Animations/Enemies/Act 1/StingFae2/StingFae2.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fa80a0fce07ebac46897e27f8228657c
+    m_Address: Assets/Animations/Enemies/Act 1/StingFae2/StingFae2.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ea501cc3cb779a8429e5bbb505cb4de1
+    m_Address: Assets/Animations/Enemies/Act 1/StingFae2/StingFae2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e24b9451d0755c24382ff164b33621df
+    m_Address: Assets/Animations/Enemies/Act 1/StingFae2/StingFae2_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: faf623d6a75248d40a0a13cdada803ab
+    m_Address: Assets/Animations/Enemies/Act 1/StingFae2/StingFae2_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 73ab36fd83088314492dabb359e36cc0
+    m_Address: Assets/Animations/Enemies/Act 1/SwampGoblin1/SwampGoblin1.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3b7deadbfdea07e4389d46d499b035a3
+    m_Address: Assets/Animations/Enemies/Act 1/SwampGoblin1/SwampGoblin1.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0af60baa5332df34db33b235d654d301
+    m_Address: Assets/Animations/Enemies/Act 1/SwampGoblin1/SwampGoblin1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d7c41b6c256c31a4fa889f3f74222744
+    m_Address: Assets/Animations/Enemies/Act 1/SwampGoblin1/SwampGoblin1_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 408a087526a2f0d4581a59f4523f0cfd
+    m_Address: Assets/Animations/Enemies/Act 1/SwampGoblin1/SwampGoblin1_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e9cb32cfe2cbc6b45acd5fddc573f914
+    m_Address: Assets/Animations/Enemies/Act 1/SwampGoblin2/SwampGoblin2.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d5dec9ade5fc07048ad50b953f9f4ce2
+    m_Address: Assets/Animations/Enemies/Act 1/SwampGoblin2/SwampGoblin2.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c24182122e81e6b46a2a92f7b00c5f90
+    m_Address: Assets/Animations/Enemies/Act 1/SwampGoblin2/SwampGoblin2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 18760e58d2837a2468b9fb005b8b5b64
+    m_Address: Assets/Animations/Enemies/Act 1/SwampGoblin2/SwampGoblin2_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 06a96e6d5bc72bb45946b54462f5f6dc
+    m_Address: Assets/Animations/Enemies/Act 1/SwampGoblin2/SwampGoblin2_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 175fd39cce9dfce4f9eb427f35519f2e
+    m_Address: Assets/Animations/Enemies/Act 1/ThornWolf/ThornWolf.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2ba8fdf95db6963409e7757577b3375d
+    m_Address: Assets/Animations/Enemies/Act 1/ThornWolf/ThornWolf.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: acdd37f565773d648b232e34ac594257
+    m_Address: Assets/Animations/Enemies/Act 1/ThornWolf/ThornWolf.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4234534bf76772242b1070bbdb251233
+    m_Address: Assets/Animations/Enemies/Act 1/ThornWolf/ThornWolf_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 14fd117f620084b4f9c0f5eb3f145f24
+    m_Address: Assets/Animations/Enemies/Act 1/ThornWolf/ThornWolf_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2164f370c7c6f944fa2b75496a1ce798
+    m_Address: Assets/Animations/Enemies/Act 1/ThornWolfPup/ThornWolf_Pup.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 446a4dd776aa1124aacafcd77f7c7978
+    m_Address: Assets/Animations/Enemies/Act 1/ThornWolfPup/ThornWolf_Pup.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e06901296b96ea74ca0fef213234b44f
+    m_Address: Assets/Animations/Enemies/Act 1/ThornWolfPup/ThornWolf_Pup.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 872a43c579c84304590046fcd83e0f23
+    m_Address: Assets/Animations/Enemies/Act 1/ThornWolfPup/ThornWolf_Pup_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: afc3c59dcad096247a64d88cc0e8a7be
+    m_Address: Assets/Animations/Enemies/Act 1/ThornWolfPup/ThornWolf_Pup_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2848c9c271d1e5b4e94855716deb98f0
+    m_Address: Assets/Animations/Enemies/Act 1/Trapelican/Trapelican.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e10f0d5395d238641990c546dd9d1dba
+    m_Address: Assets/Animations/Enemies/Act 1/Trapelican/Trapelican.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c99ed7591b073ac438b3bacecf5860e6
+    m_Address: Assets/Animations/Enemies/Act 1/Trapelican/Trapelican.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bccc15134eed1a84ea6a92c59c2624d0
+    m_Address: Assets/Animations/Enemies/Act 1/Trapelican/Trapelican_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6672fb3f4ff157a47b76f23451f2301c
+    m_Address: Assets/Animations/Enemies/Act 1/Trapelican/Trapelican_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d659eafa852d9ba44b195c824f372616
+    m_Address: Assets/Animations/Enemies/Act 1/Treant/Treant.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 007cde1a46fc36b4d86503ad82e59bf9
+    m_Address: Assets/Animations/Enemies/Act 1/Treant/Treant.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d2aab197e1d04e54c97a642785c969af
+    m_Address: Assets/Animations/Enemies/Act 1/Treant/Treant.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b67be136029bb43469a8a31b84056795
+    m_Address: Assets/Animations/Enemies/Act 1/Treant/Treant_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3b779fd27139dfa42938391d31067090
+    m_Address: Assets/Animations/Enemies/Act 1/Treant/Treant_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b636ccc80c0f6d24fa2b6ff943c11cd9
+    m_Address: Assets/Audio/Mixer.mixer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 09f8a24339cc86a479a4681220386bdd
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/AncientOne/OGG/Ancientone-atack1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 48f657303d6ae8e4cb1f46f68e23635d
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/AncientOne/OGG/Ancientone-atack2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: be08073f90f1a074388096cac0b2c196
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/AncientOne/OGG/Ancientone-cast.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fbd2e66b62be0dc429670aae52aaceee
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/AncientOne/OGG/Ancientone-cast2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d880effd86028ce4f9ac1d8635349b11
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/AncientOne/OGG/Ancientone-death.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f606047fb025e5e4c956a01719d1ced6
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/AncientOne/OGG/Ancientone-hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: adb7f98d17a5ebf4fbd91634a046d43e
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Barkcharger/OGG/Atack01.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b91fb83cbdab7f548b44d6b49ed9b2bf
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Barkcharger/OGG/Atack02.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 28851ebbd1b119940a3f4089116f7bbb
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Barkcharger/OGG/Brace_hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7cd39c8f9bafe424ea637ad37cb0f0ca
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Barkcharger/OGG/death.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d2fb0a504e1e1f046bd086c8efb7111b
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Barkcharger/OGG/hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f0baa085afadd924e86501525b888f7f
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/FungalBrute/OGG/Fungalbrite-Atack1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: da2fb0a2bb6f07e4f8b98f5ff364b2a1
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/FungalBrute/OGG/Fungalbrite-Atack2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0c7f2a9c6fd6fcf4b8eb5ddec3acb123
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/FungalBrute/OGG/Fungalbrite-cast1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3057fb2cb95548645add6630c353b13e
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/FungalBrute/OGG/Fungalbrite-cast2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 881f44ea46384104d8f59b94d5b1dbbf
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/FungalBrute/OGG/Fungalbrite-death.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c407bd5d5f42e5646a5612b89490d91f
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/FungalBrute/OGG/Fungalbrite-hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 38b7547d8851f7241a0a2486f294a449
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/GroundMoth/OGG/GroundMoth-atack1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 22431fe9a68450a4389d909a2386aa35
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/GroundMoth/OGG/GroundMoth-atack2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f0c34c37418393b4ab18bc912aaf8060
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/GroundMoth/OGG/GroundMoth-cast1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8b578df3fe449fb4a9ae9c5eec8185df
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/GroundMoth/OGG/GroundMoth-death.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 677d9e2cbae6c7a4baa45fdc1a3bb37c
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/GroundMoth/OGG/GroundMoth-hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9fd51b1de472bf24cb734793894a5041
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Mimicfrog/OGG/Mimicfrog-Blue-Atack1_v2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cde03749274fc134a8b30bbcd5dd43fa
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Mimicfrog/OGG/Mimicfrog-Blue-Cast1_v2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b56c23adce7c42f4babc24519c50e6d8
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Mimicfrog/OGG/Mimicfrog-Green-Atack1_v2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 46ce08d35c7905947aa22ff471687842
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Mimicfrog/OGG/Mimicfrog-Green-cast1_v2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b25a1555bd8fde34e83b689dd3039ff2
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Mimicfrog/OGG/Mimicfrog-Green-death.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f0482960628bf6a4ca41ea2762f34703
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Mimicfrog/OGG/Mimicfrog-Green-hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 67afc9bbe4f9f424f9f3b71ea95b9caa
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Mimicfrog/OGG/Mimicfrog1-Blue-death.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 34eb5cc5bf672054ca58440d8b117a60
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Mimicfrog/OGG/Mimicfrog1-Blue-hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 65a4734ad99d59b4cb6ef3c5abf5e9e3
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/QueenOrchid/OGG/QueenOrchid-atack1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2f52d65a6ac7ee146878871902495ca6
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/QueenOrchid/OGG/QueenOrchid-atack2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 99ca22276d1d147488199abdffec1535
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/QueenOrchid/OGG/QueenOrchid-atack3.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 761b6706f9775884db077a7e44d5eb88
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/QueenOrchid/OGG/QueenOrchid-cast1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8006b55feac7de94fba3506f19ab785b
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/QueenOrchid/OGG/QueenOrchid-death1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 85e16b40903e3394bbe9079f1a3c3f7b
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/QueenOrchid/OGG/QueenOrchid-hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 09f178ff791f7a643bac82eab12d76b3
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Sporemonger/OGG/SporeMonger-atack1
+      v2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 853e69e036f2b4d44bb2cf22950fb475
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Sporemonger/OGG/SporeMonger-atack2
+      v2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 91d8494c8bd3ce149b4c06dd5e8836da
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Sporemonger/OGG/SporeMonger-cast1
+      v2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4b41def311bf7034985d1cab952da22a
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Sporemonger/OGG/SporeMonger-death
+      v2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d0f4030f34aa82740aa1104ed410da37
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Sporemonger/OGG/SporeMonger-hit
+      v2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9786953ce82cd9248affe275f2bb29bd
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Stingfae1/OGG/StingFae1-attack1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bd1c9e6557db76c408d8ab5ceba59b27
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Stingfae1/OGG/StingFae1-attack2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a2e89a10f6cf051409cd4a2192b315df
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Stingfae1/OGG/StingFae1-cast1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8d045f42293aa584387384cd32016a17
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Stingfae1/OGG/StingFae1-cast2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f22d24d7776651f4e907434b012458cf
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Stingfae1/OGG/StingFae1-death.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 28a1a8fb948114d41b0da6fcd84c508c
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Stingfae1/OGG/StingFae1-hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d52a83753f614bc438dce7f73143e9a6
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Stingfae2/OGG/StingFae2-attack1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 281a1f8ea8db98749b82a3955bd6cc11
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Stingfae2/OGG/StingFae2-attack2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9b657664f77373f4db533734e2bb3b62
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Stingfae2/OGG/StingFae2-cast1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f0476a91f91adf3418c7d46f17d47774
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Stingfae2/OGG/StingFae2-cast2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: aec356b9faa7cfb46af42c981e6856de
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Stingfae2/OGG/StingFae2-death.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2393fe5c133d08c4a9e2f5b3038e0b0c
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Stingfae2/OGG/StingFae2-hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 16d6e7879196dc64fbecff56065f6694
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/SwampGoblin1/WAV/SwampGoblin1-
+      atack v2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 82ef6f33d6c9f6044832e39c62c2110e
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/SwampGoblin1/WAV/SwampGoblin1-
+      cast2 v2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a8079c20c9c26b24ba21fd8cfb803ded
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/SwampGoblin1/WAV/SwampGoblin1-cast1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 263027031f7210c459e92c455119940c
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/SwampGoblin1/WAV/SwampGoblin1-death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2e25627cb50e94644a12a4c0049d823d
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/SwampGoblin1/WAV/SwampGoblin1-hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e816bd8946b83bc4bb7d603db6863017
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/SwampGoblin2/OGG/SwampGoblin-atack1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f31c3df15763ef34aa5edad3418fd839
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/SwampGoblin2/OGG/SwampGoblin-cast1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 030e8c8beb0d54c48ab7da49bbe420e2
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/SwampGoblin2/OGG/SwampGoblin-death.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 22ad437f163395848ad1fc422ff8fd72
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/SwampGoblin2/OGG/SwampGoblin-hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0631da0ea3cb1b64b824ad29c3ecff1a
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Thornwolf/OGG/ThornWolf-attack1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a4769622499bdf54c8516f16553ad4b9
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Thornwolf/OGG/ThornWolf-attack2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ca34199eac2e59546b371a30dffc0403
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Thornwolf/OGG/ThornWolf-cast1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ab9abc334df7aee408f7161d28650cbc
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Thornwolf/OGG/ThornWolf-cast2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 493a124a31a3e3d41a889db4d317db0e
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Thornwolf/OGG/ThornWolf-death.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1315c7e545e02ab408bda25722c80edc
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Thornwolf/OGG/ThornWolf-hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: de530efd8eccd1e439fc6548b796e44e
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Thornwolf_pup/OGG/Thornwolf_pup-Blue-atack1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 608121ae9e2f6ac44bdcbb8785ac4fb6
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Thornwolf_pup/OGG/Thornwolf_pup-Blue-atack2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 020867ecfdc49c44585e0dcca7fbb870
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Thornwolf_pup/OGG/Thornwolf_pup-Blue-cast1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 68194af429f463f4a806c8eb14003669
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Thornwolf_pup/OGG/Thornwolf_pup-Blue-cast2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: df7ba14bc918bcf4594c571989cf694d
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Thornwolf_pup/OGG/Thornwolf_pup-Blue-death.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 99aa92b78617a2f43846a28e22398a87
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Thornwolf_pup/OGG/Thornwolf_pup-Blue-hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: deb91ad5c42c8a846b0e5959c9330838
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Thornwolf_pup/OGG/Thornwolf_pup-Red-atack1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 59f431857d4b93646bd8f490296b36d1
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Thornwolf_pup/OGG/Thornwolf_pup-Red-atack2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7e2d28b63a37057418555124ca36d8b4
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Thornwolf_pup/OGG/Thornwolf_pup-Red-cast1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b0d18655bc3043f4883de8bfe11cc66f
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Thornwolf_pup/OGG/Thornwolf_pup-Red-cast2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0e7dafb2fc7662d4998ce9dfbcd10d7d
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Thornwolf_pup/OGG/Thornwolf_pup-Red-death.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b2f62ee8048968e478fb34dda58bf9f4
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Thornwolf_pup/OGG/Thornwolf_pup-Red-hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9902628014dfa784d92e89a6a8af9246
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Trapelican/OGG/Trapelican-atack1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 09d61ac54dbec4342ad84bbb870f5ab3
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Trapelican/OGG/Trapelican-cast1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0326f614dfa568743a092dd4a649503b
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Trapelican/OGG/Trapelican-death.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 58d693afb5b099445bc5938dc06116a0
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Trapelican/OGG/Trapelican-hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f09da9a027c9b994f8ad609448f48d9f
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Trapelican/OGG/Trapelican-lure_atack1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1bee69fcb43fec64c932a00c01b55e77
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Trapelican/OGG/Trapelican-lure_hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5b73980b9a8e1824f8d50dea0578ef6d
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Treant/OGG/Treant-atack1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 794d5af7a411f9541ab264a52f0ad540
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Treant/OGG/Treant-atack2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 53a34e273c8fad34583f1a9c980dd054
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Treant/OGG/Treant-atack3.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 88f11fc89c48afc4581ae9e6421d2259
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Treant/OGG/Treant-cast1.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b1c68d815fb153c4ab675077d0aad528
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Treant/OGG/Treant-cast2.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 69de2ae2a2ad861419f91873c8dace76
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Treant/OGG/Treant-death.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f15ffcacfdb1a7a48a7279bc43f50953
+    m_Address: Assets/Audio/Sfx/Act 1 Enemy Sounds/Treant/OGG/Treant-hit.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f81ed7fca1462ec4ca17a353d27860ac
+    m_Address: Assets/Materials/Materials/RenderQuadShader.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 76086f6bdbbd1fe4b9b1b8b62b360df2
+    m_Address: Assets/Materials/Materials/RenderQuadMaterial.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1e8a610c9e01c3648bac42585e5fc676
+    m_Address: Assets/Plugins/Spine/Runtime/spine-unity/Shaders/Spine-Skeleton.shader
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: eefb14fc925eccd44b35e1474ddf6bdc
+    m_Address: ancientone
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f572e46ecb739ac43b81da281c96fb93
+    m_Address: barkcharger
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: dfe415f1a1b61374187337bb92ae543d
+    m_Address: bluesporeling
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0615d0d0452615b4cbde831b9dad9650
+    m_Address: fungalbrute
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3e0921147555f904fb6b2b6e417d310d
+    m_Address: groundmoth
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 264f69e8dfc45b24b81c26263da10c2d
+    m_Address: mimicfrog1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6c910ef42872eff49b29b5f0efcd7f48
+    m_Address: queenorchid
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d379161abbe609947a45861ca7c85894
+    m_Address: redsporeling
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 900e09cef49f44a4a946c1a397bbe063
+    m_Address: sporemonger
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7a3076e93eb397e43ba425920993cb16
+    m_Address: stingfae1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f80e3cd2f3fa6504e9bac4846db6acd5
+    m_Address: stingfae2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 33c32965304227d478a6e608f62b9690
+    m_Address: swampgoblin1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c583ea8b6d6c69b459820623ac9805f2
+    m_Address: swampgoblin2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b3397d9c780be8b44b541997f260d0fd
+    m_Address: thornwolf
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 435957c370d93074d9ef33cde99044fa
+    m_Address: thornwolfpup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 87e8dbfbfd54df64c82694dee94e82bc
+    m_Address: trapelican
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fbc8ab645c8573b479aa513b3441c73b
+    m_Address: treant
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 22121a61158c537409bdfb815bac0f54
+    m_Address: yellowsporeling
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b5243524a01eab148b0a227677e45ff2, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 9b297b953f3fe6345b957cab35e328c7, type: 2}
+    - {fileID: 11400000, guid: f849b556e58be3647a7b905ebb2868e7, type: 2}
