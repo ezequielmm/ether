@@ -38,15 +38,25 @@ namespace KOTE.UI.Armory
         private List<ArmoryHeaderManager> gearHeaders = new();
 
         [SerializeField] private PostProcessingTransition postProcessingTransition;
-        
+        public const string MEMORY_REFRESH_MESSAGE = "refresh-armory";
         private void Awake()
         {
             loadingText.text = "";
             loadingText.raycastTarget = false;
             
             NftManager.Instance.NftsLoaded.AddListener(PopulateCharacterList);
-        }
 
+            WebBridge.OnWebMessageRecieved.AddListener(OnArmoryRefresh);
+
+        }
+        void OnArmoryRefresh(string data)
+        {
+            if (data != MEMORY_REFRESH_MESSAGE)
+            {
+                return;
+            }
+            Debug.Log("<B><color=red> HANDLE ARMORY REFRESH HERE </color></B>");
+        }
         private void Start()
         {
             panelContainer.SetActive(false);
