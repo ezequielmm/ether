@@ -50,6 +50,16 @@ namespace KOTE.UI.Armory
 
         }
 
+#if UNITY_EDITOR
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.F1))
+            {
+                OnArmoryRefresh(MEMORY_REFRESH_MESSAGE);
+            }
+        }
+#endif
+
         public void OnBridgeOpen()
         {
             WebBridge.SendUnityMessage("open-bridge", "open-bridge");
@@ -62,6 +72,9 @@ namespace KOTE.UI.Armory
                 return;
             }
             Debug.Log("<B><color=red> HANDLE ARMORY REFRESH HERE </color></B>");
+
+            PopulatePlayerGearInventory();
+            WalletManager.Instance.SetActiveWallet();
         }
         private void Start()
         {
@@ -110,7 +123,8 @@ namespace KOTE.UI.Armory
             }
 
             curNode = nftList.First;
-            //GameManager.Instance.EVENT_NFT_SELECTED.Invoke(curNode.Value.MetaData);
+            if (panelContainer.activeSelf)
+                GameManager.Instance.NftSelected(curNode.Value.MetaData);
         }
 
         private void UpdatePanelOnNftUpdate()
