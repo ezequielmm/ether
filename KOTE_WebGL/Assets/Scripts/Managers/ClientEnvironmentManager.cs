@@ -105,9 +105,6 @@ public class EnvironmentUrls
     public EnvironmentUrls()
     {
         AssetsUrl = (string.IsNullOrEmpty(ArtAssetURL)) ? Application.streamingAssetsPath : ArtAssetURL;
-        #if UNITY_EDITOR || DEVELOPMENT_BUILD || !UNITY_WEBGL
-            AssetsUrl =  $"https://koteskins.robotseamonster.com/";
-        #endif
     }
 
     [JsonIgnore]
