@@ -261,6 +261,25 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  validEnemyList:
+  - ancientone
+  - barkcharger
+  - bluesporeling
+  - fungalbrute
+  - groundmoth
+  - mimicfrog1
+  - queenorchid
+  - redsporeling
+  - sporemonger
+  - stingfae1
+  - stingfae2
+  - swampgoblin1
+  - swampgoblin2
+  - thornwolf
+  - thornwolfpup
+  - trapelican
+  - treant
+  - yellowsporeling
 --- !u!1 &6794035165732702146
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using Spine.Unity;
 using TMPro;
@@ -43,6 +44,8 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
     public static Dictionary<string, GameObject> InstantiatedEnemiesCache = new Dictionary<string, GameObject>();
     public static Dictionary<string, List<Action<GameObject>>> ThePainTrain = new Dictionary<string, List<Action<GameObject>>>();
+
+    public string[] validEnemyList;
 
     public EnemyData EnemyData
     {
@@ -133,6 +136,9 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
         enemyType = enemyType.ToLower().Replace(" ", "").Trim();
         Debug.Log($"enemyType: {enemyType}");
+        if (!validEnemyList.Contains(enemyType))
+            enemyType = "sporemonger";
+        
         LoadEnemyPrefab(enemyType, (instance) =>
         {
             activeEnemy = instance;

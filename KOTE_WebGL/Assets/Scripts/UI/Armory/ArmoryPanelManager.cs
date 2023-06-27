@@ -49,6 +49,12 @@ namespace KOTE.UI.Armory
             WebBridge.OnWebMessageRecieved.AddListener(OnArmoryRefresh);
 
         }
+
+        public void OnBridgeOpen()
+        {
+            WebBridge.SendUnityMessage("open-bridge", "open-bridge");
+        }
+        
         void OnArmoryRefresh(string data)
         {
             if (data != MEMORY_REFRESH_MESSAGE)
