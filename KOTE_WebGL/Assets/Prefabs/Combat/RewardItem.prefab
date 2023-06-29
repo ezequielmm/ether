@@ -367,6 +367,7 @@ MonoBehaviour:
   rewardItemType: 0
   rewardImage: {fileID: 8495531943339981627}
   tooltipController: {fileID: 6643783074752643595}
+  claimButton: {fileID: 7028354136957532670}
 --- !u!114 &6643783074752643595
 MonoBehaviour:
   m_ObjectHideFlags: 0

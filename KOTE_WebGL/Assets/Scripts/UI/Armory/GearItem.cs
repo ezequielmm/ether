@@ -62,7 +62,7 @@ public class GearItemData
     public async UniTask GetGearImage() 
     {
         gearImage = 
-            await GearIconManager.Instance.GetGearSprite(trait.ParseToEnum<Trait>(), name);
+            (await FetchData.Instance.GetArmoryGearImage(trait.ParseToEnum<Trait>(), name))?.ToSprite();
     }
 }
 

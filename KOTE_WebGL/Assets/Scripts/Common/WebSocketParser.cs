@@ -492,6 +492,7 @@ public class WebSocketParser
     private static void ProcessRewardsData(string data)
     {
         SWSM_RewardsData rewardsData = JsonConvert.DeserializeObject<SWSM_RewardsData>(data);
+        
         GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(rewardsData);
     }
 

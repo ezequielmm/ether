@@ -23,6 +23,8 @@ public class RewardItem : MonoBehaviour //, IPointerClickHandler
     //and then we pass in the action we want to take when the reward is selected
     private Action onRewardSelected;
 
+    [SerializeField] private Button claimButton;
+    
     public void PopulateRewardItem(RewardItemData reward, Action<RewardItemType> EffectsAction,
         Action onAddACard = null)
     {

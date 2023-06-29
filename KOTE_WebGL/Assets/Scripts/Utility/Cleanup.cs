@@ -12,7 +12,7 @@ public class Cleanup : MonoBehaviour
         StartCoroutine(CleanupRoutine());      
     }
     
-    public static void CleanupGame() =>
+    public static void  CleanupGame() =>
         SceneManager.LoadScene(SceneName);
 
     private IEnumerator CleanupRoutine()

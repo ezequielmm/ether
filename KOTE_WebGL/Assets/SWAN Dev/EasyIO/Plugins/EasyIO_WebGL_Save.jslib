@@ -11,6 +11,10 @@
     },
     
     EasyIO_WebGL_SaveToLocal: function (array, size, fileNamePtr) {
+        console.log(array);
+        console.log(size);
+        console.log(fileNamePtr);
+        
         var fileName = UTF8ToString(fileNamePtr);
 
         var bytes = new Uint8Array(size);
@@ -28,6 +32,8 @@
         event.initMouseEvent("click");
         link.dispatchEvent(event);
         window.URL.revokeObjectURL(link.href);
+
+        console.log(link);
     }
 };
 

@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using IMBX;
 using KOTE.UI.Armory;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SDev;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -16,6 +19,8 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
     public Dictionary<FetchType, string> TestData = new();
 
+    private uint textureIndex;
+    
     public static FetchData Instance
     {
         get
@@ -196,9 +201,53 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
     public async UniTask<Texture2D> GetTexture(string url)
     {
-        using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(url))
+        string imageName = GetMD5Hash(url);
+        imageName += ".png";
+
+        var loader = ImageLoader.Create(0, FilePathName.AppPath.TemporaryCachePath);
+        
+        Texture2D texture = null;
+        var myIndex = textureIndex++;
+
+        bool textureLoaded = false;
+        
+        loader.Load(
+            myIndex,
+            url,
+            imageName,
+            "CachedImages",
+            ImageLoader.CacheMode.UseCached,
+            (loadedText, index) =>
+                {
+                    if (myIndex == index)
+                    {
+                        texture = loadedText;
+                        textureLoaded = true;
+                    }
+                }
+            );
+
+        while (!textureLoaded) {
+            await Task.Yield();
+        }
+
+        return texture;
+    }
+    
+    private string GetMD5Hash(string input)
+    {
+        using (MD5 md5 = MD5.Create())
         {
-            return await MakeTextureRequest(request);
+            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+            byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < hashBytes.Length; i++)
+            {
+                sb.Append(hashBytes[i].ToString("x2"));
+            }
+
+            return sb.ToString();
         }
     }
 
@@ -216,11 +265,15 @@ public class FetchData : DataManager, ISingleton<FetchData>
         return await GetTexture(requestUrl);
     }
 
-    public async UniTask<Texture2D> GetArmoryGearImage(string gearName)
+    public async UniTask<Texture2D> GetArmoryGearImage(Trait gearType, string gearName)
     {
+        gearName = $"{gearType}/{gearName}";
         string spriteName = gearName + ".png";
         string requestUrl = ClientEnvironmentManager.Instance.GearIconURL.AddPath(spriteName);
-        return await GetTexture(requestUrl);
+        //Debug.Log($"[Armory] Requesting {requestUrl}");
+        var texture = await GetTexture(requestUrl);
+        //Debug.Log($"[Armory] Request done! {texture == null} ");
+        return texture;
     }
 
 

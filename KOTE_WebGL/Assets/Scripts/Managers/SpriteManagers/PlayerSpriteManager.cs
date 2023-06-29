@@ -101,6 +101,12 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 
     public void UpdateNftTrait(Trait trait, string traitValue)
     {
+        if (_curNft == null)
+        {
+            Debug.LogError($"[PlayerSpriteManager] No current NFT!");
+            return;
+        }
+        
         if (trait == Trait.Padding)
         {
             _curNft.ChangeGear(Trait.Upper_Padding, traitValue);

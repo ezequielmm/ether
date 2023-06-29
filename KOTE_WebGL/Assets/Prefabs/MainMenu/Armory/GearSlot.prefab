@@ -140,6 +140,7 @@ MonoBehaviour:
   tooltip: {fileID: 6728412329716207824}
   gearTrait: 0
   icon: {fileID: 4648140617421302986}
+  defaultImage: {fileID: 21300000, guid: b763e389a5c8c1e47ac82761bdbdaa3d, type: 3}
 --- !u!114 &6784872156645851148
 MonoBehaviour:
   m_ObjectHideFlags: 0

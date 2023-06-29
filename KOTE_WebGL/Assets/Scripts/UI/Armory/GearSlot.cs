@@ -11,6 +11,7 @@ namespace KOTE.UI.Armory
         public Trait gearTrait;
         public Image icon;
         private GearItemData selectedGear;
+        public Sprite defaultImage;
         
         public void OnPointerDown(PointerEventData data)
         {
@@ -45,7 +46,7 @@ namespace KOTE.UI.Armory
 
         internal void ResetSlot()
         {
-            icon.sprite = GearIconManager.Instance.defaultImage;
+            icon.sprite = defaultImage;
             tooltip.enabled = false;
             selectedGear = null;
         }

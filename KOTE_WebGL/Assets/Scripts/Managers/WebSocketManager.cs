@@ -46,6 +46,9 @@ public class WebSocketManager : SingleTon<WebSocketManager>
     private float socketOpenTimeGameSeconds = -1;
     private float socketDeathTimeGameSeconds = -1;
 
+    private Queue<Action> EmissionQueue = new Queue<Action>();
+    private List<string> rewardCached = new();
+    
     protected override void Awake()
     {
         base.Awake();
@@ -72,7 +75,16 @@ public class WebSocketManager : SingleTon<WebSocketManager>
             GameManager.Instance.EVENT_TRINKETS_SELECTED.AddListener(OnTrinketsSelected);
 
             GameManager.Instance.EVENT_SCENE_LOADED.AddListener(OnSceneChange);
+            
+            GameManager.instance.EVENT_POPULATE_REWARDS_PANEL.AddListener(ClearRewardsCache);
         }
+    }
+
+    private void ClearRewardsCache(SWSM_RewardsData data)
+    {
+        Debug.Log($"Rewards panel populated, clearing cache");
+        var rewardItemDatas = data.data.data.rewards.Select(e => e.id);
+        rewardCached.RemoveAll(e => !rewardItemDatas.Contains(e));
     }
 
     void Start()
@@ -381,6 +393,13 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     void OnRewardSelected(string rewardId)
     {
+        Debug.Log($"rewardID: {rewardId}");
+        if (rewardCached.Contains(rewardId))
+        {
+            Debug.LogError($"Already queueing reward {rewardId}!");
+            return;
+        }
+        rewardCached.Add(rewardId);
         Emit(SocketEvent.RewardSelected, rewardId);
     }
 
@@ -432,8 +451,6 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         EmitWithResponse(SocketEvent.GetData, dataType.ToString());
     }
 
-    private Queue<Action> EmissionQueue = new Queue<Action>();
-
     private void ResolvePromise(string json, UniPromise<string> promise)
     {
         promise.FulfillRequest(json);
@@ -462,6 +479,13 @@ public class WebSocketManager : SingleTon<WebSocketManager>
         }
         // stop logging
         // LogEmission(eventName, variables);
+
+        if (variables.Length > 0)
+        {
+            var rewardID = (string) variables[0];
+            Debug.Log($"EMIT: {rewardID}");
+        }
+        
         rootSocket.Emit(eventName, variables);
     }
 
