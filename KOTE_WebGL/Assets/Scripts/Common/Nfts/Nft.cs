@@ -30,22 +30,19 @@ public class Nft
     public bool isKnight => Contract == NftContract.Knights;
     public DateTime PlayableAt => DateTime.Today + TimeSpan.FromHours(24);
 
-    public async UniTask<Sprite> GetImage() 
+    public void GetImage(Action<Sprite> callback) 
     {
-        if (Image != null) 
+        if (/*Image != null ||*/ string.IsNullOrEmpty(adaptedImageURI)) 
         {
-            return Image;
+            callback?.Invoke(null);
+            return;
         }
 
-        if (string.IsNullOrEmpty(adaptedImageURI)) return null;
-        Texture2D texture = await FetchData.Instance.GetTexture(adaptedImageURI);
-        if (texture == null)
-            return null;
-        Image = texture.ToSprite();
-        return Image;
+        FetchData.Instance.GetTexture(adaptedImageURI, (texture) => {
+            Image = texture ? texture.ToSprite() : null;
+            callback?.Invoke(Image);
+        });
     }
-
-    public Nft() { }
 }
 
 public class TraitDictionaryConverter : JsonConverter

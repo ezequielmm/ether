@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Spine;
@@ -38,8 +39,10 @@ public class Villager : PlayerNft
         EquippedTraits[trait] = traitValue;
     }
 
-    public override async UniTask GetNftSprites(SkeletonData playerSkeleton)
+    public override IEnumerator GetNftSprites(SkeletonData playerSkeleton, Action callback)
     {
+        
+        var pending = 0;
         foreach (Trait trait in Enum.GetValues(typeof(Trait)))
         {
             string traitValue;
@@ -92,23 +95,29 @@ public class Villager : PlayerNft
                 }
 
 
-                if (DoesSkinSpriteExist(spriteData) || DoesDefaultSpriteExist(spriteData))
-                {
-                    // Sprite already fetched
-                    continue;
-                }
+                // if (DoesSkinSpriteExist(spriteData) || DoesDefaultSpriteExist(spriteData))
+                // {
+                //     // Sprite already fetched
+                //     continue;
+                // }
 
-                Sprite skinElement = await GetPlayerSkin(spriteData);
-                spriteData.Sprite = skinElement;
-                if (!spriteData.IsUseableInSkin)
+                pending++;
+                GetPlayerSkin(spriteData, skinElement =>
                 {
-                    Debug.LogError($"[PlayerNft] Can not use current TraitSprite. {spriteData}");
-                    continue;
-                }
-
-                SkinSprites.Add(spriteData);
+                    pending--;
+                    spriteData.Sprite = skinElement;
+                    if (!spriteData.IsUseableInSkin)
+                        Debug.LogWarning($"[PlayerNft] Can not use current TraitSprite. {spriteData}");
+                    else
+                        SkinSprites.Add(spriteData);
+                });
             }
         }
+
+        while (pending > 0)
+            yield return null;
+
+        callback?.Invoke();
     }
 
     

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -16,7 +17,7 @@ public abstract class PlayerNft
     protected Dictionary<Trait, string> Traits = new();
     protected Dictionary<Trait, string> EquippedTraits = new();
 
-    public abstract UniTask GetNftSprites(SkeletonData playerSkeleton);
+    public abstract IEnumerator GetNftSprites(SkeletonData playerSkeleton, Action callback);
 
     public abstract void ChangeGear(Trait trait, string traitValue);
 
@@ -25,8 +26,9 @@ public abstract class PlayerNft
         EquippedTraits.Clear();
     }
 
-    public async UniTask GetDefaultSprites(SkeletonData playerSkeleton)
+    public IEnumerator GetDefaultSprites(SkeletonData playerSkeleton, Action callback)
     {
+        var pending = 0;
         for (int i = 0; i < GameSettings.DEFAULT_SKIN_DATA.Count; i++)
         {
             TraitSprite spriteData = GameSettings.DEFAULT_SKIN_DATA[i];
@@ -55,24 +57,34 @@ public abstract class PlayerNft
                     // Sprite already fetched
                     continue;
                 }
+                
+                Action<Sprite> inner = (skinElement) =>
+                {
+                    pending--;
+                    actualSpriteData.Sprite = skinElement;
+                    if (!actualSpriteData.IsUseableInSkin)
+                        Debug.LogWarning($"[PlayerNft] Can not use current TraitSprite. {actualSpriteData}");
+                    else
+                        DefaultSprites.Add(actualSpriteData);
+                };
 
                 Sprite skinElement =
                     PlayerSpriteManager.Instance.DefaultSkinImages.entityImages.Find(s => s.name == imageName);
-                if (skinElement == null)
-                {
-                    skinElement = await GetPlayerSkin(actualSpriteData);
+                
+                pending++;
+                if (skinElement == null) {
+                    GetPlayerSkin(actualSpriteData, inner);
                 }
-
-                actualSpriteData.Sprite = skinElement;
-                if (!actualSpriteData.IsUseableInSkin)
-                {
-                    Debug.LogError($"[PlayerNft] Can not use current TraitSprite. {actualSpriteData}");
-                    continue;
+                else {
+                    inner(skinElement);
                 }
-
-                DefaultSprites.Add(actualSpriteData);
             }
         }
+
+        while (pending > 0)
+            yield return null;
+
+        callback?.Invoke();
     }
 
     public List<TraitSprite> FullSpriteList()
@@ -111,16 +123,16 @@ public abstract class PlayerNft
         Traits[Trait.Lower_Padding] = paddingColor;
     }
 
-    protected async UniTask<Sprite> GetPlayerSkin(TraitSprite spriteData)
+    protected void GetPlayerSkin(TraitSprite spriteData, Action<Sprite> callback)
     {
-        Texture2D texture = await FetchData.Instance.GetNftSkinElement(spriteData);
-        if (texture == null)
+        FetchData.Instance.GetNftSkinElement(spriteData, texture =>
         {
-            Debug.LogWarning($"Skin image not found on server for {spriteData.ImageName}");
-            return null;
-        }
-
-        return texture.ToSprite();
+            if (texture == null) {
+                Debug.LogWarning($"Skin image not found on server for {spriteData.ImageName}");
+            }
+            callback( texture ? texture.ToSprite() : null);
+        });
+        
     }
 
     protected TraitSprite GenerateSpriteData(Skin.SkinEntry skinEntry, string skinName, string traitValue,

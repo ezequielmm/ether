@@ -16,28 +16,32 @@ public class GearItem : MonoBehaviour
     public GearItemData ItemData;
     
 
-    public async virtual void Populate(GearItemData newItemData)
+    public void Populate(GearItemData newItemData)
     {
         ItemData = newItemData;
+        Action inner = () => {
+            Sprite ImageSprite = ItemData.gearImage;
+            if (GearImage == null)
+            {
+                Debug.LogError($"[GearItem] GearImage on gameobject [{gameObject.name}] is null.");
+                return;
+            }
+            GearImage.sprite = ImageSprite;
+        
+            tooltip.SetTooltips(new List<Tooltip>
+            {
+                new Tooltip
+                {
+                    title = $"{ItemData.name}{FormatTraitText()}"
+                }
+            });
+        };
         if (newItemData.gearImage == null)
         {
-            await ItemData.GetGearImage();
+            ItemData.GetGearImage(inner);
         }
-        Sprite ImageSprite = ItemData.gearImage;
-        if (GearImage == null)
-        {
-            Debug.LogError($"[GearItem] GearImage on gameobject [{gameObject.name}] is null.");
-            return;
-        }
-        GearImage.sprite = ImageSprite;
-        
-        tooltip.SetTooltips(new List<Tooltip>
-        {
-            new Tooltip
-            {
-                title = $"{ItemData.name}{FormatTraitText()}"
-            }
-        });
+        else
+            inner();
     }
     
     private string FormatTraitText()
@@ -59,10 +63,12 @@ public class GearItemData
 
     [JsonIgnore] public bool CanVillagerEquip => rarity == GearRarity.Common || rarity == GearRarity.Uncommon;
 
-    public async UniTask GetGearImage() 
+    public void GetGearImage(Action callback) 
     {
-        gearImage = 
-            (await FetchData.Instance.GetArmoryGearImage(trait.ParseToEnum<Trait>(), name))?.ToSprite();
+        FetchData.Instance.GetArmoryGearImage(trait.ParseToEnum<Trait>(), name, (texture) => {
+            gearImage = texture?.ToSprite();
+            callback?.Invoke();
+        });
     }
 }
 

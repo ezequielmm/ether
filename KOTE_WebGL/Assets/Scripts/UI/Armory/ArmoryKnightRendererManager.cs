@@ -1,3 +1,4 @@
+using KOTE.UI.Armory;
 using UnityEngine;
 
 public class ArmoryKnightRendererManager : MonoBehaviour
@@ -11,7 +12,7 @@ public class ArmoryKnightRendererManager : MonoBehaviour
         knightManager.skinLoaded.AddListener(OnSkinLoaded);
     }
 
-    private void OnSkinLoading()
+    public void OnSkinLoading()
     {
         knight.SetActive(false);
         loadingText.SetActive(true);

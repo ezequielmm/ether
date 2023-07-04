@@ -231,8 +231,8 @@ public class MainMenuManager : MonoBehaviour
     }
     void OnTransitionEnd()
     {
-        Debug.Log("OnTransitionEnd");
-        GameManager.Instance.LoadScene(inGameScenes.Expedition, true);
+        //GameManager.Instance.LoadScene(inGameScenes.Expedition, true);
+        GameManager.Instance.LoadSceneNewTest();
     }
     public void OnNewExpeditionButton()
     {

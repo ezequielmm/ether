@@ -681,6 +681,12 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &447206326 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6680858168128477038, guid: 84d0035375b14914aaadb5031aae0732,
+    type: 3}
+  m_PrefabInstance: {fileID: 5214273266828855281}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519378150
 GameObject:
   m_ObjectHideFlags: 0
@@ -5807,7 +5813,7 @@ PrefabInstance:
     - target: {fileID: 1325322342185662606, guid: 84d0035375b14914aaadb5031aae0732,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2568851806348108797, guid: 84d0035375b14914aaadb5031aae0732,
         type: 3}
@@ -5864,6 +5870,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3956595393700516434, guid: 84d0035375b14914aaadb5031aae0732,
+        type: 3}
+      propertyPath: loadingTextGearPanel
+      value: 
+      objectReference: {fileID: 447206326}
     - target: {fileID: 3956595393700516434, guid: 84d0035375b14914aaadb5031aae0732,
         type: 3}
       propertyPath: postProcessingTransition
@@ -6062,7 +6073,7 @@ PrefabInstance:
     - target: {fileID: 6841770010625878433, guid: 84d0035375b14914aaadb5031aae0732,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7807168679077890090, guid: 84d0035375b14914aaadb5031aae0732,
         type: 3}

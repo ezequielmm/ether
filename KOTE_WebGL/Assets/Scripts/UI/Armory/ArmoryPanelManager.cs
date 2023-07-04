@@ -1,8 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using map;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,7 +28,8 @@ namespace KOTE.UI.Armory
         [SerializeField] private Button leftButton;
         [SerializeField] private Button rightButton;
         [SerializeField] private TextMeshProUGUI loadingText;
-        
+        [SerializeField] private GameObject loadingTextGearPanel;
+
         // making a reference to this since GetComponentInChildren only works on active gameObjects
         public ScrollRect gearListScroll;
 
@@ -39,15 +43,20 @@ namespace KOTE.UI.Armory
 
         [SerializeField] private PostProcessingTransition postProcessingTransition;
         public const string MEMORY_REFRESH_MESSAGE = "refresh-armory";
+
+        private Coroutine populateGearInventoryRoutine;
+
+        
+        private Dictionary<string, Sprite> cachedSprites = new();
+        
         private void Awake()
         {
             loadingText.text = "";
             loadingText.raycastTarget = false;
-            
+
             NftManager.Instance.NftsLoaded.AddListener(PopulateCharacterList);
 
             WebBridge.OnWebMessageRecieved.AddListener(OnArmoryRefresh);
-
         }
 
 #if UNITY_EDITOR
@@ -64,23 +73,31 @@ namespace KOTE.UI.Armory
         {
             WebBridge.SendUnityMessage("open-bridge", "open-bridge");
         }
-        
+
         void OnArmoryRefresh(string data)
         {
             if (data != MEMORY_REFRESH_MESSAGE)
             {
                 return;
             }
+
             Debug.Log("<B><color=red> HANDLE ARMORY REFRESH HERE </color></B>");
 
-            PopulatePlayerGearInventory();
-            WalletManager.Instance.SetActiveWallet();
+            FindObjectOfType<ArmoryKnightRendererManager>(true).OnSkinLoading();
+
+            StartCoroutine(Routine());
+            IEnumerator Routine()
+            {
+                yield return null;
+                PopulatePlayerGearInventory();
+            }
         }
+
         private void Start()
         {
             panelContainer.SetActive(false);
             // listen for successful login to get the player's gear
-            
+
             gearListScroll.scrollSensitivity = GameSettings.PANEL_SCROLL_SPEED;
         }
 
@@ -94,11 +111,11 @@ namespace KOTE.UI.Armory
                     GameManager.Instance.NftSelected(curNode.Value.MetaData);
                     UpdatePanelOnNftUpdate();
                 }
+
                 panelContainer.SetActive(show);
             }
             catch (Exception e)
             {
-                
             }
         }
 
@@ -131,7 +148,9 @@ namespace KOTE.UI.Armory
         {
             Nft curMetadata = curNode.Value.MetaData;
             TokenNameText.text = FormatTokenName(curMetadata);
-            CanPlayText.text = curMetadata.CanPlay ? "" : $"Available in: {ParseTime((int)(curMetadata.PlayableAt - DateTime.UtcNow).TotalSeconds)}";
+            CanPlayText.text = curMetadata.CanPlay
+                ? ""
+                : $"Available in: {ParseTime((int)(curMetadata.PlayableAt - DateTime.UtcNow).TotalSeconds)}";
             CanPlayText.transform.parent.gameObject.SetActive(!curMetadata.CanPlay);
             portraitManager.SetPortrait(curMetadata);
             foreach (GameObject panel in gearPanels)
@@ -152,7 +171,7 @@ namespace KOTE.UI.Armory
             leftButton.interactable = true;
             rightButton.interactable = true;
         }
-        
+
         private string FormatTokenName(Nft tokenData)
         {
             string contractName = "";
@@ -174,38 +193,84 @@ namespace KOTE.UI.Armory
             return contractName + " #" + tokenData.TokenId;
         }
 
-        public async void PopulatePlayerGearInventory()
+        public void PopulatePlayerGearInventory()
         {
-            ClearHeaders();
-            GearData data = await FetchData.Instance.GetGearInventory();
-            if (data == null) return;
-            await PopulateGearList(data.ownedGear);
-
-            GenerateHeaders();
+            if (populateGearInventoryRoutine == null)
+                populateGearInventoryRoutine = StartCoroutine(PopulatePlayerGearInventoryRoutine());
         }
 
-        private async UniTask PopulateGearList(List<GearItemData> ownedGear)
+        IEnumerator PopulatePlayerGearInventoryRoutine()
         {
-            // Debug.Log("[Armory] PopulateGearList");
-            foreach (GearItemData itemData in ownedGear)
-            {
-                itemData.gearImage =
-                    (await FetchData.Instance.GetArmoryGearImage(itemData.trait.ParseToEnum<Trait>(), itemData.name))?.ToSprite();
-                if (itemData.gearImage == null)
-                    Debug.LogError($"Image is null for {itemData.name} - {itemData.category} - {itemData.trait}");
-                
-                if (categoryLists.ContainsKey(itemData.category))
+            loadingTextGearPanel.gameObject.SetActive(true);
+            ClearHeaders();
+            GearData data = null;
+            yield return RequestService.Instance.GetRequestCoroutine(
+                WebRequesterManager.Instance.ConstructUrl(RestEndpoint.PlayerGear),
+                response =>
                 {
-                    // Debug.Log($"[Armory] categoryLists contains {itemData.category}");
-                    categoryLists[itemData.category].Add(itemData);
-                    continue;
-                }
+                    data = FetchData.ParseJsonWithPath<GearData>(response, "data");
+                }, err => { Debug.LogError($"[Armory] Error getting player gear: {err}"); }
+            );
 
-                // Debug.Log($"[Armory] categoryLists does not contain {itemData.category}");
-                categoryLists[itemData.category] = new List<GearItemData> { itemData };
+            if (data == null)
+            {
+                populateGearInventoryRoutine = null;
+                yield break;
             }
 
+            yield return PopulateGearList(data.ownedGear);
+
+            populateGearInventoryRoutine = null;
+        }
+
+        private IEnumerator PopulateGearList(List<GearItemData> ownedGear)
+        {
+            var callbacksPending = ownedGear.Count;
+
+            foreach (GearItemData itemData in ownedGear)
+            {
+                FetchData.Instance.GetArmoryGearImage(itemData.trait.ParseToEnum<Trait>(), itemData.name,
+                    texture =>
+                    {
+                        var sprite = default(Sprite);
+                        if (cachedSprites.ContainsKey(itemData.name)) {
+                            sprite = cachedSprites[itemData.name];
+                        }
+                        else {
+                            sprite = texture?.ToSprite();
+                            cachedSprites.Add(itemData.name, sprite);
+                        }
+                        
+                        itemData.gearImage = sprite;
+
+                        if (itemData.gearImage == null)
+                            Debug.LogError(
+                                $"Image is null for {itemData.name} - {itemData.category} - {itemData.trait}");
+
+                        if (categoryLists.ContainsKey(itemData.category))
+                        {
+                            // Debug.Log($"[Armory] categoryLists contains {itemData.category}");
+                            categoryLists[itemData.category].Add(itemData);
+                        }
+                        else
+                        {
+                            // Debug.Log($"[Armory] categoryLists does not contain {itemData.category}");
+                            categoryLists[itemData.category] = new List<GearItemData> { itemData };
+                        }
+
+                        callbacksPending--;
+                    }
+                );
+                yield return null;
+            }
+
+            while (callbacksPending > 0)
+                yield return null;
+
             UpdateGearListBasedOnToken();
+            yield return null;
+            yield return GenerateHeaders();
+            loadingTextGearPanel.gameObject.SetActive(false);
         }
 
         private void UpdateGearListBasedOnToken()
@@ -221,7 +286,7 @@ namespace KOTE.UI.Armory
             }
         }
 
-        private void GenerateHeaders()
+        private IEnumerator GenerateHeaders()
         {
             // Debug.Log($"[Armory] GenerateHeaders : {categoryLists.Keys.Count}");
             foreach (string category in categoryLists.Keys)
@@ -233,6 +298,8 @@ namespace KOTE.UI.Armory
                     header.Populate(category, categoryLists[category]);
                     gearHeaders.Add(header);
                 }
+
+                yield return null;
             }
         }
 
@@ -243,11 +310,12 @@ namespace KOTE.UI.Armory
                 slots.ResetSlot();
                 OnGearItemRemoved(slots.gearTrait);
             }
-            
+
             foreach (ArmoryHeaderManager header in gearHeaders)
             {
                 Destroy(header.gameObject);
             }
+
             gearHeaders.Clear();
             categoryLists.Clear();
         }
@@ -284,7 +352,7 @@ namespace KOTE.UI.Armory
                 slot.ResetSlot();
             }
         }
-        
+
         private void ClearGearSlots()
         {
             foreach (GearSlot slot in gearSlots)
@@ -299,26 +367,26 @@ namespace KOTE.UI.Armory
 
         public void OnPreviousToken()
         {
-            if (curNode?.Previous == null) return;
             rightButton.interactable = false;
             loadingText.text = "Loading...";
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-            curNode = curNode.Previous;
+            if (curNode.Previous == null)
+                curNode = curNode.List.Last;
+            else
+                curNode = curNode.Previous;
             GameManager.Instance.NftSelected(curNode.Value.MetaData);
             UpdatePanelOnNftUpdate();
         }
 
         public void OnNextToken()
         {
-            if (curNode?.Next == null)
-            {
-                Debug.LogError($"[OnNextToken] no cur node or next node is null");
-                return;
-            }
             rightButton.interactable = false;
             loadingText.text = "Loading...";
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-            curNode = curNode.Next;
+            if (curNode.Next == null)
+                curNode = curNode.List.First;
+            else
+                curNode = curNode.Next;
             GameManager.Instance.NftSelected(curNode.Value.MetaData);
             UpdatePanelOnNftUpdate();
         }
@@ -368,7 +436,11 @@ namespace KOTE.UI.Armory
             GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Music, 1);
             GameManager.Instance.EVENT_PLAY_MUSIC.Invoke(MusicTypes.Ambient, 1);
             //GameManager.Instance.LoadScene(inGameScenes.Expedition);
-            postProcessingTransition.OnTransitionInEnd.AddListener(() => GameManager.Instance.LoadScene(inGameScenes.Expedition, true));
+            postProcessingTransition.OnTransitionInEnd.AddListener(() =>
+            {
+                //GameManager.Instance.LoadScene(inGameScenes.Expedition, true);
+                GameManager.Instance.LoadSceneNewTest();
+            });
             postProcessingTransition.StartTransition();
         }
 
@@ -388,7 +460,7 @@ namespace KOTE.UI.Armory
             equippedGear.Remove(gearTrait);
             GameManager.Instance.UpdateNft(gearTrait, "");
         }
-        
+
         public string ParseTime(int totalSeconds)
         {
             TimeSpan time = TimeSpan.FromSeconds(totalSeconds);

@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +23,8 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
     private uint textureIndex;
     
+    private Dictionary<string, Texture2D> cachedTextures = new();
+    
     public static FetchData Instance
     {
         get
@@ -37,6 +41,17 @@ public class FetchData : DataManager, ISingleton<FetchData>
     public void DestroyInstance()
     {
         instance = null;
+    }
+
+    public void CleanMemory(Texture2D[] ignoreTextures)
+    {
+        var copy = cachedTextures.Values.ToList();
+        foreach (var texture2D in copy)
+        {
+            if (!ignoreTextures.Contains(texture2D))
+                MonoBehaviour.Destroy(texture2D);
+        }
+        cachedTextures.Clear();
     }
 
     public async UniTask<string> GetServerVersion()
@@ -198,13 +213,19 @@ public class FetchData : DataManager, ISingleton<FetchData>
             return ParseJsonWithPath<ExpeditionStartData>(rawJson, "data");
         }
     }
-
-    public async UniTask<Texture2D> GetTexture(string url)
+    
+    public void GetTexture(string url, Action<Texture2D> onResolve)
     {
         string imageName = GetMD5Hash(url);
         imageName += ".png";
 
-        var loader = ImageLoader.Create(0, FilePathName.AppPath.TemporaryCachePath);
+        if (cachedTextures.ContainsKey(imageName))
+        {
+            onResolve?.Invoke(cachedTextures[imageName]);
+            return;
+        }
+
+        var loader = ImageLoader.Create(0, FilePathName.AppPath.PersistentDataPath);
         
         Texture2D texture = null;
         var myIndex = textureIndex++;
@@ -223,15 +244,11 @@ public class FetchData : DataManager, ISingleton<FetchData>
                     {
                         texture = loadedText;
                         textureLoaded = true;
+                        cachedTextures.Add(imageName, texture);
+                        onResolve?.Invoke(texture);
                     }
                 }
             );
-
-        while (!textureLoaded) {
-            await Task.Yield();
-        }
-
-        return texture;
     }
     
     private string GetMD5Hash(string input)
@@ -251,29 +268,19 @@ public class FetchData : DataManager, ISingleton<FetchData>
         }
     }
 
-    public async UniTask<Texture2D> GetVillagerPortraitElement(string elementName)
-    {
-        string spriteName = elementName + ".png";
-        string requestUrl = ClientEnvironmentManager.Instance.PortraitElementURL.AddPath(spriteName);
-        return await GetTexture(requestUrl);
-    }
-
-    public async UniTask<Texture2D> GetNftSkinElement(TraitSprite spriteData)
+    public void GetNftSkinElement(TraitSprite spriteData, Action<Texture2D> callback)
     {
         string spriteName = spriteData.ImageName + ".png";
         string requestUrl = ClientEnvironmentManager.Instance.SkinURL.AddPath(spriteName);
-        return await GetTexture(requestUrl);
+        GetTexture(requestUrl, callback);
     }
 
-    public async UniTask<Texture2D> GetArmoryGearImage(Trait gearType, string gearName)
+    public void GetArmoryGearImage(Trait gearType, string gearName, Action<Texture2D> callback)
     {
         gearName = $"{gearType}/{gearName}";
         string spriteName = gearName + ".png";
         string requestUrl = ClientEnvironmentManager.Instance.GearIconURL.AddPath(spriteName);
-        //Debug.Log($"[Armory] Requesting {requestUrl}");
-        var texture = await GetTexture(requestUrl);
-        //Debug.Log($"[Armory] Request done! {texture == null} ");
-        return texture;
+        GetTexture(requestUrl, callback);
     }
 
 

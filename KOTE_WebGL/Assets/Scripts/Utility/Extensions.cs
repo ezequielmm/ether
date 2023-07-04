@@ -32,7 +32,7 @@ public static class Extensions
     public static void AddAuthToken(this UnityWebRequest request)
     {
         if(request == null) return;
-        string token = AuthenticationManager.Instance.GetSessionToken() ?? string.Empty;
+        string token = AuthenticationManager.Token ?? string.Empty;
         request.SetRequestHeader("Authorization", $"Bearer {token}");
     }
 

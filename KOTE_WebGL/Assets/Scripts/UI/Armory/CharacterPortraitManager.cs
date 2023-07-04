@@ -33,12 +33,12 @@ public class CharacterPortraitManager : MonoBehaviour
         inactiveOverlay.SetActive(true);
     }
 
-    private async void ShowPortrait(Nft metadata)
+    private void ShowPortrait(Nft metadata)
     {
-        PortraitSpriteManager.Instance.ClearCache();
-        
         if (!string.IsNullOrEmpty(metadata.adaptedImageURI))
-            portraitImage.sprite = await PortraitSpriteManager.Instance.GetKnightPortrait(metadata);
+            PortraitSpriteManager.Instance.GetKnightPortrait(metadata, sprite => {
+                portraitImage.sprite = sprite;
+            });
         else
             portraitImage.sprite = villagerDefault;
     }

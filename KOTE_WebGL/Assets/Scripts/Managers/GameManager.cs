@@ -406,6 +406,11 @@ public class GameManager : SingleTon<GameManager>
         CurrentScene = inGameScenes.Loader;
     }
 
+    public void LoadSceneNewTest()
+    {
+        SceneManager.LoadScene("MemoryCleaner", LoadSceneMode.Single);
+    }
+
     private void RequestExpeditionSync()
     {
         // Queue a map update for later

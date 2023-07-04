@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Spine;
 using Spine.Unity;
@@ -39,7 +41,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
                 nft.ClearEquippedGear();
             }
         }
-        if(_curNft != null) UpdatePlayerSkin();
+        if(_curNft != null) UpdatePlayerSkin(null);
     }
 
     public void SetSkin(int nftToken, NftContract contract, List<GearItemData> equippedGear = null)
@@ -116,7 +118,8 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         {
             _curNft.ChangeGear(trait, traitValue);
         }
-        UpdatePlayerSkin();
+        
+        UpdatePlayerSkin(null);
     }
 
     public void BuildPlayer(Nft selectedNft)
@@ -124,42 +127,37 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         PlayerNft.ClearCache();
 
         _curNft = GetNftBasedOnMetadata(selectedNft);
-        int curNftIndex = characterList.FindIndex(x => x == _curNft);
-        if (curNftIndex != -1 && curNftIndex != characterList.Count - 1)
-        {
-            CacheSkin(characterList[curNftIndex + 1]);
-        }
+        //int curNftIndex = characterList.FindIndex(x => x == _curNft);
+        // if (curNftIndex != -1 && curNftIndex != characterList.Count - 1)
+        // {
+        //     CacheSkin(characterList[curNftIndex + 1], null);
+        // }
         
-        UpdatePlayerSkin();
+        UpdatePlayerSkin(null);
     }
 
-    public async void CachePlayerSkinsAtStartup(List<Nft> tokens)
+    private void CacheSkin(PlayerNft skin, Action callback)
     {
-        for (int i = 0; i < tokens.Count; i++)
+        StartCoroutine(skin.GetDefaultSprites(knightSkeletonData, () =>
         {
-            PlayerNft curNft = GetNftBasedOnMetadata(tokens[i]);
-            if (i < GameSettings.INITIAL_SKIN_CACHE)
-            {
-                await CacheSkin(curNft);
-            }
-        }
+            StartCoroutine(skin.GetNftSprites(knightSkeletonData, callback));
+        }));
     }
 
-    private async UniTask CacheSkin(PlayerNft skin)
-    {
-        await skin.GetDefaultSprites(knightSkeletonData);
-        await skin.GetNftSprites(knightSkeletonData);
-    }
-
-    private async void UpdatePlayerSkin()
+    private void UpdatePlayerSkin(Action callback)
     {
         // TODO: Totally a Memory Leak
         skinLoading.Invoke();
-        await _curNft.GetDefaultSprites(knightSkeletonData);
-        await _curNft.GetNftSprites(knightSkeletonData);
         
-        GameManager.Instance.UpdatePlayerSkin();
-        OnSkinLoaded.Invoke();
+        StartCoroutine(_curNft.GetDefaultSprites(knightSkeletonData, () =>
+        {
+            StartCoroutine(_curNft.GetNftSprites(knightSkeletonData, () =>
+            {
+                GameManager.Instance.UpdatePlayerSkin();
+                OnSkinLoaded.Invoke();
+                callback?.Invoke();
+            }));
+        }));
     }
 
     private PlayerNft GetNftBasedOnMetadata(Nft selectedNft)
@@ -190,7 +188,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
                 return null;
         }
     }
-
+    
     public List<TraitSprite> GetAllTraitSprites()
     {
         return _curNft?.FullSpriteList() ?? new List<TraitSprite>();
