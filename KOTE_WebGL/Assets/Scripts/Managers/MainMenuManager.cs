@@ -77,8 +77,6 @@ public class MainMenuManager : MonoBehaviour
     
     public async void VerifyResumeExpedition()
     {
-
-        Debug.Log("VerifyResumeExpedition");
         if (!_hasWallet || !_isWhitelisted) 
         {
             playButton.gameObject.SetActive(false);
@@ -206,23 +204,6 @@ public class MainMenuManager : MonoBehaviour
         }
         else
         {
-            // if there's no wallet, ask if they want to connect one
-
-            Debug.Log("Step 1 B: No expedition");
-            if (!_hasWallet)
-            {
-                Debug.Log("Step 2 A: No expedition, Doesnt have wallet");
-
-
-                Debug.LogError("no wallet");
-                GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(
-                    "No Wallet connected, would you like to add one?",
-                    () => { wallet.SetActiveWallet(); },
-                    () => { GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true); },
-                    new[] { "Manage Wallet", "Play Without Wallet" });
-                return;
-            }
-
             Debug.Log("Step 2 B: No expedition, has a wallet!, what happens now?");
             // else open the armory panel
             //GameManager.Instance.EVENT_CHARACTERSELECTIONPANEL_ACTIVATION_REQUEST.Invoke(true);

@@ -19,7 +19,8 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 
 
     public UnityEvent OnSkinLoaded;
-    
+    private Nft currentNft;
+
     private SkeletonData knightSkeletonData => KinghtData.GetSkeletonData(true);
 
     protected override void Awake()
@@ -124,15 +125,18 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
 
     public void BuildPlayer(Nft selectedNft)
     {
+        if (currentNft != null && currentNft != selectedNft)
+        {
+            _curNft.ClearEquippedGear();
+            GameManager.Instance.UpdatePlayerSkin();
+        }
+        
+        currentNft = selectedNft;
+        
         PlayerNft.ClearCache();
 
         _curNft = GetNftBasedOnMetadata(selectedNft);
-        //int curNftIndex = characterList.FindIndex(x => x == _curNft);
-        // if (curNftIndex != -1 && curNftIndex != characterList.Count - 1)
-        // {
-        //     CacheSkin(characterList[curNftIndex + 1], null);
-        // }
-        
+
         UpdatePlayerSkin(null);
     }
 

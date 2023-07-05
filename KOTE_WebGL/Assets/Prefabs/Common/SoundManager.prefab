@@ -67,7 +67,7 @@ MonoBehaviour:
     SoundList: {fileID: 11400000, guid: 7e4f7671cfff1e143b50808544663628, type: 2}
   - Type: 5
     SoundList: {fileID: 11400000, guid: 4776a615b89b0de4992b1b4ba21bf228, type: 2}
-  showSoundDebugs: 1
+  showSoundDebugs: 0
 --- !u!82 &4876010967604876366
 AudioSource:
   m_ObjectHideFlags: 0

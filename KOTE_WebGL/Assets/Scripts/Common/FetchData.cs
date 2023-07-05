@@ -242,6 +242,11 @@ public class FetchData : DataManager, ISingleton<FetchData>
                 {
                     if (myIndex == index)
                     {
+                        if (cachedTextures.ContainsKey(imageName)) {
+                            onResolve?.Invoke(cachedTextures[imageName]);
+                            return;
+                        }
+                        
                         texture = loadedText;
                         textureLoaded = true;
                         cachedTextures.Add(imageName, texture);

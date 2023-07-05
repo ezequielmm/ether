@@ -81,11 +81,10 @@ namespace KOTE.UI.Armory
                 return;
             }
 
-            Debug.Log("<B><color=red> HANDLE ARMORY REFRESH HERE </color></B>");
-
             FindObjectOfType<ArmoryKnightRendererManager>(true).OnSkinLoading();
 
             StartCoroutine(Routine());
+
             IEnumerator Routine()
             {
                 yield return null;

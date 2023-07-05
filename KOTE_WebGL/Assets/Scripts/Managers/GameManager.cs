@@ -12,7 +12,7 @@ public class GameManager : SingleTon<GameManager>
         FindObjectOfType<MainMenuManager>().SetupPostAuthenticationButtons();
         FindObjectOfType<SettingsManager>().EnableLogoutAndWalletsButtons();
         FindObjectOfType<SettingsButtonManager>().OnAuthenticated();
-        FindObjectOfType<WalletPanel>().UpdateWalletInfo();
+        //FindObjectOfType<WalletPanel>().UpdateWalletInfo();
         FindObjectOfType<ArmoryPanelManager>().PopulatePlayerGearInventory();
     }
 
@@ -183,12 +183,12 @@ public class GameManager : SingleTon<GameManager>
         if (CurrentScene == inGameScenes.MainMenu)
         {
             FindObjectOfType<PlayerSkinManager>(true)?.SkinReset();
+            FindObjectOfType<ArmoryPanelManager>()?.ResetCharacterSelectionUI();
         }
         else if (CurrentScene == inGameScenes.Expedition)
         {
             FindObjectOfType<PlayerSkinManager>()?.SkinReset();
         }
-        FindObjectOfType<ArmoryPanelManager>()?.ResetCharacterSelectionUI();
     }
 
     //TOP BAR EVENTS
@@ -448,6 +448,11 @@ public class GameManager : SingleTon<GameManager>
                 action.Item1.Invoke();
                 SceneLoadsActions.RemoveAt(i);
             }
+        }
+
+        if (scene == inGameScenes.Expedition)
+        {
+            UpdatePlayerSkin();
         }
     }
 
