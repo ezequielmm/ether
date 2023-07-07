@@ -180,14 +180,11 @@ public class GameManager : SingleTon<GameManager>
     
     public void UpdatePlayerSkin()
     {
+        FindObjectOfType<PlayerSkinManager>(true)?.SkinReset();
+        
         if (CurrentScene == inGameScenes.MainMenu)
         {
-            FindObjectOfType<PlayerSkinManager>(true)?.SkinReset();
             FindObjectOfType<ArmoryPanelManager>()?.ResetCharacterSelectionUI();
-        }
-        else if (CurrentScene == inGameScenes.Expedition)
-        {
-            FindObjectOfType<PlayerSkinManager>()?.SkinReset();
         }
     }
 

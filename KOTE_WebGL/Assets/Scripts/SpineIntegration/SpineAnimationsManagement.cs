@@ -60,6 +60,8 @@ public class SpineAnimationsManagement : MonoBehaviour
 
     public void SetSkeletonDataAsset()
     {
+        if (skeletonAnimationScript?.skeletonDataAsset != null)
+            return;
         SetProperties();
     }
 

@@ -20,24 +20,27 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
     private SkeletonData skeletonData;
     private List<(Skin.SkinEntry, Attachment)> generatedAttachments;
     private Renderer renderer;
-
+    
     public void SkinReset()
     {
         equipsSkin = new Skin("Equips");
         if (skeletonAnimation.skeleton == null)
         {
-            Debug.LogWarning($"[PlayerSkinManager] Skeleton is null, can't apply skin");
-            return;
+            if (TryGetComponent<SpineAnimationsManagement>(out var animationsManagement))
+                animationsManagement.SetSkeletonDataAsset();
+            else
+            {
+                Debug.LogWarning($"[PlayerSkinManager] Skeleton is null, can't apply skin");
+                return;
+            }
         }
         skeletonAnimation.Skeleton.SetSkin(equipsSkin);
 
         RefreshSkeletonAttachments();
-        if (!gameObject.activeSelf)
-            gameObject.SetActive(true);
-        StartCoroutine(UpdateSkin());
+        UpdateSkin();
     }
 
-    private IEnumerator UpdateSkin()
+    private void UpdateSkin()
     {
         //equip
         skeletonData = skeletonDataAsset.GetSkeletonData(true);
@@ -65,7 +68,6 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
             {
                 // if this is called, nothing's going wrong, this nft doesn't have a skin for this trait, leaving for debugging
                 Debug.LogWarning($"[PlayerSkinManager] Can't apply Sprite of type [{traitType}]: {traitSprite}");
-                yield return null;
                 continue;
             }
             
@@ -74,8 +76,6 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
                 Debug.Log("[UpdateSkin] skin" + traitSprite.SkinName + "NOT FOUND");
             else
                 equipsSkin.AddSkin(skin);
-
-            yield return null;
         }
 
         generatedAttachments = new List<(Skin.SkinEntry, Attachment)>();
@@ -97,14 +97,11 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
 
                 generatedAttachments.Add((skinAttachment, attachment));
             }
-
-            yield return null;
         }
 
         foreach ((Skin.SkinEntry, Attachment) attachmentData in generatedAttachments)
         {
             equipsSkin.SetAttachment(attachmentData.Item1.SlotIndex, attachmentData.Item1.Name, attachmentData.Item2);
-            yield return null;
         }
 
         skeletonAnimation.Skeleton.SetSkin(equipsSkin);
