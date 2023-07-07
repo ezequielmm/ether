@@ -24,7 +24,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
     private uint textureIndex;
     
     private Dictionary<string, Texture2D> cachedTextures = new();
-    
+
     public static FetchData Instance
     {
         get
@@ -140,8 +140,11 @@ public class FetchData : DataManager, ISingleton<FetchData>
             return null;
         }
 
-        string requestUrl = webRequest.ConstructUrl(RestEndpoint.WalletData) + $"/{wallet}?amount=10";
-        Debug.Log(requestUrl);
+        int amount = 10;
+        if (URLParameters.GetSearchParameters().TryGetValue("amount", out var nftsAmountString))
+            amount = int.Parse(nftsAmountString) < 5 ? 5 : int.Parse(nftsAmountString);
+        
+        string requestUrl = webRequest.ConstructUrl(RestEndpoint.WalletData) + $"/{wallet}?amount={amount}";
         using (UnityWebRequest request = UnityWebRequest.Get(requestUrl))
         {
             string rawJson = await KeepRetryingRequest(request);
