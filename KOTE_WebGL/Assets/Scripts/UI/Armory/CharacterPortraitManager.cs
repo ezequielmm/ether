@@ -42,4 +42,5 @@ public class CharacterPortraitManager : MonoBehaviour
         else
             portraitImage.sprite = villagerDefault;
     }
+
 }

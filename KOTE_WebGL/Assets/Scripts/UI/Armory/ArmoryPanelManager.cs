@@ -14,6 +14,8 @@ namespace KOTE.UI.Armory
 {
     public class ArmoryPanelManager : MonoBehaviour
     {
+        public CharactersListManager charactersListManager;
+
         public GameObject panelContainer;
         public Button playButton;
         public CharacterPortraitManager portraitManager;
@@ -102,25 +104,40 @@ namespace KOTE.UI.Armory
 
         public void ActivateContainer(bool show)
         {
-            // run this whe the panel is opened, instead of when nfts load, so images are cached
-            try
-            {
+            // run this when the panel is opened, instead of when nfts load, so images are cached
+            //try
+            //{
+            /*
                 if (show)
                 {
-                    GameManager.Instance.NftSelected(curNode.Value.MetaData);
-                    UpdatePanelOnNftUpdate();
+                    if (curNode != null && curNode.Value.MetaData != null)
+                    {
+                        GameManager.Instance.NftSelected(curNode.Value.MetaData);
+                        UpdatePanelOnNftUpdate();
+                    }
                 }
-
+*/
                 panelContainer.SetActive(show);
-            }
-            catch (Exception e)
-            {
-            }
+                gameObject.SetActive(show);
+                charactersListManager.Show(NftManager.Instance.GetAllNfts());
+                
+                
+                //}
+                //catch (Exception e)
+                //{
+                //    Debug.LogError(e);
+                //}
         }
 
         private void PopulateCharacterList()
         {
             List<Nft> nfts = NftManager.Instance.GetAllNfts();
+            
+            //TODO:
+            if(charactersListManager){
+                charactersListManager.Show(nfts);
+            }
+            
             //PlayerSpriteManager.Instance.CachePlayerSkinsAtStartup(nfts);
             //PortraitSpriteManager.Instance.CacheAllSprites();
             nftList.Clear();
@@ -152,6 +169,7 @@ namespace KOTE.UI.Armory
                 : $"Available in: {ParseTime((int)(curMetadata.PlayableAt - DateTime.UtcNow).TotalSeconds)}";
             CanPlayText.transform.parent.gameObject.SetActive(!curMetadata.CanPlay);
             portraitManager.SetPortrait(curMetadata);
+            
             foreach (GameObject panel in gearPanels)
             {
                 panel.SetActive(!curMetadata.isKnight);
