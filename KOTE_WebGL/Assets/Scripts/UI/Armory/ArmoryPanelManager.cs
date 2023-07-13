@@ -133,7 +133,6 @@ namespace KOTE.UI.Armory
         {
             List<Nft> nfts = NftManager.Instance.GetAllNfts();
             
-            //TODO:
             if(charactersListManager){
                 charactersListManager.Show(nfts);
             }
