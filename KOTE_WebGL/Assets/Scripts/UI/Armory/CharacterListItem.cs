@@ -67,4 +67,9 @@ public class CharacterListItem : MonoBehaviour
             return $"{time.Days}Ds {time.Hours}Hr";
         }
     }
+
+    internal void SetSelected(bool selected)
+    {
+        portraitManager.SetSelected(selected);
+    }
 }
