@@ -91,15 +91,24 @@ public class NftManager : ISingleton<NftManager>
                 // if the metadata is null then the backend detected bad data and didn't send anything
                 if (token.metadata == null)
                 {
-                    Debug.LogWarning(
+                    Debug.LogError(
                         $"[NftManager] No Metadata Found for the {contract.ContractType} {token.token_id} From The Server");
                     continue;
                 }
-
+                Debug.Log("Token Can Play: " + token.can_play);
                 token.metadata.TokenId = int.Parse(token.token_id);
                 token.metadata.Contract = contract.ContractType;
                 token.metadata.adaptedImageURI = token.adaptedImageURI;
                 token.metadata.CanPlay = token.can_play;
+                if (token.can_play == false)
+                {
+                    Debug.Log("Token cant play");
+                }
+                if (token.metadata.CanPlay == false)
+                {
+                    Debug.Log("Token cant " +
+                        "play 2 ");
+                }
                 Nfts[contract.ContractType].Add(token.metadata);
             }
         }

@@ -13,7 +13,7 @@ public class GameManager : SingleTon<GameManager>
         FindObjectOfType<SettingsManager>().EnableLogoutAndWalletsButtons();
         FindObjectOfType<SettingsButtonManager>().OnAuthenticated();
         //FindObjectOfType<WalletPanel>().UpdateWalletInfo();
-        FindObjectOfType<ArmoryPanelManager>().PopulatePlayerGearInventory();
+        FindObjectOfType<ArmoryPanelManager>(true).PopulatePlayerGearInventory();
     }
 
     //PROFILE EVENTS
@@ -43,7 +43,7 @@ public class GameManager : SingleTon<GameManager>
     //[HideInInspector] public UnityEvent<bool> EVENT_SHOW_ARMORY_PANEL = new UnityEvent<bool>();
     public void ShowArmoryPanel(bool show)
     {
-        FindObjectOfType<ArmoryPanelManager>().ActivateContainer(show);
+        FindObjectOfType<ArmoryPanelManager>(true).ActivateContainer(show);
     }
 
     //CONFIRMATION PANEL EVENTS
@@ -170,6 +170,7 @@ public class GameManager : SingleTon<GameManager>
     
     public void NftSelected(Nft nft)
     {
+
         PlayerSpriteManager.Instance.BuildPlayer(nft);
     }
 
