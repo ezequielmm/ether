@@ -5,6 +5,18 @@ using UnityEngine;
 
 namespace KOTE.UI.Armory
 {
+    public class Category
+    {
+        public string name;
+        public List<CategoryItem> items;
+    }
+
+    public class CategoryItem
+    {
+        public GearItemData item;
+        public int amount;
+    }
+    
     public class GearListManager : MonoBehaviour
     {
         [SerializeField] private GameObject loadingText;
@@ -20,13 +32,7 @@ namespace KOTE.UI.Armory
         
         private int currentItemIndex = 0;
         private int currentCategoryIndex = 0;
-        
-        class Category
-        {
-            public string name;
-            public List<GearItemData> items;
-        }
-        
+
         public void Clear()
         {
             loadingText.SetActive(true);
@@ -52,12 +58,22 @@ namespace KOTE.UI.Armory
 
             var category = categoryLists.FirstOrDefault(e => e.name == itemData.category);
             if (categoryLists.Any(e => e.name == itemData.category))
-                category.items.Add(itemData);
+                category.items.Add(new () {
+                    item = itemData,
+                    amount = 1
+                });
             else
                 categoryLists.Add(new ()
                 {
                     name = itemData.category,
-                    items = new List<GearItemData> { itemData }   
+                    items = new List<CategoryItem>
+                    {
+                        new ()
+                        {
+                            item = itemData,
+                            amount = 1
+                        }
+                    }   
                 });
         }
         
@@ -71,6 +87,17 @@ namespace KOTE.UI.Armory
 
         public void GenerateHeaders()
         {
+            // Remove duplicated items by item.name for each category, and add 1 to the amount of that item
+            foreach (var category in categoryLists)
+            {
+                var items = category.items.GroupBy(e => e.item.name).Select(e => new CategoryItem
+                {
+                    item = e.First().item,
+                    amount = e.Count()
+                }).ToList();
+                category.items = items;
+            }
+
             ShowPage(0);
             loadingText.SetActive(false);
         }
@@ -105,7 +132,9 @@ namespace KOTE.UI.Armory
             pagesCount.text = $"{page}/{currentCategory.items.Count / pageLength + (pageLength != currentCategory.items.Count ? 1 : 0)}";
             
             header.ClearList();
-            header.Populate(currentCategory.name, currentCategory.items.Skip(startIndex).Take(pageLength).ToList());
+            header.Populate(
+                currentCategory.name, 
+                currentCategory.items.Skip(startIndex).Take(pageLength).ToList());
             header.OnToggle(true);
         }
 

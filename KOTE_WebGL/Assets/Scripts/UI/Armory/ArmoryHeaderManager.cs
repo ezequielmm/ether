@@ -30,6 +30,17 @@ namespace KOTE.UI.Armory
             title.text = headerName;
             GenerateGearItems(gearData);
         }
+        
+        public void Populate(string currentCategoryName, List<CategoryItem> gearData)
+        {
+            title.text = currentCategoryName;
+            foreach (var gearItem in gearData)
+            {
+                var item = Instantiate(gearPrefab, gearList.transform);
+                item.Populate(gearItem.item, gearItem.amount);
+                gearItems.Add(item);
+            }
+        }
 
         private void GenerateGearItems(List<GearItemData> gearData)
         {

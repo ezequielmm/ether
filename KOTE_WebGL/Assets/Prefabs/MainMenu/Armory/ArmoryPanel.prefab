@@ -4051,7 +4051,7 @@ MonoBehaviour:
   gearPanels:
   - {fileID: 6220174527205603789}
   - {fileID: 3640251270229046520}
-  - {fileID: 6841770010625878433}
+  - {fileID: 1968092758607072538}
   leftButton: {fileID: 6100225257306159182}
   rightButton: {fileID: 5355019824354035837}
   loadingText: {fileID: 5105157798284892674}

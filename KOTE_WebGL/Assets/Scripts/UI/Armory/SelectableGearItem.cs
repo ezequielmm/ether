@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -12,6 +13,9 @@ namespace KOTE.UI.Armory
 
         private bool isInteractable = true;
 
+        [SerializeField] private GameObject stackImage;
+        [SerializeField] private TextMeshProUGUI stackText;
+        
         public void UpdateSelectableBasedOnTokenType(NftContract curTokenType)
         {
             switch (curTokenType)
@@ -54,6 +58,15 @@ namespace KOTE.UI.Armory
         {
             // TODO: Abstract out more
             if (isInteractable) FindObjectOfType<ArmoryPanelManager>().OnGearItemSelected(ItemData);
+        }
+
+        public void Populate(GearItemData gearItemItem, int gearItemAmount)
+        {
+            base.Populate(gearItemItem);
+            stackImage.SetActive(gearItemAmount > 1);
+            
+            var stackNumberText = gearItemAmount > 999 ? "999+" : gearItemAmount.ToString();
+            stackText.text = stackNumberText;
         }
     }
 }
