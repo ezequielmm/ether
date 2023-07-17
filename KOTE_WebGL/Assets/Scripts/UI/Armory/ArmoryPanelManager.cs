@@ -35,7 +35,6 @@ namespace KOTE.UI.Armory
         // making a reference to this since GetComponentInChildren only works on active gameObjects
         public ScrollRect gearListScroll;
 
-        private LinkedListNode<ArmoryTokenData> curNode;
         private LinkedList<ArmoryTokenData> nftList = new();
         private Dictionary<string, List<GearItemData>> categoryLists = new();
         private Dictionary<Trait, GearItemData> equippedGear = new();
@@ -48,7 +47,7 @@ namespace KOTE.UI.Armory
 
         private Coroutine populateGearInventoryRoutine;
 
-        
+        private Nft SelectedCharacter => charactersListManager.SelectedCharacter;
         private Dictionary<string, Sprite> cachedSprites = new();
         
         private void Awake()
@@ -144,7 +143,6 @@ namespace KOTE.UI.Armory
             if (nfts.Count == 0)
             {
                 portraitManager.SetDefault();
-                curNode = null;
                 playButton.interactable = false;
                 return;
             }
@@ -154,14 +152,13 @@ namespace KOTE.UI.Armory
                 nftList.AddLast(new ArmoryTokenData(nft));
             }
 
-            curNode = nftList.First;
             if (panelContainer.activeSelf)
-                GameManager.Instance.NftSelected(curNode.Value.MetaData);
+                GameManager.Instance.NftSelected(SelectedCharacter);
         }
 
         private void UpdatePanelOnNftUpdate()
         {
-            Nft curMetadata = curNode.Value.MetaData;
+            Nft curMetadata = SelectedCharacter;
             TokenNameText.text = FormatTokenName(curMetadata);
             CanPlayText.text = curMetadata.CanPlay
                 ? ""
@@ -293,8 +290,8 @@ namespace KOTE.UI.Armory
         {
             foreach (ArmoryHeaderManager header in gearHeaders)
             {
-                if (curNode != null)
-                    header.UpdateGearSelectableStatus(curNode.Value.MetaData.Contract);
+                if (SelectedCharacter != null)
+                    header.UpdateGearSelectableStatus(SelectedCharacter.Contract);
                 else
                 {
                     Debug.Log($"This node is null");
@@ -338,15 +335,15 @@ namespace KOTE.UI.Armory
 
         private void PopulateEquippedGear()
         {
-            if (curNode.Value.MetaData.Contract == NftContract.Villager &&
-                villagerEquippedGear.ContainsKey(curNode.Value.Id))
+            if (SelectedCharacter.Contract == NftContract.Villager &&
+                villagerEquippedGear.ContainsKey(SelectedCharacter.TokenId))
             {
-                EquipGearInSlots(villagerEquippedGear[curNode.Value.Id]);
+                EquipGearInSlots(villagerEquippedGear[SelectedCharacter.TokenId]);
             }
-            else if (curNode.Value.MetaData.Contract == NftContract.BlessedVillager &&
-                     blessedVillagerEquippedGear.ContainsKey(curNode.Value.Id))
+            else if (SelectedCharacter.Contract == NftContract.BlessedVillager &&
+                     blessedVillagerEquippedGear.ContainsKey(SelectedCharacter.TokenId))
             {
-                EquipGearInSlots(blessedVillagerEquippedGear[curNode.Value.Id]);
+                EquipGearInSlots(blessedVillagerEquippedGear[SelectedCharacter.TokenId]);
             }
             else
             {
@@ -377,38 +374,18 @@ namespace KOTE.UI.Armory
             }
         }
 
-        private void SetEquippedGear()
-        {
-        }
+ 
 
-        public void OnPreviousToken()
-        {
-            rightButton.interactable = false;
-            loadingText.text = "Loading...";
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-            if (curNode.Previous == null)
-                curNode = curNode.List.Last;
-            else
-                curNode = curNode.Previous;
-            GameManager.Instance.NftSelected(curNode.Value.MetaData);
-            UpdatePanelOnNftUpdate();
-        }
-
-        public void OnNextToken()
-        {
-            rightButton.interactable = false;
-            loadingText.text = "Loading...";
-            GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
-            if (curNode.Next == null)
-                curNode = curNode.List.First;
-            else
-                curNode = curNode.Next;
-            GameManager.Instance.NftSelected(curNode.Value.MetaData);
-            UpdatePanelOnNftUpdate();
-        }
+        
 
         public void OnPlayButton()
         {
+            if (charactersListManager.SelectedCharacter.CanPlay == false)
+            {
+                Debug.LogError("This character cant play");
+                return;
+            }
+
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             OnStartExpedition();
         }
@@ -426,10 +403,14 @@ namespace KOTE.UI.Armory
 
         private async void OnStartExpedition()
         {
+            
             playButton.interactable = false;
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
+
+            var nft = charactersListManager.SelectedCharacter;
+           
             ExpeditionStartData startData =
-                await FetchData.Instance.RequestNewExpedition(curNode.Value.MetaData.Contract, curNode.Value.Id,
+                await FetchData.Instance.RequestNewExpedition(nft.Contract, nft.TokenId,
                     equippedGear.Values.ToList());
             if (startData.expeditionCreated)
             {
@@ -443,7 +424,7 @@ namespace KOTE.UI.Armory
                     () => { }, new[] { "Close", "" });
             }
 
-            playButton.interactable = curNode.Value.MetaData.CanPlay;
+            playButton.interactable = SelectedCharacter.CanPlay;
         }
 
         private void OnExpeditionConfirmed()
@@ -462,8 +443,8 @@ namespace KOTE.UI.Armory
 
         public void OnGearItemSelected(GearItemData activeItem)
         {
-            if (curNode.Value.MetaData.Contract == NftContract.Knights ||
-                (curNode.Value.MetaData.Contract == NftContract.Villager && !activeItem.CanVillagerEquip)) return;
+            if (SelectedCharacter.Contract == NftContract.Knights ||
+                (SelectedCharacter.Contract == NftContract.Villager && !activeItem.CanVillagerEquip)) return;
 
             Trait itemTrait = activeItem.trait.ParseToEnum<Trait>();
             gearSlots.Find(x => x.gearTrait == itemTrait).SetGearInSlot(activeItem);

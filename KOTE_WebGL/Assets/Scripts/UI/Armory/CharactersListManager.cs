@@ -64,6 +64,7 @@ public class CharactersListManager : MonoBehaviour
         }
         UpdateSelected();
 
+        characterListItem[0].OnClick.Invoke();
     }
 
     private void ClearList()
@@ -80,7 +81,6 @@ public class CharactersListManager : MonoBehaviour
 
         SelectedCharacter = item.Nft;
         UpdateSelected();
-
         GameManager.Instance.NftSelected(item.Nft);
     }
 

@@ -170,6 +170,7 @@ public class GameManager : SingleTon<GameManager>
     
     public void NftSelected(Nft nft)
     {
+
         PlayerSpriteManager.Instance.BuildPlayer(nft);
     }
 
