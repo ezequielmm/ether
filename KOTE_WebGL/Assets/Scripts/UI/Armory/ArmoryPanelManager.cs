@@ -2,10 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Cysharp.Threading.Tasks;
 using map;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,6 +12,7 @@ namespace KOTE.UI.Armory
     public class ArmoryPanelManager : MonoBehaviour
     {
         public CharactersListManager charactersListManager;
+        public GearListManager GearListManager;
 
         public GameObject panelContainer;
         public Button playButton;
@@ -48,7 +46,7 @@ namespace KOTE.UI.Armory
         private Coroutine populateGearInventoryRoutine;
 
         private Nft SelectedCharacter => charactersListManager.SelectedCharacter;
-        private Dictionary<string, Sprite> cachedSprites = new();
+
         
         private void Awake()
         {
@@ -214,7 +212,7 @@ namespace KOTE.UI.Armory
 
         IEnumerator PopulatePlayerGearInventoryRoutine()
         {
-            loadingTextGearPanel.gameObject.SetActive(true);
+            GearListManager.Clear();
             ClearHeaders();
             GearData data = null;
             yield return RequestService.Instance.GetRequestCoroutine(
@@ -245,32 +243,7 @@ namespace KOTE.UI.Armory
                 FetchData.Instance.GetArmoryGearImage(itemData.trait.ParseToEnum<Trait>(), itemData.name,
                     texture =>
                     {
-                        var sprite = default(Sprite);
-                        if (cachedSprites.ContainsKey(itemData.name)) {
-                            sprite = cachedSprites[itemData.name];
-                        }
-                        else {
-                            sprite = texture?.ToSprite();
-                            cachedSprites.Add(itemData.name, sprite);
-                        }
-                        
-                        itemData.gearImage = sprite;
-
-                        if (itemData.gearImage == null)
-                            Debug.LogError(
-                                $"Image is null for {itemData.name} - {itemData.category} - {itemData.trait}");
-
-                        if (categoryLists.ContainsKey(itemData.category))
-                        {
-                            // Debug.Log($"[Armory] categoryLists contains {itemData.category}");
-                            categoryLists[itemData.category].Add(itemData);
-                        }
-                        else
-                        {
-                            // Debug.Log($"[Armory] categoryLists does not contain {itemData.category}");
-                            categoryLists[itemData.category] = new List<GearItemData> { itemData };
-                        }
-
+                        GearListManager.AddGearItem(itemData, texture);
                         callbacksPending--;
                     }
                 );
@@ -283,37 +256,39 @@ namespace KOTE.UI.Armory
             UpdateGearListBasedOnToken();
             yield return null;
             yield return GenerateHeaders();
-            loadingTextGearPanel.gameObject.SetActive(false);
         }
 
         private void UpdateGearListBasedOnToken()
         {
-            foreach (ArmoryHeaderManager header in gearHeaders)
-            {
-                if (SelectedCharacter != null)
-                    header.UpdateGearSelectableStatus(SelectedCharacter.Contract);
-                else
-                {
-                    Debug.Log($"This node is null");
-                }
-            }
+            GearListManager.UpdateGearListBasedOnToken(SelectedCharacter);
+            // foreach (ArmoryHeaderManager header in gearHeaders)
+            // {
+            //     if (SelectedCharacter != null)
+            //         header.UpdateGearSelectableStatus(SelectedCharacter.Contract);
+            //     else
+            //     {
+            //         Debug.Log($"This node is null");
+            //     }
+            // }
         }
 
         private IEnumerator GenerateHeaders()
         {
             // Debug.Log($"[Armory] GenerateHeaders : {categoryLists.Keys.Count}");
-            foreach (string category in categoryLists.Keys)
-            {
-                ArmoryHeaderManager header = Instantiate(headerPrefab, gearListTransform);
-                // Debug.Log($"[Armory] GenerateHeaders header : {header}");
-                if (categoryLists.ContainsKey(category))
-                {
-                    header.Populate(category, categoryLists[category]);
-                    gearHeaders.Add(header);
-                }
-
-                yield return null;
-            }
+            GearListManager.GenerateHeaders();
+            // foreach (string category in categoryLists.Keys)
+            // {
+            //     ArmoryHeaderManager header = Instantiate(headerPrefab, gearListTransform);
+            //     // Debug.Log($"[Armory] GenerateHeaders header : {header}");
+            //     if (categoryLists.ContainsKey(category))
+            //     {
+            //         header.Populate(category, categoryLists[category]);
+            //         gearHeaders.Add(header);
+            //     }
+            //
+            //     yield return null;
+            // }
+            yield return null;
         }
 
         private void ClearHeaders()

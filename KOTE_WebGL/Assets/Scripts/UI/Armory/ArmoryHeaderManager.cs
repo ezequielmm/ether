@@ -49,7 +49,7 @@ namespace KOTE.UI.Armory
             }
         }
 
-        private void OnToggle(bool isOn)
+        public void OnToggle(bool isOn)
         {
             gearList.SetActive(isOn);
         }
@@ -58,6 +58,15 @@ namespace KOTE.UI.Armory
         {
             Collapsed,
             Expanded
+        }
+
+        public void ClearList()
+        {
+            foreach (SelectableGearItem item in gearItems)
+            {
+                Destroy(item.gameObject);
+            }
+            gearItems.Clear();
         }
     }
 }
