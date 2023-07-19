@@ -36,6 +36,8 @@ namespace KOTE.UI.Armory
         public void Clear()
         {
             loadingText.SetActive(true);
+            header.ClearList();
+            categoryLists.Clear();
             // Remove instantiated items
         }
 
