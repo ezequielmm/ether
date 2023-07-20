@@ -17,21 +17,13 @@ namespace KOTE.UI.Armory
         public GameObject panelContainer;
         public Button playButton;
         public CharacterPortraitManager portraitManager;
-        public TMP_Text TokenNameText;
-        public TMP_Text CanPlayText;
-        public ArmoryHeaderManager headerPrefab;
-        public Transform gearListTransform;
         public List<GearSlot> gearSlots;
 
-        public GameObject[] gearPanels;
+        public List<GameObject> gearPanels;
 
         [SerializeField] private Button leftButton;
         [SerializeField] private Button rightButton;
         [SerializeField] private TextMeshProUGUI loadingText;
-        [SerializeField] private GameObject loadingTextGearPanel;
-
-        // making a reference to this since GetComponentInChildren only works on active gameObjects
-        public ScrollRect gearListScroll;
 
         private LinkedList<ArmoryTokenData> nftList = new();
         private Dictionary<string, List<GearItemData>> categoryLists = new();
@@ -96,7 +88,6 @@ namespace KOTE.UI.Armory
             panelContainer.SetActive(false);
             // listen for successful login to get the player's gear
 
-            gearListScroll.scrollSensitivity = GameSettings.PANEL_SCROLL_SPEED;
         }
 
         public void ActivateContainer(bool show)
@@ -154,54 +145,14 @@ namespace KOTE.UI.Armory
                 GameManager.Instance.NftSelected(SelectedCharacter);
         }
 
-        private void UpdatePanelOnNftUpdate()
-        {
-            Nft curMetadata = SelectedCharacter;
-            TokenNameText.text = FormatTokenName(curMetadata);
-            CanPlayText.text = curMetadata.CanPlay
-                ? ""
-                : $"Available in: {ParseTime((int)(curMetadata.PlayableAt - DateTime.UtcNow).TotalSeconds)}";
-            CanPlayText.transform.parent.gameObject.SetActive(!curMetadata.CanPlay);
-            portraitManager.SetPortrait(curMetadata);
-            
-            foreach (GameObject panel in gearPanels)
-            {
-                panel.SetActive(!curMetadata.isKnight);
-            }
-
-            playButton.interactable = curMetadata.CanPlay;
-            if (curMetadata.isKnight) ClearGearSlots();
-            else PopulateEquippedGear();
-
-            UpdateGearListBasedOnToken();
-        }
+        public void ActiveGearPanel(bool value) => 
+            gearPanels.ForEach(go => go.SetActive(value));
 
         public void ResetCharacterSelectionUI()
         {
             loadingText.text = "";
             leftButton.interactable = true;
             rightButton.interactable = true;
-        }
-
-        private string FormatTokenName(Nft tokenData)
-        {
-            string contractName = "";
-            switch (tokenData.Contract)
-            {
-                case NftContract.Knights:
-                    contractName = tokenData.Contract.ToString().TrimEnd('s');
-                    break;
-                case NftContract.Villager:
-                    contractName = tokenData.Contract.ToString();
-                    break;
-                case NftContract.BlessedVillager:
-                    contractName = "Blessed Villager";
-                    break;
-                case NftContract.NonTokenVillager:
-                    return "Basic Villager";
-            }
-
-            return contractName + " #" + tokenData.TokenId;
         }
 
         public void PopulatePlayerGearInventory()
