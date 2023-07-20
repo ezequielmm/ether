@@ -26,12 +26,24 @@ namespace map.Clouds
         private readonly Queue<Cloud> _cloudsPool = new();
         private Queue<int> _spriteIndexQueue = new();
 
+        private Coroutine initializeCloudsRoutine;
+        
         private void Awake()
         {
-            GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.AddListener((a) => StartCoroutine(Initialize()));
+            GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.AddListener((a) =>
+            {
+                StartCoroutine(Initialize());
+            });
         }
         
-        private IEnumerator Initialize() {
+        private IEnumerator Initialize()
+        {
+            // clear all clouds, just in case
+            foreach (var cloud in _cloudsPool) {
+                Destroy(cloud.gameObject);
+            }
+            _cloudsPool.Clear();
+            
             GenerateClouds();
             yield return new WaitForSeconds(_startPlayDelay);
             

@@ -20,9 +20,13 @@ namespace KOTE.UI.Armory
         {
             // set the the dropdown to the 'default' values
             gearList.SetActive(false);
-            dropdownArrow.sprite = arrowOptions[(int)ArrowDirections.Collapsed];
-            toggle.isOn = false;
-            toggle.onValueChanged.AddListener(OnToggle);
+            if (dropdownArrow)
+                dropdownArrow.sprite = arrowOptions[(int)ArrowDirections.Collapsed];
+            if (toggle)
+            {
+                toggle.isOn = false;
+                toggle.onValueChanged.AddListener(OnToggle);
+            }
         }
 
         internal void Populate(string headerName, List<GearItemData> gearData)
