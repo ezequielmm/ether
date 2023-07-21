@@ -170,7 +170,7 @@ public class GameManager : SingleTon<GameManager>
     
     public void NftSelected(Nft nft)
     {
-        FindObjectOfType<ArmoryPanelManager>().ActiveGearPanel(nft.Contract != NftContract.Knights && nft.Contract != NftContract.None);
+        FindObjectOfType<ArmoryPanelManager>().NftSelected(nft);
         PlayerSpriteManager.Instance.BuildPlayer(nft);
     }
 

@@ -184,6 +184,16 @@ namespace KOTE.UI.Armory
 
             populateGearInventoryRoutine = null;
         }
+        
+        public void NftSelected(Nft nft)
+        {
+            ActiveGearPanel(nft.Contract != NftContract.Knights && nft.Contract != NftContract.None);
+            foreach (var gearSlot in gearSlots)
+            {
+                gearSlot.ResetSlot();
+                equippedGear.Remove(gearSlot.gearTrait);
+            }
+        }
 
         private IEnumerator PopulateGearList(List<GearItemData> ownedGear)
         {
@@ -382,27 +392,6 @@ namespace KOTE.UI.Armory
         {
             equippedGear.Remove(gearTrait);
             GameManager.Instance.UpdateNft(gearTrait, "");
-        }
-
-        public string ParseTime(int totalSeconds)
-        {
-            TimeSpan time = TimeSpan.FromSeconds(totalSeconds);
-
-            // Si el tiempo es menor a una hora, formatear como minutos y segundos.
-            if (time.TotalHours < 1)
-            {
-                return $"{time.Minutes:D2}:{time.Seconds:D2}";
-            }
-            // Si el tiempo es menor a un día pero mayor o igual a una hora, formatear como horas y minutos.
-            else if (time.TotalDays < 1)
-            {
-                return $"{time.Hours}Hr {time.Minutes:D2}m";
-            }
-            // Si el tiempo es mayor o igual a un día, formatear como días, horas y minutos.
-            else
-            {
-                return $"{time.Days}Ds {time.Hours}Hr";
-            }
         }
     }
 
