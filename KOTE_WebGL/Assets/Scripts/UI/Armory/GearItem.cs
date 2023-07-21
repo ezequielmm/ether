@@ -51,6 +51,7 @@ public class GearItem : MonoBehaviour
     }
 }
 
+[Serializable]
 public class GearItemData
 {
     public int gearId;

@@ -5,12 +5,14 @@ using UnityEngine;
 
 namespace KOTE.UI.Armory
 {
+    [System.Serializable]
     public class Category
     {
         public string name;
         public List<CategoryItem> items;
     }
 
+    [System.Serializable]
     public class CategoryItem
     {
         public GearItemData item;
@@ -44,12 +46,13 @@ namespace KOTE.UI.Armory
         public void AddGearItem(GearItemData itemData, Texture2D texture)
         {
             var sprite = default(Sprite);
-            if (cachedSprites.ContainsKey(itemData.name)) {
-                sprite = cachedSprites[itemData.name];
+            var key = $"{itemData.trait}/{itemData.name}";
+            if (cachedSprites.ContainsKey(key)) {
+                sprite = cachedSprites[key];
             }
             else {
                 sprite = texture?.ToSprite();
-                cachedSprites.Add(itemData.name, sprite);
+                cachedSprites.Add(key, sprite);
             }
                         
             itemData.gearImage = sprite;
@@ -59,7 +62,7 @@ namespace KOTE.UI.Armory
                     $"Image is null for {itemData.name} - {itemData.category} - {itemData.trait}");
 
             var category = categoryLists.FirstOrDefault(e => e.name == itemData.category);
-            if (categoryLists.Any(e => e.name == itemData.category))
+            if (category != null)
                 category.items.Add(new () {
                     item = itemData,
                     amount = 1
