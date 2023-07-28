@@ -220,9 +220,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
     public void GetTexture(string url, Action<Texture2D> onResolve)
     {
         string imageName = GetMD5Hash(url);
-        // Add the extension only if it's not there
-        if (!imageName.EndsWith(".png"))
-            imageName += ".png";
+        imageName += ".png";
 
         if (cachedTextures.ContainsKey(imageName))
         {
@@ -293,6 +291,12 @@ public class FetchData : DataManager, ISingleton<FetchData>
         GetTexture(requestUrl, callback);
     }
 
+    public void GetLootboxGearImage(string image, Action<Texture2D> action)
+    {
+        image += ".png";
+        var url = ClientEnvironmentManager.Instance.LootboxAssetsURL.AddPath(image);
+        GetTexture(url, action);
+    }
 
     public async UniTask<string> GetTokenByLogin(string email, string hashedPassword)
     {

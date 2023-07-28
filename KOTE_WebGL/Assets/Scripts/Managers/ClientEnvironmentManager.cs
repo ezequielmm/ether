@@ -17,6 +17,8 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
     public string PortraitElementURL => _environmentUrls.PortraitElementURL;
     public string WebSocketURL => _environmentUrls.WebSocketURL;
     public string LeaderboardURL => _environmentUrls.LeaderboardURL;
+    
+    public string LootboxAssetsURL => _environmentUrls.LootboxAssetsURL;
 
     private EnvironmentUrls _environmentUrls;
     public Environments Environment { get; private set; } = Environments.Unknown;
@@ -100,7 +102,7 @@ public class EnvironmentUrls
     [JsonProperty("socket_url")] public string WebSocketURL;
     [JsonProperty("asset_url")] public string ArtAssetURL;
     [JsonProperty("leaderboard_url")] public string LeaderboardURL;
-    
+
     private string AssetsUrl;
     public EnvironmentUrls()
     {
@@ -116,6 +118,8 @@ public class EnvironmentUrls
     [JsonIgnore]
     public string PortraitElementURL => AssetsUrl.AddPath("Portraits");
 
+    [JsonIgnore]
+    public string LootboxAssetsURL => AssetsUrl.AddPath("LootboxAssets");
 
     public bool DoAllUrlsExist()
     {
