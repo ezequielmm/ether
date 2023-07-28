@@ -14,6 +14,7 @@ public class GearItem : MonoBehaviour
     public TooltipAtCursor tooltip;
     [HideInInspector]
     public GearItemData ItemData;
+    public RewardsLoot RewardsLoot;
     
 
     public void Populate(GearItemData newItemData)
@@ -49,6 +50,38 @@ public class GearItem : MonoBehaviour
         if (ItemData.trait == "Weapon") return "";
         return " " + ItemData.trait;
     }
+
+    public void Populate(RewardsLoot newItemData)
+    {
+        RewardsLoot = newItemData;
+        Action inner = () => {
+            Sprite ImageSprite = RewardsLoot.gearImage;
+            if (GearImage == null)
+            {
+                Debug.LogError($"[GearItem] GearImage on gameobject [{gameObject.name}] is null.");
+                return;
+            }
+            GearImage.sprite = ImageSprite;
+        
+            tooltip.SetTooltips(new List<Tooltip>
+            {
+                new Tooltip
+                {
+                    title = $"{RewardsLoot.name}"
+                }
+            });
+        };
+        
+        if (newItemData.gearImage == null)
+        {
+            FetchData.Instance.GetTexture(newItemData.image, (texture) => {
+                newItemData.gearImage = texture?.ToSprite();
+                inner();
+            });
+        }
+        else
+            inner();
+    }
 }
 
 [Serializable]
@@ -73,11 +106,19 @@ public class GearItemData
     }
 }
 
+public class RewardsLoot
+{
+    public string name;
+    public string image;
+    public Sprite gearImage;
+}
+
 public enum GearRarity
 {
     Common,
     Uncommon,
     Rare,
     Epic,
-    Legendary
+    Legendary,
+    iOP
 }

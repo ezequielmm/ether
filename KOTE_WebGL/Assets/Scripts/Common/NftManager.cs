@@ -31,6 +31,9 @@ public class NftManager : ISingleton<NftManager>
     private WalletManager wallet;
     public Dictionary<NftContract, List<Nft>> Nfts = new();
 
+    private Nft nftSelected;
+    public Nft NftSelected => nftSelected;
+    
     private NftManager()
     {
         wallet = WalletManager.Instance;
@@ -131,6 +134,11 @@ public class NftManager : ISingleton<NftManager>
         { NftContract.BlessedVillager, "0x55abb816b145CA8F34ffA22D63fBC5bc57186690" },
         { NftContract.NonTokenVillager, "" }
     };
+
+    public void SetNft(Nft nft)
+    {
+        nftSelected = nft;
+    }
 }
 
 // these are named as such to match backend

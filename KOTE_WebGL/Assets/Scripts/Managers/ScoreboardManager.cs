@@ -14,11 +14,6 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
 
     ScoreboardData ScoreData;
 
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-
     void Start()
     {
         if (Scoreboard == null)
@@ -52,7 +47,7 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
     public async void UpdateAndShow()
     {
         Debug.Log("[ScoreboardManager] Updating Score");
-        await UpdateScore();
+        ScoreData = await FetchData.Instance.GetExpeditionScore();
 
         if (ScoreData == null)
             HideScore();
@@ -60,17 +55,12 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
             ShowScore();
     }
 
-    public async UniTask UpdateScore()
-    {
-        ScoreData = await FetchData.Instance.GetExpeditionScore();
-    }
-
     public void ShowScore()
     {
         Debug.Log("[ScoreboardManager] Showing Score");
         Scoreboard.Populate(ScoreData);
-        Lootbox.Populate(ScoreData.Lootbox);
-        if (ScoreData.Lootbox.Count == 0)
+        Lootbox.Populate(ScoreData.Rewards);
+        if (ScoreData.Rewards.Count == 0)
         {
             ToggleScorePanel(true);
             if (ScoreData.NotifyNoLoot)
@@ -102,6 +92,7 @@ public class ScoreboardData
     [JsonProperty("achievements")] public List<Achievement> Achievements = new();
     [JsonProperty("notifyNoLoot")] public bool NotifyNoLoot;
     [JsonProperty("lootbox")] public List<GearItemData> Lootbox = new();
+    [JsonProperty("rewards")] public List<RewardsLoot> Rewards = new();
 }
 
 [Serializable]

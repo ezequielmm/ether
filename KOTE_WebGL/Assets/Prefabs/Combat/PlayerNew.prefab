@@ -93,8 +93,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skeletonAnimation: {fileID: 9032002354893603797}
   skeletonMaterial: {fileID: 2100000, guid: 7c6832fc74eb7fc409b7ab0a6491c54f, type: 2}
-  skeletonDataAsset: {fileID: 11400000, guid: 0833cefecbb1e774184077143e73eb05, type: 2}
-  spritesArray: []
+  skeletonDataAsset: {fileID: 11400000, guid: e5ec6e22e9617b54c944a7f390881c7a, type: 2}
   skinLoaded:
     m_PersistentCalls:
       m_Calls: []
@@ -121,7 +120,7 @@ MonoBehaviour:
   ANIMATION_EVENT:
     m_PersistentCalls:
       m_Calls: []
-  animationJson: {fileID: 4900000, guid: 5fa14dfdac046c24b9d0674e57e10c4a, type: 3}
+  animationJson: {fileID: 4900000, guid: fd7d3a541427c0e46a057ea3de060b5c, type: 3}
   atlasAssetBase: {fileID: 0}
   animations:
   - sequenceName: Idle

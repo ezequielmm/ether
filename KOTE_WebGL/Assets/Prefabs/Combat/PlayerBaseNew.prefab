@@ -506,13 +506,18 @@ PrefabInstance:
         type: 3}
       propertyPath: skeletonDataAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 0833cefecbb1e774184077143e73eb05,
+      objectReference: {fileID: 11400000, guid: e5ec6e22e9617b54c944a7f390881c7a,
         type: 2}
     - target: {fileID: 5810527289466403425, guid: 00da284390956bf4aab0067a0d16eee2,
         type: 3}
       propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9032002354893603801, guid: 00da284390956bf4aab0067a0d16eee2,
+        type: 3}
+      propertyPath: animationJson
+      value: 
+      objectReference: {fileID: 4900000, guid: fd7d3a541427c0e46a057ea3de060b5c, type: 3}
     - target: {fileID: 9032002354893603803, guid: 00da284390956bf4aab0067a0d16eee2,
         type: 3}
       propertyPath: m_Mesh

@@ -94,7 +94,6 @@ public class Villager : PlayerNft
                     continue;
                 }
 
-
                 // if (DoesSkinSpriteExist(spriteData) || DoesDefaultSpriteExist(spriteData))
                 // {
                 //     // Sprite already fetched

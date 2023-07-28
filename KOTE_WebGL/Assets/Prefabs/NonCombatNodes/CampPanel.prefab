@@ -1718,6 +1718,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Upgrade Cards Panel
       objectReference: {fileID: 0}
+    - target: {fileID: 902047207135734817, guid: d70a85a2e42ea4540b500ab28ec9ecbd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 902047207135734818, guid: d70a85a2e42ea4540b500ab28ec9ecbd,
         type: 3}
       propertyPath: m_Pivot.x

@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: Knight_SkeletonData
   m_EditorClassIdentifier: 
   atlasAssets:
-  - {fileID: 11400000, guid: ab76fe77814ea1343817af2d9497b5dd, type: 2}
+  - {fileID: 11400000, guid: 2dfeb79b5eef76344aeab1b0cfdafb88, type: 2}
   scale: 0.01
-  skeletonJSON: {fileID: 4900000, guid: 5fa14dfdac046c24b9d0674e57e10c4a, type: 3}
+  skeletonJSON: {fileID: 4900000, guid: fd7d3a541427c0e46a057ea3de060b5c, type: 3}
   isUpgradingBlendModeMaterials: 0
   blendModeMaterials:
     requiresBlendModeMaterials: 1
     applyAdditiveMaterial: 1
     additiveMaterials:
-    - pageName: Knight.png
-      material: {fileID: 2100000, guid: 5afea09f0212c97498a7e402911d23d1, type: 2}
+    - pageName: KnightNew.png
+      material: {fileID: 2100000, guid: 7bb8022f29b15cf49aa175d7542203cb, type: 2}
     multiplyMaterials: []
     screenMaterials: []
   skeletonDataModifiers: []

@@ -172,6 +172,7 @@ public class GameManager : SingleTon<GameManager>
     {
         FindObjectOfType<ArmoryPanelManager>().NftSelected(nft);
         PlayerSpriteManager.Instance.BuildPlayer(nft);
+        NftManager.Instance.SetNft(nft);
     }
 
     public void UpdateNft(Trait trait, string value)

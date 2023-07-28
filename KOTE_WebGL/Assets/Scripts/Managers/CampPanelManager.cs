@@ -33,6 +33,7 @@ public class CampPanelManager : MonoBehaviour
 
     public void OnRestSelected()
     {
+        GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
         GameManager.Instance.EVENT_CAMP_HEAL.Invoke();
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Rest");
         OnCampFinish();
@@ -84,6 +85,7 @@ public class CampPanelManager : MonoBehaviour
 
     private async void UpgradeCard() 
     {
+        GameManager.Instance.EVENT_CONTINUE_EXPEDITION.Invoke();
         CardUpgrade upgradeData = await FetchData.Instance.CampUpgradeCard(upgradePanel.OriginalCard.id);
         GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Upgrade");
         upgradePanel.uiCardPair[0].gameObject.transform.DOScale(Vector3.zero, 1)

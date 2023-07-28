@@ -220,7 +220,9 @@ public class FetchData : DataManager, ISingleton<FetchData>
     public void GetTexture(string url, Action<Texture2D> onResolve)
     {
         string imageName = GetMD5Hash(url);
-        imageName += ".png";
+        // Add the extension only if it's not there
+        if (!imageName.EndsWith(".png"))
+            imageName += ".png";
 
         if (cachedTextures.ContainsKey(imageName))
         {

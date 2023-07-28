@@ -1,7 +1,13 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using Newtonsoft.Json;
 using UnityEngine;
-using UnityEngine.UI;
+
+public class LootboxReward
+{
+    [JsonProperty("name")] public string Name;
+    [JsonProperty("image")] public string Image;
+}
 
 public class LootboxPanelManager : MonoBehaviour
 {
@@ -11,10 +17,10 @@ public class LootboxPanelManager : MonoBehaviour
     [SerializeField] GameObject ReturnToLootButton;
     public RectTransform RadiantBackground;
 
-    public void Populate(List<GearItemData> items)
+    public void Populate(List<RewardsLoot> items)
     {
         ClearGear();
-        foreach (GearItemData item in items)
+        foreach (var item in items)
         {
             AddGearItem(item);
         }
@@ -35,7 +41,7 @@ public class LootboxPanelManager : MonoBehaviour
         Cleanup.CleanupGame();
     }
 
-    private void AddGearItem(GearItemData gear)
+    private void AddGearItem(RewardsLoot gear)
     {
         GameObject GearItemObject = Instantiate(GearItemPrefab, LootContainer.transform);
         GearItem gearItem = GearItemObject.GetComponent<GearItem>();
@@ -53,5 +59,10 @@ public class LootboxPanelManager : MonoBehaviour
         
         if (ReturnToLootButton != null)
             ReturnToLootButton.SetActive(enable);
+    }
+
+    public void OpenSquires()
+    {
+        Application.OpenURL("https://squires.knightsoftheether.com/");
     }
 }

@@ -44,5 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bce15e6f3d810149851620def90261a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  KinghtData: {fileID: 11400000, guid: 0833cefecbb1e774184077143e73eb05, type: 2}
+  KinghtData: {fileID: 11400000, guid: e5ec6e22e9617b54c944a7f390881c7a, type: 2}
   DefaultSkinImages: {fileID: 11400000, guid: baf93baaee53bdf40a8a217e048cc1bc, type: 2}
+  OnSkinLoaded:
+    m_PersistentCalls:
+      m_Calls: []
