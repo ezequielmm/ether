@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using map;
+using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,7 +40,7 @@ namespace KOTE.UI.Armory
 
         private Nft SelectedCharacter => charactersListManager.SelectedCharacter;
 
-        
+
         private void Awake()
         {
             loadingText.text = "";
@@ -105,26 +106,27 @@ namespace KOTE.UI.Armory
                     }
                 }
 */
-                panelContainer.SetActive(show);
-                gameObject.SetActive(show);
-                charactersListManager.Show(NftManager.Instance.GetAllNfts());
-                
-                
-                //}
-                //catch (Exception e)
-                //{
-                //    Debug.LogError(e);
-                //}
+            panelContainer.SetActive(show);
+            gameObject.SetActive(show);
+            charactersListManager.Show(NftManager.Instance.GetAllNfts());
+
+
+            //}
+            //catch (Exception e)
+            //{
+            //    Debug.LogError(e);
+            //}
         }
 
         private void PopulateCharacterList()
         {
             List<Nft> nfts = NftManager.Instance.GetAllNfts();
-            
-            if(charactersListManager){
+
+            if (charactersListManager)
+            {
                 charactersListManager.Show(nfts);
             }
-            
+
             //PlayerSpriteManager.Instance.CachePlayerSkinsAtStartup(nfts);
             //PortraitSpriteManager.Instance.CacheAllSprites();
             nftList.Clear();
@@ -145,7 +147,7 @@ namespace KOTE.UI.Armory
                 GameManager.Instance.NftSelected(SelectedCharacter);
         }
 
-        public void ActiveGearPanel(bool value) => 
+        public void ActiveGearPanel(bool value) =>
             gearPanels.ForEach(go => go.SetActive(value));
 
         public void ResetCharacterSelectionUI()
@@ -171,7 +173,11 @@ namespace KOTE.UI.Armory
                 response =>
                 {
                     data = FetchData.ParseJsonWithPath<GearData>(response, "data");
-                }, err => { Debug.LogError($"[Armory] Error getting player gear: {err}"); }
+                },
+                err =>
+                {
+                    Debug.LogError($"[Armory] Error getting player gear: {err}");
+                }
             );
 
             if (data == null)
@@ -184,7 +190,7 @@ namespace KOTE.UI.Armory
 
             populateGearInventoryRoutine = null;
         }
-        
+
         public void NftSelected(Nft nft)
         {
             ActiveGearPanel(nft.Contract != NftContract.Knights && nft.Contract != NftContract.None);
@@ -310,9 +316,9 @@ namespace KOTE.UI.Armory
             }
         }
 
- 
 
-        
+
+
 
         public void OnPlayButton()
         {
@@ -339,12 +345,12 @@ namespace KOTE.UI.Armory
 
         private async void OnStartExpedition()
         {
-            
+
             playButton.interactable = false;
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
 
             var nft = charactersListManager.SelectedCharacter;
-           
+
             ExpeditionStartData startData =
                 await FetchData.Instance.RequestNewExpedition(nft.Contract, nft.TokenId,
                     equippedGear.Values.ToList());
@@ -393,8 +399,31 @@ namespace KOTE.UI.Armory
             equippedGear.Remove(gearTrait);
             GameManager.Instance.UpdateNft(gearTrait, "");
         }
-    }
 
+        public void InitiateBlessedVillager()
+        {
+            GameManager.Instance.ShowConfirmationPanel(
+                "Are you sure you want to initiate this villager?",
+                () =>
+                {
+                    WebBridge.SendUnityMessage("open-initiation", JsonConvert.SerializeObject(new InitiationInfo
+                    {
+                        TokenId = SelectedCharacter.TokenId,
+                        Contract = NftManager.Instance.GetContractAddress(NftContract.BlessedVillager),
+                        GearIds = equippedGear.Values.Select(x => x.gearId).ToArray(),
+                        Wallet = WalletManager.Instance.ActiveWallet
+                    }));
+                });
+        }
+
+        public class InitiationInfo
+        {
+            [JsonProperty("tokenId")] public int TokenId;
+            [JsonProperty("contract")]  public string Contract;
+            [JsonProperty("gearIds")]  public int[] GearIds;
+            [JsonProperty("wallet")] public string Wallet;
+        }
+    }
 
     public class GearData
     {

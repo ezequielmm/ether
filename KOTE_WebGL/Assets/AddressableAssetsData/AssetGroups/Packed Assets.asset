@@ -16,7 +16,11 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 9aedcf3a0da9c1a40a7ef0b2606fa3ef
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 85f57b5102b264a45b7b2523fa484c73
+    m_Address: Assets/Sprites/Encounter/magic-carpetB.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b5243524a01eab148b0a227677e45ff2, type: 2}
   m_SchemaSet:

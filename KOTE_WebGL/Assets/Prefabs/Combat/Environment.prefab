@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1294476089092863517}
   - component: {fileID: 1278045885}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Environment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66,7 +66,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6185417559574641162}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}

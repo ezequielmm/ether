@@ -1040,6 +1040,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 188d28c762989cd4a960f56a29297723, type: 3}
+--- !u!114 &175465901 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8014808670911635747, guid: 188d28c762989cd4a960f56a29297723,
+    type: 3}
+  m_PrefabInstance: {fileID: 175465900}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06acf1cb7701f4742ae5071bec232e86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &252026735
 GameObject:
   m_ObjectHideFlags: 0
@@ -1808,6 +1820,11 @@ PrefabInstance:
       propertyPath: cardPanel
       value: 
       objectReference: {fileID: 1769211339}
+    - target: {fileID: 4313720721637226650, guid: a343a3e8879f23140908c30f5042dec0,
+        type: 3}
+      propertyPath: cardPairPanel
+      value: 
+      objectReference: {fileID: 175465901}
     - target: {fileID: 4346405433204640295, guid: a343a3e8879f23140908c30f5042dec0,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -4065,7 +4082,7 @@ GameObject:
   - component: {fileID: 1689268571}
   - component: {fileID: 1689268570}
   - component: {fileID: 1689268569}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: BGCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6163,7 +6180,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 127
+    m_Bits: 95
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

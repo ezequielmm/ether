@@ -35,7 +35,7 @@ public class WebRequesterManager : SingleTon<WebRequesterManager>
         StartCoroutine(GetCharacterList());
     }
 
-    public async UniTask<DownloadHandler> MakeRequest(UnityWebRequest request, bool allowLogs = true)
+    public async UniTask<DownloadHandler>  MakeRequest(UnityWebRequest request, bool allowLogs = true)
     {
         try
         {

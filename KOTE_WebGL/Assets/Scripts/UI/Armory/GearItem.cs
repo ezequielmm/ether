@@ -74,7 +74,7 @@ public class GearItem : MonoBehaviour
         
         if (newItemData.gearImage == null)
         {
-            FetchData.Instance.GetLootboxGearImage(newItemData.image, (texture) => {
+            FetchData.Instance.GetLootboxGearImage(newItemData.name, (texture) => {
                 newItemData.gearImage = texture?.ToSprite();
                 inner();
             });

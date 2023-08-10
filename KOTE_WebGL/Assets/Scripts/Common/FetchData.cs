@@ -293,7 +293,8 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
     public void GetLootboxGearImage(string image, Action<Texture2D> action)
     {
-        image += ".png";
+        if (!image.EndsWith(".png"))
+            image += ".png";
         var url = ClientEnvironmentManager.Instance.LootboxAssetsURL.AddPath(image);
         GetTexture(url, action);
     }
@@ -390,7 +391,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
                     AuthenticationManager.Instance.Logout();
                 }, null, buttons);
             }
-                return ParseJsonWithPath<ProfileData>(rawJson, "data");
+            return ParseJsonWithPath<ProfileData>(rawJson, "data");
         }
     }
 

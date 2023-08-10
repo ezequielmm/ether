@@ -45,6 +45,14 @@ public class EncounterManager : MonoBehaviour
         // We will want the selection to tell us what to do next.
         // Not update encounter data (As it dose now).
         EncounterData encounterData = await FetchData.Instance.SelectEncounterOption(option);
+        var newExpeditionStatus = await FetchData.Instance.GetExpeditionStatus();
+        GameManager.Instance.PlayerStateUpdate(new PlayerStateData()
+        {
+            data = new PlayerStateData.Data()
+            {
+                playerState = newExpeditionStatus.playerData
+            }
+        });
         ShowAndPopulate();
     }
 
@@ -111,7 +119,7 @@ public class EncounterManager : MonoBehaviour
     {
         SelectPanelOptions panelOptions = new SelectPanelOptions
         {
-            FireSelectWhenCardClicked = false,
+            FireSelectWhenCardClicked = true,
             HideBackButton = true,
             MustSelectAllCards = true,
             NumberOfCardsToSelect = selectionData.NumberOfCardsToSelect,

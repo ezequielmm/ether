@@ -97,3 +97,10 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+  - name: rugburn
+    image: {fileID: 0}
+    imageRef:
+      m_AssetGUID: 85f57b5102b264a45b7b2523fa484c73
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0

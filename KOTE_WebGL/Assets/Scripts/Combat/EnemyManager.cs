@@ -94,40 +94,6 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         }
     }
 
-    private void SetEnemyPrefabOLD(string enemyType)
-    {
-        var currentPrefab = GetComponentInChildren<EnemyPrefab>();
-        if (currentPrefab != null)
-            Destroy(currentPrefab.gameObject);
-        var prefab = GetEnemyPrefab(enemyType);
-        
-        if (prefab != null)
-        {
-            activeEnemy = Instantiate(prefab, transform);
-            activeEnemy.transform.localPosition = Vector3.zero;
-            GrabEnemyFadeout(activeEnemy);
-            enemyPlacementData = activeEnemy.GetComponentInChildren<EnemyPrefab>();
-            enemyPlacementData.FitColliderToArt();
-            // Add the cursorEnter and Exit for tooltips
-            // Set mounting points
-            Vector3 top = enemyPlacementData.intentMountingPoint.position;
-            top.y = Mathf.Min(GameSettings.INTENT_MAX_HEIGHT, top.y);
-            TopBar.position = top;
-            Vector3 bottom = enemyPlacementData.healthMountingPoint.position;
-            bottom.y = Mathf.Max(transform.position.y, bottom.y);
-            BottomBar.position = bottom;
-
-            collider = activeEnemy.GetComponentInChildren<Collider2D>();
-            enemyBounds = collider.bounds;
-            collider.enabled = false;
-
-            this.enemyType = enemyType.ParseToEnum<EnemyTypes>();
-            gameObject.name = Enum.GetName(typeof(EnemyTypes), this.enemyType);
-
-            Instantiate();
-        }
-    }
-
     private void SetEnemyPrefab(string enemyType)
     {
         var currentPrefab = GetComponentInChildren<EnemyPrefab>();

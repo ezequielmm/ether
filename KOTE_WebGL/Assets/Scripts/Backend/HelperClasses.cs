@@ -95,6 +95,8 @@ public class ExpeditionStatus
     public NftContract TokenType => GetContractType();
     [JsonProperty("contest")] public ContestData Contest = new ContestData();
 
+    [JsonProperty("playerState")] public PlayerData playerData = new ();
+    
     private NftContract GetContractType()
     {
         switch (tokenType)

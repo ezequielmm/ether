@@ -405,6 +405,7 @@ public class WebSocketParser
 
     private static void ProcessCombatQueue(string data)
     {
+        Debug.Log($"ProcessCombatQueue data: {data}");
         SWSM_CombatAction combatAction = JsonConvert.DeserializeObject<SWSM_CombatAction>(data);
         Debug.Log($"[SWSM Parser] Combat Queue Data: {data}");
         foreach (CombatTurnData combatData in combatAction.data.data) // For when it's a list.
