@@ -1040,6 +1040,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 188d28c762989cd4a960f56a29297723, type: 3}
+--- !u!114 &175465901 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8014808670911635747, guid: 188d28c762989cd4a960f56a29297723,
+    type: 3}
+  m_PrefabInstance: {fileID: 175465900}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06acf1cb7701f4742ae5071bec232e86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &252026735
 GameObject:
   m_ObjectHideFlags: 0
@@ -1803,6 +1815,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 97.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4313720721637226650, guid: a343a3e8879f23140908c30f5042dec0,
+        type: 3}
+      propertyPath: cardPanel
+      value: 
+      objectReference: {fileID: 1769211339}
+    - target: {fileID: 4313720721637226650, guid: a343a3e8879f23140908c30f5042dec0,
+        type: 3}
+      propertyPath: cardPairPanel
+      value: 
+      objectReference: {fileID: 175465901}
     - target: {fileID: 4346405433204640295, guid: a343a3e8879f23140908c30f5042dec0,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -4480,6 +4502,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1769211336}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1769211339 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 382812150100250055, guid: d70a85a2e42ea4540b500ab28ec9ecbd,
+    type: 3}
+  m_PrefabInstance: {fileID: 1769211336}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98598c35c3439934bb780b8a63c5b8ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1785792895
 PrefabInstance:
   m_ObjectHideFlags: 0

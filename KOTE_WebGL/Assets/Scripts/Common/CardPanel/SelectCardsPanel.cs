@@ -210,35 +210,32 @@ public class SelectCardsPanel : CardPanelBase
 
     private void UpdateSelectButton()
     {
-        if (currentSettings.HideBackButton)
+        if (selectedCardIds.Count > 0)
         {
-            if (selectedCardIds.Count > 0)
+            selectButtonText.text = "Select";
+            selectButton.onClick.RemoveAllListeners();
+            selectButton.onClick.AddListener(() =>
             {
-                selectButtonText.text = "Select";
-                selectButton.onClick.RemoveAllListeners();
-                selectButton.onClick.AddListener(() =>
+                onFinishedSelection(selectedCardIds);
+                totalCardsSelected += selectedCards;
+                ClearSelectList();
+                DeleteSelectedCard();
+                UpdateSelectButton();
+                if (totalCardsSelected == cardsToSelect)
                 {
-                    onFinishedSelection(selectedCardIds);
-                    totalCardsSelected += selectedCards;
-                    ClearSelectList();
-                    DeleteSelectedCard();
-                    UpdateSelectButton();
-                    if (totalCardsSelected == cardsToSelect)
-                    {
-                        HidePanel();
-                    }
-                    else if (totalCardsSelected > cardsToSelect)
-                    {
-                        Debug.LogError("Too many cards selected!");
-                    }
-                });
-            }
-            else if (selectedCardIds.Count == 0)
-            {
-                selectButtonText.text = "Cancel";
-                selectButton.onClick.RemoveAllListeners();
-                selectButton.onClick.AddListener(() => { HidePanel(); });
-            }
+                    HidePanel();
+                }
+                else if (totalCardsSelected > cardsToSelect)
+                {
+                    Debug.LogError("Too many cards selected!");
+                }
+            });
+        }
+        else if (selectedCardIds.Count == 0)
+        {
+            selectButtonText.text = "Cancel";
+            selectButton.onClick.RemoveAllListeners();
+            selectButton.onClick.AddListener(() => { HidePanel(); });
         }
     }
 

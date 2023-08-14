@@ -85,7 +85,7 @@ public class EncounterManager : MonoBehaviour
         ShowCardPanel(upgradeableCards, new SelectPanelOptions
         {
             MustSelectAllCards = false,
-            HideBackButton = true,
+            HideBackButton = false,
             FireSelectWhenCardClicked = true,
             NumberOfCardsToSelect = 1,
             ShowCardInCenter = false,
@@ -119,8 +119,8 @@ public class EncounterManager : MonoBehaviour
     {
         SelectPanelOptions panelOptions = new SelectPanelOptions
         {
-            FireSelectWhenCardClicked = true,
-            HideBackButton = true,
+            FireSelectWhenCardClicked = false,
+            HideBackButton = false,
             MustSelectAllCards = true,
             NumberOfCardsToSelect = selectionData.NumberOfCardsToSelect,
             ShowCardInCenter = false
