@@ -63,6 +63,7 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
             // some dark magic due to the way Flails are set up in spine
             //if (traitType == "Weapon" && flailFound) continue;
 
+            
             TraitSprite traitSprite = skinSprites.Find(x => x.TraitType.ToString() == traitType);
             if (string.IsNullOrEmpty(traitSprite?.SkinName))
             {

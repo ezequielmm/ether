@@ -45,7 +45,7 @@ namespace map
             _currentNode = nodeId;
             var node = FindObjectsOfType<NodeData>().First(e => e.id == nodeId);
 
-            if (node.type == NODE_TYPES.camp || node.type == NODE_TYPES.royal_house || node.type == NODE_TYPES.portal)
+            if (node.type != NODE_TYPES.combat)
             {
                 GameManager.Instance.OnNodeTransitionEnd?.Invoke(_currentNode);
                 return;
