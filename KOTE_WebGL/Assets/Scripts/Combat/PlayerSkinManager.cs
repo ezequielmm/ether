@@ -48,7 +48,7 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
         List<TraitSprite> skinSprites = PlayerSpriteManager.Instance.GetAllTraitSprites();
 
         // some dark magic due to the way Flails are set up in spine
-        //bool flailFound = TryStartWithFlailSkin(skinSprites, out equipsSkin);
+        bool flailFound = TryStartWithFlailSkin(skinSprites, out equipsSkin);
 
         renderer ??= GetComponent<Renderer>();
         foreach (var mat in renderer.materials)
@@ -61,7 +61,7 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
         foreach (var traitType in Enum.GetNames(typeof(Trait)))
         {
             // some dark magic due to the way Flails are set up in spine
-            //if (traitType == "Weapon" && flailFound) continue;
+            if (traitType == "Weapon" && flailFound) continue;
 
             
             TraitSprite traitSprite = skinSprites.Find(x => x.TraitType.ToString() == traitType);
