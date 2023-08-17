@@ -21,11 +21,13 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     public UnityEvent OnSkinLoaded;
     private Nft currentNft;
 
-    private SkeletonData knightSkeletonData => KinghtData.GetSkeletonData(true);
-
-    protected override void Awake()
+    private SkeletonData knightSkeletonData
     {
-        base.Awake();
+        get
+        {
+            KinghtData.Clear();
+            return KinghtData.GetSkeletonData(true);
+        }
     }
 
     private void Start()
@@ -136,6 +138,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         PlayerNft.ClearCache();
 
         _curNft = GetNftBasedOnMetadata(selectedNft);
+        _curNft.ClearEquippedGear();
 
         UpdatePlayerSkin(null);
     }

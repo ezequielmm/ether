@@ -371,13 +371,14 @@ namespace KOTE.UI.Armory
                 "Are you sure you want to initiate this villager?",
                 () =>
                 {
-                    WebBridge.SendUnityMessage("open-initiation", JsonConvert.SerializeObject(new InitiationInfo
+                    var sendJson = JsonConvert.SerializeObject(new InitiationInfo
                     {
                         TokenId = SelectedCharacter.TokenId,
                         Contract = NftManager.Instance.GetContractAddress(NftContract.BlessedVillager),
                         GearIds = equippedGear.Values.Select(x => x.gearId).ToArray(),
                         Wallet = WalletManager.Instance.ActiveWallet
-                    }));
+                    });
+                    WebBridge.SendUnityMessage(sendJson, sendJson);
                 });
         }
 
