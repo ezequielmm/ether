@@ -25,10 +25,6 @@ namespace KOTE.UI.Armory
                     SetInteractiveForVillager();
                     break;
                 case NftContract.Knights:
-                    isInteractable = false;
-                    GearImage.color = Color.gray;
-
-                    break;
                 case NftContract.BlessedVillager:
                     isInteractable = true;
                     GearImage.color = Color.white;

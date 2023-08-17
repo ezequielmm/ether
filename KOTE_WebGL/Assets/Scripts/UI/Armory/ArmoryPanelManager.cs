@@ -93,29 +93,9 @@ namespace KOTE.UI.Armory
 
         public void ActivateContainer(bool show)
         {
-            // run this when the panel is opened, instead of when nfts load, so images are cached
-            //try
-            //{
-            /*
-                if (show)
-                {
-                    if (curNode != null && curNode.Value.MetaData != null)
-                    {
-                        GameManager.Instance.NftSelected(curNode.Value.MetaData);
-                        UpdatePanelOnNftUpdate();
-                    }
-                }
-*/
             panelContainer.SetActive(show);
             gameObject.SetActive(show);
             charactersListManager.Show(NftManager.Instance.GetAllNfts());
-
-
-            //}
-            //catch (Exception e)
-            //{
-            //    Debug.LogError(e);
-            //}
         }
 
         private void PopulateCharacterList()
@@ -157,6 +137,18 @@ namespace KOTE.UI.Armory
             rightButton.interactable = true;
         }
 
+        public void ResetEquippedGear()
+        {
+            FindObjectOfType<ArmoryKnightRendererManager>(true).OnSkinLoading();
+
+            StartCoroutine(Routine());
+            IEnumerator Routine()
+            {
+                yield return null;
+                ClearHeaders();
+            }
+        }
+        
         public void PopulatePlayerGearInventory()
         {
             if (populateGearInventoryRoutine == null)
@@ -193,7 +185,7 @@ namespace KOTE.UI.Armory
 
         public void NftSelected(Nft nft)
         {
-            ActiveGearPanel(nft.Contract != NftContract.Knights && nft.Contract != NftContract.None);
+            ActiveGearPanel(nft.Contract != NftContract.None);
             foreach (var gearSlot in gearSlots)
             {
                 gearSlot.ResetSlot();
@@ -228,33 +220,11 @@ namespace KOTE.UI.Armory
         private void UpdateGearListBasedOnToken()
         {
             GearListManager.UpdateGearListBasedOnToken(SelectedCharacter);
-            // foreach (ArmoryHeaderManager header in gearHeaders)
-            // {
-            //     if (SelectedCharacter != null)
-            //         header.UpdateGearSelectableStatus(SelectedCharacter.Contract);
-            //     else
-            //     {
-            //         Debug.Log($"This node is null");
-            //     }
-            // }
         }
 
         private IEnumerator GenerateHeaders()
         {
-            // Debug.Log($"[Armory] GenerateHeaders : {categoryLists.Keys.Count}");
             GearListManager.GenerateHeaders();
-            // foreach (string category in categoryLists.Keys)
-            // {
-            //     ArmoryHeaderManager header = Instantiate(headerPrefab, gearListTransform);
-            //     // Debug.Log($"[Armory] GenerateHeaders header : {header}");
-            //     if (categoryLists.ContainsKey(category))
-            //     {
-            //         header.Populate(category, categoryLists[category]);
-            //         gearHeaders.Add(header);
-            //     }
-            //
-            //     yield return null;
-            // }
             yield return null;
         }
 
@@ -315,10 +285,6 @@ namespace KOTE.UI.Armory
                 slot.ResetSlot();
             }
         }
-
-
-
-
 
         public void OnPlayButton()
         {
@@ -385,8 +351,7 @@ namespace KOTE.UI.Armory
 
         public void OnGearItemSelected(GearItemData activeItem)
         {
-            if (SelectedCharacter.Contract == NftContract.Knights ||
-                (SelectedCharacter.Contract == NftContract.Villager && !activeItem.CanVillagerEquip)) return;
+            if (SelectedCharacter.Contract == NftContract.Villager && !activeItem.CanVillagerEquip) return;
 
             Trait itemTrait = activeItem.trait.ParseToEnum<Trait>();
             gearSlots.Find(x => x.gearTrait == itemTrait).SetGearInSlot(activeItem);

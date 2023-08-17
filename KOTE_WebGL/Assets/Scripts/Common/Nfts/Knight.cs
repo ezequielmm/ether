@@ -15,11 +15,6 @@ public class Knight : PlayerNft
         InjectTempTraits();
     }
 
-    public override void ChangeGear(Trait trait, string traitValue)
-    {
-        // knights cannot change gear
-    }
-
 
     public override IEnumerator GetNftSprites(SkeletonData playerSkeleton, Action callback)
     {
@@ -28,50 +23,7 @@ public class Knight : PlayerNft
             throw new NullReferenceException("Nft Metadata cannot be null.");
         }
 
-        var pending = 0;
-        foreach (Trait trait in Traits.Keys)
-        {
-            string traitValue = Traits[trait];
-            string skinName = GetSkinName(trait, traitValue);
-            Skin traitSkin = playerSkeleton.Skins.Find(x => x.Name.Contains(skinName));
-            if (traitSkin == null)
-            {
-                Debug.LogWarning($"[PlayerNft] {trait} skin not found for {traitValue}");
-                continue;
-            }
-
-            foreach (Skin.SkinEntry skinEntry in traitSkin.Attachments)
-            {
-                TraitSprite spriteData = GenerateSpriteData(skinEntry, traitSkin.Name, traitValue, trait);
-                if (spriteData == null)
-                {
-                    // ignore placeholder
-                    continue;
-                }
-
-                // if (DoesSkinSpriteExist(spriteData))
-                // {
-                //     // Sprite already fetched
-                //     continue;
-                // }
-
-                pending++;
-                GetPlayerSkin(spriteData, skinElement =>
-                {
-                    pending--;
-                    spriteData.Sprite = skinElement;
-                    if (!spriteData.IsUseableInSkin)
-                        Debug.LogWarning($"[PlayerNft] Can not use current TraitSprite. {spriteData}");
-                    else
-                        SkinSprites.Add(spriteData);
-                });
-            }
-        }
-
-        while (pending > 0)
-            yield return null;
-        
-        callback?.Invoke();
+        yield return base.GetNftSprites(playerSkeleton, callback);
     }
 
     #region Temp Code
