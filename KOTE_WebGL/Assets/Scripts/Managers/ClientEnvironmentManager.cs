@@ -58,20 +58,14 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
     {
         Debug.Log("host " + URLParameters.Host);
         Debug.Log("origin " + URLParameters.Origin);
- #if !UNITY_EDITOR
+        var host = GetStreamingAssetsPath();
         string path = "/environment.json";
-        string host = $"{URLParameters.Origin}";
         string url = host + path;
+ #if !UNITY_EDITOR
         Debug.Log("Get env from remote host " + url);
  #else
-        string path = "/environment.json";
-        string host = $"{Application.streamingAssetsPath}";
-        string url = host + path;
         Debug.Log("Get env from local-editor host " + url);
  #endif
-       
-
-      
 
         using UnityWebRequest request = UnityWebRequest.Get(url);
         request.SetRequestHeader("Access-Control-Allow-Origin", "*");
@@ -92,6 +86,15 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
         {
             Debug.LogError($"environment error: {request.error}");
         }
+    }
+
+    public static string GetStreamingAssetsPath()
+    {
+#if !UNITY_EDITOR
+        return $"{URLParameters.Origin}";
+#else
+        return $"{Application.streamingAssetsPath}";
+#endif
     }
 }
 

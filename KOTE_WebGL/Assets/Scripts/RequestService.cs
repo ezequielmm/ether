@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Text;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -17,7 +20,7 @@ public class RequestService : MonoBehaviour
         }
     }
 
-    public IEnumerator GetRequestCoroutine(string url, Action<string> callback,  Action<string> error)
+    public IEnumerator GetRequestCoroutine(string url, Action<string> callback,  Action<string> error = null)
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
         {
@@ -38,13 +41,15 @@ public class RequestService : MonoBehaviour
         }
     }
 
-    public IEnumerator GetRequestCoroutine<T>(string url, Action<T> success, Action<string> error)
+    public IEnumerator GetRequestCoroutine<T>(string url, Action<T> success, Action<string> error = null)
     {
         yield return GetRequestCoroutine(url, (str) =>
         {
             try
             {
-                var data = JsonUtility.FromJson<T>(str);
+                var utf8Bytes = Encoding.UTF8.GetBytes(str);
+                str = Encoding.UTF8.GetString(utf8Bytes);
+                var data = JsonConvert.DeserializeObject<T>(str);
                 success?.Invoke(data);
             }
             catch (Exception e)
