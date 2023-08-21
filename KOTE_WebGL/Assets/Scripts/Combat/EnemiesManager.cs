@@ -80,7 +80,7 @@ public class EnemiesManager : MonoBehaviour
         return Utils.GetSceneSize(size.ParseToEnum<Size>());
     }
 
-    private void OnEnemiesUpdate(EnemiesData enemiesData)
+    public void OnEnemiesUpdate(EnemiesData enemiesData)
     {
         if (enemiesData.data.Count == 0)
         {

@@ -2,11 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Combat;
 using DG.Tweening;
 using Spine.Unity;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class EnemyManager : MonoBehaviour, ITooltipSetter
@@ -21,11 +23,10 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     public Transform BottomBar;
 
     public bool overrideEnemy = false;
-    public EnemyTypes enemyType;
+    public string enemyName;
     public bool setEnemy = false;
 
     [SerializeField] private List<GameObject> enemyMap;
-    [SerializeField] private List<AssetReference> enemyMapAssets;
     
     private EnemyData enemyData;
     private EnemyPrefab enemyPlacementData;
@@ -47,6 +48,8 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
     public string[] validEnemyList;
 
+    [SerializeField] private EnemiesConfig enemiesConfig;
+    
     public EnemyData EnemyData
     {
         set { enemyData = ProcessNewData(enemyData, value); }
@@ -90,22 +93,19 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         if (setEnemy)
         {
             setEnemy = false;
-            SetEnemyPrefab(Enum.GetName(typeof(EnemyTypes), enemyType));
+            SetEnemyPrefab(enemyName);
         }
     }
 
-    private void SetEnemyPrefab(string enemyType)
+    private void SetEnemyPrefab(string enemyName)
     {
         var currentPrefab = GetComponentInChildren<EnemyPrefab>();
         if (currentPrefab != null)
             Destroy(currentPrefab.gameObject);
-
-        enemyType = enemyType.ToLower().Replace(" ", "").Trim();
-        Debug.Log($"enemyType: {enemyType}");
-        if (!validEnemyList.Contains(enemyType))
-            enemyType = "sporemonger";
         
-        LoadEnemyPrefab(enemyType, (instance) =>
+        enemyName = enemiesConfig.GetEnemy(enemyName);
+        
+        LoadEnemyPrefab(enemyName, (instance) =>
         {
             activeEnemy = instance;
             activeEnemy.transform.SetParent(transform);
@@ -126,8 +126,8 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             enemyBounds = collider.bounds;
             collider.enabled = false;
 
-            this.enemyType = enemyType.ParseToEnum<EnemyTypes>();
-            gameObject.name = Enum.GetName(typeof(EnemyTypes), this.enemyType);
+            this.enemyName = enemyName;
+            gameObject.name = enemyName;
 
             Instantiate();
         });
@@ -531,24 +531,6 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         toRun.Invoke();
     }
 
-    private GameObject GetEnemyPrefab(string enemyName)
-    {
-        if (overrideEnemy)
-        {
-            enemyName = enemyType.ToString();
-        }
-
-        var enemy = FindPrefab(enemyName);
-        if (enemy != null) return enemy;
-
-        Debug.LogError($"[EnemyManager] Missing {enemyName} prefab. Using SporeMonger as a backup");
-        enemyName = "SporeMonger";
-        enemy = FindPrefab(enemyName);
-        if (enemy != null) return enemy;
-        Debug.LogError($"[EnemyManager] Missing {enemyName} prefab.");
-        return null;
-    }
-
     private void GrabEnemyFadeout(GameObject enemy)
     {
         spineFadeout = enemy.GetComponentInChildren<SkeletonRenderTextureFadeout>();
@@ -564,18 +546,5 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         GameManager.Instance.EVENT_SET_TOOLTIPS.Invoke(tooltips, TooltipController.Anchor.MiddleRight, anchorPoint,
             null);
         collider.enabled = false;
-    }
-
-    private GameObject FindPrefab(string enemyName)
-    {
-        foreach (var enemy in enemyMap)
-        {
-            if (enemy.name.ToLower().Equals(enemyName.ToLower()))
-            {
-                return enemy;
-            }
-        }
-
-        return null;
     }
 }

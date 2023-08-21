@@ -836,6 +836,702 @@ MonoBehaviour:
     m_Address: yellowsporeling
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 5dc29a90dbc3b444399a8f18b448482d
+    m_Address: Assets/Animations/Enemies/Act 02/CaveGoblin/CaveGoblin.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4edff66f5cb664245b7229fe958cded2
+    m_Address: Assets/Animations/Enemies/Act 02/CaveGoblin/CaveGoblin.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ba135a1dd3fa1ab44b949a170d3918f1
+    m_Address: Assets/Animations/Enemies/Act 02/CaveGoblin/CaveGoblin.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 75e40406219cda84ab1d006bf066b2ec
+    m_Address: Assets/Animations/Enemies/Act 02/CaveGoblin/CaveGoblin.skel.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1cd749457347e624e8ea7c513351f8b3
+    m_Address: Assets/Animations/Enemies/Act 02/CaveGoblin/CaveGoblin_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 89042186cdb0d0d49ad23a07e3f98b38
+    m_Address: Assets/Animations/Enemies/Act 02/CaveGoblin/CaveGoblin_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e4b386963a303284a8181d3a328faff3
+    m_Address: Assets/Animations/Enemies/Act 02/CaveHomunculi/CaveHomunculi.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 37a33c34f15433a46b430cb2297c7c6f
+    m_Address: Assets/Animations/Enemies/Act 02/CaveHomunculi/CaveHomunculi.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f17ae068c3bac1a4ebb555def188ae59
+    m_Address: Assets/Animations/Enemies/Act 02/CaveHomunculi/CaveHomunculi.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 43f8b529e6096c745919dfd32b360c66
+    m_Address: Assets/Animations/Enemies/Act 02/CaveHomunculi/CaveHomunculi_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 224ce6fa1c2cb5d4d82130be79ae2231
+    m_Address: Assets/Animations/Enemies/Act 02/CaveHomunculi/CaveHomunculi_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: febd6e80ca6e31c4e964d9bfb5c8f95a
+    m_Address: Assets/Animations/Enemies/Act 02/Centipion/Centipion.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: dd64b08b0055fde48a91dbd08ea1c76d
+    m_Address: Assets/Animations/Enemies/Act 02/Centipion/Centipion.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fb76a34f8df6120419c182f1ad7ead87
+    m_Address: Assets/Animations/Enemies/Act 02/Centipion/Centipion.skel.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 928af02743167ec428b847ec87d07be5
+    m_Address: Assets/Animations/Enemies/Act 02/Centipion/Centipion_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 74e57d0f729cebe489e02b1540ba2f82
+    m_Address: Assets/Animations/Enemies/Act 02/Centipion/Centipion_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 09ff07fab74a6c64181121a14867b237
+    m_Address: Assets/Animations/Enemies/Act 02/DeepDweller_LureMode/DeepDweller_LureMode.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 50eb7bcfa405ee343b5686378ba16ef3
+    m_Address: Assets/Animations/Enemies/Act 02/DeepDweller_LureMode/DeepDweller_LureMode.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e49f49642c2f70149b5986c3c627b636
+    m_Address: Assets/Animations/Enemies/Act 02/DeepDweller_LureMode/DeepDweller_LureMode.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 351d08106aae1a1468b0893087ad3b30
+    m_Address: Assets/Animations/Enemies/Act 02/DeepDweller_LureMode/DeepDweller_LureMode_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 80b3a319cba46384d87e8d424782cf49
+    m_Address: Assets/Animations/Enemies/Act 02/DeepDweller_LureMode/DeepDweller_LureMode_Material-Additive.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a25809db591175944bf39fd596b18e20
+    m_Address: Assets/Animations/Enemies/Act 02/DeepDweller_LureMode/DeepDweller_LureMode_Material-Screen.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a6e22622c60e6514cb967addf1b2cb6f
+    m_Address: Assets/Animations/Enemies/Act 02/DeepDweller_LureMode/DeepDweller_LureMode_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2d9e8a167d3b1d44eaff6650782dc679
+    m_Address: Assets/Animations/Enemies/Act 02/DeepDweller_MonsterMode/DeepDweller_MonsterMode.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 674e001940e9c164ebed48d311b0860b
+    m_Address: Assets/Animations/Enemies/Act 02/DeepDweller_MonsterMode/DeepDweller_MonsterMode.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4061d8df12addec499aeeb4a04f2e9ce
+    m_Address: Assets/Animations/Enemies/Act 02/DeepDweller_MonsterMode/DeepDweller_MonsterMode.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cd3e3681ad1fd924a98d466ae197985f
+    m_Address: Assets/Animations/Enemies/Act 02/DeepDweller_MonsterMode/DeepDweller_MonsterMode_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 022f48046e5d5ee46b67a6aa1c2d5ef6
+    m_Address: Assets/Animations/Enemies/Act 02/DeepDweller_MonsterMode/DeepDweller_MonsterMode_Material-Additive.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 083f7dc36fa6e1d47966747f22b79fb4
+    m_Address: Assets/Animations/Enemies/Act 02/DeepDweller_MonsterMode/DeepDweller_MonsterMode_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 613acb0364dc4aa429666cbff0108b80
+    m_Address: Assets/Animations/Enemies/Act 02/DeepGoblin/DeepGoblin.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b4bbf971773002f458bdf430ffd562f5
+    m_Address: Assets/Animations/Enemies/Act 02/DeepGoblin/DeepGoblin.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cfedc0927615e834c89fc1cb5841f426
+    m_Address: Assets/Animations/Enemies/Act 02/DeepGoblin/DeepGoblin.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 71bf48aacfece224ebf4caef0a152a8e
+    m_Address: Assets/Animations/Enemies/Act 02/DeepGoblin/DeepGoblin_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8814c271987a17f46aacf34df2ddc58c
+    m_Address: Assets/Animations/Enemies/Act 02/DeepGoblin/DeepGoblin_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8fd4d7bc38335c44399ccb4c2040961e
+    m_Address: Assets/Animations/Enemies/Act 02/DeepSorcerer/DeepSorcerer.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 157a261dd2cf26c40a4cd56df22715e0
+    m_Address: Assets/Animations/Enemies/Act 02/DeepSorcerer/DeepSorcerer.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7dc36a547da069b48bdea79f468f5b1d
+    m_Address: Assets/Animations/Enemies/Act 02/DeepSorcerer/DeepSorcerer.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ca34a2a1b0eadac44ab9a1ae7325bddb
+    m_Address: Assets/Animations/Enemies/Act 02/DeepSorcerer/DeepSorcerer_2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 52058413cd9185742886e58324b6ae6c
+    m_Address: Assets/Animations/Enemies/Act 02/DeepSorcerer/DeepSorcerer_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e8f8b47101874e146b928f744be6c289
+    m_Address: Assets/Animations/Enemies/Act 02/DeepSorcerer/DeepSorcerer_DeepSorcerer-Additive.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4e8d7efe5972b0141b1cb284939d9f61
+    m_Address: Assets/Animations/Enemies/Act 02/DeepSorcerer/DeepSorcerer_DeepSorcerer.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6c6f70df2d0d63244b0cdf332f7b9db7
+    m_Address: Assets/Animations/Enemies/Act 02/DeepSorcerer/DeepSorcerer_DeepSorcerer_2.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 26c2e552a68b89640869f8079a060af9
+    m_Address: Assets/Animations/Enemies/Act 02/ElementalSpirit_Fire/ElementalSpirit_Fire.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d3cde482fbc217b4c8def2d7a46bd579
+    m_Address: Assets/Animations/Enemies/Act 02/ElementalSpirit_Fire/ElementalSpirit_Fire.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: aa5d12b8ced7c974e8e76c547ca75c54
+    m_Address: Assets/Animations/Enemies/Act 02/ElementalSpirit_Fire/ElementalSpirit_Fire.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 228410de1fbb2c1429215c392e7242cd
+    m_Address: Assets/Animations/Enemies/Act 02/ElementalSpirit_Fire/ElementalSpirit_Fire_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 44dacab4bffd75645b7fbb783c524c86
+    m_Address: Assets/Animations/Enemies/Act 02/ElementalSpirit_Fire/ElementalSpirit_Fire_Material-Additive.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c6a819ebe9941f248a551aeecd8a009e
+    m_Address: Assets/Animations/Enemies/Act 02/ElementalSpirit_Fire/ElementalSpirit_Fire_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c4980a4b9260d754595435ebc53523e4
+    m_Address: Assets/Animations/Enemies/Act 02/ElementalSpirit_Rock/ElementalSpirit_Rock.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8b4bcfec90e13224aa7f29c13e2adfd4
+    m_Address: Assets/Animations/Enemies/Act 02/ElementalSpirit_Rock/ElementalSpirit_Rock.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: eb1fb6c6313d0a54e882b12e3d16b5b9
+    m_Address: Assets/Animations/Enemies/Act 02/ElementalSpirit_Rock/ElementalSpirit_Rock.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: acf45f863711263479f3586d8768d533
+    m_Address: Assets/Animations/Enemies/Act 02/ElementalSpirit_Rock/ElementalSpirit_Rock_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 061a9fd9fe08b9243abc01b557498ff8
+    m_Address: Assets/Animations/Enemies/Act 02/ElementalSpirit_Rock/ElementalSpirit_Rock_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6f5642a0d21269843958143e7d0f7094
+    m_Address: Assets/Animations/Enemies/Act 02/ElementalWaterSpirit/ElementalWaterSpirit.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 72d52840a23e7e94a833bd2441ade246
+    m_Address: Assets/Animations/Enemies/Act 02/ElementalWaterSpirit/ElementalWaterSpirit.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f7a4f8368c7263146b19a8266b580528
+    m_Address: Assets/Animations/Enemies/Act 02/ElementalWaterSpirit/ElementalWaterSpirit.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ce03a7b6df27b134fab5c72f66237d8b
+    m_Address: Assets/Animations/Enemies/Act 02/ElementalWaterSpirit/ElementalWaterSpirit_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 39b3691128ab6f8448f7cad59411b126
+    m_Address: Assets/Animations/Enemies/Act 02/ElementalWaterSpirit/ElementalWaterSpirit_Material-Additive.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e93876424472e3a479504b9800cdcfa7
+    m_Address: Assets/Animations/Enemies/Act 02/ElementalWaterSpirit/ElementalWaterSpirit_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 48c5be90e3b70974bad01ce2ef9bd0a2
+    m_Address: Assets/Animations/Enemies/Act 02/FireBeetle/export.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 357c825d6cf6ca140881f29bd3ca93e7
+    m_Address: Assets/Animations/Enemies/Act 02/FireBeetle/FireBeetle.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4e9a7a3eec8636b4184d4c58efb54dfe
+    m_Address: Assets/Animations/Enemies/Act 02/FireBeetle/FireBeetle.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 299df2b2a3d4ebe42aa504da54b45876
+    m_Address: Assets/Animations/Enemies/Act 02/FireBeetle/FireBeetle.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b83506e796fde2e4aa5efff48fbfa7af
+    m_Address: Assets/Animations/Enemies/Act 02/FireBeetle/FireBeetle_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6bd18dde82ea3694dba40654e36e446f
+    m_Address: Assets/Animations/Enemies/Act 02/FireBeetle/FireBeetle_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 45d07afa46f40bf42ae4755ea22b7304
+    m_Address: Assets/Animations/Enemies/Act 02/GlowBug/export.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fafb635fcdac9f8478645032fa1d8da7
+    m_Address: Assets/Animations/Enemies/Act 02/GlowBug/GlowBug.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 51a0e16212367cb44ac24705f5de7d62
+    m_Address: Assets/Animations/Enemies/Act 02/GlowBug/GlowBug.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f67f414567539e947936f02b58cbe14f
+    m_Address: Assets/Animations/Enemies/Act 02/GlowBug/GlowBug.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4401349cbffd09548964e69c23429318
+    m_Address: Assets/Animations/Enemies/Act 02/GlowBug/GlowBug_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 037ceeec81d0bcb49a2d58259a13b8e4
+    m_Address: Assets/Animations/Enemies/Act 02/GlowBug/GlowBug_Material-Additive.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4e49f7a2e07dd1b4faacb6e2320251fa
+    m_Address: Assets/Animations/Enemies/Act 02/GlowBug/GlowBug_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d1b5b396aea03e9438eef33aac3cbaff
+    m_Address: Assets/Animations/Enemies/Act 02/Mimic/export.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 423245dd5fc9c16439341105c7bc62a1
+    m_Address: Assets/Animations/Enemies/Act 02/Mimic/Mimic.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6d163502beb321e4aafe957670fa6541
+    m_Address: Assets/Animations/Enemies/Act 02/Mimic/Mimic.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fbfdeb2591f35ea4db3bf1d9c8d83e37
+    m_Address: Assets/Animations/Enemies/Act 02/Mimic/Mimic.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 83d9b76e846a64c4b810598933c10cfd
+    m_Address: Assets/Animations/Enemies/Act 02/Mimic/Mimic_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 449fb1dd298756940aeafbfafd9d1aa2
+    m_Address: Assets/Animations/Enemies/Act 02/Mimic/Mimic_Material-Additive.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1682ed91938ca7d4eaa2e47c83fdaad1
+    m_Address: Assets/Animations/Enemies/Act 02/Mimic/Mimic_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4dc5491167a0ca64b89c75ae09a7e3c2
+    m_Address: Assets/Animations/Enemies/Act 02/MoldPolyp/export.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 286ea73de7712384cb94dad5d0c08328
+    m_Address: Assets/Animations/Enemies/Act 02/MoldPolyp/MoldPolyp.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cfe854a8023c41349b3492cbbb3a6306
+    m_Address: Assets/Animations/Enemies/Act 02/MoldPolyp/MoldPolyp.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4f4b1331a8ce5c8418b07562dfad594d
+    m_Address: Assets/Animations/Enemies/Act 02/MoldPolyp/MoldPolyp.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8514cd16e432cd548bce6fa40ca9e438
+    m_Address: Assets/Animations/Enemies/Act 02/MoldPolyp/MoldPolyp_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bb555a03ad761d34a8096df4f6895eef
+    m_Address: Assets/Animations/Enemies/Act 02/MoldPolyp/MoldPolyp_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d1e6f9827653d9d47ac36778905f115a
+    m_Address: Assets/Animations/Enemies/Act 02/MossyArcher/export.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 45f4843435aa19242a34832c285ea850
+    m_Address: Assets/Animations/Enemies/Act 02/MossyArcher/MossyArcher.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d9da4acce2f1c804bb336b5d38867e83
+    m_Address: Assets/Animations/Enemies/Act 02/MossyArcher/MossyArcher.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0290429cee2b7e145820b66adeec8d14
+    m_Address: Assets/Animations/Enemies/Act 02/MossyArcher/MossyArcher.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3a441abeb2c709c4fb25e19313864657
+    m_Address: Assets/Animations/Enemies/Act 02/MossyArcher/MossyArcher_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 493abcc20bca7b8449118066d4999558
+    m_Address: Assets/Animations/Enemies/Act 02/MossyArcher/MossyArcher_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9afb51dbbbf3ec04d9e4ef18f60e621f
+    m_Address: Assets/Animations/Enemies/Act 02/MossyBones/export.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: aa4fb4a604e1c0345a8e3531f6be3a1a
+    m_Address: Assets/Animations/Enemies/Act 02/MossyBones/MossyBones.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 89f57e8faac4e3941be8a63d9406f7b3
+    m_Address: Assets/Animations/Enemies/Act 02/MossyBones/MossyBones.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 217dc9fa8d2ed32458465de9f0a6cab4
+    m_Address: Assets/Animations/Enemies/Act 02/MossyBones/MossyBones.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c85bd2af0f231ce41b5b3150f258ddb1
+    m_Address: Assets/Animations/Enemies/Act 02/MossyBones/MossyBones_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 80f3f1d4d27f3b84fb22b34b5f9c4a94
+    m_Address: Assets/Animations/Enemies/Act 02/MossyBones/MossyBones_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 35665c585e753094f9b317cc6f9e4fc9
+    m_Address: Assets/Animations/Enemies/Act 02/MossySkeleton/export.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 940bc4e5c2be262489de4b671e726b04
+    m_Address: Assets/Animations/Enemies/Act 02/MossySkeleton/MossySkeleton.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8dfdddc876a36ce4f88e05c8483010fb
+    m_Address: Assets/Animations/Enemies/Act 02/MossySkeleton/MossySkeleton.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 945eb82d9424f8340ae1777184a31db8
+    m_Address: Assets/Animations/Enemies/Act 02/MossySkeleton/MossySkeleton.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8eb679c075d3d254b86162aaa38bb8aa
+    m_Address: Assets/Animations/Enemies/Act 02/MossySkeleton/MossySkeleton_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: aafb57690994192499e5a36493dd2776
+    m_Address: Assets/Animations/Enemies/Act 02/MossySkeleton/MossySkeleton_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f99b2c47008e56f4a81c0ae94c285017
+    m_Address: Assets/Animations/Enemies/Act 02/MutantSpider/export.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7b265ef8492e4d64e9a2db99218d545e
+    m_Address: Assets/Animations/Enemies/Act 02/MutantSpider/MutantSpider.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5afd17a05551100428e153ad78d1ab17
+    m_Address: Assets/Animations/Enemies/Act 02/MutantSpider/MutantSpider.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0347eea1c3bcde644966be8a7aa335c6
+    m_Address: Assets/Animations/Enemies/Act 02/MutantSpider/MutantSpider.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9503865d7225dbf409603af224d78f97
+    m_Address: Assets/Animations/Enemies/Act 02/MutantSpider/MutantSpider_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 224ddafe1ed0ad74baf704d8938f12fa
+    m_Address: Assets/Animations/Enemies/Act 02/MutantSpider/MutantSpider_Material-Additive.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5c960485f160396428897e049487896b
+    m_Address: Assets/Animations/Enemies/Act 02/MutantSpider/MutantSpider_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e861b7f63a384f84889a64b9b3e323f4
+    m_Address: Assets/Animations/Enemies/Act 02/NightWisps/export.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9dcb8e0beead20142826a5eb76eb1aee
+    m_Address: Assets/Animations/Enemies/Act 02/NightWisps/NightWisps.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e91fe3b9f00d5884eac6686b5c5a1355
+    m_Address: Assets/Animations/Enemies/Act 02/NightWisps/NightWisps.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 66b8cfc8a1e447a4780df9a8ad5c4710
+    m_Address: Assets/Animations/Enemies/Act 02/NightWisps/NightWisps.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1cb82dc0021e70c4fad8da29c11a5749
+    m_Address: Assets/Animations/Enemies/Act 02/NightWisps/NightWisps_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2fe1664a49ee1324381faeefecc5159a
+    m_Address: Assets/Animations/Enemies/Act 02/NightWisps/NightWisps_Material-Additive.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 25898ec59ba271a4a9e8630ad3573a48
+    m_Address: Assets/Animations/Enemies/Act 02/NightWisps/NightWisps_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a42323649e28f1e4f883ce226604abb2
+    m_Address: Assets/Animations/Enemies/Act 02/StickMantis/export.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c44b578dd66a12447abe276575be51c9
+    m_Address: Assets/Animations/Enemies/Act 02/StickMantis/StickMantis.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a2ac5134b8f7d924b977482e12033c47
+    m_Address: Assets/Animations/Enemies/Act 02/StickMantis/StickMantis.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a7a9a89f3bf07f147b8fa29116f1b313
+    m_Address: Assets/Animations/Enemies/Act 02/StickMantis/StickMantis.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bddaacac828bd40408ff0935049e6d5d
+    m_Address: Assets/Animations/Enemies/Act 02/StickMantis/StickMantis_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: afb3fddf356b52b4fb997f861e7ad699
+    m_Address: Assets/Animations/Enemies/Act 02/StickMantis/StickMantis_Material-Additive.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6706d4e1b3ba7054a8668fee510cb51e
+    m_Address: Assets/Animations/Enemies/Act 02/StickMantis/StickMantis_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 00dc0d1d10a737940b40966c1a0946dc
+    m_Address: Assets/Animations/Enemies/Act 02/SwarmCocoon/export.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1980dbe4afaadbc4abb8babed5c0ed12
+    m_Address: Assets/Animations/Enemies/Act 02/SwarmCocoon/SwarmCocoon.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ada71a996b88b854e88c8c1a6cb5c82f
+    m_Address: Assets/Animations/Enemies/Act 02/SwarmCocoon/SwarmCocoon.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 446b2a14df635174680e98150d019866
+    m_Address: Assets/Animations/Enemies/Act 02/SwarmCocoon/SwarmCocoon.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 169803346f92bfa4eb98403d3a41b46c
+    m_Address: Assets/Animations/Enemies/Act 02/SwarmCocoon/SwarmCocoon_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2ba4586f259f2f741bb2478a3a2b4848
+    m_Address: Assets/Animations/Enemies/Act 02/SwarmCocoon/SwarmCocoon_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5ac3bd9021ae9784ea820853149a22cd
+    m_Address: Assets/Animations/Enemies/Act 02/SwarmMaster/export.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 38a087fe54221e7419fb6319c9b19ee3
+    m_Address: Assets/Animations/Enemies/Act 02/SwarmMaster/SwarmMaster.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5675be95a564f1b4bbdd0b9192a6fc20
+    m_Address: Assets/Animations/Enemies/Act 02/SwarmMaster/SwarmMaster.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5132c80338d7bd94c986912d0aa5a8ac
+    m_Address: Assets/Animations/Enemies/Act 02/SwarmMaster/SwarmMaster.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d9b2480fb5e86784cac08959ca25af15
+    m_Address: Assets/Animations/Enemies/Act 02/SwarmMaster/SwarmMaster_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 419058951f690cd4791b5d400c9c57a8
+    m_Address: Assets/Animations/Enemies/Act 02/SwarmMaster/SwarmMaster_Material-Additive.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7ea8cc6302ad6e945a5f2293b0dcd54f
+    m_Address: Assets/Animations/Enemies/Act 02/ThornWolf_Pup/export.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5298926e9856eaa42a3ba1d50d65c59b
+    m_Address: Assets/Animations/Enemies/Act 02/ThornWolf_Pup/ThornWolf_Pup.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7396c5bcc83491947b0c6c97e5a024c2
+    m_Address: Assets/Animations/Enemies/Act 02/ThornWolf_Pup/ThornWolf_Pup.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: dd5ca63c545f34743aab77c3c897cb9a
+    m_Address: Assets/Animations/Enemies/Act 02/ThornWolf_Pup/ThornWolf_Pup.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3de788415666e6a4bb7583edccb5e647
+    m_Address: Assets/Animations/Enemies/Act 02/ThornWolf_Pup/ThornWolf_Pup_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 20451df07ea72444da33f505879cab9a
+    m_Address: Assets/Animations/Enemies/Act 02/ThornWolf_Pup/ThornWolf_Pup_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4b83fa277dceee8408905f8f56e16f44
+    m_Address: Assets/Animations/Enemies/Act 02/Troll/export.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 22e07339d6ef3a54389f2bf7a8030fb7
+    m_Address: Assets/Animations/Enemies/Act 02/Troll/Troll.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 695bbc0208b0a1d4dab66e3ec80c6e0e
+    m_Address: Assets/Animations/Enemies/Act 02/Troll/Troll.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 284f5b328b2838741942f36eba2b7477
+    m_Address: Assets/Animations/Enemies/Act 02/Troll/Troll.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 02cfed35c617b784fbdf9486e577fe9c
+    m_Address: Assets/Animations/Enemies/Act 02/Troll/Troll_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a3ee2fec8ab1f3a48bf4970aa4fcad36
+    m_Address: Assets/Animations/Enemies/Act 02/Troll/Troll_Material-Additive.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 43f2a6ed910a4284bb2b66163dd49e29
+    m_Address: Assets/Animations/Enemies/Act 02/Troll/Troll_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 633f6bf749d0b3c4fbc621d9ad8c8a6e
+    m_Address: Assets/Animations/Enemies/Act 02/SwarmMaster/SwarmMaster_Material.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b7fd4f8eebca4d145b8bca3c88207ec1
+    m_Address: cavegoblin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2a526c7c850c38146b105ee4aece3c6e
+    m_Address: mutantspider
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3de3a8f1f262ccd448df57e78fdb1e61
+    m_Address: cavehomunculi
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 68ee5d64ffef14b4c8334f69dc8e6c76
+    m_Address: centipion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6e4f387dd9e14b44ca7e69c8a38f9ca8
+    m_Address: deepdweller_luremode
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 52ba7ae5753946e4a9e54212635eec5b
+    m_Address: deepdweller_monstermode
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b7753afc708d22b409bc885c66302031
+    m_Address: deepgoblin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f75efe00da5da3440861283e7b1c2019
+    m_Address: deepsorcerer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 93a41a38aaf345a4da8ee442d4c0fc4a
+    m_Address: elementalspirit_fire
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 037cac15f5db97443bc9bf1567366d00
+    m_Address: elementalspirit_rock
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8e3d6fdea882d7c41821e0f9829f0672
+    m_Address: elementalwaterspirit
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: dc5a21ea7d1fb3142be391f6dc07fadf
+    m_Address: firebeetle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1cd43ac1e54c72941a14223abe0bb636
+    m_Address: glowbug
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 11666d161b8f091488737bbc5adb88c2
+    m_Address: mimic
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7e1215ecdf48a274488b598d15c31258
+    m_Address: moldpolyp
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3b9adc9d88306bf4ea99fc82e8757501
+    m_Address: mossyarcher
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6902cd6c0dd8338448c599f3cabe1d30
+    m_Address: mossybones
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0cc5fa497193f1240adfe18285e65ca9
+    m_Address: mossyskeleton
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4d90f4411c8139345a95561d3ff309d1
+    m_Address: nightwisps
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 10f70245945be7c468b12654caad8aba
+    m_Address: stickmantis
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fef41c16af4334f49a4ee5deffdcbd51
+    m_Address: swarmcocoon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f0e378cee51b3454faa2d7332151c5e1
+    m_Address: swarmmaster
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9242726f3d0961c4db5e987b2f73a5bf
+    m_Address: thornwolf_pup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 362aa70752f08d945b95a605705af929
+    m_Address: troll
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b5243524a01eab148b0a227677e45ff2, type: 2}
   m_SchemaSet:
