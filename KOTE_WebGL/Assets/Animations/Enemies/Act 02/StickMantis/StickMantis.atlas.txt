@@ -1,0 +1,66 @@
+StickMantis.png
+size:2048,2048
+filter:Linear,Linear
+pma:true
+scale:1.16
+FX-Swipe
+bounds:1060,902,254,368
+body 01
+bounds:2,303,967,1132
+rotate:90
+body 02
+bounds:158,268,639,285
+body 03
+bounds:1625,300,989,376
+rotate:90
+body 04
+bounds:1188,1305,572,254
+claw back
+bounds:1722,1322,270,100
+claw front
+bounds:284,1002,166,111
+electricity
+bounds:2,1272,1184,762
+head
+bounds:1025,305,1015,804
+rotate:90
+moss ball
+bounds:1188,1561,578,473
+mouth
+bounds:2,879,280,391
+quill
+bounds:2,2,875,376
+rotate:180
+shadow
+bounds:284,1115,190,155
+slime 01
+bounds:409,506,279,95
+offsets:5,0,284,103
+slime 02
+bounds:452,1088,169,57
+slime 03
+bounds:581,1234,93,36
+slime 04
+bounds:284,894,179,106
+slime 06
+bounds:476,1153,160,65
+slime 07
+bounds:476,1213,103,57
+slime 08
+bounds:504,593,232,60
+slime 09
+bounds:476,1122,162,60
+offsets:0,3,162,63
+tail 01
+bounds:456,204,331,148
+tail 02
+bounds:1440,7,492,331
+rotate:180
+tentacles 01
+bounds:617,7,450,117
+tentacles 02
+bounds:2,803,325,74
+tentacles 03
+bounds:1171,24,336,297
+tentacles 04
+bounds:878,66,481,209

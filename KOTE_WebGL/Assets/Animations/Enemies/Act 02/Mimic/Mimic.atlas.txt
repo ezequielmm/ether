@@ -1,0 +1,145 @@
+Mimic.png
+size:1024,1024
+filter:Linear,Linear
+pma:true
+scale:0.5
+B-L leg_Lower leg
+bounds:632,22,93,180
+rotate:90
+B-L leg_Mid leg
+bounds:239,107,94,156
+B-L leg_Nail 1
+bounds:733,944,27,27
+B-L leg_Nail 2
+bounds:731,855,25,16
+B-L leg_Upper leg
+bounds:379,70,72,166
+rotate:90
+B-L leg_feet
+bounds:319,480,29,58
+B-R leg_Foot
+bounds:349,72,43,71
+B-R leg_Low leg
+bounds:91,130,125,200
+B-R leg_Middle leg
+bounds:863,151,81,131
+B-R leg_Nail 1
+bounds:2,560,47,29
+B-R leg_Nail 2
+bounds:706,873,61,37
+B-R leg_Upper part
+bounds:2,158,162,191
+BODY
+bounds:327,203,311,277
+offsets:16,0,327,277
+CHEST_Base
+bounds:2,759,500,263
+CHEST_MUSHROOM L-back
+bounds:601,143,90,89
+CHEST_MUSHROOM L-front
+bounds:883,950,130,72
+CHEST_MUSHROOM R
+bounds:631,915,100,107
+CHEST_MUSHROOM R-left
+bounds:813,877,51,36
+CHEST_MUSHROOM R-right
+bounds:545,62,93,58
+CHEST_MUSHROOM R-top
+bounds:504,891,125,131
+CHEST_Top
+bounds:2,591,449,166
+Eye_L
+bounds:802,891,9,19
+Eye_L_back
+bounds:504,787,24,25
+Eye_R
+bounds:762,947,10,20
+Eye_R_back
+bounds:595,857,32,32
+Eye_mid
+bounds:868,899,10,45
+Eye_mid_back
+bounds:453,621,83,75
+F-L leg_Feet
+bounds:978,789,43,75
+F-L leg_Higher leg
+bounds:638,163,123,215
+F-L leg_Lower leg
+bounds:867,131,155,213
+offsets:0,5,155,218
+F-L leg_Middle leg
+bounds:270,59,100,110
+rotate:180
+F-L leg_Nail 1
+bounds:977,738,40,49
+F-L leg_Nail 2
+bounds:763,175,44,41
+F-R leg_Lower leg
+bounds:132,97,138,253
+F-R leg_Mid leg
+bounds:646,105,62,165
+offsets:0,0,62,178
+rotate:90
+F-R leg_Nail 1
+bounds:871,593,44,58
+F-R leg_Nail 2
+bounds:631,868,73,45
+F-R leg_Upper leg
+bounds:189,132,136,225
+F-R leg_feet
+bounds:890,41,60,91
+rotate:90
+FX_bite01
+bounds:538,379,285,360
+rotate:270
+FX_bite02
+bounds:73,38,258,77
+HEAD_MUSHROOM Top-mid left
+bounds:504,797,89,92
+HEAD_MUSHROOM Top-up left
+bounds:438,24,106,77
+HEAD_MUSHROOM top right
+bounds:473,120,126,82
+offsets:0,4,126,87
+HEAD_Mushroom head right
+bounds:459,475,77,60
+HEAD_Mushrooms head left
+bounds:892,497,118,141
+HEAD_blinkL
+bounds:888,564,28,27
+HEAD_blinkR
+bounds:847,642,22,25
+HEAD_blink_BIG
+bounds:2,288,76,72
+Head jaw
+bounds:774,75,406,248
+rotate:270
+Head_chest
+bounds:493,612,529,294
+rotate:180
+Head_interior
+bounds:2,350,350,239
+TEETH_Botto-mid right
+bounds:857,988,20,34
+TEETH_Bottom far-left
+bounds:297,123,150,84
+TEETH_Bottom far-right
+bounds:880,865,135,83
+TEETH_Bottom left-mid
+bounds:959,288,63,60
+TEETH_Bottom mid-left
+bounds:453,701,36,56
+TEETH_Bottom-mid
+bounds:769,865,27,45
+TEETH_Bottom-right mid
+bounds:738,253,30,64
+TEETH_Top L-Mid
+bounds:982,502,40,59
+TEETH_Top Left
+bounds:306,515,209,87
+TEETH_Top R-mid
+bounds:717,319,47,59
+TEETH_Top Right
+bounds:733,911,148,111
+shadow
+bounds:2,89,82,67

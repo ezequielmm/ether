@@ -1,0 +1,139 @@
+MutantSpider.png
+size:2048,2048
+filter:Linear,Linear
+pma:true
+FX_bite02
+bounds:1804,1531,515,154
+rotate:90
+abdomen
+bounds:2,1315,856,731
+blink 01
+bounds:657,2019,34,27
+blink 02
+bounds:621,2019,34,27
+blink 03
+bounds:181,2016,38,30
+blink 04
+bounds:221,2014,31,32
+blink 05
+bounds:142,2014,37,32
+blink 06
+bounds:103,2014,37,32
+blink 07
+bounds:292,2024,31,22
+blink 08
+bounds:254,2019,36,27
+body
+bounds:1129,1368,330,310
+eyes
+bounds:545,522,166,123
+fx_Swipe6
+bounds:1453,659,122,256
+head
+bounds:1660,211,196,218
+rotate:90
+leg_01_bottom
+bounds:2,717,251,614
+rotate:90
+leg_01_middle
+bounds:1376,1032,422,670
+rotate:270
+leg_01_tip
+bounds:871,189,224,511
+offsets:1,0,225,511
+rotate:270
+leg_02_bottom
+bounds:713,482,176,570
+rotate:90
+leg_02_middle
+bounds:1248,1243,286,685
+rotate:90
+leg_02_tip
+bounds:325,220,138,498
+offsets:0,0,155,498
+rotate:90
+leg_03_bottom
+bounds:1495,751,410,551
+rotate:90
+leg_03_middle
+bounds:1578,537,468,510
+rotate:180
+leg_03_tip
+bounds:519,354,186,555
+rotate:270
+leg_04_bottom
+bounds:2,965,552,492
+leg_04_middle
+bounds:993,630,557,401
+offsets:0,1,557,402
+leg_04_tip
+bounds:1796,404,250,554
+leg_05_bottom
+bounds:1552,905,494,448
+leg_05_middle
+bounds:1062,323,569,228
+leg_05_tip
+bounds:1384,128,365,258
+rotate:180
+leg_06_bottom
+bounds:1200,385,386,526
+rotate:90
+leg_06_middle
+bounds:597,195,250,572
+rotate:90
+leg_06_tip
+bounds:1913,172,133,419
+leg_07_bottom
+bounds:237,620,134,640
+rotate:90
+leg_07_middle
+bounds:2,404,349,566
+rotate:270
+leg_07_tip
+bounds:896,942,161,482
+rotate:90
+leg_08_bottom
+bounds:606,1006,274,677
+rotate:90
+leg_08_leg_tip
+bounds:2,297,144,523
+rotate:90
+leg_08_middle
+bounds:2,837,442,571
+rotate:270
+lower jaw-L
+bounds:1960,1933,61,113
+lower jaw-R
+bounds:1960,1827,61,104
+shadow
+bounds:859,1619,164,134
+upper jaw-L
+bounds:2,980,118,210
+upper jaw-R
+bounds:555,886,104,206
+web 01
+bounds:1227,1613,324,433
+rotate:180
+web 02
+bounds:620,690,408,387
+web 03
+bounds:797,1503,523,543
+rotate:180
+web 04
+bounds:651,1178,401,550
+offsets:0,2,401,552
+rotate:90
+web_body_01
+bounds:501,1092,241,194
+offsets:9,0,250,245
+rotate:90
+web_body_02
+bounds:1441,1411,635,361
+rotate:90
+web_head_01
+bounds:2,1964,99,82
+web_head_02
+bounds:1553,1666,88,132
+offsets:0,68,88,200
+web_head_03
+bounds:337,1183,93,135

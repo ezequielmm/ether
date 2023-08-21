@@ -1,0 +1,183 @@
+DeepDweller_MonsterMode.png
+size:2048,2048
+filter:Linear,Linear
+pma:true
+scale:0.21
+FX_bite02
+bounds:1030,964,108,32
+arm_L_arm 01
+bounds:1536,1822,317,224
+offsets:0,1,317,225
+arm_L_fin
+bounds:348,2014,151,32
+arm_L_forearm 01
+bounds:597,1096,330,111
+back_arm 03
+bounds:1304,1668,267,378
+back_fin 01
+bounds:1936,1263,110,124
+back_fin 02
+bounds:1944,1840,102,117
+back_finger 01
+bounds:1017,1343,143,261
+back_finger 02
+bounds:1704,1038,253,119
+back_finger 03
+bounds:1376,398,232,121
+back_forearm 03
+bounds:886,1905,141,340
+rotate:90
+back_hand
+bounds:668,1206,124,166
+back_leg 04
+bounds:623,772,134,309
+rotate:90
+body 01
+bounds:453,1406,654,640
+body 02
+bounds:1417,1073,803,629
+offsets:0,0,803,633
+rotate:90
+body 03
+bounds:2,1069,674,977
+offsets:0,0,674,1074
+eye_blink
+bounds:1964,1224,76,37
+fin 02
+bounds:973,479,564,1029
+rotate:90
+fin tail
+bounds:2,145,605,634
+rotate:90
+fx_Swipe6
+bounds:406,1958,26,54
+fx_body_heat_1
+bounds:2,437,877,620
+rotate:180
+fx_dot_glow
+bounds:2013,1970,29,29
+fx_energy_beam_00001
+bounds:40,2013,30,33
+fx_energy_beam_00002
+bounds:882,2002,34,44
+fx_energy_beam_00003
+bounds:2,1975,36,71
+fx_energy_beam_00004
+bounds:2004,959,36,96
+fx_energy_beam_00005
+bounds:612,1611,37,104
+fx_energy_beam_00006
+bounds:1228,1938,38,108
+fx_energy_beam_00007
+bounds:1453,1572,42,125
+fx_energy_beam_00008
+bounds:1390,235,51,126
+fx_energy_beam_00009
+bounds:1332,149,48,121
+fx_energy_beam_00010
+bounds:2,151,49,116
+fx_energy_beam_00011
+bounds:1188,160,49,119
+fx_energy_beam_00012
+bounds:1135,175,51,125
+fx_energy_beam_00013
+bounds:638,157,50,126
+fx_energy_beam_00014
+bounds:2,269,51,126
+fx_energy_beam_00015
+bounds:1337,272,51,126
+fx_energy_beam_00016
+bounds:1993,705,53,126
+fx_energy_beam_00017
+bounds:881,459,51,126
+fx_energy_beam_00018
+bounds:733,158,50,126
+fx_energy_beam_00019
+bounds:1889,144,46,126
+fx_energy_beam_00020
+bounds:1864,1059,45,126
+rotate:90
+fx_energy_beam_00021
+bounds:86,1320,38,126
+fx_energy_beam_00022
+bounds:936,840,36,122
+fx_energy_beam_00023
+bounds:2010,1327,36,118
+fx_energy_beam_00024
+bounds:2002,586,36,117
+fx_energy_beam_00025
+bounds:1109,1604,35,115
+fx_energy_beam_00026
+bounds:1007,1228,35,112
+fx_energy_beam_00027
+bounds:1381,1159,34,110
+fx_energy_beam_00028
+bounds:1957,664,34,108
+fx_energy_beam_00029
+bounds:1268,1938,34,108
+fx_energy_beam_00030
+bounds:2,1064,33,82
+fx_energy_beam_00031
+bounds:1978,1962,33,84
+fx_energy_beam_00032
+bounds:2013,2001,32,45
+fx_energy_beam_00033
+bounds:708,2005,31,41
+fx_glow_sunrays_3
+bounds:1583,1989,57,57
+fx_glow_sunrays_lines_1
+bounds:918,2017,57,29
+offsets:0,28,57,57
+gill 01
+bounds:1745,1879,231,167
+gill 02
+bounds:1586,135,301,239
+hand_L_fin 01
+bounds:1755,986,114,103
+hand_L_fin 02
+bounds:1473,1949,108,97
+hand_L_finger 01
+bounds:156,317,231,159
+hand_L_finger 02
+bounds:2,1446,94,243
+hand_L_finger 03
+bounds:1909,753,137,205
+hand_L_hand
+bounds:989,1791,155,121
+head
+bounds:1476,205,480,570
+rotate:90
+jaw
+bounds:785,158,440,776
+rotate:90
+jaw back
+bounds:635,1209,371,428
+leg_L_arm 02
+bounds:881,587,356,290
+rotate:90
+leg_L_fin
+bounds:1135,736,157,91
+leg_L_fin 03
+bounds:1874,1053,172,193
+leg_L_fin 04
+bounds:104,1141,158,392
+leg_L_finger 01
+bounds:2,1086,133,173
+leg_L_finger 02
+bounds:260,843,359,173
+leg_L_finger 03
+bounds:107,420,384,112
+leg_L_foot
+bounds:743,1942,139,104
+leg_L_forearm 02
+bounds:406,285,150,371
+rotate:90
+neck
+bounds:1140,769,633,383
+neck_fin 01
+bounds:72,2042,4,4
+offsets:117,415,768,581
+shadow
+bounds:1642,2018,34,28
+tail
+bounds:2,899,1450,1036

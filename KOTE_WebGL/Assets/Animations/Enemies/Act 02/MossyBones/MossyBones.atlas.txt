@@ -1,0 +1,189 @@
+MossyBones.png
+size:2048,2048
+filter:Linear,Linear
+scale:0.71
+Cone_Stream_Cloud_v2/image_001_0002
+bounds:1224,170,182,182
+Cone_Stream_Cloud_v2/image_001_0003
+bounds:1501,207,182,182
+Cone_Stream_Cloud_v2/image_001_0004
+bounds:2,227,182,182
+Cone_Stream_Cloud_v2/image_001_0005
+bounds:1692,228,182,182
+Cone_Stream_Cloud_v2/image_001_0006
+bounds:370,253,182,182
+Cone_Stream_Cloud_v2/image_001_0007
+bounds:738,295,182,182
+Cone_Stream_Cloud_v2/image_001_0008
+bounds:1040,337,182,182
+Cone_Stream_Cloud_v2/image_001_0009
+bounds:1317,354,182,182
+Cone_Stream_Cloud_v2/image_001_0010
+bounds:1508,391,182,182
+Cone_Stream_Cloud_v2/image_001_0011
+bounds:186,411,182,182
+Cone_Stream_Cloud_v2/image_001_0012
+bounds:1706,412,182,182
+Cone_Stream_Cloud_v2/image_001_0013
+bounds:554,437,182,182
+Cone_Stream_Cloud_v2/image_001_0014
+bounds:2,476,182,182
+Cone_Stream_Cloud_v2/image_001_0015
+bounds:856,479,182,182
+Cone_Stream_Cloud_v2/image_001_0016
+bounds:1133,521,182,182
+Cone_Stream_Cloud_v2/image_001_0017
+bounds:1324,538,182,182
+Cone_Stream_Cloud_v2/image_001_0018
+bounds:370,595,182,182
+Cone_Stream_Cloud_v2/image_001_0019
+bounds:1706,596,182,182
+Cone_Stream_Cloud_v2/image_001_0020
+bounds:186,660,182,182
+Cone_Stream_Cloud_v2/image_001_0021
+bounds:949,663,182,182
+Cone_Stream_Cloud_v2/image_001_0022
+bounds:2,683,182,182
+Cone_Stream_Cloud_v2/image_001_0023
+bounds:1140,705,182,182
+Cone_Stream_Cloud_v2/image_001_0024
+bounds:765,730,182,182
+Cone_Stream_Cloud_v2/image_001_0025
+bounds:1847,780,182,182
+Cone_Stream_Cloud_v2/image_001_0026
+bounds:1663,783,182,182
+Cone_Stream_Cloud_v2/image_001_0027
+bounds:956,847,182,182
+Cone_Stream_Cloud_v2/image_001_0028
+bounds:2,867,182,182
+Cone_Stream_Cloud_v2/image_001_0029
+bounds:581,883,182,182
+Cone_Stream_Cloud_v2/image_001_0030
+bounds:1847,964,182,182
+Cone_Stream_Cloud_v2/image_001_0031
+bounds:1451,1864,182,182
+FX-Swipe/FX-Swipe
+bounds:1343,91,155,225
+Shadow/shadow
+bounds:186,862,116,95
+polyp 01/arrow
+bounds:1513,668,229,191
+rotate:90
+polyp 01/base moss
+bounds:206,1067,614,239
+rotate:180
+polyp 01/chestplate
+bounds:1707,1709,246,337
+polyp 01/fungus 01
+bounds:1890,461,105,109
+polyp 01/fungus 02
+bounds:885,1686,56,62
+polyp 01/fungus 03
+bounds:956,1069,105,72
+polyp 01/fungus 04
+bounds:603,740,136,141
+polyp 01/jaw
+bounds:320,1269,121,126
+polyp 01/moss piece 01
+bounds:1830,75,187,181
+polyp 01/mushroom helmet
+bounds:1937,1920,92,126
+polyp 01/rib 01
+bounds:1956,1865,82,54
+polyp 01/rib 02
+bounds:1963,1169,83,94
+polyp 01/rib 03
+bounds:1635,1853,58,122
+polyp 01/rib 04
+bounds:2,1575,187,99
+polyp 01/rib 04A
+bounds:191,1548,137,126
+polyp 01/rib 05
+bounds:186,610,161,48
+polyp 01/rib 06
+bounds:653,1250,166,52
+polyp 01/rib 07
+bounds:1635,1977,141,69
+polyp 01/skull
+bounds:1879,258,167,190
+polyp 01/sword
+bounds:1480,874,524,566
+rotate:270
+polyp 01/upper moss
+bounds:885,1582,464,821
+rotate:90
+polyp 02/RIB
+bounds:370,444,169,149
+polyp 02/armor glove
+bounds:554,167,213,213
+rotate:180
+polyp 02/bone arm
+bounds:186,174,187,226
+polyp 02/bone foot
+bounds:768,68,186,234
+rotate:270
+polyp 02/bone leg
+bounds:1218,1427,242,255
+polyp 02/fungus 01
+bounds:1691,125,123,101
+polyp 02/fungus 02
+bounds:984,108,168,90
+polyp 02/fungus 03
+bounds:1487,121,203,84
+polyp 02/lower moss
+bounds:217,1397,1094,280
+rotate:180
+polyp 02/mushrooms
+bounds:1947,1705,99,133
+polyp 02/spear 01
+bounds:16,584,649,838
+rotate:270
+polyp 02/spear 02
+bounds:1002,574,628,702
+rotate:90
+polyp 02/upper moss
+bounds:1493,1263,451,507
+rotate:270
+polyp 03/arm moss
+bounds:101,91,181,149
+polyp 03/arm moss lower
+bounds:1257,917,220,272
+polyp 03/base moss
+bounds:694,1185,1039,253
+rotate:180
+polyp 03/base moss 01
+bounds:473,1304,599,97
+polyp 03/bone arm 01
+bounds:822,914,132,269
+polyp 03/bone arm 02
+bounds:1162,979,168,207
+rotate:180
+polyp 03/bone finger
+bounds:1140,893,83,124
+polyp 03/bone hand
+bounds:922,175,202,237
+rotate:180
+polyp 03/bone thumb
+bounds:1628,1090,73,120
+polyp 03/fungi
+bounds:1040,522,85,139
+polyp 03/hand fungi
+bounds:1224,376,62,143
+polyp 03/hand moss
+bounds:277,957,133,260
+rotate:90
+polyp 03/mushrooms
+bounds:2,1188,373,317
+rotate:270
+polyp 03/rib 01
+bounds:1890,572,115,206
+polyp 03/rib 02
+bounds:1126,143,94,192
+polyp 03/rib 03
+bounds:1464,1026,116,160
+polyp 03/rib 04
+bounds:330,1580,146,94
+polyp 03/rib 05
+bounds:374,170,223,72
+polyp 03/sword
+bounds:2,1676,881,370

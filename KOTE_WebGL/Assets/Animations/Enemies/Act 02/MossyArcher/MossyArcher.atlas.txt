@@ -1,0 +1,118 @@
+MossyArcher.png
+size:2048,2048
+filter:Linear,Linear
+pma:true
+scale:1.25
+BOW
+bounds:2,629,393,1999
+rotate:270
+FUNGI
+bounds:1374,912,261,253
+arm-L
+bounds:956,702,548,181
+rotate:180
+arm-R
+bounds:833,202,388,211
+armor-chest
+bounds:1065,1356,409,561
+rotate:180
+armor-foot
+bounds:1478,211,296,253
+armor-leg
+bounds:1151,874,234,558
+arrow
+bounds:278,14,425,231
+rotate:180
+arrow 06
+bounds:1378,2,395,159
+offsets:0,0,398,159
+arrow animation
+bounds:577,369,905,138
+offsets:0,2,905,140
+celade
+bounds:990,38,300,189
+celade back
+bounds:346,1645,103,153
+chainmail-L
+bounds:1642,1018,404,348
+chainmail-head
+bounds:1496,580,204,550
+rotate:270
+chainmail-head2
+bounds:577,199,185,448
+rotate:270
+chainmail-legs
+bounds:2,937,659,980
+chest
+bounds:662,1176,441,741
+finger-L 01
+bounds:877,1051,85,123
+finger-L 02
+bounds:577,983,93,88
+finger-L 03
+bounds:672,971,99,78
+fingers R
+bounds:705,29,178,194
+foot-R
+bounds:1038,203,385,216
+forearm-R
+bounds:81,1732,410,185
+offsets:14,0,424,186
+fungus 01
+bounds:1856,1412,153,190
+rotate:90
+fungus 02
+bounds:1927,1330,119,116
+fungus 03
+bounds:103,1631,105,101
+fungus 04
+bounds:702,722,246,119
+fungus 05
+bounds:161,389,249,136
+fx_Swipe6
+bounds:422,199,153,320
+hand-L
+bounds:1759,93,199,166
+hand-R-interior
+bounds:1423,92,186,151
+rotate:90
+helmet
+bounds:1717,261,329,265
+jaw
+bounds:882,21,176,185
+rotate:270
+leg_mushrooms
+bounds:1734,1483,228,434
+moss
+bounds:1476,1437,256,480
+rib 01
+bounds:1908,958,130,144
+rib 02
+bounds:1236,558,100,258
+rotate:90
+ribcage
+bounds:591,1051,194,256
+shadow
+bounds:2,96,205,168
+shin-R
+bounds:2,136,392,428
+offsets:113,0,505,546
+rotate:90
+shoulder
+bounds:1387,1166,459,304
+skull
+bounds:969,1019,218,216
+rotate:90
+straight string
+bounds:2,503,60,1950
+rotate:270
+sword 2
+bounds:472,797,703,289
+thigh-L
+bounds:1539,846,170,268
+rotate:90
+thigh-R
+bounds:2,559,254,549
+rotate:270
+thumb-L
+bounds:1452,1831,84,86
