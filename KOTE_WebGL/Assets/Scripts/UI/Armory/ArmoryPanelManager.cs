@@ -63,7 +63,14 @@ namespace KOTE.UI.Armory
 
         public void OnBridgeOpen()
         {
-            WebBridge.SendUnityMessage("open-bridge", "open-bridge");
+            var data = new Dictionary<string, object>
+            {
+                {"eventName", "open-bridge"},
+                {"data", null}
+            };
+            var sendJson = JsonConvert.SerializeObject(data);
+            Debug.Log($"Json: {sendJson}");
+            WebBridge.SendUnityMessage(sendJson, sendJson);
         }
 
         void OnArmoryRefresh(string data)
@@ -373,16 +380,27 @@ namespace KOTE.UI.Armory
                 {
                     var sendJson = JsonConvert.SerializeObject(new InitiationInfo
                     {
-                        TokenId = SelectedCharacter.TokenId,
-                        Contract = NftManager.Instance.GetContractAddress(NftContract.BlessedVillager),
-                        GearIds = equippedGear.Values.Select(x => x.gearId).ToArray(),
-                        Wallet = WalletManager.Instance.ActiveWallet
+                        eventName = "initiate",
+                        data = new InitiationData()
+                        {
+                            TokenId = SelectedCharacter.TokenId,
+                            Contract = NftManager.Instance.GetContractAddress(NftContract.BlessedVillager),
+                            GearIds = equippedGear.Values.Select(x => x.gearId).ToArray(),
+                            Wallet = WalletManager.Instance.ActiveWallet
+                        }
                     });
+                    Debug.Log($"Json: {sendJson}");
                     WebBridge.SendUnityMessage(sendJson, sendJson);
                 });
         }
 
         public class InitiationInfo
+        {
+            public string eventName;
+            public InitiationData data;
+        }
+
+        public class InitiationData
         {
             [JsonProperty("tokenId")] public int TokenId;
             [JsonProperty("contract")]  public string Contract;
