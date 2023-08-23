@@ -59,7 +59,7 @@ public class ContestManager : SingleTon<ContestManager>
 
     void Start()
     {
-        UserDataManager.Instance.ExpeditionStatusUpdated.AddListener(UpdateContestTimes);
+        UserDataManager.Instance.ExpeditionStatusUpdated.AddListener(() => UpdateContestTimes());
         reportedEndOfContest = false;
         OnContestEnded.AddListener(ResetContestOnEnd);
         UpdateContestTimes();
@@ -78,11 +78,14 @@ public class ContestManager : SingleTon<ContestManager>
         {
             if(AuthenticationManager.Instance.Authenticated)
                 await UserDataManager.Instance.UpdateExpeditionStatus();
-            UpdateContestTimes();
+            await UpdateContestTimes();
+            // Perevent the contest from ending again.
+            if (TimeUntilEnd.TotalSeconds <= 0)
+                reportedEndOfContest = true;
         }
     }
 
-    private async void UpdateContestTimes()
+    private async UniTask UpdateContestTimes()
     {
         await UniTask.WaitUntil(() => ContestData != null);
         SetContestTimes(ContestData.StartTime, ContestData.EndTime,
