@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [Serializable]
@@ -17,9 +18,34 @@ public class Nft
     public string Name;
     [JsonProperty("description")]
     public string Description;
+
+    private Dictionary<Trait, string> trait;
+    public Dictionary<Trait, string> Traits
+    {
+        set => trait = value;
+        get =>
+            trait ?? (trait = attributes.ToDictionary(k => (Trait)Enum.Parse(typeof(Trait),
+                k.Key.ToString() switch
+                {
+                    "Breastplates" => "Breastplate",
+                    "Helmets" => "Helmet",
+                    "Weapons" => "Weapon",
+                    "Gauntlets" => "Gauntlet",
+                    "Paddings" => "Padding",
+                    "Crests" => "Crest",
+                    "Shields" => "Shield",
+                    "Sigils" => "Sigil",
+                    "Vambraces" => "Vambrace",
+                    "Legguards" => "Legguard",
+                    "Upper_Paddings" => "Upper_Padding",
+                    "Lower_Paddings" => "Lower_Padding",
+                    _ => k.Key.ToString()
+                }), v => v.Value));
+    }
+
     [JsonProperty("attributes")]
     [JsonConverter(typeof(TraitDictionaryConverter))]
-    public Dictionary<Trait, string> Traits;
+    public Dictionary<TraitsParse, string> attributes;
     [JsonProperty("can_play")]
     public bool CanPlay;
     public string adaptedImageURI;
@@ -55,7 +81,7 @@ public class TraitDictionaryConverter : JsonConverter
 
     public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
     {
-        Dictionary<Trait, string> result = new();
+        Dictionary<TraitsParse, string> result = new();
         if (reader.TokenType == JsonToken.Null)
         {
             return result;
@@ -64,7 +90,7 @@ public class TraitDictionaryConverter : JsonConverter
         foreach (JObject jObject in jArray) 
         {
             string TraitName = jObject.SelectToken("trait_type").ToObject<string>();
-            if (Enum.TryParse(TraitName, true, out Trait trait)) 
+            if (Enum.TryParse(TraitName, true, out TraitsParse trait)) 
             {
                 string TraitValue = jObject.SelectToken("value").ToObject<string>();
                 result.Add(trait, TraitValue);
@@ -76,6 +102,6 @@ public class TraitDictionaryConverter : JsonConverter
     public override bool CanRead => true;
     public override bool CanConvert(Type objectType)
     {
-        return typeof(Dictionary<Trait, string>) == objectType;
+        return typeof(Dictionary<TraitsParse, string>) == objectType;
     }
 }

@@ -406,6 +406,40 @@ public enum Trait
 }
 
 [Serializable]
+public enum TraitsParse
+{
+    Breastplate,
+    Breastplates,
+    Helmet,
+    Helmets,
+    Weapon,
+    Weapons,
+    Gauntlet,
+    Gauntlets,
+    Padding,
+    Paddings,
+    Crest,
+    Crests,
+    Shield,
+    Shields,
+    Pauldrons,
+    Sigil,
+    Sigils,
+    Vambrace,
+    Vambraces,
+    Boots,
+    Legguard,
+    Legguards,
+    Shadow,
+    Shadows,
+    Base,
+    Upper_Padding,
+    Upper_Paddings,
+    Lower_Padding,
+    Lower_Paddings
+}
+
+[Serializable]
 public enum CommunicationDirection
 {
     Incoming,
