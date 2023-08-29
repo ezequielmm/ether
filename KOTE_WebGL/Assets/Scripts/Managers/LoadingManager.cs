@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using DefaultNamespace;
+using IMBX;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -32,7 +33,6 @@ public class LoadingManager : MonoBehaviour
     {
 #if UNITY_EDITOR
         StartCoroutine(MockLogin());
-
         IEnumerator MockLogin()
         {
             yield return new WaitForSeconds(2);

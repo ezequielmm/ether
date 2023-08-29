@@ -339,12 +339,16 @@ public class WebSocketParser
             case nameof(WS_MESSAGE_ACTIONS.show_rewards):
                 GameManager.Instance.EVENT_GAME_STATUS_CHANGE.Invoke(GameStatuses.RewardsPanel);
                 break;
+            
             case nameof(WS_MESSAGE_ACTIONS.select_another_reward):
                 SWSM_RewardsData updatedRewardsData = JsonConvert.DeserializeObject<SWSM_RewardsData>(data);
                 GameManager.Instance.EVENT_POPULATE_REWARDS_PANEL.Invoke(updatedRewardsData);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.show_score):
                 GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.ScoreBoard);
+                break;
+            case nameof(WS_MESSAGE_ACTIONS.show_next_stage):
+                Debug.Log("Next stage trigger");
                 break;
             case nameof(WS_MESSAGE_ACTIONS.show_map):
                 // Change to Loader Scene which will load the Map Scene
