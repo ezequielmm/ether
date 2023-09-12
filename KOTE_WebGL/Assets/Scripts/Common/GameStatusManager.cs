@@ -51,7 +51,7 @@ public class GameStatusManager : MonoBehaviour
 
     public void CheckForHangingStatuses()
     {
-        if (preppingStatus == GameStatuses.None || preppingStatus == GameStatuses.ScoreBoard)
+        if (preppingStatus == GameStatuses.None || preppingStatus == GameStatuses.ScoreBoard || preppingStatus == GameStatuses.ScoreBoardAndNextAct)
             return;
 
     Debug.LogWarning(
@@ -61,7 +61,7 @@ public class GameStatusManager : MonoBehaviour
 
     public void OnEventConfirmation(Type enumType, string eventName)
     {
-        if (preppingStatus is not (GameStatuses.GameOver or GameStatuses.RewardsPanel or GameStatuses.ScoreBoard))
+        if (preppingStatus is not (GameStatuses.GameOver or GameStatuses.RewardsPanel or GameStatuses.ScoreBoard or GameStatuses.ScoreBoardAndNextAct))
         {
             return;
         }
@@ -108,7 +108,8 @@ public class GameStatusManager : MonoBehaviour
                 break;
             case GameStatuses.GameOver:
             case GameStatuses.ScoreBoard:
-                ScoreboardManager.Instance.UpdateAndShow();
+            case GameStatuses.ScoreBoardAndNextAct:
+                ScoreboardManager.Instance.UpdateAndShow(newGameStatus);
                 break;
             case GameStatuses.RoyalHouse:
             default:

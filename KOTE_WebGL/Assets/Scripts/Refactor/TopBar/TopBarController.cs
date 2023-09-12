@@ -36,7 +36,7 @@ namespace Refactor.TopBar
             topBarUI.ToogleMapIcon(arg0);
         }
 
-        private void UpdateStageText(int act, int step)
+        private void UpdateStageText(int act, int step, bool isBoss)
         {
             topBarUI.UpdateStageText(act, step);
         }

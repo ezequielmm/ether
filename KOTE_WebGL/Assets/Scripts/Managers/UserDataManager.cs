@@ -17,6 +17,7 @@ public class UserDataManager : SingleTon<UserDataManager>
 
     ProfileData profile = null;
     ExpeditionStatus expeditionStatus = null;
+    public ExpeditionStatus ExpeditionStatus => expeditionStatus;
 
     public UnityEvent ExpeditionStatusUpdated { get; } = new();
 

@@ -11,9 +11,6 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
 
     [SerializeField] string ExpiredLootMessage = $"The contest has ended before you had the chance to beat the boss. " +
                                                  $"As such, all loot has been forfeited.";
-
-    ScoreboardData ScoreData;
-
     void Start()
     {
         if (Scoreboard == null)
@@ -44,26 +41,23 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
             GameManager.Instance.EVENT_TOGGLE_COMBAT_ELEMENTS.Invoke(false);
     }
 
-    public async void UpdateAndShow()
+    public async void UpdateAndShow(GameStatuses newGameStatus)
     {
         Debug.Log("[ScoreboardManager] Updating Score");
-        ScoreData = await FetchData.Instance.GetExpeditionScore();
-
-        if (ScoreData == null)
-            HideScore();
-        else
-            ShowScore();
+        var score = await FetchData.Instance.GetExpeditionScore();
+        ShowScore(score, newGameStatus);
     }
 
-    public void ShowScore()
+    public void ShowScore(ScoreboardData scoreboardData, GameStatuses newGameStatus)
     {
         Debug.Log("[ScoreboardManager] Showing Score");
-        Scoreboard.Populate(ScoreData);
-        Lootbox.Populate(ScoreData.Rewards);
-        if (ScoreData.Rewards.Count == 0)
+        Scoreboard.Populate(scoreboardData, newGameStatus);
+        Lootbox.Populate(scoreboardData != null ? scoreboardData.Rewards : new List<RewardsLoot>(), newGameStatus);
+        
+        if (scoreboardData == null || scoreboardData.Rewards.Count == 0)
         {
             ToggleScorePanel(true);
-            if (ScoreData.NotifyNoLoot)
+            if (scoreboardData != null && scoreboardData.NotifyNoLoot)
             {
                 GameManager.instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(ExpiredLootMessage,
                     () => { }, () => { }, new[] { "It was fun while it lasted.", null });

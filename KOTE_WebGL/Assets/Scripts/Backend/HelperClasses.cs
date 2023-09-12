@@ -19,7 +19,6 @@ public class ExpeditionMapData
 [Serializable]
 public class NodeDataHelper
 {
-    public int act;
     public int step;
     public int id;
     public string type;
@@ -96,6 +95,8 @@ public class ExpeditionStatus
     [JsonProperty("contest")] public ContestData Contest = new ContestData();
 
     [JsonProperty("playerState")] public PlayerData playerData = new ();
+    
+    [JsonProperty("currentStage")] public int CurrentStage;
     
     private NftContract GetContractType()
     {

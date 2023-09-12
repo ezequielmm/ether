@@ -54,6 +54,7 @@ MonoBehaviour:
   BackgroundMusic:
   - {fileID: 11400000, guid: 74ff5c3fd93ff9041ba8fb0fc4eaee40, type: 2}
   - {fileID: 11400000, guid: 574440d970935f24785959ac3900c0d1, type: 2}
+  - {fileID: 11400000, guid: 574440d970935f24785959ac3900c0d1, type: 2}
   _soundsListMap:
   - Type: 0
     SoundList: {fileID: 11400000, guid: 40153f211a5d85a4ab5c540bb6e696d0, type: 2}

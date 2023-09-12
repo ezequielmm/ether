@@ -348,7 +348,7 @@ public class WebSocketParser
                 GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.ScoreBoard);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.show_next_stage):
-                Debug.Log("Next stage trigger");
+                GameManager.Instance.EVENT_PREPARE_GAME_STATUS_CHANGE.Invoke(GameStatuses.ScoreBoardAndNextAct);
                 break;
             case nameof(WS_MESSAGE_ACTIONS.show_map):
                 // Change to Loader Scene which will load the Map Scene

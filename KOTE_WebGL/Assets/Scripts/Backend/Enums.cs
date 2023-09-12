@@ -29,7 +29,8 @@ public enum GameStatuses
     RoyalHouse,
     RewardsPanel,
     GameOver,
-    ScoreBoard
+    ScoreBoard,
+    ScoreBoardAndNextAct
 }
 
 [Serializable]

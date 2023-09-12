@@ -44,7 +44,7 @@ public class TopBarManager : MonoBehaviour
         showmapbutton.SetActive(arg0);
     }
 
-    private void UpdateStageText(int act, int step)
+    private void UpdateStageText(int act, int step, bool isBoss)
     {
         stageText.SetText("STAGE " + act + "-" + (step + 1));
     }

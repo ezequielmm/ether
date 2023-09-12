@@ -228,9 +228,8 @@ public class FetchData : DataManager, ISingleton<FetchData>
             return;
         }
 
-        var loader = ImageLoader.Create(0, FilePathName.AppPath.PersistentDataPath);
+        var loader = ImageLoader.Create(0);
         
-        Texture2D texture = null;
         var myIndex = textureIndex++;
 
         bool textureLoaded = false;
@@ -240,7 +239,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
             url,
             imageName,
             "CachedImages",
-            ImageLoader.CacheMode.UseCached,
+            ImageLoader.CacheMode.NoCache,
             (loadedText, index) =>
                 {
                     if (myIndex == index)
@@ -250,10 +249,9 @@ public class FetchData : DataManager, ISingleton<FetchData>
                             return;
                         }
                         
-                        texture = loadedText;
                         textureLoaded = true;
-                        cachedTextures.Add(imageName, texture);
-                        onResolve?.Invoke(texture);
+                        cachedTextures.Add(imageName, loadedText);
+                        onResolve?.Invoke(loadedText);
                     }
                 }
             );

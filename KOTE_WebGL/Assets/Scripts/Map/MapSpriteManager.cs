@@ -377,7 +377,7 @@ namespace map
 
             ClearMap();
 
-            DetermineTilesToUse(expeditionMapData);
+            DetermineTilesToUse();
 
             // Set Seed
             GenerateMapSeeds(expeditionMapData.expeditionData.seed);
@@ -404,14 +404,14 @@ namespace map
             //StartCoroutine(GenerateMapImages());
         }
 
-        private void DetermineTilesToUse(SWSM_MapData expeditionData)
+        private void DetermineTilesToUse()
         {
-            int currentMapAct = expeditionData.expeditionData.nodeList[0].act;
+            int currentStage = UserDataManager.Instance.ExpeditionStatus.CurrentStage;
 
             // if the current act of the map is not act 0 and we have a tile list for that act, use it
-            if (currentMapAct > 0 && currentMapAct - 1 < actTileLists.Length)
+            if (currentStage > 0 && currentStage - 1 < actTileLists.Length)
             {
-                currentActTiles = actTileLists[currentMapAct - 1];
+                currentActTiles = actTileLists[currentStage - 1];
                 return;
             }
             // else default to the act 1 tiles
@@ -545,19 +545,19 @@ namespace map
                 NodeDataHelper nodeData = expeditionMapData.expeditionData.nodeList[i];
 
                 //acts
-                if (!mapStructure.acts.ContainsKey(nodeData.act))
+                if (!mapStructure.acts.ContainsKey(UserDataManager.Instance.ExpeditionStatus.CurrentStage))
                 {
-                    mapStructure.acts[nodeData.act] = new Act();
+                    mapStructure.acts[UserDataManager.Instance.ExpeditionStatus.CurrentStage] = new Act();
                 }
 
                 //steps
-                if (!mapStructure.acts[nodeData.act].steps.ContainsKey(nodeData.step))
+                if (!mapStructure.acts[UserDataManager.Instance.ExpeditionStatus.CurrentStage].steps.ContainsKey(nodeData.step))
                 {
-                    mapStructure.acts[nodeData.act].steps[nodeData.step] = new Step();
+                    mapStructure.acts[UserDataManager.Instance.ExpeditionStatus.CurrentStage].steps[nodeData.step] = new Step();
                 }
 
                 //add id
-                mapStructure.acts[nodeData.act].steps[nodeData.step].nodesData.Add(nodeData);
+                mapStructure.acts[UserDataManager.Instance.ExpeditionStatus.CurrentStage].steps[nodeData.step].nodesData.Add(nodeData);
             }
 
             return mapStructure;
@@ -640,8 +640,9 @@ namespace map
                             }
 
                             playerIcon.transform.localPosition = knightPos;
-                            GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.Invoke(nodeData.act,
-                                nodeData.step);
+                            GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.Invoke(
+                                UserDataManager.Instance.ExpeditionStatus.CurrentStage,
+                                nodeData.step, newNode.subType == NODE_SUBTYPES.combat_boss);
                             //  GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_TEXT.Invoke(nodeData.act, nodeData.step);
                         }
                     }

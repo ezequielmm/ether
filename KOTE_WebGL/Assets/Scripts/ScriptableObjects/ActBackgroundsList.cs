@@ -13,4 +13,6 @@ public class ActBackgroundsList : ScriptableObject
     }
 
     public List<ActBackground> BackgroundsList;
+    
+    public GameObject BossBackground;
 }

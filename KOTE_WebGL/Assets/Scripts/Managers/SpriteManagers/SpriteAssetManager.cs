@@ -103,7 +103,7 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
         return defaultImage;
     }
 
-    public Sprite GetCombatBackground(int act, int step)
+    public Sprite GetCombatBackground(int act, int step, bool isBoss)
     {
         NamedSpriteList actBackgrounds = combatBackgroundList[act];
         

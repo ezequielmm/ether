@@ -888,6 +888,7 @@ MonoBehaviour:
     type: 3}
   LootContainer: {fileID: 1091158508100698670}
   ReturnToLootButton: {fileID: 0}
+  continueButtonText: {fileID: 1387393213353568867}
   RadiantBackground: {fileID: 0}
 --- !u!1 &5419818170067588794
 GameObject:

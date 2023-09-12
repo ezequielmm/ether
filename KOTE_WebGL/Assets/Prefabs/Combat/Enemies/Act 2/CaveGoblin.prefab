@@ -205,62 +205,171 @@ MonoBehaviour:
   animationJson: {fileID: 4900000, guid: 4edff66f5cb664245b7229fe958cded2, type: 3}
   atlasAssetBase: {fileID: 11400000, guid: 1cd749457347e624e8ea7c513351f8b3, type: 2}
   animations:
-  - sequenceName: attack
-    sequence:
-    - track: 1
-      name: attack
-      loop: 0
-      delay: 0
-      animationEvent: 1
-  - sequenceName: cast
-    sequence:
-    - track: 1
-      name: cast1
-      loop: 0
-      delay: 0
-      animationEvent: 1
   - sequenceName: idle
     sequence:
-    - track: 1
+    - track: 0
       name: idle
       loop: 1
       delay: 0
       animationEvent: 0
-  - sequenceName: hit
+    endWithIdle: 0
+  - sequenceName: hidden_idle
     sequence:
-    - track: 1
-      name: hit
+    - track: 0
+      name: hidden_idle
+      loop: 1
+      delay: 0
+      animationEvent: 1
+    endWithIdle: 0
+  - sequenceName: attack
+    sequence:
+    - track: 0
+      name: attack1
       loop: 0
       delay: 0
       animationEvent: 1
-  - sequenceName: death
+    endWithIdle: 1
+  - sequenceName: attack_hidden
     sequence:
-    - track: 1
-      name: death
+    - track: 0
+      name: attack2
       loop: 0
       delay: 0
       animationEvent: 1
-  - sequenceName: club
+    endWithIdle: 1
+  - sequenceName: defend
     sequence:
-    - track: 1
-      name: attack
-      loop: 0
-      delay: 0
-      animationEvent: 1
-  - sequenceName: gather shadow
-    sequence:
-    - track: 1
+    - track: 0
       name: cast1
       loop: 0
       delay: 0
       animationEvent: 1
-  - sequenceName: spore cloud
+    endWithIdle: 1
+  - sequenceName: buff
     sequence:
-    - track: 1
-      name: cast2
+    - track: 0
+      name: cast1
       loop: 0
       delay: 0
       animationEvent: 1
+    endWithIdle: 1
+  - sequenceName: debuff
+    sequence:
+    - track: 0
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    endWithIdle: 1
+  - sequenceName: special
+    sequence:
+    - track: 0
+      name: hidden_start
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    - track: 0
+      name: hidden_idle
+      loop: 1
+      delay: 0
+      animationEvent: 0
+    endWithIdle: 1
+  - sequenceName: signature_move
+    sequence:
+    - track: 0
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    - track: 0
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    - track: 0
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    - track: 0
+      name: hidden_start
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    - track: 0
+      name: hidden_idle
+      loop: 1
+      delay: 0
+      animationEvent: 0
+    endWithIdle: 0
+  - sequenceName: attack_buff
+    sequence:
+    - track: 0
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    - track: 0
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    endWithIdle: 1
+  - sequenceName: defend_buff
+    sequence:
+    - track: 0
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    - track: 0
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    endWithIdle: 1
+  - sequenceName: defend_debuff
+    sequence:
+    - track: 0
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    - track: 0
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    endWithIdle: 1
+  - sequenceName: special_attack
+    sequence:
+    - track: 0
+      name: hidden_start
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    - track: 0
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    endWithIdle: 1
+  - sequenceName: hit
+    sequence:
+    - track: 0
+      name: hit
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    endWithIdle: 1
+  - sequenceName: death
+    sequence:
+    - track: 0
+      name: death
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    endWithIdle: 0
   availableAnimations:
   - attack
   - cast1

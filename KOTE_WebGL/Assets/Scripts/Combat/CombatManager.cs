@@ -21,7 +21,7 @@ public class CombatManager : MonoBehaviour
 
     private void OnGameStatusChange(GameStatuses status)
     {
-        if (status == GameStatuses.ScoreBoard)
+        if (status == GameStatuses.ScoreBoard || status == GameStatuses.ScoreBoardAndNextAct)
         {
             pointer.SetActive(false);
             hand.SetActive(false);

@@ -55,7 +55,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         set { enemyData = ProcessNewData(enemyData, value); }
         get { return enemyData; }
     }
-
+    
     public void SetEnemeyData(EnemyData data)
     {
         if (enemyData != null)
@@ -172,7 +172,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         // TODO: Ensure that the player sets the correct enemy when attacked.
         if (attack.originId != enemyData.id) return;
 
-        Debug.Log($"[EnemyManager] Combat Request GET!");
+        Debug.Log($"[EnemyManager] Combat Request GET! actionName: {attack.action.name} hint: {attack.action.hint}");
 
         bool endCalled = false;
         float afterEvent = 0;
@@ -191,7 +191,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
                 // Run Attack
                 Debug.Log("+++++++++++++++[Enemy]Attack");
 
-                var f = PlayAnimation(attack.action?.name, "Attack");
+                var f = PlayAnimation(DetermineAnimation(attack.action), "Attack");
                 if (f > afterEvent) afterEvent = f;
                 endCalled = true;
                 RunAfterEvent(() =>
@@ -203,7 +203,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
             {
                 runningEvents.Add(attack.attackId);
-                var f = PlayAnimation(attack.action?.name, "Cast");
+                var f = PlayAnimation(DetermineAnimation(attack.action), "Cast");
                 if (f > afterEvent) afterEvent = f;
                 endCalled = true;
                 RunAfterEvent(() =>
@@ -215,7 +215,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.heal)) // Health Up
             {
                 runningEvents.Add(attack.attackId);
-                var f = PlayAnimation(attack.action?.name, "Cast");
+                var f = PlayAnimation(DetermineAnimation(attack.action),  "Cast");
                 if (f > afterEvent) afterEvent = f;
                 endCalled = true;
                 RunAfterEvent(() =>
@@ -230,7 +230,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
         {
             runningEvents.Add(attack.attackId); // If no conditions met, pass onto the target and play cast
-            var f = PlayAnimation(attack.action?.name, "Cast");
+            var f = PlayAnimation(DetermineAnimation(attack.action), "Cast");
             if (f > afterEvent) afterEvent = f;
             endCalled = true;
             RunAfterEvent(() =>
@@ -254,6 +254,10 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         }
     }
 
+    private string DetermineAnimation(CombatTurnData.QueueActionData action)
+        => action != null && !string.IsNullOrEmpty(action.name) ? action.name :
+            action != null && !string.IsNullOrEmpty(action.hint) ? action.hint : "";
+    
     private void OnAttackResponse(CombatTurnData attack)
     {
         var target = attack.GetTarget(enemyData.id);
@@ -273,7 +277,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         {
             // Play Attack audio
             // Can be specific, but we'll default to "Attack"
-            waitDuration += PlayAnimation(attack.action?.name, "Hit");
+            waitDuration += PlayAnimation(attack.action?.name, attack.action != null && !string.IsNullOrEmpty(attack.action.hint) ? attack.action.hint : "Hit");
         }
 
         if (target.healthDelta > 0) // Healed!
@@ -354,12 +358,21 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         GameManager.Instance.EVENT_ACTIVATE_POINTER.AddListener(ActivateCollider);
         GameManager.Instance.EVENT_DEACTIVATE_POINTER.AddListener(DeactivateCollider);
 
+        GameManager.Instance.EVENT_UPDATE_INTENT.AddListener(OnUpdateIntent);
+        
         statusManager = GetComponentInChildren<StatusManager>();
 
 
         Canvas canvas = barFader.GetComponent<Canvas>();
         canvas.sortingOrder = 1;
         
+    }
+
+    private void OnUpdateIntent(EnemyIntent intent)
+    {
+        // TODO: Workaround for starting with hidden idle
+        // if (enemyData.name == "Cave Goblin" && intent.intents.Any(i => i.type == "special") && !spine.CurrentAnimationSequenceContains("hidden_idle"))
+        //     spine.PlayAnimationSequence("hidden_idle");
     }
 
     public static void ClearCache()
@@ -439,9 +452,12 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
     public float PlayAnimation(string animationSequence, string fallbackAnimation)
     {
-        string animationName = CheckAnimationName(animationSequence, fallbackAnimation);
-        float length = spine.PlayAnimationSequence(animationName);
-        spine.PlayAnimationSequence("Idle");
+        string sequence = CheckAnimationName(animationSequence, fallbackAnimation);
+        if (spine.IsPlayingSequence(sequence))
+            return 0;
+        float length = spine.PlayAnimationSequence(sequence);
+        if (length == 0) // Not found animation
+            spine.PlayAnimationSequence("Idle");
         characterSound?.PlaySound(fallbackAnimation);
         return length;
     }

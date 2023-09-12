@@ -167,7 +167,6 @@ public class GameManager : SingleTon<GameManager>
 
     [HideInInspector] public UnityEvent<PlayerData> EVENT_UPDATE_PLAYER = new UnityEvent<PlayerData>();
     
-    
     public void NftSelected(Nft nft)
     {
         NftManager.Instance.SetNft(nft);
@@ -193,7 +192,7 @@ public class GameManager : SingleTon<GameManager>
     //TOP BAR EVENTS
     [HideInInspector] public UnityEvent EVENT_MAP_ICON_CLICKED = new UnityEvent();
     [HideInInspector] public UnityEvent<bool> EVENT_TOOGLE_TOPBAR_MAP_ICON = new UnityEvent<bool>();
-    [HideInInspector] public UnityEvent<int, int> EVENT_UPDATE_CURRENT_STEP_INFORMATION = new UnityEvent<int, int>();
+    [HideInInspector] public UnityEvent<int, int, bool> EVENT_UPDATE_CURRENT_STEP_INFORMATION = new UnityEvent<int, int, bool>();
 
     //SELECT PANEL EVENTS
     [HideInInspector]
@@ -362,7 +361,9 @@ public class GameManager : SingleTon<GameManager>
 
     private void SceneLoaded(Scene scene, LoadSceneMode loadMode)
     {
-        inGameScenes loadedScene = scene.name.ParseToEnum<inGameScenes>();
+        if (!Extensions.ParseEnum<inGameScenes>(scene.name, out var loadedScene))
+            return;
+        
         if (nextSceneToLoad == loadedScene && CurrentScene == nextSceneToLoad)
         {
             //TODO this needs to be addressed better. This can cause false failures for tests if testing the same function multiple times

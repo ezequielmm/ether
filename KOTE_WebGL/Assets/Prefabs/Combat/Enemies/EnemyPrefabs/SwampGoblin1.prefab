@@ -385,6 +385,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   spineAnimationsManagement: {fileID: 0}
+  sortingGroup: {fileID: 0}
+  sortingOrder: 1
   setBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}

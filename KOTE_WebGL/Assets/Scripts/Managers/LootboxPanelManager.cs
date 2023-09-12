@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using Newtonsoft.Json;
+using TMPro;
 using UnityEngine;
 
 public class LootboxReward
@@ -15,10 +16,17 @@ public class LootboxPanelManager : MonoBehaviour
     [SerializeField] GameObject GearItemPrefab;
     [SerializeField] public GameObject LootContainer;
     [SerializeField] GameObject ReturnToLootButton;
+    [SerializeField] private TextMeshProUGUI continueButtonText;
     public RectTransform RadiantBackground;
 
-    public void Populate(List<RewardsLoot> items)
+    private GameStatuses populatedWithStatus;
+    
+    public void Populate(List<RewardsLoot> items, GameStatuses newGameStatus)
     {
+        populatedWithStatus = newGameStatus;
+        
+        continueButtonText.text = newGameStatus == GameStatuses.ScoreBoard ? "Collect loot" : "Continue";
+        
         ClearGear();
         foreach (var item in items)
         {
@@ -36,9 +44,15 @@ public class LootboxPanelManager : MonoBehaviour
 
     public void OnCollectLoot()
     {
-        //GameManager.Instance.LoadScene(inGameScenes.MainMenu);
-        LoadingManager.Won = true;
-        Cleanup.CleanupGame();
+        if (populatedWithStatus == GameStatuses.ScoreBoard)
+        {
+            LoadingManager.Won = true;
+            Cleanup.CleanupGame();
+        }
+        else if (populatedWithStatus == GameStatuses.ScoreBoardAndNextAct)
+        {
+            GameManager.Instance.LoadSceneNewTest();
+        }
     }
 
     private void AddGearItem(RewardsLoot gear)

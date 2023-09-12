@@ -1141,6 +1141,7 @@ MonoBehaviour:
   finalScoreText: {fileID: 8324557350220505245}
   achievementfinalScoreText: {fileID: 3418871804143906265}
   expeditionTypeText: {fileID: 3137589195373831497}
+  continueButtonText: {fileID: 3705232691517557324}
 --- !u!1 &4470089174755816294
 GameObject:
   m_ObjectHideFlags: 0

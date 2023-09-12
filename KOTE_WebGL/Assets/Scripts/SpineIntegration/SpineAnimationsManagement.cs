@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Spine;
 using Spine.Unity;
@@ -23,6 +24,8 @@ public class SpineAnimationsManagement : MonoBehaviour
 
         [SerializeField]
         public List<Animation> sequence;
+
+        [SerializeField] public bool endWithIdle = true;
 
         [Serializable]
         public class Animation
@@ -49,7 +52,10 @@ public class SpineAnimationsManagement : MonoBehaviour
 
     [SerializeField]
     public List<AnimationSequence> animations = new List<AnimationSequence>();
+    private Dictionary<string, AnimationSequence> animationsDictionary;
 
+    AnimationSequence currentAnimationSequence;
+    
     [Unity.Collections.ReadOnly]
     public List<string> availableAnimations = new List<string>();
 
@@ -90,38 +96,43 @@ public class SpineAnimationsManagement : MonoBehaviour
     public float PlayAnimationSequence(string animationSequenceName)
     {
         animationSequenceName = animationSequenceName.ToLower();
-        foreach (AnimationSequence animationSequence in animations)
+        animationsDictionary ??= animations.ToDictionary(k => k.sequenceName.ToLower(), v => v);
+        var foundKey = animationsDictionary.TryGetValue(animationSequenceName, out var animationSequence);
+        if (!foundKey)
         {
-            if (animationSequence.sequenceName.ToLower() == animationSequenceName)
+            currentAnimationSequence = null;
+            return 0;
+        }
+
+        currentAnimationSequence = animationSequence;
+        float duration = 0;
+        foreach (AnimationSequence.Animation animation in animationSequence.sequence)
+        {
+            TrackEntry te = null;
+            switch (animation.animationEvent)
             {
-                float duration = 0;
-                foreach (AnimationSequence.Animation animation in animationSequence.sequence)
-                {
-                    TrackEntry te = null;
-                    switch (animation.animationEvent)
-                    {
-                        case AnimationEvent.Add:
-                            te = skeletonAnimationScript.AnimationState.AddAnimation(animation.track, animation.name, animation.loop, animation.delay);
-                            duration += te.Animation.Duration + animation.delay;
-                            break;
-                        case AnimationEvent.Set:
-                            te = skeletonAnimationScript.AnimationState.SetAnimation(animation.track, animation.name, animation.loop);
-                            duration = te.Animation.Duration;
-                            break;
-                        case AnimationEvent.None:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                    if (te != null) 
-                    {
-                        te.Event += HandleEvent;
-                    }
-                }
-                return duration;
+                case AnimationEvent.Add:
+                    te = skeletonAnimationScript.AnimationState.AddAnimation(animation.track, animation.name, animation.loop, animation.delay);
+                    duration += te.Animation.Duration + animation.delay;
+                    break;
+                case AnimationEvent.Set:
+                    te = skeletonAnimationScript.AnimationState.SetAnimation(animation.track, animation.name, animation.loop);
+                    duration = te.Animation.Duration;
+                    break;
+                case AnimationEvent.None:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            if (te != null) 
+            {
+                te.Event += HandleEvent;
             }
         }
-        return 0;
+
+        if (animationSequence.endWithIdle)
+            PlayAnimationSequence("Idle");
+        return duration;
     }
 
     private void HandleEvent(TrackEntry trackEntry, Spine.Event e) 
@@ -139,4 +150,11 @@ public class SpineAnimationsManagement : MonoBehaviour
     {
         skeletonAnimationScript.skeleton.SetSkin(skin);
     }
+
+    public bool CurrentAnimationSequenceContains(string animationName)
+    => currentAnimationSequence != null && currentAnimationSequence.sequence.Any(animation => animation.name == animationName);
+
+    public bool IsPlayingSequence(string sequenceName)
+        => currentAnimationSequence != null && currentAnimationSequence.sequenceName == sequenceName;
+
 }

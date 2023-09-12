@@ -94,7 +94,7 @@ public class NodeData : MonoBehaviour, ITooltipSetter
         }
 
         GameManager.Instance.EVENT_MAP_NODE_SELECTED.Invoke(id);
-        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.Invoke(act, step);
+        GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.Invoke(act, step, subType == NODE_SUBTYPES.combat_boss);
         GameManager.Instance.EVENT_CLEAR_TOOLTIPS.Invoke();
         StopActiveNodeAnimation();
     
@@ -155,7 +155,7 @@ public class NodeData : MonoBehaviour, ITooltipSetter
         subType = nodeData.subType.ParseToEnum<NODE_SUBTYPES>();
         exits = nodeData.exits;
         name = nodeData.type + "_" + nodeData.id;
-        act = nodeData.act;
+        act = UserDataManager.Instance.ExpeditionStatus.CurrentStage;
         step = nodeData.step;
         title = nodeData.title;
     }

@@ -36,6 +36,33 @@ public static class Extensions
         request.SetRequestHeader("Authorization", $"Bearer {token}");
     }
 
+    public static bool ParseEnum<TEnum>(string dataString, out TEnum outVal) where TEnum : struct, Enum
+    {
+        TEnum parsedEnum;
+
+        dataString = dataString.Replace(" ", "");
+
+        bool parseSuccess = Enum.TryParse(dataString, out parsedEnum);
+        if (parseSuccess)
+        {
+            outVal = parsedEnum;
+            return true;
+        }
+        try
+        {
+            parsedEnum = (TEnum)Enum.Parse(typeof(TEnum), dataString, true);
+            outVal = parsedEnum;
+            return true;
+        }
+        catch
+        {
+            Debug.LogWarning("Warning: Enum not parsed. No value '" + dataString + "' in enum type " + typeof(TEnum) +
+                             "Falling back to default value");
+            outVal = default;
+            return false;
+        }
+    }
+    
     public static TEnum ParseToEnum<TEnum>(this string dataString) where TEnum : struct, Enum
     {
         TEnum parsedEnum;

@@ -14,9 +14,9 @@ public class EnvironmentManager : MonoBehaviour
         GameManager.Instance.EVENT_UPDATE_CURRENT_STEP_INFORMATION.AddListener(OnMapNodeSelected);
     }
 
-    private void OnMapNodeSelected(int act, int step)
+    private void OnMapNodeSelected(int act, int step, bool isBoss)
     {
             // else set that as the background and continue
-            combatBg.sprite = SpriteAssetManager.Instance.GetCombatBackground(act, step);
+            combatBg.sprite = SpriteAssetManager.Instance.GetCombatBackground(act, step, isBoss);
     }
 }
