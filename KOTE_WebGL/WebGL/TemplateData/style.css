@@ -1,0 +1,88 @@
+html {
+    box-sizing: border-box;
+    --progress-border: #000;
+    --progress-background: green;
+    --shadow: rgba(0, 0, 0, 0.8);
+    --background: #231F20;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+html, body {
+    height: 100%;
+}
+canvas {
+    display: block;
+}
+body {
+    margin: 0;
+}
+.dark {
+    background: var(--background);
+    color: white;
+}
+#unity-container {
+    width: 100%;
+    height: 100%;
+}
+#unity-canvas {
+    width: 100%;
+    height: 100%;
+}
+#unity-fullscreen-button {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    width: 38px;
+    height: 38px;
+    background: url('fullscreen-button.png') no-repeat center;
+    background-size: contain;
+}
+
+#progress-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#loading-logo {
+    width: 50%;
+    filter: drop-shadow(0 0 1em var(--shadow));
+    margin-bottom: 5em;
+}
+
+#progress-bar-border, #progress-bar {
+    border-radius: 10px;
+}
+
+#progress-bar-border {
+    border: 1px var(--progress-border) solid;
+    background-color: var(--background);
+    width: 50%;
+    overflow: hidden;
+    filter: drop-shadow(0 0 1em var(--shadow));
+}
+
+#progress-bar {
+    background-color: var(--progress-background);
+    height: 2em;
+    width: 0%;
+    transition: width 0.2s;
+}
+
+#productVersion {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+#productVersion > p {
+    margin: 1%;
+    color:rgba(255, 255, 255, 0.3)
+}

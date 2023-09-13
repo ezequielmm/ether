@@ -1,0 +1,8 @@
+{
+    "request_url": "http://localhost:3000",
+    "skin_url": "https://dev.knightsoftheether.com/",
+    "gear_icon_url": "https://dev.knightsoftheether.com/GearIcons/",
+    "portrait_url": "https://dev.knightsoftheether.com/Portraits/",
+    "socket_url": "http://localhost:3000",
+    "leaderboard_url": "https://app.treasure.lol/tournaments/mydsummer-madness"
+}
