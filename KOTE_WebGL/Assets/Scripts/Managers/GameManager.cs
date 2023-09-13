@@ -461,4 +461,21 @@ public class GameManager : SingleTon<GameManager>
         this.PlayerStateData = playerStateData;
         EVENT_PLAYER_STATUS_UPDATE.Invoke(playerStateData);
     }
+
+    public void OnTurnNewTurn(List<CombatTurnData> turn)
+    {
+        var dict = new Dictionary<string, List<CombatTurnData>>();
+        foreach (var data in turn)
+        {
+            if (dict.ContainsKey(data.originId))
+                dict[data.originId].Add(data);
+            else
+                dict.Add(data.originId, new List<CombatTurnData>() {data});
+        }
+
+        foreach (var enemy in FindObjectsOfType<EnemyManager>())
+        {
+            enemy.PlayAnimations(dict[enemy.EnemyData.id]);
+        }
+    }
 }

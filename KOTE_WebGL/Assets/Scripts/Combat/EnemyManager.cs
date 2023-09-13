@@ -166,94 +166,33 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         }
         ThePainTrain[enemyName].Clear();
     }
-    
-    private void OnAttackRequest(CombatTurnData attack)
+
+    public void PlayAnimations(List<CombatTurnData> combatTurnData)
     {
-        // TODO: Ensure that the player sets the correct enemy when attacked.
-        if (attack.originId != enemyData.id) return;
-
-        Debug.Log($"[EnemyManager] Combat Request GET! actionName: {attack.action.name} hint: {attack.action.hint}");
-
-        bool endCalled = false;
+        var str = $"[EnemyManager] {enemyData.name} is playing animations: \n";
         float afterEvent = 0;
+        float length = 0;
         RunAfterTime(0.1f, () => { CalledEvent = false; });
-        foreach (CombatTurnData.Target target in attack.targets)
+
+        for (var i = 0; i < combatTurnData.Count; i++)
         {
-            if (attack.action == null || string.IsNullOrEmpty(attack.action.hint))
-            {
-                endCalled = true;
-                GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack);
-            }
-            // Run Attack Animation Or Status effects
-            else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.damage))
-            {
-                runningEvents.Add(attack.attackId);
-                // Run Attack
-                Debug.Log("+++++++++++++++[Enemy]Attack");
-
-                var f = PlayAnimation(DetermineAnimation(attack.action), "Attack");
-                if (f > afterEvent) afterEvent = f;
-                endCalled = true;
-                RunAfterEvent(() =>
-                {
-                    GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack);
-                    runningEvents.Remove(attack.attackId);
-                });
-            }
-            else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.defense)) // Defense Up
-            {
-                runningEvents.Add(attack.attackId);
-                var f = PlayAnimation(DetermineAnimation(attack.action), "Cast");
-                if (f > afterEvent) afterEvent = f;
-                endCalled = true;
-                RunAfterEvent(() =>
-                {
-                    GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack);
-                    runningEvents.Remove(attack.attackId);
-                });
-            }
-            else if (target.effectType == nameof(ATTACK_EFFECT_TYPES.heal)) // Health Up
-            {
-                runningEvents.Add(attack.attackId);
-                var f = PlayAnimation(DetermineAnimation(attack.action),  "Cast");
-                if (f > afterEvent) afterEvent = f;
-                endCalled = true;
-                RunAfterEvent(() =>
-                {
-                    GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack);
-                    runningEvents.Remove(attack.attackId);
-                });
-            }
-        }
-
-        if (!endCalled)
-
-        {
-            runningEvents.Add(attack.attackId); // If no conditions met, pass onto the target and play cast
-            var f = PlayAnimation(DetermineAnimation(attack.action), "Cast");
+            var turnData = combatTurnData[i];
+            str += "turndata: " + turnData.action.name + " " + turnData.action.hint + "\n";
+            var f = PlayAnimation(DetermineAnimation(turnData.action),"", i);
+            length = f;
             if (f > afterEvent) afterEvent = f;
-            endCalled = true;
             RunAfterEvent(() =>
             {
-                GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(attack);
-                runningEvents.Remove(attack.attackId);
+                GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(turnData);
+                runningEvents.Remove(turnData.attackId);
             });
         }
-        else if (afterEvent > 0)
-        {
-            RunAfterTime(afterEvent, () =>
-            {
-                if (RunWithEvent != null && !CalledEvent && runningEvents.Contains(attack.attackId))
-                {
-                    Debug.LogWarning(
-                        $"[EnemyManager | {enemyData.name}] Animation is missing a 'attack' or 'release' event!");
-                    RunWithEvent.Invoke();
-                    runningEvents.Remove(attack.attackId);
-                }
-            });
-        }
-    }
 
+        spine.PlayAnimationSequence("Idle");
+            
+        Debug.Log($"{str}");
+    }
+    
     private string DetermineAnimation(CombatTurnData.QueueActionData action)
         => action != null && !string.IsNullOrEmpty(action.name) ? action.name :
             action != null && !string.IsNullOrEmpty(action.hint) ? action.hint : "";
@@ -352,7 +291,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     private void Start()
     {
         GameManager.Instance.EVENT_UPDATE_ENEMY.AddListener(OnUpdateEnemy);
-        GameManager.Instance.EVENT_ATTACK_REQUEST.AddListener(OnAttackRequest);
+        //GameManager.Instance.EVENT_ATTACK_REQUEST.AddListener(OnAttackRequest);
         GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnAttackResponse);
 
         GameManager.Instance.EVENT_ACTIVATE_POINTER.AddListener(ActivateCollider);
@@ -450,14 +389,13 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         }
     }
 
-    public float PlayAnimation(string animationSequence, string fallbackAnimation)
+    public float PlayAnimation(string animationSequence, string fallbackAnimation, int i = 0)
     {
         string sequence = CheckAnimationName(animationSequence, fallbackAnimation);
         if (spine.IsPlayingSequence(sequence))
             return 0;
-        float length = spine.PlayAnimationSequence(sequence);
-        if (length == 0) // Not found animation
-            spine.PlayAnimationSequence("Idle");
+        float length = spine.PlayAnimationSequence(sequence, i);
+        spine.PlayAnimationSequence("Idle");
         characterSound?.PlaySound(fallbackAnimation);
         return length;
     }

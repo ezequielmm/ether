@@ -91,10 +91,16 @@ public class SpineAnimationsManagement : MonoBehaviour
     /// Runs an animation by name
     /// </summary>
     /// <param name="animationSequenceName"></param>
+    /// <param name="i"></param>
     /// <returns>Duration of the animation</returns>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public float PlayAnimationSequence(string animationSequenceName)
+    public float PlayAnimationSequence(string animationSequenceName, int i = 0)
     {
+        // If the last sequence animation is looping, avoid playing idle
+        Debug.Log($"animationSequenceName: {animationSequenceName}, currentAnimationSequence: {currentAnimationSequence?.sequenceName}");
+        if (animationSequenceName == "Idle" && currentAnimationSequence != null && currentAnimationSequence.sequence[currentAnimationSequence.sequence.Count - 1].loop)
+            return 0;
+        
         animationSequenceName = animationSequenceName.ToLower();
         animationsDictionary ??= animations.ToDictionary(k => k.sequenceName.ToLower(), v => v);
         var foundKey = animationsDictionary.TryGetValue(animationSequenceName, out var animationSequence);
@@ -109,29 +115,32 @@ public class SpineAnimationsManagement : MonoBehaviour
         foreach (AnimationSequence.Animation animation in animationSequence.sequence)
         {
             TrackEntry te = null;
-            switch (animation.animationEvent)
+            if (animation.animationEvent == AnimationEvent.Add || i != 0)
             {
-                case AnimationEvent.Add:
-                    te = skeletonAnimationScript.AnimationState.AddAnimation(animation.track, animation.name, animation.loop, animation.delay);
-                    duration += te.Animation.Duration + animation.delay;
-                    break;
-                case AnimationEvent.Set:
-                    te = skeletonAnimationScript.AnimationState.SetAnimation(animation.track, animation.name, animation.loop);
-                    duration = te.Animation.Duration;
-                    break;
-                case AnimationEvent.None:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                te = skeletonAnimationScript.AnimationState.AddAnimation(animation.track, animation.name,
+                    animation.loop, animation.delay);
+                duration += te.Animation.Duration + animation.delay;
             }
+            else if (animation.animationEvent == AnimationEvent.Set)
+            {
+                te = skeletonAnimationScript.AnimationState.SetAnimation(animation.track, animation.name,
+                    animation.loop);
+                duration = te.Animation.Duration;
+            }
+            else if (animation.animationEvent == AnimationEvent.None)
+            {
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
             if (te != null) 
             {
                 te.Event += HandleEvent;
             }
         }
-
-        if (animationSequence.endWithIdle)
-            PlayAnimationSequence("Idle");
+        
         return duration;
     }
 

@@ -416,6 +416,8 @@ public class WebSocketParser
         {
             GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(combatData);
         }
+
+        GameManager.Instance.OnTurnNewTurn(combatAction.data.data);
     }
 
     private static void ProcessShowCardDialog(string data)

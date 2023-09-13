@@ -229,6 +229,14 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     endWithIdle: 1
+  - sequenceName: attack1
+    sequence:
+    - track: 0
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    endWithIdle: 1
   - sequenceName: attack_hidden
     sequence:
     - track: 0
