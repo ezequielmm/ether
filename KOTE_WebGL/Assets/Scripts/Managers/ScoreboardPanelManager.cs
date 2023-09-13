@@ -38,15 +38,14 @@ public class ScoreboardPanelManager : MonoBehaviour
 
     public void OnContinueButton()
     {
-        if (populatedWithStatus == GameStatuses.ScoreBoard)
-        {
-            LoadingManager.Won = true;
-            Cleanup.CleanupGame();
-        }
-        else if (populatedWithStatus == GameStatuses.ScoreBoardAndNextAct)
+        if (populatedWithStatus == GameStatuses.ScoreBoardAndNextAct)
         {
             GameManager.Instance.LoadSceneNewTest();
+            return;
         }
+
+        LoadingManager.Won = true;
+        Cleanup.CleanupGame();
     }
 
     public void Populate(ScoreboardData scoreboard, GameStatuses newGameStatus)
@@ -56,7 +55,7 @@ public class ScoreboardPanelManager : MonoBehaviour
         achievementfinalScoreText.text = scoreboard != null ? scoreboard.TotalScore.ToString() : "???";
         expeditionTypeText.text = "Casual";
 
-        continueButtonText.text = newGameStatus == GameStatuses.ScoreBoard ? "Main Menu" : "Continue";
+        continueButtonText.text = newGameStatus == GameStatuses.ScoreBoard || newGameStatus == GameStatuses.ScoreBoardAndNextAct ? "Main Menu" : "Continue";
         
         populatedWithStatus = newGameStatus;
 

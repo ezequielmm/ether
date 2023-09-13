@@ -42,17 +42,16 @@ public class LootboxPanelManager : MonoBehaviour
         }
     }
 
-    public void OnCollectLoot()
+    public void OnContinueButton()
     {
-        if (populatedWithStatus == GameStatuses.ScoreBoard)
-        {
-            LoadingManager.Won = true;
-            Cleanup.CleanupGame();
-        }
-        else if (populatedWithStatus == GameStatuses.ScoreBoardAndNextAct)
+        if (populatedWithStatus == GameStatuses.ScoreBoardAndNextAct)
         {
             GameManager.Instance.LoadSceneNewTest();
+            return;
         }
+
+        LoadingManager.Won = true;
+        Cleanup.CleanupGame();
     }
 
     private void AddGearItem(RewardsLoot gear)
