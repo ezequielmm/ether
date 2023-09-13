@@ -169,7 +169,6 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
     public void PlayAnimations(List<CombatTurnData> combatTurnData)
     {
-        var str = $"[EnemyManager] {enemyData.name} is playing animations: \n";
         float afterEvent = 0;
         float length = 0;
         RunAfterTime(0.1f, () => { CalledEvent = false; });
@@ -177,9 +176,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         for (var i = 0; i < combatTurnData.Count; i++)
         {
             var turnData = combatTurnData[i];
-            str += "turndata: " + turnData.action.name + " " + turnData.action.hint + "\n";
             var f = PlayAnimation(DetermineAnimation(turnData.action),"", i);
-            length = f;
             if (f > afterEvent) afterEvent = f;
             RunAfterEvent(() =>
             {
@@ -189,8 +186,6 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         }
 
         spine.PlayAnimationSequence("Idle");
-            
-        Debug.Log($"{str}");
     }
     
     private string DetermineAnimation(CombatTurnData.QueueActionData action)
