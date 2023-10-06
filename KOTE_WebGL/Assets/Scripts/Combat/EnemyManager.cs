@@ -51,6 +51,8 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
     [SerializeField] private EnemiesConfig enemiesConfig;
     [SerializeField] private Animator animator;
+
+    private bool awaitForEnemyRequestPrefab;
     
     public EnemyData EnemyData
     {
@@ -74,7 +76,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
     private EnemyData ProcessNewData(EnemyData old, EnemyData current)
     {
-        if (activeEnemy == null)
+        if (!awaitForEnemyRequestPrefab && activeEnemy == null)
         {
             SetEnemyPrefab(current);
         }
@@ -107,9 +109,9 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         if (currentPrefab != null)
             Destroy(currentPrefab.gameObject);
 
-        
         var enemyName = enemiesConfig.GetEnemy(enemy.name);
         
+        awaitForEnemyRequestPrefab = true;
         LoadEnemyPrefab(enemyName, (instance) =>
         {
             activeEnemy = instance;
@@ -141,6 +143,8 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             var vfxAnimations = spine.gameObject.AddComponent<Animator>();
             vfxAnimations.runtimeAnimatorController = animator.runtimeAnimatorController;
             Destroy(animator);
+
+            awaitForEnemyRequestPrefab = false;
         });
         
         

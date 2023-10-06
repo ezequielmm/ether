@@ -170,7 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemiesManager: {fileID: 1572060671}
   enemiesToTry:
-  - boobytrap
+  - sporemonger
   vfxToTest: Debuff
 --- !u!114 &1572060671
 MonoBehaviour:
