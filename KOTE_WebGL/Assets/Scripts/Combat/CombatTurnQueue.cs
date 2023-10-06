@@ -13,7 +13,7 @@ public class CombatTurnQueue : MonoBehaviour
     [SerializeField] 
     //[ReadOnly]
     QueueState queueState;
-
+        
     enum QueueState {
         idle = 0,
         awaitingRun,

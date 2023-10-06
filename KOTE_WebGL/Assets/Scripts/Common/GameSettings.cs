@@ -58,7 +58,7 @@ public static class GameSettings
     public static float CARD_PLAYED_TIMEOUT_DELAY = 0.5f;
 
     // COMBAT
-    public const float COMBAT_ANIMATION_DELAY = 0.5f;
+    public const float COMBAT_ANIMATION_DELAY = 0.1f;
     public static float INTENT_TOOLTIP_SPEED = 0.2f;
     public static float INTENT_FADE_SPEED = 0.2f;
     public static float STATUS_TOOLTIP_SPEED = 0.2f;
@@ -67,7 +67,7 @@ public static class GameSettings
     public static float INTENT_MAX_HEIGHT = 3.2f;
     public static float INTENT_HEIGHT = 1.1f;
     public static float HEALTH_HEIGHT = 0.9f;
-    public static bool SHOW_PLAYER_INJURED_IDLE = false;
+    public static bool SHOW_PLAYER_INJURED_IDLE = true;
     public static float END_WAIT_TIMEOUT = 5;
     public const float UI_FADEOUT_TIME = .5f;
     public const float POINTER_MOUSE_OFFSET = 1f;

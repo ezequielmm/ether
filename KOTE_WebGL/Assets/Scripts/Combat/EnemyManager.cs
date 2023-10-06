@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Combat;
+using Combat.VFX;
 using DG.Tweening;
 using Spine.Unity;
 using TMPro;
@@ -23,7 +24,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     public Transform BottomBar;
 
     public bool overrideEnemy = false;
-    public string enemyName;
+    public EnemyData enemy;
     public bool setEnemy = false;
 
     [SerializeField] private List<GameObject> enemyMap;
@@ -32,7 +33,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     private EnemyPrefab enemyPlacementData;
     private GameObject activeEnemy;
 
-    private SpineAnimationsManagement spine;
+    public SpineAnimationsManagement spine;
     private Action RunWithEvent;
     private bool CalledEvent;
     private List<Guid> runningEvents = new List<Guid>();
@@ -49,12 +50,15 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     public string[] validEnemyList;
 
     [SerializeField] private EnemiesConfig enemiesConfig;
+    [SerializeField] private Animator animator;
     
     public EnemyData EnemyData
     {
         set { enemyData = ProcessNewData(enemyData, value); }
         get { return enemyData; }
     }
+    
+    [SerializeField] public VFXList vfxList;
     
     public void SetEnemeyData(EnemyData data)
     {
@@ -72,7 +76,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     {
         if (activeEnemy == null)
         {
-            SetEnemyPrefab(current.name);
+            SetEnemyPrefab(current);
         }
 
         if (old == null)
@@ -93,17 +97,18 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         if (setEnemy)
         {
             setEnemy = false;
-            SetEnemyPrefab(enemyName);
+            SetEnemyPrefab(enemy);
         }
     }
 
-    private void SetEnemyPrefab(string enemyName)
+    private void SetEnemyPrefab(EnemyData enemy)
     {
         var currentPrefab = GetComponentInChildren<EnemyPrefab>();
         if (currentPrefab != null)
             Destroy(currentPrefab.gameObject);
+
         
-        enemyName = enemiesConfig.GetEnemy(enemyName);
+        var enemyName = enemiesConfig.GetEnemy(enemy.name);
         
         LoadEnemyPrefab(enemyName, (instance) =>
         {
@@ -112,7 +117,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             activeEnemy.transform.localPosition = Vector3.zero;
             GrabEnemyFadeout(activeEnemy);
             enemyPlacementData = activeEnemy.GetComponentInChildren<EnemyPrefab>();
-            enemyPlacementData.FitColliderToArt();
+            enemyPlacementData.InitEnemy(enemy);
             // Add the cursorEnter and Exit for tooltips
             // Set mounting points
             Vector3 top = enemyPlacementData.intentMountingPoint.position;
@@ -122,14 +127,20 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             bottom.y = Mathf.Max(transform.position.y, bottom.y);
             BottomBar.position = bottom;
 
+            this.enemy = enemy;
+            
             collider = activeEnemy.GetComponentInChildren<Collider2D>();
             enemyBounds = collider.bounds;
             collider.enabled = false;
-
-            this.enemyName = enemyName;
+            
             gameObject.name = enemyName;
-
+            
             Instantiate();
+
+            // Suplant animator
+            var vfxAnimations = spine.gameObject.AddComponent<Animator>();
+            vfxAnimations.runtimeAnimatorController = animator.runtimeAnimatorController;
+            Destroy(animator);
         });
         
         
@@ -167,25 +178,20 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         ThePainTrain[enemyName].Clear();
     }
 
-    public void PlayAnimations(List<CombatTurnData> combatTurnData)
+    public void PlayAnimations(CombatTurnData combatTurnData)
     {
+        if (combatTurnData.originId != enemyData.id) return;
+        
         float afterEvent = 0;
         float length = 0;
         RunAfterTime(0.1f, () => { CalledEvent = false; });
-
-        for (var i = 0; i < combatTurnData.Count; i++)
+        RunAfterEvent(() =>
         {
-            var turnData = combatTurnData[i];
-            var f = PlayAnimation(DetermineAnimation(turnData.action),"", i);
-            if (f > afterEvent) afterEvent = f;
-            RunAfterEvent(() =>
-            {
-                GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(turnData);
-                runningEvents.Remove(turnData.attackId);
-            });
-        }
-
-        spine.PlayAnimationSequence("Idle");
+            GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(combatTurnData);
+            runningEvents.Remove(combatTurnData.attackId);
+        });
+        
+        PlayAnimation(DetermineAnimation(combatTurnData.action),"");
     }
     
     private string DetermineAnimation(CombatTurnData.QueueActionData action)
@@ -286,7 +292,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     private void Start()
     {
         GameManager.Instance.EVENT_UPDATE_ENEMY.AddListener(OnUpdateEnemy);
-        //GameManager.Instance.EVENT_ATTACK_REQUEST.AddListener(OnAttackRequest);
+        GameManager.Instance.EVENT_ATTACK_REQUEST.AddListener(PlayAnimations);
         GameManager.Instance.EVENT_ATTACK_RESPONSE.AddListener(OnAttackResponse);
 
         GameManager.Instance.EVENT_ACTIVATE_POINTER.AddListener(ActivateCollider);
@@ -384,13 +390,10 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         }
     }
 
-    public float PlayAnimation(string animationSequence, string fallbackAnimation, int i = 0)
+    public float PlayAnimation(string animationSequence, string fallbackAnimation)
     {
         string sequence = CheckAnimationName(animationSequence, fallbackAnimation);
-        if (spine.IsPlayingSequence(sequence))
-            return 0;
-        float length = spine.PlayAnimationSequence(sequence, i);
-        spine.PlayAnimationSequence("Idle");
+        float length = spine.PlayAnimationSequence(sequence);
         characterSound?.PlaySound(fallbackAnimation);
         return length;
     }
@@ -409,7 +412,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
     private float OnDeath()
     {
-        float length = spine.PlayAnimationSequence("Death");
+        float length = spine.PlayAnimationSequence("Death", true);
         characterSound?.PlaySound("Death");
         return length;
     }
@@ -465,7 +468,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         if (eventName.Equals("attack") || eventName.Equals("release"))
         {
             CalledEvent = true;
-            RunWithEvent.Invoke();
+            RunWithEvent?.Invoke();
         }
     }
 

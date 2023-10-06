@@ -139,6 +139,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1045377431794367041}
   - component: {fileID: 4894103059069234196}
+  - component: {fileID: 2553237924377533355}
   m_Layer: 0
   m_Name: EnemyBase
   m_TagString: Enemy
@@ -185,9 +186,19 @@ MonoBehaviour:
   TopBar: {fileID: 7179701136310191698}
   BottomBar: {fileID: 1180120973307756160}
   overrideEnemy: 0
-  enemyName: 
+  enemy:
+    id: 
+    name: 
+    enemyId: 0
+    defense: 0
+    hpCurrent: 0
+    hpMax: 0
+    type: 
+    category: 
+    size: 
   setEnemy: 0
   enemyMap: []
+  spine: {fileID: 0}
   validEnemyList:
   - ancientone
   - barkcharger
@@ -208,6 +219,28 @@ MonoBehaviour:
   - treant
   - yellowsporeling
   enemiesConfig: {fileID: 11400000, guid: f8c3ffc165c71dc41b635812fc85e66a, type: 2}
+  animator: {fileID: 2553237924377533355}
+  vfxList: {fileID: 11400000, guid: 1a226e9bbd9aed5408db67b64c8c523a, type: 2}
+--- !u!95 &2553237924377533355
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2957114846732785694}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f36bfdb1872e46046b78b61db55e2e52, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6794035165732702146
 GameObject:
   m_ObjectHideFlags: 0

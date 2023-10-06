@@ -73,10 +73,9 @@ GameObject:
   - component: {fileID: 9009202863534736340}
   - component: {fileID: 6240596488205435130}
   - component: {fileID: 7474224721577811400}
-  - component: {fileID: 3740520548250957769}
-  - component: {fileID: 8116098645001177014}
-  - component: {fileID: 987153690772721421}
   - component: {fileID: 6097621599233558811}
+  - component: {fileID: 6363377572699039590}
+  - component: {fileID: 4252200375053851027}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -149,7 +148,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3740520548250957769
+--- !u!114 &6097621599233558811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4959182642083739945}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fc94f89310427643babb41e000a8462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeoutSeconds: 1
+--- !u!114 &6363377572699039590
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,7 +170,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4959182642083739945}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
+  m_Script: {fileID: 11500000, guid: e075b9a3e08e2f74fbd651c858ab16ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonDataAsset: {fileID: 0}
@@ -184,10 +196,7 @@ MonoBehaviour:
     materialsInsideMask: []
     materialsOutsideMask: []
   disableRenderingOnOverride: 1
-  _animationName: 
-  loop: 0
-  timeScale: 1
---- !u!114 &8116098645001177014
+--- !u!114 &4252200375053851027
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -196,109 +205,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 4959182642083739945}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de6881dad5d0cd1408e58105013f4428, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ANIMATION_EVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  animationJson: {fileID: 4900000, guid: 6d163502beb321e4aafe957670fa6541, type: 3}
-  atlasAssetBase: {fileID: 11400000, guid: 83d9b76e846a64c4b810598933c10cfd, type: 2}
-  animations:
-  - sequenceName: attack
-    sequence:
-    - track: 1
-      name: attack
-      loop: 0
-      delay: 0
-      animationEvent: 1
-  - sequenceName: cast
-    sequence:
-    - track: 1
-      name: cast1
-      loop: 0
-      delay: 0
-      animationEvent: 1
-  - sequenceName: idle
-    sequence:
-    - track: 1
-      name: idle
-      loop: 1
-      delay: 0
-      animationEvent: 0
-  - sequenceName: hit
-    sequence:
-    - track: 1
-      name: hit
-      loop: 0
-      delay: 0
-      animationEvent: 1
-  - sequenceName: death
-    sequence:
-    - track: 1
-      name: death
-      loop: 0
-      delay: 0
-      animationEvent: 1
-  - sequenceName: club
-    sequence:
-    - track: 1
-      name: attack
-      loop: 0
-      delay: 0
-      animationEvent: 1
-  - sequenceName: gather shadow
-    sequence:
-    - track: 1
-      name: cast1
-      loop: 0
-      delay: 0
-      animationEvent: 1
-  - sequenceName: spore cloud
-    sequence:
-    - track: 1
-      name: cast2
-      loop: 0
-      delay: 0
-      animationEvent: 1
-  availableAnimations:
-  - attack
-  - cast1
-  - cast2
-  - death
-  - hit
-  - idle
---- !u!114 &987153690772721421
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4959182642083739945}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25e6ceb271c9af848ae53f2af1073d0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 1, a: 1}
-  quadMaterial: {fileID: 2100000, guid: 76086f6bdbbd1fe4b9b1b8b62b360df2, type: 2}
+  quadMaterial: {fileID: 0}
   targetCamera: {fileID: 0}
   maxRenderTextureSize: 1024
   quad: {fileID: 0}
   renderTexture: {fileID: 0}
---- !u!114 &6097621599233558811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4959182642083739945}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fc94f89310427643babb41e000a8462, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeoutSeconds: 1
 --- !u!1 &9145094296802414103
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,6 +228,10 @@ GameObject:
   - component: {fileID: 6272650766991654147}
   - component: {fileID: -1039979707646209197}
   - component: {fileID: -6798476435309489445}
+  - component: {fileID: 7087061486794617905}
+  - component: {fileID: 609664949775757694}
+  - component: {fileID: 8760931613834799029}
+  - component: {fileID: 7476987568547738548}
   m_Layer: 0
   m_Name: Mimic
   m_TagString: Enemy
@@ -534,3 +453,199 @@ MonoBehaviour:
   - Name: Cast
     SoundList:
     - {fileID: 8300000, guid: a8079c20c9c26b24ba21fd8cfb803ded, type: 3}
+--- !u!23 &7087061486794617905
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &609664949775757694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skeletonDataAsset: {fileID: 0}
+  initialSkinName: 
+  fixPrefabOverrideViaMeshFilter: 2
+  initialFlipX: 0
+  initialFlipY: 0
+  updateWhenInvisible: 3
+  separatorSlotNames: []
+  zSpacing: 0
+  useClipping: 1
+  immutableTriangles: 0
+  pmaVertexColors: 1
+  clearStateOnDisable: 0
+  tintBlack: 0
+  singleSubmesh: 0
+  fixDrawOrder: 0
+  addNormals: 0
+  calculateTangents: 0
+  maskInteraction: 0
+  maskMaterials:
+    materialsMaskDisabled: []
+    materialsInsideMask: []
+    materialsOutsideMask: []
+  disableRenderingOnOverride: 1
+  _animationName: 
+  loop: 0
+  timeScale: 1
+--- !u!114 &8760931613834799029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de6881dad5d0cd1408e58105013f4428, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ANIMATION_EVENT:
+    m_PersistentCalls:
+      m_Calls: []
+  animationJson: {fileID: 4900000, guid: 6d163502beb321e4aafe957670fa6541, type: 3}
+  atlasAssetBase: {fileID: 11400000, guid: 83d9b76e846a64c4b810598933c10cfd, type: 2}
+  animations:
+  - sequenceName: idle
+    sequence:
+    - track: 0
+      name: idle
+      loop: 1
+      delay: 0
+      animationEvent: 0
+    animationType: 0
+  - sequenceName: attack
+    sequence:
+    - track: 0
+      name: attack
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+  - sequenceName: attack2
+    sequence:
+    - track: 0
+      name: attack2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+  - sequenceName: defend
+    sequence:
+    - track: 0
+      name: hidden
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+  - sequenceName: buff
+    sequence:
+    - track: 0
+      name: 
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+  - sequenceName: debuff
+    sequence:
+    - track: 0
+      name: attack2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+  - sequenceName: counter
+    sequence:
+    - track: 0
+      name: hidden
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+  - sequenceName: signature_move
+    sequence:
+    - track: 0
+      name: attack2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+  - sequenceName: death
+    sequence:
+    - track: 0
+      name: death
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 1
+  availableAnimations:
+  - attack
+  - cast1
+  - cast2
+  - death
+  - hit
+  - idle
+  idleAnimation: idle
+--- !u!114 &7476987568547738548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25e6ceb271c9af848ae53f2af1073d0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 1, g: 1, b: 1, a: 1}
+  quadMaterial: {fileID: 2100000, guid: 76086f6bdbbd1fe4b9b1b8b62b360df2, type: 2}
+  targetCamera: {fileID: 0}
+  maxRenderTextureSize: 1024
+  quad: {fileID: 0}
+  renderTexture: {fileID: 0}

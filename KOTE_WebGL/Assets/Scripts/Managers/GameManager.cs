@@ -341,13 +341,14 @@ public class GameManager : SingleTon<GameManager>
     public inGameScenes CurrentScene { get; private set; } = inGameScenes.Loader;
     public static string ServerVersion { get; private set; }
     public PlayerStateData PlayerStateData { get; private set; }
+    
+    public bool IsPlayerTurn = true;
 
     // Start is called before the first frame update
     void Start()
     {
         EnqueueActionForSceneLoad(GetServerVersion, inGameScenes.MainMenu);
         EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(OnLogout);
-        EVENT_SCENE_LOADED.AddListener(OnSceneLoad);
         SceneManager.activeSceneChanged += UpdateSoundVolume;
         SceneManager.sceneLoaded += SceneLoaded;
         //EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ReturnToMainMenu);
@@ -374,6 +375,7 @@ public class GameManager : SingleTon<GameManager>
         if (nextSceneToLoad == loadedScene)
         {
             CurrentScene = nextSceneToLoad;
+            OnSceneLoad(nextSceneToLoad);
             EVENT_SCENE_LOADED.Invoke(nextSceneToLoad);
         }
     }
@@ -452,30 +454,20 @@ public class GameManager : SingleTon<GameManager>
 
         if (scene == inGameScenes.Expedition)
         {
+            IsPlayerTurn = true;
             UpdatePlayerSkin();
         }
     }
 
     internal void PlayerStateUpdate(PlayerStateData playerStateData)
     {
-        this.PlayerStateData = playerStateData;
+        PlayerStateData = playerStateData;
         EVENT_PLAYER_STATUS_UPDATE.Invoke(playerStateData);
     }
 
-    public void OnTurnNewTurn(List<CombatTurnData> turn)
+    public void OnChangeTurn(string dataData)
     {
-        var dict = new Dictionary<string, List<CombatTurnData>>();
-        foreach (var data in turn)
-        {
-            if (dict.ContainsKey(data.originId))
-                dict[data.originId].Add(data);
-            else
-                dict.Add(data.originId, new List<CombatTurnData>() {data});
-        }
-
-        foreach (var enemy in FindObjectsOfType<EnemyManager>())
-        {
-            enemy.PlayAnimations(dict[enemy.EnemyData.id]);
-        }
+        IsPlayerTurn = dataData == "player";
+        EVENT_CHANGE_TURN.Invoke(dataData);
     }
 }

@@ -29,6 +29,8 @@ public class ScoreboardPanelManager : MonoBehaviour
     public void TogglePanel(bool enable)
     {
         gameOverContainer.SetActive(enable);
+        if (enable)
+            continueButtonText.text = populatedWithStatus == GameStatuses.ScoreBoard || populatedWithStatus == GameStatuses.GameOver ? "Main Menu" : "Continue";
     }
 
     public void OnShowAchievementsButton()
@@ -54,8 +56,6 @@ public class ScoreboardPanelManager : MonoBehaviour
         finalScoreText.text = scoreboard != null ? scoreboard.TotalScore.ToString() : "???";
         achievementfinalScoreText.text = scoreboard != null ? scoreboard.TotalScore.ToString() : "???";
         expeditionTypeText.text = "Casual";
-
-        continueButtonText.text = newGameStatus == GameStatuses.ScoreBoard || newGameStatus == GameStatuses.ScoreBoardAndNextAct ? "Main Menu" : "Continue";
         
         populatedWithStatus = newGameStatus;
 

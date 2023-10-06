@@ -64,7 +64,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         {
             GameSettings.SHOW_PLAYER_INJURED_IDLE = true;
         }
-        spineAnimationsManagement.PlayAnimationSequence("Idle");
+        spineAnimationsManagement.PlayAnimationSequence("idle");
     }
 
     public void SetNameAndFief(string name, int fief)
@@ -280,10 +280,12 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
 
     private PlayerData ProcessNewData(PlayerData old, PlayerData current)
     {
+        // Initial setup
         if (old == null)
         {
             SetDefense(current.defense);
             SetHealth(current.hpCurrent, current.hpMax);
+            OnIdle(current);
             return current;
         }
 
@@ -373,40 +375,37 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
     public float PlayAnimation(string animationSequence)
     {
         float length = spineAnimationsManagement.PlayAnimationSequence(animationSequence);
-        OnIdle();
         return length;
     }
 
     public float Attack()
     {
-        Debug.Log("+++++++++++++++[Player]Attack");
-        float length = spineAnimationsManagement.PlayAnimationSequence("Attack");
-        OnIdle();
+        float length = spineAnimationsManagement.PlayAnimationSequence("attack");
         return length;
     }
 
     private float OnHit()
     {
-        float length = spineAnimationsManagement.PlayAnimationSequence("Hit");
-        OnIdle();
+        float length = spineAnimationsManagement.PlayAnimationSequence("hit");
         return length;
     }
 
     private float OnDeath()
     {
-        float length = spineAnimationsManagement.PlayAnimationSequence("Death");
+        float length = spineAnimationsManagement.PlayAnimationSequence("death");
         return length;
     }
 
-    private void OnIdle()
+    private void OnIdle(PlayerData data = null)
     {
-        if (playerData.hpCurrent < (playerData.hpMax / 4)  && GameSettings.SHOW_PLAYER_INJURED_IDLE)
+        data ??= playerData;
+        if (data != null && data.hpCurrent < (data.hpMax / 4)  && GameSettings.SHOW_PLAYER_INJURED_IDLE)
         {
-            spineAnimationsManagement.PlayAnimationSequence("InjuredIdle");
+            spineAnimationsManagement.PlayAnimationSequence("injuredIdle");
             return;
         }
 
-        spineAnimationsManagement.PlayAnimationSequence("Idle");
+        spineAnimationsManagement.PlayAnimationSequence("idle");
     }
 
 

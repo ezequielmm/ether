@@ -123,48 +123,54 @@ MonoBehaviour:
   animationJson: {fileID: 4900000, guid: fd7d3a541427c0e46a057ea3de060b5c, type: 3}
   atlasAssetBase: {fileID: 0}
   animations:
-  - sequenceName: Idle
+  - sequenceName: idle
     sequence:
     - track: 1
       name: idle0
       loop: 1
       delay: 0
       animationEvent: 0
-  - sequenceName: InjuredIdle
+    animationType: 0
+  - sequenceName: injuredIdle
     sequence:
     - track: 1
       name: injured idle
       loop: 1
       delay: 0
       animationEvent: 0
-  - sequenceName: Attack
+    animationType: 2
+  - sequenceName: attack
     sequence:
     - track: 1
       name: attack1
       loop: 0
       delay: 0
       animationEvent: 1
-  - sequenceName: Hit
+    animationType: 2
+  - sequenceName: hit
     sequence:
     - track: 1
       name: hit
       loop: 0
       delay: 0
       animationEvent: 1
-  - sequenceName: Cast
+    animationType: 2
+  - sequenceName: cast
     sequence:
     - track: 1
       name: cast
       loop: 0
       delay: 0
       animationEvent: 1
-  - sequenceName: Death
+    animationType: 2
+  - sequenceName: death
     sequence:
     - track: 1
       name: death
       loop: 0
       delay: 0
       animationEvent: 1
+    animationType: 1
   availableAnimations:
   - attack1
   - attack2
@@ -179,6 +185,7 @@ MonoBehaviour:
   - injured idle
   - throw v1
   - throw v2
+  idleAnimation: Idle
 --- !u!114 &9032002354893603797
 MonoBehaviour:
   m_ObjectHideFlags: 0

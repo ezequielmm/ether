@@ -1453,7 +1453,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 6e4f387dd9e14b44ca7e69c8a38f9ca8
-    m_Address: deepdweller_luremode
+    m_Address: deepdewellerlure
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 52ba7ae5753946e4a9e54212635eec5b
@@ -1465,7 +1465,7 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: f75efe00da5da3440861283e7b1c2019
-    m_Address: deepsorcerer
+    m_Address: deepsorcerergreen
     m_ReadOnly: 0
     m_SerializedLabels: []
   - m_GUID: 93a41a38aaf345a4da8ee442d4c0fc4a
@@ -1530,6 +1530,30 @@ MonoBehaviour:
     m_SerializedLabels: []
   - m_GUID: 362aa70752f08d945b95a605705af929
     m_Address: troll
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fe2b3bf4a03fccc44a472321a197d63e
+    m_Address: boobytrap
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9cb1a86e54d7a9948b785973c7a5fe21
+    m_Address: Assets/Animations/Enemies/Act 02/BoobyTrap/Booby Trap.atlas.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e5a66c0bf5580fa47bcde29ae079c0f5
+    m_Address: Assets/Animations/Enemies/Act 02/BoobyTrap/BoobyTrap.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f999991e07138e8459c45fd6fed68315
+    m_Address: Assets/Animations/Enemies/Act 02/BoobyTrap/Booby Trap.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a9aaebfc43fc7f14697bcd23ff185b0d
+    m_Address: Assets/Animations/Enemies/Act 02/BoobyTrap/Booby Trap_Atlas.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c7b0d7a1cbde61a49b38badb3f8021f3
+    m_Address: Assets/Animations/Enemies/Act 02/BoobyTrap/Booby Trap_Material.mat
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

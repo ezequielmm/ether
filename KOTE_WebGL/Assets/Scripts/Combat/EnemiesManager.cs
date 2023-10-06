@@ -17,7 +17,7 @@ public class EnemiesManager : MonoBehaviour
     public float sampleEnemyWidth = 4.44f;
     [Range(1,5)]
     public int sampleEnemyCount = 3;
-    List<GameObject> enemies = new List<GameObject>();
+    public List<GameObject> enemies = new List<GameObject>();
     Vector3 spawnPos => new Vector3(spawnX, floor, 0);
 
 

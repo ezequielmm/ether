@@ -417,7 +417,7 @@ public class WebSocketParser
             GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(combatData);
         }
 
-        GameManager.Instance.OnTurnNewTurn(combatAction.data.data);
+        //GameManager.Instance.OnTurnNewTurn(combatAction.data.data);
     }
 
     private static void ProcessShowCardDialog(string data)
@@ -546,7 +546,7 @@ public class WebSocketParser
 
         Debug.Log("[ProcessChangeTurn]data= " + data);
         Debug.Log("[ProcessChangeTurn]who.data= " + who.data);
-        GameManager.Instance.EVENT_CHANGE_TURN.Invoke(who.data.data);
+        GameManager.Instance.OnChangeTurn(who.data.data);
     }
 
     #endregion

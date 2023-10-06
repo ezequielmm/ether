@@ -81,6 +81,34 @@ MonoBehaviour:
         m_Value: ServerData/WebGL
       - m_Id: cd62af449e1c2bd418c3ffd968571e6d
         m_Value: https://dev.knightsoftheether.com/ServerData/WebGL
+    - m_InheritedParent: 
+      m_Id: a238f648cfdfd90489a7fe34fc776771
+      m_ProfileName: Test
+      m_Values:
+      - m_Id: c32f4b59a4263554b8223aed800e04bd
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: 48397f6bc80c95d498d6dc08c097cff6
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: 259c8ce6038b77746874b7fcf15c87ac
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 8e168f101f5e0a248991ff37a41b745c
+        m_Value: ServerData/WebGL
+      - m_Id: cd62af449e1c2bd418c3ffd968571e6d
+        m_Value: https://test.knightsoftheether.com/ServerData/WebGL
+    - m_InheritedParent: 
+      m_Id: 21214cbebb05b2b4b9dfacb170efeb96
+      m_ProfileName: Demo
+      m_Values:
+      - m_Id: c32f4b59a4263554b8223aed800e04bd
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: 48397f6bc80c95d498d6dc08c097cff6
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: 259c8ce6038b77746874b7fcf15c87ac
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 8e168f101f5e0a248991ff37a41b745c
+        m_Value: ServerData/WebGL
+      - m_Id: cd62af449e1c2bd418c3ffd968571e6d
+        m_Value: https://demo.knightsoftheether.com/ServerData/WebGL
     m_ProfileEntryNames:
     - m_Id: c32f4b59a4263554b8223aed800e04bd
       m_Name: BuildTarget

@@ -11,7 +11,6 @@ public class EndTurnManager : MonoBehaviour
 
     bool listenForEmptyQueue = false;
     float timeLimit;
-    bool isPlayersTurn = true;
 
     void Start()
     {
@@ -56,20 +55,18 @@ public class EndTurnManager : MonoBehaviour
         {
             endTurnButtonManager.Enable();
             listenForEmptyQueue = false;
-            isPlayersTurn = true;
         }
         else if(who == "enemy")
         {
             endTurnButtonManager.Disable();
             listenForEmptyQueue = true;
             timeLimit += 3; // This is only because sometimes the enemy does nothing
-            isPlayersTurn = false;
         }
     }
 
     public void EndTurn()
     {
-        if (isPlayersTurn)
+        if (GameManager.Instance.IsPlayerTurn)
         {
             GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.UI, "Button Click");
             GameManager.Instance.EVENT_END_TURN_CLICKED.Invoke();

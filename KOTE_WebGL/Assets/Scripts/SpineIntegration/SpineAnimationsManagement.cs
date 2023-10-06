@@ -1,11 +1,14 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Spine;
 using Spine.Unity;
+using TMPro;
 using Animation = Spine.Animation;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 [Serializable, RequireComponent(typeof(SkeletonAnimation))]
 public class SpineAnimationsManagement : MonoBehaviour
@@ -25,7 +28,7 @@ public class SpineAnimationsManagement : MonoBehaviour
         [SerializeField]
         public List<Animation> sequence;
 
-        [SerializeField] public bool endWithIdle = true;
+        [FormerlySerializedAs("specialAnimation")] public AnimationType animationType = AnimationType.Other;
 
         [Serializable]
         public class Animation
@@ -37,7 +40,13 @@ public class SpineAnimationsManagement : MonoBehaviour
             public AnimationEvent animationEvent;
         }
     }
-
+    public enum AnimationType
+    {
+        Idle,
+        Death,
+        Other
+    }
+    
     public UnityEvent<string> ANIMATION_EVENT = new UnityEvent<string>();
 
     private SkeletonData skeletonData;
@@ -53,13 +62,96 @@ public class SpineAnimationsManagement : MonoBehaviour
     [SerializeField]
     public List<AnimationSequence> animations = new List<AnimationSequence>();
     private Dictionary<string, AnimationSequence> animationsDictionary;
-
-    AnimationSequence currentAnimationSequence;
+    
     
     [Unity.Collections.ReadOnly]
     public List<string> availableAnimations = new List<string>();
 
-    private void Awake()
+#if UNITY_EDITOR
+    [ContextMenu("Reset Animations List")]
+    private void ResetAnimationsList()
+    {
+        animations = new List<AnimationSequence>()
+        {
+            new AnimationSequence()
+            {
+                sequenceName = "idle",
+                sequence = new List<AnimationSequence.Animation>()
+                {
+                    new AnimationSequence.Animation()
+                    {
+                        track = 0,
+                        name = "idle",
+                        loop = true,
+                        delay = 0,
+                        animationEvent = AnimationEvent.Set
+                    }
+                },
+                animationType = AnimationType.Idle
+            },
+            new AnimationSequence()
+            {
+                sequenceName = "hit",
+                sequence = new List<AnimationSequence.Animation>()
+                {
+                    new AnimationSequence.Animation()
+                    {
+                        track = 0,
+                        name = "hit",
+                        loop = false,
+                        delay = 0,
+                        animationEvent = AnimationEvent.Set
+                    }
+                }
+            },
+            new AnimationSequence()
+            {
+                sequenceName = "death",
+                sequence = new List<AnimationSequence.Animation>()
+                {
+                    new AnimationSequence.Animation()
+                    {
+                        track = 0,
+                        name = "death",
+                        loop = false,
+                        delay = 0,
+                        animationEvent = AnimationEvent.Set
+                    }
+                },
+                animationType = AnimationType.Death
+            },
+            new AnimationSequence()
+            {
+                sequenceName = "attack",
+                sequence = new List<AnimationSequence.Animation>()
+                {
+                    new AnimationSequence.Animation()
+                    {
+                        track = 0,
+                        name = "attack",
+                        loop = false,
+                        delay = 0,
+                        animationEvent = AnimationEvent.Set
+                    }
+                }
+            },
+            new AnimationSequence()
+            {
+                sequenceName = "buff"
+            },
+            new AnimationSequence()
+            {
+                sequenceName = "debuff"
+            },
+            new AnimationSequence()
+            {
+                sequenceName = "defend"
+            }
+        };
+    }
+#endif
+    
+    public void Awake()
     {
         SetSkeletonDataAsset();
     }
@@ -76,7 +168,7 @@ public class SpineAnimationsManagement : MonoBehaviour
         skeletonDataAsset = SkeletonDataAsset.CreateRuntimeInstance(animationJson, atlasAssetBase, true);
         skeletonData = skeletonDataAsset.GetSkeletonData(false);
 
-        skeletonAnimationScript = GetComponent<SkeletonAnimation>();
+        skeletonAnimationScript = GetComponentInChildren<SkeletonAnimation>();
         skeletonAnimationScript.skeletonDataAsset = skeletonDataAsset;
         skeletonAnimationScript.Initialize(true);
 
@@ -86,68 +178,128 @@ public class SpineAnimationsManagement : MonoBehaviour
             availableAnimations.Add(animation.Name);
         }
     }
+    
+    // This overload tries to keep a queue of animations, if queue isn't cleared the next incoming animation will be added to the queue
+    private Queue<AnimationSequence> animationQueue = new();
+    [SerializeField] private string idleAnimation = "idle";
 
-    /// <summary>
-    /// Runs an animation by name
-    /// </summary>
-    /// <param name="animationSequenceName"></param>
-    /// <param name="i"></param>
-    /// <returns>Duration of the animation</returns>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public float PlayAnimationSequence(string animationSequenceName, int i = 0)
+    public float PlayAnimationSequence(string animationSequenceName, bool forceSet = false)
     {
-        // If the last sequence animation is looping, avoid playing idle
-        Debug.Log($"animationSequenceName: {animationSequenceName}, currentAnimationSequence: {currentAnimationSequence?.sequenceName}");
-        if (animationSequenceName == "Idle" && currentAnimationSequence != null && currentAnimationSequence.sequence[currentAnimationSequence.sequence.Count - 1].loop)
-            return 0;
+        SetSkeletonDataAsset();
         
         animationSequenceName = animationSequenceName.ToLower();
         animationsDictionary ??= animations.ToDictionary(k => k.sequenceName.ToLower(), v => v);
         var foundKey = animationsDictionary.TryGetValue(animationSequenceName, out var animationSequence);
-        if (!foundKey)
-        {
-            currentAnimationSequence = null;
+        if (!foundKey){
+            HandleEvent(animationSequenceName, null, "attack");
             return 0;
         }
-
-        currentAnimationSequence = animationSequence;
+        
+        var sequenceRemovedSuccessfully = false;
+        
         float duration = 0;
-        foreach (AnimationSequence.Animation animation in animationSequence.sequence)
+        
+        for (var i = 0; i < animationSequence.sequence.Count; i++)
         {
+            var animation = animationSequence.sequence[i];
             TrackEntry te = null;
-            if (animation.animationEvent == AnimationEvent.Add || i != 0)
+            if ((animation.animationEvent == AnimationEvent.Add || animationQueue.Count > 1) && !forceSet)
             {
-                te = skeletonAnimationScript.AnimationState.AddAnimation(animation.track, animation.name,
-                    animation.loop, animation.delay);
-                duration += te.Animation.Duration + animation.delay;
+                if (!AnimationExists(animation.name))
+                {
+                    Debug.LogError($"Animation {animation.name} not found in {gameObject.name}");
+                }
+                else
+                {
+                    te = skeletonAnimationScript.AnimationState.AddAnimation(animation.track, animation.name,
+                        animation.loop, animation.delay);
+                    duration += te.Animation.Duration + animation.delay;
+                }
             }
             else if (animation.animationEvent == AnimationEvent.Set)
             {
-                te = skeletonAnimationScript.AnimationState.SetAnimation(animation.track, animation.name,
-                    animation.loop);
-                duration = te.Animation.Duration;
-            }
-            else if (animation.animationEvent == AnimationEvent.None)
-            {
+                if (!AnimationExists(animation.name))
+                {
+                    Debug.LogError($"Animation {animation.name} not found in {gameObject.name}");
+                }
+                else
+                {
+                    te = skeletonAnimationScript.AnimationState.SetAnimation(animation.track, animation.name,
+                        animation.loop);
+                    duration = te.Animation.Duration;
+                }
             }
             else
             {
                 throw new ArgumentOutOfRangeException();
             }
 
-            if (te != null) 
-            {
-                te.Event += HandleEvent;
+            if (te != null) {
+                te.Event += (trackEntry, ev) => HandleEvent(animationSequenceName, trackEntry, ev.Data.Name);
+                if (i == animationSequence.sequence.Count - 1)
+                {
+                    te.Event += (trackEntry, e) => {
+                        Debug.Log($"[Spine] {gameObject.name} event fired {e.Data.Name}, removing from queue [duration: {duration}]");
+                        sequenceRemovedSuccessfully = true;
+                        RemoveFromQueue(animationSequenceName);
+                    };
+                }
             }
+            
+        }
+        
+        if (animationSequence.animationType != AnimationType.Idle)
+            animationQueue.Enqueue(animationSequence);
+        
+        StartCoroutine(CheckRemovedFromQueue(duration));
+        IEnumerator CheckRemovedFromQueue(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            if (!sequenceRemovedSuccessfully)
+                RemoveFromQueue(animationSequenceName);
         }
         
         return duration;
     }
 
-    private void HandleEvent(TrackEntry trackEntry, Spine.Event e) 
+    private void RemoveFromQueue(string sequenceName)
     {
-        Debug.Log($"[Spine] Event Triggered: {e.Data.Name}");
-        ANIMATION_EVENT.Invoke(e.Data.Name);
+        if (animationQueue.Count <= 0) return;
+        
+        var sequence = animationQueue.Dequeue();
+
+        if (animationQueue.Count <= 0)
+            // TODO: awful hack to prevent idle animation from playing when death animation is playing
+        {
+            PlayIdle(sequence.animationType == AnimationType.Death);
+        }
+    }
+
+    private void PlayIdle(bool isDied)
+    {
+        if (isDied)
+            return;
+        
+        animationsDictionary ??= animations.ToDictionary(k => k.sequenceName.ToLower(), v => v);
+        if (!animationsDictionary.TryGetValue(idleAnimation, out var animationSequence))
+        {
+            idleAnimation = idleAnimation.ToLower();
+            if (!animationsDictionary.TryGetValue(idleAnimation, out animationSequence)) {
+                Debug.LogError($"idle animation {idleAnimation} not found in {gameObject.name}");
+                return;
+            }
+        }
+        
+        PlayAnimationSequence(animationSequence.sequenceName);
+    }
+
+    private bool AnimationExists(string animationName) => 
+        skeletonAnimationScript.skeleton.Data.FindAnimation(animationName) != null;
+
+    private void HandleEvent(string sequenceName, TrackEntry trackEntry, string eventName) 
+    {
+        Debug.Log($"[Spine] Event Triggered: {eventName}");
+        ANIMATION_EVENT.Invoke(eventName);
     }
 
     public float PlayAnimationSequence(AnimationSequence animationSequence)
@@ -159,11 +311,4 @@ public class SpineAnimationsManagement : MonoBehaviour
     {
         skeletonAnimationScript.skeleton.SetSkin(skin);
     }
-
-    public bool CurrentAnimationSequenceContains(string animationName)
-    => currentAnimationSequence != null && currentAnimationSequence.sequence.Any(animation => animation.name == animationName);
-
-    public bool IsPlayingSequence(string sequenceName)
-        => currentAnimationSequence != null && currentAnimationSequence.sequenceName == sequenceName;
-
 }

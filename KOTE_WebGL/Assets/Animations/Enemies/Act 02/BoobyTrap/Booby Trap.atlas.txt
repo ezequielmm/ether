@@ -1,0 +1,8 @@
+Booby Trap.png
+size:512,512
+filter:Linear,Linear
+pma:true
+scale:0.23
+Treasure Chest Placeholder
+bounds:2,109,266,159
+offsets:0,1,266,163

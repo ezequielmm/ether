@@ -16,20 +16,39 @@ public class EnemyPrefab : MonoBehaviour
     public SortingGroup sortingGroup;
     public int sortingOrder = 1;
     public Bounds setBounds;
-    private void Awake()
+    
+    public void InitEnemy(EnemyData data)
     {
         spineAnimationsManagement = GetComponentInChildren<SpineAnimationsManagement>();
-    }
-
-    private void Start()
-    {
-        // calling this in Awake throws an error
+        SkeletonAnimation skeleton = transform.GetComponentsInChildren<SkeletonAnimation>()[0];
+        
+        spineAnimationsManagement.SetProperties();
+        SetSkin(data, skeleton);
+        
         FitColliderToArt();
 
-
-        SkeletonAnimation skeleton = transform.GetComponentsInChildren<SkeletonAnimation>()[0];
+        
         sortingGroup = skeleton.gameObject.AddComponent<SortingGroup>();
         sortingGroup.sortingOrder = sortingOrder;
+    }
+
+    private void SetSkin(EnemyData data, SkeletonAnimation skeleton)
+    {
+        SetEnemySkin(data.name switch
+        {
+            "Swarm Cocoon" => data.size.ToLower(),
+            "Mossy Bones" => "polyp 01",
+            "Deep Sorcerer Green" => "Green",
+            "Deep Sorcerer Red" => "Red",
+            _ => ""
+        }, skeleton);
+    }
+
+    private void SetEnemySkin(string skinName, SkeletonAnimation skeleton)
+    {
+        if (string.IsNullOrEmpty(skinName))
+            return;
+        skeleton.skeleton.SetSkin(skinName);
     }
 
     public void FitColliderToArt()

@@ -34,8 +34,8 @@ MonoBehaviour:
   - cavegoblin
   - cavehomunculi
   - centipion
-  - deepdweller_luremode
-  - deepdweller_monstermode
+  - deepdewellerlure
+  - deepdwellermonstermode
   - deepgoblin
   - deepsorcerer
   - elementalspirit_fire
@@ -55,3 +55,6 @@ MonoBehaviour:
   - swarmmaster
   - thornwolf_pup
   - troll
+  - boobytrap
+  - deepsorcerergreen
+  - 

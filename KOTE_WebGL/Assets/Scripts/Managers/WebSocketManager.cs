@@ -426,6 +426,7 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 
     private void OnEndTurn()
     {
+        Debug.Log($"[CombatQueue] Sending message {SocketEvent.EndTurn} [OnEndTurn]");
         EmitWithResponse(OnEndOfTurnAnswer, SocketEvent.EndTurn);
     }
 

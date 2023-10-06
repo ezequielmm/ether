@@ -25,8 +25,6 @@ public class LootboxPanelManager : MonoBehaviour
     {
         populatedWithStatus = newGameStatus;
         
-        continueButtonText.text = newGameStatus == GameStatuses.ScoreBoard ? "Collect loot" : "Continue";
-        
         ClearGear();
         foreach (var item in items)
         {
@@ -68,6 +66,7 @@ public class LootboxPanelManager : MonoBehaviour
         {
             RadiantBackground.DOLocalRotate(new Vector3(0.0f, 0.0f, 1), 1.0f).SetRelative()
                 .SetLoops(-1, LoopType.Incremental).SetEase(Ease.Linear);
+            continueButtonText.text = populatedWithStatus == GameStatuses.ScoreBoard ? "Collect loot" : "Continue";
         }
         
         if (ReturnToLootButton != null)
