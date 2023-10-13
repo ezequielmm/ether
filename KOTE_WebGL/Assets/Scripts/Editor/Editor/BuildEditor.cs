@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.AddressableAssets.Settings;
@@ -9,6 +10,7 @@ public class OptionSelector : EditorWindow
     {
         Dev,
         Test,
+        Test2,
         Demo
     }
 
@@ -60,30 +62,22 @@ public class OptionSelector : EditorWindow
         //AddressableAssetProfileSettings profile = settings.profileSettings;
         //string profileID = settings.profileSettings.GetProfileId(profileName);
 
-        switch (selectedOption)
+        var profileId = selectedOption switch
         {
-            case Options.Dev:
-                settings.activeProfileId = "5a961f23dd1267943b6be1009ecadc22";
-                BuildWebGLProject();
-                Debug.Log("Has seleccionado la Opci�n 1.");
-                // Realiza acciones relacionadas con la Opci�n 1 aqu�.
-                break;
-            case Options.Test:
-                settings.activeProfileId = "a238f648cfdfd90489a7fe34fc776771";
-                BuildWebGLProject();
-                Debug.Log("Has seleccionado la Opci�n 2.");
-                // Realiza acciones relacionadas con la Opci�n 2 aqu�.
-                break;
-            case Options.Demo:
-                settings.activeProfileId = "21214cbebb05b2b4b9dfacb170efeb96";
-                BuildWebGLProject();
-                Debug.Log("Has seleccionado la Opci�n 3.");
-                // Realiza acciones relacionadas con la Opci�n 3 aqu�.
-                break;
-            default:
-                Debug.LogError("Opci�n no reconocida.");
-                break;
+            Options.Dev => "5a961f23dd1267943b6be1009ecadc22",
+            Options.Test => "a238f648cfdfd90489a7fe34fc776771",
+            Options.Test2 => "ac8c9f15be2660a4788e80f44c3b3ad6",
+            Options.Demo => "21214cbebb05b2b4b9dfacb170efeb96",
+            _ => ""
+        };
+        if (string.IsNullOrEmpty(profileId))
+        {
+            Debug.LogError("Opci�n no reconocida.");
+            return;
         }
+        
+        settings.activeProfileId = profileId;
+        BuildWebGLProject();
     }
 
     void LoadVersionNumber()
