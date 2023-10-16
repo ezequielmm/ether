@@ -110,7 +110,7 @@ MonoBehaviour:
       - m_Id: cd62af449e1c2bd418c3ffd968571e6d
         m_Value: https://demo.knightsoftheether.com/ServerData/WebGL
     - m_InheritedParent: 
-      m_Id: ac8c9f15be2660a4788e80f44c3b3ad6
+      m_Id: 9dd45e67f571dfe4cbfa918393eb58d4
       m_ProfileName: Test2
       m_Values:
       - m_Id: c32f4b59a4263554b8223aed800e04bd
@@ -156,7 +156,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9888b246656f74448984acd5fa7072f1, type: 2}
   - {fileID: 11400000, guid: 8a387281cd53dc840ba0fe6725efaac6, type: 2}
   - {fileID: 11400000, guid: 67dfb6d9c70b37d449e3a87e01e6819f, type: 2}
-  m_ActiveProfileId: ac8c9f15be2660a4788e80f44c3b3ad6
+  m_ActiveProfileId: 5a961f23dd1267943b6be1009ecadc22
   m_HostingServicesManager:
     m_HostingServiceInfos: []
     m_Settings: {fileID: 11400000}

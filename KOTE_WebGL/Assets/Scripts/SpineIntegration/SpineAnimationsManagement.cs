@@ -66,7 +66,7 @@ public class SpineAnimationsManagement : MonoBehaviour
     
     [Unity.Collections.ReadOnly]
     public List<string> availableAnimations = new List<string>();
-
+    
 #if UNITY_EDITOR
     [ContextMenu("Reset Animations List")]
     private void ResetAnimationsList()
@@ -151,8 +151,9 @@ public class SpineAnimationsManagement : MonoBehaviour
     }
 #endif
     
-    public void Awake()
+    public void Init(IIdleSolver idleSolver)
     {
+        this.idleSolver = idleSolver;
         SetSkeletonDataAsset();
     }
 
@@ -181,7 +182,7 @@ public class SpineAnimationsManagement : MonoBehaviour
     
     // This overload tries to keep a queue of animations, if queue isn't cleared the next incoming animation will be added to the queue
     private Queue<AnimationSequence> animationQueue = new();
-    [SerializeField] private string idleAnimation = "idle";
+    private IIdleSolver idleSolver;
 
     public float PlayAnimationSequence(string animationSequenceName, bool forceSet = false)
     {
@@ -203,7 +204,7 @@ public class SpineAnimationsManagement : MonoBehaviour
         {
             var animation = animationSequence.sequence[i];
             TrackEntry te = null;
-            if ((animation.animationEvent == AnimationEvent.Add || animationQueue.Count > 1) && !forceSet)
+            if ((animation.animationEvent == AnimationEvent.Add || animationQueue.Count >= 1) && !forceSet)
             {
                 if (!AnimationExists(animation.name))
                 {
@@ -275,17 +276,18 @@ public class SpineAnimationsManagement : MonoBehaviour
         }
     }
 
-    private void PlayIdle(bool isDied)
+    public void PlayIdle(bool isDied = false)
     {
-        if (isDied)
+        if (isDied || animationQueue.Count > 0)
             return;
-        
+
+        var selectIdleSequence = idleSolver.DetermineIdleSequence();
         animationsDictionary ??= animations.ToDictionary(k => k.sequenceName.ToLower(), v => v);
-        if (!animationsDictionary.TryGetValue(idleAnimation, out var animationSequence))
+        if (!animationsDictionary.TryGetValue(selectIdleSequence, out var animationSequence))
         {
-            idleAnimation = idleAnimation.ToLower();
-            if (!animationsDictionary.TryGetValue(idleAnimation, out animationSequence)) {
-                Debug.LogError($"idle animation {idleAnimation} not found in {gameObject.name}");
+            selectIdleSequence = selectIdleSequence.ToLower();
+            if (!animationsDictionary.TryGetValue(selectIdleSequence, out animationSequence)) {
+                Debug.LogError($"idle animation {selectIdleSequence} not found in {gameObject.name}");
                 return;
             }
         }

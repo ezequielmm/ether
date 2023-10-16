@@ -23,11 +23,26 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
 
     Bounds playerBounds;
 
-    private PlayerData playerData;
+    private PlayerData playerData = new();
 
     public PlayerData PlayerData
     {
-        set { playerData = ProcessNewData(playerData, value); }
+        set
+        {
+            playerData.id = value.id;
+            playerData.playerName = value.playerName;
+            playerData.defense = value.defense;
+            playerData.hpCurrent = value.hpCurrent;
+            playerData.hpMax = value.hpMax;
+            playerData.cards = value.cards;
+            playerData.energy = value.energy;
+            playerData.energyMax = value.energyMax;
+            playerData.gold = value.gold;
+            playerData.potions = value.potions;
+            playerData.characterClass = value.characterClass;
+            playerData.trinkets = value.trinkets;
+            ProcessNewData(null, value);
+        }
         get { return playerData; }
     }
 
@@ -56,15 +71,11 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
             statusManager = GetComponentInChildren<StatusManager>();
 
         if (spineAnimationsManagement == null)
-            spineAnimationsManagement = GetComponent<SpineAnimationsManagement>();
-        spineAnimationsManagement.ANIMATION_EVENT.AddListener(OnAnimationEvent);
-
-        //spineAnimationsManagement.SetSkin("weapon/sword");
-        if(PlayerPrefs.GetInt("enable_injured_idle") == 1)
         {
-            GameSettings.SHOW_PLAYER_INJURED_IDLE = true;
+            spineAnimationsManagement = GetComponent<SpineAnimationsManagement>();
         }
-        spineAnimationsManagement.PlayAnimationSequence("idle");
+        spineAnimationsManagement.ANIMATION_EVENT.AddListener(OnAnimationEvent);
+        spineAnimationsManagement.Init(new PlayerIdleSolver(playerData));
     }
 
     public void SetNameAndFief(string name, int fief)
@@ -263,7 +274,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         if (eventName.Equals("attack") || eventName.Equals("release"))
         {
             CalledEvent = true;
-            RunWithEvent.Invoke();
+            RunWithEvent?.Invoke();
         }
     }
 
@@ -278,15 +289,15 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         toRun.Invoke();
     }
 
-    private PlayerData ProcessNewData(PlayerData old, PlayerData current)
+    private void ProcessNewData(PlayerData old, PlayerData current)
     {
         // Initial setup
         if (old == null)
         {
             SetDefense(current.defense);
             SetHealth(current.hpCurrent, current.hpMax);
-            OnIdle(current);
-            return current;
+            spineAnimationsManagement.PlayIdle();
+            return;
         }
 
         int hpDelta = current.hpCurrent - old.hpCurrent;
@@ -300,8 +311,6 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         SetDefense(current.defense);
         SetHealth(current.hpCurrent, current.hpMax);
         SetName(current.playerName);
-
-        return current;
     }
 
     private void SetHealth(int? current = null, int? max = null)
@@ -395,20 +404,7 @@ public class PlayerManager : MonoBehaviour, ITooltipSetter
         float length = spineAnimationsManagement.PlayAnimationSequence("death");
         return length;
     }
-
-    private void OnIdle(PlayerData data = null)
-    {
-        data ??= playerData;
-        if (data != null && data.hpCurrent < (data.hpMax / 4)  && GameSettings.SHOW_PLAYER_INJURED_IDLE)
-        {
-            spineAnimationsManagement.PlayAnimationSequence("injuredIdle");
-            return;
-        }
-
-        spineAnimationsManagement.PlayAnimationSequence("idle");
-    }
-
-
+    
     private void CheckDeath(int current)
     {
         if (current <= 0)

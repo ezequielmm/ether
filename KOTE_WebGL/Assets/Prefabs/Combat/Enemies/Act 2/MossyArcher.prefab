@@ -401,7 +401,7 @@ MonoBehaviour:
   animations:
   - sequenceName: idle
     sequence:
-    - track: 1
+    - track: 0
       name: idle
       loop: 1
       delay: 0
@@ -420,6 +420,19 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 2
+  - sequenceName: attack2
+    sequence:
+    - track: 0
+      name: drawn_start
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    - track: 0
+      name: attack2
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    animationType: 2
   - sequenceName: debuff
     sequence: []
     animationType: 2
@@ -427,9 +440,6 @@ MonoBehaviour:
     sequence: []
     animationType: 2
   - sequenceName: buff
-    sequence: []
-    animationType: 2
-  - sequenceName: debuff
     sequence: []
     animationType: 2
   - sequenceName: counter
@@ -440,7 +450,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     - track: 0
-      name: idle_drawn
+      name: attack1
       loop: 0
       delay: 0
       animationEvent: 0
@@ -452,14 +462,29 @@ MonoBehaviour:
       loop: 0
       delay: 0
       animationEvent: 1
+    - track: 0
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 0
     animationType: 2
-  - sequenceName: infect1
+  - sequenceName: infect1_attack
     sequence:
     - track: 0
       name: drawn_start
       loop: 0
       delay: 0
       animationEvent: 1
+    - track: 0
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    - track: 0
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 0
     animationType: 2
   - sequenceName: grow
     sequence: []
@@ -471,6 +496,11 @@ MonoBehaviour:
       loop: 0
       delay: 0
       animationEvent: 1
+    - track: 0
+      name: attack2
+      loop: 0
+      delay: 0
+      animationEvent: 0
     - track: 0
       name: attack2
       loop: 0
@@ -500,7 +530,7 @@ MonoBehaviour:
   - death
   - hit
   - idle
-  idleAnimation: idle
+  defaultIdleAnimation: idle
 --- !u!114 &6799574483886385033
 MonoBehaviour:
   m_ObjectHideFlags: 0

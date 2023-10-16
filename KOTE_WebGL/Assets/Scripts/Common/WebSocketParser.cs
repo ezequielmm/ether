@@ -137,7 +137,15 @@ public class WebSocketParser
                 ProcessShowCardDialog(data);
                 break;
             case "spawn_enemies":
-                ProcessSpawnEnemies(data);
+            case "transform_enemy":
+            {
+                SWSM_Enemies enemiesData = JsonConvert.DeserializeObject<SWSM_Enemies>(data);
+                (action switch
+                {
+                    "spawn_enemies" => GameManager.Instance.EVENT_ADD_ENEMIES,
+                    "transform_enemy" => GameManager.Instance.EVENT_TRANSFORM_ENEMIES,
+                }).Invoke(enemiesData.data);
+            }
                 break;
             default:
                 Debug.LogWarning($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
@@ -440,12 +448,6 @@ public class WebSocketParser
         GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCards.data.data.cards,
             panelOptions,
             (selectedCards) => { SendData.Instance.SendCardsSelected(selectedCards); });
-    }
-
-    private static void ProcessSpawnEnemies(string data)
-    {
-        SWSM_Enemies enemiesData = JsonConvert.DeserializeObject<SWSM_Enemies>(data);
-        GameManager.Instance.EVENT_ADD_ENEMIES.Invoke(enemiesData.data);
     }
 
     private static void UpdateEnergy(string data)

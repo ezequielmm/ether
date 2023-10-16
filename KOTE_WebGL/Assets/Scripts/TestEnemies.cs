@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Combat.VFX;
+using TMPro;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -11,6 +14,8 @@ namespace DefaultNamespace
 
         [SerializeField] private string[] enemiesToTry;
         [SerializeField] private string vfxToTest;
+        [SerializeField] private TextMeshProUGUI text;
+        [SerializeField] private VFXList vfxes;
 
         private void Start()
         {
@@ -28,6 +33,12 @@ namespace DefaultNamespace
             });
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+                TestVFXes();
+        }
+
         [ContextMenu("Test")]
         private void TestVFX()
         {
@@ -37,6 +48,29 @@ namespace DefaultNamespace
                 enemyManager,
                 enemyManager.spine.TryGetComponent<Animator>(out var animator) ? animator : enemyManager.spine.gameObject.AddComponent<Animator>(),
                 enemyManager.spine.GetComponent<MeshRenderer>());
+        }
+        
+        [ContextMenu("TestVfxes")]
+        private void TestVFXes()
+        {
+            var enemyManager = _enemiesManager.enemies[0].GetComponent<EnemyManager>();
+
+            StartCoroutine(Test());
+            IEnumerator Test()
+            {
+                foreach (var vfxPair in vfxes.vfxPairs)
+                {
+                    var vfx = enemyManager.vfxList.GetVFX(vfxPair.name);
+                    vfx.Play(
+                        enemyManager,
+                        enemyManager.spine.TryGetComponent<Animator>(out var animator) ? animator : enemyManager.spine.gameObject.AddComponent<Animator>(),
+                        enemyManager.spine.GetComponent<MeshRenderer>());
+                    text.text = $"VFX: {vfxPair.name}";
+                    yield return new WaitForSeconds(2.5f);
+                }
+
+                text.text = "";
+            }
         }
     }
 }

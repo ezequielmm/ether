@@ -19,7 +19,7 @@ public class Nft
     [JsonProperty("description")]
     public string Description;
 
-    private Dictionary<Trait, string> trait;
+    public Dictionary<Trait, string> trait;
     public Dictionary<Trait, string> Traits
     {
         set => trait = value;

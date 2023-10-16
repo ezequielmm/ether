@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 using DG.Tweening;
@@ -26,6 +27,7 @@ public class EnemiesManager : MonoBehaviour
     {
         GameManager.Instance.EVENT_UPDATE_ENEMIES.AddListener(OnEnemiesUpdate);
         GameManager.Instance.EVENT_ADD_ENEMIES.AddListener(OnAddEnemies);
+        GameManager.Instance.EVENT_TRANSFORM_ENEMIES.AddListener(OnTransformEnemies);
     }
 
     private EnemyManager SpawnEnemy(EnemyData enemyData)
@@ -161,6 +163,34 @@ public class EnemiesManager : MonoBehaviour
             }
         }
         PositionEnemies();
+    }
+    
+    private void OnTransformEnemies(EnemiesData enemiesData)
+    {
+        var oldEnemyNewData = enemiesData.data[0];
+        var oldEnemy = GetEnemy(oldEnemyNewData.id);
+        enemies.Remove(oldEnemy.gameObject);
+
+        var dataWithOnlyTransformation = new EnemiesData {
+            data = new List<EnemyData>(enemiesData.data.Where(e => e.id != oldEnemy.EnemyData.id))
+        };
+        
+        GameManager.Instance.ActiveEndOfTurnButton(false);
+        Action spawnTransformationAction = () =>
+        {
+            OnAddEnemies(dataWithOnlyTransformation);
+            if (GameManager.Instance.IsPlayerTurn)
+                GameManager.Instance.ActiveEndOfTurnButton(true);
+        };
+        
+        // if the enemy is dead, then we need to wait for it to die before we can add the new enemies
+        if (oldEnemyNewData.hpCurrent <= 0)
+        {
+            oldEnemy.AddActionWhenDied(spawnTransformationAction);
+            return;
+        }
+        
+        spawnTransformationAction();
     }
 
     private void PositionEnemies() 

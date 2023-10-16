@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
@@ -64,6 +65,9 @@ public class EndTurnManager : MonoBehaviour
         }
     }
 
+    public void EndTurnButtonActive(bool value)
+    => ((Action)(value ? endTurnButtonManager.Enable : endTurnButtonManager.Disable))?.Invoke();
+    
     public void EndTurn()
     {
         if (GameManager.Instance.IsPlayerTurn)

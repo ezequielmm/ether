@@ -97,6 +97,7 @@ MonoBehaviour:
   skinLoaded:
     m_PersistentCalls:
       m_Calls: []
+  skinsVFX: {fileID: 0}
 --- !u!33 &9032002354893603803
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -131,14 +132,14 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 0
-  - sequenceName: injuredIdle
+  - sequenceName: injured_Idle
     sequence:
     - track: 1
       name: injured idle
       loop: 1
       delay: 0
       animationEvent: 0
-    animationType: 2
+    animationType: 0
   - sequenceName: attack
     sequence:
     - track: 1
@@ -185,7 +186,6 @@ MonoBehaviour:
   - injured idle
   - throw v1
   - throw v2
-  idleAnimation: Idle
 --- !u!114 &9032002354893603797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,4 +234,4 @@ SortingGroup:
   m_Enabled: 1
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1

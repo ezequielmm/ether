@@ -407,6 +407,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 0
+    IdleOverride: 
   - sequenceName: hidden_idle
     sequence:
     - track: 0
@@ -415,6 +416,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 0
+    IdleOverride: 
   - sequenceName: attack
     sequence:
     - track: 0
@@ -423,6 +425,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    IdleOverride: 
   - sequenceName: attack1
     sequence:
     - track: 0
@@ -431,6 +434,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    IdleOverride: 
   - sequenceName: attack_hidden
     sequence:
     - track: 0
@@ -439,6 +443,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    IdleOverride: 
   - sequenceName: defend
     sequence:
     - track: 0
@@ -447,6 +452,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    IdleOverride: 
   - sequenceName: buff
     sequence:
     - track: 0
@@ -455,6 +461,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    IdleOverride: 
   - sequenceName: debuff
     sequence:
     - track: 0
@@ -463,6 +470,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    IdleOverride: 
   - sequenceName: special
     sequence:
     - track: 0
@@ -476,6 +484,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 2
+    IdleOverride: hidden_idle
   - sequenceName: signature_move
     sequence:
     - track: 0
@@ -504,6 +513,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 2
+    IdleOverride: 
   - sequenceName: attack_buff
     sequence:
     - track: 0
@@ -517,6 +527,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 2
+    IdleOverride: 
   - sequenceName: defend_buff
     sequence:
     - track: 0
@@ -530,6 +541,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 2
+    IdleOverride: 
   - sequenceName: defend_debuff
     sequence:
     - track: 0
@@ -543,6 +555,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 2
+    IdleOverride: 
   - sequenceName: special_attack
     sequence:
     - track: 0
@@ -556,6 +569,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 2
+    IdleOverride: 
   - sequenceName: hit
     sequence:
     - track: 0
@@ -564,6 +578,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    IdleOverride: 
   - sequenceName: death
     sequence:
     - track: 0
@@ -572,6 +587,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 1
+    IdleOverride: 
   availableAnimations:
   - attack
   - cast1

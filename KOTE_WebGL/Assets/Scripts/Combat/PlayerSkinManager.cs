@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Combat.VFX;
 using Spine;
 using Spine.Unity;
 using Spine.Unity.AttachmentTools;
@@ -20,6 +21,8 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
     private SkeletonData skeletonData;
     private List<(Skin.SkinEntry, Attachment)> generatedAttachments;
     private Renderer renderer;
+
+    [SerializeField] private VFXList skinsVFX;
     
     public void SkinReset()
     {
@@ -111,20 +114,46 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
         {
             equipsSkin.SetAttachment(attachmentData.Item1.SlotIndex, attachmentData.Item1.Name, attachmentData.Item2);
         }
-
+        
         skeletonAnimation.Skeleton.SetSkin(equipsSkin);
         RefreshSkeletonAttachments();
+
+        var a = new Dictionary<Skin.SkinEntry, List<Attachment>>();
+        foreach (var (skinEntry, attachment) in generatedAttachments)
+        {
+            if (!a.ContainsKey(skinEntry))
+                a[skinEntry] = new List<Attachment>();
+            a[skinEntry].Add(attachment);
+        }
+        
+        //ApplySkinVFX(a);
+        
         skinLoaded.Invoke();
         
         Resources.UnloadUnusedAssets();
         System.GC.Collect();
     }
 
+    private void ApplySkinVFX(Dictionary<Skin.SkinEntry, List<Attachment>> dictionary)
+    {
+        foreach (var kv in dictionary)
+        {
+            var visualEffect = skinsVFX.GetVFX(kv.Key.Name);
+            if (visualEffect != null)
+            {
+                foreach (var attachment in kv.Value)
+                {
+                    visualEffect.Play(this, GetComponent<Animator>(), GetComponent<MeshRenderer>(), attachment.GetMaterial());
+                }
+            }
+        }
+    }
+
     /*
      * this is an extremely annoying case, but if the character is using a flail, the base skin
      * HAS to be the flail, or the bones won't exist, and the flail won't animate.
      * In all other cases it's perfectly fine to start from an empty skin
-    */
+     */
     private Skin TryStartWithFlailSkin(List<TraitSprite> skinSprites)
     {
         TraitSprite traitSprite = skinSprites

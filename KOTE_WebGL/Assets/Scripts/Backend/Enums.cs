@@ -404,7 +404,8 @@ public enum Trait
     Shadow,
     Base,
     Upper_Padding,
-    Lower_Padding
+    Lower_Padding,
+    Cloak
 }
 
 [Serializable]

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Combat;
 using Combat.VFX;
+using Cysharp.Threading.Tasks.Triggers;
 using DG.Tweening;
 using Spine.Unity;
 using TMPro;
@@ -47,12 +48,12 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     public static Dictionary<string, GameObject> InstantiatedEnemiesCache = new Dictionary<string, GameObject>();
     public static Dictionary<string, List<Action<GameObject>>> ThePainTrain = new Dictionary<string, List<Action<GameObject>>>();
 
-    public string[] validEnemyList;
-
     [SerializeField] private EnemiesConfig enemiesConfig;
     [SerializeField] private Animator animator;
 
     private bool awaitForEnemyRequestPrefab;
+
+    public event Action OnEnemyDied;
     
     public EnemyData EnemyData
     {
@@ -119,15 +120,9 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             activeEnemy.transform.localPosition = Vector3.zero;
             GrabEnemyFadeout(activeEnemy);
             enemyPlacementData = activeEnemy.GetComponentInChildren<EnemyPrefab>();
-            enemyPlacementData.InitEnemy(enemy);
+            enemyPlacementData.InitEnemy(enemy, FitTopAndBottomBar);
             // Add the cursorEnter and Exit for tooltips
             // Set mounting points
-            Vector3 top = enemyPlacementData.intentMountingPoint.position;
-            top.y = Mathf.Min(GameSettings.INTENT_MAX_HEIGHT, top.y);
-            TopBar.position = top;
-            Vector3 bottom = enemyPlacementData.healthMountingPoint.position;
-            bottom.y = Mathf.Max(transform.position.y, bottom.y);
-            BottomBar.position = bottom;
 
             this.enemy = enemy;
             
@@ -148,6 +143,16 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         });
         
         
+    }
+
+    private void FitTopAndBottomBar()
+    {
+        Vector3 top = enemyPlacementData.intentMountingPoint.position;
+        top.y = Mathf.Min(GameSettings.INTENT_MAX_HEIGHT, top.y);
+        TopBar.position = top;
+        Vector3 bottom = enemyPlacementData.healthMountingPoint.position;
+        bottom.y = Mathf.Max(transform.position.y, bottom.y);
+        BottomBar.position = bottom;
     }
 
     private void LoadEnemyPrefab(string enemyName, Action<GameObject> onSuccess)
@@ -303,9 +308,6 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         GameManager.Instance.EVENT_DEACTIVATE_POINTER.AddListener(DeactivateCollider);
 
         GameManager.Instance.EVENT_UPDATE_INTENT.AddListener(OnUpdateIntent);
-        
-        statusManager = GetComponentInChildren<StatusManager>();
-
 
         Canvas canvas = barFader.GetComponent<Canvas>();
         canvas.sortingOrder = 1;
@@ -342,9 +344,14 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
         if (activeEnemy != null)
         {
+            statusManager ??= GetComponentInChildren<StatusManager>();
+            
             spine = activeEnemy.GetComponentInChildren<SpineAnimationsManagement>();
+            spine.Init(new EnemyIdleSolver(statusManager));
+            
+            statusManager.OnStatusUpdated += (statuses) => spine.PlayIdle();
+            
             spine.ANIMATION_EVENT.AddListener(OnAnimationEvent);
-            spine.PlayAnimationSequence("Idle");
         }
         
         characterSound = activeEnemy.GetComponentInChildren<CharacterSound>();
@@ -394,11 +401,15 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         }
     }
 
-    public float PlayAnimation(string animationSequence, string fallbackAnimation)
+    public float PlayAnimation(string animationSequence, string fallbackAnimation, Action doWhenAnimationEnds = null)
     {
         string sequence = CheckAnimationName(animationSequence, fallbackAnimation);
         float length = spine.PlayAnimationSequence(sequence);
         characterSound?.PlaySound(fallbackAnimation);
+
+        if (doWhenAnimationEnds != null)
+            RunAfterTime(length, doWhenAnimationEnds);
+        
         return length;
     }
 
@@ -412,13 +423,6 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         }
 
         return animationSequence.ToLower();
-    }
-
-    private float OnDeath()
-    {
-        float length = spine.PlayAnimationSequence("Death", true);
-        characterSound?.PlaySound("Death");
-        return length;
     }
 
     private void ActivateCollider(PointerData _)
@@ -445,13 +449,19 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             explodePS.Play();
 
             // Play animation
-            RunAfterTime(OnDeath(), () =>
+            PlayAnimation("death", "Death", () =>
             {
                 spineFadeout.OnFadeoutComplete += DestroyOnFadeout;
                 spineFadeout.enabled = true;
+                OnEnemyDied?.Invoke();
             });
             barFader.FadeOutUi();
         }
+    }
+
+    public void AddActionWhenDied(Action toRun)
+    {
+        OnEnemyDied += toRun;
     }
 
     private void DestroyOnFadeout(SkeletonRenderTextureFadeout target)

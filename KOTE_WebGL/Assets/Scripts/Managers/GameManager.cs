@@ -4,6 +4,7 @@ using KOTE.UI.Armory;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class GameManager : SingleTon<GameManager>
 {
@@ -301,6 +302,7 @@ public class GameManager : SingleTon<GameManager>
     //Enemies events
     [HideInInspector] public UnityEvent<EnemiesData> EVENT_UPDATE_ENEMIES { get; } = new UnityEvent<EnemiesData>();
     [HideInInspector] public UnityEvent<EnemiesData> EVENT_ADD_ENEMIES = new UnityEvent<EnemiesData>();
+    [HideInInspector] public UnityEvent<EnemiesData> EVENT_TRANSFORM_ENEMIES = new UnityEvent<EnemiesData>();
     [HideInInspector] public UnityEvent<EnemyData> EVENT_UPDATE_ENEMY = new UnityEvent<EnemyData>();
     [HideInInspector] public UnityEvent<EnemyIntent> EVENT_UPDATE_INTENT = new UnityEvent<EnemyIntent>();
 
@@ -470,4 +472,7 @@ public class GameManager : SingleTon<GameManager>
         IsPlayerTurn = dataData == "player";
         EVENT_CHANGE_TURN.Invoke(dataData);
     }
+
+    public void ActiveEndOfTurnButton(bool value) => 
+        FindObjectOfType<EndTurnManager>().EndTurnButtonActive(value);
 }

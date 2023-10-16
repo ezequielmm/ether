@@ -73,6 +73,8 @@ namespace map
         Dictionary<Vector3Int, TileSplineRef> tileSplineRef = new Dictionary<Vector3Int, TileSplineRef>();
         Dictionary<Vector3Int, GameObject> nodeMapRef = new Dictionary<Vector3Int, GameObject>();
         private Vector3 playerIconOffset = new Vector3(-0.25f, -0.25f, 0);
+        
+        private SWSM_MapData latestMapData;
 
         private class SplinePoint
         {
@@ -128,7 +130,9 @@ namespace map
 
         void Start()
         {
-            GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.AddListener(OnMapNodesDataUpdated); // Gen Map
+            GameManager.Instance.EVENT_ALL_MAP_NODES_UPDATE.AddListener(SetMapData); // Set map data to generate map later
+            UserDataManager.Instance.ExpeditionStatusUpdated.AddListener(GenerateMapOnExpeditionStatusUpdated); // Gen Map
+            
             GameManager.Instance.EVENT_MAP_PANEL_TOGGLE.AddListener(OnToggleMap);
             GameManager.Instance.EVENT_MAP_ICON_CLICKED.AddListener(OnMapIconClicked);
             GameManager.Instance.EVENT_MAP_SCROLL_CLICK.AddListener(OnScrollButtonClicked);
@@ -348,9 +352,28 @@ namespace map
             }
         }
 
-        private void OnMapNodesDataUpdated(SWSM_MapData mapData)
+        private void SetMapData(SWSM_MapData mapData)
         {
-            GenerateMap(mapData);
+            latestMapData = mapData;
+        }
+
+        private Coroutine generateMapAwaitRoutine;
+        private void GenerateMapOnExpeditionStatusUpdated()
+        {
+            // TODO: This coroutine handling is because from backend this method will be called. But we need a previous "mapData" info that the backend needs to give us before run this
+
+            if (generateMapAwaitRoutine != null)
+                StopCoroutine(generateMapAwaitRoutine);
+            generateMapAwaitRoutine = StartCoroutine(GenerateMapOnExpeditionStatusUpdatedRoutine());
+        }
+
+        IEnumerator GenerateMapOnExpeditionStatusUpdatedRoutine()
+        {
+            while (latestMapData == null)
+                yield return null;
+
+            generateMapAwaitRoutine = null;
+            GenerateMap(latestMapData);
             StartCoroutine(Scroll());
         }
 

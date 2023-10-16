@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ public class StatusManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     static bool askedForStatus = false;
     bool statusSet = false;
+    public event Action<Status[]> OnStatusUpdated;
 
     void Start()
     {
@@ -214,12 +216,16 @@ public class StatusManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         DrawStatus(statusList);
     }
 
+    public Status[] GetStatusList() => statusList.ToArray();
+    
     private void OnSetStatus(StatusData status) 
     {
         if ((status.targetEntity != entityType || status.id != entityID) && (status.targetEntity != "all")) return;
 
         statusList = status.statuses;
         DrawStatus(status.statuses);
+
+        OnStatusUpdated?.Invoke(GetStatusList());
     }
 
     public STATUS ToEnum(string str) 

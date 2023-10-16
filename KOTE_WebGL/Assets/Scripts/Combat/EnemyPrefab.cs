@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Spine.Unity;
@@ -17,22 +18,20 @@ public class EnemyPrefab : MonoBehaviour
     public int sortingOrder = 1;
     public Bounds setBounds;
     
-    public void InitEnemy(EnemyData data)
+    public void InitEnemy(EnemyData data, Action fitTransformsCallback)
     {
         spineAnimationsManagement = GetComponentInChildren<SpineAnimationsManagement>();
         SkeletonAnimation skeleton = transform.GetComponentsInChildren<SkeletonAnimation>()[0];
         
         spineAnimationsManagement.SetProperties();
-        SetSkin(data, skeleton);
-        
-        FitColliderToArt();
+        SetSkin(data, skeleton, fitTransformsCallback);
 
         
         sortingGroup = skeleton.gameObject.AddComponent<SortingGroup>();
         sortingGroup.sortingOrder = sortingOrder;
     }
 
-    private void SetSkin(EnemyData data, SkeletonAnimation skeleton)
+    private void SetSkin(EnemyData data, SkeletonAnimation skeleton, Action fitTransformsCallback)
     {
         SetEnemySkin(data.name switch
         {
@@ -41,16 +40,33 @@ public class EnemyPrefab : MonoBehaviour
             "Deep Sorcerer Green" => "Green",
             "Deep Sorcerer Red" => "Red",
             _ => ""
-        }, skeleton);
+        }, skeleton, fitTransformsCallback);
     }
 
-    private void SetEnemySkin(string skinName, SkeletonAnimation skeleton)
+    private void SetEnemySkin(string skinName, SkeletonAnimation skeleton, Action callback = null)
     {
         if (string.IsNullOrEmpty(skinName))
+        {
+            FitColliderToArt();
+            callback?.Invoke();
             return;
+        }
+        
+        if (callback != null)
+        {        
+            SkeletonRenderer.SkeletonRendererDelegate skinUpdated = _ =>
+            {
+                FitColliderToArt();
+                callback?.Invoke();
+            };
+            callback += () => skeleton.OnMeshAndMaterialsUpdated -= skinUpdated;
+        
+            skeleton.OnMeshAndMaterialsUpdated += skinUpdated;
+        }
         skeleton.skeleton.SetSkin(skinName);
     }
 
+    [ContextMenu("FitColliderToArt")]
     public void FitColliderToArt()
     {
         spineAnimationsManagement.PlayAnimationSequence("Idle");
