@@ -65,8 +65,8 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
             Debug.LogException(e);
         }
        
-        ClearSessionToken();
-        WebBridge.SendUnityMessage("logout", "unity-client-logout");
+        //ClearSessionToken();
+        //WebBridge.SendUnityMessage("logout", "unity-client-logout");
     }
 
     private bool Authenticate(string token)

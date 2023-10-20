@@ -14,6 +14,7 @@ using Newtonsoft.Json.Linq;
 using SDev;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class FetchData : DataManager, ISingleton<FetchData>
 {
@@ -333,9 +334,66 @@ public class FetchData : DataManager, ISingleton<FetchData>
             return ParseJsonWithPath<string>(rawJson, "data.token");
         }
     }
+    void ClearScene()
+    {
+        // Obtener una lista de todos los GameObjects en la escena
+        var gameObjectList = GameObject.FindObjectsOfType<GameObject>();
 
+        // Destruir todos los GameObjects en la lista
+        //
+        //
+        //
+        foreach (var item in gameObjectList)
+        {
+            GameObject.Destroy(item);  
+        }
+    }
     public async UniTask Logout()
     {
+        /*
+        if (populatedWithStatus == GameStatuses.ScoreBoardAndNextAct)
+        {
+            GameManager.Instance.LoadSceneNewTest();
+            return;
+        }
+        */
+
+        //LoadingManager.Won = false;
+        //Cleanup.CleanupGame();
+
+        //string _url = "https://test2.knightsoftheether.com/";
+
+        //Application.OpenURL(_url);
+
+        Application.ExternalCall("RecargarPagina");
+
+
+
+        //// Get a list of all the objects that are in dontDestroyOnLoad
+        //List<GameObject> gameObjectList = new List<GameObject>();
+        //foreach (GameObject gameObject in GameObject.FindObjectsOfType(typeof(GameObject)))
+        //{
+        //    if (gameObject.DontDestroyOnLoad)
+        //    {
+        //        gameObjectList.Add(gameObject);
+        //    }
+        //}
+
+        //// Destroy all the objects
+        //Object.DestroyAll(gameObjectList);
+
+        //GameObject.Destroy(WebSocketManager.Instance);
+
+        //var go = GameObject.Find("WebSocketManager");
+        //GameObject.Destroy(go);
+
+        //ClearScene();
+
+
+
+        //SceneManager.LoadScene(0);
+
+        /*
         string loginUrl = webRequest.ConstructUrl(RestEndpoint.Logout);
 
         ServerCommunicationLogger.Instance.LogCommunication(
@@ -366,6 +424,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
             GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.Invoke(message);
         }
+        */
     }
 
     public async UniTask<ProfileData> GetPlayerProfile()
