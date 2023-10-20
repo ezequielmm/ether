@@ -290,17 +290,29 @@ MonoBehaviour:
   _soundsListMap:
   - Name: Attack
     SoundList:
-    - {fileID: 8300000, guid: 16d6e7879196dc64fbecff56065f6694, type: 3}
-    - {fileID: 8300000, guid: 82ef6f33d6c9f6044832e39c62c2110e, type: 3}
+    - {fileID: 8300000, guid: 2033d5dbff1c5084fbbebc257a57b06f, type: 3}
+    - {fileID: 8300000, guid: 247e33be1b12f004aadd02e6d092ad2f, type: 3}
   - Name: Hit
     SoundList:
-    - {fileID: 8300000, guid: 2e25627cb50e94644a12a4c0049d823d, type: 3}
+    - {fileID: 8300000, guid: f7ae9fbd31d935e408763ac65e6d4afa, type: 3}
   - Name: Death
     SoundList:
-    - {fileID: 8300000, guid: 263027031f7210c459e92c455119940c, type: 3}
+    - {fileID: 8300000, guid: 7eee00c5f248c8348aece93818d8518b, type: 3}
   - Name: Cast
     SoundList:
-    - {fileID: 8300000, guid: a8079c20c9c26b24ba21fd8cfb803ded, type: 3}
+    - {fileID: 8300000, guid: 8fb95be5a1236bc48987ca92baa163f1, type: 3}
+  - Name: Idle
+    SoundList:
+    - {fileID: 8300000, guid: 48c70b280adbd94448095c06d0cff506, type: 3}
+  - Name: Inhale Cast
+    SoundList:
+    - {fileID: 8300000, guid: e3baa3e7dee235948bdf909d56a89646, type: 3}
+  - Name: Inhale Idle
+    SoundList:
+    - {fileID: 8300000, guid: e29c3107e9e8ec145b077d572739afcf, type: 3}
+  - Name: Inhale Start
+    SoundList:
+    - {fileID: 8300000, guid: 0a16ac81205ee814dae53fc3e3bd7229, type: 3}
 --- !u!23 &1918944483312733380
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -407,7 +419,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
-    IdleOverride: 
+    vfxs: 
   - sequenceName: cast
     sequence:
     - track: 1
@@ -416,7 +428,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
-    IdleOverride: 
+    vfxs: 
   - sequenceName: idle
     sequence:
     - track: 1
@@ -425,7 +437,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 0
-    IdleOverride: 
+    vfxs: 
   - sequenceName: inhale_idle
     sequence:
     - track: 1
@@ -434,7 +446,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 0
-    IdleOverride: 
+    vfxs: 
   - sequenceName: hit
     sequence:
     - track: 1
@@ -443,7 +455,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
-    IdleOverride: 
+    vfxs: 
   - sequenceName: death
     sequence:
     - track: 1
@@ -452,7 +464,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 1
-    IdleOverride: 
+    vfxs: 
   - sequenceName: signature_move
     sequence:
     - track: 1
@@ -461,7 +473,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
-    IdleOverride: inhale_idle
+    vfxs: 
   - sequenceName: buff
     sequence:
     - track: 1
@@ -470,7 +482,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
-    IdleOverride: 
+    vfxs: 
   - sequenceName: attack1
     sequence:
     - track: 1
@@ -479,7 +491,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
-    IdleOverride: 
+    vfxs: 
   - sequenceName: laser
     sequence:
     - track: 1
@@ -488,7 +500,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
-    IdleOverride: idle
+    vfxs: 
   availableAnimations:
   - attack
   - cast1
@@ -496,7 +508,6 @@ MonoBehaviour:
   - death
   - hit
   - idle
-  idleAnimation: idle
 --- !u!114 &3598529525326487945
 MonoBehaviour:
   m_ObjectHideFlags: 0

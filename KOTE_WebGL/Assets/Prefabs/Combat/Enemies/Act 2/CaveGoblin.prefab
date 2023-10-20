@@ -290,17 +290,29 @@ MonoBehaviour:
   _soundsListMap:
   - Name: Attack
     SoundList:
-    - {fileID: 8300000, guid: 16d6e7879196dc64fbecff56065f6694, type: 3}
-    - {fileID: 8300000, guid: 82ef6f33d6c9f6044832e39c62c2110e, type: 3}
+    - {fileID: 8300000, guid: 444203170e7e34449b14e755b59e5232, type: 3}
+    - {fileID: 8300000, guid: f075d10df037d3445b8d0849338456d1, type: 3}
   - Name: Hit
     SoundList:
-    - {fileID: 8300000, guid: 2e25627cb50e94644a12a4c0049d823d, type: 3}
+    - {fileID: 8300000, guid: 9c2ad4a9f574add4280f6746c1f41a83, type: 3}
   - Name: Death
     SoundList:
-    - {fileID: 8300000, guid: 263027031f7210c459e92c455119940c, type: 3}
+    - {fileID: 8300000, guid: af8ee12ab35be43439c7f38e2f5d872d, type: 3}
   - Name: Cast
     SoundList:
-    - {fileID: 8300000, guid: a8079c20c9c26b24ba21fd8cfb803ded, type: 3}
+    - {fileID: 8300000, guid: e6bcee4e8f51ab145b68d2bb5577bddc, type: 3}
+  - Name: Hidden Start
+    SoundList:
+    - {fileID: 8300000, guid: c4a3fd0df132d0d488292dff25ba26b7, type: 3}
+  - Name: Hit Hidden
+    SoundList:
+    - {fileID: 8300000, guid: d9bf058409f82f44089c1d15e3a4b365, type: 3}
+  - Name: Idle Hidden
+    SoundList:
+    - {fileID: 8300000, guid: a7da7880391fe16429905601f7fab49b, type: 3}
+  - Name: Idle
+    SoundList:
+    - {fileID: 8300000, guid: f505a73c2320f584d9358a0c073e3824, type: 3}
 --- !u!23 &7564937364164523602
 MeshRenderer:
   m_ObjectHideFlags: 0

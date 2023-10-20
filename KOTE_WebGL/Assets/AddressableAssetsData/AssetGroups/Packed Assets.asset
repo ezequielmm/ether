@@ -45,6 +45,1064 @@ MonoBehaviour:
     m_Address: Assets/Sprites/Trinkets/061.png
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: d9bf058409f82f44089c1d15e3a4b365
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Cave Goblin/Cave Goblin/CaveGoblin
+      - Hit Hidden.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9c2ad4a9f574add4280f6746c1f41a83
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Cave Goblin/Cave Goblin/CaveGoblin
+      - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 444203170e7e34449b14e755b59e5232
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Cave Goblin/Cave Goblin/CaveGoblin
+      - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e6bcee4e8f51ab145b68d2bb5577bddc
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Cave Goblin/Cave Goblin/CaveGoblin
+      - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f075d10df037d3445b8d0849338456d1
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Cave Goblin/Cave Goblin/CaveGoblin
+      - Attack 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c4a3fd0df132d0d488292dff25ba26b7
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Cave Goblin/Cave Goblin/CaveGoblin
+      - Hidden Start.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a7da7880391fe16429905601f7fab49b
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Cave Goblin/Cave Goblin/CaveGoblin
+      - Idle Hidden.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: af8ee12ab35be43439c7f38e2f5d872d
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Cave Goblin/Cave Goblin/CaveGoblin
+      - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f505a73c2320f584d9358a0c073e3824
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Cave Goblin/Cave Goblin/CaveGoblin
+      - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a516791a11c6d164395b5431513570c6
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Cave Homunculi/Cave Homunculi/Cave
+      Homunculi - Cast 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9ab678ddbeb506d49ae033f6f9f8ebaf
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Cave Homunculi/Cave Homunculi/Cave
+      Homunculi - Cast 3.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a8bcb68e4754a5246a6cf3d51ab93f4b
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Cave Homunculi/Cave Homunculi/Cave
+      Homunculi - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6b543ad3fba1d77489f56074beadbc9c
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Cave Homunculi/Cave Homunculi/Cave
+      Homunculi - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0af1c4a3b7ae1fd4cb10a917d0d14fe4
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Cave Homunculi/Cave Homunculi/Cave
+      Homunculi - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 33e8d99e73cd90047809abd038fa822c
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Cave Homunculi/Cave Homunculi/Cave
+      Homunculi - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5b93b42bc188a9c409ad7dca2bf4e2ab
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Cave Homunculi/Cave Homunculi/Cave
+      Homunculi - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0f47ff078db14224eb51491ed66de3f4
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Centipion/Centipion/Centipion
+      - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2abf32a5829cc0746aca861b826f34de
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Centipion/Centipion/Centipion
+      - Attack 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4a9b177df8ceb3e4fa6f089584669b92
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Centipion/Centipion/Centipion
+      - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e8726638b8e0b9245a9b22c1b2b2bcb2
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Centipion/Centipion/Centipion
+      - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5487287bed0175e409f8c2de4d385719
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Centipion/Centipion/Centipion
+      - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d3d053ff457c4d34e834d16cc3cc7c35
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Centipion/Centipion/Centipion
+      - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c003fa6311ec07f4596bccfa4706ab38
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Dweller Lure/Deep Dweller
+      Lure/Deep Dweller Lure - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f9c3172a26ce01c48b774d46f2d65cdc
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Dweller Lure/Deep Dweller
+      Lure/Deep Dweller Lure - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2ba4abfa440cbd240a011597e12ee5b8
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Dweller Lure/Deep Dweller
+      Lure/Deep Dweller Lure - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0ff0fc9620c4dc9499edaa9fd8882a75
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Dweller Lure/Deep Dweller
+      Lure/Deep Dweller Lure - Cast 1 rev2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d424d2c004ef6284594f549d8ae34e98
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Dweller Lure/Deep Dweller
+      Lure/Deep Dweller Lure - Cast 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 06de7bbce30cda549ac92a1b6c470077
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Dweller Lure/Deep Dweller
+      Lure/Deep Dweller Lure - Cast 3.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f85d8fea3edbc214fb634e3a0a7f3c22
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Dweller Lure/Deep Dweller
+      Lure/Deep Dweller Lure - Cast 4.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8fb95be5a1236bc48987ca92baa163f1
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Dweller Monster/Deep Dweller
+      Monster/Deep Dweller Monster - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f7ae9fbd31d935e408763ac65e6d4afa
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Dweller Monster/Deep Dweller
+      Monster/Deep Dweller Monster - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0a16ac81205ee814dae53fc3e3bd7229
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Dweller Monster/Deep Dweller
+      Monster/Deep Dweller Monster - Inhale Start.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 48c70b280adbd94448095c06d0cff506
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Dweller Monster/Deep Dweller
+      Monster/Deep Dweller Monster - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e29c3107e9e8ec145b077d572739afcf
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Dweller Monster/Deep Dweller
+      Monster/Deep Dweller Monster - Inhale Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7eee00c5f248c8348aece93818d8518b
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Dweller Monster/Deep Dweller
+      Monster/Deep Dweller Monster - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2033d5dbff1c5084fbbebc257a57b06f
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Dweller Monster/Deep Dweller
+      Monster/Deep Dweller Monster - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e3baa3e7dee235948bdf909d56a89646
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Dweller Monster/Deep Dweller
+      Monster/Deep Dweller Monster - Inhale Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 247e33be1b12f004aadd02e6d092ad2f
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Dweller Monster/Deep Dweller
+      Monster/Deep Dweller Monster - Attack 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a851abf13880ff24baccef36800a3627
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer Red - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9692a1e4b6138314ebf31d8cf9dfa6cd
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer Green - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b4760100bd4b284408a26dda9e0f9633
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer Red - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c82a8673f7286004ca781a2eb8de3fc1
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer Red - Cast 2 giant ground tentacle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9f02309dd10fcf44a9dc2a5f2385666b
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer Green - Cast 2 tentacle book.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b7518c0b328b47e40b9fc84389b92dca
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer Red - Cast 2 giant tentacle book.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 71dfd51438ae33448bbb25fcdafcf53a
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer Red - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 447bff7e73a965e429cccb48b98ae085
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer Green - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: acd68d9bf70de374e99c42737073ed16
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer Red - cast 2 tentacle book.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3e02e74c3e71ba947b6c875faa756132
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer Red -Cast 3.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f6024c56477efe3418e587624b7b0ce4
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer Red - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 602f5b4e5a071fc48816980fb6e4e6c2
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer Green - Cast 2 kthulu book.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4ca92990f1d185b41ae758fc472f83be
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer Red - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5ae920016e906f1449f85aee2e13995a
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer - Idle Green.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 035782d544b6a9f47885d0452c6f57a4
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Dweller Green - Cast 2 Giant Tentacle Book.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d5f4be82756f0bf4dad1e9182dc30657
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer Green - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c84532dd3fb201d46a700695833dd64c
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer Green - Cast 2 Giant Ground Tentacle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 51a5f877875841944b31cff22966aa29
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer Green - Cast 3.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bb0a9a9f689ba114097f025b03a416fd
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer Green - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9c8d5105645a18843b048563abeace80
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Deep Sorcerer/Deep Sorcerer/Deep
+      Sorcerer Red - Cast 2 kthulu book.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ab4f91731604ff94986d4154b321a71c
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Fire/Elemental
+      Spirit Fire/Elemental Spirit Fire - Cast 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1c2dfbaea1036274388670f6d908f33a
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Fire/Elemental
+      Spirit Fire/Elemental Spirit Fire - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2bb001f7a8a6e0a4180b4f35a192f688
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Fire/Elemental
+      Spirit Fire/Elemental Spirit Fire - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 86f8f1e90f2bf994eb6c9215e6f36dd2
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Fire/Elemental
+      Spirit Fire/Elemental Spirit Fire - Attack 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5c65214984039d549a0317067772be49
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Fire/Elemental
+      Spirit Fire/Elemental Spirit Fire - Attack 3.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 45a7353e0a693734f97bb8a2235d9200
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Fire/Elemental
+      Spirit Fire/Elemental Spirit Fire - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9986478dfc11e69448f19dc2cb89dd5b
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Fire/Elemental
+      Spirit Fire/Elemental Spirit Fire - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c161278b1185b684ebd040e4f0d078ff
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Fire/Elemental
+      Spirit Fire/Elemental Spirit Fire - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a1c39baf6020db2479610c5b05a31963
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Rock/Elemental
+      Spirit Rock/Elemental Spirit Rock - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6d3e24b0466f5964585d76e6fc4589d7
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Rock/Elemental
+      Spirit Rock/Elemental Spirit Rock - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 217cf27f1d27edd4bb30372ae81d4b4d
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Rock/Elemental
+      Spirit Rock/Elemental Spirit Rock - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 423ff6fca71ef574e892a14b57c5a08c
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Rock/Elemental
+      Spirit Rock/Elemental Spirit Rock - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 50aef8043e6c19640a8315e2295f17eb
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Rock/Elemental
+      Spirit Rock/Elemental Spirit Rock - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d5ca81fb9ca1fcd4c859e5f8684e6417
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Water/Elemental
+      Spirit Water/Elemental Spirit Water - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 56a917d35fcf0f04eb5bc420cad26c96
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Water/Elemental
+      Spirit Water/Elemental Spirit Water - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 70727ed7ce489174b9b3d53e191cc822
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Water/Elemental
+      Spirit Water/Elemental Spirit Water - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 171de1b0866386449a66090b693e83c8
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Water/Elemental
+      Spirit Water/Elemental Spirit Water - Cast 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5ff1f8ee6d324ed49860992aceb28d54
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Water/Elemental
+      Spirit Water/Elemental Spirit Water - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: df62f18f99da8a34e89be58081682a1d
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Water/Elemental
+      Spirit Water/Elemental Spirit Water - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 27ca92a7868517c45a1dc22ec0564f31
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Elemental Spirit Water/Elemental
+      Spirit Water/Elemental Spirit Water - Cast 3.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 47d1d59858b8d774e83ed4e801043afa
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/FireBeetle/FireBeetle/FireBeetle
+      - Cast 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f37f0dc0b0e4dcb49be31b0ab029479b
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/FireBeetle/FireBeetle/FireBeetle
+      - Attack.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 69fd9ba4c31758247ad0ef128ca67ea3
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/FireBeetle/FireBeetle/FireBeetle
+      - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f6e59245fdb83354ab7f38bd98d8dce7
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/FireBeetle/FireBeetle/FireBeetle
+      - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ee770a2d7b368944dae1f27ecfa9658e
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/FireBeetle/FireBeetle/FireBeetle
+      - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c691331bc363fa0459eec5c88c16418c
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/FireBeetle/FireBeetle/FireBeetle
+      - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d7a77c285ba31bc42abfe41d7a2cfd3e
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Glowbug/Glowbug/Glowbug - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8f8bf8830ef448341a64228df034f7a0
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Glowbug/Glowbug/Glowbug - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 99ed6db8a0f33a74586256f422684a9e
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Glowbug/Glowbug/Glowbug - Cast
+      2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9c77d49cdae8ac444bfdf24747543af6
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Glowbug/Glowbug/Glowbug - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: dbb2778519776224b8088acbe7ed6a22
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Glowbug/Glowbug/Glowbug - Cast
+      1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8b96a469d2fb1a24a9ca0b5eb89e90b7
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Glowbug/Glowbug/Glowbug - Attack
+      1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3b2a169b44f432948b9732cec2e9a0a5
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mimic/Mimic/Mimic - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 92c5ff97c0a95224d8d27d39c574a3f2
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mimic/Mimic/Mimic - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cb1cd4174954567478bb6950c976177e
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mimic/Mimic/Mimic - Attack 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8bc983b7b3c73ed4ba2b1272bc9615ca
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mimic/Mimic/Mimic - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0a128b74dd2cbf04ba7413d898fddec8
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mimic/Mimic/Mimic - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3ad1f9797cedeb541951d846570c6a88
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mimic/Mimic/Mimic - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 662bfb7a26a23f349891bbbeb8025996
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mimic Death Revision/Mimic - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c151767bd35a192459bfecbe684f46d0
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mold Polyp/Mold Polyp/Mold Polyp
+      - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ebfc0889ab9169546bb57f91826e6676
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mold Polyp/Mold Polyp/Mold Polyp
+      - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: afbf1eec56deaea4eaa7ce2f42f33b95
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mold Polyp/Mold Polyp/Mold Polyp
+      - Cast 3.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5c03d0c8deca72544856f05e9a6b8ecc
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mold Polyp/Mold Polyp/Mold Polyp
+      - Cast 4.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c9e92e962acdff0428691c396f61e4dd
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mold Polyp/Mold Polyp/Mold Polyp
+      - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c74158b8f3df9424b96b279bdc3bb9b1
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mold Polyp/Mold Polyp/Mold Polyp
+      - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 348931a337d43a04ea6d74fcec07669d
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mold Polyp/Mold Polyp/Mold Polyp
+      - Cast 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2e2920c4afed9a74a85280bcc9ded544
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Archer/Mossy Archer/Mossy
+      Archer - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e8462e5f9e642e942ad9c0b590710678
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Archer/Mossy Archer/Mossy
+      Archer - Hit Drawn.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3516b892fc6e30242993eba11c8f94d8
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Archer/Mossy Archer/Mossy
+      Archer - Idle Drawn.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 384e0d0d1060bdd4aaac5c01b8286e14
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Archer/Mossy Archer/Mossy
+      Archer - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 81ed4b7247f465f41b00013dc11e572e
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Archer/Mossy Archer/Mossy
+      Archer - Attack 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 16c9171cc817aa94da7f983dd89de15e
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Archer/Mossy Archer/Mossy
+      Archer - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 643ab983f5ac0e8459719475c830f4a5
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Archer/Mossy Archer/Mossy
+      Archer - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b63c57e76e8d46445a63b62bddb251c2
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Archer/Mossy Archer/Mossy
+      Archer - Drawn Start.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 057ede1321eff664fa25da6c61f08a8e
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Bones/Mossy Bones/Mossy
+      Bones Polyp 1 - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b543ef91fc2836045aaf602031840a7d
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Bones/Mossy Bones/Mossy
+      Bones Polyp 2 - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4e7d69383405e1143b4eafb097fa7665
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Bones/Mossy Bones/Mossy
+      Bones Polyp 2 - Cast 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: db766fd6d05dcc145850387309683969
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Bones/Mossy Bones/Mossy
+      Bones Polyp 3 - Cast 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c8b70d5477983b640bb08406e354b251
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Bones/Mossy Bones/Mossy
+      Bones Polyp 1 - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3737578018c611e4880c29118872e288
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Bones/Mossy Bones/Mossy
+      Bones Polyp 1 - Cast 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6230ce79ad4e2d9439c2ab960e6727e2
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Bones/Mossy Bones/Mossy
+      Bones Polyp 2 - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cad928c17d0a4c14486874f729dec276
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Bones/Mossy Bones/Mossy
+      Bones Polyp 2 - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 90cc7c96969dbf147a7dac63f78dd0fe
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Bones/Mossy Bones/Mossy
+      Bones Polyp 1 - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 699b4c036f783224eb53fa97f31a8b19
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Bones/Mossy Bones/Mossy
+      Bones Polyp 2 - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0a37a26ca289bb543b8877ade2873064
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Bones/Mossy Bones/Mossy
+      Bones Polyp 3 - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 49533cbc6e9ff7849a8231a1d5ebede6
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Bones/Mossy Bones/Mossy
+      Bones Polyp 1 - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 89293f6b294dfae4b8627c25d4105c43
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Bones/Mossy Bones/Mossy
+      Bones Polyp 3 - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a6f2fadf8e2eabe4ca82f0b7522fd32c
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Bones/Mossy Bones/Mossy
+      Bones Polyp 3 - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8dae5cada8eea854ea02555d56f1784c
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Bones/Mossy Bones/Mossy
+      Bones Polyp 3 - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d3f5d8e33b98d9845a69695763b12c07
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Bones/Mossy Bones/Mossy
+      Bones Polyp 2 - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 216003790bfb7f749be6c7b1f700d499
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Bones/Mossy Bones/Mossy
+      Bones Polyp 1 - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ecc18d9c610251e4ea15890550198b78
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Bones/Mossy Bones/Mossy
+      Bones Polyp 3 - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 316a58bc99940624d83f4d747b9194ae
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Skeleton/Mossy Skeleton/Mossy
+      Skeleton - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d74e37f3b06291840a1672c427d6570b
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Skeleton/Mossy Skeleton/Mossy
+      Skeleton - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 11e429a0918ebd244a88c66cce5ba8e4
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Skeleton/Mossy Skeleton/Mossy
+      Skeleton - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 28e13a634b82e094f8f0fbad259d66c4
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Skeleton/Mossy Skeleton/Mossy
+      Skeleton - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b61e4a8c5733db64aba4b95701a393d2
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mossy Skeleton/Mossy Skeleton/Mossy
+      Skeleton Attack 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d58b4c059cf8291448fd41bda62fe955
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mutant Spider/Mutant Spider/Mutant
+      Spider - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ad116c2c9434a7a4cb84ed0cd05f0c71
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mutant Spider/Mutant Spider/Mutant
+      Spider - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b132b6402f629a4489fc9456e0d743f4
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mutant Spider/Mutant Spider/Mutant
+      Spider - Attack 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 469a985fdaecb4c408990eef8c0dacbc
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mutant Spider/Mutant Spider/Mutant
+      Spider - Attack 3.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 23819f53762ee4b41a7a37236dcc3c06
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mutant Spider/Mutant Spider/Mutant
+      Spider - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1108820405febdb498d99e8cf8b5bba3
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mutant Spider/Mutant Spider/Mutant
+      Spider - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8ea93626dd431414599f6d1f910495a7
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Mutant Spider/Mutant Spider/Mutant
+      Spider - Cast.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d8ea54daa8e05034c839ffe989c2be37
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Night Wisp/Night Wisp/Night Wisp
+      - Cast 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6cdd12cef534ca9448224d110d0ad3fc
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Night Wisp/Night Wisp/Night Wisp
+      - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 06709e1cc19393d4cbc836fb48bc94d9
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Night Wisp/Night Wisp/Night Wisp
+      - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: add69fcc394a7744990482ff542cc96d
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Night Wisp/Night Wisp/Night Wisp
+      - Explosive Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b9286ad7b2d77354ab3a3861202b72b1
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Night Wisp/Night Wisp/Night Wisp
+      - Idle Intro.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0dbce148053e62d49ba00c0f7c253fc8
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Night Wisp/Night Wisp/Night Wisp
+      - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0e9ec53a560b80448b21240323264acb
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Night Wisp/Night Wisp/Night Wisp
+      - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 80587212e7e94514497842d23d2f5bc6
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Night Wisp/Night Wisp/Night Wisp
+      - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 75533ae0c348e6e4b897200fa47c4674
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Cocoon/Swarm Cocoon/Swarm
+      Cocoon big - Burst.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7c30a75872adfe441baa8339ebac8664
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Cocoon/Swarm Cocoon/Swarm
+      Cocoon medium - burst.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 17439501566d1cb4c808205aa357f69c
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Cocoon/Swarm Cocoon/Swarm
+      Cocoon medium - idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d553696c292f150439adfa6be3967b0e
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Cocoon/Swarm Cocoon/Swarm
+      Cocoon medium - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 77bdd480d8693124399130154c88e1de
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Cocoon/Swarm Cocoon/Swarm
+      Cocoon big - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0ef1c02654997734d98ab5569d46854d
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Cocoon/Swarm Cocoon/Swarm
+      Cocoon small - death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c7d211861defe9e4e9a127551d208a4f
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Cocoon/Swarm Cocoon/Swarm
+      Cocoon small - burst.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f6974d9ec5dbc3446a0be8231f5d990f
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Cocoon/Swarm Cocoon/Swarm
+      Cocoon medium - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3e821396b8c6e8b45a70dc361b09c03e
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Cocoon/Swarm Cocoon/Swarm
+      Cocoon small - idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fc704c2a0db41a54aa41810ef366a57f
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Cocoon/Swarm Cocoon/Swarm
+      Cocoon small - hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c0af2981155bae248aee3fd6e2faf21a
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Cocoon/Swarm Cocoon/Swarm
+      Cocoon big - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f93d96eb72c87514e81098b8531f250a
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Cocoon/Swarm Cocoon/Swamr
+      Cocoon big - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0e41702effe1aee479c3ee92ea485bc0
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master large - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 839a7edb5f6e8a641848d9b8382735bc
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master normal - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a1a2836571f8d0d43b75983ab0048b68
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master normal - Cast 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 62074d5775a18644fbde52437df399b6
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master large to normal.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8e436ea47979d1c4c9dc6b39c34e50f2
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master large - Attack 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 95ea8fcc9b4f3fc4dbb8416ec4d03add
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master saggy - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7194808b20f2bf44fb3dbe3a1b1c574c
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master normal - Attack 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: dacb3d7f292bbc144abbc35738028b1d
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master normal to saggy.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b8207a83ae771c14e9eec1d8b1e20f76
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master large - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bea20fe27853d5e45a2b8f89d2db1f71
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master saggy - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1e28f85408acc864ab180d5f223b0131
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master saggy - Attack 3.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b361742ebcfaa6144bc6f3f9ee984349
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master large - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1066964f0bdbe8c4dabda632ab647114
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master normal - Attack 3.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c05cd9d7e7c3ff0429d34b2e7ea6d698
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master normal - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e6bc83c42b2d73c4aad16c73f50ca0dd
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master saggy - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 09cdc5a01a3012b47ac141aee14f1cf8
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master large - Attack 3.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c49138c377798eb429fc1dfe0e357be1
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master normal to large.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 364d48de2d4980f4cb2c8e2e3ca90759
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master large - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2f87a0c0cf8318c4f885fef9571c5b85
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master saggy - Cast 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e7b6bd8ccd56fee4b9937adec0c4e9e6
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master sagggy - Attack 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c0286be8c20e5454ea4c2357403a165d
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master saggy - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1d2e0b92188ce6c4ebbc30ec7ac2fa4b
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master saggy to normal.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7e38cf1a6960e8144b417a21be3a5ff1
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master normal - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 66d5a114f88d8794180b73965af3aa82
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master normal - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a00365113bf34cf498c01157b4ffa5ea
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master large - Cast 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b005d554e860de34a85772533f3367dc
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master large - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 548f7c46f8f004c4791731baa4290ec3
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master saggy - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c48d80abf6c21ad468df18c4722c39ef
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Swarm Master/Swarm Master/Swarm
+      Master normal - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e49f7fbf78b29bf45856bba70c415313
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/ThornWolf Pup/ThornWolf Pup/ThornWolf
+      Pup Red - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a0a7ff467feeec64f91d498f87fafde1
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/ThornWolf Pup/ThornWolf Pup/ThornWolf
+      Pup Blue - Attack 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 49712d271621eba4d8f10049233f29bd
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/ThornWolf Pup/ThornWolf Pup/ThornWolf
+      Pup Red - Flee.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 322defce2beabab499b8c667591993d3
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/ThornWolf Pup/ThornWolf Pup/ThornWolf
+      Pup Red - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 048e6633962d4dd4c84748380c1ff540
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/ThornWolf Pup/ThornWolf Pup/ThornWolf
+      Pup Blue - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f76eec271280452449065c49c50a50e1
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/ThornWolf Pup/ThornWolf Pup/ThornWolf
+      Pup Red - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c1c16ebde67cc7544b7a47fe84d6588d
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/ThornWolf Pup/ThornWolf Pup/ThornWolf
+      Pup Blue - Cast 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8008caf423e372444902ac0142751eed
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/ThornWolf Pup/ThornWolf Pup/ThornWolf
+      Pup Red - Flee Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d3cc913ef7691f04e81005ed136ae359
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/ThornWolf Pup/ThornWolf Pup/ThornWolf
+      Pup Blue - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5bae84758c6cd9146abb55476095843f
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/ThornWolf Pup/ThornWolf Pup/ThornWolf
+      Pup Red - Attack 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fcb73db7647c73243a5fa3916123a4c7
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/ThornWolf Pup/ThornWolf Pup/ThornWolf
+      Pup Blue - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cc40c73799818c445aa1648fdb0f576f
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/ThornWolf Pup/ThornWolf Pup/ThornWolf
+      Pup Blue - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bc91897dd76f96f44b1b8bd3807c767e
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/ThornWolf Pup/ThornWolf Pup/ThornWolf
+      Pup Red - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2851fe4cce52e2040a1439b311a0d286
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/ThornWolf Pup/ThornWolf Pup/ThornWolf
+      Pup Blue - Flee Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: edcd379f3c734134082b29a05e7be1b8
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/ThornWolf Pup/ThornWolf Pup/ThornWolf
+      Pup Blue - Flee.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 882794eae95aa664fabe39fc56d495c9
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/ThornWolf Pup/ThornWolf Pup/ThornWolf
+      Pup Red - Cast 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e3072aadb5aa22e4d877c489ffea3ba0
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/ThornWolf Pup/ThornWolf Pup/ThornWolf
+      Pup Red - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 17824b3309fcdf04f8e50244fb6169a8
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/ThornWolf Pup/ThornWolf Pup/ThornWolf
+      Pup Blue - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 96a7820298d4b6f4c932c98e21b9e367
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Troll/Troll/Troll - Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1b5c6a454b856e046919d2287002ff64
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Troll/Troll/Troll - Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8ea412a1c9377c84c8aa62cb0fb5a305
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Troll/Troll/Troll - Attack 2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c134716066dbc7f44b420ce34535d91b
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Troll/Troll/Troll - Cast 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f6d2fba45e9a39542ba130ab2f9a2046
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Troll/Troll/Troll - Attack 1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d0e903562c162c446b6672a32a3ba149
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Troll/Troll/Troll - Idle.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: baf2871d74793ff4091ef0f36f76ccef
+    m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Troll/Troll/Troll - Attack 3.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b5243524a01eab148b0a227677e45ff2, type: 2}
   m_SchemaSet:
