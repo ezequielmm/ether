@@ -21,6 +21,30 @@ MonoBehaviour:
     m_Address: Assets/Sprites/Encounter/magic-carpetB.png
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 6f1bcbe2541c0dc48b0c38d523dfbd51
+    m_Address: Assets/Sprites/Encounter/CaveIn.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e311e8e9e607e134090ad9317c9b913a
+    m_Address: Assets/AllIn1SpriteShader/Materials/SkinsVFX/HallowedHelmet.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2061cafae14deee4689f1309b8c656a4
+    m_Address: Assets/Sprites/SkinsVFX/HallowedHead_flames .png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1ba2ff31d4cc68b45921935951b851bc
+    m_Address: Assets/Sprites/SkinsVFX/Hallowed_Vambraces_flame_R.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e93271eb21b5a1041abede24824dd822
+    m_Address: Assets/Sprites/SkinsVFX/Hallowed_Vambraces_flame_L.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5bf4b13f940a88145ac60998c2455a9d
+    m_Address: Assets/Sprites/Trinkets/061.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b5243524a01eab148b0a227677e45ff2, type: 2}
   m_SchemaSet:

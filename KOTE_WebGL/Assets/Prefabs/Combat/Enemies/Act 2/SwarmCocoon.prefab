@@ -399,22 +399,6 @@ MonoBehaviour:
   animationJson: {fileID: 4900000, guid: ada71a996b88b854e88c8c1a6cb5c82f, type: 3}
   atlasAssetBase: {fileID: 11400000, guid: 169803346f92bfa4eb98403d3a41b46c, type: 2}
   animations:
-  - sequenceName: attack
-    sequence:
-    - track: 1
-      name: attack
-      loop: 0
-      delay: 0
-      animationEvent: 1
-    animationType: 2
-  - sequenceName: cast
-    sequence:
-    - track: 1
-      name: cast1
-      loop: 0
-      delay: 0
-      animationEvent: 1
-    animationType: 2
   - sequenceName: idle
     sequence:
     - track: 1
@@ -423,6 +407,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 0
+    vfxs: 
   - sequenceName: hit
     sequence:
     - track: 1
@@ -431,6 +416,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: death
     sequence:
     - track: 1
@@ -439,30 +425,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 1
-  - sequenceName: club
-    sequence:
-    - track: 1
-      name: attack
-      loop: 0
-      delay: 0
-      animationEvent: 1
-    animationType: 2
-  - sequenceName: gather shadow
-    sequence:
-    - track: 1
-      name: cast1
-      loop: 0
-      delay: 0
-      animationEvent: 1
-    animationType: 2
-  - sequenceName: spore cloud
-    sequence:
-    - track: 1
-      name: cast2
-      loop: 0
-      delay: 0
-      animationEvent: 1
-    animationType: 2
+    vfxs: 
   availableAnimations:
   - attack
   - cast1
@@ -470,7 +433,6 @@ MonoBehaviour:
   - death
   - hit
   - idle
-  idleAnimation: idle
 --- !u!114 &4083773959209653522
 MonoBehaviour:
   m_ObjectHideFlags: 0

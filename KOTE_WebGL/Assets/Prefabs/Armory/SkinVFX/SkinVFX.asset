@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2debf38a08d546a7ac904d73b9ff6cc2, type: 3}
+  m_Name: SkinVFX
+  m_EditorClassIdentifier: 
+  vfxPairs:
+  - skinName: Helmet_Hallowed
+    vfxData:
+    - boneName: BN-Head
+      vfx: {fileID: 8510636406652581662, guid: ebc7624ebc6d8024aa9888636497309a, type: 3}
+  - skinName: Vambrace_Hallowed
+    vfxData:
+    - boneName: BN-Forearm-L
+      vfx: {fileID: 9056862139247876431, guid: 37b4d43deb01b27468ad8334ef6baaa3, type: 3}
+    - boneName: BN-Forearm-R
+      vfx: {fileID: 931624766065318507, guid: e81e8982e297d404b801ee7cbe7b5c9b, type: 3}

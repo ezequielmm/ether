@@ -402,11 +402,12 @@ MonoBehaviour:
   - sequenceName: attack
     sequence:
     - track: 1
-      name: normal-attack1
+      name: normal-attack3
       loop: 0
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: cast
     sequence:
     - track: 1
@@ -415,6 +416,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: idle
     sequence:
     - track: 1
@@ -423,6 +425,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 0
+    vfxs: 
   - sequenceName: hit
     sequence:
     - track: 1
@@ -431,6 +434,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: death
     sequence:
     - track: 1
@@ -439,6 +443,79 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 1
+    vfxs: 
+  - sequenceName: summon
+    sequence:
+    - track: 1
+      name: normal-cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: summon_2
+    sequence:
+    - track: 1
+      name: normal-cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: summon_3
+    sequence:
+    - track: 1
+      name: normal-cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: summon_4
+    sequence:
+    - track: 1
+      name: normal-cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: defend
+    sequence:
+    - track: 1
+      name: normal-cast2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: attack_thunder_red_debuff
+    sequence:
+    - track: 1
+      name: normal-attack1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: attack_thunder_green_debuff_2
+    sequence:
+    - track: 1
+      name: normal-attack2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: signature_move
+    sequence:
+    - track: 1
+      name: saggy-cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
   availableAnimations:
   - attack
   - cast1
@@ -446,7 +523,6 @@ MonoBehaviour:
   - death
   - hit
   - idle
-  idleAnimation: idle
 --- !u!114 &6782786042289096963
 MonoBehaviour:
   m_ObjectHideFlags: 0

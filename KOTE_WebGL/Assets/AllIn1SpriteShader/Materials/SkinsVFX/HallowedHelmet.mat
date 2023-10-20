@@ -10,8 +10,10 @@ Material:
   m_Name: HallowedHelmet
   m_Shader: {fileID: 4800000, guid: a36b7719ff0465b42ab1407d67672c5f, type: 3}
   m_ValidKeywords:
+  - DISTORT_ON
+  - GLITCH_ON
   - GLOW_ON
-  - WAVEUV_ON
+  - WIND_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -51,7 +53,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 2061cafae14deee4689f1309b8c656a4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OutlineDistortTex:
@@ -102,8 +104,8 @@ Material:
     - _ColorSwapRedLuminosity: 0.5
     - _Contrast: 1
     - _CullingOption: 0
-    - _DistortAmount: 0.5
-    - _DistortTexXSpeed: 5
+    - _DistortAmount: 0.46
+    - _DistortTexXSpeed: -1.3
     - _DistortTexYSpeed: 5
     - _EditorDrawers: 6
     - _FadeAmount: -0.1
@@ -128,8 +130,8 @@ Material:
     - _GrassManualAnim: 1
     - _GrassManualToggle: 0
     - _GrassRadialBend: 0.1
-    - _GrassSpeed: 2
-    - _GrassWind: 20
+    - _GrassSpeed: 0.8
+    - _GrassWind: 10.3
     - _GreyscaleBlend: 1
     - _GreyscaleLuminosity: 0
     - _GreyscaleOutline: 0
@@ -154,7 +156,7 @@ Material:
     - _MinXUV: 0
     - _MinYUV: 0
     - _MotionBlurAngle: 0.1
-    - _MotionBlurDist: 1.25
+    - _MotionBlurDist: -3
     - _MyDstMode: 10
     - _MySrcMode: 5
     - _NegativeAmount: 1
@@ -173,7 +175,7 @@ Material:
     - _OutlineWidth: 0.004
     - _OverlayBlend: 1
     - _OverlayGlow: 1
-    - _PinchUvAmount: 0.35
+    - _PinchUvAmount: 0.002
     - _PixelateSize: 32
     - _PosterizeGamma: 0.75
     - _PosterizeNumColors: 8
@@ -181,8 +183,8 @@ Material:
     - _RandomSeed: 0
     - _RectSize: 1
     - _RotateUvAmount: 0
-    - _RoundWaveSpeed: 1
-    - _RoundWaveStrength: 0.05
+    - _RoundWaveSpeed: 0.04
+    - _RoundWaveStrength: 0.059
     - _ShadowAlpha: 0.5
     - _ShadowX: 0.1
     - _ShadowY: -0.05
@@ -191,8 +193,8 @@ Material:
     - _ShakeUvY: 1
     - _ShineGlow: 1
     - _ShineLocation: 0.5
-    - _ShineRotate: 0
-    - _ShineWidth: 0.1
+    - _ShineRotate: 2.22
+    - _ShineWidth: 0.214
     - _TextureScrollXSpeed: 1
     - _TextureScrollYSpeed: 0
     - _TwistUvAmount: 1
@@ -203,7 +205,7 @@ Material:
     - _WaveSpeed: 10
     - _WaveStrength: 7.5
     - _WaveX: 0
-    - _WaveY: 0.5
+    - _WaveY: 1
     - _ZTestMode: 4
     - _ZWrite: 0
     - _ZoomUvAmount: 0.5
@@ -232,5 +234,5 @@ Material:
     - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
     - _OverlayColor: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ShineColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShineColor: {r: 1, g: 1, b: 1, a: 0.14117648}
   m_BuildTextureStacks: []

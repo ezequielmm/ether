@@ -172,7 +172,7 @@ MonoBehaviour:
   _enemiesManager: {fileID: 1572060671}
   enemiesToTry:
   - mimic
-  vfxToTest: Debuff
+  vfxToTest: 13
   text: {fileID: 8731995980948551041}
   vfxes: {fileID: 11400000, guid: 1a226e9bbd9aed5408db67b64c8c523a, type: 2}
 --- !u!114 &1572060671

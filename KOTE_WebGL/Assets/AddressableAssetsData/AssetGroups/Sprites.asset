@@ -965,10 +965,6 @@ MonoBehaviour:
     m_Address: Assets/Sprites/Battle/Status/44_Blighted.png
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 67c308ae7e154aa4196e87a48210ae77
-    m_Address: Assets/Sprites/cards/CardImages/139.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: 086e8ef4f2c708e44a844c62069b76a5
     m_Address: Assets/Sprites/Battle/Battle_BG_2.png
     m_ReadOnly: 0

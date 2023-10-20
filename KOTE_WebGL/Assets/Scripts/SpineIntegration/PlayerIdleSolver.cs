@@ -1,4 +1,5 @@
-﻿using Spine.Unity;
+﻿using Combat.VFX;
+using Spine.Unity;
 using UnityEngine;
 
 internal class PlayerIdleSolver : IIdleSolver
@@ -16,4 +17,9 @@ internal class PlayerIdleSolver : IIdleSolver
     => data != null && data.hpCurrent < (data.hpMax / 4)  && GameSettings.SHOW_PLAYER_INJURED_IDLE ? 
         "injured_idle" : 
         "idle";
+
+    public VFX DetermineIdleVFX()
+    {
+        return VFX.None;
+    }
 }

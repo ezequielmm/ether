@@ -454,7 +454,10 @@ public class WebSocketParser
     {
         SWSM_EnergyArray energyData = JsonConvert.DeserializeObject<SWSM_EnergyArray>(data);
         //        Debug.Log(energyData);
-        GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(energyData.data.data[0], energyData.data.data[1]);
+        if (energyData.data.data != null)
+            GameManager.Instance.EVENT_UPDATE_ENERGY.Invoke(energyData.data.data[0], energyData.data.data[1]);
+        else
+            Debug.LogWarning($"[SWSM_Parser][UpdateEnergy] energyData.data is null");
     }
 
     private static void ProcessUpdateEnemy(string rawData)

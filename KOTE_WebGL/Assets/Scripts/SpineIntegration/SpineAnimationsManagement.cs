@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Combat.VFX;
 using UnityEngine;
 using Spine;
 using Spine.Unity;
@@ -39,6 +40,8 @@ public class SpineAnimationsManagement : MonoBehaviour
             public float delay;
             public AnimationEvent animationEvent;
         }
+
+        public VFX[] vfxs;
     }
     public enum AnimationType
     {
@@ -57,11 +60,14 @@ public class SpineAnimationsManagement : MonoBehaviour
     public TextAsset animationJson;
     public AtlasAssetBase atlasAssetBase;
 
-
+    public SkeletonUtility skeletonUtility { get; private set; }
+    
 
     [SerializeField]
     public List<AnimationSequence> animations = new List<AnimationSequence>();
     private Dictionary<string, AnimationSequence> animationsDictionary;
+    
+    private VFXList vfxList;
     
     
     [Unity.Collections.ReadOnly]
@@ -151,9 +157,12 @@ public class SpineAnimationsManagement : MonoBehaviour
     }
 #endif
     
-    public void Init(IIdleSolver idleSolver)
+    public void Init(IIdleSolver idleSolver, VFXList vfxList = null)
     {
+        this.vfxList = vfxList;
         this.idleSolver = idleSolver;
+        animator = GetComponent<Animator>();
+        meshRenderer = GetComponent<MeshRenderer>();
         SetSkeletonDataAsset();
     }
 
@@ -173,6 +182,11 @@ public class SpineAnimationsManagement : MonoBehaviour
         skeletonAnimationScript.skeletonDataAsset = skeletonDataAsset;
         skeletonAnimationScript.Initialize(true);
 
+        skeletonUtility = GetComponentInChildren<SkeletonUtility>();
+        if (skeletonUtility)
+            Debug.Log($"This getter call creates the skeleton {skeletonUtility.Skeleton}");
+        skeletonUtility?.SpawnHierarchy(SkeletonUtilityBone.Mode.Follow, true, true, true);
+
         availableAnimations.Clear();
         foreach (Animation animation in skeletonData.Animations)
         {
@@ -182,7 +196,10 @@ public class SpineAnimationsManagement : MonoBehaviour
     
     // This overload tries to keep a queue of animations, if queue isn't cleared the next incoming animation will be added to the queue
     private Queue<AnimationSequence> animationQueue = new();
+    private Queue<string> vfxQueue = new();
     private IIdleSolver idleSolver;
+    private Animator animator;
+    private MeshRenderer meshRenderer;
 
     public float PlayAnimationSequence(string animationSequenceName, bool forceSet = false)
     {
@@ -251,6 +268,19 @@ public class SpineAnimationsManagement : MonoBehaviour
         
         if (animationSequence.animationType != AnimationType.Idle)
             animationQueue.Enqueue(animationSequence);
+
+        if (animationSequence.vfxs.Length > 0 && vfxList != null)
+        {
+            foreach (var vfx in animationSequence.vfxs)
+            {
+                var visualEffect = vfxList.GetVFX(vfx);
+                if (!visualEffect) continue;
+                
+                vfxQueue.Enqueue(vfx.ToString());
+                if (vfxQueue.Count <= 1)
+                    PlayNextVfx();
+            }
+        }
         
         StartCoroutine(CheckRemovedFromQueue(duration));
         IEnumerator CheckRemovedFromQueue(float delay)
@@ -263,6 +293,14 @@ public class SpineAnimationsManagement : MonoBehaviour
         return duration;
     }
 
+    private void PlayNextVfx()
+    {
+        if (vfxQueue.Count <= 0) return;
+        
+        if (Enum.TryParse<VFX>(vfxQueue.Dequeue(), out var vfx))
+            vfxList.GetVFX(vfx)?.Play(this, animator, meshRenderer, PlayNextVfx);
+    }
+    
     private void RemoveFromQueue(string sequenceName)
     {
         if (animationQueue.Count <= 0) return;
@@ -291,6 +329,13 @@ public class SpineAnimationsManagement : MonoBehaviour
                 return;
             }
         }
+
+        var idleVfx = idleSolver.DetermineIdleVFX();
+        if (idleVfx != VFX.None) {
+            var visualEffect = vfxList.GetVFX(idleVfx);
+            if (visualEffect)
+                visualEffect.Play(this, animator, meshRenderer);
+        }
         
         PlayAnimationSequence(animationSequence.sequenceName);
     }
@@ -313,4 +358,6 @@ public class SpineAnimationsManagement : MonoBehaviour
     {
         skeletonAnimationScript.skeleton.SetSkin(skin);
     }
+
+    public Transform GetBone(string boneName) => skeletonUtility != null ? skeletonUtility.boneComponents.FirstOrDefault(b => b.name == boneName)?.transform : null;
 }

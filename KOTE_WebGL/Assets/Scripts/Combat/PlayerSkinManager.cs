@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Combat.VFX;
 using Spine;
 using Spine.Unity;
@@ -22,15 +23,19 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
     private List<(Skin.SkinEntry, Attachment)> generatedAttachments;
     private Renderer renderer;
 
-    [SerializeField] private VFXList skinsVFX;
-    
+    [SerializeField] private SkinVFXList skinsVFX;
+    private SpineAnimationsManagement spine;
+
     public void SkinReset()
     {
         equipsSkin = new Skin("Equips");
+        
+        spine ??= GetComponentInChildren<SpineAnimationsManagement>();
         if (skeletonAnimation.skeleton == null)
         {
-            if (TryGetComponent<SpineAnimationsManagement>(out var animationsManagement))
-                animationsManagement.SetSkeletonDataAsset();
+            if (spine != null){
+                spine.SetSkeletonDataAsset();
+            }
             else
             {
                 Debug.LogWarning($"[PlayerSkinManager] Skeleton is null, can't apply skin");
@@ -50,11 +55,31 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
         skeletonData = skeletonDataAsset.GetSkeletonData(false);
         
         List<TraitSprite> skinSprites = PlayerSpriteManager.Instance.GetAllTraitSprites();
-
+        
+        var vfxInfo = new Dictionary<string, List<(GameObject, Transform)>>();
+        foreach (var skin in PlayerSpriteManager.Instance.GetActiveSkinNames)
+        {
+            var vfxPair = skinsVFX.GetVFX(skin);
+            if (vfxPair == null) continue;
+            
+            foreach (var vfxData in vfxPair)
+            {
+                var bone = spine.GetBone(vfxData.boneName);
+                if (bone == null)
+                    continue;
+                
+                if (!vfxInfo.ContainsKey(skin))
+                    vfxInfo.Add(skin, new List<(GameObject, Transform)>());
+                vfxInfo[skin].Add((vfxData.vfx, bone));
+            }
+        }
+        
         // some dark magic due to the way Flails are set up in spine
         var flailFound = TryStartWithFlailSkin(skinSprites);
         if (flailFound != null)
+        {
             equipsSkin = flailFound;
+        }
 
         renderer ??= GetComponent<Renderer>();
         foreach (var mat in renderer.materials)
@@ -63,7 +88,8 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
                 continue;
             Destroy(mat);
         }
-
+        
+        
         foreach (var traitType in Enum.GetNames(typeof(Trait)))
         {
             // some dark magic due to the way Flails are set up in spine
@@ -84,12 +110,15 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
             if (skin == null)
                 Debug.Log("[UpdateSkin] skin" + traitSprite.SkinName + "NOT FOUND");
             else
+            {
                 equipsSkin.AddSkin(skin);
+            }
         }
 
         generatedAttachments = new List<(Skin.SkinEntry, Attachment)>();
         foreach (Skin.SkinEntry skinAttachment in equipsSkin.Attachments)
         {
+            
             TraitSprite traitSprite = skinSprites.Find(x => x.AttachmentIndex == skinAttachment.SlotIndex);
             if (traitSprite == null)
             {
@@ -117,36 +146,33 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
         
         skeletonAnimation.Skeleton.SetSkin(equipsSkin);
         RefreshSkeletonAttachments();
-
-        var a = new Dictionary<Skin.SkinEntry, List<Attachment>>();
-        foreach (var (skinEntry, attachment) in generatedAttachments)
-        {
-            if (!a.ContainsKey(skinEntry))
-                a[skinEntry] = new List<Attachment>();
-            a[skinEntry].Add(attachment);
-        }
         
-        //ApplySkinVFX(a);
+        ApplySkinVFX(vfxInfo);
         
         skinLoaded.Invoke();
-        
-        Resources.UnloadUnusedAssets();
-        System.GC.Collect();
     }
 
-    private void ApplySkinVFX(Dictionary<Skin.SkinEntry, List<Attachment>> dictionary)
+    private void ApplySkinVFX(Dictionary<string, List<(GameObject, Transform)>> dictionary)
     {
-        foreach (var kv in dictionary)
+        StartCoroutine(ApplyVFXRoutine());
+        IEnumerator ApplyVFXRoutine()
         {
-            var visualEffect = skinsVFX.GetVFX(kv.Key.Name);
-            if (visualEffect != null)
+            yield return new WaitForEndOfFrame();
+
+            foreach (var kv in dictionary)
             {
-                foreach (var attachment in kv.Value)
+                var visualEffect = skinsVFX.GetVFX(kv.Key);
+                if (visualEffect != null)
                 {
-                    visualEffect.Play(this, GetComponent<Animator>(), GetComponent<MeshRenderer>(), attachment.GetMaterial());
+                    foreach (var tuple in kv.Value)
+                    {
+                        var vfx = Instantiate(tuple.Item1, tuple.Item2);
+                        vfx.transform.localPosition = Vector3.zero;
+                    }
                 }
             }
         }
+        
     }
 
     /*
@@ -181,11 +207,13 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
         if (templateAttachment.GetType() == typeof(RegionAttachment))
         {
             attachment = CreateRegionAttachment(templateAttachment, sprite);
+            attachment.GetMaterial().mainTexture.name = sprite.texture.name;
             return attachment;
         }
         else if (templateAttachment.GetType() == typeof(MeshAttachment))
         {
             attachment = CreateMeshAttachment(templateAttachment, sprite);
+            attachment.GetMaterial().mainTexture.name = sprite.texture.name;
             return attachment;
         }
 

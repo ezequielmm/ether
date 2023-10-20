@@ -407,6 +407,16 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 0
+    vfxs: 
+  - sequenceName: counter_idle
+    sequence:
+    - track: 0
+      name: drawn_idle
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 0
+    vfxs: 
   - sequenceName: attack
     sequence:
     - track: 0
@@ -420,6 +430,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 2
+    vfxs: 
   - sequenceName: attack2
     sequence:
     - track: 0
@@ -433,15 +444,19 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 2
+    vfxs: 
   - sequenceName: debuff
     sequence: []
     animationType: 2
+    vfxs: 01000000
   - sequenceName: defend
     sequence: []
     animationType: 2
+    vfxs: 03000000
   - sequenceName: buff
     sequence: []
     animationType: 2
+    vfxs: 00000000
   - sequenceName: counter
     sequence:
     - track: 0
@@ -449,12 +464,8 @@ MonoBehaviour:
       loop: 0
       delay: 0
       animationEvent: 1
-    - track: 0
-      name: attack1
-      loop: 0
-      delay: 0
-      animationEvent: 0
     animationType: 2
+    vfxs: 04000000
   - sequenceName: infect
     sequence:
     - track: 0
@@ -468,6 +479,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 2
+    vfxs: 06000000
   - sequenceName: infect1_attack
     sequence:
     - track: 0
@@ -486,9 +498,11 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 2
+    vfxs: 
   - sequenceName: grow
     sequence: []
     animationType: 2
+    vfxs: 09000000
   - sequenceName: signature_move
     sequence:
     - track: 0
@@ -507,6 +521,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 2
+    vfxs: 0600000006000000
   - sequenceName: death
     sequence:
     - track: 0
@@ -515,6 +530,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 1
+    vfxs: 
   - sequenceName: hit
     sequence:
     - track: 0
@@ -523,6 +539,63 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
+  - sequenceName: attack_debuff
+    sequence:
+    - track: 0
+      name: drawn_start
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    - track: 0
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    animationType: 2
+    vfxs: 01000000
+  - sequenceName: attack_buff
+    sequence:
+    - track: 0
+      name: drawn_start
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    - track: 0
+      name: attack2
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    animationType: 2
+    vfxs: 00000000
+  - sequenceName: counter_defense
+    sequence:
+    - track: 0
+      name: drawn_start
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 0400000002000000
+  - sequenceName: infect_attack
+    sequence:
+    - track: 0
+      name: drawn_start
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    - track: 0
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    - track: 0
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    animationType: 2
+    vfxs: 06000000
   availableAnimations:
   - attack
   - cast1
@@ -530,7 +603,6 @@ MonoBehaviour:
   - death
   - hit
   - idle
-  defaultIdleAnimation: idle
 --- !u!114 &6799574483886385033
 MonoBehaviour:
   m_ObjectHideFlags: 0

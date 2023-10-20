@@ -123,44 +123,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &1303347409 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6551685658940756726, guid: 33c4b6f1a2d560847a90ef3bf749f7c8,
-    type: 3}
-  m_PrefabInstance: {fileID: 1343476200}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1303347410 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6551685658940756722, guid: 33c4b6f1a2d560847a90ef3bf749f7c8,
     type: 3}
   m_PrefabInstance: {fileID: 1343476200}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1303347409}
+  m_GameObject: {fileID: 1759649334}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de6881dad5d0cd1408e58105013f4428, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!95 &1303347417
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1303347409}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d5108cc75fb44f74b9769f8e70c98b75, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &1343476200
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -223,12 +197,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2810720631561535991, guid: 33c4b6f1a2d560847a90ef3bf749f7c8,
-        type: 3}
-      propertyPath: skinsVFX
-      value: 
-      objectReference: {fileID: 11400000, guid: 9beb3f43d775d7846a35963ff3766012,
-        type: 2}
     - target: {fileID: 4348910761551215378, guid: 33c4b6f1a2d560847a90ef3bf749f7c8,
         type: 3}
       propertyPath: m_Name
@@ -243,6 +211,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6551685658940756727, guid: 33c4b6f1a2d560847a90ef3bf749f7c8,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6551685658940756727, guid: 33c4b6f1a2d560847a90ef3bf749f7c8,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6551685658940756727, guid: 33c4b6f1a2d560847a90ef3bf749f7c8,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33c4b6f1a2d560847a90ef3bf749f7c8, type: 3}
@@ -299,12 +282,46 @@ MonoBehaviour:
   boots: Hallowed
   gauntlets: Hallowed
   pauldrons: Hallowed
-  vambrace: 
+  vambrace: Hallowed
   legguard: Hallowed
   padding: Hallowed
   playerSpriteManager: {fileID: 1039217531695229944, guid: 4a6c37039f8cd4d4888f5ca32b21ee8b,
     type: 3}
   playerAnimations: {fileID: 1303347410}
+--- !u!1 &1759649334 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6551685658940756726, guid: 33c4b6f1a2d560847a90ef3bf749f7c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1343476200}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1759649338 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6551685658940756734, guid: 33c4b6f1a2d560847a90ef3bf749f7c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1343476200}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759649334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1759649343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759649334}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c70a5b35f6ff2541aed8e8346b7e4d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skeletonRenderer: {fileID: 1759649338}
+  copyPropertyBlock: 1
+  copyMeshRendererFlags: 1
+  partsRenderers: []
 --- !u!1 &1971212743
 GameObject:
   m_ObjectHideFlags: 0

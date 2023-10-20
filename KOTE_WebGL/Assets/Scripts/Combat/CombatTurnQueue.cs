@@ -140,7 +140,7 @@ public class CombatTurnQueue : MonoBehaviour
 
     private void ProcessTurn(CombatTurnData data) 
     {
-        Debug.Log($"[CombatQueue] [{queue.Count}] Action Being Run --==| {data.ToString()} |==--");
+        Debug.Log($"[CombatQueue] [{queue.Count}] {data.action?.name} Action Being Run --==| {data.ToString()} |==--");
         AwaitToContinue = true;
         queueState = QueueState.requst;
         skipAwaitCounter = 3;

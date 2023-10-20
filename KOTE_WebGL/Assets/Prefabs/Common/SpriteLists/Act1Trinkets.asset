@@ -71,6 +71,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 49b9bebe1ad162d4883171ea4cfe08f0, type: 3}
   - {fileID: 21300000, guid: 9cd4c53a76b68cc48a5849a9261e9dcc, type: 3}
   - {fileID: 21300000, guid: 1b0f58d3826f41a47b3e9f82d472f69e, type: 3}
+  - {fileID: 21300000, guid: 5bf4b13f940a88145ac60998c2455a9d, type: 3}
   entityImagesRef:
   - m_AssetGUID: 98716ceccef61434285290e8173a971f
     m_SubObjectName: 
@@ -301,6 +302,10 @@ MonoBehaviour:
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   - m_AssetGUID: 1b0f58d3826f41a47b3e9f82d472f69e
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 5bf4b13f940a88145ac60998c2455a9d
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0

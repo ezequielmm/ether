@@ -407,7 +407,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 0
-    IdleOverride: 
+    vfxs: 
   - sequenceName: hidden_idle
     sequence:
     - track: 0
@@ -416,7 +416,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 0
-    IdleOverride: 
+    vfxs: 
   - sequenceName: attack
     sequence:
     - track: 0
@@ -425,7 +425,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
-    IdleOverride: 
+    vfxs: 
   - sequenceName: attack1
     sequence:
     - track: 0
@@ -434,8 +434,8 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
-    IdleOverride: 
-  - sequenceName: attack_hidden
+    vfxs: 
+  - sequenceName: attack_hidden_2
     sequence:
     - track: 0
       name: attack2
@@ -443,7 +443,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
-    IdleOverride: 
+    vfxs: 
   - sequenceName: defend
     sequence:
     - track: 0
@@ -452,7 +452,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
-    IdleOverride: 
+    vfxs: 
   - sequenceName: buff
     sequence:
     - track: 0
@@ -461,7 +461,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
-    IdleOverride: 
+    vfxs: 
   - sequenceName: debuff
     sequence:
     - track: 0
@@ -470,7 +470,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
-    IdleOverride: 
+    vfxs: 
   - sequenceName: special
     sequence:
     - track: 0
@@ -478,13 +478,8 @@ MonoBehaviour:
       loop: 0
       delay: 0
       animationEvent: 1
-    - track: 0
-      name: hidden_idle
-      loop: 1
-      delay: 0
-      animationEvent: 0
     animationType: 2
-    IdleOverride: hidden_idle
+    vfxs: 
   - sequenceName: signature_move
     sequence:
     - track: 0
@@ -507,13 +502,8 @@ MonoBehaviour:
       loop: 0
       delay: 0
       animationEvent: 0
-    - track: 0
-      name: hidden_idle
-      loop: 1
-      delay: 0
-      animationEvent: 0
     animationType: 2
-    IdleOverride: 
+    vfxs: 
   - sequenceName: attack_buff
     sequence:
     - track: 0
@@ -527,7 +517,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 2
-    IdleOverride: 
+    vfxs: 
   - sequenceName: defend_buff
     sequence:
     - track: 0
@@ -541,7 +531,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 2
-    IdleOverride: 
+    vfxs: 
   - sequenceName: defend_debuff
     sequence:
     - track: 0
@@ -555,7 +545,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 2
-    IdleOverride: 
+    vfxs: 
   - sequenceName: special_attack
     sequence:
     - track: 0
@@ -569,7 +559,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 2
-    IdleOverride: 
+    vfxs: 
   - sequenceName: hit
     sequence:
     - track: 0
@@ -578,7 +568,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
-    IdleOverride: 
+    vfxs: 
   - sequenceName: death
     sequence:
     - track: 0
@@ -587,7 +577,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 1
-    IdleOverride: 
+    vfxs: 
   availableAnimations:
   - attack
   - cast1
@@ -595,7 +585,6 @@ MonoBehaviour:
   - death
   - hit
   - idle
-  idleAnimation: idle
 --- !u!114 &2214821413363804581
 MonoBehaviour:
   m_ObjectHideFlags: 0

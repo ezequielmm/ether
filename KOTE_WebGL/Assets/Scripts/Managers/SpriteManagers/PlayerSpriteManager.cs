@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -27,6 +28,17 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
         {
             KinghtData.Clear();
             return KinghtData.GetSkeletonData(true);
+        }
+    }
+
+    public string[] GetActiveSkinNames
+    {
+        get
+        {
+            if (currentNft == null)
+                return Array.Empty<string>();
+
+            return _curNft.GetActiveSkinNames;
         }
     }
 

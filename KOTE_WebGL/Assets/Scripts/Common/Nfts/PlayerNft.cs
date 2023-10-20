@@ -336,4 +336,20 @@ public abstract class PlayerNft
         DefaultSprites.Clear();
         DefaultSprites = new List<TraitSprite>();
     }
+    
+    public string[] GetActiveSkinNames
+    {
+        get
+        {
+            var skinNames = EquippedTraits.
+                ToDictionary(
+                    trait => trait.Key, 
+                    trait => GetSkinName(trait.Key, trait.Value));
+
+            foreach (var trait in Traits.Where(trait => !skinNames.ContainsKey(trait.Key)))
+                skinNames.Add(trait.Key, GetSkinName(trait.Key, trait.Value));
+
+            return skinNames.Values.ToArray();
+        }
+    }
 }

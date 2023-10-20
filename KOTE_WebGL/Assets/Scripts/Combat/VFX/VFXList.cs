@@ -10,13 +10,13 @@ namespace Combat.VFX
         [System.Serializable]
         public struct VFXPair
         {
-            public string name;
+            public VFX name;
             public ScriptableObject vfx;
         }
         public VFXPair[] vfxPairs;
-        private Dictionary<string, ScriptableObject> vfxDict;
+        private Dictionary<VFX, ScriptableObject> vfxDict;
         
-        public VisualEffect GetVFX(string name)
+        public VisualEffect GetVFX(VFX name)
         {
             vfxDict ??= vfxPairs.ToDictionary(k => k.name, v => v.vfx);
             if (vfxDict.TryGetValue(name, out var vfx))
@@ -24,5 +24,24 @@ namespace Combat.VFX
             
             return null;
         }
+    }
+    
+    public enum VFX
+    {
+        Buff,
+        Debuff,
+        Defend,
+        Defend_Shake,
+        Counter,
+        Self_immolation,
+        Infect,
+        Breach_attack,
+        Breach_hit,
+        Grow,
+        TransformMossy,
+        Mitosis,
+        Scorch,
+        Ethereal,
+        None
     }
 }

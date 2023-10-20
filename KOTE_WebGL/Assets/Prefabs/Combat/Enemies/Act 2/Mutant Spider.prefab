@@ -402,11 +402,12 @@ MonoBehaviour:
   - sequenceName: attack
     sequence:
     - track: 1
-      name: attack
+      name: attack1
       loop: 0
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: cast
     sequence:
     - track: 1
@@ -415,6 +416,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: idle
     sequence:
     - track: 1
@@ -423,6 +425,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 0
+    vfxs: 
   - sequenceName: hit
     sequence:
     - track: 1
@@ -431,6 +434,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: death
     sequence:
     - track: 1
@@ -439,6 +443,33 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 1
+    vfxs: 
+  - sequenceName: defend
+    sequence: []
+    animationType: 2
+    vfxs: 02000000
+  - sequenceName: buff
+    sequence: []
+    animationType: 2
+    vfxs: 00000000
+  - sequenceName: breach
+    sequence:
+    - track: 1
+      name: attack3
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: attack_debuff
+    sequence:
+    - track: 1
+      name: attack2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
   availableAnimations:
   - attack
   - cast1
@@ -446,7 +477,6 @@ MonoBehaviour:
   - death
   - hit
   - idle
-  idleAnimation: idle
 --- !u!114 &7102231509554550847
 MonoBehaviour:
   m_ObjectHideFlags: 0

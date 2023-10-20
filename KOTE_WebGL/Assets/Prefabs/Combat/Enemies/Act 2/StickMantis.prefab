@@ -399,70 +399,146 @@ MonoBehaviour:
   animationJson: {fileID: 4900000, guid: a2ac5134b8f7d924b977482e12033c47, type: 3}
   atlasAssetBase: {fileID: 11400000, guid: bddaacac828bd40408ff0935049e6d5d, type: 2}
   animations:
-  - sequenceName: attack
-    sequence:
-    - track: 1
-      name: attack
-      loop: 0
-      delay: 0
-      animationEvent: 1
-    animationType: 2
-  - sequenceName: cast
-    sequence:
-    - track: 1
-      name: cast1
-      loop: 0
-      delay: 0
-      animationEvent: 1
-    animationType: 2
   - sequenceName: idle
     sequence:
-    - track: 1
+    - track: 0
       name: idle
       loop: 1
       delay: 0
-      animationEvent: 0
+      animationEvent: 1
     animationType: 0
+    vfxs: 
   - sequenceName: hit
     sequence:
-    - track: 1
+    - track: 0
       name: hit
       loop: 0
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: death
     sequence:
-    - track: 1
+    - track: 0
       name: death
       loop: 0
       delay: 0
       animationEvent: 1
     animationType: 1
-  - sequenceName: club
+    vfxs: 
+  - sequenceName: attack
     sequence:
-    - track: 1
-      name: attack
+    - track: 0
+      name: attack1
       loop: 0
       delay: 0
       animationEvent: 1
     animationType: 2
-  - sequenceName: gather shadow
-    sequence:
-    - track: 1
-      name: cast1
-      loop: 0
-      delay: 0
-      animationEvent: 1
+    vfxs: 
+  - sequenceName: buff
+    sequence: []
     animationType: 2
-  - sequenceName: spore cloud
+    vfxs: 00000000
+  - sequenceName: debuff
     sequence:
-    - track: 1
+    - track: 0
       name: cast2
       loop: 0
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
+  - sequenceName: defend
+    sequence:
+    - track: 0
+      name: cast2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: counter
+    sequence:
+    - track: 0
+      name: cast2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: signature_move
+    sequence:
+    - track: 0
+      name: cast2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    - track: 0
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    animationType: 2
+    vfxs: 0c000000
+  - sequenceName: breach
+    sequence:
+    - track: 0
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: attack_2
+    sequence:
+    - track: 0
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: attack_debuff
+    sequence:
+    - track: 0
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    - track: 0
+      name: cast2
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    animationType: 2
+    vfxs: 
+  - sequenceName: buff_2
+    sequence:
+    - track: 0
+      name: cast2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: counter_buff
+    sequence:
+    - track: 0
+      name: cast2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 00000000
+  - sequenceName: debuff_2
+    sequence:
+    - track: 0
+      name: cast2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
   availableAnimations:
   - attack
   - cast1
@@ -470,7 +546,6 @@ MonoBehaviour:
   - death
   - hit
   - idle
-  idleAnimation: idle
 --- !u!114 &6791538956309269099
 MonoBehaviour:
   m_ObjectHideFlags: 0

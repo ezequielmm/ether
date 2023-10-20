@@ -457,7 +457,7 @@ public class GameManager : SingleTon<GameManager>
         if (scene == inGameScenes.Expedition)
         {
             IsPlayerTurn = true;
-            UpdatePlayerSkin();
+            FindObjectOfType<PlayerSpriteManager>().BuildPlayer(NftManager.Instance.NftSelected);
         }
     }
 

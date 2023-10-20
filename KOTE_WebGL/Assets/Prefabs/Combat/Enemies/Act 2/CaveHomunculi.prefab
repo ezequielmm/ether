@@ -402,11 +402,12 @@ MonoBehaviour:
   - sequenceName: attack
     sequence:
     - track: 1
-      name: attack
+      name: attack1
       loop: 0
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: cast
     sequence:
     - track: 1
@@ -415,6 +416,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: idle
     sequence:
     - track: 1
@@ -423,6 +425,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 0
+    vfxs: 
   - sequenceName: hit
     sequence:
     - track: 1
@@ -431,6 +434,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: death
     sequence:
     - track: 1
@@ -439,15 +443,8 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 1
-  - sequenceName: club
-    sequence:
-    - track: 1
-      name: attack
-      loop: 0
-      delay: 0
-      animationEvent: 1
-    animationType: 2
-  - sequenceName: gather shadow
+    vfxs: 
+  - sequenceName: defend
     sequence:
     - track: 1
       name: cast1
@@ -455,7 +452,62 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
-  - sequenceName: spore cloud
+    vfxs: 
+  - sequenceName: buff
+    sequence:
+    - track: 1
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: absorb
+    sequence:
+    - track: 1
+      name: cast3
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: debuff
+    sequence:
+    - track: 1
+      name: cast3
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: call_for_reinforcements
+    sequence:
+    - track: 1
+      name: cast3
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: breach
+    sequence:
+    - track: 1
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 07000000
+  - sequenceName: attack_debuff
+    sequence:
+    - track: 1
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 01000000
+  - sequenceName: mistify
     sequence:
     - track: 1
       name: cast2
@@ -463,6 +515,113 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
+  - sequenceName: infect
+    sequence:
+    - track: 1
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 06000000
+  - sequenceName: signature_move
+    sequence:
+    - track: 1
+      name: cast3
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    - track: 1
+      name: cast3
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    animationType: 2
+    vfxs: 
+  - sequenceName: counter
+    sequence:
+    - track: 1
+      name: cast3
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: call_for_reinforcements_2
+    sequence:
+    - track: 1
+      name: cast3
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    - track: 1
+      name: cast3
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    animationType: 2
+    vfxs: 
+  - sequenceName: attack_debuff2
+    sequence:
+    - track: 1
+      name: attack1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    - track: 1
+      name: cast2
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    animationType: 2
+    vfxs: 
+  - sequenceName: absorb_defend
+    sequence:
+    - track: 1
+      name: cast3
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    - track: 1
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    animationType: 2
+    vfxs: 
+  - sequenceName: buff_2
+    sequence:
+    - track: 1
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
+  - sequenceName: counter_buff
+    sequence:
+    - track: 1
+      name: cast3
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    - track: 1
+      name: cast1
+      loop: 0
+      delay: 0
+      animationEvent: 0
+    animationType: 2
+    vfxs: 
+  - sequenceName: debuff_3
+    sequence:
+    - track: 1
+      name: cast2
+      loop: 0
+      delay: 0
+      animationEvent: 1
+    animationType: 2
+    vfxs: 
   availableAnimations:
   - attack
   - cast1
@@ -470,7 +629,6 @@ MonoBehaviour:
   - death
   - hit
   - idle
-  idleAnimation: idle
 --- !u!114 &291880579990878955
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,11 +13,25 @@ MonoBehaviour:
   m_Name: _VFXList
   m_EditorClassIdentifier: 
   vfxPairs:
-  - name: DefendShake
+  - name: 3
     vfx: {fileID: 11400000, guid: 184f3efd999502c48b2ded86fa533b59, type: 2}
-  - name: Buff
+  - name: 0
     vfx: {fileID: 11400000, guid: 1512b45a234b7064c8f81e13f8d31ba4, type: 2}
-  - name: Debuff
+  - name: 1
     vfx: {fileID: 11400000, guid: 64b439570485acc438352040704687ce, type: 2}
-  - name: Defend
+  - name: 2
     vfx: {fileID: 11400000, guid: be07caf100bbc4543b3705a4464d1580, type: 2}
+  - name: 4
+    vfx: {fileID: 11400000, guid: 2e01aa1980bcc8040ad79af3a1ba4a57, type: 2}
+  - name: 5
+    vfx: {fileID: 11400000, guid: 1553bdd87418def40be7f69a618a6237, type: 2}
+  - name: 6
+    vfx: {fileID: 11400000, guid: 5e232b782503a3c4d8e122c1d2f8183f, type: 2}
+  - name: 7
+    vfx: {fileID: 11400000, guid: 294a1577262d9f54d8cce3745fd9f582, type: 2}
+  - name: 8
+    vfx: {fileID: 11400000, guid: d9a8f677271fff4499bba14e886eecb8, type: 2}
+  - name: 9
+    vfx: {fileID: 11400000, guid: a65e34fd4133b304ea8c0d7d9e6fcc60, type: 2}
+  - name: 13
+    vfx: {fileID: 11400000, guid: 6dcc2201f616d554a80967a403693a9d, type: 2}

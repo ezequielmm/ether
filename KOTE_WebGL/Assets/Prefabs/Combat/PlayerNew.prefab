@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 9032002354893603801}
   - component: {fileID: 9032002354893603797}
   - component: {fileID: 5810527289466403425}
+  - component: {fileID: 1715223895797713400}
+  - component: {fileID: 6292840078930383099}
   m_Layer: 6
   m_Name: PlayerNew
   m_TagString: Player
@@ -97,7 +99,7 @@ MonoBehaviour:
   skinLoaded:
     m_PersistentCalls:
       m_Calls: []
-  skinsVFX: {fileID: 0}
+  skinsVFX: {fileID: 11400000, guid: ae189e0baf2f0744fb7113702106d60d, type: 2}
 --- !u!33 &9032002354893603803
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -235,3 +237,39 @@ SortingGroup:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
+--- !u!95 &1715223895797713400
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9032002354893603805}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f36bfdb1872e46046b78b61db55e2e52, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6292840078930383099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9032002354893603805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f726fb798ad621458c431cb9966d91d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boneRoot: {fileID: 0}
+  flipBy180DegreeRotation: 0
+  skeletonRenderer: {fileID: 9032002354893603797}
+  skeletonGraphic: {fileID: 0}

@@ -407,9 +407,21 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 0
+    vfxs: 
+  - sequenceName: defend
+    sequence: []
+    animationType: 2
+    vfxs: 03000000
+  - sequenceName: buff
+    sequence: []
+    animationType: 2
+    vfxs: 00000000
+  - sequenceName: debuff
+    sequence: []
+    animationType: 2
+    vfxs: 01000000
   availableAnimations:
   - idle
-  idleAnimation: idle
 --- !u!114 &3839044452817650201
 MonoBehaviour:
   m_ObjectHideFlags: 0

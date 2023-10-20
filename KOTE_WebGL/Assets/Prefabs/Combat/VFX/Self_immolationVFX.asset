@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de8f891ba214ba9b5e1e4c8cd34ab31, type: 3}
+  m_Name: Self_immolationVFX
+  m_EditorClassIdentifier: 
+  animationName: Self_immolationVFX
+  material: {fileID: 2100000, guid: 4301171e3f0ffdb4a82a3bde293f718f, type: 2}
+  particlesPrefab: {fileID: 7856220586610982406, guid: eb37cec7cb2cfb54ba5ab761473eec0f,
+    type: 3}
+  stopWhenAnimationEnds: 1

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9de8f891ba214ba9b5e1e4c8cd34ab31, type: 3}
+  m_Name: InfectVFX
+  m_EditorClassIdentifier: 
+  animationName: InfectVFX
+  material: {fileID: 2100000, guid: c3e23543cec80964abb43cb2d96892cc, type: 2}
+  particlesPrefab: {fileID: 2905221677640386370, guid: f1080e0e14606844fa68803d195753d7,
+    type: 3}
+  stopWhenAnimationEnds: 1

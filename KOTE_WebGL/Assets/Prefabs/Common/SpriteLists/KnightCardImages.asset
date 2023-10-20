@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2786be413087d984db896b2c5302fe51, type: 3}
   m_Name: KnightCardImages
   m_EditorClassIdentifier: 
-  cardImages:
+  entityImages:
   - {fileID: 21300000, guid: ed8c4a4046486844f865bd19774ce023, type: 3}
   - {fileID: 21300000, guid: 6b0f545a7cae2bf408b83bcb70ca5cae, type: 3}
   - {fileID: 21300000, guid: f7e02324243fdd948826097af695638e, type: 3}
@@ -70,6 +70,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 428c8acdfdc095d4c9edd9c418c7c1ff, type: 3}
   - {fileID: 21300000, guid: d089f213935b62d479e49f630ea8d98e, type: 3}
   - {fileID: 21300000, guid: 02ee4f2f87cdd9844adad0ceaa0ee903, type: 3}
+  - {fileID: 21300000, guid: 67c308ae7e154aa4196e87a48210ae77, type: 3}
   - {fileID: 21300000, guid: 1efa33064d3d7624f83fb2a20524a3f5, type: 3}
   - {fileID: 21300000, guid: 6b7fc93dc88bb7a4eafb6b30418c57c8, type: 3}
   - {fileID: 21300000, guid: e3019e1249b1dde4bad443c9a29b0bf0, type: 3}
@@ -79,7 +80,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8c0f67f04a61b3f47988e64d224518ce, type: 3}
   - {fileID: 21300000, guid: 8388228ca6c809c45852ac7013a21e0a, type: 3}
   - {fileID: 21300000, guid: c7883e914b90cea4fad576164be62052, type: 3}
-  - {fileID: 21300000, guid: 67c308ae7e154aa4196e87a48210ae77, type: 3}
   - {fileID: 21300000, guid: 95bac8031c0265c418b1118a95e84d1f, type: 3}
   - {fileID: 21300000, guid: 0484fa796ad27b547b4db56717988dc0, type: 3}
   - {fileID: 21300000, guid: fe6b1b1c41141d94aade66d1340cb7e6, type: 3}
@@ -93,3 +93,4 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 48f78182fc7109c4d94e1fe15f05659d, type: 3}
   - {fileID: 21300000, guid: c0ada8da4f8823a448ef0489a338efc1, type: 3}
   - {fileID: 21300000, guid: d799a935ed6aad948bd7b26cc2d80792, type: 3}
+  entityImagesRef: []

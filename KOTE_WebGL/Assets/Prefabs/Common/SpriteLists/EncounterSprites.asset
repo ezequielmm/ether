@@ -104,3 +104,10 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+  - name: caveIn
+    image: {fileID: 0}
+    imageRef:
+      m_AssetGUID: 6f1bcbe2541c0dc48b0c38d523dfbd51
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0

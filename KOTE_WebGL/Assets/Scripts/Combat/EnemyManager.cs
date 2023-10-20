@@ -134,11 +134,6 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             
             Instantiate();
 
-            // Suplant animator
-            var vfxAnimations = spine.gameObject.AddComponent<Animator>();
-            vfxAnimations.runtimeAnimatorController = animator.runtimeAnimatorController;
-            Destroy(animator);
-
             awaitForEnemyRequestPrefab = false;
         });
         
@@ -347,7 +342,13 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             statusManager ??= GetComponentInChildren<StatusManager>();
             
             spine = activeEnemy.GetComponentInChildren<SpineAnimationsManagement>();
-            spine.Init(new EnemyIdleSolver(statusManager));
+            
+            // Suplant animator
+            var vfxAnimations = spine.gameObject.AddComponent<Animator>();
+            vfxAnimations.runtimeAnimatorController = animator.runtimeAnimatorController;
+            Destroy(animator);
+            
+            spine.Init(new EnemyIdleSolver(statusManager), vfxList);
             
             statusManager.OnStatusUpdated += (statuses) => spine.PlayIdle();
             

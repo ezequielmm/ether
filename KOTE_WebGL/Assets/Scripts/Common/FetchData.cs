@@ -250,6 +250,8 @@ public class FetchData : DataManager, ISingleton<FetchData>
                         }
                         
                         textureLoaded = true;
+                        if (loadedText)
+                            loadedText.name = url;
                         cachedTextures.Add(imageName, loadedText);
                         onResolve?.Invoke(loadedText);
                     }

@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Linq;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Combat.VFX
@@ -9,35 +9,24 @@ namespace Combat.VFX
     {
         public string animationName;
         public Material material;
-        public ParticleSystem particlesPrefab;
-        private ParticleSystem particlesInstance;
+        public VFXParticle particlesPrefab;
+        private VFXParticle particlesInstance;
         public bool stopWhenAnimationEnds = true;
 
-        public void Play(MonoBehaviour monoBehaviour, Animator anim, MeshRenderer meshRenderer)
-        {
-            var previousMat = meshRenderer.material;
-            meshRenderer.material = new Material(material);
-            meshRenderer.material.mainTexture = previousMat.mainTexture;
-            
-            anim.Play(animationName);
-            
-            if (particlesPrefab)
-            {
-                if (!particlesInstance) particlesInstance = Instantiate(particlesPrefab, meshRenderer.transform);
-                particlesInstance.transform.localPosition = Vector3.zero;
-                particlesInstance.Play();
-            }
-            
-            monoBehaviour.StartCoroutine(EffectFinish(anim, meshRenderer, previousMat));
-        }
+        public VFXLogic logic;
         
-        public void Play(MonoBehaviour monoBehaviour, Animator anim, Renderer meshRenderer, Material targetMaterial)
+        public void Play(MonoBehaviour monoBehaviour, Animator anim, MeshRenderer meshRenderer, Action callbackAtEnd = null)
         {
-            var previousMat = meshRenderer.materials.First(e => e == targetMaterial);
-            meshRenderer.material = new Material(material);
-            meshRenderer.material.mainTexture = previousMat.mainTexture;
+            if (logic && !logic.RunLogic(monoBehaviour))
+                return;
             
-            anim.Play(animationName);
+            var previousMat = meshRenderer.material;
+            
+            if (material)
+            {
+                meshRenderer.material = new Material(material);
+                meshRenderer.material.mainTexture = previousMat.mainTexture;
+            }
             
             if (particlesPrefab)
             {
@@ -45,23 +34,31 @@ namespace Combat.VFX
                 particlesInstance.transform.localPosition = Vector3.zero;
                 particlesInstance.Play();
             }
-            
-            monoBehaviour.StartCoroutine(EffectFinish(anim, meshRenderer, previousMat));
+
+            if (!string.IsNullOrEmpty(animationName))
+            {
+                anim.Play(animationName);
+                monoBehaviour.StartCoroutine(EffectFinish(anim, () =>
+                {
+                    meshRenderer.material = previousMat;
+                    callbackAtEnd?.Invoke();
+                }));
+            }
         }
 
-        private IEnumerator EffectFinish(Animator anim, Renderer meshRenderer, Material previousMat)
+        private IEnumerator EffectFinish(Animator anim, Action afterAnimation)
         {
             var t = 0f;
             var duration = anim.GetCurrentAnimatorStateInfo(0).length;
             
-            while (t < duration)
+            while (t < duration || !stopWhenAnimationEnds)
             {
-                t += Time.deltaTime;
+                if (t < duration)
+                    t += Time.deltaTime;
                 yield return null;
             }
-            if (!stopWhenAnimationEnds) yield return null;
             
-            meshRenderer.material = previousMat;
+            afterAnimation?.Invoke();
             anim.Play("Default");
         }
 

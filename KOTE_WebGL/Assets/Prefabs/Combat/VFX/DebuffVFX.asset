@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animationName: BuffVFX
   material: {fileID: 2100000, guid: 9e77eb0ad6e36d44b96c42ee73775443, type: 2}
-  particlesPrefab: {fileID: 2031173416513693009, guid: 517c987a70121ae4f9ad2f4b5847220a,
+  particlesPrefab: {fileID: -6283687565002260047, guid: 517c987a70121ae4f9ad2f4b5847220a,
     type: 3}
+  stopWhenAnimationEnds: 1

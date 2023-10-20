@@ -13,7 +13,7 @@ namespace DefaultNamespace
         [SerializeField] private EnemiesManager _enemiesManager;
 
         [SerializeField] private string[] enemiesToTry;
-        [SerializeField] private string vfxToTest;
+        [SerializeField] private VFX vfxToTest;
         [SerializeField] private TextMeshProUGUI text;
         [SerializeField] private VFXList vfxes;
 
@@ -37,6 +37,8 @@ namespace DefaultNamespace
         {
             if (Input.GetKeyDown(KeyCode.A))
                 TestVFXes();
+            if (Input.GetKeyDown(KeyCode.S))
+                TestVFX();
         }
 
         [ContextMenu("Test")]
@@ -44,8 +46,8 @@ namespace DefaultNamespace
         {
             var enemyManager = _enemiesManager.enemies[0].GetComponent<EnemyManager>();
             var vfx = enemyManager.vfxList.GetVFX(vfxToTest);
-            vfx.Play(
-                enemyManager,
+            vfx?.Play(
+                enemyManager.spine,
                 enemyManager.spine.TryGetComponent<Animator>(out var animator) ? animator : enemyManager.spine.gameObject.AddComponent<Animator>(),
                 enemyManager.spine.GetComponent<MeshRenderer>());
         }
