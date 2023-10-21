@@ -112,7 +112,16 @@ public enum ENEMY_INTENT
     defend,
     plot, // buff
     scheme, // debuff
-    stunned // nothing
+    stunned, // nothing
+    counter,
+    reinforcements,
+    breach,
+    cannibalize,
+    signature,
+    grow,
+    phase,
+    absorb,
+    mistify
 }
 
 public enum STATUS

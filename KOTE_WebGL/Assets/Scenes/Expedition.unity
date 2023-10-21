@@ -5836,6 +5836,9 @@ MonoBehaviour:
   EVENT_ADD_ENEMIES:
     m_PersistentCalls:
       m_Calls: []
+  EVENT_TRANSFORM_ENEMIES:
+    m_PersistentCalls:
+      m_Calls: []
   EVENT_UPDATE_ENEMY:
     m_PersistentCalls:
       m_Calls: []
@@ -5873,6 +5876,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   firstLoad: 1
+  IsPlayerTurn: 1
 --- !u!4 &1829050461
 Transform:
   m_ObjectHideFlags: 0

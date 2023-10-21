@@ -126,6 +126,27 @@ MonoBehaviour:
   - type: 5
     valueThreshold: 0
     icon: {fileID: 21300000, guid: 6e3a1e797b690cc48a2dfd3656c21806, type: 3}
+  - type: 6
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 35dfcd8ff81776c4cb91aa888acc9ebe, type: 3}
+  - type: 7
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: b03057fa13a04874b8f543ce92c80e0f, type: 3}
+  - type: 10
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: d400aae9a3b9e17488cd123eed7bde7c, type: 3}
+  - type: 11
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 22ab3f5d1605a714c821c3e86142b089, type: 3}
+  - type: 12
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: b3ccb90efe5d1a248a4e67a0b9ab68d2, type: 3}
+  - type: 13
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 5aefa19c5ee0c7e4eb84b344f32d5633, type: 3}
+  - type: 14
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: c821be07e60b08145add7c86ca2a8ed4, type: 3}
   - type: 0
     valueThreshold: 0
     icon: {fileID: 21300000, guid: 5c09cb3f900dd8240b4963ed67712f89, type: 3}

@@ -137,6 +137,8 @@ public class EnemyIntentManager : MonoBehaviour
         {
             var intent = intentItem.Key;
             int count = intentItem.Value;
+            
+            if(intent.type.ToLower().Equals("do_nothing")) continue;
 
             GameObject icon = Instantiate(iconPrefab);
             var intentIcon = icon.GetComponent<IntentIcon>();
@@ -173,6 +175,7 @@ public class EnemyIntentManager : MonoBehaviour
             case "plot":
             case "buff":
             case "plotting":
+            case "do_nothing":
                 return ENEMY_INTENT.plot;
             case "scheme":
             case "schemeing":
@@ -182,7 +185,24 @@ public class EnemyIntentManager : MonoBehaviour
             case "nothing":
             case "stunned":
                 return ENEMY_INTENT.stunned;
-            case "unknown":
+            case "counter":
+                return ENEMY_INTENT.counter;
+            case "reinforcements":
+                return ENEMY_INTENT.reinforcements;
+            case "breach":
+                return ENEMY_INTENT.breach;
+            case "cannibalize":
+                return ENEMY_INTENT.cannibalize;
+            case "signature":
+                return ENEMY_INTENT.signature;
+            case "grow":
+                return ENEMY_INTENT.grow;
+            case "phase":
+                return ENEMY_INTENT.phase;
+            case "absorb":
+                return ENEMY_INTENT.absorb;
+            case "mistify":
+                return ENEMY_INTENT.mistify;
             default:
                 return ENEMY_INTENT.unknown;
         }
