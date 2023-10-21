@@ -127,7 +127,6 @@ public enum ENEMY_INTENT
 public enum STATUS
 {
     unknown = 0,
-
     resolve,
     fortitude,
     distraught,
@@ -182,7 +181,15 @@ public enum STATUS
     reactive,
     mysteriousFigure,
     birdcage,
-    emptyFade
+    emptyFade,
+    absorbing,
+    chargingBeam,
+    ethereal,
+    grown,
+    hatching,
+    mistified,
+    reveal,
+    countering
 }
 
 [Serializable]

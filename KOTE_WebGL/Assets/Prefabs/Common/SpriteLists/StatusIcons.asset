@@ -15,113 +15,449 @@ MonoBehaviour:
   SpriteList:
   - name: unknown
     image: {fileID: 21300000, guid: 735fcbc825f85b24d9c9586262528537, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: resolve
     image: {fileID: 21300000, guid: 9924afd0ee05b8744a9e8a5231d2b8a6, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: fortitude
     image: {fileID: 21300000, guid: ecbfbea374a434b45bccd06b369a6400, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: distraught
     image: {fileID: 21300000, guid: 46584cf324cc18b419525e9f962c1023, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: feeble
     image: {fileID: 21300000, guid: e5dde790e9482b944b25cc5a2e7936ce, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: fatigue
     image: {fileID: 21300000, guid: af817928fa05c4543baaaa83afd67bf7, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: resist
     image: {fileID: 21300000, guid: 78a317125834e2b4387e32533ea677cb, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: spirited
     image: {fileID: 21300000, guid: 50da98894d75f8640a2fc46e7548da94, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: spikes
     image: {fileID: 21300000, guid: 38c5683132ae48c4da20647271b99ee0, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: dodge
     image: {fileID: 21300000, guid: c6e0d978c9b9cbe4d8c7513d24e4092e, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: forceField
     image: {fileID: 21300000, guid: 43a41787b2ed8484f9801c26405ef5fa, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: regeneration
     image: {fileID: 21300000, guid: 19ff0ff10ce50ca40ad68aa310210906, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: intercept
     image: {fileID: 21300000, guid: 7adefac3415d0584fba44e21830d2331, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: enraged
     image: {fileID: 21300000, guid: d41302f222bcae3489b99e795e876237, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: heraldDelayed
     image: {fileID: 21300000, guid: f48c9ee1d333ee249bd5ae93d34ae0bc, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: heralding
     image: {fileID: 21300000, guid: 18cfcae18e3373548a69badc89c781d6, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: gritted
     image: {fileID: 21300000, guid: 8aa7bfbdc76b2444e87a31d765721818, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: grittedPlus
     image: {fileID: 21300000, guid: e6533388c9757c64290e1b29bcd0e32a, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: resolveExpires
     image: {fileID: 21300000, guid: 87f55fa60045c1f4891f0e15bfb7d002, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: bolstered
     image: {fileID: 21300000, guid: 0191484b967608942884e6dd9d81b2ef, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: anticipating
     image: {fileID: 21300000, guid: e14a4a873774b8540ac2fa0e8bc78929, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: siphoning
     image: {fileID: 21300000, guid: 3c27dfd6b1781ee48a20906fb631e320, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: turtling
     image: {fileID: 21300000, guid: 2ff9fe522b6e7e14293e89f2dd85a45c, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: imbued
     image: {fileID: 21300000, guid: 91e6eea7712249f49aa3535e2b914236, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: doubleDown
     image: {fileID: 21300000, guid: 9dab33e74780dbd44b55ffa320c4fa83, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: praying
     image: {fileID: 21300000, guid: da06f4d7f945a4146b47760db1769176, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: trinity
     image: {fileID: 21300000, guid: df0a9ae9c8467ae41910e5805748f6cb, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: trinityPlus
     image: {fileID: 21300000, guid: 4990a712567edc943b1fa1076a305655, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: enflamed
     image: {fileID: 21300000, guid: d617ca8f3e5ed854ba63099ffc89ea2b, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: gifted
     image: {fileID: 21300000, guid: 25605611fa62b59409b95f42649d4abd, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: finelyEdged
     image: {fileID: 21300000, guid: f4488beedee3ae641a3971083f4aa70f, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: finelyEdgedPlus
     image: {fileID: 21300000, guid: e349e31057e232241851f6459c384ec6, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: armoredUp
     image: {fileID: 21300000, guid: d3ee69046b4a2d6448051c879f470d76, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: armoredUpPlus
     image: {fileID: 21300000, guid: af0080ed791e9e14bb4cdaa912c6acd0, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: dewDrop
     image: {fileID: 21300000, guid: 769f06f16a80ac5438f3bc85e1781c24, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: burn
     image: {fileID: 21300000, guid: 6c8d3c19a30c3c248811bd0b30e50c53, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: tasteOfBlood
     image: {fileID: 21300000, guid: 65190e81357c8ed4bbf37187d635beeb, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: confusion
     image: {fileID: 21300000, guid: 566e6b97442337549b0436e679ce8c2c, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: confused
     image: {fileID: 21300000, guid: 3bccb04ab3a22dc429abd5bad1ac1d02, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: stunned
     image: {fileID: 21300000, guid: 6e1a9dea8f011104287b46a1f7338e4c, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: drained
     image: {fileID: 21300000, guid: 20967e6642d0d9c4fb5a509fa3e781c1, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: summoned
     image: {fileID: 21300000, guid: 760cd753b62590440937274bd9154e8b, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: clearheaded
     image: {fileID: 21300000, guid: cd7e0bf06e909074d99b4494aeb2a48a, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: blinded
     image: {fileID: 21300000, guid: 765ba72f0ed7e204e9ea65359f043503, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: blighted
     image: {fileID: 21300000, guid: cadfd6ffec5f31e47867322eb23191bd, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: oiled
     image: {fileID: 21300000, guid: b247ac3c6f27ba448b315ab09e78b797, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: trapped
     image: {fileID: 21300000, guid: 582240936026fee4e87556536b99ba70, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: mimic
     image: {fileID: 21300000, guid: 14cf73f0ebe10cf4299e6624089bc87d, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: moldy
     image: {fileID: 21300000, guid: f71a465012a03c941b13f7d823ee0879, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: squishy
     image: {fileID: 21300000, guid: 163dedd6ae9d2f045afa0fa23fe2fc00, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: combustible
     image: {fileID: 21300000, guid: e26aead0f46e3f94aa6746c657123e70, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: hidden
     image: {fileID: 21300000, guid: 8d8271be5e086af4a8e32bb37ae50a2b, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: reactive
     image: {fileID: 21300000, guid: e26a83f36d64cd04cb79cf55517803bc, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: mysteriousFigure
     image: {fileID: 21300000, guid: 0fc18a4d8acc0cc4bb665aa97aa74ab1, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: emptyFade
     image: {fileID: 21300000, guid: 34039c27376dc4c409acefb5feb28510, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   - name: birdcage
     image: {fileID: 21300000, guid: 68fb6e0ddc58d71498a85dc2959e0ad8, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - name: absorbing
+    image: {fileID: 21300000, guid: 82736564c7b80384aaf2d07ee8730cae, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - name: chargingBeam
+    image: {fileID: 21300000, guid: 4229393f0215d0046ab7325e7a6c1e6c, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - name: ethereal
+    image: {fileID: 21300000, guid: 320632dc1d27fb84b8cb04c8625ff9b6, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - name: grown
+    image: {fileID: 21300000, guid: 913529bb79041894da71926d41c6116b, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - name: hatching
+    image: {fileID: 21300000, guid: 3c43074e439ea2a46802decfe600c318, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - name: mistified
+    image: {fileID: 21300000, guid: 8be3221603ff5d24492e1bf0524b2ed1, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - name: reveal
+    image: {fileID: 21300000, guid: b6de98d3d651f6a4ea86686977f1a6e0, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - name: countering
+    image: {fileID: 21300000, guid: ebf98c50c4fdd5544bf5dd1718dc3f10, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
