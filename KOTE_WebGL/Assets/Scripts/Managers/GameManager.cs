@@ -389,9 +389,13 @@ public class GameManager : SingleTon<GameManager>
         nextSceneToLoad = scene;
 
         //TODO: This is a hack to fix the issue with the expedition scene not loading properly
-        if (scene == inGameScenes.MainMenu) 
+        if (scene == inGameScenes.MainMenu)
+        {
             firstLoad = true;
-        
+            //GameManager.instance.firstLoad = true;
+        }
+
+
         if (scene == inGameScenes.Expedition && CurrentScene != inGameScenes.MainMenu)
         {
             Debug.Log("RequestExpeditionSync");
@@ -401,6 +405,9 @@ public class GameManager : SingleTon<GameManager>
         if (scene == inGameScenes.MainMenu)
         {
             EVENT_STOP_MUSIC.Invoke();
+            //firstLoad = true;
+            //GameManager.instance.firstLoad = true;
+            //Debug.LogWarning(":::::::::::::::::::::::::FIRST LOAD :::::::::::::::::::::::::");
         }
 
         if (async)
