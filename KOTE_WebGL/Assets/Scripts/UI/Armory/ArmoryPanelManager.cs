@@ -329,6 +329,7 @@ namespace KOTE.UI.Armory
                     equippedGear.Values.ToList());
             if (startData.expeditionCreated)
             {
+                //Debug.LogError(":::::::::::::::::::::::::::::::::::ON START EXPEDITION::::::::::::::::::::::::::::::::::::::" + nft.Contract + " " + nft.TokenId);
                 OnExpeditionConfirmed();
                 return;
             }
