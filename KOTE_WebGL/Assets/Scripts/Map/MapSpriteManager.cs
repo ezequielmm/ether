@@ -369,8 +369,13 @@ namespace map
 
         IEnumerator GenerateMapOnExpeditionStatusUpdatedRoutine()
         {
+            //latestMapData = null;
+
             while (latestMapData == null)
+            {
                 yield return null;
+                Debug.LogError("::::::::::::::::::::::::::: LAST MAP IS NULL ::::::::::::::::::::::::");
+            }
 
             generateMapAwaitRoutine = null;
             GenerateMap(latestMapData);
