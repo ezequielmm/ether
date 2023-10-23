@@ -184,12 +184,12 @@ public enum STATUS
     emptyFade,
     absorbing,
     chargingBeam,
-    ethereal,
-    grown,
+    elemental,
+    growed,
     hatching,
     mistified,
     reveal,
-    countering
+    counter
 }
 
 [Serializable]
