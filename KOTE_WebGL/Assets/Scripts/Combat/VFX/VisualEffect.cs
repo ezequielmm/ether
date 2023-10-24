@@ -22,11 +22,13 @@ namespace Combat.VFX
             
             var previousMat = meshRenderer.material;
             
+            /*
             if (material)
             {
                 meshRenderer.material = new Material(material);
                 meshRenderer.material.mainTexture = previousMat.mainTexture;
             }
+            */
             
             if (particlesPrefab)
             {
