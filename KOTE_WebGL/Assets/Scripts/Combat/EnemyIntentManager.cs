@@ -144,7 +144,11 @@ public class EnemyIntentManager : MonoBehaviour
             var intentIcon = icon.GetComponent<IntentIcon>();
             intentIcon.Initialize();
             var intentType = intentFromString(intent.type);
+            
             intentIcon.SetValue(intentType == ENEMY_INTENT.attack ? intent.value : 0, count);
+            if(intentType == ENEMY_INTENT.signature) 
+                intentIcon.SetValue(intent.negateDamage);
+            
             intentIcon.SetIcon(intentType, intent.value);
             intentIcon.SetTooltip(intent.type, intentType != ENEMY_INTENT.unknown ? intent.description : "Unknown");
 

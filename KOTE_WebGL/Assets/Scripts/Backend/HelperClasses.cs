@@ -516,6 +516,8 @@ public class EnemyIntent
         public int value;
         public string description;
         public string type;
+        public int negateDamage;
+        public string name;
     }
 }
 
