@@ -15,7 +15,7 @@ namespace KOTE.UI.Armory
     [System.Serializable]
     public class CategoryItem
     {
-        public GearItemData item;
+        public VictoryItems item;
         public int amount;
     }
     
@@ -43,7 +43,7 @@ namespace KOTE.UI.Armory
             // Remove instantiated items
         }
 
-        public void AddGearItem(GearItemData itemData, Texture2D texture)
+        public void AddGearItem(VictoryItems itemData, Texture2D texture)
         {
             var sprite = default(Sprite);
             var key = $"{itemData.trait}/{itemData.name}";

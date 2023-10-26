@@ -21,7 +21,7 @@ public class LootboxPanelManager : MonoBehaviour
 
     private GameStatuses populatedWithStatus;
     
-    public void Populate(List<RewardsLoot> items, GameStatuses newGameStatus)
+    public void Populate(List<VictoryItems> items, GameStatuses newGameStatus)
     {
         populatedWithStatus = newGameStatus;
         
@@ -52,7 +52,7 @@ public class LootboxPanelManager : MonoBehaviour
         Cleanup.CleanupGame();
     }
 
-    private void AddGearItem(RewardsLoot gear)
+    private void AddGearItem(VictoryItems gear)
     {
         GameObject GearItemObject = Instantiate(GearItemPrefab, LootContainer.transform);
         GearItem gearItem = GearItemObject.GetComponent<GearItem>();

@@ -878,7 +878,7 @@ public class ExpeditionStartSendData
 {
     public string tokenType;
     public int nftId;
-    public List<GearItemData> equippedGear;
+    public List<VictoryItems> equippedGear;
     public string walletId;
     public string contractId;
 }

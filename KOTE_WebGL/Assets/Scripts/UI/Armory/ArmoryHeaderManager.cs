@@ -29,7 +29,7 @@ namespace KOTE.UI.Armory
             }
         }
 
-        internal void Populate(string headerName, List<GearItemData> gearData)
+        internal void Populate(string headerName, List<VictoryItems> gearData)
         {
             title.text = headerName;
             GenerateGearItems(gearData);
@@ -46,9 +46,9 @@ namespace KOTE.UI.Armory
             }
         }
 
-        private void GenerateGearItems(List<GearItemData> gearData)
+        private void GenerateGearItems(List<VictoryItems> gearData)
         {
-            foreach (GearItemData gearItem in gearData)
+            foreach (VictoryItems gearItem in gearData)
             {
                 SelectableGearItem item = Instantiate(gearPrefab, gearList.transform);
                 item.Populate(gearItem);

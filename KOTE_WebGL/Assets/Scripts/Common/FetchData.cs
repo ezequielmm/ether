@@ -173,7 +173,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
     }
 
     public async UniTask<ExpeditionStartData> RequestNewExpedition(NftContract characterType, int selectedNft,
-        List<GearItemData> equippedGear)
+        List<VictoryItems> equippedGear)
     {
         /*
          

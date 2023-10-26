@@ -13,11 +13,11 @@ public class GearItem : MonoBehaviour
 
     public TooltipAtCursor tooltip;
     [HideInInspector]
-    public GearItemData ItemData;
+    public VictoryItems ItemData;
     public RewardsLoot RewardsLoot;
     
 
-    public void Populate(GearItemData newItemData)
+    public void Populate(VictoryItems newItemData)
     {
         ItemData = newItemData;
         Action inner = () => {
@@ -100,6 +100,40 @@ public class GearItemData
     public void GetGearImage(Action callback) 
     {
         FetchData.Instance.GetArmoryGearImage(trait.ParseToEnum<Trait>(), name, (texture) => {
+            gearImage = texture?.ToSprite();
+            callback?.Invoke();
+        });
+    }
+}
+
+[Serializable]
+public class VictoryItems
+{
+    public string rewardType;
+    public int gearId;
+    public string name;
+    public string trait;
+    public string category;
+    public GearRarity rarity;
+    public string image;
+    public bool isActive;
+    public bool onlyOneAllowed;
+    [JsonIgnore]
+    public Sprite gearImage;
+
+    [JsonIgnore] public bool CanVillagerEquip => rarity == GearRarity.Common || rarity == GearRarity.Uncommon;
+
+    public void GetGearImage(Action callback)
+    {
+        FetchData.Instance.GetArmoryGearImage(trait.ParseToEnum<Trait>(), name, (texture) => {
+            gearImage = texture?.ToSprite();
+            callback?.Invoke();
+        });
+    }
+
+    public void GetRewardImage(Action callback)
+    {
+        FetchData.Instance.GetLootboxGearImage(image, (texture) => {
             gearImage = texture?.ToSprite();
             callback?.Invoke();
         });
