@@ -420,6 +420,17 @@ public class WebSocketParser
         Debug.Log($"ProcessCombatQueue data: {data}");
         SWSM_CombatAction combatAction = JsonConvert.DeserializeObject<SWSM_CombatAction>(data);
         Debug.Log($"[SWSM Parser] Combat Queue Data: {data}");
+        
+        //TODO: this is a workaround avoiding multiple animations firing
+        List<string> addedEnemies = new List<string>();
+        foreach (CombatTurnData combatData in combatAction.data.data) 
+        {
+            if (addedEnemies.Contains(combatData.originId))
+                combatData.action = null;
+            else
+                addedEnemies.Add(combatData.originId);
+        }
+        
         foreach (CombatTurnData combatData in combatAction.data.data) // For when it's a list.
         {
             GameManager.Instance.EVENT_COMBAT_TURN_ENQUEUE.Invoke(combatData);

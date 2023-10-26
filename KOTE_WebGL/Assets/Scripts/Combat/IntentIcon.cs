@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,15 +14,19 @@ public class IntentIcon : IconMap<ENEMY_INTENT>
         tooltipSpeed = GameSettings.INTENT_TOOLTIP_SPEED;
     }
 
-    public void SetValue(int value = 0, int times = 1) 
+    public void SetValue(int value = 0, int times = 1, string title = null) 
     {
-        if (value * times <= 0)
-        {
-            SetDisplayText("");
-        }
+        if (!string.IsNullOrEmpty(title))
+            if (value * times <= 0)
+                SetDisplayText(string.IsNullOrEmpty(title) ? "" : title);
+            else
+                SetDisplayText(string.IsNullOrEmpty(title) ? "" : $"{title}: " + $"{value}{(times > 1 ? $"x{times}" : "")}");
         else
         {
-            SetDisplayText($"{value}{(times > 1 ? $"x{times}" : "")}");
+            if(value == 0)
+                SetDisplayText("");
+            else
+                SetDisplayText($"{value}{(times > 1 ? $"x{times}" : "")}");
         }
     }
 }
