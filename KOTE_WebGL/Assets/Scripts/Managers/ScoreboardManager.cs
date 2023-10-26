@@ -85,7 +85,7 @@ public class ScoreboardData
     [JsonProperty("totalScore")] public int TotalScore;
     [JsonProperty("achievements")] public List<Achievement> Achievements = new();
     [JsonProperty("notifyNoLoot")] public bool NotifyNoLoot;
-    [JsonProperty("lootbox")] public List<GearItemData> Lootbox = new();
+    [JsonProperty("victoryItems")] public List<GearItemData> Lootbox = new();
     [JsonProperty("rewards")] public List<RewardsLoot> Rewards = new();
 }
 
