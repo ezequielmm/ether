@@ -10,7 +10,7 @@ namespace KOTE.UI.Armory
         public TooltipAtCursor tooltip;
         public Trait gearTrait;
         public Image icon;
-        private GearItemData selectedGear;
+        private VictoryItems selectedGear;
         public Sprite defaultImage;
         
         public void OnPointerDown(PointerEventData data)
@@ -19,12 +19,12 @@ namespace KOTE.UI.Armory
             FindObjectOfType<ArmoryPanelManager>().OnGearItemRemoved(gearTrait);
         }
 
-        internal GearItemData GetEquippedGear()
+        internal VictoryItems GetEquippedGear()
         {
             return selectedGear;
         }
 
-        internal void SetGearInSlot(GearItemData currentGear)
+        internal void SetGearInSlot(VictoryItems currentGear)
         {
             selectedGear = currentGear;
             icon.sprite = currentGear.gearImage;

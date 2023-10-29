@@ -52,7 +52,7 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
     {
         Debug.Log("[ScoreboardManager] Showing Score");
         Scoreboard.Populate(scoreboardData, newGameStatus);
-        Lootbox.Populate(scoreboardData != null ? scoreboardData.Rewards : new List<RewardsLoot>(), newGameStatus);
+        Lootbox.Populate(scoreboardData != null ? scoreboardData.VictoryItems : new List<VictoryItems>(), newGameStatus);
         
         if (scoreboardData == null || scoreboardData.Rewards.Count == 0)
         {
@@ -87,6 +87,7 @@ public class ScoreboardData
     [JsonProperty("notifyNoLoot")] public bool NotifyNoLoot;
     [JsonProperty("victoryItems")] public List<GearItemData> Lootbox = new();
     [JsonProperty("rewards")] public List<RewardsLoot> Rewards = new();
+    [JsonProperty("victoryItems")] public List<VictoryItems> VictoryItems = new();
 }
 
 [Serializable]

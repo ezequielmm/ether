@@ -28,7 +28,7 @@ namespace KOTE.UI.Armory
 
         private LinkedList<ArmoryTokenData> nftList = new();
         private Dictionary<string, List<GearItemData>> categoryLists = new();
-        private Dictionary<Trait, GearItemData> equippedGear = new();
+        private Dictionary<Trait, VictoryItems> equippedGear = new();
         private Dictionary<int, List<GearItemData>> villagerEquippedGear = new();
         private Dictionary<int, List<GearItemData>> blessedVillagerEquippedGear = new();
         private List<ArmoryHeaderManager> gearHeaders = new();
@@ -200,11 +200,11 @@ namespace KOTE.UI.Armory
             }
         }
 
-        private IEnumerator PopulateGearList(List<GearItemData> ownedGear)
+        private IEnumerator PopulateGearList(List<VictoryItems> ownedGear)
         {
             var callbacksPending = ownedGear.Count;
 
-            foreach (GearItemData itemData in ownedGear)
+            foreach (VictoryItems itemData in ownedGear)
             {
                 FetchData.Instance.GetArmoryGearImage(itemData.trait.ParseToEnum<Trait>(), itemData.name,
                     texture =>
@@ -252,46 +252,46 @@ namespace KOTE.UI.Armory
             categoryLists.Clear();
         }
 
-        private void PopulateEquippedGear()
-        {
-            if (SelectedCharacter.Contract == NftContract.Villager &&
-                villagerEquippedGear.ContainsKey(SelectedCharacter.TokenId))
-            {
-                EquipGearInSlots(villagerEquippedGear[SelectedCharacter.TokenId]);
-            }
-            else if (SelectedCharacter.Contract == NftContract.BlessedVillager &&
-                     blessedVillagerEquippedGear.ContainsKey(SelectedCharacter.TokenId))
-            {
-                EquipGearInSlots(blessedVillagerEquippedGear[SelectedCharacter.TokenId]);
-            }
-            else
-            {
-                ClearGearSlots();
-            }
-        }
+        //private void PopulateEquippedGear()
+        //{
+        //    if (SelectedCharacter.Contract == NftContract.Villager &&
+        //        villagerEquippedGear.ContainsKey(SelectedCharacter.TokenId))
+        //    {
+        //        EquipGearInSlots(villagerEquippedGear[SelectedCharacter.TokenId]);
+        //    }
+        //    else if (SelectedCharacter.Contract == NftContract.BlessedVillager &&
+        //             blessedVillagerEquippedGear.ContainsKey(SelectedCharacter.TokenId))
+        //    {
+        //        EquipGearInSlots(blessedVillagerEquippedGear[SelectedCharacter.TokenId]);
+        //    }
+        //    else
+        //    {
+        //        ClearGearSlots();
+        //    }
+        //}
 
-        private void EquipGearInSlots(List<GearItemData> gear)
-        {
-            foreach (GearSlot slot in gearSlots)
-            {
-                GearItemData curGear = gear.Find(x => x.trait.ParseToEnum<Trait>() == slot.gearTrait);
-                if (curGear != null)
-                {
-                    slot.SetGearInSlot(curGear);
-                    continue;
-                }
+        //private void EquipGearInSlots(List<VictoryItems> gear)
+        //{
+        //    foreach (GearSlot slot in gearSlots)
+        //    {
+        //        VictoryItems curGear = gear.Find(x => x.trait.ParseToEnum<Trait>() == slot.gearTrait);
+        //        if (curGear != null)
+        //        {
+        //            slot.SetGearInSlot(curGear);
+        //            continue;
+        //        }
 
-                slot.ResetSlot();
-            }
-        }
+        //        slot.ResetSlot();
+        //    }
+        //}
 
-        private void ClearGearSlots()
-        {
-            foreach (GearSlot slot in gearSlots)
-            {
-                slot.ResetSlot();
-            }
-        }
+        //private void ClearGearSlots()
+        //{
+        //    foreach (GearSlot slot in gearSlots)
+        //    {
+        //        slot.ResetSlot();
+        //    }
+        //}
 
         public void OnPlayButton()
         {
@@ -357,7 +357,7 @@ namespace KOTE.UI.Armory
             postProcessingTransition.StartTransition();
         }
 
-        public void OnGearItemSelected(GearItemData activeItem)
+        public void OnGearItemSelected(VictoryItems activeItem)
         {
             if (SelectedCharacter.Contract == NftContract.Villager && !activeItem.CanVillagerEquip) return;
 
@@ -412,7 +412,7 @@ namespace KOTE.UI.Armory
 
     public class GearData
     {
-        public List<GearItemData> ownedGear;
+        public List<VictoryItems> ownedGear;
         // TODO this isn't working quite right, it's not correctly being parsed into a js object
         // TODO so we're getting a string back instead of a json object
         //public List<GearItemData> equippedGear;

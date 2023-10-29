@@ -56,7 +56,7 @@ namespace KOTE.UI.Armory
             if (isInteractable) FindObjectOfType<ArmoryPanelManager>().OnGearItemSelected(ItemData);
         }
 
-        public void Populate(GearItemData gearItemItem, int gearItemAmount)
+        public void Populate(VictoryItems gearItemItem, int gearItemAmount)
         {
             base.Populate(gearItemItem);
             stackImage.SetActive(gearItemAmount > 1);
