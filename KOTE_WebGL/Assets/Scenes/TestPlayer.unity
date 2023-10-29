@@ -274,17 +274,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad41deab8a5c4a47956d79eef3a9e21b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  helmet: PlagueDoc
-  breastplate: PlagueDoc
+  helmet: Hallowed_Pumpkin_Helmet
+  breastplate: Incense_Breastplate
   cloak: PlagueDoc
-  weapon: PlagueDoc
-  shield: PlagueDoc
-  boots: PlagueDoc
-  gauntlets: PlagueDoc
-  pauldrons: PlagueDoc
-  vambrace: PlagueDoc
-  legguard: 
-  padding: PlagueDoc
+  weapon: Carving_Knife
+  shield: Phoenix_Shield
+  boots: Pleather_Boots
+  gauntlets: Pleather_Gloves
+  pauldrons: Thorn_Pauldrons
+  vambrace: Hallowed_Vambraces
+  legguard: Plaguards
+  padding: Plague_Padding
   playerSpriteManager: {fileID: 1039217531695229944, guid: 4a6c37039f8cd4d4888f5ca32b21ee8b,
     type: 3}
   playerAnimations: {fileID: 1303347410}

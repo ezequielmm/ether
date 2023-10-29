@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: SkinVFX
   m_EditorClassIdentifier: 
   vfxPairs:
-  - skinName: Helmet_Hallowed
+  - skinName: Helmet_Hallowed_Pumpkin_Helmet
     vfxData:
     - boneName: BN-Head
       vfx: {fileID: 8510636406652581662, guid: ebc7624ebc6d8024aa9888636497309a, type: 3}
-  - skinName: Vambrace_Hallowed
+  - skinName: NON WORK Vambrace_Hallowed
     vfxData:
     - boneName: BN-Forearm-L
       vfx: {fileID: 9056862139247876431, guid: 37b4d43deb01b27468ad8334ef6baaa3, type: 3}
