@@ -274,17 +274,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad41deab8a5c4a47956d79eef3a9e21b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  helmet: Hallowed
-  breastplate: Hallowed
-  cloak: Hallowed
-  weapon: Carving Knife
-  shield: Hallowed
-  boots: Hallowed
-  gauntlets: Hallowed
-  pauldrons: Hallowed
-  vambrace: Hallowed
-  legguard: Hallowed
-  padding: Hallowed
+  helmet: PlagueDoc
+  breastplate: PlagueDoc
+  cloak: PlagueDoc
+  weapon: PlagueDoc
+  shield: PlagueDoc
+  boots: PlagueDoc
+  gauntlets: PlagueDoc
+  pauldrons: PlagueDoc
+  vambrace: PlagueDoc
+  legguard: 
+  padding: PlagueDoc
   playerSpriteManager: {fileID: 1039217531695229944, guid: 4a6c37039f8cd4d4888f5ca32b21ee8b,
     type: 3}
   playerAnimations: {fileID: 1303347410}

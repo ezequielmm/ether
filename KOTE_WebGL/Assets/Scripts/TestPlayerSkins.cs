@@ -19,6 +19,7 @@ namespace DefaultNamespace
         public string legguard;
         public string padding;
 
+        [Space]
         [SerializeField] private GameObject playerSpriteManager;
         [SerializeField] private SpineAnimationsManagement playerAnimations;
         
@@ -86,6 +87,8 @@ namespace DefaultNamespace
                 "attack",
                 "attack",
                 "cast",
+                "injured_idle",
+                "death"
             };
 
             foreach (var anim in animationsList)
