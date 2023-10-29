@@ -28,7 +28,8 @@ public class LootboxPanelManager : MonoBehaviour
         ClearGear();
         foreach (var item in items)
         {
-            AddGearItem(item);
+
+                AddGearItem(item);
         }
     }
 

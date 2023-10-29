@@ -39,7 +39,10 @@ public class GearItem : MonoBehaviour
         };
         if (newItemData.gearImage == null)
         {
-            ItemData.GetGearImage(inner);
+            if (string.IsNullOrEmpty(ItemData.rewardType) || ItemData.rewardType == "Lootbox")
+                ItemData.GetGearImage(inner);
+            else
+                ItemData.GetRewardImage(inner);
         }
         else
             inner();
@@ -133,7 +136,7 @@ public class VictoryItems
 
     public void GetRewardImage(Action callback)
     {
-        FetchData.Instance.GetLootboxGearImage(image, (texture) => {
+        FetchData.Instance.GetLootboxGearImage(name, (texture) => {
             gearImage = texture?.ToSprite();
             callback?.Invoke();
         });
