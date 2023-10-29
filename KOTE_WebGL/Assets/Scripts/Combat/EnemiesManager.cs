@@ -26,7 +26,7 @@ public class EnemiesManager : MonoBehaviour
     private void Awake()
     {
         GameManager.Instance.EVENT_UPDATE_ENEMIES.AddListener(OnEnemiesUpdate);
-        GameManager.Instance.EVENT_ADD_ENEMIES.AddListener(OnAddEnemies);
+        GameManager.Instance.EVENT_ADD_ENEMIES.AddListener(data =>  OnAddEnemies(data));
         GameManager.Instance.EVENT_TRANSFORM_ENEMIES.AddListener(OnTransformEnemies);
     }
 
@@ -142,7 +142,7 @@ public class EnemiesManager : MonoBehaviour
         PositionEnemies();
     }
 
-    private void OnAddEnemies(EnemiesData enemiesData)
+    private void OnAddEnemies(EnemiesData enemiesData, bool isTransformation = false)
     {
         foreach (EnemyData data in enemiesData.data)
         {
@@ -162,7 +162,7 @@ public class EnemiesManager : MonoBehaviour
                 enemies.Add(enemyManager.gameObject);
             }
         }
-        PositionEnemies();
+        PositionEnemies(isTransformation);
     }
     
     private void OnTransformEnemies(EnemiesData enemiesData)
@@ -178,7 +178,7 @@ public class EnemiesManager : MonoBehaviour
         GameManager.Instance.ActiveEndOfTurnButton(false);
         Action spawnTransformationAction = () =>
         {
-            OnAddEnemies(dataWithOnlyTransformation);
+            OnAddEnemies(dataWithOnlyTransformation, true);
             if (GameManager.Instance.IsPlayerTurn)
                 GameManager.Instance.ActiveEndOfTurnButton(true);
         };
@@ -193,7 +193,7 @@ public class EnemiesManager : MonoBehaviour
         spawnTransformationAction();
     }
 
-    private void PositionEnemies() 
+    private void PositionEnemies(bool isTransformaiton = false) 
     {
         // Total enemy width
         float totalWidth = 0;
@@ -220,7 +220,20 @@ public class EnemiesManager : MonoBehaviour
             float size = GetSize(enemy.EnemyData.size); //enemy.collider.bounds.size.x;
             float xPos = leftEdge + (size / 2);
             Vector3 desiredPosition = new Vector3(xPos, transform.position.y + floor, transform.position.z);
-            enemy.transform.DOMove(desiredPosition, 1);
+            
+            // Enemy transform special handle
+            if (!isTransformaiton)
+            {
+                enemy.transform.DOMove(desiredPosition, 1);
+            }
+            else
+            {
+                enemy.transform.position = desiredPosition;
+                var initialScale = enemy.transform.localScale;
+                enemy.transform.localScale = Vector3.zero;
+                enemy.transform.DOScale(initialScale, 1f);
+            }
+            
             leftEdge += size + spacing;
         }
         Debug.Log($"[EnemiesManager] List of enemy IDs: {sb.ToString().Substring(0, sb.ToString().Length-2)}");

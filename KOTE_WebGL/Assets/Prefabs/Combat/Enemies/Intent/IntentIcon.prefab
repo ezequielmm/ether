@@ -156,6 +156,9 @@ MonoBehaviour:
   - type: 9
     valueThreshold: 0
     icon: {fileID: 21300000, guid: 6989a65a9f25c8448a15bd5be72f7f62, type: 3}
+  - type: 15
+    valueThreshold: 0
+    icon: {fileID: 21300000, guid: 033d4168842654b43b53e9e107fc339a, type: 3}
   tooltipSpeed: 1
 --- !u!61 &3173607789730986161
 BoxCollider2D:

@@ -121,7 +121,8 @@ public enum ENEMY_INTENT
     grow,
     phase,
     absorb,
-    mistify
+    mistify,
+    infect
 }
 
 public enum STATUS

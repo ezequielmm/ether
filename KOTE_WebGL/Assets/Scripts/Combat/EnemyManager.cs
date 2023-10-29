@@ -116,8 +116,10 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         LoadEnemyPrefab(enemyName, (instance) =>
         {
             activeEnemy = instance;
+            var originalScale = activeEnemy.transform.localScale;
             activeEnemy.transform.SetParent(transform);
             activeEnemy.transform.localPosition = Vector3.zero;
+            activeEnemy.transform.localScale = originalScale;
             GrabEnemyFadeout(activeEnemy);
             enemyPlacementData = activeEnemy.GetComponentInChildren<EnemyPrefab>();
             enemyPlacementData.InitEnemy(enemy, FitTopAndBottomBar);
