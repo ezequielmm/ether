@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: Jade Walkable 4
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: 114cd715f3c8e9e449b857062d49419e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 343de1e5af905894eb4dcf1fccfe7f5b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

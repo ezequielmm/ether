@@ -1103,6 +1103,26 @@ MonoBehaviour:
     m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Troll/Troll/Troll - Attack 3.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 03107b8f27cd8e34787e59085da50ad8
+    m_Address: Assets/Sprites/cards/CardImages/553.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: dcefa3f237f177443ba73ea1907bdbd7
+    m_Address: Assets/Sprites/cards/CardImages/554.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d0b83a7cc9bd60042af41f80fdebed88
+    m_Address: Assets/Sprites/cards/CardImages/559.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 881a8fa24fe3d094292298d89975457b
+    m_Address: Assets/Sprites/cards/CardImages/567.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4c5cbda06f3110e449fd7f85ab82ced5
+    m_Address: Assets/Sprites/cards/CardImages/569.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b5243524a01eab148b0a227677e45ff2, type: 2}
   m_SchemaSet:

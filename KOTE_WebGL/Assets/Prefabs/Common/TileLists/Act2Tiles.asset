@@ -13,10 +13,18 @@ MonoBehaviour:
   m_Name: Act2Tiles
   m_EditorClassIdentifier: 
   grassTiles:
-  - {fileID: 11400000, guid: 86baf023186076645852c098ecb45c13, type: 2}
+  - {fileID: 11400000, guid: bf4182e50aa975c4a9f5c9cd1ff305e7, type: 2}
+  - {fileID: 11400000, guid: 814cfdff503853d4e8ca95f6b1eb50b7, type: 2}
+  - {fileID: 11400000, guid: af3a901401f8cf24098c70a7e8c503a7, type: 2}
   lakeTiles:
-  - {fileID: 11400000, guid: 86baf023186076645852c098ecb45c13, type: 2}
+  - {fileID: 11400000, guid: a1a54f4bbdde6654b9dc62a65306e039, type: 2}
+  - {fileID: 11400000, guid: d21427a05f2173341aaf3d18b1df4c16, type: 2}
+  - {fileID: 11400000, guid: c4bff419faf2fc54e937ce7211b5b8f0, type: 2}
   mountainTiles:
   - {fileID: 11400000, guid: 86baf023186076645852c098ecb45c13, type: 2}
+  - {fileID: 11400000, guid: db9ce5e7afc8f5d4c84a42e238c3b97d, type: 2}
+  - {fileID: 11400000, guid: 94093f3eb1d6269479edc0637c9813f1, type: 2}
+  - {fileID: 11400000, guid: 71a1e7d0122065e41ab707bf0975e672, type: 2}
   forestTiles:
-  - {fileID: 11400000, guid: 86baf023186076645852c098ecb45c13, type: 2}
+  - {fileID: 11400000, guid: acdf4433331b57449a153e6fb4fbca26, type: 2}
+  - {fileID: 11400000, guid: bc3c283e20031594787ceb5e35fa92b7, type: 2}
