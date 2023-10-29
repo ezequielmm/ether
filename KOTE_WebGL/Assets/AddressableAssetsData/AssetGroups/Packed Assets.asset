@@ -21,10 +21,6 @@ MonoBehaviour:
     m_Address: Assets/Sprites/Encounter/magic-carpetB.png
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 6f1bcbe2541c0dc48b0c38d523dfbd51
-    m_Address: Assets/Sprites/Encounter/CaveIn.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: e311e8e9e607e134090ad9317c9b913a
     m_Address: Assets/AllIn1SpriteShader/Materials/SkinsVFX/HallowedHelmet.mat
     m_ReadOnly: 0
@@ -1121,6 +1117,10 @@ MonoBehaviour:
     m_SerializedLabels: []
   - m_GUID: 4c5cbda06f3110e449fd7f85ab82ced5
     m_Address: Assets/Sprites/cards/CardImages/569.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 09821a488c30ce641bbef085635e71f6
+    m_Address: Assets/Sprites/Encounter/CaveIn2.png
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0
