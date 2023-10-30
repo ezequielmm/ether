@@ -26,10 +26,10 @@ public class LootboxPanelManager : MonoBehaviour
         populatedWithStatus = newGameStatus;
         
         ClearGear();
+
         foreach (var item in items)
         {
-
-                AddGearItem(item);
+            AddGearItem(item);
         }
     }
 
