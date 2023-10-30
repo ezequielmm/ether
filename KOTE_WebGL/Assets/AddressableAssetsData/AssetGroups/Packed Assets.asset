@@ -1099,10 +1099,6 @@ MonoBehaviour:
     m_Address: Assets/Audio/Sfx/Act 2 Enemy Sounds/Troll/Troll/Troll - Attack 3.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: dcefa3f237f177443ba73ea1907bdbd7
-    m_Address: Assets/Sprites/cards/CardImages/554.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: d0b83a7cc9bd60042af41f80fdebed88
     m_Address: Assets/Sprites/cards/CardImages/559.png
     m_ReadOnly: 0

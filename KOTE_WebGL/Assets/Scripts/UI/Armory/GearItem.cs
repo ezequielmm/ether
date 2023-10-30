@@ -33,7 +33,7 @@ public class GearItem : MonoBehaviour
             {
                 new Tooltip
                 {
-                    title = $"{ItemData.name}{FormatTraitText()}"
+                    title = $"{ItemData.name}"
                 }
             });
         };
