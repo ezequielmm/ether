@@ -485,6 +485,9 @@ MonoBehaviour:
   actTileLists:
   - {fileID: 11400000, guid: defc2e235d7d3c049a83cf2e7643bab2, type: 2}
   - {fileID: 11400000, guid: f1213198e0c4fc645b4c8a0c7def3d61, type: 2}
+  actMapTileLists:
+  - {fileID: 11400000, guid: 9ce805b12f0e4a24b9e62725a76f790f, type: 2}
+  - {fileID: 11400000, guid: ca3bbe5321f22be4e9545b2bc655da06, type: 2}
   startPoint: {x: 0, y: -4, z: 0}
   startX: 0
   startY: 4

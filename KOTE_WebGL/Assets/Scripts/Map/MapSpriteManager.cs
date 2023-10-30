@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DefaultNamespace.ScriptableObjects;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -26,6 +27,8 @@ namespace map
         // tilemap references
         public Tilemap MapGrid;
         public MapTileList[] actTileLists;
+        public MapTileData[] actMapTileLists;
+        
 
         public Vector3Int startPoint;
         public int startX;
@@ -66,6 +69,7 @@ namespace map
         private float halfScreenWidth;
 
         private MapTileList currentActTiles;
+        private MapTileData currentActMapTiles;
         private List<int> MapSeeds;
         private Dictionary<Vector3Int, MapTilePath> mapPaths;
         List<Vector3Int> blockedTiles = new List<Vector3Int>();
@@ -426,7 +430,7 @@ namespace map
                       " last node localPosition" +
                       nodes[nodes.Count - 1].transform.localPosition);
 
-            GenerateMapGrid();
+            GenerateMapGrid(expeditionMapData);
 
             // Generate Map Images
             //StartCoroutine(GenerateMapImages());
@@ -440,10 +444,12 @@ namespace map
             if (currentStage > 0 && currentStage - 1 < actTileLists.Length)
             {
                 currentActTiles = actTileLists[currentStage - 1];
+                currentActMapTiles = actMapTileLists[currentStage - 1];
                 return;
             }
             // else default to the act 1 tiles
             currentActTiles = actTileLists[0];
+            currentActMapTiles = actMapTileLists[0];
         }
 
         #region generateMap
@@ -711,7 +717,7 @@ namespace map
             }
         }
 
-        private void GenerateMapGrid()
+        private void GenerateMapGrid(SWSM_MapData swsmMapData)
         {
             Random.InitState(MapSeeds[0]);
             GeneratePathBackground();

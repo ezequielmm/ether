@@ -54,7 +54,7 @@ public class ScoreboardManager : SingleTon<ScoreboardManager>
         Scoreboard.Populate(scoreboardData, newGameStatus);
         Lootbox.Populate(scoreboardData != null ? scoreboardData.VictoryItems : new List<VictoryItems>(), newGameStatus);
         
-        if (scoreboardData == null || scoreboardData.Rewards.Count == 0)
+        if (scoreboardData == null || scoreboardData.VictoryItems.Count == 0)
         {
             ToggleScorePanel(true);
             if (scoreboardData != null && scoreboardData.NotifyNoLoot)

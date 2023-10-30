@@ -525,10 +525,6 @@ MonoBehaviour:
     m_Address: Assets/Sprites/cards/frames/KOTE_Asset_Frame_Neutral.png
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 775f4cc36b80bed49a2836b59c174bc8
-    m_Address: Assets/Sprites/cards/CardImages/69.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: 478e687a98c7af9498bca26e1cfa65be
     m_Address: Assets/Sprites/Potions/020.png
     m_ReadOnly: 0
