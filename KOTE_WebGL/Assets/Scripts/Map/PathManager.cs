@@ -12,8 +12,8 @@ public class PathManager : MonoBehaviour
     public int exitNodeId;
 
     // store the step and act so we can animate the map expansion
-    private int pathStep;
-    private int pathAct;
+    public int pathStep {get; private set;}
+    public int pathAct {get; private set;}
 
     // we need to know the status of the nodes on both ends of the path
     private NODE_STATUS entranceNodeStatus;

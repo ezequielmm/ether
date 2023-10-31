@@ -10,10 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca7a0eb9f69b43b09ebde9d708c21b7c, type: 3}
-  m_Name: Act2TilesData
+  m_Name: Act2 Art Data
   m_EditorClassIdentifier: 
   mapTiles:
   - percentageStep: 0.5
     tileList: {fileID: 11400000, guid: f1213198e0c4fc645b4c8a0c7def3d61, type: 2}
+    combatBackground: {fileID: 7082852882746524761, guid: 681a0db8c26f9194babf6b890f382443,
+      type: 3}
   - percentageStep: 1
     tileList: {fileID: 11400000, guid: 11ecb808b8d19f64a89d9e4688547281, type: 2}
+    combatBackground: {fileID: 4918233441643978109, guid: d987b6fba668da44c830aa02571edafc,
+      type: 3}
+  bossBackground: {fileID: 7532968753195231827, guid: 95c2610128ca9504eb83ea8a2a88c575,
+    type: 3}

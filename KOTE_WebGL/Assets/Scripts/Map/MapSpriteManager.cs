@@ -27,7 +27,7 @@ namespace map
         // tilemap references
         public Tilemap MapGrid;
         public MapTileList[] actTileLists;
-        public MapTileData[] actMapTileLists;
+        public MapArtData[] actMapTileLists;
         
 
         public Vector3Int startPoint;
@@ -69,7 +69,7 @@ namespace map
         private float halfScreenWidth;
 
         private MapTileList currentActTiles;
-        private MapTileData currentActMapTiles;
+        private MapArtData _currentActMapArts;
         private List<int> MapSeeds;
         private Dictionary<Vector3Int, MapTilePath> mapPaths;
         List<Vector3Int> blockedTiles = new List<Vector3Int>();
@@ -430,7 +430,7 @@ namespace map
                       " last node localPosition" +
                       nodes[nodes.Count - 1].transform.localPosition);
 
-            GenerateMapGrid(expeditionMapData);
+            GenerateMapGrid(mapStructure);
 
             // Generate Map Images
             //StartCoroutine(GenerateMapImages());
@@ -444,12 +444,12 @@ namespace map
             if (currentStage > 0 && currentStage - 1 < actTileLists.Length)
             {
                 currentActTiles = actTileLists[currentStage - 1];
-                currentActMapTiles = actMapTileLists[currentStage - 1];
+                _currentActMapArts = actMapTileLists[currentStage - 1];
                 return;
             }
             // else default to the act 1 tiles
             currentActTiles = actTileLists[0];
-            currentActMapTiles = actMapTileLists[0];
+            _currentActMapArts = actMapTileLists[0];
         }
 
         #region generateMap
@@ -717,7 +717,7 @@ namespace map
             }
         }
 
-        private void GenerateMapGrid(SWSM_MapData swsmMapData)
+        private void GenerateMapGrid(MapStructure mapStructure)
         {
             Random.InitState(MapSeeds[0]);
             GeneratePathBackground();
@@ -876,17 +876,21 @@ namespace map
                             height); // new Vector3Int(width, height, (int)GameSettings.MAP_SPRITE_ELEMENTS_Z);
                     if (MapGrid.HasTile(tilePos) == false)
                     {
+                        // find which node is closer to the current tile from left side
+                        var closestNode = nodes.OrderBy(e => Mathf.Abs(e.transform.position.x - width)).First();
+                        var tiles = _currentActMapArts.GetTilesFromStep(closestNode.step, nodes.Last().step);
+                        
                         // pick a random tile of whatever type was selected
                         if (randomType == 0)
                         {
-                            int randomTile = Random.Range(0, currentActTiles.mountainTiles.Length);
-                            MapGrid.SetTile(tilePos, currentActTiles.mountainTiles[randomTile]);
+                            int randomTile = Random.Range(0, tiles.mountainTiles.Length);
+                            MapGrid.SetTile(tilePos, tiles.mountainTiles[randomTile]);
                         }
 
                         if (randomType == 1)
                         {
-                            int randomTile = Random.Range(0, currentActTiles.forestTiles.Length);
-                            MapGrid.SetTile(tilePos, currentActTiles.forestTiles[randomTile]);
+                            int randomTile = Random.Range(0, tiles.forestTiles.Length);
+                            MapGrid.SetTile(tilePos, tiles.forestTiles[randomTile]);
                         }
                     }
                     else
@@ -929,11 +933,11 @@ namespace map
                 Vector3Int start = MapGrid.WorldToCell(path.transform.TransformPoint(spline.GetPosition(0)));
                 Vector3Int end =
                     MapGrid.WorldToCell(path.transform.TransformPoint(spline.GetPosition(spline.GetPointCount() - 1)));
-                SnapPath(start, end, path);
+                SnapPath(start, end, path, _currentActMapArts.GetTilesFromStep(path.pathStep, pathManagers.Last().pathStep));
             }
         }
 
-        private void SetNodeGrass(Vector3Int node)
+        private void SetNodeGrass(Vector3Int node, MapTileList mapTileList)
         {
             // we have to set the z to a constant, as for some reason you can two tiles in the same spot with different z levels
             node = GetVectorWithZ(node.x, node.y);
@@ -941,18 +945,18 @@ namespace map
             int lakeCheck = Random.Range(0, 10);
             if (lakeCheck == 9)
             {
-                int randomLakeTile = Random.Range(0, currentActTiles.lakeTiles.Length);
-                MapGrid.SetTile(node, currentActTiles.lakeTiles[randomLakeTile]);
+                int randomLakeTile = Random.Range(0, mapTileList.lakeTiles.Length);
+                MapGrid.SetTile(node, mapTileList.lakeTiles[randomLakeTile]);
                 return;
             }
 
-            int randomTile = Random.Range(0, currentActTiles.grassTiles.Length);
-            MapGrid.SetTile(node, currentActTiles.grassTiles[randomTile]);
+            int randomTile = Random.Range(0, mapTileList.grassTiles.Length);
+            MapGrid.SetTile(node, mapTileList.grassTiles[randomTile]);
         }
 
 
         // Snaps the paths to the grid
-        private void SnapPath(Vector3Int start, Vector3Int end, PathManager path)
+        private void SnapPath(Vector3Int start, Vector3Int end, PathManager path, MapTileList tiles)
         {
             start.z = 0;
             end.z = 0;
@@ -1008,13 +1012,14 @@ namespace map
             }
 
             // Set path between starting and ending points
+
             int splineIndex = 0;
             for (int i = startIndex; i < endIndex + 1; i++)
             {
                 var tile = tilePath[i];
 
                 // Set grass node
-                SetNodeGrass(tile);
+                SetNodeGrass(tile, tiles);
 
                 bool lastNode = i == endIndex;
                 // if path is on that tile
