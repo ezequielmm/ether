@@ -385,7 +385,7 @@ namespace KOTE.UI.Armory
                         data = new InitiationData()
                         {
                             TokenId = SelectedCharacter.TokenId,
-                            Contract = NftManager.Instance.GetContractAddress(NftContract.BlessedVillager),
+                            Contract = NftManager.Instance.GetContractAddress(SelectedCharacter.Contract),
                             GearIds = equippedGear.Values.Select(x => x.gearId).ToArray(),
                             Wallet = WalletManager.Instance.ActiveWallet
                         }
