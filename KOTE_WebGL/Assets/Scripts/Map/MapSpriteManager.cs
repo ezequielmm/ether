@@ -1333,7 +1333,7 @@ namespace map
             {
                 bounds.Encapsulate(renderer.bounds);
             }
-
+/*
             // if small map
             if (bounds.max.x < halfScreenWidth * 2)
             {
@@ -1342,7 +1342,7 @@ namespace map
             else
             {
                 //  Sets Left Edge
-
+*/
                 // need to remove left side bounds to keep houses on left edge
                 float leftEdge = Mathf.Abs(-maskBounds.extents.x + maskBounds.center.x) *
                                  GameSettings.MAP_LEFT_EDGE_MULTIPLIER;
@@ -1361,7 +1361,7 @@ namespace map
                 bounds.extents = new Vector3(bounds.extents.x - (rightEdge / 2), bounds.extents.y, bounds.extents.z);
                 // subtract half of the right edge to center
                 bounds.center = new Vector3(bounds.center.x - (rightEdge / 2), bounds.center.y, bounds.center.z);
-            }
+  //          }
 
             nodesHolder.transform.rotation = currentRotation;
             nodesHolder.transform.position = currentPosition;

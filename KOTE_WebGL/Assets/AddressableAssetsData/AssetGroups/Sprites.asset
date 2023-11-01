@@ -413,10 +413,6 @@ MonoBehaviour:
     m_Address: Assets/Sprites/cards/CardImages/129.png
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: b71e0f7a81a60064982941c7875558f3
-    m_Address: Assets/Sprites/cards/CardImages/504.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: f9a2b896402b2d24c8c779d20a8021fc
     m_Address: Assets/Sprites/Trinkets/007.png
     m_ReadOnly: 0
