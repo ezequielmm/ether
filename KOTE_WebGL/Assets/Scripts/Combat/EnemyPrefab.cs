@@ -17,6 +17,7 @@ public class EnemyPrefab : MonoBehaviour
     public SortingGroup sortingGroup;
     public int sortingOrder = 1;
     public Bounds setBounds;
+    public Bounds rendererBounds;
     
     public void InitEnemy(EnemyData data, Action fitTransformsCallback)
     {
@@ -71,6 +72,10 @@ public class EnemyPrefab : MonoBehaviour
     {
         spineAnimationsManagement.PlayAnimationSequence("Idle");
         // Remove transformations
+
+        // Ensure our parent is at 1 scale first (possible animation running here)
+        transform.parent.transform.localScale = Vector3.one;
+        
         Vector3 originalPos = transform.position;
         transform.position = Vector3.zero;
         Quaternion originalRot = transform.rotation;
@@ -89,10 +94,6 @@ public class EnemyPrefab : MonoBehaviour
             // Renderer bounds is in world space
             bounds.Encapsulate(renderer.bounds);
         }
-
-        // Adjust bounds
-        //bounds.center = bounds.center;
-        //bounds.size = bounds.size;
 
         // Set collider to bounds
         collider.offset = bounds.center + (Vector3.up * (GameSettings.INTENT_HEIGHT - GameSettings.HEALTH_HEIGHT) / originalScale.y);

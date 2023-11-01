@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0daf96e2ebd28cd4491d9c5c42502552, type: 3}
+  m_Name: Act2MagmaTiles
+  m_EditorClassIdentifier: 
+  grassTiles:
+  - {fileID: 11400000, guid: ecf94ad1029bb3342be47f13357421d6, type: 2}
+  - {fileID: 11400000, guid: ecd9a0775b51b1b40b1e2644d7cda0dd, type: 2}
+  lakeTiles:
+  - {fileID: 11400000, guid: ecf94ad1029bb3342be47f13357421d6, type: 2}
+  - {fileID: 11400000, guid: ecd9a0775b51b1b40b1e2644d7cda0dd, type: 2}
+  mountainTiles:
+  - {fileID: 11400000, guid: e7953e9be3a4cae40a5de927320d31b2, type: 2}
+  - {fileID: 11400000, guid: 3d2f09277e629f9418319d8ff8adf3f2, type: 2}
+  - {fileID: 11400000, guid: aa3245dca80aff14b9f444e216aed297, type: 2}
+  forestTiles:
+  - {fileID: 11400000, guid: ecf94ad1029bb3342be47f13357421d6, type: 2}
+  - {fileID: 11400000, guid: ecd9a0775b51b1b40b1e2644d7cda0dd, type: 2}

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0daf96e2ebd28cd4491d9c5c42502552, type: 3}
-  m_Name: Act2Tiles
+  m_Name: Act2Jade Tiles
   m_EditorClassIdentifier: 
   grassTiles:
   - {fileID: 11400000, guid: bf4182e50aa975c4a9f5c9cd1ff305e7, type: 2}
