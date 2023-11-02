@@ -1,8 +1,8 @@
 {
-    "request_url": "https://api.dev.knightsoftheether.com/",
+    "request_url": "https://api.demo.knightsoftheether.com/",
     "skin_url": "https://dev.knightsoftheether.com/",
     "gear_icon_url": "https://dev.knightsoftheether.com/GearIcons/",
     "portrait_url": "https://dev.knightsoftheether.com/Portraits/",
-    "socket_url": "https://api.dev.knightsoftheether.com/",
+    "socket_url": "https://api.demo.knightsoftheether.com/",
     "leaderboard_url": "https://app.treasure.lol/tournaments/mydsummer-madness"
 }

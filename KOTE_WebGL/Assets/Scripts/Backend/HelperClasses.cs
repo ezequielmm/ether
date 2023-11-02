@@ -261,6 +261,7 @@ public class Statuses
         public int value;
         public string attachTo;
         public string description;
+        public int counter;
     }
 }
 
@@ -268,6 +269,15 @@ public class Statuses
 public class Effect
 {
     public string target;
+    public string effect;
+    public Args args = new();
+    public int times;
+
+    [Serializable]
+    public class Args
+    {
+        public int? value;
+    }
 }
 
 

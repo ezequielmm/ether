@@ -53,6 +53,8 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
             cardEnergy = "X";
         }
 
+        ComputeCardDescription(card);
+
         energyTF.SetText(cardEnergy);
         nameTF.SetText(card.name);
         rarityTF.SetText(card.rarity);
@@ -77,6 +79,27 @@ public class UICardPrefabManager : MonoBehaviour, IPointerEnterHandler, IPointer
         PopulateToolTips();
 
         Deselect();
+    }
+
+    private void ComputeCardDescription(Card card)
+    {
+        if (!card.description.Contains("{") || !card.description.Contains("}"))
+            return;
+
+        Debug.Log($"Parsing card description for {card.name} in client side");
+        
+        card.properties.effects.ForEach(e =>
+        {
+            card.description = card.description.Replace("{" + e.effect + "}", e.args?.value.ToString() ?? "");
+        });
+        
+        card.properties.statuses.ForEach(s =>
+        {
+            card.description = card.description.Replace($"{s.name}", 
+                !string.IsNullOrEmpty(s.args?.value.ToString()) ?
+                s.args?.value.ToString() :
+                string.IsNullOrEmpty(s.args?.counter.ToString()) ? s.args?.counter.ToString() : "");
+        });
     }
 
     private void PopulateToolTips()
