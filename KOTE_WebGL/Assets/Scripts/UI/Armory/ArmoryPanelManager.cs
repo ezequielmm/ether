@@ -47,8 +47,6 @@ namespace KOTE.UI.Armory
             loadingText.raycastTarget = false;
 
             NftManager.Instance.NftsLoaded.AddListener(PopulateCharacterList);
-
-            WebBridge.OnWebMessageRecieved.AddListener(OnArmoryRefresh);
         }
 
 #if UNITY_EDITOR
@@ -56,7 +54,7 @@ namespace KOTE.UI.Armory
         {
             if (Input.GetKeyDown(KeyCode.F1))
             {
-                OnArmoryRefresh(MEMORY_REFRESH_MESSAGE);
+                OnArmoryRefresh();
             }
         }
 #endif
@@ -73,13 +71,8 @@ namespace KOTE.UI.Armory
             WebBridge.SendUnityMessage(sendJson, sendJson);
         }
 
-        void OnArmoryRefresh(string data)
+        public void OnArmoryRefresh()
         {
-            if (data != MEMORY_REFRESH_MESSAGE)
-            {
-                return;
-            }
-
             FindObjectOfType<ArmoryKnightRendererManager>(true).OnSkinLoading();
 
             StartCoroutine(Routine());

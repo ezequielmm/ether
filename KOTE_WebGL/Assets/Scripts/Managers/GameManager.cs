@@ -359,6 +359,19 @@ public class GameManager : SingleTon<GameManager>
     
     public bool IsPlayerTurn = true;
 
+    private void Awake()
+    {
+        WebBridge.OnWebMessageRecieved.AddListener(WebBridgeMessageReceived);
+    }
+
+    private void WebBridgeMessageReceived(string message)
+    {
+        if (ArmoryPanelManager.MEMORY_REFRESH_MESSAGE == message)
+            FindObjectOfType<ArmoryPanelManager>()?.OnArmoryRefresh();
+        else if (WalletManager.INITIATED_SUCCESS_MESSAGE == message)
+            WalletManager.Instance.GetNftsInWallet(WalletManager.Instance.ActiveWallet);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
