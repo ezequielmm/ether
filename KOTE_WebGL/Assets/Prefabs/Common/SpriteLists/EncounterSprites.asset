@@ -111,3 +111,31 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+  - name: stoneCutters
+    image: {fileID: 0}
+    imageRef:
+      m_AssetGUID: cd8a933e9664dbf48af82de8e8ceefc4
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - name: memStalactive
+    image: {fileID: 0}
+    imageRef:
+      m_AssetGUID: 07a047602aa5af5499bfe04877e7829b
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - name: royalEmissary
+    image: {fileID: 0}
+    imageRef:
+      m_AssetGUID: c88a3f4d12f0f534a9124ba61636c14d
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - name: stoneMason
+    image: {fileID: 0}
+    imageRef:
+      m_AssetGUID: b9c14fa1799f8764b8318a716bdafd16
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0

@@ -1115,6 +1115,22 @@ MonoBehaviour:
     m_Address: Assets/Sprites/Encounter/CaveIn2.png
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: cd8a933e9664dbf48af82de8e8ceefc4
+    m_Address: Assets/Sprites/Encounter/Stonecutters.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 07a047602aa5af5499bfe04877e7829b
+    m_Address: Assets/Sprites/Encounter/Mesmerizing Stalactite.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c88a3f4d12f0f534a9124ba61636c14d
+    m_Address: Assets/Sprites/Encounter/Royal Emissary.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b9c14fa1799f8764b8318a716bdafd16
+    m_Address: Assets/Sprites/Encounter/Stone Mason.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b5243524a01eab148b0a227677e45ff2, type: 2}
   m_SchemaSet:
