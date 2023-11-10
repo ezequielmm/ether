@@ -36,6 +36,7 @@ public class ConfirmationPanelManager : MonoBehaviour
     public void ShowConfirmationPanel(string displayText, Action onConfirmFunction)
     {
         if (confirmationPanelContainer.activeSelf) return;
+        Debug.Log($"[ConfirmationPanelManager] ShowConfirmationPanel {displayText}");
         confirmButton.SetActive(true);
         cancelButton.SetActive(true);
 
@@ -52,6 +53,8 @@ public class ConfirmationPanelManager : MonoBehaviour
     private void ShowConfirmationPanelWithBackAction(string displayText, Action onConfirmFunction, Action onCancelFunction)
     {
         if (confirmationPanelContainer.activeSelf) return;
+        Debug.Log($"[ConfirmationPanelManager] ShowConfirmationPanelWithBackAction {displayText}");
+        
         confirmButton.SetActive(true);
         cancelButton.SetActive(true);
 
@@ -69,6 +72,7 @@ public class ConfirmationPanelManager : MonoBehaviour
         Action onCancelFunction, string[] buttonTexts)
     {
         if (confirmationPanelContainer.activeSelf) return;
+        Debug.Log($"[ConfirmationPanelManager] ShowConfirmationPanelWIthFullControl {displayText}");
         if(buttonTexts.Length != 2) 
         {
             Debug.LogError($"[ConfirmationPanelManager] ShowConfirmationPanelWIthFullControl: buttonTexts must have 2 items.");

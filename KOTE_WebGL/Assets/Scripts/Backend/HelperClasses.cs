@@ -261,7 +261,7 @@ public class Statuses
         public int value;
         public string attachTo;
         public string description;
-        public int counter;
+        public int? counter;
     }
 }
 

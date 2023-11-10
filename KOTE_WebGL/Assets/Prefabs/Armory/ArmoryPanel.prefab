@@ -904,6 +904,7 @@ MonoBehaviour:
   tooltip: {fileID: 756088281235734123}
   gearTrait: 7
   icon: {fileID: 1702279672932713073}
+  defaultImage: {fileID: 0}
 --- !u!114 &663859089148964535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1709,6 +1710,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GearImage: {fileID: 1178743529243850185}
   tooltip: {fileID: 8617530404126119326}
+  ItemData:
+    rewardType: 
+    gearId: 0
+    name: 
+    trait: 
+    category: 
+    rarity: 0
+    image: 
+    isActive: 0
+    onlyOneAllowed: 0
+    gearImage: {fileID: 0}
+  stackImage: {fileID: 0}
+  stackText: {fileID: 0}
 --- !u!114 &8617530404126119326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3372,6 +3386,7 @@ MonoBehaviour:
   tooltip: {fileID: 1190528008685885590}
   gearTrait: 6
   icon: {fileID: 964903866489496716}
+  defaultImage: {fileID: 0}
 --- !u!114 &1426850467059025994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5776,6 +5791,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GearImage: {fileID: 5433098648322016953}
   tooltip: {fileID: 1848497753603673680}
+  ItemData:
+    rewardType: 
+    gearId: 0
+    name: 
+    trait: 
+    category: 
+    rarity: 0
+    image: 
+    isActive: 0
+    onlyOneAllowed: 0
+    gearImage: {fileID: 0}
+  stackImage: {fileID: 0}
+  stackText: {fileID: 0}
 --- !u!114 &1848497753603673680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6070,6 +6098,7 @@ MonoBehaviour:
   tooltip: {fileID: 2871718780740328666}
   gearTrait: 1
   icon: {fileID: 4196221371593367744}
+  defaultImage: {fileID: 0}
 --- !u!114 &2635396460603968518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6953,7 +6982,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3967023892898244400}
   m_HandleRect: {fileID: 4336011656279146849}
   m_Direction: 2
-  m_Value: 0.9999965
+  m_Value: 1
   m_Size: 0.9744987
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -7023,6 +7052,7 @@ MonoBehaviour:
   tooltip: {fileID: 3272682178298455295}
   gearTrait: 4
   icon: {fileID: 3498024796121913573}
+  defaultImage: {fileID: 0}
 --- !u!114 &3324304137960322083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7279,6 +7309,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GearImage: {fileID: 7808820695019549384}
   tooltip: {fileID: 3498583207609614131}
+  ItemData:
+    rewardType: 
+    gearId: 0
+    name: 
+    trait: 
+    category: 
+    rarity: 0
+    image: 
+    isActive: 0
+    onlyOneAllowed: 0
+    gearImage: {fileID: 0}
+  stackImage: {fileID: 0}
+  stackText: {fileID: 0}
 --- !u!114 &3498583207609614131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7358,6 +7401,7 @@ MonoBehaviour:
   tooltip: {fileID: 3553913614684448136}
   gearTrait: 3
   icon: {fileID: 3221082555450202514}
+  defaultImage: {fileID: 0}
 --- !u!114 &3610377822750094676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8597,6 +8641,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GearImage: {fileID: 7668892129934593059}
   tooltip: {fileID: 8298271847931491001}
+  ItemData:
+    rewardType: 
+    gearId: 0
+    name: 
+    trait: 
+    category: 
+    rarity: 0
+    image: 
+    isActive: 0
+    onlyOneAllowed: 0
+    gearImage: {fileID: 0}
+  stackImage: {fileID: 0}
+  stackText: {fileID: 0}
 --- !u!114 &8298271847931491001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9450,6 +9507,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GearImage: {fileID: 1546911490088165816}
   tooltip: {fileID: 9046311190740318912}
+  ItemData:
+    rewardType: 
+    gearId: 0
+    name: 
+    trait: 
+    category: 
+    rarity: 0
+    image: 
+    isActive: 0
+    onlyOneAllowed: 0
+    gearImage: {fileID: 0}
+  stackImage: {fileID: 0}
+  stackText: {fileID: 0}
 --- !u!114 &9046311190740318912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10101,17 +10171,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inactiveOverlay: {fileID: 6568579940644261249}
-  knight: {fileID: 2307527190363806523}
-  knightImage: {fileID: 9001337068549800130}
+  portraitImage: {fileID: 0}
   defaultKnight: {fileID: 21300000, guid: 7e1c836ccd082474ea84237b41fbef98, type: 3}
-  villager: {fileID: 3959217985274184042}
-  villagerComposite: {fileID: 1486291104311866043}
-  loadingText: {fileID: 1934149739452494075}
-  portraitLayers:
-  - {fileID: 7501172686641752177}
-  - {fileID: 2132384943019271953}
-  - {fileID: 4005085058309756376}
-  - {fileID: 5809356553484870070}
+  selectedFrame: {fileID: 0}
+  villagerDefault: {fileID: 0}
 --- !u!1 &5186772415823335680
 GameObject:
   m_ObjectHideFlags: 0
@@ -10899,6 +10962,7 @@ MonoBehaviour:
   tooltip: {fileID: 5307599676831755462}
   gearTrait: 0
   icon: {fileID: 6073664675632451804}
+  defaultImage: {fileID: 0}
 --- !u!114 &5395536461423426586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11280,13 +11344,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c834d8fe398904448946d8c87f105265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  charactersListManager: {fileID: 0}
+  GearListManager: {fileID: 0}
   panelContainer: {fileID: 682796372828725046}
   playButton: {fileID: 5453188191525416437}
   portraitManager: {fileID: 6632946367844898707}
-  TokenNameText: {fileID: 5135361579823425470}
-  headerPrefab: {fileID: 6503190128952527097, guid: e57ecd5646c586246a1cea646dcaf6cf,
-    type: 3}
-  gearListTransform: {fileID: 6153412071285043192}
   gearSlots:
   - {fileID: 6622286893445020329}
   - {fileID: 8521753441863702552}
@@ -11302,7 +11364,9 @@ MonoBehaviour:
   - {fileID: 5570888751791021685}
   - {fileID: 2997566893903467328}
   - {fileID: 5039356013828525593}
-  gearListScroll: {fileID: 4691810564068195119}
+  leftButton: {fileID: 0}
+  rightButton: {fileID: 0}
+  loadingText: {fileID: 0}
   postProcessingTransition: {fileID: 0}
 --- !u!1 &5570888751791021685
 GameObject:
@@ -11664,6 +11728,7 @@ MonoBehaviour:
   tooltip: {fileID: 5542262575554300684}
   gearTrait: 9
   icon: {fileID: 5839917936386176790}
+  defaultImage: {fileID: 0}
 --- !u!114 &5738351635992435664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12578,6 +12643,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GearImage: {fileID: 3524713448175499828}
   tooltip: {fileID: 2831775726463253823}
+  ItemData:
+    rewardType: 
+    gearId: 0
+    name: 
+    trait: 
+    category: 
+    rarity: 0
+    image: 
+    isActive: 0
+    onlyOneAllowed: 0
+    gearImage: {fileID: 0}
+  stackImage: {fileID: 0}
+  stackText: {fileID: 0}
 --- !u!114 &2831775726463253823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13133,6 +13211,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GearImage: {fileID: 4520319167991733671}
   tooltip: {fileID: 6143775758430035860}
+  ItemData:
+    rewardType: 
+    gearId: 0
+    name: 
+    trait: 
+    category: 
+    rarity: 0
+    image: 
+    isActive: 0
+    onlyOneAllowed: 0
+    gearImage: {fileID: 0}
+  stackImage: {fileID: 0}
+  stackText: {fileID: 0}
 --- !u!114 &6143775758430035860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13636,6 +13727,7 @@ MonoBehaviour:
   tooltip: {fileID: 6880195649890005825}
   gearTrait: 2
   icon: {fileID: 4799360985481629531}
+  defaultImage: {fileID: 0}
 --- !u!114 &6643925899347944349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13745,6 +13837,7 @@ MonoBehaviour:
   tooltip: {fileID: 6680508686367179869}
   gearTrait: 10
   icon: {fileID: 4707514365080909895}
+  defaultImage: {fileID: 0}
 --- !u!114 &6916760861089764481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14116,6 +14209,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GearImage: {fileID: 5002072741228688183}
   tooltip: {fileID: 1669317479047542262}
+  ItemData:
+    rewardType: 
+    gearId: 0
+    name: 
+    trait: 
+    category: 
+    rarity: 0
+    image: 
+    isActive: 0
+    onlyOneAllowed: 0
+    gearImage: {fileID: 0}
+  stackImage: {fileID: 0}
+  stackText: {fileID: 0}
 --- !u!114 &1669317479047542262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15400,6 +15506,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GearImage: {fileID: 674322096542737354}
   tooltip: {fileID: 5159665009957407486}
+  ItemData:
+    rewardType: 
+    gearId: 0
+    name: 
+    trait: 
+    category: 
+    rarity: 0
+    image: 
+    isActive: 0
+    onlyOneAllowed: 0
+    gearImage: {fileID: 0}
+  stackImage: {fileID: 0}
+  stackText: {fileID: 0}
 --- !u!114 &5159665009957407486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15969,6 +16088,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GearImage: {fileID: 6090184206336127428}
   tooltip: {fileID: 921887973615691855}
+  ItemData:
+    rewardType: 
+    gearId: 0
+    name: 
+    trait: 
+    category: 
+    rarity: 0
+    image: 
+    isActive: 0
+    onlyOneAllowed: 0
+    gearImage: {fileID: 0}
+  stackImage: {fileID: 0}
+  stackText: {fileID: 0}
 --- !u!114 &921887973615691855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16038,6 +16170,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GearImage: {fileID: 2800014797079850963}
   tooltip: {fileID: 2978104198954532092}
+  ItemData:
+    rewardType: 
+    gearId: 0
+    name: 
+    trait: 
+    category: 
+    rarity: 0
+    image: 
+    isActive: 0
+    onlyOneAllowed: 0
+    gearImage: {fileID: 0}
+  stackImage: {fileID: 0}
+  stackText: {fileID: 0}
 --- !u!114 &2978104198954532092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16837,6 +16982,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GearImage: {fileID: 6176442448366551116}
   tooltip: {fileID: 6905657635276602522}
+  ItemData:
+    rewardType: 
+    gearId: 0
+    name: 
+    trait: 
+    category: 
+    rarity: 0
+    image: 
+    isActive: 0
+    onlyOneAllowed: 0
+    gearImage: {fileID: 0}
+  stackImage: {fileID: 0}
+  stackText: {fileID: 0}
 --- !u!114 &6905657635276602522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17042,6 +17200,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GearImage: {fileID: 1122698531596993551}
   tooltip: {fileID: 5694693314620631393}
+  ItemData:
+    rewardType: 
+    gearId: 0
+    name: 
+    trait: 
+    category: 
+    rarity: 0
+    image: 
+    isActive: 0
+    onlyOneAllowed: 0
+    gearImage: {fileID: 0}
+  stackImage: {fileID: 0}
+  stackText: {fileID: 0}
 --- !u!114 &5694693314620631393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17121,6 +17292,7 @@ MonoBehaviour:
   tooltip: {fileID: 8896363900486198804}
   gearTrait: 11
   icon: {fileID: 7392561807454853646}
+  defaultImage: {fileID: 0}
 --- !u!114 &8664523051508037320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17519,6 +17691,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GearImage: {fileID: 640560892884083006}
   tooltip: {fileID: 6270072186762580618}
+  ItemData:
+    rewardType: 
+    gearId: 0
+    name: 
+    trait: 
+    category: 
+    rarity: 0
+    image: 
+    isActive: 0
+    onlyOneAllowed: 0
+    gearImage: {fileID: 0}
+  stackImage: {fileID: 0}
+  stackText: {fileID: 0}
 --- !u!114 &6270072186762580618
 MonoBehaviour:
   m_ObjectHideFlags: 0

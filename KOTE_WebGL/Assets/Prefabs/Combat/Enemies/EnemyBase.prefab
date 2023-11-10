@@ -198,26 +198,8 @@ MonoBehaviour:
     size: 
   setEnemy: 0
   enemyMap: []
+  ultiFeedback: {fileID: 0}
   spine: {fileID: 0}
-  validEnemyList:
-  - ancientone
-  - barkcharger
-  - bluesporeling
-  - fungalbrute
-  - groundmoth
-  - mimicfrog1
-  - queenorchid
-  - redsporeling
-  - sporemonger
-  - stingfae1
-  - stingfae2
-  - swampgoblin1
-  - swampgoblin2
-  - thornwolf
-  - thornwolfpup
-  - trapelican
-  - treant
-  - yellowsporeling
   enemiesConfig: {fileID: 11400000, guid: f8c3ffc165c71dc41b635812fc85e66a, type: 2}
   animator: {fileID: 2553237924377533355}
   vfxList: {fileID: 11400000, guid: 1a226e9bbd9aed5408db67b64c8c523a, type: 2}

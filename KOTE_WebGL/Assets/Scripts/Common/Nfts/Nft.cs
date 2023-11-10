@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -9,14 +8,11 @@ using UnityEngine;
 [Serializable]
 public class Nft
 {
-    [JsonProperty("token_id")]
     public int TokenId;
     public NftContract Contract;
-    [JsonProperty("image_url")]
     public string ImageUrl;
     [JsonProperty("name")]
     public string Name;
-    [JsonProperty("description")]
     public string Description;
 
     public Dictionary<Trait, string> trait;
@@ -46,7 +42,7 @@ public class Nft
     [JsonProperty("attributes")]
     [JsonConverter(typeof(TraitDictionaryConverter))]
     public Dictionary<TraitsParse, string> attributes;
-    [JsonProperty("can_play")]
+    
     public bool CanPlay;
     public string adaptedImageURI;
 
@@ -55,6 +51,7 @@ public class Nft
     
     public bool isKnight => Contract == NftContract.Knights;
     public DateTime PlayableAt => DateTime.Today + TimeSpan.FromHours(24);
+    public bool IsInitiated;
 
     public void GetImage(Action<Sprite> callback) 
     {
@@ -68,6 +65,26 @@ public class Nft
             Image = texture ? texture.ToSprite() : null;
             callback?.Invoke(Image);
         });
+    }
+    
+    public string FormatTokenName()
+    {
+        string contractName = "";
+        switch (Contract)
+        {
+            case NftContract.Knights:
+                contractName += Contract.ToString().TrimEnd('s');
+                break;
+            case NftContract.Villager:
+                contractName += Contract.ToString();
+                break;
+            case NftContract.BlessedVillager:
+                contractName += "Blessed Villager";
+                break;
+            case NftContract.NonTokenVillager:
+                return "Basic Villager";
+        }
+        return contractName + " #" + TokenId;
     }
 }
 

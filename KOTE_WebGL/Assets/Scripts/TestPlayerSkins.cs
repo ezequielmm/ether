@@ -48,7 +48,6 @@ namespace DefaultNamespace
             {
                 CanPlay = true,
                 Contract = NftContract.Knights,
-                Name = "TrollMaster"
             };
 
             nftData.trait = new Dictionary<Trait, string>();

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Combat;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
@@ -22,7 +23,8 @@ public class EnemiesManager : MonoBehaviour
     Vector3 spawnPos => new Vector3(spawnX, floor, 0);
 
 
-
+    [SerializeField] private UltiFeedback ultiFeedback;
+    
     private void Awake()
     {
         GameManager.Instance.EVENT_UPDATE_ENEMIES.AddListener(OnEnemiesUpdate);
@@ -36,6 +38,9 @@ public class EnemiesManager : MonoBehaviour
         newEnemy.transform.localPosition = spawnPos;
         EnemyManager em = newEnemy.GetComponent<EnemyManager>();
         em.SetEnemeyData(enemyData);
+
+        em.OnSignatureMoveReproduce += ultiFeedback.DoFeedback;
+        
         return em;
     }
 

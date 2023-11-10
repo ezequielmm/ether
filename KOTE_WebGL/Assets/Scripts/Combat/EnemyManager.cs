@@ -11,7 +11,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Serialization;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Slider = UnityEngine.UI.Slider;
 
 public class EnemyManager : MonoBehaviour, ITooltipSetter
 {
@@ -29,6 +30,8 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     public bool setEnemy = false;
 
     [SerializeField] private List<GameObject> enemyMap;
+
+    public event Action<string, Vector3, GameObject> OnSignatureMoveReproduce;
     
     private EnemyData enemyData;
     private EnemyPrefab enemyPlacementData;
@@ -54,6 +57,8 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     private bool awaitForEnemyRequestPrefab;
 
     public event Action OnEnemyDied;
+
+    private string signature_move_name;
     
     public EnemyData EnemyData
     {
@@ -197,6 +202,12 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             runningEvents.Remove(combatTurnData.attackId);
         });
         
+        // if (!string.IsNullOrEmpty(combatTurnData.action?.name) && combatTurnData.action.name == "signature_move")
+        //     OnSignatureMoveReproduce?.Invoke(
+        //         string.IsNullOrEmpty(signature_move_name) ? "Signature Attack" : signature_move_name, 
+        //         enemyPlacementData.intentMountingPoint.position,
+        //         activeEnemy);
+        
         PlayAnimation(DetermineAnimation(combatTurnData.action),"");
     }
     
@@ -316,6 +327,9 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         // TODO: Workaround for starting with hidden idle
         // if (enemyData.name == "Cave Goblin" && intent.intents.Any(i => i.type == "special") && !spine.CurrentAnimationSequenceContains("hidden_idle"))
         //     spine.PlayAnimationSequence("hidden_idle");
+        if (EnemyData.id != intent.id) return;
+        
+        signature_move_name = intent.intents.FirstOrDefault(e => e.type == "signature")?.name;
     }
 
     public static void ClearCache()

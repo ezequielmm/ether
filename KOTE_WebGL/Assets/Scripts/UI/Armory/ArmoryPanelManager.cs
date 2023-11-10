@@ -376,7 +376,7 @@ namespace KOTE.UI.Armory
         public void InitiateBlessedVillager()
         {
             GameManager.Instance.ShowConfirmationPanel(
-                "Are you sure you want to initiate this villager?",
+                $"Are you sure you want to initiate {SelectedCharacter.FormatTokenName()}?",
                 () =>
                 {
                     var sendJson = JsonConvert.SerializeObject(new InitiationInfo

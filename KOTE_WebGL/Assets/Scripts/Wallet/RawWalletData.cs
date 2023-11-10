@@ -26,6 +26,7 @@ public class ContractData
             {
                 case "BlessedVillager":
                 case "blessed-villager":
+                case "blessed-villager-initiated":
                     return NftContract.BlessedVillager;
                 case "Villager":
                 case "villager":
@@ -45,8 +46,10 @@ public class ContractData
 public class TokenData
 {
     public string token_id;
+    
     public string name;
     public bool can_play;
     public Nft metadata;
+    public string image;
     public string adaptedImageURI;
 }

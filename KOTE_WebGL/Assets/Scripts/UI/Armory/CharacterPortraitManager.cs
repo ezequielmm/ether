@@ -46,11 +46,57 @@ public class CharacterPortraitManager : MonoBehaviour
     {
         this.nft = metadata;
         if (!string.IsNullOrEmpty(metadata.adaptedImageURI))
+        {
+            Debug.Log($"Parsing base64 string from {metadata.TokenId} {metadata.adaptedImageURI}");
+            var base64Sprite = FromBase64ToSprite(metadata.adaptedImageURI);
+            if (base64Sprite != null)
+            {
+                portraitImage.sprite = base64Sprite;
+                return;
+            }
+            
             PortraitSpriteManager.Instance.GetKnightPortrait(metadata, sprite => {
                 portraitImage.sprite = sprite;
             });
+            
+        }
         else
             portraitImage.sprite = villagerDefault;
     }
 
+    private Sprite FromBase64ToSprite(string base64String)
+    {
+
+        if (string.IsNullOrEmpty(base64String)) {
+            Debug.LogWarning("base64Image is empty. Please set a valid base64 image string in the Inspector.");
+            return null;
+        }
+
+        // Decode the base64 string into a byte array
+        var convert = base64String;
+        convert = convert.Replace("data:image/png;base64,", "");
+        convert = convert.Replace('-', '+');
+        convert = convert.Replace('_', '/');
+        byte[] imageBytes = null;
+        
+        try
+        {
+            imageBytes = Convert.FromBase64String(convert);
+        }
+        catch (Exception e)
+        {
+            Debug.Log($"Failed to parse base64 string: {e.Message}");
+            return null;
+        }
+
+        // Create a Texture2D from the byte array
+        Texture2D texture = new Texture2D(2, 2);
+        if (!texture.LoadImage(imageBytes)) {
+            Debug.LogError("Failed to load the image from base64 string.");
+            return null;
+        }
+
+        Debug.Log($"Parse success!");
+        return texture.ToSprite();
+    }
 }

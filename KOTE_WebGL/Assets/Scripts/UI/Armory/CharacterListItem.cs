@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,6 +9,7 @@ public class CharacterListItem : MonoBehaviour
 {
     [SerializeField] private TMP_Text TokenNameText;
     [SerializeField] private TMP_Text CanPlayText;
+    [SerializeField] private GameObject InitiatedLabel;
     [SerializeField] private CharacterPortraitManager portraitManager;
 
     public UnityEvent OnClick => GetComponent<Button>().onClick;
@@ -19,33 +18,14 @@ public class CharacterListItem : MonoBehaviour
     public void SetCharacter(Nft character)
     {
         Nft = character;
-        TokenNameText.text = FormatTokenName(character);
+        TokenNameText.text = character.FormatTokenName();
+        InitiatedLabel.SetActive(character.IsInitiated);
         CanPlayText.text = character.CanPlay ? ""
             : $"Available in: {ParseTime((int)(character.PlayableAt - DateTime.UtcNow).TotalSeconds)}";
         CanPlayText.transform.parent.gameObject.SetActive(!character.CanPlay);
         portraitManager.SetPortrait(character);
     }
-    
-    private string FormatTokenName(Nft tokenData)
-    {
-        string contractName = "";
-        switch (tokenData.Contract)
-        {
-            case NftContract.Knights:
-                contractName = tokenData.Contract.ToString().TrimEnd('s');
-                break;
-            case NftContract.Villager:
-                contractName = tokenData.Contract.ToString();
-                break;
-            case NftContract.BlessedVillager:
-                contractName = "Blessed Villager";
-                break;
-            case NftContract.NonTokenVillager:
-                return "Basic Villager";
-        }
-        return contractName + " #" + tokenData.TokenId;
-    }
-    
+
     //TODO: parse time like a normal person
     public string ParseTime(int totalSeconds)
     {
