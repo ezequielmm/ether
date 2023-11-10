@@ -151,7 +151,7 @@ namespace KOTE.Expedition.Combat.Cards
                     Debug.Log("card is on center");
                     // Get Player ID
                     GameManager.Instance.EVENT_PLAY_SFX.Invoke(SoundTypes.Card, "Play");
-                    GameManager.Instance.EVENT_CARD_PLAYED.Invoke(cardManager.cardData.id, "-1");
+                    GameManager.Instance.PlayCard(cardManager.cardData.id, "-1");
                     cardManager.cardActive = false;
                 }
                 else

@@ -244,6 +244,19 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector]
     public UnityEvent<string, string> EVENT_CARD_PLAYED = new UnityEvent<string, string>(); // cardID, targetID
 
+    public void PlayCard(string cardId, string targetId)
+    {
+        // if (WebSocketManager.Instance.IsSocketHealthy)
+        // {
+        //     Debug.Log($"PlayCard {cardId} {targetId}");
+            EVENT_CARD_PLAYED.Invoke(cardId, targetId);
+        // }
+        // else
+        // {
+        //     Debug.Log($"PlayCard socket not healthy");
+        // }
+    }
+
     [HideInInspector] public UnityEvent EVENT_END_TURN_CLICKED = new UnityEvent();
     [HideInInspector] public UnityEvent<Type, string> EVENT_CONFIRM_EVENT = new UnityEvent<Type, string>();
 

@@ -19,6 +19,6 @@ public class PointerPlayCard : MonoBehaviour, IPointerRunable
     public void Run(string originId, string targetId)
     {
         // Card --> Enemy/Player
-        GameManager.Instance.EVENT_CARD_PLAYED.Invoke(originId, targetId);
+        GameManager.Instance.PlayCard(originId, targetId);
     }
 }
