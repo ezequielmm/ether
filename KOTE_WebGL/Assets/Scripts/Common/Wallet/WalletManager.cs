@@ -33,7 +33,7 @@ public class WalletManager : ISingleton<WalletManager>
     public string ActiveWallet => AuthenticationManager.LoginData.Wallet;
     public bool WalletVerified { get; set; } = false;
     public Dictionary<NftContract, List<int>> NftsInWallet = new();
-    public const string INITIATED_SUCCESS_MESSAGE = "initiated-sucess";
+    public const string INITIATED_SUCCESS_MESSAGE = "initiated-success";
 
 
     private WalletManager()

@@ -45,6 +45,8 @@ public class CharacterPortraitManager : MonoBehaviour
     private void ShowPortrait(Nft metadata)
     {
         this.nft = metadata;
+        if (nft.IsInitiated)
+            Debug.Log("asd");
         if (!string.IsNullOrEmpty(metadata.adaptedImageURI))
         {
             Debug.Log($"Parsing base64 string from {metadata.TokenId} {metadata.adaptedImageURI}");

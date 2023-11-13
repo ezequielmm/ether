@@ -14,6 +14,7 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
     public string WebRequestURL => _environmentUrls.WebRequestURL;
     public string SkinURL => _environmentUrls.SkinURL;
     public string GearIconURL => _environmentUrls.GearIconURL;
+    public string KnightPortraitsURL => _environmentUrls.KnightPortraitsURL;
     public string PortraitElementURL => _environmentUrls.PortraitElementURL;
     public string WebSocketURL => _environmentUrls.WebSocketURL;
     public string LeaderboardURL => _environmentUrls.LeaderboardURL;
@@ -117,6 +118,9 @@ public class EnvironmentUrls
 
     [JsonIgnore]
     public string GearIconURL => AssetsUrl.AddPath("GearIcons");
+    
+    [JsonIgnore]
+    public string KnightPortraitsURL => AssetsUrl.AddPath("KnightPortraits");
 
     [JsonIgnore]
     public string PortraitElementURL => AssetsUrl.AddPath("Portraits");

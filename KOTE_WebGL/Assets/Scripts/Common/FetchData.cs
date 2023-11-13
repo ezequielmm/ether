@@ -221,7 +221,10 @@ public class FetchData : DataManager, ISingleton<FetchData>
     public void GetTexture(string url, Action<Texture2D> onResolve)
     {
         string imageName = GetMD5Hash(url);
-        imageName += ".png";
+        if (url.EndsWith(".jpg"))
+            imageName += ".jpg";
+        else
+            imageName += ".png";
 
         if (cachedTextures.ContainsKey(imageName))
         {
@@ -289,6 +292,12 @@ public class FetchData : DataManager, ISingleton<FetchData>
         gearName = $"{gearType}/{gearName}";
         string spriteName = gearName + ".png";
         string requestUrl = ClientEnvironmentManager.Instance.GearIconURL.AddPath(spriteName);
+        GetTexture(requestUrl, callback);
+    }
+    
+    public void GetKnightPortrait(int tokenID, Action<Texture2D> callback)
+    {
+        string requestUrl = ClientEnvironmentManager.Instance.KnightPortraitsURL.AddPath($"{tokenID}.jpg");
         GetTexture(requestUrl, callback);
     }
 
