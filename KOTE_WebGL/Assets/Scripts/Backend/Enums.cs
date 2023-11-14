@@ -190,7 +190,8 @@ public enum STATUS
     hatching,
     mistified,
     reveal,
-    counter
+    counter,
+    galvanized
 }
 
 [Serializable]
