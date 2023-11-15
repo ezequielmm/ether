@@ -461,3 +461,10 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+  - name: galvanized
+    image: {fileID: 21300000, guid: 0a980d02f890aaf478c499dfca78a919, type: 3}
+    imageRef:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0

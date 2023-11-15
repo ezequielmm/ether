@@ -20,11 +20,15 @@ public class CardAssetManager : SingleTon<CardAssetManager>
 
     private void Start()
     {
+        Debug.Log("cardimagelists:" + cardImageLists.Count);
         // cache the range of card ids to check against when a card is asked for
         foreach (SpriteList imageList in cardImageLists)
         {
             var minRange = int.Parse(imageList.entityImages[0].name);
-            var maxRange = imageList.entityImages.Select(e => e.name).Select(int.Parse).Max();
+            var maxRange = int.Parse(imageList.entityImages[cardImageLists.Count].name);//imageList.entityImages.Select(e => e.name).Select(int.Parse).Max();
+
+            Debug.Log("cardimagelists: " + minRange + " cardimagelists: " + maxRange);
+                 
             imageListRanges.Add((minRange, maxRange));
         }
     }
