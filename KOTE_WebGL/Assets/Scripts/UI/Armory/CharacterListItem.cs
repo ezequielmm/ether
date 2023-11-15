@@ -19,6 +19,7 @@ public class CharacterListItem : MonoBehaviour
     {
         Nft = character;
         TokenNameText.text = character.FormatTokenName();
+        Debug.Log($"[CharacterListItem] SetCharacter {character.FormatTokenName()} isInitiated? {character.IsInitiated}");
         InitiatedLabel.SetActive(character.IsInitiated);
         CanPlayText.text = character.CanPlay ? ""
             : $"Available in: {ParseTime((int)(character.PlayableAt - DateTime.UtcNow).TotalSeconds)}";

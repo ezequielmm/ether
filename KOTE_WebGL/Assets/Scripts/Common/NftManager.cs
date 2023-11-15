@@ -103,6 +103,8 @@ public class NftManager : ISingleton<NftManager>
                 token.metadata.Contract = contract.ContractType;
                 token.metadata.adaptedImageURI = token.adaptedImageURI;
                 token.metadata.CanPlay = token.can_play;
+                
+                Debug.Log($"[NFTManager] character {token.metadata.FormatTokenName()} {contract.characterClass} is initiated? {contract.characterClass.Contains("initiated")}");
                 token.metadata.IsInitiated = contract.characterClass.Contains("initiated");
 
                 if (token.can_play == false)
