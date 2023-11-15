@@ -25,7 +25,7 @@ public class CardAssetManager : SingleTon<CardAssetManager>
         foreach (SpriteList imageList in cardImageLists)
         {
             var minRange = int.Parse(imageList.entityImages[0].name);
-            var maxRange = int.Parse(imageList.entityImages[cardImageLists.Count].name);//imageList.entityImages.Select(e => e.name).Select(int.Parse).Max();
+            var maxRange = imageList.entityImages.Select(e => e.name).Select(int.Parse).Max();
 
             Debug.Log("cardimagelists: " + minRange + " cardimagelists: " + maxRange);
                  
