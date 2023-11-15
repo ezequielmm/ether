@@ -64,7 +64,9 @@ public class CharactersListManager : MonoBehaviour
         }
         UpdateSelected();
 
-        characterListItem[0].OnClick.Invoke();
+        // Select first character
+        if (characterListItem.Count > 0)
+            characterListItem[0].OnClick.Invoke();
     }
 
     private void ClearList()

@@ -88,7 +88,8 @@ public class NftManager : ISingleton<NftManager>
         foreach (ContractData contract in walletData.Contracts)
         {
             if (contract.ContractType == NftContract.None) continue;
-            Nfts[contract.ContractType] = new List<Nft>();
+            if (!Nfts.ContainsKey(contract.ContractType))
+                Nfts[contract.ContractType] = new List<Nft>();
             foreach (TokenData token in contract.tokens)
             {
                 // if the metadata is null then the backend detected bad data and didn't send anything
