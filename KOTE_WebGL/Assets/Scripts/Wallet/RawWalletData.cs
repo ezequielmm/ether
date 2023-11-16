@@ -34,6 +34,7 @@ public class ContractData
                 case "KnightsOfTheEther":
                 case "Knights":
                 case "knight":
+                case "knight-initiated":
                     return NftContract.Knights;
                 default:
                     return NftContract.None;

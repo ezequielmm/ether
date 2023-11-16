@@ -366,11 +366,20 @@ public class GameManager : SingleTon<GameManager>
 
     private void WebBridgeMessageReceived(string message)
     {
+        Debug.Log($"[WebBridge] Message Received {message}");
         if (ArmoryPanelManager.MEMORY_REFRESH_MESSAGE == message)
             FindObjectOfType<ArmoryPanelManager>()?.OnArmoryRefresh();
         else if (WalletManager.INITIATED_SUCCESS_MESSAGE == message)
-            WalletManager.Instance.GetNftsInWallet(WalletManager.Instance.ActiveWallet);
+            WalletManager.Instance.SetActiveWallet();
     }
+
+#if UNITY_EDITOR
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
+            WalletManager.Instance.SetActiveWallet();
+    }
+#endif
 
     // Start is called before the first frame update
     void Start()
