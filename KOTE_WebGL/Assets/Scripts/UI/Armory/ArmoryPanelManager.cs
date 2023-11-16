@@ -56,6 +56,8 @@ namespace KOTE.UI.Armory
             {
                 OnArmoryRefresh();
             }
+
+            Debug.Log($"[Armory] SelectedCharacter {SelectedCharacter.FormatTokenName()}");
         }
 #endif
 
@@ -318,7 +320,7 @@ namespace KOTE.UI.Armory
             var nft = charactersListManager.SelectedCharacter;
 
             ExpeditionStartData startData =
-                await FetchData.Instance.RequestNewExpedition(nft.Contract, nft.TokenId,
+                await FetchData.Instance.RequestNewExpedition(nft.ContractAddress, nft.TokenId,
                     equippedGear.Values.ToList());
             if (startData.expeditionCreated)
             {
@@ -378,7 +380,7 @@ namespace KOTE.UI.Armory
                         data = new InitiationData()
                         {
                             TokenId = SelectedCharacter.TokenId,
-                            Contract = NftManager.Instance.GetContractAddress(SelectedCharacter.Contract),
+                            Contract = SelectedCharacter.ContractAddress,
                             GearIds = equippedGear.Values.Select(x => x.gearId).ToArray(),
                             Wallet = WalletManager.Instance.ActiveWallet
                         }

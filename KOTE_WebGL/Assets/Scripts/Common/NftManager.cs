@@ -63,24 +63,7 @@ public class NftManager : ISingleton<NftManager>
 
         return returnList;
     }
-
-    public void SetContractAddress(NftContract contract, string address)
-    {
-        if (IsTestNet)
-        {
-            testNetNftContractMap[contract] = address;
-            return;
-        }
-
-        etheriumNftContractMap[contract] = address;
-    }
-
-    public string GetContractAddress(NftContract contract)
-    {
-        if (IsTestNet) return testNetNftContractMap[contract];
-        return etheriumNftContractMap[contract];
-    }
-
+    
     private void UpdateNfts(RawWalletData walletData)
     {
         Nfts.Clear();
@@ -105,8 +88,8 @@ public class NftManager : ISingleton<NftManager>
                 token.metadata.adaptedImageURI = token.adaptedImageURI;
                 token.metadata.CanPlay = token.can_play;
                 
-                Debug.Log($"[NFTManager] character {token.metadata.FormatTokenName()} {contract.characterClass} is initiated? {contract.characterClass.Contains("initiated")}");
                 token.metadata.IsInitiated = contract.characterClass.Contains("initiated");
+                token.metadata.ContractAddress = contract.contract_address;
 
                 if (token.can_play == false)
                 {
@@ -123,22 +106,6 @@ public class NftManager : ISingleton<NftManager>
 
         NftsLoaded.Invoke();
     }
-
-    private static Dictionary<NftContract, string> etheriumNftContractMap = new()
-    {
-        { NftContract.Knights, "0x32A322C7C77840c383961B8aB503c9f45440c81f" },
-        { NftContract.Villager, "0xbFfd759b9F7d07ac76797cc13974031Eb23e5757" },
-        { NftContract.BlessedVillager, "0x2d51402A6DAb0EA48E30Bb169db74FfE3c1c6675" },
-        { NftContract.NonTokenVillager, "" }
-    };
-
-    private static Dictionary<NftContract, string> testNetNftContractMap = new()
-    {
-        { NftContract.Knights, "0x80e2109a826148b9b1a41b0958ca53a4cdc64b70" },
-        { NftContract.Villager, "0xbFfd759b9F7d07ac76797cc13974031Eb23e5757" },
-        { NftContract.BlessedVillager, "0x55abb816b145CA8F34ffA22D63fBC5bc57186690" },
-        { NftContract.NonTokenVillager, "" }
-    };
 
     public void SetNft(Nft nft)
     {

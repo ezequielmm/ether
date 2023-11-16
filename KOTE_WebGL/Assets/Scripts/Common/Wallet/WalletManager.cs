@@ -185,7 +185,6 @@ public class WalletManager : ISingleton<WalletManager>
         {
             if (contractData.tokens == null || contractData.tokens.Count == 0) continue;
             NftContract contract = contractData.ContractType;
-            NftManager.Instance.SetContractAddress(contract, contractData.contract_address);
             
             if (!NftsInWallet.ContainsKey(contract))
                 NftsInWallet[contract] = new List<int>();

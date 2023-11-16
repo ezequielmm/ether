@@ -51,6 +51,8 @@ public class Nft
     
     public bool isKnight => Contract == NftContract.Knights;
     public DateTime PlayableAt => DateTime.Today + TimeSpan.FromHours(24);
+    
+    public string ContractAddress;
     public bool IsInitiated;
 
     public void GetImage(Action<Sprite> callback) 
