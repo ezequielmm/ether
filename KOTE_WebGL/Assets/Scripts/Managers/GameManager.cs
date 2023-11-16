@@ -373,6 +373,14 @@ public class GameManager : SingleTon<GameManager>
             WalletManager.Instance.SetActiveWallet();
     }
 
+#if UNITY_EDITOR
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
+            WalletManager.Instance.SetActiveWallet();
+    }
+#endif
+
     // Start is called before the first frame update
     void Start()
     {
