@@ -15,6 +15,7 @@ public class ClientEnvironmentManager : ISingleton<ClientEnvironmentManager>
     public string SkinURL => _environmentUrls.SkinURL;
     public string GearIconURL => _environmentUrls.GearIconURL;
     public string KnightPortraitsURL => _environmentUrls.KnightPortraitsURL;
+    public string InitiatedGearUrl => _environmentUrls.InitiatedGearUrl;
     public string PortraitElementURL => _environmentUrls.PortraitElementURL;
     public string WebSocketURL => _environmentUrls.WebSocketURL;
     public string LeaderboardURL => _environmentUrls.LeaderboardURL;
@@ -106,6 +107,7 @@ public class EnvironmentUrls
     [JsonProperty("socket_url")] public string WebSocketURL;
     [JsonProperty("asset_url")] public string ArtAssetURL;
     [JsonProperty("leaderboard_url")] public string LeaderboardURL;
+    [JsonProperty("initiated_gear_url")] public string InitiatedGearUrl;
 
     private string AssetsUrl;
     public EnvironmentUrls()

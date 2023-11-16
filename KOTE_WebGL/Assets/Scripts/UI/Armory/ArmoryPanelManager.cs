@@ -193,6 +193,24 @@ namespace KOTE.UI.Armory
                 gearSlot.ResetSlot();
                 equippedGear.Remove(gearSlot.gearTrait);
             }
+
+            if (nft.IsInitiated)
+            {
+                foreach (var item in nft.initiatedRealItems)
+                {
+                    var gearSlot = gearSlots.First(e => e.gearTrait == item.trait.ParseToEnum<Trait>());
+                    if (item.gearImage)
+                        gearSlot.SetGearInSlot(item, .5f);
+                    else
+                    {
+                        item.GetGearImage(() =>
+                        {
+                            if (gearSlot.GetEquippedGear() == null)
+                                gearSlot.SetGearInSlot(item, .5f);
+                        });
+                    }
+                }
+            }
         }
 
         private IEnumerator PopulateGearList(List<VictoryItems> ownedGear)
@@ -235,7 +253,7 @@ namespace KOTE.UI.Armory
             foreach (var slots in gearSlots)
             {
                 slots.ResetSlot();
-                OnGearItemRemoved(slots.gearTrait);
+                OnGearItemRemoved(slots, slots.gearTrait);
             }
 
             foreach (ArmoryHeaderManager header in gearHeaders)
@@ -362,9 +380,11 @@ namespace KOTE.UI.Armory
             GameManager.Instance.UpdateNft(Enum.Parse<Trait>(activeItem.trait), activeItem.name);
         }
 
-        public void OnGearItemRemoved(Trait gearTrait)
+        public void OnGearItemRemoved(GearSlot gearSlot, Trait gearTrait)
         {
             equippedGear.Remove(gearTrait);
+            if (SelectedCharacter.IsInitiated)
+                gearSlot.SetGearInSlot(SelectedCharacter.initiatedRealItems.Find(e => e.trait == gearSlot.gearTrait.ToString()), .5f);
             GameManager.Instance.UpdateNft(gearTrait, "");
         }
 

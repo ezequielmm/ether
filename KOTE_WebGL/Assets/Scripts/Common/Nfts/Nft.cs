@@ -42,6 +42,8 @@ public class Nft
     [JsonProperty("attributes")]
     [JsonConverter(typeof(TraitDictionaryConverter))]
     public Dictionary<TraitsParse, string> attributes;
+
+    public List<VictoryItems> initiatedRealItems;
     
     public bool CanPlay;
     public string adaptedImageURI;

@@ -31,7 +31,7 @@ public class RequestService : MonoBehaviour
             
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError("Error: " + webRequest.error);
+                Debug.LogError("Error: " + webRequest.error + " url: " + url);
                 error?.Invoke(webRequest.error);
             }
             else

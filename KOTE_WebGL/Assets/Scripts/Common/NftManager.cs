@@ -87,24 +87,29 @@ public class NftManager : ISingleton<NftManager>
                 token.metadata.Contract = contract.ContractType;
                 token.metadata.adaptedImageURI = token.adaptedImageURI;
                 token.metadata.CanPlay = token.can_play;
-                
-                token.metadata.IsInitiated = contract.characterClass.Contains("initiated");
+
+                var isInitiated = contract.characterClass.Contains("initiated");
+                token.metadata.IsInitiated = isInitiated;
                 token.metadata.ContractAddress = contract.contract_address;
 
-                if (token.can_play == false)
-                {
-                    Debug.Log("Token cant play");
-                }
-                if (token.metadata.CanPlay == false)
-                {
-                    Debug.Log("Token cant " +
-                        "play 2 ");
-                }
+                if (isInitiated)
+                    RequestRealGear(token);
+                    
                 Nfts[contract.ContractType].Add(token.metadata);
             }
         }
 
         NftsLoaded.Invoke();
+    }
+
+    private void RequestRealGear(TokenData token)
+    {
+        MonoBehaviour.FindObjectOfType<MonoBehaviour>().StartCoroutine(RequestService.Instance.GetRequestCoroutine(
+            $"{ClientEnvironmentManager.Instance.InitiatedGearUrl}{token.token_id}/{token.metadata.ContractAddress}",
+            data =>
+            {
+                token.metadata.initiatedRealItems = FetchData.ParseJsonWithPath<List<VictoryItems>>(data, "realItems");
+            }));
     }
 
     public void SetNft(Nft nft)

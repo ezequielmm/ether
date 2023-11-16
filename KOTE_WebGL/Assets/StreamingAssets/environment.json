@@ -4,5 +4,6 @@
     "gear_icon_url": "https://dev.knightsoftheether.com/GearIcons/",
     "portrait_url": "https://dev.knightsoftheether.com/Portraits/",
     "socket_url": "https://api.dev.knightsoftheether.com/",
-    "leaderboard_url": "https://app.treasure.lol/tournaments/mydsummer-madness"
+    "leaderboard_url": "https://app.treasure.lol/tournaments/mydsummer-madness",
+    "initiated_gear_url": "https://bridge-api-dev.knightsoftheether.com/realitems/",
 }

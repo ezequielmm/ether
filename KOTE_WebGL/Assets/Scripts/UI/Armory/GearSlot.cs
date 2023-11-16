@@ -16,7 +16,7 @@ namespace KOTE.UI.Armory
         public void OnPointerDown(PointerEventData data)
         {
             ResetSlot();
-            FindObjectOfType<ArmoryPanelManager>().OnGearItemRemoved(gearTrait);
+            FindObjectOfType<ArmoryPanelManager>().OnGearItemRemoved(this, gearTrait);
         }
 
         internal VictoryItems GetEquippedGear()
@@ -24,10 +24,14 @@ namespace KOTE.UI.Armory
             return selectedGear;
         }
 
-        internal void SetGearInSlot(VictoryItems currentGear)
+        internal void SetGearInSlot(VictoryItems currentGear, float alphaColor = 1f)
         {
             selectedGear = currentGear;
             icon.sprite = currentGear.gearImage;
+            var color = icon.color;
+            color.a = alphaColor;
+            icon.color = color;
+            
             tooltip.SetTooltips(new List<Tooltip>
             {
                 new Tooltip
