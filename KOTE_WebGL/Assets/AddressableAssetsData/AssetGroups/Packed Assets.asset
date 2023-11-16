@@ -1131,6 +1131,46 @@ MonoBehaviour:
     m_Address: Assets/Sprites/Encounter/Stone Mason.png
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: b6de98d3d651f6a4ea86686977f1a6e0
+    m_Address: Assets/Sprites/Battle/Status/status_reveal.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8be3221603ff5d24492e1bf0524b2ed1
+    m_Address: Assets/Sprites/Battle/Status/status_mistified.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3c43074e439ea2a46802decfe600c318
+    m_Address: Assets/Sprites/Battle/Status/status_hatching.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 913529bb79041894da71926d41c6116b
+    m_Address: Assets/Sprites/Battle/Status/status_grown.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 0a980d02f890aaf478c499dfca78a919
+    m_Address: Assets/Sprites/Battle/Status/status_galvanized.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 320632dc1d27fb84b8cb04c8625ff9b6
+    m_Address: Assets/Sprites/Battle/Status/status_ethereal.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ebf98c50c4fdd5544bf5dd1718dc3f10
+    m_Address: Assets/Sprites/Battle/Status/status_countering.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4229393f0215d0046ab7325e7a6c1e6c
+    m_Address: Assets/Sprites/Battle/Status/status_chargingbeam.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 82736564c7b80384aaf2d07ee8730cae
+    m_Address: Assets/Sprites/Battle/Status/status_absorbing.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f7729943589940d4988f43f937b34aec
+    m_Address: Assets/Sprites/Battle/Status/Status background.PNG
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b5243524a01eab148b0a227677e45ff2, type: 2}
   m_SchemaSet:
