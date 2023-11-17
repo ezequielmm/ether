@@ -65,7 +65,7 @@ public class Nft
             return;
         }
 
-        if (IsInitiated)
+        if (IsInitiated || (!IsInitiated && Contract == NftContract.BlessedVillager))
         {
             FetchData.Instance.GetTexture(adaptedImageURI, (texture) =>
             {
@@ -74,8 +74,21 @@ public class Nft
             });
             return;
         }
+
+        var knightID = adaptedImageURI.Split("/").LastOrDefault();
+        if (string.IsNullOrEmpty(knightID)) {
+            callback?.Invoke(null);
+            return;
+        }
+        // Remove img formats
+        knightID = knightID.Split(".").FirstOrDefault();
+        if (string.IsNullOrEmpty(knightID)) {
+            callback?.Invoke(null);
+            return;
+        }
+        knightID += ".jpg";
         
-        FetchData.Instance.GetKnightPortrait(TokenId, (texture) => {
+        FetchData.Instance.GetKnightPortrait(knightID, (texture) => {
             Image = texture ? texture.ToSprite() : null;
             callback?.Invoke(Image);
         });

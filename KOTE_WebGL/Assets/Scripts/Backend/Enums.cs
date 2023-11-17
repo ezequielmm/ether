@@ -192,7 +192,6 @@ public enum STATUS
     reveal,
     counter,
     galvanized,
-    elemental
 }
 
 [Serializable]

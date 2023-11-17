@@ -295,9 +295,9 @@ public class FetchData : DataManager, ISingleton<FetchData>
         GetTexture(requestUrl, callback);
     }
     
-    public void GetKnightPortrait(int tokenID, Action<Texture2D> callback)
+    public void GetKnightPortrait(string tokenID, Action<Texture2D> callback)
     {
-        string requestUrl = ClientEnvironmentManager.Instance.KnightPortraitsURL.AddPath($"{tokenID}.jpg");
+        string requestUrl = ClientEnvironmentManager.Instance.KnightPortraitsURL.AddPath(tokenID);
         GetTexture(requestUrl, callback);
     }
 
