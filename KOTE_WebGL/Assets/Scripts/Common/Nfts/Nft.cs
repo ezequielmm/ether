@@ -65,6 +65,16 @@ public class Nft
             return;
         }
 
+        if (IsInitiated)
+        {
+            FetchData.Instance.GetTexture(adaptedImageURI, (texture) =>
+            {
+                Image = texture ? texture.ToSprite() : null;
+                callback?.Invoke(Image);
+            });
+            return;
+        }
+        
         FetchData.Instance.GetKnightPortrait(TokenId, (texture) => {
             Image = texture ? texture.ToSprite() : null;
             callback?.Invoke(Image);
