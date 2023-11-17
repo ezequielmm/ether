@@ -191,7 +191,8 @@ public enum STATUS
     mistified,
     reveal,
     counter,
-    galvanized
+    galvanized,
+    elemental
 }
 
 [Serializable]
