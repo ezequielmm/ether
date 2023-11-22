@@ -12,9 +12,14 @@ namespace KOTE.UI.Armory
         public Image icon;
         private VictoryItems selectedGear;
         public Sprite defaultImage;
+
+        private bool isInteractive;
+
+        public void SetInteractive(bool value) => isInteractive = value;
         
         public void OnPointerDown(PointerEventData data)
         {
+            if (!isInteractive) return;
             ResetSlot();
             FindObjectOfType<ArmoryPanelManager>().OnGearItemRemoved(this, gearTrait);
         }
@@ -40,6 +45,7 @@ namespace KOTE.UI.Armory
                 }
             });
             tooltip.enabled = true;
+            isInteractive = true;
         }
 
         private string FormatTraitText()

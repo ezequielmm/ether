@@ -92,7 +92,7 @@ public class NftManager : ISingleton<NftManager>
                 token.metadata.IsInitiated = isInitiated;
                 token.metadata.ContractAddress = contract.contract_address;
 
-                if (isInitiated)
+                if (token.metadata.Contract is NftContract.Knights or NftContract.BlessedVillager)
                     RequestRealGear(token);
                     
                 Nfts[contract.ContractType].Add(token.metadata);

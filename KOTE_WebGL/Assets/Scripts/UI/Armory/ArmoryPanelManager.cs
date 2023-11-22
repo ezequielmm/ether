@@ -194,19 +194,25 @@ namespace KOTE.UI.Armory
                 equippedGear.Remove(gearSlot.gearTrait);
             }
 
-            if (nft.IsInitiated)
+            if (nft.initiatedRealItems != null)
             {
                 foreach (var item in nft.initiatedRealItems)
                 {
                     var gearSlot = gearSlots.First(e => e.gearTrait == item.trait.ParseToEnum<Trait>());
                     if (item.gearImage)
+                    {
                         gearSlot.SetGearInSlot(item, .5f);
+                        gearSlot.SetInteractive(false);
+                    }
                     else
                     {
                         item.GetGearImage(() =>
                         {
                             if (gearSlot.GetEquippedGear() == null)
+                            {
                                 gearSlot.SetGearInSlot(item, .5f);
+                                gearSlot.SetInteractive(false);
+                            }
                         });
                     }
                 }
@@ -383,7 +389,7 @@ namespace KOTE.UI.Armory
         public void OnGearItemRemoved(GearSlot gearSlot, Trait gearTrait)
         {
             equippedGear.Remove(gearTrait);
-            if (SelectedCharacter.IsInitiated)
+            if (SelectedCharacter.Contract is NftContract.Knights or NftContract.BlessedVillager)
                 gearSlot.SetGearInSlot(SelectedCharacter.initiatedRealItems.Find(e => e.trait == gearSlot.gearTrait.ToString()), .5f);
             GameManager.Instance.UpdateNft(gearTrait, "");
         }
