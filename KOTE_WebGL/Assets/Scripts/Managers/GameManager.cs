@@ -373,6 +373,14 @@ public class GameManager : SingleTon<GameManager>
             WalletManager.Instance.SetActiveWallet();
     }
 
+
+    public void NewWalletConfirmed(RawWalletData data)
+    {
+        FindObjectOfType<CharacterSelectionManager>(true).ClearOutNfts(data);
+        FindObjectOfType<TreasuryManager>(true).ClearOutNfts(data);
+        NftManager.Instance.UpdateNfts(data);
+    }
+    
 #if UNITY_EDITOR
     private void Update()
     {

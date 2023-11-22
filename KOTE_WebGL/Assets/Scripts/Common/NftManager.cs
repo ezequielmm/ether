@@ -37,7 +37,6 @@ public class NftManager : ISingleton<NftManager>
     private NftManager()
     {
         wallet = WalletManager.Instance;
-        wallet.NewWalletConfirmed.AddListener(UpdateNfts);
     }
 
     public List<Nft> GetContractNfts(NftContract nftContract)
@@ -63,8 +62,8 @@ public class NftManager : ISingleton<NftManager>
 
         return returnList;
     }
-    
-    private void UpdateNfts(RawWalletData walletData)
+
+    public void UpdateNfts(RawWalletData walletData)
     {
         Nfts.Clear();
         Nfts[NftContract.NonTokenVillager] = new List<Nft> { GameSettings.DEFAULT_PLAYER };

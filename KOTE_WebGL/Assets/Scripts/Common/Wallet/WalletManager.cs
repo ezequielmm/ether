@@ -25,8 +25,7 @@ public class WalletManager : ISingleton<WalletManager>
     {
         instance = null;
     }
-
-    public UnityEvent<RawWalletData> NewWalletConfirmed { get; } = new();
+    
     public UnityEvent<string> DisconnectingWallet { get; } = new();
     public UnityEvent WalletStatusModified { get; } = new();
 
@@ -53,6 +52,7 @@ public class WalletManager : ISingleton<WalletManager>
         WalletStatusModified.Invoke();
         if (!ownWallet)
         {
+            Debug.Log($"[WalletManager] Player does not own wallet");
             return;
         }
 
@@ -63,42 +63,11 @@ public class WalletManager : ISingleton<WalletManager>
         {
             Debug.LogWarning("No Wallet Contents retrieved");
         }
-        /*
-        if (NftsInWallet.Keys.Count == 0)
-        {
-            // Could not get knights
-            GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
-                "ERROR: Could not gather wallet contents. Please try again later.", () => { });
-            return;
-        }
 
-        
-        
-        if (!WalletHasNfts())
-        {
-            // No Knights
-            GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL.Invoke(
-                "No KOTE tokens found in connected wallet.\n, Please try a different wallet.", () => { });
-            return;
-        }
-*/
         WalletVerified = true;
-        NewWalletConfirmed.Invoke(walletData);
+        
+        GameManager.Instance.NewWalletConfirmed(walletData);
         WalletStatusModified.Invoke();
-    }
-
-    private bool WalletHasNfts()
-    {
-        bool hasNfts = false;
-        foreach (NftContract contract in NftsInWallet.Keys)
-        {
-            if (NftsInWallet[contract] != null && NftsInWallet[contract].Count > 0)
-            {
-                hasNfts = true;
-            } 
-        }
-
-        return hasNfts;
     }
 
     public async UniTask ConnectWallet()

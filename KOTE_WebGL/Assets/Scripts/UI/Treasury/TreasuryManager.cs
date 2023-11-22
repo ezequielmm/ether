@@ -28,7 +28,6 @@ public class TreasuryManager : MonoBehaviour
 
         GameManager.Instance.EVENT_TREASURYPANEL_ACTIVATION_REQUEST.AddListener(ActivateInnerTreasuryPanel);
         WalletManager.Instance.DisconnectingWallet.AddListener(ClearOutNfts);
-        WalletManager.Instance.NewWalletConfirmed.AddListener(ClearOutNfts);
         Button firstCharacterButton = characterList.transform.GetChild(0)?.GetComponent<Button>();
         if (firstCharacterButton != null) firstCharacterButton.onClick?.Invoke();
     }
@@ -48,7 +47,7 @@ public class TreasuryManager : MonoBehaviour
         ClearNfts();
     }
     
-    private void ClearOutNfts(RawWalletData walletData)
+    public void ClearOutNfts(RawWalletData walletData)
     {
         ClearNfts();
     }

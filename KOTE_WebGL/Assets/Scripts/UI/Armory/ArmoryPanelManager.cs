@@ -389,8 +389,12 @@ namespace KOTE.UI.Armory
         public void OnGearItemRemoved(GearSlot gearSlot, Trait gearTrait)
         {
             equippedGear.Remove(gearTrait);
-            if (SelectedCharacter.Contract is NftContract.Knights or NftContract.BlessedVillager)
-                gearSlot.SetGearInSlot(SelectedCharacter.initiatedRealItems.Find(e => e.trait == gearSlot.gearTrait.ToString()), .5f);
+            if (SelectedCharacter.initiatedRealItems != null)
+            {
+                var knightTraitGear = SelectedCharacter.initiatedRealItems.Find(e => e.trait == gearSlot.gearTrait.ToString());
+                if (knightTraitGear != null)
+                    gearSlot.SetGearInSlot(knightTraitGear, .5f);
+            }
             GameManager.Instance.UpdateNft(gearTrait, "");
         }
 
