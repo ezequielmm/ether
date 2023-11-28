@@ -157,6 +157,9 @@ MonoBehaviour:
   setBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
+  rendererBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!50 &6272650766991654147
 Rigidbody2D:
   serializedVersion: 4
@@ -301,9 +304,6 @@ MonoBehaviour:
     SoundList:
     - {fileID: 8300000, guid: c8b70d5477983b640bb08406e354b251, type: 3}
     - {fileID: 8300000, guid: 3737578018c611e4880c29118872e288, type: 3}
-  - Name: Cast
-    SoundList:
-    - {fileID: 8300000, guid: 216003790bfb7f749be6c7b1f700d499, type: 3}
 --- !u!23 &3202130168508129170
 MeshRenderer:
   m_ObjectHideFlags: 0

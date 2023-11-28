@@ -89,6 +89,7 @@ public class NftManager : ISingleton<NftManager>
 
                 var isInitiated = contract.characterClass.Contains("initiated");
                 token.metadata.IsInitiated = isInitiated;
+                token.metadata.CharacterClass = contract.characterClass;
                 token.metadata.ContractAddress = contract.contract_address;
 
                 if (token.metadata.Contract is NftContract.Knights or NftContract.BlessedVillager)

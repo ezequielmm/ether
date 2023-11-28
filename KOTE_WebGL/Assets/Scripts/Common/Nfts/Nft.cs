@@ -44,6 +44,8 @@ public class Nft
     public Dictionary<TraitsParse, string> attributes;
 
     public List<VictoryItems> initiatedRealItems;
+
+    public string CharacterClass;
     
     public bool CanPlay;
     public string adaptedImageURI;

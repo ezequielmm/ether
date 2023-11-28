@@ -344,8 +344,7 @@ namespace KOTE.UI.Armory
             var nft = charactersListManager.SelectedCharacter;
 
             ExpeditionStartData startData =
-                await FetchData.Instance.RequestNewExpedition(nft.ContractAddress, nft.TokenId,
-                    equippedGear.Values.ToList());
+                await FetchData.Instance.RequestNewExpedition(nft, equippedGear.Values.ToList());
             if (startData.expeditionCreated)
             {
                 //Debug.LogError(":::::::::::::::::::::::::::::::::::ON START EXPEDITION::::::::::::::::::::::::::::::::::::::" + nft.Contract + " " + nft.TokenId);

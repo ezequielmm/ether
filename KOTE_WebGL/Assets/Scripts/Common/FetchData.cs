@@ -172,7 +172,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
         }
     }
 
-    public async UniTask<ExpeditionStartData> RequestNewExpedition(string characterType, int selectedNft,
+    public async UniTask<ExpeditionStartData> RequestNewExpedition(Nft nft,
         List<VictoryItems> equippedGear)
     {
         /*
@@ -187,11 +187,11 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
         ExpeditionStartSendData startData = new ExpeditionStartSendData
         {
-            tokenType = characterType,
-            nftId = selectedNft,
+            tokenType = nft.CharacterClass,
+            nftId = nft.TokenId,
             equippedGear = equippedGear,
             walletId = WalletManager.Instance.ActiveWallet,
-            contractId = characterType
+            contractId = nft.ContractAddress
         };
 
         string data = JsonConvert.SerializeObject(startData);

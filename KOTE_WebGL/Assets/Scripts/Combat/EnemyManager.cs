@@ -424,6 +424,9 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         float length = spine.PlayAnimationSequence(sequence);
         characterSound?.PlaySound(fallbackAnimation);
 
+        if (animationSequence == "signature_move")
+            OnSignatureMoveReproduce?.Invoke(signature_move_name, transform.position, activeEnemy);
+        
         if (doWhenAnimationEnds != null)
             RunAfterTime(length, doWhenAnimationEnds);
         
