@@ -149,6 +149,7 @@ public static class GameSettings
         adaptedImageURI = "",
         Name = "Basic Villager",
         TokenId = 1,
+        CharacterClass = "non-token-villager",
         Traits = new Dictionary<Trait, string>
         {
             { Trait.Padding, "Brown" },
