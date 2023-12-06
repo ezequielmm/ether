@@ -208,14 +208,23 @@ public class SpineAnimationsManagement : MonoBehaviour
         animationSequenceName = animationSequenceName.ToLower();
         animationsDictionary ??= animations.ToDictionary(k => k.sequenceName.ToLower(), v => v);
         var foundKey = animationsDictionary.TryGetValue(animationSequenceName, out var animationSequence);
+        
+        float duration = 0;
+        
         if (!foundKey){
-            HandleEvent(animationSequenceName, null, "attack");
-            return 0;
+            // HandleEvent(animationSequenceName, null, "attack");
+            // return 0;
+            animationSequence = new AnimationSequence()
+            {
+                sequenceName = "undefined",
+                animationType = AnimationType.Other,
+                sequence = new(),
+                vfxs = new VFX[]{},
+            };
+            duration = .5f;
         }
         
         var sequenceRemovedSuccessfully = false;
-        
-        float duration = 0;
         
         for (var i = 0; i < animationSequence.sequence.Count; i++)
         {
