@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using KOTE.Expedition.Combat.Cards.Piles;
 using KOTE.UI.Armory;
 using UnityEngine;
 using UnityEngine.Events;
@@ -196,9 +197,26 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<int, int, bool> EVENT_UPDATE_CURRENT_STEP_INFORMATION = new UnityEvent<int, int, bool>();
 
     //SELECT PANEL EVENTS
-    [HideInInspector]
-    public UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>> EVENT_SHOW_SELECT_CARD_PANEL { get; } =
-        new UnityEvent<List<Card>, SelectPanelOptions, Action<List<string>>>();
+    public void ShowSelectedCardPanel(List<Card> selectableCards, SelectPanelOptions selectOptions,
+        Action<List<string>> onFinishedSelection)
+    {
+        var selectCardsPanel = FindObjectOfType<SelectCardsPanel>(true);
+        if (selectableCards == null) return;
+        
+        var handManager = FindObjectOfType<HandManager>(true);
+
+        if (handManager)
+        {
+            selectCardsPanel.OnPanelShow += handManager.DisableCards;
+            selectCardsPanel.OnPanelHide += () =>
+            {
+                handManager.EnableCards();
+                selectCardsPanel.OnPanelHide = null;
+            };
+        }
+        
+        selectCardsPanel.OnShowSelectCardPanel(selectableCards, selectOptions, onFinishedSelection);
+    }
 
     [HideInInspector] public UnityEvent<Deck> EVENT_CARD_PILE_SHOW_DECK = new UnityEvent<Deck>();
 

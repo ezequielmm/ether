@@ -26,6 +26,7 @@ public class SendData : DataManager, ISingleton<SendData>
 
     public async UniTask SendCardsSelected(List<string> cardIds)
     {
+        if (cardIds.Count <= 0) return;
         CardsSelectedList cardList = new CardsSelectedList { cardsToTake = cardIds };
         await socketRequest.SendData(SocketEvent.MoveSelectedCard, cardList);
     }

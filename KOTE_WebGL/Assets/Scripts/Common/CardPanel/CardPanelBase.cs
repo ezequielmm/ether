@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,9 @@ public class CardPanelBase : MonoBehaviour
 
     public bool scaleOnHover = true;
     public bool useBackgroundImage = false;
+
+    public Action OnPanelShow;
+    public Action OnPanelHide;
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -55,6 +59,8 @@ public class CardPanelBase : MonoBehaviour
         gridLayout.cellSize = new Vector2(250, 350);
         commonCardsContainer.SetActive(false);
         DestroyCards();
+        
+        OnPanelHide?.Invoke();
     }
 
     public virtual UICardPrefabManager OnGenerateCard(UICardPrefabManager uiCard) 

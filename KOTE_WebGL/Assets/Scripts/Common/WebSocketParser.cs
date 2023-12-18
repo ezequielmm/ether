@@ -453,12 +453,14 @@ public class WebSocketParser
         {
             HideBackButton = true,
             MustSelectAllCards = false,
-            NumberOfCardsToSelect = showCards.data.data.cardsToTake,
-            ShowCardInCenter = true
+            NumberOfCardsToSelect = showCards.data.data.cardsToTake
         };
-        GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.Invoke(showCards.data.data.cards,
+        GameManager.Instance.ShowSelectedCardPanel(showCards.data.data.cards,
             panelOptions,
-            (selectedCards) => { SendData.Instance.SendCardsSelected(selectedCards); });
+            (selectedCards) =>
+            {
+                SendData.Instance.SendCardsSelected(selectedCards);
+            });
     }
 
     private static void UpdateEnergy(string data)

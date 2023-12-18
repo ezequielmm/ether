@@ -56,8 +56,6 @@ namespace KOTE.UI.Armory
             {
                 OnArmoryRefresh();
             }
-
-            Debug.Log($"[Armory] SelectedCharacter {SelectedCharacter.FormatTokenName()}");
         }
 #endif
 

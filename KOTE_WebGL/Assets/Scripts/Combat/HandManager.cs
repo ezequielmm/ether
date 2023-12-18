@@ -115,5 +115,23 @@ namespace KOTE.Expedition.Combat.Cards.Piles
                 }
             }
         }
+
+        [ContextMenu("DisableCards")]
+        public void DisableCards()
+        {
+            foreach (var card in handDeck)
+            {
+                card.cardActive = false;
+            }
+        }
+        
+        [ContextMenu("EnableCards")]
+        public void EnableCards()
+        {
+            foreach (var card in handDeck)
+            {
+                card.cardActive = true;
+            }
+        }
     }
 }

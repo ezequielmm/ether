@@ -44,11 +44,10 @@ public class SelectCardsPanel : CardPanelBase
     protected override void Start()
     {
         base.Start();
-        GameManager.Instance.EVENT_SHOW_SELECT_CARD_PANEL.AddListener(OnShowSelectCardPanel);
         hideCardOverlay.gameObject.SetActive(false);
     }
     
-    private void OnShowSelectCardPanel(List<Card> selectableCards, SelectPanelOptions selectOptions,
+    public void OnShowSelectCardPanel(List<Card> selectableCards, SelectPanelOptions selectOptions,
         Action<List<string>> onFinishedSelection)
     {
         ClearSelectList();
@@ -89,6 +88,8 @@ public class SelectCardsPanel : CardPanelBase
         selectButton.gameObject.SetActive(!selectOptions.MustSelectAllCards && !selectOptions.NoSelectButton);
         backButton.gameObject.SetActive(!selectOptions.HideBackButton);
         commonCardsContainer.SetActive(true);
+        
+        OnPanelShow?.Invoke();
     }
 
     private void SetCardToBeToggled(SelectableUiCardManager cardManager, SelectPanelOptions selectOptions)
@@ -216,17 +217,22 @@ public class SelectCardsPanel : CardPanelBase
             selectButton.onClick.RemoveAllListeners();
             selectButton.onClick.AddListener(() =>
             {
-                onFinishedSelection(selectedCardIds);
                 totalCardsSelected += selectedCards;
-                ClearSelectList();
-                DeleteSelectedCard();
-                UpdateSelectButton();
                 if (totalCardsSelected == cardsToSelect)
                 {
-                    HidePanel();
+                    HideCardSelectPanel();
+                    onFinishedSelection(selectedCardIds);
+                    ClearSelectList();
+                    DeleteSelectedCard();
+                    selectButtonText.text = "Cancel";
+                    selectButton.onClick.RemoveAllListeners();
                 }
                 else if (totalCardsSelected > cardsToSelect)
                 {
+                    HidePanel();
+                    DeleteSelectedCard();
+                    UpdateSelectButton();
+                    // TODO: Show in an UI
                     Debug.LogError("Too many cards selected!");
                 }
             });
