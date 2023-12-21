@@ -56,7 +56,8 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
     private bool awaitForEnemyRequestPrefab;
 
-    public event Action OnEnemyDied;
+    public event Action<GameObject> OnEnemyDied;
+    public event Action<GameObject> OnEnemySpawned;
 
     private string signature_move_name;
     
@@ -67,7 +68,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     }
     
     [SerializeField] public VFXList vfxList;
-    
+
     public void SetEnemeyData(EnemyData data)
     {
         if (enemyData != null)
@@ -134,6 +135,17 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             this.enemy = enemy;
             
             collider = activeEnemy.GetComponentInChildren<Collider2D>();
+            
+            // Half collider size if line is 0
+            if (enemy.line == 0)
+            {
+                var boxCollider2D = (collider as BoxCollider2D);
+                if (boxCollider2D)
+                {
+                    boxCollider2D.size = new Vector2(boxCollider2D.size.x, boxCollider2D.size.y / 2) ;
+                    boxCollider2D.offset = new Vector2(boxCollider2D.offset.x, boxCollider2D.offset.y / 2);
+                }
+            }
             enemyBounds = collider.bounds;
             collider.enabled = false;
             
@@ -369,6 +381,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             statusManager.OnStatusUpdated += (statuses) => spine.PlayIdle();
             
             spine.ANIMATION_EVENT.AddListener(OnAnimationEvent);
+            OnEnemySpawned?.Invoke(activeEnemy);
         }
         
         characterSound = activeEnemy.GetComponentInChildren<CharacterSound>();
@@ -473,13 +486,13 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
             {
                 spineFadeout.OnFadeoutComplete += DestroyOnFadeout;
                 spineFadeout.enabled = true;
-                OnEnemyDied?.Invoke();
+                OnEnemyDied?.Invoke(gameObject);
             });
             barFader.FadeOutUi();
         }
     }
 
-    public void AddActionWhenDied(Action toRun)
+    public void AddActionWhenDied(Action<GameObject> toRun)
     {
         OnEnemyDied += toRun;
     }

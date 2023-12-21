@@ -140,13 +140,9 @@ public class WebSocketParser
             case "transform_enemy":
             {
                 SWSM_Enemies enemiesData = JsonConvert.DeserializeObject<SWSM_Enemies>(data);
-                (action switch
-                {
-                    "spawn_enemies" => GameManager.Instance.EVENT_ADD_ENEMIES,
-                    "transform_enemy" => GameManager.Instance.EVENT_TRANSFORM_ENEMIES,
-                }).Invoke(enemiesData.data);
-            }
+                GameManager.Instance.SpawnOrTransformEnemies(action, enemiesData.data);
                 break;
+            }
             default:
                 Debug.LogWarning($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
                 break;
@@ -476,8 +472,8 @@ public class WebSocketParser
     private static void ProcessUpdateEnemy(string rawData)
     {
         SWSM_Enemies enemiesData = JsonConvert.DeserializeObject<SWSM_Enemies>(rawData);
-
-        GameManager.Instance.EVENT_UPDATE_ENEMIES.Invoke(enemiesData.data);
+        
+        GameManager.Instance.UpdateEnemies(enemiesData.data);
     }
 
     private static void ProcessUpdatePlayer(string data)

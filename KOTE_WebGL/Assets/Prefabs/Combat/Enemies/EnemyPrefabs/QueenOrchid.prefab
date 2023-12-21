@@ -81,6 +81,7 @@ GameObject:
   - component: {fileID: 8657770188093488010}
   - component: {fileID: 5564546847079581906}
   - component: {fileID: 5049952274683851900}
+  - component: {fileID: 1235184772436490938}
   m_Layer: 0
   m_Name: QueenOrchid
   m_TagString: Enemy
@@ -145,16 +146,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   intentMountingPoint: {fileID: 5704810928317230918}
   healthMountingPoint: {fileID: 3610515532737044675}
-  onCursorEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onCursorExit:
-    m_PersistentCalls:
-      m_Calls: []
   spineAnimationsManagement: {fileID: 0}
   sortingGroup: {fileID: 0}
   sortingOrder: 1
   setBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  rendererBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
 --- !u!50 &6089881018909539269
@@ -408,6 +406,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: cast
     sequence:
     - track: 1
@@ -416,6 +415,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: idle
     sequence:
     - track: 1
@@ -424,6 +424,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 0
+    vfxs: 
   - sequenceName: hit
     sequence:
     - track: 1
@@ -432,6 +433,7 @@ MonoBehaviour:
       delay: 0.5
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: death
     sequence:
     - track: 1
@@ -440,6 +442,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 1
+    vfxs: 
   - sequenceName: pheromone cloud
     sequence:
     - track: 1
@@ -448,6 +451,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: constrict
     sequence:
     - track: 1
@@ -456,6 +460,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: bite
     sequence:
     - track: 1
@@ -464,6 +469,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   availableAnimations:
   - attack1
   - attack2
@@ -472,7 +478,6 @@ MonoBehaviour:
   - death
   - hit
   - idle
-  idleAnimation: idle
 --- !u!114 &5564546847079581906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -504,3 +509,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeoutSeconds: 1
+--- !u!114 &1235184772436490938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3264b24f699a4b8baed49f8cca746cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  onCursorEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onCursorExit:
+    m_PersistentCalls:
+      m_Calls: []

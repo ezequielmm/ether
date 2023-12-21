@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Combat.Pointer;
 using KOTE.Expedition.Combat.Cards.Piles;
 using KOTE.UI.Armory;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 public class GameManager : SingleTon<GameManager>
 {
@@ -331,9 +332,32 @@ public class GameManager : SingleTon<GameManager>
     [HideInInspector] public UnityEvent<string> EVENT_CHANGE_TURN = new UnityEvent<string>();
 
     //Enemies events
-    [HideInInspector] public UnityEvent<EnemiesData> EVENT_UPDATE_ENEMIES { get; } = new UnityEvent<EnemiesData>();
-    [HideInInspector] public UnityEvent<EnemiesData> EVENT_ADD_ENEMIES = new UnityEvent<EnemiesData>();
-    [HideInInspector] public UnityEvent<EnemiesData> EVENT_TRANSFORM_ENEMIES = new UnityEvent<EnemiesData>();
+    public void SpawnOrTransformEnemies(string action, EnemiesData data)
+    {
+        var enemiesManager = FindObjectOfType<EnemiesManager>();
+        Debug.Log($"[EnemiesManager] SpawnOrTransformEnemies {action} {data} {enemiesManager}");
+        if (action == "spawn_enemies")
+        {
+            enemiesManager.OnAddEnemies(data);
+        }
+        else if (action == "transform_enemy")
+        {
+            enemiesManager.OnTransformEnemies(data);
+        }
+    }
+    public void UpdateEnemies(EnemiesData data)
+    {
+        FindObjectOfType<EnemiesManager>().OnEnemiesUpdate(data);
+    }
+    public void EnemySpawned(GameObject enemy)
+    {
+        FindObjectOfType<PointerManager>()?.AddInteractable(enemy.GetComponentInChildren<PointerInteractable>());
+    }
+    public void EnemyDied(GameObject enemy)
+    {
+        FindObjectOfType<PointerManager>()?.RemoveInteractable(enemy.GetComponentInChildren<PointerInteractable>());
+    }   
+    
     [HideInInspector] public UnityEvent<EnemyData> EVENT_UPDATE_ENEMY = new UnityEvent<EnemyData>();
     [HideInInspector] public UnityEvent<EnemyIntent> EVENT_UPDATE_INTENT = new UnityEvent<EnemyIntent>();
 

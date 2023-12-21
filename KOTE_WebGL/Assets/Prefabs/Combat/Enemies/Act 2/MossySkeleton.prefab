@@ -81,6 +81,7 @@ GameObject:
   - component: {fileID: 7392278995453590949}
   - component: {fileID: 7365016334158188392}
   - component: {fileID: 3441341067241275035}
+  - component: {fileID: -8297342996338977130}
   m_Layer: 0
   m_Name: MossySkeleton
   m_TagString: Enemy
@@ -145,12 +146,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   intentMountingPoint: {fileID: 2008666325652794148}
   healthMountingPoint: {fileID: 8855561072198671968}
-  onCursorEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onCursorExit:
-    m_PersistentCalls:
-      m_Calls: []
   spineAnimationsManagement: {fileID: 0}
   sortingGroup: {fileID: 0}
   sortingOrder: 1
@@ -580,3 +575,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeoutSeconds: 1
+--- !u!114 &-8297342996338977130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3264b24f699a4b8baed49f8cca746cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  onCursorEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onCursorExit:
+    m_PersistentCalls:
+      m_Calls: []

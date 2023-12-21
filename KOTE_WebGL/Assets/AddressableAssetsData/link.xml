@@ -2,6 +2,7 @@
   <assembly fullname="GameAssembly, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="CardAssetManager" preserve="all" />
     <type fullname="CharacterSound" preserve="all" />
+    <type fullname="Combat.Pointer.PointerInteractable" preserve="all" />
     <type fullname="EnemyPrefab" preserve="all" />
     <type fullname="NamedSoundList" preserve="all" />
     <type fullname="NamedSpriteList" preserve="all" />

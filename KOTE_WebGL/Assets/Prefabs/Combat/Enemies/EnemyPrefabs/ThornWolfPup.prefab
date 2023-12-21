@@ -81,6 +81,7 @@ GameObject:
   - component: {fileID: 8216563058265025676}
   - component: {fileID: 7274440989908170446}
   - component: {fileID: 4671338971879119062}
+  - component: {fileID: -3646472757795240261}
   m_Layer: 0
   m_Name: ThornWolfPup
   m_TagString: Enemy
@@ -145,16 +146,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   intentMountingPoint: {fileID: 3955422518823642167}
   healthMountingPoint: {fileID: 6897585323418475308}
-  onCursorEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onCursorExit:
-    m_PersistentCalls:
-      m_Calls: []
   spineAnimationsManagement: {fileID: 0}
   sortingGroup: {fileID: 0}
   sortingOrder: 1
   setBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  rendererBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
 --- !u!50 &8406717301304214992
@@ -414,6 +412,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: cast
     sequence:
     - track: 1
@@ -422,6 +421,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: idle
     sequence:
     - track: 1
@@ -430,6 +430,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 0
+    vfxs: 
   - sequenceName: hit
     sequence:
     - track: 1
@@ -438,6 +439,7 @@ MonoBehaviour:
       delay: 0.5
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: death
     sequence:
     - track: 1
@@ -446,6 +448,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 1
+    vfxs: 
   - sequenceName: bite
     sequence:
     - track: 1
@@ -454,6 +457,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: bristle
     sequence:
     - track: 1
@@ -462,6 +466,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: claw
     sequence:
     - track: 1
@@ -470,6 +475,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: howl
     sequence:
     - track: 1
@@ -478,6 +484,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: flee
     sequence:
     - track: 1
@@ -486,6 +493,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   availableAnimations:
   - attack1
   - attack2
@@ -496,7 +504,6 @@ MonoBehaviour:
   - flee - run cycle
   - hit
   - idle
-  idleAnimation: idle
 --- !u!114 &7274440989908170446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,3 +535,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeoutSeconds: 1
+--- !u!114 &-3646472757795240261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3264b24f699a4b8baed49f8cca746cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  onCursorEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onCursorExit:
+    m_PersistentCalls:
+      m_Calls: []

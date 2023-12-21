@@ -151,47 +151,33 @@ public class PointerCollisionChecker : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    public void EvaluateCursor(GameObject entity, bool isOver)
     {
-        bool isOver = false;
-        if (collision != null && collision.gameObject.CompareTag("Enemy"))
-        {
-            var other = collision.gameObject.GetComponentInParent<EnemyManager>();
-            if (other != null)
-                isOver = true;
-        } 
-        else if (collision != null && collision.gameObject.CompareTag("Player"))
-        {
-            var other = collision.gameObject.GetComponentInParent<PlayerManager>();
-            if (other != null)
-                isOver = true;
-        }
-
-        if (OverTarget != isOver)
-        {
-            if (isOver)
-            {
-                Enter(collision.gameObject);
-            }
-            else 
-            {
-                if (lastOver != null)
-                {
-                    Exit(lastOver);
-                }
-            }
-        } 
-        else if (isOver && collision.gameObject != lastOver) 
-        {
-            if (lastOver != null)
-            {
-                Exit(lastOver);
-            }
-            Enter(collision.gameObject);
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        OnTriggerStay2D(null);
+        if (isOver)
+            Enter(entity);
+        else
+            Exit(entity);
+        // if (OverTarget != isOver)
+        // {
+        //     if (isOver)
+        //     {
+        //         Enter(entity);
+        //     }
+        //     else 
+        //     {
+        //         if (lastOver != null)
+        //         {
+        //             Exit(lastOver);
+        //         }
+        //     }
+        // } 
+        // else if (isOver && entity != lastOver) 
+        // {
+        //     if (lastOver != null)
+        //     {
+        //         Exit(lastOver);
+        //     }
+        //     Enter(entity);
+        // }
     }
 }

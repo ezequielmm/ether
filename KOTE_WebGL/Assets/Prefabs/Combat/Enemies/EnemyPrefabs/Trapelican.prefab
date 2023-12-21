@@ -81,6 +81,7 @@ GameObject:
   - component: {fileID: 5032384692726303352}
   - component: {fileID: 8101822532890010282}
   - component: {fileID: 6652080232689447941}
+  - component: {fileID: -3396636318132538492}
   m_Layer: 0
   m_Name: Trapelican
   m_TagString: Enemy
@@ -145,16 +146,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   intentMountingPoint: {fileID: 3841530979758106892}
   healthMountingPoint: {fileID: 2730670278841105869}
-  onCursorEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onCursorExit:
-    m_PersistentCalls:
-      m_Calls: []
   spineAnimationsManagement: {fileID: 0}
   sortingGroup: {fileID: 0}
   sortingOrder: 1
   setBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  rendererBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
 --- !u!50 &6232052209567427606
@@ -408,6 +406,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: cast
     sequence:
     - track: 1
@@ -416,6 +415,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: idle
     sequence:
     - track: 1
@@ -424,6 +424,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 0
+    vfxs: 
   - sequenceName: hit
     sequence:
     - track: 1
@@ -432,6 +433,7 @@ MonoBehaviour:
       delay: 0.5
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: death
     sequence:
     - track: 1
@@ -440,6 +442,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 1
+    vfxs: 
   - sequenceName: bite
     sequence:
     - track: 1
@@ -448,6 +451,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: swoop
     sequence:
     - track: 1
@@ -456,6 +460,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: biteLure
     sequence:
     - track: 1
@@ -464,6 +469,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: idleLure
     sequence:
     - track: 1
@@ -472,6 +478,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 2
+    vfxs: 
   - sequenceName: lure
     sequence:
     - track: 1
@@ -480,6 +487,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: treeSprung
     sequence:
     - track: 1
@@ -488,6 +496,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   availableAnimations:
   - attack1
   - cast1
@@ -498,7 +507,6 @@ MonoBehaviour:
   - lure_hit
   - lure_idle
   - lure_start
-  idleAnimation: idle
 --- !u!114 &8101822532890010282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -530,3 +538,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeoutSeconds: 1
+--- !u!114 &-3396636318132538492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3264b24f699a4b8baed49f8cca746cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  onCursorEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onCursorExit:
+    m_PersistentCalls:
+      m_Calls: []

@@ -1,42 +1,55 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Combat;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.UI;
 
 public class EnemiesManager : MonoBehaviour
 {
     public GameObject enemyPrefab;
-
-    public float extent = 4.44f;
-    public float floor = -1.5f;
-    public float spawnX = 5;
+    
+    public List<LineData> lines = new()
+    {
+        new LineData()
+        {
+            extent = 4.44f,
+            floor = -1.5f,
+            zPosition = 0
+        },
+        new LineData()
+        {
+            extent = 4.44f,
+            floor = -0.6f,
+            zPosition = -2
+        }
+    };
     [Range(1f, 8f)]
     public float sampleEnemyWidth = 4.44f;
     [Range(1,5)]
     public int sampleEnemyCount = 3;
+
     public List<GameObject> enemies = new List<GameObject>();
-    Vector3 spawnPos => new Vector3(spawnX, floor, 0);
-
-
     [SerializeField] private UltiFeedback ultiFeedback;
-    
-    private void Awake()
+
+    [Serializable]
+    public class LineData
     {
-        GameManager.Instance.EVENT_UPDATE_ENEMIES.AddListener(OnEnemiesUpdate);
-        GameManager.Instance.EVENT_ADD_ENEMIES.AddListener(data =>  OnAddEnemies(data));
-        GameManager.Instance.EVENT_TRANSFORM_ENEMIES.AddListener(OnTransformEnemies);
+        public float xOffset;
+        public float extent;
+        public float floor;
+        public float zPosition;
+        public float spacing = 2;
     }
 
-    private EnemyManager SpawnEnemy(EnemyData enemyData)
+    private EnemyManager SpawnEnemy(EnemyData enemyData, int lineIndex)
     {
         GameObject newEnemy = Instantiate(enemyPrefab, this.transform);
+        var spawnPos = new Vector3(newEnemy.transform.position.x, lines[lineIndex].floor, lines[lineIndex].zPosition);
         newEnemy.transform.localPosition = spawnPos;
         EnemyManager em = newEnemy.GetComponent<EnemyManager>();
+        em.OnEnemySpawned += GameManager.Instance.EnemySpawned;
+        em.OnEnemyDied += GameManager.Instance.EnemyDied;
         em.SetEnemeyData(enemyData);
 
         em.OnSignatureMoveReproduce += ultiFeedback.DoFeedback;
@@ -89,11 +102,12 @@ public class EnemiesManager : MonoBehaviour
 
     public void OnEnemiesUpdate(EnemiesData enemiesData)
     {
+        Debug.Log($"[EnemiesManager] EnemiesUpdate");
         if (enemiesData.data.Count == 0)
         {
             GameManager.Instance.EVENT_GAME_STATUS_CONFIRM.Invoke();
         }
-
+        
         List<GameObject> newEnemyList = new List<GameObject>();
         foreach (EnemyData data in enemiesData.data)
         {
@@ -114,7 +128,7 @@ public class EnemiesManager : MonoBehaviour
             }
             else 
             {
-                enemyManager = SpawnEnemy(data);
+                enemyManager = SpawnEnemy(data, data.line ?? 0);
                 enemies.Add(enemyManager.gameObject);
                 newEnemyList.Add(enemyManager.gameObject);
             }
@@ -127,28 +141,60 @@ public class EnemiesManager : MonoBehaviour
             return;
         }
      
-        for(int i = 0; i < enemies.Count; i++)
-        {
-            var enemy = enemies[i];
-            if (!newEnemyList.Contains(enemy)) 
-            {
-                enemies.RemoveAt(i);
-                if (enemy != null)
-                {
-                    enemy.transform.DOMove(transform.position + Vector3.right * spawnX, 1).OnComplete(() => { Destroy(enemy); });
-                }
-                i--;
-                continue;
-            }
-        }
+        // for(int i = 0; i < enemies.Count; i++)
+        // {
+        //     var enemy = enemies[i];
+        //     if (!newEnemyList.Contains(enemy)) 
+        //     {
+        //         enemies.RemoveAt(i);
+        //         if (enemy != null)
+        //         {
+        //             enemy.transform.DOMove(transform.position + Vector3.right * spawnX, 1).OnComplete(() => { Destroy(enemy); });
+        //         }
+        //         i--;
+        //         continue;
+        //     }
+        // }
         enemies.Clear();
         enemies = newEnemyList;
 
-        PositionEnemies();
+        PositionEnemiesInLine();
     }
-
-    private void OnAddEnemies(EnemiesData enemiesData, bool isTransformation = false)
+    
+    public void OnTransformEnemies(EnemiesData enemiesData)
     {
+        Debug.Log($"[EnemiesManager] OnTransformEnemies {enemies.Count}");
+        var oldEnemyNewData = enemiesData.data[0];
+        var oldEnemy = GetEnemy(oldEnemyNewData.id);
+        var indexOfOldEnemy = enemies.IndexOf(oldEnemy.gameObject);
+        enemies.Remove(oldEnemy.gameObject);
+
+        var dataWithOnlyTransformation = new EnemiesData {
+            data = new List<EnemyData>(enemiesData.data.Where(e => e.id != oldEnemy.EnemyData.id))
+        };
+        
+        GameManager.Instance.ActiveEndOfTurnButton(false);
+        Action<GameObject> spawnTransformationAction = (_) =>
+        {
+            Debug.Log($"[EnemiesManager] Transform done {enemies.Count}");
+            OnAddEnemies(dataWithOnlyTransformation, true, indexOfOldEnemy);
+            if (GameManager.Instance.IsPlayerTurn)
+                GameManager.Instance.ActiveEndOfTurnButton(true);
+        };
+        
+        // if the enemy is dead, then we need to wait for it to die before we can add the new enemies
+        if (oldEnemyNewData.hpCurrent <= 0)
+        {
+            oldEnemy.AddActionWhenDied(spawnTransformationAction);
+            return;
+        }
+        
+        spawnTransformationAction(null);
+    }
+    
+    public void OnAddEnemies(EnemiesData enemiesData, bool isTransformation = false, int indexToInsert = -1)
+    {
+        Debug.Log($"[EnemiesManager] OnAddEnemies");
         foreach (EnemyData data in enemiesData.data)
         {
             bool enemyExists = EnemyExists(data);
@@ -163,152 +209,76 @@ public class EnemiesManager : MonoBehaviour
             }
             else
             {
-                enemyManager = SpawnEnemy(data);
-                enemies.Add(enemyManager.gameObject);
+                enemyManager = SpawnEnemy(data, data.line ?? 0);
+                if (indexToInsert <= -1)
+                    enemies.Add(enemyManager.gameObject);
+                else
+                    enemies.Insert(indexToInsert, enemyManager.gameObject);
             }
         }
-        PositionEnemies(isTransformation);
+
+        PositionEnemiesInLine(isTransformation);
+    }
+
+    [ContextMenu("PositionEnemiesInLine")]
+    private void Position()
+    {
+        PositionEnemiesInLine();
     }
     
-    private void OnTransformEnemies(EnemiesData enemiesData)
+    private void PositionEnemiesInLine(bool isTransformation = false)
     {
-        var oldEnemyNewData = enemiesData.data[0];
-        var oldEnemy = GetEnemy(oldEnemyNewData.id);
-        enemies.Remove(oldEnemy.gameObject);
-
-        var dataWithOnlyTransformation = new EnemiesData {
-            data = new List<EnemyData>(enemiesData.data.Where(e => e.id != oldEnemy.EnemyData.id))
-        };
-        
-        GameManager.Instance.ActiveEndOfTurnButton(false);
-        Action spawnTransformationAction = () =>
-        {
-            OnAddEnemies(dataWithOnlyTransformation, true);
-            if (GameManager.Instance.IsPlayerTurn)
-                GameManager.Instance.ActiveEndOfTurnButton(true);
-        };
-        
-        // if the enemy is dead, then we need to wait for it to die before we can add the new enemies
-        if (oldEnemyNewData.hpCurrent <= 0)
-        {
-            oldEnemy.AddActionWhenDied(spawnTransformationAction);
-            return;
-        }
-        
-        spawnTransformationAction();
+        var enemiesManager = enemies.Select(e => e.GetComponent<EnemyManager>()).ToArray();
+        PositionEnemies(enemiesManager,
+            0, isTransformation);
+        PositionEnemies(enemiesManager,
+            1, isTransformation);
     }
-
-    private void PositionEnemies(bool isTransformaiton = false) 
+    private void PositionEnemies(EnemyManager[] enemies, int lineIndex, bool isTransformaiton = false) 
     {
         // Total enemy width
-        float totalWidth = 0;
-        foreach (var enemyObj in enemies) 
-        {
-            var enemy = enemyObj.GetComponent<EnemyManager>();
-            totalWidth += GetSize(enemy.EnemyData.size); // enemy.collider.bounds.size.x;
-        }
+        if (enemies.Length == 0) return;
+        
+        enemies = enemies.Where(e => e.GetComponent<EnemyManager>().EnemyData.line == lineIndex).ToArray();
 
-        // Amount of space enemies take out outside of set aside spacing
-        float spillOver = Mathf.Max(0, totalWidth - (extent * 2));
-        // The space between enemies (should be 0 if no space)
-        float spacing = Mathf.Max(0, ((extent * 2) - totalWidth) / enemies.Count);
-        // The left edge that enemies will start spawning at
-        float leftEdge = transform.position.x + -extent + (-spillOver) + (spacing / 2f);
+        Debug.Log($"positioning: {enemies.Length} enemies in line {lineIndex}");
+        
+        var lineData = lines[lineIndex];
 
-        StringBuilder sb = new StringBuilder();
+        var leftEdge = -lineData.extent - lineData.xOffset;
+        var enemiesWidth = enemies.Sum(e => GetSize(e.EnemyData.size));
 
+        var lineTotalLength = lineData.extent * 2;
+        var spacesCount = (enemies.Length - 1);
+        
+        var freeSpace = (lineTotalLength - enemiesWidth) / spacesCount;
+        var spacing = Mathf.Min(freeSpace,  lineData.spacing);
+        
+        var currentOffset = spacing < lineData.spacing ? 0f  :
+            (lineTotalLength - (enemiesWidth + spacing * spacesCount)) / 2 ;
+        
         // Add all the enemies
-        foreach (var enemyObj in enemies)
+        foreach (var enemy in enemies)
         {
-            var enemy = enemyObj.GetComponent<EnemyManager>();
-            sb.Append($"[{enemy.EnemyData.id}], ");
+            var currentX = leftEdge + currentOffset;
             float size = GetSize(enemy.EnemyData.size); //enemy.collider.bounds.size.x;
-            float xPos = leftEdge + (size / 2);
-            Vector3 desiredPosition = new Vector3(xPos, transform.position.y + floor, transform.position.z);
+            
+            Vector3 desiredPosition = new Vector3(currentX + (size / 2), transform.localPosition.y + lineData.floor, lineData.zPosition);
             
             // Enemy transform special handle
             if (!isTransformaiton)
             {
-                enemy.transform.DOMove(desiredPosition, 1);
+                enemy.transform.DOLocalMove(desiredPosition, 1);
             }
             else
             {
-                enemy.transform.position = desiredPosition;
+                enemy.transform.localPosition = desiredPosition;
                 var initialScale = enemy.transform.localScale;
                 enemy.transform.localScale = Vector3.zero;
                 enemy.transform.DOScale(initialScale, 1f);
             }
             
-            leftEdge += size + spacing;
-        }
-        Debug.Log($"[EnemiesManager] List of enemy IDs: {sb.ToString().Substring(0, sb.ToString().Length-2)}");
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Vector3 bound = new Vector3(extent * 2, 5, 0);
-        Bounds b = new Bounds(transform.position, bound);
-        Gizmos.color = Color.green;
-        GizmoExtensions.DrawBox(b);
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawLine(new Vector3(transform.position.x - (bound.x/2 * 0.9f), transform.position.y + floor, 0), new Vector3(transform.position.x + (bound.x/2 * 0.9f), transform.position.y + floor, 0));
-
-        Gizmos.color = Color.red;
-        float totalWidth = sampleEnemyWidth * sampleEnemyCount;
-        int enemyCount = sampleEnemyCount;
-        if (Application.isPlaying) 
-        {
-            totalWidth = 0;
-            foreach (var enemyObj in enemies)
-            {
-                var enemy = enemyObj.GetComponent<EnemyManager>();
-                totalWidth += GetSize(enemy.EnemyData.size);
-            }
-            enemyCount = enemies.Count;
-        }
-
-        // Amount of space enemies take out outside of set aside spacing
-        float spillOver = Mathf.Max(0, totalWidth - (extent * 2));
-        // The space between enemies (should be 0 if no space)
-        float spacing = Mathf.Max(0, (extent * 2) - totalWidth) / enemyCount;
-        // The left edge that enemies will start spawning at
-        float leftEdge = transform.position.x + -extent + (-spillOver) + (spacing/2f);
-
-        if (spacing > 0)
-        {
-            Gizmos.color = Color.red;
-            GizmoExtensions.DrawBoxWithX(spacing / 2, bound.y / 4f, new Vector3(leftEdge - (spacing / 4f), transform.position.y + floor + bound.y / 4, 0));
-        }
-
-        for (int i = 0; i < enemyCount; i++) 
-        {
-            float size = sampleEnemyWidth;
-            if (Application.isPlaying)
-            {
-                var enemy = enemies[i].GetComponent<EnemyManager>();
-                size = GetSize(enemy.EnemyData.size);
-            }
-            float xPos = leftEdge + (size / 2);
-            Vector3 desiredPosition = new Vector3(xPos, transform.position.y + floor + bound.y / 4, 0);
-            leftEdge += size + spacing;
-
-            Gizmos.color = Color.blue;
-            if (Application.isPlaying)
-            {
-                Gizmos.color = Color.cyan;
-            }
-            GizmoExtensions.DrawBoxWithX(size, bound.y/2, desiredPosition);
-
-            Gizmos.color = Color.red;
-            if (i != enemyCount - 1 && spacing > 0)
-            {
-                GizmoExtensions.DrawBoxWithX(spacing, bound.y / 4f, new Vector3(leftEdge - (spacing / 2f), transform.position.y + floor + bound.y / 4, 0));
-            }
-        }
-        if (spacing > 0)
-        {
-            Gizmos.color = Color.red;
-            GizmoExtensions.DrawBoxWithX(spacing / 2, bound.y / 4f, new Vector3(leftEdge - (spacing * 3 / 4f), transform.position.y + floor + bound.y / 4, 0));
+            currentOffset += size + spacing;
         }
     }
 }

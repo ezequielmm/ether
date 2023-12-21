@@ -46,9 +46,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 2957114846732785694, guid: 36028b7649ff96f4597d49484c32d0e6,
     type: 3}
-  extent: 4.44
-  floor: -1.5
-  spawnX: 8
+  lines:
+  - xOffset: 0
+    extent: 5
+    floor: -2
+    zPosition: -2
+    spacing: 1.5
+  - xOffset: 3
+    extent: 6
+    floor: -0.3
+    zPosition: 0
+    spacing: 1.5
   sampleEnemyWidth: 4.44
   sampleEnemyCount: 3
   enemies: []

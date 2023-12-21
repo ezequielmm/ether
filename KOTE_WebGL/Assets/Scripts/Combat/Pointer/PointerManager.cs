@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using Combat.Pointer;
 using UnityEngine;
 using UnityEngine.U2D;
 
@@ -32,6 +34,9 @@ public class PointerManager : MonoBehaviour
     
     private readonly Vector3 plane = new Vector3(1,1,0);
 
+    private List<PointerInteractable> interactables = new List<PointerInteractable>();
+    private PointerCollisionChecker pointerCollisionChecker;
+
     private void OnEnable()
     {
         if (runables == null) 
@@ -49,6 +54,7 @@ public class PointerManager : MonoBehaviour
 
     private void Start()
     {
+        pointerCollisionChecker = pointerContainer.GetComponentInChildren<PointerCollisionChecker>();
         spline = PointerLine.spline;
         splinePointCount = spline.GetPointCount();
 
@@ -65,16 +71,49 @@ public class PointerManager : MonoBehaviour
             originalLeftTangents[i] = spline.GetLeftTangent(i);
             originalRightTangents[i] = spline.GetRightTangent(i);
         }
+        
+        // Setting up interactables in scene
+        foreach (var pointerInteractable in FindObjectsOfType<PointerInteractable>())
+        {
+            if (interactables.Contains(pointerInteractable)) continue;
+            interactables.Add(pointerInteractable);
+            
+            SetUpInteractable(pointerInteractable);
+        }
     }
 
+    private void SetUpInteractable(PointerInteractable pointerInteractable)
+    {
+        pointerInteractable.onCursorEnter.AddListener(() => pointerCollisionChecker.EvaluateCursor(pointerInteractable.gameObject, true));
+        pointerInteractable.onCursorExit.AddListener(() => pointerCollisionChecker.EvaluateCursor(pointerInteractable.gameObject, false));
+    }
 
-    public void OnPointerActivated(PointerData data)
+    public void AddInteractable(PointerInteractable pointerInteractable)
+    {
+        if (pointerInteractable == null || interactables.Contains(pointerInteractable)) return;
+        interactables.Add(pointerInteractable);
+            
+        SetUpInteractable(pointerInteractable);
+    }
+
+    public void RemoveInteractable(PointerInteractable pointerInteractable)
+    {
+        if (pointerInteractable == null || !interactables.Contains(pointerInteractable)) return;
+        interactables.Remove(pointerInteractable);
+            
+        pointerInteractable.onCursorEnter.RemoveAllListeners();
+        pointerInteractable.onCursorExit.RemoveAllListeners();
+    }
+
+    private void OnPointerActivated(PointerData data)
     {
         Vector3 pointerOrigin = data.Origin;
 
         TargetProfile = data.Targets;
 
+        // TODO: TEST
         pointerContainer.SetActive(true);
+        
         originPoint.gameObject.SetActive(true);
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0;
@@ -148,7 +187,9 @@ public class PointerManager : MonoBehaviour
 
         // else return it to the deck
         //GameManager.Instance.EVENT_CARD_MOUSE_EXIT.Invoke(id);
+        //TODO: HORRIBLE
         pointerContainer.SetActive(false);
+        
         originPoint.gameObject.SetActive(false);
     }
 
