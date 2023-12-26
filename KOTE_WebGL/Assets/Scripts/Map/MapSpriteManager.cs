@@ -378,9 +378,10 @@ namespace map
             while (latestMapData == null)
             {
                 yield return null;
-                Debug.LogError("::::::::::::::::::::::::::: LAST MAP IS NULL ::::::::::::::::::::::::");
+                //Debug.LogError("::::::::::::::::::::::::::: LAST MAP IS NULL ::::::::::::::::::::::::");
             }
 
+            Debug.Log("Generating Map");
             generateMapAwaitRoutine = null;
             GenerateMap(latestMapData);
             StartCoroutine(Scroll());
@@ -390,7 +391,9 @@ namespace map
         {
             if (GameSettings.MAP_AUTO_SCROLL_ACTIVE)
             {
+#pragma warning disable CS0162 // Unreachable code detected
                 yield return new WaitForSeconds(0.5f);
+#pragma warning restore CS0162 // Unreachable code detected
             }
 
             ScrollBackToPlayerIcon();
@@ -1241,7 +1244,9 @@ namespace map
             {
                 if (GameSettings.MAP_AUTO_SCROLL_ACTIVE)
                 {
+#pragma warning disable CS0162 // Unreachable code detected
                     activeTween = nodesHolder.transform.DOLocalMoveX(targetx, scrollTime);
+#pragma warning restore CS0162 // Unreachable code detected
                 }
                 else
                 {
@@ -1270,8 +1275,10 @@ namespace map
             */
             if (GameSettings.SHOW_MAP_REVEAL_ON_PORTAL)
             {
+#pragma warning disable CS0162 // Unreachable code detected
                 StartCoroutine(RevealMapThenReturnToPlayer(nodesHolder.transform.localPosition,
                     GameSettings.MAP_SCROLL_ANIMATION_DURATION));
+#pragma warning restore CS0162 // Unreachable code detected
                 return;
             }
 
@@ -1429,7 +1436,9 @@ namespace map
             {
                 if (GameSettings.MAP_AUTO_SCROLL_ACTIVE)
                 {
+#pragma warning disable CS0162 // Unreachable code detected
                     activeTween = nodesHolder.transform.DOLocalMoveX(targetx, scrollTime);
+#pragma warning restore CS0162 // Unreachable code detected
                 }
                 else
                 {

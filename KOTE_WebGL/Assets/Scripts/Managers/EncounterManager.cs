@@ -128,7 +128,7 @@ public class EncounterManager : MonoBehaviour
         ShowCardPanel(selectionData.Cards, panelOptions, 
         (List<string> selectedCards) =>
         {
-            SendData.Instance.SendCardsSelected(selectedCards);
+            _ = SendData.Instance.SendCardsSelected(selectedCards);
             CloseChildPanels();
             ShowAndPopulate();
         }, null);

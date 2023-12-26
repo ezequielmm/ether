@@ -156,7 +156,7 @@ public class EnemyIntentManager : MonoBehaviour
         }
         iconContainer.CreateSprites();
         transform.localScale = Vector3.zero;
-        transform.DOScale(1, GameSettings.INTENT_FADE_SPEED);
+        transform.DOScale(Vector3.one, GameSettings.INTENT_FADE_SPEED);
         askedForIntent = false;
         intentSet = true;
 

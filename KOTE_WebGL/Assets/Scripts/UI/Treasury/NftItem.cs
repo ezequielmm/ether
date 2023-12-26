@@ -6,7 +6,9 @@ public class NftItem : MonoBehaviour
     public Image nftImage;
     [HideInInspector]public Nft Nft;
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
     public async void Populate(Nft _nft)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
         this.Nft = _nft;
         // TODO REENABLE ONCE THE TREASURY IS USED AGAIN

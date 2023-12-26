@@ -303,6 +303,7 @@ public class SpriteSpacer : MonoBehaviour
         icon.transform.SetParent(container.transform);
         icons.Add(icon);
         icon.transform.localPosition = -Vector3.one;
+        icon.transform.localScale = Vector3.one;
     }
 
     public void DeleteIcon(GameObject icon) 

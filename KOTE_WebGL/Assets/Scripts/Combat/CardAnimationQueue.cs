@@ -48,7 +48,10 @@ public class CardAnimationQueue : MonoBehaviour
         {
             activeSequence = null;
             // delay a little to let things settle
-            StartCoroutine(WaitToRearrange());
+            if (gameObject.activeInHierarchy)
+            {
+                StartCoroutine(WaitToRearrange());
+            }
         }
         else
         {

@@ -47,7 +47,9 @@ public class NodeView : MonoBehaviour
         gameObject.transform.localScale *= GameSettings.COMPLETED_NODE_SCALE;
         if (GameSettings.COLOR_UNAVAILABLE_MAP_NODES == false)
         {
+#pragma warning disable CS0162 // Unreachable code detected
             _spriteRenderer.material = grayscaleMaterial;
+#pragma warning restore CS0162 // Unreachable code detected
         }
     }
     

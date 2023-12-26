@@ -17,7 +17,7 @@ public class TooltipComponent : MonoBehaviour
 
     [SerializeField]
     float fadeSpeed = 0.2f;
-    bool showing = false;
+    //bool showing = false;
 
     Image background;
 
@@ -91,7 +91,7 @@ public class TooltipComponent : MonoBehaviour
         title?.DOFade(1, fadeSpeed).SetDelay(0.1f);
         description?.DOFade(1, fadeSpeed).SetDelay(0.1f).OnComplete(() => 
         {
-            showing = true;
+            //showing = true;
         });
     }
 }

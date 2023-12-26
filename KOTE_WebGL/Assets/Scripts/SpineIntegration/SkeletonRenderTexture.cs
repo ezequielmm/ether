@@ -239,8 +239,12 @@ namespace Spine.Unity {
 			if (textureSize != allocatedRenderTextureSize) {
 				if (renderTexture)
 					RenderTexture.ReleaseTemporary(renderTexture);
-				renderTexture = RenderTexture.GetTemporary(textureSize.x, textureSize.y);
-				allocatedRenderTextureSize = textureSize;
+				
+				if (textureSize.x > 0)
+				{
+                    renderTexture = RenderTexture.GetTemporary(textureSize.x, textureSize.y);
+                    allocatedRenderTextureSize = textureSize;
+                }
 			}
 		}
 #endif

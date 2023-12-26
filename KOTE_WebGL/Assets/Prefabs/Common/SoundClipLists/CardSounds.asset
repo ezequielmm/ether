@@ -30,7 +30,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 00982d25c8ac7974bb15a5e5a20683f9, type: 3}
   - name: Discard
     clips:
-    - {fileID: 0}
+    - {fileID: 8300000, guid: debf95c098654bb478250d0fd224a54c, type: 3}
   - name: Out Of Energy
     clips:
     - {fileID: 8300000, guid: 6eaa37120c0547948a5ffd2a161bfea9, type: 3}

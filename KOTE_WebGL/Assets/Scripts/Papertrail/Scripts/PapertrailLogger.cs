@@ -291,18 +291,18 @@ namespace Papertrail
         private void LogInternal(Facility facility, Severity severity, string msg)
         {
             return;
-            // Early out if the client's logging level is lower than the log message
-            if (string.IsNullOrEmpty(msg) || severity > minimumLoggingLevel)
-                return;
-            // Calculate the message severity (facility * 8 + severity)
-            int severityValue = ((int)facility) * 8 + (int)severity;
-            string message = string.Empty;
+            //// Early out if the client's logging level is lower than the log message
+            //if (string.IsNullOrEmpty(msg) || severity > minimumLoggingLevel)
+            //    return;
+            //// Calculate the message severity (facility * 8 + severity)
+            //int severityValue = ((int)facility) * 8 + (int)severity;
+            //string message = string.Empty;
 
-            PapertrailLogData logData = new PapertrailLogData(severityValue, msg);
-            message = JsonConvert.SerializeObject(logData);
+            //PapertrailLogData logData = new PapertrailLogData(severityValue, msg);
+            //message = JsonConvert.SerializeObject(logData);
 
-            // Send the completed message
-            BeginSend(message);
+            //// Send the completed message
+            //BeginSend(message);
         }
 
         /// <summary>

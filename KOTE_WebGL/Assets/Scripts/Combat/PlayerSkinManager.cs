@@ -21,7 +21,9 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
     private Skin equipsSkin;
     private SkeletonData skeletonData;
     private List<(Skin.SkinEntry, Attachment)> generatedAttachments;
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
     private Renderer renderer;
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
 
     [SerializeField] private SkinVFXList skinsVFX;
     private SpineAnimationsManagement spine;
@@ -154,6 +156,10 @@ public class PlayerSkinManager : MonoBehaviour, IHasSkeletonDataAsset
 
     private void ApplySkinVFX(Dictionary<string, List<(GameObject, Transform)>> dictionary)
     {
+        if (!gameObject.activeInHierarchy)
+        {
+            return;
+        }
         StartCoroutine(ApplyVFXRoutine());
         IEnumerator ApplyVFXRoutine()
         {

@@ -70,14 +70,18 @@ public class WalletManager : ISingleton<WalletManager>
         WalletStatusModified.Invoke();
     }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
     public async UniTask ConnectWallet()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
         SetWallet(AuthenticationManager.LoginData.Wallet);
       
     }
 
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
     public async UniTask<bool> ConfirmActiveWalletOwnership()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
         return true;
     }
@@ -86,7 +90,7 @@ public class WalletManager : ISingleton<WalletManager>
     {
         //TODO: WTF
         return true;
-        
+        /*
         if (tokenType == NftContract.None)
         {
             Debug.Log($"[WalletManager] Player will never own a [{NftContract.None}] token type.");
@@ -102,7 +106,7 @@ public class WalletManager : ISingleton<WalletManager>
         {
             return NftsInWallet[tokenType].Contains(nftId);
         }
-        return false;
+        return false;*/
     }
 
     public bool ConfirmOwnsNfts()

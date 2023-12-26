@@ -39,7 +39,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
 
     public SpineAnimationsManagement spine;
     private Action RunWithEvent;
-    private bool CalledEvent;
+    //private bool CalledEvent;
     private List<Guid> runningEvents = new List<Guid>();
 
     new private Collider2D collider;
@@ -193,9 +193,9 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     {
         if (combatTurnData.originId != enemyData.id) return;
         
-        float afterEvent = 0;
-        float length = 0;
-        RunAfterTime(0.1f, () => { CalledEvent = false; });
+        //float afterEvent = 0;
+        //float length = 0;
+        //RunAfterTime(0.1f, () => { CalledEvent = false; });
         RunAfterEvent(() =>
         {
             GameManager.Instance.EVENT_ATTACK_RESPONSE.Invoke(combatTurnData);
@@ -438,7 +438,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         if (string.IsNullOrEmpty(animationSequence))
         {
             Debug.LogWarning(
-                $"[EnemyManager] Warning! enemy {enemyData.name} received a null or empty animation request");
+                $"[EnemyManager] Warning! enemy {enemyData.name} received a null or empty animation request - Using Default animation: {defaultAnimation}");
             return defaultAnimation;
         }
 
@@ -501,7 +501,7 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
     {
         if (eventName.Equals("attack") || eventName.Equals("release"))
         {
-            CalledEvent = true;
+            //CalledEvent = true;
             RunWithEvent?.Invoke();
         }
     }

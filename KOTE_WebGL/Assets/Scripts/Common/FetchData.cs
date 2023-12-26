@@ -236,8 +236,6 @@ public class FetchData : DataManager, ISingleton<FetchData>
         
         var myIndex = textureIndex++;
 
-        bool textureLoaded = false;
-        
         loader.Load(
             myIndex,
             url,
@@ -253,7 +251,6 @@ public class FetchData : DataManager, ISingleton<FetchData>
                             return;
                         }
                         
-                        textureLoaded = true;
                         if (loadedText)
                             loadedText.name = url;
                         cachedTextures.Add(imageName, loadedText);
@@ -357,7 +354,9 @@ public class FetchData : DataManager, ISingleton<FetchData>
             GameObject.Destroy(item);  
         }
     }
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
     public async UniTask Logout()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
         /*
         if (populatedWithStatus == GameStatuses.ScoreBoardAndNextAct)
@@ -374,7 +373,9 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
         //Application.OpenURL(_url);
 
+#pragma warning disable CS0618 // Type or member is obsolete
         Application.ExternalCall("RecargarPagina");
+#pragma warning restore CS0618 // Type or member is obsolete
 
 
 

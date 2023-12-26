@@ -326,10 +326,12 @@ public class WebSocketManager : SingleTon<WebSocketManager>
 #if UNITY_EDITOR
         if (GameSettings.DEBUG_MODE_ON)
         {
+#pragma warning disable CS0162 // Unreachable code detected
             data = Utils.ReadJsonFile("node_data_act1.txt");
-            //data = Utils.ReadJsonFile("node_data_only_RH.txt");
-            //data = Utils.ReadJsonFile("node_data_act1step2.txt");
-            //data = Utils.ReadJsonFile("node_data_act_test.txt");
+#pragma warning restore CS0162 // Unreachable code detected
+                              //data = Utils.ReadJsonFile("node_data_only_RH.txt");
+                              //data = Utils.ReadJsonFile("node_data_act1step2.txt");
+                              //data = Utils.ReadJsonFile("node_data_act_test.txt");
         }
 #endif
         //Debug.Log("Data from OnExpeditionMap: " + data);

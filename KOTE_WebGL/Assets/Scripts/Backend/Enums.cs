@@ -4,7 +4,8 @@ public enum inGameScenes
 {
     MainMenu,
     Loader,
-    Expedition
+    Expedition,
+    MemoryCleaner
 }; //created so we can use the names on the enums instead of hard coding strings everytime, if a scene name is changed we can just change it here as well instead of changing at various spots
 
 [Serializable]

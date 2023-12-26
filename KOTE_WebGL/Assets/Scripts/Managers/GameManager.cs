@@ -15,7 +15,8 @@ public class GameManager : SingleTon<GameManager>
         FindObjectOfType<SettingsManager>().EnableLogoutAndWalletsButtons();
         FindObjectOfType<SettingsButtonManager>().OnAuthenticated();
         //FindObjectOfType<WalletPanel>().UpdateWalletInfo();
-        FindObjectOfType<ArmoryPanelManager>(true).PopulatePlayerGearInventory();
+        //TODO: JLJ - Commented Line (Not used until player skin select)
+        //FindObjectOfType<ArmoryPanelManager>(true).PopulatePlayerGearInventory();
     }
 
     //PROFILE EVENTS
@@ -377,8 +378,9 @@ public class GameManager : SingleTon<GameManager>
     
     public bool IsPlayerTurn = true;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         WebBridge.OnWebMessageRecieved.AddListener(WebBridgeMessageReceived);
     }
 
@@ -397,6 +399,8 @@ public class GameManager : SingleTon<GameManager>
         FindObjectOfType<CharacterSelectionManager>(true).ClearOutNfts(data);
         FindObjectOfType<TreasuryManager>(true).ClearOutNfts(data);
         NftManager.Instance.UpdateNfts(data);
+        //TODO: JLJ - Commented Line (Not used until player skin select)
+        FindObjectOfType<ArmoryPanelManager>(true).PopulatePlayerGearInventory();
     }
     
 #if UNITY_EDITOR

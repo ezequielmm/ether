@@ -117,7 +117,6 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
 
             // else set that as the background and continue
            return actBackgrounds.SpriteList[i].image;
-            break;
         }
 
         Debug.LogError($"No background found for act {act} step {step}");

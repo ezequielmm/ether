@@ -49,15 +49,18 @@ public class InstanceExample : MonoBehaviour
 	{
 		ParticleSystem newParticleSystem = Instantiate(prefab,position,Quaternion.identity) as ParticleSystem;
 
-		/// -----------------------------
-		// Make sure it will be destroyed
-		/// -----------------------------
-		Destroy(
+        /// -----------------------------
+        // Make sure it will be destroyed
+        /// -----------------------------
+
+#pragma warning disable CS0618 // Type or member is obsolete
+        Destroy(
 			newParticleSystem.gameObject,
 			newParticleSystem.startLifetime
 		);
+#pragma warning restore CS0618 // Type or member is obsolete
 
-		return newParticleSystem;
+        return newParticleSystem;
 	}
 
 

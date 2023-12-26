@@ -23,12 +23,15 @@ public class AuthenticationManager : SingleTon<AuthenticationManager>
     private void Start()
     {
         GameManager.Instance.EVENT_REQUEST_LOGOUT_COMPLETED.AddListener(ClearSessionToken);
-        Login();
+        _ = Login();
+
     }
 
     public bool Authenticated => !string.IsNullOrEmpty(GetSessionToken());
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
     public async UniTask<bool> Login()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
         if (Token == null)
         {

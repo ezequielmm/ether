@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using static StatusData;
+using UnityEngine.PlayerLoop;
 
 public class StatusManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -155,6 +156,9 @@ public class StatusManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         statusCollider.enabled = true;
         statusCollider.offset = iconContainer.Bounds.center + iconContainer.transform.localPosition;
         statusCollider.size = iconContainer.Bounds.size;
+        var lastPosition = transform.localPosition;
+        lastPosition.x = -0.90f;
+        transform.localPosition = lastPosition;
     }
 
     private void OnTurnChange(string who) 

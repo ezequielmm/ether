@@ -23,7 +23,7 @@ public class LoadingManager : MonoBehaviour
     
     public static bool Won { get; internal set; }
 
-    private bool IsBusy = false;
+    //private bool IsBusy = false;
 
 #if UNITY_EDITOR
     public string editorToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIweDIxQkViOTIzMGU3OTYzRUVjNjFhYzQwNjZmMjdlQjA5QjM2NTdFMzMiLCJ0eXBlIjoic2Vzc2lvbiIsImlhdCI6MTY5ODUxMTE4OCwiZXhwIjoxNjk5MTE1OTg4fQ.eFVPNkBPWZruUe5fcEl-sOa3bd6GOvlYWlx_Vh7Dp5c";

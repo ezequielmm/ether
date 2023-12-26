@@ -75,7 +75,7 @@ public class UserDataManager : SingleTon<UserDataManager>
     public void OnExpeditionStart(inGameScenes sceneType)
     {
         if (sceneType != inGameScenes.Expedition) return;
-        UpdateExpeditionStatus();
+        _ = UpdateExpeditionStatus();
     }
 
     public void SetExpedition(ExpeditionStatus newStatus)
@@ -100,7 +100,7 @@ public class UserDataManager : SingleTon<UserDataManager>
             string pannelMessage = "Account Error. Please log in again.";
             string[] buttons = { "Return To Login screen", string.Empty };
             GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(pannelMessage,
-                () => { FetchData.Instance.Logout(); }, null, buttons);
+                () => { _ = FetchData.Instance.Logout(); }, null, buttons);
         }
 
         return !noAccount;

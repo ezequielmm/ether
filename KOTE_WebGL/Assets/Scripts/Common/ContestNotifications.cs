@@ -65,7 +65,9 @@ public class ContestNotifications : MonoBehaviour
         GameManager.Instance.EVENT_SHOW_CONFIRMATION_PANEL_WITH_FULL_CONTROL.Invoke(EndOfContestText, () =>
             {
                 Debug.Log("GiveContestEnded");
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 UserDataManager.Instance.ClearExpedition();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 GameManager.Instance.LoadScene(inGameScenes.MainMenu);
             }, () => { },
             new string[] { "Back to Main Menu", "Continue (No Lootbox)" });

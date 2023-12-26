@@ -25,12 +25,14 @@ public class MetaMask : SingleTon<MetaMask>
         Debug.LogError($"[MetaMask | {gameObject.name}] Enviroment not in WebGL. Can not access MetaMask.");
         return null;
 #endif
+#pragma warning disable CS0162 // Unreachable code detected
         if (!HasMetamask)
         {
             Debug.LogError(
                 $"[MetaMask | {gameObject.name}] MetaMask is not found in the browser. Be sure to install it!");
             return null;
         }
+#pragma warning restore CS0162 // Unreachable code detected
 
         var promise = CreatePromise();
         MetamaskSelectAccount(promise.Id.ToString(), "ReturnFromJavascript", gameObject.name);
@@ -46,12 +48,14 @@ public class MetaMask : SingleTon<MetaMask>
         Debug.LogError($"[MetaMask | {gameObject.name}] Enviroment not in WebGL. Can not access MetaMask.");
         return null;
 #endif
+#pragma warning disable CS0162 // Unreachable code detected
         if (!HasMetamask)
         {
             Debug.LogError(
                 $"[MetaMask | {gameObject.name}] MetaMask is not found in the browser. Be sure to install it!");
             return null;
         }
+#pragma warning restore CS0162 // Unreachable code detected
 
         var promise = CreatePromise();
         MetamaskPersonalSign(promise.Id.ToString(), account, message, "ReturnFromJavascript", gameObject.name);

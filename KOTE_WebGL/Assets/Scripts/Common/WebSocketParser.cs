@@ -28,7 +28,6 @@ public class WebSocketParser
             case nameof(WS_MESSAGE_TYPES.card_upgrade):
                 Debug.LogError($"{WS_MESSAGE_TYPES.card_upgrade} is not implemented, report this.");
                 throw new NotImplementedException();
-                break;
             case nameof(WS_MESSAGE_TYPES.add_potion):
                 ProcessAddPotion(swsm.data.action, data);
                 break;
@@ -96,7 +95,9 @@ public class WebSocketParser
 #if UNITY_EDITOR
         if (GameSettings.DEBUG_MODE_ON)
         {
+#pragma warning disable CS0162 // Unreachable code detected
             data = Utils.ReadJsonFile("map_test_data.json");
+#pragma warning restore CS0162 // Unreachable code detected
         }
 #endif
 
@@ -144,6 +145,7 @@ public class WebSocketParser
                 {
                     "spawn_enemies" => GameManager.Instance.EVENT_ADD_ENEMIES,
                     "transform_enemy" => GameManager.Instance.EVENT_TRANSFORM_ENEMIES,
+                    _ => throw new NotImplementedException(),
                 }).Invoke(enemiesData.data);
             }
                 break;
@@ -459,7 +461,9 @@ public class WebSocketParser
             panelOptions,
             (selectedCards) =>
             {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 SendData.Instance.SendCardsSelected(selectedCards);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             });
     }
 

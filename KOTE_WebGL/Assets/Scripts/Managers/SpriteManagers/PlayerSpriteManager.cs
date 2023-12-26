@@ -14,7 +14,7 @@ public class PlayerSpriteManager : SingleTon<PlayerSpriteManager>
     public SpriteList DefaultSkinImages;
     public UnityEvent skinLoading { get; } = new();
 
-    private PlayerNft _curNft;
+    public PlayerNft _curNft;
     private List<PlayerNft> characterList = new List<PlayerNft>();
     private UnityAction nftLoadedListener;
 
