@@ -155,8 +155,6 @@ public class EnemiesManager : MonoBehaviour
         //         continue;
         //     }
         // }
-        enemies.Clear();
-        enemies = newEnemyList;
 
         PositionEnemiesInLine();
     }
@@ -239,7 +237,13 @@ public class EnemiesManager : MonoBehaviour
         // Total enemy width
         if (enemies.Length == 0) return;
         
-        enemies = enemies.Where(e => e.GetComponent<EnemyManager>().EnemyData.line == lineIndex).ToArray();
+        enemies = enemies.Where(e =>
+        {
+            var enemyLine = e.GetComponent<EnemyManager>().EnemyData.line;
+            if (lineIndex == 0 && enemyLine == null)
+                return true;
+            return enemyLine == lineIndex;
+        }).ToArray();
 
         Debug.Log($"positioning: {enemies.Length} enemies in line {lineIndex}");
         

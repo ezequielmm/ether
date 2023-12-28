@@ -48,7 +48,7 @@ MonoBehaviour:
     type: 3}
   lines:
   - xOffset: 0
-    extent: 5
+    extent: 7
     floor: -2
     zPosition: -2
     spacing: 1.5

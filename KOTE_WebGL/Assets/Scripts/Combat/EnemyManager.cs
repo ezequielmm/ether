@@ -219,8 +219,9 @@ public class EnemyManager : MonoBehaviour, ITooltipSetter
         //         string.IsNullOrEmpty(signature_move_name) ? "Signature Attack" : signature_move_name, 
         //         enemyPlacementData.intentMountingPoint.position,
         //         activeEnemy);
-        
-        PlayAnimation(DetermineAnimation(combatTurnData.action),"");
+
+        var determineAnimation = DetermineAnimation(combatTurnData.action);
+        PlayAnimation(determineAnimation,"");
     }
     
     private string DetermineAnimation(CombatTurnData.QueueActionData action)
