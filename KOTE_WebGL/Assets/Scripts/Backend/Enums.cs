@@ -186,7 +186,6 @@ public enum STATUS
     emptyFade,
     absorbing,
     chargingBeam,
-    elemental,
     growed,
     hatching,
     mistified,

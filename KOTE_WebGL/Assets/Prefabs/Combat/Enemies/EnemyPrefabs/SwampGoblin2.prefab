@@ -81,6 +81,7 @@ GameObject:
   - component: {fileID: 5344238363285616756}
   - component: {fileID: 4897795524724359796}
   - component: {fileID: 5481122227073595535}
+  - component: {fileID: 5110731330957987297}
   m_Layer: 0
   m_Name: SwampGoblin2
   m_TagString: Enemy
@@ -145,16 +146,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   intentMountingPoint: {fileID: 637937264444858106}
   healthMountingPoint: {fileID: 8082651498716096778}
-  onCursorEnter:
-    m_PersistentCalls:
-      m_Calls: []
-  onCursorExit:
-    m_PersistentCalls:
-      m_Calls: []
   spineAnimationsManagement: {fileID: 0}
   sortingGroup: {fileID: 0}
   sortingOrder: 1
   setBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  rendererBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
 --- !u!50 &9042282606503098450
@@ -406,6 +404,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: cast
     sequence:
     - track: 1
@@ -414,6 +413,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: Idle
     sequence:
     - track: 1
@@ -422,6 +422,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 0
     animationType: 0
+    vfxs: 
   - sequenceName: hit
     sequence:
     - track: 1
@@ -430,6 +431,7 @@ MonoBehaviour:
       delay: 0.5
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: death
     sequence:
     - track: 1
@@ -438,6 +440,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 1
+    vfxs: 
   - sequenceName: enrage
     sequence:
     - track: 1
@@ -446,6 +449,7 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   - sequenceName: strike
     sequence:
     - track: 1
@@ -454,13 +458,13 @@ MonoBehaviour:
       delay: 0
       animationEvent: 1
     animationType: 2
+    vfxs: 
   availableAnimations:
   - attack1
   - cast1
   - death
   - hit
   - idle
-  idleAnimation: idle
 --- !u!114 &4897795524724359796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -492,3 +496,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeoutSeconds: 1
+--- !u!114 &5110731330957987297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9145094296802414103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3264b24f699a4b8baed49f8cca746cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  onCursorEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onCursorExit:
+    m_PersistentCalls:
+      m_Calls: []

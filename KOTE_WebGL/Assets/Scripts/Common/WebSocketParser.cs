@@ -28,6 +28,7 @@ public class WebSocketParser
             case nameof(WS_MESSAGE_TYPES.card_upgrade):
                 Debug.LogError($"{WS_MESSAGE_TYPES.card_upgrade} is not implemented, report this.");
                 throw new NotImplementedException();
+                break;
             case nameof(WS_MESSAGE_TYPES.add_potion):
                 ProcessAddPotion(swsm.data.action, data);
                 break;
@@ -95,9 +96,7 @@ public class WebSocketParser
 #if UNITY_EDITOR
         if (GameSettings.DEBUG_MODE_ON)
         {
-#pragma warning disable CS0162 // Unreachable code detected
             data = Utils.ReadJsonFile("map_test_data.json");
-#pragma warning restore CS0162 // Unreachable code detected
         }
 #endif
 
@@ -141,14 +140,9 @@ public class WebSocketParser
             case "transform_enemy":
             {
                 SWSM_Enemies enemiesData = JsonConvert.DeserializeObject<SWSM_Enemies>(data);
-                (action switch
-                {
-                    "spawn_enemies" => GameManager.Instance.EVENT_ADD_ENEMIES,
-                    "transform_enemy" => GameManager.Instance.EVENT_TRANSFORM_ENEMIES,
-                    _ => throw new NotImplementedException(),
-                }).Invoke(enemiesData.data);
-            }
+                GameManager.Instance.SpawnOrTransformEnemies(action, enemiesData.data);
                 break;
+            }
             default:
                 Debug.LogWarning($"[SWSM Parser][Combat Update] Unknown Action \"{action}\". Data = {data}");
                 break;
@@ -461,9 +455,7 @@ public class WebSocketParser
             panelOptions,
             (selectedCards) =>
             {
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
                 SendData.Instance.SendCardsSelected(selectedCards);
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             });
     }
 
@@ -480,8 +472,8 @@ public class WebSocketParser
     private static void ProcessUpdateEnemy(string rawData)
     {
         SWSM_Enemies enemiesData = JsonConvert.DeserializeObject<SWSM_Enemies>(rawData);
-
-        GameManager.Instance.EVENT_UPDATE_ENEMIES.Invoke(enemiesData.data);
+        
+        GameManager.Instance.UpdateEnemies(enemiesData.data);
     }
 
     private static void ProcessUpdatePlayer(string data)

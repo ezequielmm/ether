@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Spine.Unity;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.Rendering;
 
 [RequireComponent(typeof(BoxCollider2D))]
@@ -11,8 +8,6 @@ public class EnemyPrefab : MonoBehaviour
 {
     public Transform intentMountingPoint;
     public Transform healthMountingPoint;
-    public UnityEvent onCursorEnter;
-    public UnityEvent onCursorExit;
     public SpineAnimationsManagement spineAnimationsManagement;
     public SortingGroup sortingGroup;
     public int sortingOrder = 1;
@@ -109,14 +104,5 @@ public class EnemyPrefab : MonoBehaviour
         transform.position = originalPos;
         transform.rotation = originalRot;
         transform.localScale = originalScale;
-    }
-
-    private void OnMouseEnter()
-    {
-        onCursorEnter.Invoke();
-    }
-    private void OnMouseExit()
-    {
-        onCursorExit.Invoke();
     }
 }

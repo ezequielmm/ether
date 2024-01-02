@@ -700,6 +700,7 @@ public class EnemyData
     public string type;
     public string category;
     public string size;
+    public int? line;
 }
 
 public class SWSM_Players
