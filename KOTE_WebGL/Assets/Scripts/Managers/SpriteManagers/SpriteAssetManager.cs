@@ -167,5 +167,6 @@ public class SpriteAssetManager : SingleTon<SpriteAssetManager>
 
         Debug.Log($"Rresult: {async.Result}");
         onSuccess.Invoke(async.Result);
+        Addressables.Release(async);
     }
 }

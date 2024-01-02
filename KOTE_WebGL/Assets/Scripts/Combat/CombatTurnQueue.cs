@@ -94,7 +94,10 @@ public class CombatTurnQueue : MonoBehaviour
     private void ClearCombatQueue() 
     {
         awaitToContinue = false;
-        Debug.Log($"[CombatQueue] Cleared with [{queue.Count}] animations left.");
+        if (queue.Count > 0)
+        {
+            Debug.LogWarning($"[CombatQueue] Combat Queue was not properly closed before clearing part of queue. Cleared with [{queue.Count}] animations left.");
+        }
         queue.Clear();
         queueState = QueueState.idle;
     }
@@ -186,7 +189,6 @@ public class CombatTurnQueue : MonoBehaviour
             if (queue.Count == 0) 
             {
                 ClearCombatQueue();
-                Debug.LogWarning($"[CombatQueue] Combat Queue was not properly closed before clearing part of queue.");
             }
         }
     }

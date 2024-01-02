@@ -174,7 +174,8 @@ public class GameManager : SingleTon<GameManager>
     {
         NftManager.Instance.SetNft(nft);
         PlayerSpriteManager.Instance.BuildPlayer(nft);
-        FindObjectOfType<ArmoryPanelManager>().NftSelected(nft);
+        ArmoryPanelManager armoryPanelManager = FindObjectOfType<ArmoryPanelManager>();
+        armoryPanelManager?.NftSelected(nft);
     }
 
     public void UpdateNft(Trait trait, string value)
@@ -419,6 +420,14 @@ public class GameManager : SingleTon<GameManager>
         SceneManager.activeSceneChanged += UpdateSoundVolume;
         SceneManager.sceneLoaded += SceneLoaded;
         //EVENT_REQUEST_LOGOUT_SUCCESSFUL.AddListener(ReturnToMainMenu);
+    }
+
+    protected override void OnDestroy()
+    {
+        EVENT_REQUEST_LOGOUT_COMPLETED.RemoveListener(OnLogout);
+        SceneManager.activeSceneChanged -= UpdateSoundVolume;
+        SceneManager.sceneLoaded -= SceneLoaded;
+        base.OnDestroy();
     }
 
     private async void GetServerVersion()
