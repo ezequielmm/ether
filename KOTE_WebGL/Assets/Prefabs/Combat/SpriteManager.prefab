@@ -51,6 +51,7 @@ MonoBehaviour:
   gems: {fileID: 11400000, guid: fd61f9889f67b7a43aab950b324b0fa0, type: 2}
   cardImageLists:
   - {fileID: 11400000, guid: 5f1b5dffb5f2ba54fb9ad6b0613ef7e8, type: 2}
+  cardImages: {fileID: 11400000, guid: 903f22d7424176e4d9fc04b1d1ebd0ef, type: 2}
 --- !u!114 &3299591649399607022
 MonoBehaviour:
   m_ObjectHideFlags: 0
