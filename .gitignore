@@ -6,6 +6,8 @@
 [Bb]uilds/
 [Ll]ogs/
 /Assets/AssetStoreTools*
+KOTE_WebGL/Assets/_JLJ/*
+KOTE_WebGL/Assets/_JLJ.meta
 KOTE_WebGL\Assets\Resources\[Ee]nv
 ## TextMesh Pro files
 [Aa]ssets/TextMesh*Pro
