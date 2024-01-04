@@ -291,7 +291,7 @@ public abstract class PlayerNft
     protected string GetSkinName(Trait trait, string value)
     {
         string skinName = value;
-        skinName = skinName.Replace('-', '_').Replace(' ', '_');
+        skinName = skinName.Replace('-', '_').Replace(' ', '_').Replace("/", "");
 
         if (trait == Trait.Sigil)
         {

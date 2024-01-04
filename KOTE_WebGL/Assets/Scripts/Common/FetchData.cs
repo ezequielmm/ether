@@ -286,6 +286,7 @@ public class FetchData : DataManager, ISingleton<FetchData>
 
     public void GetArmoryGearImage(Trait gearType, string gearName, Action<Texture2D> callback)
     {
+        gearName = gearName.Replace("/", "");
         gearName = $"{gearType}/{gearName}";
         string spriteName = gearName + ".jpg";
         string requestUrl = ClientEnvironmentManager.Instance.GearIconURL.AddPath(spriteName);
