@@ -1171,6 +1171,10 @@ MonoBehaviour:
     m_Address: Assets/Sprites/Battle/Status/Status background.PNG
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: e1c90ee1ff26d2c488dd2a1f92de91c7
+    m_Address: Assets/Sprites/cards/CardImages/551.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b5243524a01eab148b0a227677e45ff2, type: 2}
   m_SchemaSet:
